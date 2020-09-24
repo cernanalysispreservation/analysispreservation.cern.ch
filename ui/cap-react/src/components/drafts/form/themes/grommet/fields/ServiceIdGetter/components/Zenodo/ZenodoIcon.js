@@ -2,9 +2,9 @@ import React from "react";
 
 import SVGIcon from "grommet/components/SVGIcon";
 
-const ZenodoIcon = () => (
+const ZenodoIcon = ({ size = "small" }) => (
   <SVGIcon
-    size="small"
+    size={size}
     viewBox="0 0 200 80"
     version="1.1"
     type="logo"

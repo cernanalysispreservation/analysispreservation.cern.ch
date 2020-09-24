@@ -213,6 +213,7 @@ class PublishedPreview extends React.Component {
                     schemaType={this.props.schemaType.toJS()}
                     uiSchema={uiSchema}
                     onChange={() => {}}
+                    isPublished
                   >
                     <span />
                   </JSONSchemaPreviewer>

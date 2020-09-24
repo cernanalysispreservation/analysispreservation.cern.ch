@@ -43,7 +43,8 @@ class DraftEditorHeader extends React.Component {
     if (typeof obj !== "object") {
       this.isEmptyValues(obj) ? null : arr.push(obj);
     } else {
-      Object.values(obj).length > 0 &&
+      obj &&
+        Object.values(obj).length > 0 &&
         Object.values(obj).map(item => {
           let checkedValue;
           if (typeof item !== "object") {

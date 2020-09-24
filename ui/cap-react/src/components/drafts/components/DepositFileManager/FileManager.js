@@ -32,7 +32,9 @@ class FileManager extends React.Component {
 
   render() {
     return this.props.activeLayer ? (
-      <Modal onClose={this.props.toggleLayer} title="File Manager">
+      <Modal 
+      onClose={this.props.toggleLayer} 
+      title="File Manager">
         <Box size={{ height: "xlarge", width: { min: "large" } }}>
           <Box flex={true}>
             <Box flex={true} direction="row">

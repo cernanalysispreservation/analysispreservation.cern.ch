@@ -49,7 +49,7 @@ let ObjectFieldTemplate = function(props) {
     return (
       <Box
         className={
-          props.formContext.publishedPreview
+          props.formContext.readonlyPreview
             ? "published-array obj-fld-tml"
             : "obj-fld-tml"
         }

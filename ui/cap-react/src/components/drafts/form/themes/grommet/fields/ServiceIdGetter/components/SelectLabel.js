@@ -13,7 +13,7 @@ const SelectLabel = ({ service }) => {
       direction="row"
       align="center"
       justify="center"
-      pad={{ horizontal: "small", between: "small" }}
+      pad={{ between: "small" }}
     >
       <Box>{IconFactory[service.value]}</Box>
       <Box>{service.label}</Box>

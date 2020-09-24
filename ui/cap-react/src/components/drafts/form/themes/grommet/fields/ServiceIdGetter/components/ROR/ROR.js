@@ -7,7 +7,7 @@ import Anchor from "../../../../../../../../partials/Anchor";
 
 const Ror = ({ data } = data) => {
   return (
-    <Box colorIndex="light-3" flex={true}>
+    <Box  flex={true}>
       <Box
         flex={false}
         direction="column"
@@ -25,7 +25,9 @@ const Ror = ({ data } = data) => {
           justify="start"
         >
           <Paragraph margin="none" style={{ color: "grey" }}>
-            {data.acronyms.length > 0 ? `${data.acronyms},` : ""}
+            {data.acronyms && data.acronyms.length > 0
+              ? `${data.acronyms},`
+              : ""}
             {data.country.country_code}
           </Paragraph>
           <Box

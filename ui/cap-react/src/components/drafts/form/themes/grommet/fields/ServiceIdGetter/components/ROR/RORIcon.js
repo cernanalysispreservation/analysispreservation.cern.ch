@@ -2,9 +2,9 @@ import React from "react";
 
 import SVGIcon from "grommet/components/SVGIcon";
 
-const RORIcon = () => (
+const RORIcon = ({ size = "small" }) => (
   <SVGIcon
-    size="small"
+    size={size}
     viewBox="0 0 229.82 75.17"
     version="1.1"
     type="logo"

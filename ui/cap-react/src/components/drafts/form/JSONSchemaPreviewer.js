@@ -135,7 +135,8 @@ class JSONShemaPreviewer extends React.Component {
             onSubmit={this.props.onSubmit}
             formContext={{
               tabView: this.state.uiObject === "tabView",
-              publishedPreview: true
+              readonlyPreview: true,
+              isPublished: this.props.isPublished
             }}
           >
             {this.props.children}
@@ -153,7 +154,8 @@ JSONShemaPreviewer.propTypes = {
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
   children: PropTypes.node,
-  schemaType: PropTypes.object
+  schemaType: PropTypes.object,
+  isPublished: PropTypes.bool
 };
 
 export default JSONShemaPreviewer;

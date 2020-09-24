@@ -8,7 +8,7 @@ import ORCidIcon from "./ORCidIcon";
 
 const Orcid = ({ data } = data) => {
   return (
-    <Box colorIndex="light-3" flex={true}>
+    <Box flex={true}>
       <Box
         flex={false}
         direction="row"

@@ -2,9 +2,9 @@ import React from "react";
 
 import SVGIcon from "grommet/components/SVGIcon";
 
-const ORCidIcon = () => (
+const ORCidIcon = ({ size = "small" }) => (
   <SVGIcon
-    size="small"
+    size={size}
     viewBox="0 0 270 270"
     version="1.1"
     type="logo"

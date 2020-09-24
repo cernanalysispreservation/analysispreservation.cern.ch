@@ -5,6 +5,8 @@ import RadioWidget from "./RadioWidget";
 import CheckboxWidget from "./CheckboxWidget";
 import TextAreaWidget from "./TextAreaWidget";
 import SwitchWidget from "./SwitchWidget";
+import EmailWidget from "./EmailWidget";
+import URLWidget from "./URLWidget";
 
 const widgets = {
   text: TextWidget,
@@ -13,7 +15,9 @@ const widgets = {
   radio: RadioWidget,
   checkboxes: CheckboxWidget,
   textarea: TextAreaWidget,
-  switch: SwitchWidget
+  switch: SwitchWidget,
+  email: EmailWidget,
+  uri: URLWidget
 };
 
 export default widgets;

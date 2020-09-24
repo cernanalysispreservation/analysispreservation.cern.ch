@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Select from "grommet/components/Select";
 import TextInput from "grommet/components/TextInput";
-import FormField from "grommet/components/FormField";
 
 import Zenodo from "./components/Zenodo/Zenodo";
 import Orcid from "./components/ORCID/Orcid";
@@ -12,11 +11,12 @@ import Ror from "./components/ROR/ROR";
 
 import SelectLabel from "./components/SelectLabel";
 
-import FormTrashIcon from "grommet/components/icons/base/FormTrash";
+import { AiOutlineDelete } from "react-icons/ai";
 
 import Spinning from "grommet/components/icons/Spinning";
 
 import axios from "axios";
+import Button from "../../../../../../partials/Button";
 
 class ServiceIDGetter extends React.Component {
   constructor(props) {
@@ -144,36 +144,10 @@ class ServiceIDGetter extends React.Component {
 
   render() {
     return (
-      <FormField
-        label={
-          <span>
-            <span style={{ color: "#000" }}>
-              {this.props.title ||
-                (this.props.schema && this.props.schema.title)}
-            </span>
-            {this.props.rawDescription ? (
-              <span style={{ color: "#bbb" }}>
-                &nbsp; {this.props.rawDescription}
-              </span>
-            ) : (
-              <span style={{ color: "#bbb" }}>
-                &nbsp; Attach here a resource fetched from a list of services
-              </span>
-            )}
-          </span>
-        }
-        key={this.props.id + this.props.label}
-        error={this.state.error}
-      >
-        <Box
-          flex={true}
-          direction="column"
-          wrap={false}
-          justify="between"
-          pad={{ horizontal: "medium", vertical: "small" }}
-        >
+      <Box key={this.props.id + this.props.label} error={this.state.error}>
+        <Box flex={true} direction="column" wrap={false} justify="between">
           {!this.state.editEnabled ? (
-            <Box flex={false} colorIndex="light-3" direction="row">
+            <Box flex={false} colorIndex="" direction="row">
               {this.props.formData.fetched &&
                 this.props.formData.source.service == "ror" && (
                   <Ror data={this.props.formData.fetched} />
@@ -186,23 +160,16 @@ class ServiceIDGetter extends React.Component {
                 this.props.formData.source.service == "orcid" && (
                   <Orcid data={this.props.formData.fetched} />
                 )}
-              <Box
-                flex={false}
+              <Box justify="center">
+              <Button
                 onClick={this.onRemoveFormData}
-                colorIndex="light-2"
-                justify="center"
-              >
-                <FormTrashIcon />
-              </Box>
+                icon={<AiOutlineDelete size={20} />}
+                size="icon"
+                />
+                </Box>
             </Box>
           ) : (
-            <Box
-              flex={false}
-              align="center"
-              direction="row"
-              wrap={false}
-              pad={{ between: "medium" }}
-            >
+            <Box flex={false} align="center" direction="row" wrap={false}>
               {this.props.uiSchema["ui:servicesList"].length < 2 ? (
                 <SelectLabel
                   service={this.props.uiSchema["ui:servicesList"][0]}
@@ -222,11 +189,14 @@ class ServiceIDGetter extends React.Component {
                   onChange={this.onServiceChange}
                 />
               )}
-              <Box pad="small" colorIndex="light-2">
+              <Box pad={{ horizontal: "small" }}>
                 <TextInput
                   placeHolder="ID here"
                   value={this.state.url}
                   onDOMChange={this.onIDChange}
+                  style={{
+                    borderRadius: "3px"
+                  }}
                 />
               </Box>
               {this.state.loader ? (
@@ -234,20 +204,18 @@ class ServiceIDGetter extends React.Component {
                   <Spinning />
                 </Box>
               ) : (
-                <Box
+                <Button
                   onClick={this.getResource}
-                  pad="small"
-                  justify="center"
-                  align="center"
-                  colorIndex="grey-2"
-                >
-                  GET
-                </Box>
+                  text="GET"
+                  size="large"
+                  background="#e6e6e6"
+                  hoverColor="#f5f5f5"
+                  />
               )}
             </Box>
           )}
         </Box>
-      </FormField>
+      </Box>
     );
   }
 }
