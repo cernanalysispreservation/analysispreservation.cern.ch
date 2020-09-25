@@ -181,18 +181,25 @@ const Modal = ({
     return choices[name];
   };
 
-  const getContentBasedOnFlush = flush => {
-    const choices = {
-      false: (
-        <Wrapper>
-          <Content
-            ref={modal}
-            position={getPositionByName(position)}
-            background={background}
-            full={full}
-            animated={animated}
-            align={position}
-          >
+  return (
+    <Wrapper>
+      <Content
+        ref={modal}
+        position={getPositionByName(position)}
+        background={background}
+        full={full}
+        animated={animated}
+        align={position}
+      >
+        {flush ? (
+          <RelativeBody>
+            <Icon onClick={onClose}>
+              <AiOutlineClose size={18} color="rgba(0,0,0,0.6)" />
+            </Icon>
+            {children}
+          </RelativeBody>
+        ) : (
+          <React.Fragment>
             <Header separator={separator}>
               <HeadingWrapper>
                 <Heading tag={tag} margin="none">
@@ -204,33 +211,11 @@ const Modal = ({
               </CloseButton>
             </Header>
             <Body padding={padding}>{children}</Body>
-          </Content>
-        </Wrapper>
-      ),
-      true: (
-        <Wrapper>
-          <Content
-            ref={modal}
-            position={getPositionByName(position)}
-            background={background}
-            full={full}
-            animated={animated}
-            align={position}
-          >
-            <RelativeBody>
-              <Icon onClick={onClose}>
-                <AiOutlineClose size={18} color="rgba(0,0,0,0.6)" />
-              </Icon>
-              {children}
-            </RelativeBody>
-          </Content>
-        </Wrapper>
-      )
-    };
-
-    return choices[flush];
-  };
-  return <React.Fragment>{getContentBasedOnFlush(flush)}</React.Fragment>;
+          </React.Fragment>
+        )}
+      </Content>
+    </Wrapper>
+  );
 };
 
 Modal.propTypes = {
