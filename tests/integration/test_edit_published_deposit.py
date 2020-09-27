@@ -64,7 +64,8 @@ def test_edit_record_when_other_user_403(client, users, auth_headers_for_user,
 
 def test_edit_record(client, create_deposit, superuser,
                      auth_headers_for_superuser):
-    deposit = create_deposit(superuser, 'test', experiment='CMS', publish=True)
+    deposit = create_deposit(superuser, 'test', experiment='CMS', 
+                             publish=True)
     metadata = deposit.get_record_metadata()
     depid = deposit['_deposit']['id']
 
@@ -78,6 +79,7 @@ def test_edit_record(client, create_deposit, superuser,
         'type': 'deposit',
         'revision': 2,
         'schema': {
+            'fullname': '',
             'name': 'test',
             'version': '1.0.0'
         },

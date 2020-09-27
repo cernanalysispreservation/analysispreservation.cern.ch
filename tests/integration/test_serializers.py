@@ -68,6 +68,7 @@ def test_get_deposit_with_default_serializer(client, users,
         'type': 'deposit',
         'revision': 2,
         'schema': {
+            'fullname': '',
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
@@ -154,6 +155,7 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         'experiment': 'CMS',
         'status': 'published',
         'schema': {
+            'fullname': '',
             'name': 'cms-analysis',
             'version': '1.0.0'
         },

@@ -257,6 +257,7 @@ def test_get_deposit_with_default_serializer(client, users,
         'type': 'deposit',
         'revision': 1,
         'schema': {
+            'fullname': '',
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
@@ -746,7 +747,7 @@ def test_get_deposit_with_form_json_serializer(
 
     # create schema
     ###############
-    create_schema('test-schema', experiment='CMS',
+    create_schema('test-schema', experiment='CMS', fullname='Test Schema',
                   deposit_schema={
                       'title': 'deposit-test-schema', 'type': 'object',
                       'properties': {
@@ -849,6 +850,7 @@ def test_get_deposit_with_form_json_serializer(
         'type': 'deposit',
         'labels': [],
         'schema': {
+            'fullname': 'Test Schema',
             'name': 'test-schema',
             'version': '1.0.0'
         },

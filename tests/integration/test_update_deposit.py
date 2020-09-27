@@ -223,6 +223,7 @@ def test_update_deposit_cannot_update_underscore_prefixed_files(
         'type': 'deposit',
         'revision': 1,
         'schema': {
+            'fullname': '',
             'name': 'lhcb',
             'version': '1.0.0'
         },
@@ -350,6 +351,7 @@ def test_patch_deposit_cannot_update_underscore_prefixed_fields(
         'type': 'deposit',
         'revision': 1,
         'schema': {
+            'fullname': '',
             'name': 'lhcb',
             'version': '1.0.0'
         },

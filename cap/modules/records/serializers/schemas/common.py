@@ -122,7 +122,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         result = {
             'name': schema.name,
             'version': schema.version,
-            'fullname': schema.fullname
+            'fullname': schema.fullname or ''
         }
         return result
 

@@ -153,7 +153,7 @@ def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version
         json_headers):
     create_schema('test-analysis')
     create_schema('test-analysis', version='1.0.0')
-    latest = create_schema('test-analysis', version='2.0.0')
+    create_schema('test-analysis', fullname='Test Schema', version='2.0.0')
     metadata = {'$ana_type': 'test-analysis'}
 
     resp = client.post('/deposits/',
@@ -161,7 +161,11 @@ def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version
                        data=json.dumps(metadata))
 
     assert resp.status_code == 201
-    assert resp.json['schema'] == {'name': 'test-analysis', 'version': '2.0.0'}
+    assert resp.json['schema'] == {
+        'fullname': 'Test Schema',
+        'name': 'test-analysis',
+        'version': '2.0.0'
+    }
 
 
 def test_create_deposit_set_fields_correctly(client, location, users,
@@ -169,7 +173,7 @@ def test_create_deposit_set_fields_correctly(client, location, users,
                                              auth_headers_for_user,
                                              json_headers):
     owner = users['cms_user']
-    schema = create_schema('test-analysis', experiment='CMS')
+    schema = create_schema('test-analysis', experiment='CMS', fullname='CMS Schema')
     metadata = {
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json',
         'basic_info': {
@@ -191,6 +195,7 @@ def test_create_deposit_set_fields_correctly(client, location, users,
         'type': 'deposit',
         'revision': 0,
         'schema': {
+            'fullname': 'CMS Schema',
             'name': 'test-analysis',
             'version': '1.0.0'
         },

@@ -143,6 +143,7 @@ def test_get_records_default_serializer(client, superuser,
         'experiment': 'CMS',
         'status': 'published',
         'schema': {
+            'fullname': '',
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
@@ -311,6 +312,7 @@ def test_get_record_when_superuser_returns_record(client, db, users,
         'experiment': 'CMS',
         'status': 'published',
         'schema': {
+            'fullname': '',
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
@@ -389,6 +391,7 @@ def test_get_record_with_form_json_serializer(
     create_schema(
         'test-schema',
         experiment='CMS',
+        fullname='Test Schema',
         deposit_schema={'title': 'deposit-test-schema'},
         deposit_options={'title': 'deposit-ui-test-schema'},
         record_schema={'title': 'record-test-schema'},
@@ -440,6 +443,7 @@ def test_get_record_with_form_json_serializer(
         },
         'revision': 0, 'status': 'published', 'type': 'record', 'labels': [],
         'schema': {
+            'fullname': 'Test Schema',
             'name': 'test-schema',
             'version': '1.0.0'
         },

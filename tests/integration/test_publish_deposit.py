@@ -137,6 +137,7 @@ def test_deposit_publish_changes_status_and_creates_record(
         'type': 'deposit',
         'revision': 1,
         'schema': {
+            'fullname': '',
             'name': 'test',
             'version': '1.0.0'
         },
