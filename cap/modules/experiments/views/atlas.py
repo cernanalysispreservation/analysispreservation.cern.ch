@@ -53,10 +53,18 @@ def _get_glance_by_id(glance_id):
             'Content-Type': 'application/json',
             'Authorization': 'Bearer {}'.format(access_token)
         })
+
+        if resp.status_code == 401:
+            return {'message': 'Not authenticated to view Glance IDs.'}, 401
+        if resp.status_code == 503:
+            return {'message': 'External server replied with an error.'}, 503
+
+        items = resp.json().get('items', [])
+        return (items[0], resp.status_code) if items \
+            else ({'message': 'No Glance ID found.'}, 400)
+
     except (KeyError, ValueError):
         return {'message': 'External server replied with an error.'}, 503
-
-    return resp.json(), resp.status_code
 
 
 @atlas_bp.route('/yadage/workflow_submit', methods=['POST'])
@@ -92,9 +100,4 @@ def yadage_workflow_submit():
 def get_glance_by_id(id):
     """Retrieves GLANCE analysis data by given id (route)."""
     resp, status = _get_glance_by_id(id)
-
-    # basically, if it has en error, send the error message
-    if 'items' in resp.keys():
-        resp = resp['items'][0]
-
     return jsonify(resp), status

@@ -91,7 +91,12 @@ def test_get_glance_by_id_when_glance_server_down_returns_503(
     responses.add(
         responses.GET,
         current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=glance_id),
-        json={'message': 'External server replied with an error.'},
+        json={
+            'count': 0,
+            'links': [],
+            'items': [],
+            'hasMore': False
+        },
         status=503)
 
     resp = client.get('/atlas/glance/{}'.format(glance_id),
@@ -112,3 +117,40 @@ def test_get_glance_by_id_when_glance_server_doesnt_return_token_returns_503(
 
     assert resp.status_code == 503
     assert resp.json['message'] == 'External server replied with an error.'
+
+@responses.activate
+@patch('cap.modules.experiments.views.atlas.get_glance_token')
+def test_get_glance_by_id_when_glance_server_auth_fails_returns_401(
+        mock_get_token, client, auth_headers_for_superuser):
+    glance_id = '111'
+    mock_get_token.return_value = 'some_token'
+    responses.add(
+        responses.GET,
+        current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=glance_id),
+        json={'message': 'Not authenticated to view Glance IDs.'},
+        status=401)
+
+    resp = client.get('/atlas/glance/{}'.format(glance_id),
+                      headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 401
+    assert resp.json['message'] == 'Not authenticated to view Glance IDs.'
+
+
+@responses.activate
+@patch('cap.modules.experiments.views.atlas.get_glance_token')
+def test_get_glance_by_id_when_glance_server_returns_empty_item_list(
+        mock_get_token, client, auth_headers_for_superuser):
+    glance_id = '111'
+    mock_get_token.return_value = 'some_token'
+    responses.add(
+        responses.GET,
+        current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=glance_id),
+        json={'message': 'No Glance ID found.'},
+        status=400)
+
+    resp = client.get('/atlas/glance/{}'.format(glance_id),
+                      headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'No Glance ID found.'
