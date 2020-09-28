@@ -373,9 +373,6 @@ label {
     display: flex !important;
     flex-direction: column-reverse !important;
   }
-  .display-only-for-small {
-    display: flex !important;
-  }
 
   .tab-scroll {
     height: 1vh !important;
@@ -427,6 +424,7 @@ label {
   #item {
     min-width: 250px;
     align-items: center;
+    display: flex;
     justify-content: center;
   }
 
@@ -614,7 +612,7 @@ label {
   #list {
     overflow-x: auto;
     justify-content: flex-start;
-    max-width: 91vw;
+    max-width: 90vw;
   }
   .tabs-list-items {
     display: flex !important;
@@ -630,9 +628,6 @@ label {
 }
 
 @media only screen and (min-width: 850px) {
-  #list {
-    max-width: 91.5vw;
-  }
   .xlarge_box {
     width: 750px;
   }
@@ -640,9 +635,10 @@ label {
     justify-content: center;
   }
 }
+
 @media only screen and (min-width: 910px) {
   #list {
-    max-width: 92vw;
+    max-width: 90.5vw;
   }
   .footer-order {
     display: flex !important;
@@ -650,9 +646,15 @@ label {
   }
 }
 
+@media only screen and (min-width: 920px) {
+  #list {
+    max-width: 91vw;
+  }
+}
+
 @media only screen and (min-width: 992px) {
   #list {
-    max-width: 92.5vw;
+    max-width: 92vw;
   }
   .search_result_box {
     min-width: 615px !important;
@@ -667,11 +669,6 @@ label {
   }
 }
 
-@media only screen and (min-width: 1050px) {
-  #list {
-    max-width: 93vw;
-  }
-}
 @media only screen and (min-width: 1070px) {
   .menuItem::after {
     content: "";
@@ -687,12 +684,6 @@ label {
     transition: width 0.3s;
   }
 }
-// large
-@media only screen and (min-width: 1135px) {
-  #list {
-    max-width: 93.5vw;
-  }
-}
 
 // large
 @media only screen and (min-width: 1179px) {
@@ -701,28 +692,12 @@ label {
   }
 }
 
-@media only screen and (min-width: 1220px) {
-  #list {
-    max-width: 94vw;
-  }
-}
-@media only screen and (min-width: 1320px) {
-  #list {
-    max-width: 94.5vw;
-  }
-}
-
-// xlarge
-
-@media only screen and (min-width: 1450px) {
+@media only screen and (min-width: 1114px) {
   .sidebar-hide-small {
     position: unset !important;
   }
   .lg-column {
     flex-direction: row !important;
-  }
-  .display-only-for-small {
-    display: none !important;
   }
 
   .lg-row {
