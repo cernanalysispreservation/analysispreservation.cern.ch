@@ -22,9 +22,53 @@ class JSONShemaPreviewer extends React.Component {
   constructor(props) {
     super(props);
 
+    // make the properties iterable
+    const propertiesArray = Object.entries(this.props.schema.properties);
+
+    // calculate how many are objects || arrays
+    const allObjectsOrArrays = propertiesArray.filter(
+      item => item[1].type === "object" || item[1].type === "array"
+    );
+
+    // calculate how many are strings
+    const allStrings = propertiesArray.filter(
+      item => item[1].type === "string"
+    );
+
+    // in order to display the tabView button there are 2 criterias, either one should be true in order to display:
+    // 1) all of the fields should be either objects || arrays
+    // 2) not all of them should be strings
+
+    const shouldDisplayTabViewButton =
+      allObjectsOrArrays.length === propertiesArray.length ||
+      allStrings.length < propertiesArray.length;
+
     this.state = {
       formData: {},
-      uiObject: "tabView"
+      uiObject: shouldDisplayTabViewButton ? "tabView" : "",
+      uiAvailableList: shouldDisplayTabViewButton
+        ? [
+            {
+              text: "Tab",
+              id: "tabView",
+              value: "tabView",
+              icon: <FaRegListAlt size={15} />
+            },
+            {
+              text: "List",
+              id: "listView",
+              value: "",
+              icon: <AiOutlineUnorderedList size={15} />
+            }
+          ]
+        : [
+            {
+              text: "List",
+              id: "listView",
+              value: "",
+              icon: <AiOutlineUnorderedList size={15} />
+            }
+          ]
     };
   }
 
@@ -41,41 +85,28 @@ class JSONShemaPreviewer extends React.Component {
             justify="end"
             style={{ position: "absolute", right: "26px" }}
           >
-            <Button
-              margin="0 10px"
-              pad={{ vertical: "small", horizontal: "small" }}
-              text="List"
-              icon={<AiOutlineUnorderedList size={15} />}
-              onClick={() => {
-                this.setState({ uiObject: "" });
-              }}
-              background={
-                this.state.uiObject === "" ? "rgba(146,109,146,1)" : "#f5f5f5"
-              }
-              hoverColor={
-                this.state.uiObject === "" ? "rgba(146,109,146,.8)" : "#e6e6e6"
-              }
-              color={this.state.uiObject === "" ? "#f9f0ff" : "#000"}
-            />
-
-            <Button
-              margin="0 10px"
-              text="Tab"
-              pad={{ vertical: "small", horizontal: "small" }}
-              onClick={() => this.setState({ uiObject: "tabView" })}
-              icon={<FaRegListAlt size={15} />}
-              hoverColor={
-                this.state.uiObject === "tabView"
-                  ? "rgba(146,109,146,.8)"
-                  : "#e6e6e6"
-              }
-              background={
-                this.state.uiObject === "tabView"
-                  ? "rgba(146,109,146,1)"
-                  : "#f5f5f5"
-              }
-              color={this.state.uiObject === "tabView" ? "#f9f0ff" : "#000"}
-            />
+            {this.state.uiAvailableList.map((item, index) => (
+              <Button
+                margin="0 10px"
+                key={index}
+                text={item.text}
+                icon={item.icon}
+                background={
+                  this.state.uiObject === item.value
+                    ? "rgba(146,109,146,1)"
+                    : "#f5f5f5"
+                }
+                hoverColor={
+                  this.state.uiObject === item.value
+                    ? "rgba(146,109,146,.8)"
+                    : "#e6e6e6"
+                }
+                color={this.state.uiObject === item.value ? "#f9f0ff" : "#000"}
+                onClick={() => {
+                  this.setState({ uiObject: item.value });
+                }}
+              />
+            ))}
           </Box>
         )}
         {this.props.schema ? (
