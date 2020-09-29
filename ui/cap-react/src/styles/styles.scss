@@ -351,6 +351,21 @@ label {
 
 // xsmall
 @media only screen and (min-width: 320px) {
+  .animated-nav-wrapper {
+    position: relative;
+    min-width: 48px;
+  }
+  .small-row-medium-column {
+    flex-direction: row !important;
+    justify-content: space-around !important;
+  }
+  .animated-nav-text {
+    display: flex !important;
+    color: #000 !important;
+  }
+  .animated-nav:hover .animated-nav-text {
+    display: flex !important;
+  }
   .footer-items {
     padding: 5px !important;
   }
@@ -525,6 +540,39 @@ label {
 
 // medium
 @media only screen and (min-width: 720px) {
+  .nav-delete-div {
+    display: flex !important;
+    flex: 1 !important;
+    justify-content: flex-end !important;
+  }
+  .small-row-medium-column {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+  .animated-nav-text {
+    display: none !important;
+    color: #000 !important;
+  }
+
+  .animated-nav:hover {
+    background: #e9e9e9 !important;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 170px;
+    z-index: 200;
+  }
+
+  .animated-nav:hover .animated-nav-container {
+    width: 170px !important;
+  }
+  .animated-nav:hover .animated-nav-row:hover {
+    background: #f1f1f1 !important;
+  }
+
   .footer-items {
     padding: 0;
   }

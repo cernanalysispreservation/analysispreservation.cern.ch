@@ -124,6 +124,7 @@ class DraftActionsLayer extends React.Component {
           </Box>
           <Box
             direction="row"
+            responsive={false}
             justify="between"
             align="center"
             pad={{ horizontal: "small" }}
