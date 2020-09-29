@@ -81,9 +81,10 @@ class DraftsItemNav extends React.Component {
                     : null
                 }
               >
-                <Box flex>
+                <Box flex direction="row">
+                  {this.props.formErrors.size ? <div  style={{position:"absolute", left: "5px", width: "6px", height: "6px", borderRadius:"50%", backgroundColor: "rgba(179, 53, 52, 1)"}}></div>:null}
                   <AiOutlineTag size={NAV_IMAGE_SIZE} color="#000" />
-                </Box>
+                  </Box>
                 <Box flex className="animated-nav-text">
                   Edit
                 </Box>
@@ -178,7 +179,7 @@ DraftsItemNav.propTypes = {
   getDraftById: PropTypes.func,
   match: PropTypes.object.isRequired,
   status: PropTypes.string,
-  errors: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  formErrors: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   message: PropTypes.string,
   draft_id: PropTypes.string,
   id: PropTypes.string,
@@ -191,7 +192,7 @@ function mapStateToProps(state) {
   return {
     id: state.draftItem.get("id"),
     status: state.draftItem.get("status"),
-    errors: state.draftItem.get("errors"),
+    formErrors: state.draftItem.get("formErrors"),
     recid: state.draftItem.get("recid")
   };
 }

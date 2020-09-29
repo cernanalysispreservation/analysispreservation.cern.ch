@@ -475,6 +475,7 @@ def test_update_deposit_with_required_field_success(
         'type': 'deposit',
         'revision': 1,
         'schema': {
+            'fullname': '',
             'name': 'test-analysis',
             'version': '1.0.0'
         },

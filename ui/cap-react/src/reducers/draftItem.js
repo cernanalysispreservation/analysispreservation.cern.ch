@@ -7,6 +7,7 @@ import * as workflowsActions from "../actions/workflows"; // Workflows Actions
 
 const initialState = Map({
   errors: [],
+  extraErrors: {},
   schemaErrors: [],
   formErrors: Set([]),
   actionsLayer: false,
@@ -58,8 +59,11 @@ export default function draftsReducer(state = initialState, action) {
         .set("filePreviewEdit", action.payload);
     case draftItemActions.INIT_FORM:
       return initialState;
-    case draftItemActions.CLEAR_ERROR_SUCCESS:
-      return state.set("errors", []);
+    case draftItemActions.CLEAR_ERRORS:
+      return state
+        .set("errors", [])
+        .set("formErrors", Set([]))
+        .set("extraErrors", {});
     case commonActions.FORM_ERRORS:
       return state.set("formErrors", Set(action.errors));
     case commonActions.FETCH_SCHEMA_ERROR:
@@ -106,7 +110,11 @@ export default function draftsReducer(state = initialState, action) {
         .set("errors", [...state.get("errors"), action.error]);
 
     case draftItemActions.UPDATE_DRAFT_REQUEST:
-      return state.set("loading", true);
+      return state
+        .set("loading", true)
+        .set("errors", [])
+        .set("formErrors", Set([]))
+        .set("extraErrors", {});
     // .setIn(["current_item", "message"], { msg: "Updating.." });
     case draftItemActions.UPDATE_DRAFT_SUCCESS:
       return state
@@ -162,20 +170,25 @@ export default function draftsReducer(state = initialState, action) {
     // 		.set("loading", false)
     // 		.set("error", action.error);
     case draftItemActions.PUBLISH_DRAFT_REQUEST:
-      return state.set("loading", true);
+      return state
+        .set("loading", true)
+        .set("errors", [])
+        .set("formErrors", Set([]))
+        .set("extraErrors", {});
     case draftItemActions.PUBLISH_DRAFT_SUCCESS:
       return state
         .set("loading", false)
         .set("formData", action.draft.metadata)
         .merge(Map(action.draft));
     case draftItemActions.PUBLISH_DRAFT_ERROR:
-      return state.set("loading", false);
+      return state
+        .set("extraErrors", action.errors)
+        .set("loading", false);
 
     case draftItemActions.GENERAL_TITLE_REQUEST:
       return state.set("generalTitleLoading", true);
     case draftItemActions.GENERAL_TITLE_SUCCESS:
       return state.merge(Map(action.draft)).set("generalTitleLoading", false);
-
     case draftItemActions.GENERAL_TITLE_ERROR:
       return state.set("generalTitleLoading", false);
 

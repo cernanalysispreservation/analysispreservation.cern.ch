@@ -29,7 +29,7 @@ from invenio_rest.errors import RESTValidationError
 class RecordValidationError(RESTValidationError):
     """Record validation error exception."""
 
-    code = 400
+    code = 422
 
     description = "Validation error. Try again with valid data"
 

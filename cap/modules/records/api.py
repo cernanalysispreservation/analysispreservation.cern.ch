@@ -179,7 +179,9 @@ class CAPRecord(Record):
 
                 validator = RecordValidator(schema, resolver=resolver)
                 errors = [
-                    FieldError(list(error.path), str(error.message))
+                    FieldError(
+                        list(error.path)+error.validator_value,
+                        str(error.message))
                     for error in validator.iter_errors(self)
                 ]
 

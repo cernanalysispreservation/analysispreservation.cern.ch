@@ -7,7 +7,7 @@ import FieldHeader from "../../grommet-preview/components/FieldHeader";
 import { Paragraph } from "grommet";
 
 let FieldTemplate = function(props) {
-  const { id, label, rawDescription, children, uiSchema } = props;
+  const { id, label, rawDescription, children, uiSchema, required } = props;
 
   let gridColumns = null;
 
@@ -45,7 +45,7 @@ let FieldTemplate = function(props) {
       >
         {!props.schema.type.includes("array") && (
           <Box margin={props.id === "root" ? null : { bottom: "small" }}>
-            <FieldHeader title={label} italic bold />
+            <FieldHeader required={required} title={label} italic bold />
             <Paragraph size="small" margin="none">
               {rawDescription}
             </Paragraph>
@@ -64,6 +64,7 @@ let FieldTemplate = function(props) {
             style={{ color: "#000" }}
             dangerouslySetInnerHTML={{ __html: label }}
           />
+          { required && <strong style={{padding: "0 3px"}}>*</strong> }
           {rawDescription ? (
             <span dangerouslySetInnerHTML={{ __html: rawDescription }} />
           ) : null}

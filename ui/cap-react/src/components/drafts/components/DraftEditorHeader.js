@@ -124,7 +124,7 @@ class DraftEditorHeader extends React.Component {
     // if not save it
     if (this._checkIfEmpty(formDataWithoutGeneralTitle)) {
       cogoToast.warn(
-        "Please add some content first, and try again saving again",
+        "Please add some content first, and try saving again",
         {
           position: "top-center",
           heading: "Form is empty",

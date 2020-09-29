@@ -238,6 +238,7 @@ def test_deposit_publish_with_required_field_success(
         'type': 'deposit',
         'revision': 1,
         'schema': {
+            'fullname': '',
             'name': 'test-analysis',
             'version': '1.0.0'
         },
@@ -309,7 +310,7 @@ def test_deposit_publish__with_record_schema_with_missing_required_field_fails(
     depid = deposit['_deposit']['id']
     resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
 
-    assert resp.status_code == 400
+    assert resp.status_code == 422
     assert resp.json['message'] == 'Validation error. Try again with valid data'
     assert resp.json['errors'][0]['message'] == "'title' is a required property"
 
@@ -337,7 +338,7 @@ def test_deposit_publish_with_missing_required_fields_fails(
     depid = deposit['_deposit']['id']
     resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
 
-    assert resp.status_code == 400
+    assert resp.status_code == 422
     assert resp.json['message'] == 'Validation error. Try again with valid data'
     assert resp.json['errors'][0]['message'] == "'title' is a required property"
     assert resp.json['errors'][1]['message'] == "'abstract' is a required property"

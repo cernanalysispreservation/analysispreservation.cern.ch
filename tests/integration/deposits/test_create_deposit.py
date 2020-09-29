@@ -324,6 +324,7 @@ def test_create_deposit_with_required_fields_success(
         'type': 'deposit',
         'revision': 0,
         'schema': {
+            'fullname': '',
             'name': 'test-analysis',
             'version': '1.0.0'
         },

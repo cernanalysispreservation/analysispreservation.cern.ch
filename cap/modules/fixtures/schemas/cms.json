@@ -349,6 +349,7 @@
         "title": "Basic Information",
         "type": "object",
         "id": "basic_info",
+        "required": ["cadi_id"],
         "description":
           "Please provide some information relevant for all parts of the Analysis here"
       },
@@ -412,7 +413,8 @@
                   "description": "Add selection triggers here",
                   "id": "triggers"
                 }
-              }
+              },
+              "required": ["path"]
             },
             "title": "Primary Datasets",
             "type": "array",

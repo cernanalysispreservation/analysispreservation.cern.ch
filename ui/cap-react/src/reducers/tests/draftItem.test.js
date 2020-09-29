@@ -32,6 +32,7 @@ const draft = {
 // different states
 const initialState = Map({
   errors: [],
+  extraErrors: {},
   schemaErrors: [],
   actionsLayer: false,
   actionsLayerType: null,
@@ -69,6 +70,7 @@ const initialState = Map({
 const createDraftError = Map({
   errors: ["this is an error message for create draft error"],
   schemaErrors: [],
+  extraErrors: {},
   actionsLayer: false,
   actionsLayerType: null,
   showPreviewer: false,
@@ -105,6 +107,7 @@ const createDraftError = Map({
 const createDraftSuccess = Map({
   errors: [],
   schemaErrors: [],
+  extraErrors: {},
   actionsLayer: false,
   actionsLayerType: null,
   showPreviewer: false,
@@ -160,6 +163,7 @@ const createDraftSuccess = Map({
 });
 const loadingState = Map({
   errors: [],
+  extraErrors: {},
   schemaErrors: [],
   actionsLayer: false,
   actionsLayerType: null,
@@ -196,6 +200,7 @@ const loadingState = Map({
 });
 const generalTitleStateBefore = Map({
   errors: [],
+  extraErrors: {},
   schemaErrors: [],
   actionsLayer: false,
   actionsLayerType: null,
@@ -253,6 +258,7 @@ const generalTitleStateBefore = Map({
 const generalTitleStateAfter = Map({
   errors: [],
   schemaErrors: [],
+  extraErrors: {},
   actionsLayer: false,
   actionsLayerType: null,
   showPreviewer: false,
@@ -386,7 +392,7 @@ describe("DraftItem Reducers Test", () => {
   it("Publish Draft Error", () => {
     const action = {
       type: actions.PUBLISH_DRAFT_ERROR,
-      error: "This is an error"
+      errors: {}
     };
 
     expect(draftReducer(initialState, action)).toEqual(initialState);

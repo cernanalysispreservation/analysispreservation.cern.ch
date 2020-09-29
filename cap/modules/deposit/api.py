@@ -586,7 +586,9 @@ class CAPDeposit(Deposit, Reviewable):
 
                 result = {}
                 result['errors'] = [
-                    FieldError(list(error.path), str(error.message))
+                    FieldError(
+                        list(error.path)+error.validator_value,
+                        str(error.message))
                     for error in validator.iter_errors(self)
                 ]
 

@@ -10,8 +10,7 @@ import Box from "grommet/components/Box";
 
 import {
   initForm,
-  formDataChange,
-  clearErrorSuccess
+  formDataChange
 } from "../../actions/draftItem";
 
 import { fetchSchemaByNameVersion } from "../../actions/common";
@@ -43,7 +42,8 @@ export const transformSchema = schema => {
   schema = {
     type: schema.type,
     properties: schema.properties,
-    dependencies: schema.dependencies
+    dependencies: schema.dependencies,
+    required: schema.required
   };
 
   return schema;
@@ -130,21 +130,21 @@ class DraftEditor extends React.Component {
                       onChange={change => {
                         this.props.formDataChange(change.formData);
                       }}
-                      errors={this.props.errors}
+                      extraErrors={this.props.extraErrors || {}}
                     />
                     <DraftJSONPreviewer />
                   </React.Fragment>
                 ) : (
-                  <JSONSchemaPreviewer
-                    formData={this.props.formData}
-                    schema={_schema}
-                    uiSchema={this.props.schemas.uiSchema || {}}
-                    onChange={() => {}}
-                    displayViewButtons
-                  >
-                    <span />
-                  </JSONSchemaPreviewer>
-                )}
+                    <JSONSchemaPreviewer
+                      formData={this.props.formData}
+                      schema={_schema}
+                      uiSchema={this.props.schemas.uiSchema || {}}
+                      onChange={() => { }}
+                      displayViewButtons
+                    >
+                      <span />
+                    </JSONSchemaPreviewer>
+                  )}
               </Box>
             </Box>
           )}
@@ -181,6 +181,7 @@ function mapStateToProps(state) {
     metadata: state.draftItem.get("metadata"),
     formData: state.draftItem.get("formData"),
     errors: state.draftItem.get("errors"),
+    extraErrors: state.draftItem.get("extraErrors"),
     schemaErrors: state.draftItem.get("schemaErrors"),
     canUpdate: state.draftItem.get("can_update")
   };
@@ -190,8 +191,7 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchSchemaByNameVersion: name => dispatch(fetchSchemaByNameVersion(name)),
     initForm: () => dispatch(initForm()),
-    formDataChange: data => dispatch(formDataChange(data)),
-    clearErrorSuccess: () => dispatch(clearErrorSuccess())
+    formDataChange: data => dispatch(formDataChange(data))
   };
 }
 

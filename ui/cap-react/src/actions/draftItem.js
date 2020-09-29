@@ -1,6 +1,6 @@
 import axios from "axios";
 import { push } from "connected-react-router";
-import { fetchAndAssignSchema } from "./common";
+import { fetchAndAssignSchema, formErrorsChange } from "./common";
 import { getBucketByUri, getBucketById } from "./files";
 import cogoToast from "cogo-toast";
 
@@ -58,7 +58,7 @@ export const PERMISSIONS_ITEM_SUCCESS = "PERMISSIONS_ITEM_SUCCESS";
 export const REMOVE_LOADING = "REMOVE_LOADING";
 
 // TOFIX Consider using a HOC for error handling
-export const CLEAR_ERROR_SUCCESS = "CLEAR_ERROR_SUCCESS";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 export const FORM_DATA_CHANGE = "FORM_DATA_CHANGE";
 
@@ -75,8 +75,9 @@ export const publishDraftSuccess = draft => ({
   type: PUBLISH_DRAFT_SUCCESS,
   draft
 });
-export const publishDraftError = () => ({
-  type: PUBLISH_DRAFT_ERROR
+export const publishDraftError = (errors = null) => ({
+  type: PUBLISH_DRAFT_ERROR,
+  errors
 });
 
 export const remove_loading = () => ({
@@ -194,7 +195,7 @@ export const permissionsItemSuccess = permissions => ({
   permissions
 });
 
-export const clearErrorSuccess = () => ({ type: CLEAR_ERROR_SUCCESS });
+export const clearErrors = () => ({ type: CLEAR_ERRORS });
 
 // [TOFIX] Plug validation action if needed.
 // export function validate(data, schema) {
@@ -526,6 +527,26 @@ export function putUpdateDraft(data, draft_id) {
   };
 }
 
+let _toErrorList = function (errorSchema, fieldName = "root") {
+  // XXX: We should transform fieldName as a full field path string.
+  let errorList = [];
+  if ("__errors" in errorSchema) {
+    errorList = errorList.concat(
+      errorSchema.__errors.map(() => {
+        return `${fieldName}`;
+      })
+    );
+  }
+  return Object.keys(errorSchema).reduce((acc, key) => {
+    if (key !== "__errors") {
+      acc = acc.concat(
+        _toErrorList(errorSchema[key], fieldName + "_" + key)
+      );
+    }
+    return acc;
+  }, errorList);
+}
+
 export function postPublishDraft() {
   return (dispatch, getState) => {
     dispatch(publishDraftRequest());
@@ -533,31 +554,68 @@ export function postPublishDraft() {
 
     let links = state.draftItem.get("links");
     // let uri = `/api/deposits/${draft_id}/actions/publish`;
+    return cogoToast.loading('Publishing in progress...', { hideAfter: 1 }).then(() => {
 
-    return axios
-      .post(links.publish)
-      .then(response => {
-        dispatch(publishDraftSuccess(response.data));
-        cogoToast.success("Your Draft has been successfully published", {
-          position: "top-center",
-          heading: "Draft published",
-          bar: { size: "0" },
-          hideAfter: 3
-        });
-      })
-      .catch(error => {
-        dispatch(publishDraftError());
-        cogoToast.error(
-          "There is an error, please make sure you are connected and try again",
-          {
+      return axios
+        .post(links.publish)
+        .then(response => {
+          dispatch(publishDraftSuccess(response.data));
+          cogoToast.success("Your Draft has been successfully published", {
             position: "top-center",
-            heading: error.message,
+            heading: "Draft published",
             bar: { size: "0" },
             hideAfter: 3
+          });
+        })
+        .catch(error => {
+          let errorHeading = "Error while publishing";
+          let errorDescription;
+          let errorHideAfter = 6;
+          let errorThrow = "Error while publishing";
+
+          if (error.response.status == 422) {
+            let _errors = error.response.data.errors;
+            let errorTree = {};
+            _errors.map(e => {
+              let tmp = errorTree;
+              e.field.map(field => {
+                if (!tmp[field]) tmp[field] = {}
+                tmp = tmp[field];
+              });
+
+              if (!tmp["__errors"]) tmp["__errors"] = []
+              tmp["__errors"].push(e.message);
+            });
+
+            dispatch(formErrorsChange(_toErrorList(errorTree)));
+            errorHeading = "Validation Error while publishing";
+            errorDescription = "Please fix the errors in 'Edit' tab before publishing again";
+            errorThrow = errorTree;
           }
-        );
-        throw error.response;
-      });
+          else if (error.response.status == 403 && error.response.data && error.response.data.message == "Invalid action") {
+            errorDescription = "Either you need permissions or you are trying to publish an already published item";
+          }
+          else if (error.response) {
+            errorDescription = error.response.data && error.response.data.message ?
+                error.response.data.message : "";
+          } else if (error.request) {
+            // client never received a response, or request never left
+            errorHeading = "Something went wrong";
+            errorDescription = "There is an error, please make sure you are connected and try again";
+          } else {
+            // anything else
+          }
+          cogoToast.error(
+            errorDescription,
+            {
+              position: "top-center",
+              heading: errorHeading,
+              bar: { size: "0" },
+              hideAfter: errorHideAfter
+            });
+          throw errorThrow;
+        });
+    });
   };
 }
 
@@ -570,8 +628,8 @@ export function publishDraft(draft_id) {
         dispatch(push(`/published/${id}`));
       })
       .catch(error => {
-        dispatch(publishDraftError());
-        throw error;
+        dispatch(publishDraftError(error));
+        // throw error;
       });
   };
 }
@@ -644,10 +702,10 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         const e = error.response
           ? error.response.data
           : {
-              status: 400,
-              message:
-                "Something went wrong with your request. Please try again"
-            };
+            status: 400,
+            message:
+              "Something went wrong with your request. Please try again"
+          };
 
         dispatch(draftsItemError(e));
       });
@@ -710,10 +768,10 @@ export function getDraftByIdAndInitForm(draft_id) {
         const e = error.response
           ? error.response.data
           : {
-              status: 400,
-              message:
-                "Something went wrong with your request. Please try again"
-            };
+            status: 400,
+            message:
+              "Something went wrong with your request. Please try again"
+          };
 
         dispatch(draftsItemError(e));
       });

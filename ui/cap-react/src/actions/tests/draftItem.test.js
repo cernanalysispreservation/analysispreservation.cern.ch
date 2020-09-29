@@ -1,6 +1,7 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import * as actions from "../draftItem";
+import * as commonActions from "../common";
 import axios from "axios";
 import { Map } from "immutable";
 
@@ -252,13 +253,49 @@ describe("Action Creators => draftItem", () => {
 
   it("Async Publish Draft Error", async () => {
     const expectedActions = [
-      { type: actions.PUBLISH_DRAFT_REQUEST },
-      { type: actions.PUBLISH_DRAFT_ERROR }
+      { type: actions.PUBLISH_DRAFT_REQUEST }
     ];
 
     axios.post = jest.fn(() => {
       return Promise.reject({
         error: "this is the error from the publish draft"
+      });
+    });
+    const store = mockStore({
+      draftItem: Map({
+        links: {
+          publish:
+            "http://localhost:3000/deposits/ff517e86453646adab77144c18933717/actions/publish"
+        }
+      })
+    });
+    await store.dispatch(actions.postPublishDraft()).catch(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("Async Publish Draft Validation Error", async () => {
+    const expectedActions = [
+      { type: actions.PUBLISH_DRAFT_REQUEST },
+      { type: commonActions.FORM_ERRORS, 
+        errors: ["root_basic_info_cadi_id"]
+      }
+    ];
+
+    axios.post = jest.fn(() => {
+      return Promise.reject({
+        response: {
+          status: 422,
+          data: {
+            "message": "Validation error. Try again with valid data",
+            "errors": [
+              {
+                "field": ["basic_info", "cadi_id"],
+                "message": "'cadi_id' is a required property"
+              }
+            ]
+          }
+        }
       });
     });
     const store = mockStore({

@@ -27,7 +27,7 @@ let FieldHeader = function(props) {
               }}
             >
               {title}
-              {required ? "*" : null}
+              { required && <strong style={{padding: "0 3px"}}>*</strong> }
             </Label>
           ) : null}
         </Box>

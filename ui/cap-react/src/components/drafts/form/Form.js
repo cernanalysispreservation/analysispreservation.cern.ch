@@ -46,7 +46,11 @@ class DepositForm extends Component {
   }
 
   transformErrors = errors => {
-    return errors.map(error => {
+    errors = errors
+      .filter((item) => item.name != "required");
+    errors.map(error => {
+      if (error.name == "required") return null;
+      
       // Update messages for undefined fields when required,
       // from "should be string" ==> "Either edit or remove"
       if (error.message == "should be string") {
@@ -56,6 +60,8 @@ class DepositForm extends Component {
 
       return error;
     });
+
+    return errors
   };
 
   render() {
@@ -78,10 +84,10 @@ class DepositForm extends Component {
             liveValidate={false}
             noValidate={false}
             validate={this._validate.bind(this)}
-            onError={() => {}}
+            onError={() => { }}
             transformErrors={this.transformErrors}
             formData={this.props.formData}
-            onBlur={() => {}}
+            onBlur={() => { }}
             extraErrors={this.props.extraErrors}
             onChange={_debounce(this.props.onChange, 500)}
             formContext={{

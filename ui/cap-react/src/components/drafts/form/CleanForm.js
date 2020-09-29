@@ -35,12 +35,13 @@ class CleanForm extends React.Component {
         fields={fields}
         // tagName="div"
         uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
-        liveValidate={this.props.liveValidate}
+        liveValidate={this.props.liveValidate || false}
         noValidate={false}
         onError={() => {}}
         formData={this.props.formData}
         onBlur={() => {}}
         onChange={this.props.onChange}
+        noHtml5Validate={true}
         onSubmit={this.props.onSubmit}
       >
         {this.props.children}
