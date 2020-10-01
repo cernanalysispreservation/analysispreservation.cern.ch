@@ -29,6 +29,8 @@ from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
 from pytest import mark, raises
 
+from conftest import add_role_to_user, _datastore
+
 
 def test_when_schema_with_same_name_and_version_raises_IntegrityError(db):
     with raises(IntegrityError):

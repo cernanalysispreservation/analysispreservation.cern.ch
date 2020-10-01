@@ -24,60 +24,8 @@
 """Utils for Schemas module."""
 
 import re
-from itertools import groupby
 
 from jsonpatch import JsonPatchConflict
-
-from .models import Schema
-from .permissions import ReadSchemaPermission
-
-
-def _filter_by_read_access(schemas_list):
-    """Return only schemas that user has read access to."""
-    return [x for x in schemas_list if ReadSchemaPermission(x).can()]
-
-
-def _filter_only_latest(schemas_list):
-    """Return only latest version of schemas."""
-    return [next(g) for k, g in groupby(schemas_list, lambda s: s.name)]
-
-
-def get_schemas_for_user(latest=True):
-    """Return all schemas current user has read access to."""
-    schemas = Schema.query.order_by(
-        Schema.name,
-        Schema.major.desc(),
-        Schema.minor.desc(),
-        Schema.patch.desc(),
-    ).all()
-
-    schemas = _filter_by_read_access(schemas)
-
-    if latest:
-        schemas = _filter_only_latest(schemas)
-
-    return schemas
-
-
-def get_indexed_schemas_for_user(latest=True):
-    """Return all indexed schemas current user has read access to."""
-    schemas = (
-        Schema.query.filter_by(is_indexed=True)
-        .order_by(
-            Schema.name,
-            Schema.major.desc(),
-            Schema.minor.desc(),
-            Schema.patch.desc(),
-        )
-        .all()
-    )
-
-    schemas = _filter_by_read_access(schemas)
-
-    if latest:
-        schemas = _filter_only_latest(schemas)
-
-    return schemas
 
 
 def is_later_version(version1, version2):
@@ -153,3 +101,37 @@ def check_allowed_patch_path(data):
         except IndexError:
             raise JsonPatchConflict
     return data
+
+
+def actions_from_type(_type, perms):
+    """
+    Get user-made action names depending on the type.
+
+    When the type is record or deposit, the user should also
+    get schema-read access.
+    """
+    if _type == "record":
+        return [f"record-schema-{perm}" for perm in perms]
+    elif _type == "deposit":
+        return [f"deposit-schema-{perm}" for perm in perms]
+    elif _type == "schema":
+        return [f"schema-object-{perm}" for perm in perms]
+
+
+def get_default_mapping(name, version):
+    mapping_name = f"{name}-v{version}"
+    default_mapping = {"mappings": {}}
+    collectiion_mapping = {
+        "properties": {
+            "_collection": {
+                "type": "object",
+                "properties": {
+                    "fullname": {"type": "keyword"},
+                    "name": {"type": "keyword"},
+                    "version": {"type": "keyword"},
+                },
+            }
+        }
+    }
+    default_mapping["mappings"][mapping_name] = collectiion_mapping
+    return default_mapping

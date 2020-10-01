@@ -57,3 +57,8 @@ cap roles create data-preservation-admins@cern.ch
 cap roles add info@inveniosoftware.org analysis-preservation-support@cern.ch
 cap access allow superuser-access role analysis-preservation-support@cern.ch
 cap access allow superuser-access role data-preservation-admins@cern.ch
+
+# test user (with no privileges)
+cap users create test@inveniosoftware.org -a --password testtest
+cap roles create test-users@cern.ch
+cap roles add test@inveniosoftware.org test-users@cern.ch

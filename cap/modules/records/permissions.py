@@ -28,7 +28,15 @@ from functools import partial
 from flask import request
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 
-from cap.modules.experiments.permissions import exp_need_factory
+from cap.modules.schemas.permissions import (
+    exp_need_factory,
+    record_schema_admin_action,
+    record_schema_delete_action,
+    record_schema_read_action,
+    record_schema_review_action,
+    record_schema_update_action,
+)
+from cap.modules.schemas.resolvers import resolve_schema_by_url
 
 RecordReadActionNeed = partial(ParameterizedActionNeed, 'record-read')
 """Action need for reading a record."""
@@ -37,6 +45,9 @@ RecordAdminActionNeed = partial(ParameterizedActionNeed, 'record-admin')
 """Action need for creating a record."""
 
 RecordUpdateActionNeed = partial(ParameterizedActionNeed, 'record-update')
+"""Action need for updating a record."""
+
+RecordReviewActionNeed = partial(ParameterizedActionNeed, 'record-review')
 """Action need for updating a record."""
 
 RecordDeleteActionNeed = partial(ParameterizedActionNeed, 'record-delete')
@@ -58,6 +69,11 @@ def record_update_need(record):
     return RecordUpdateActionNeed(str(record.id))
 
 
+def record_review_need(record):
+    """Record update action."""
+    return RecordReviewActionNeed(str(record.id))
+
+
 def record_delete_need(record):
     """Record delete action."""
     return RecordDeleteActionNeed(str(record.id))
@@ -69,20 +85,39 @@ class RecordPermission(Permission):
     actions = {
         "read": record_read_need,
         "update": record_update_need,
+        "review": record_review_need,
         "admin": record_admin_need,
     }
 
-    def __init__(self, record, action):
+    schema_actions = {
+        "read": record_schema_read_action,
+        "update": record_schema_update_action,
+        "review": record_schema_review_action,
+        "delete": record_schema_delete_action,
+        "admin": record_schema_admin_action,
+    }
+
+    def __init__(self, record, action, extra_needs=None):
         """Constructor.
 
         Args:
-            deposit: deposit to which access is requested.
+            record: record to which access is requested.
         """
         _needs = set()
         _needs.add(self.actions['admin'](record))
 
+        if extra_needs:
+            _needs.update(extra_needs)
+
         if action in self.actions:
             _needs.add(self.actions[action](record))
+
+        if action in self.schema_actions:
+            _needs.add(
+                self.schema_actions[action](
+                    resolve_schema_by_url(record['$schema']).id
+                )
+            )
 
         super(RecordPermission, self).__init__(*_needs)
 
@@ -102,8 +137,6 @@ class ReadRecordPermission(RecordPermission):
 
     def __init__(self, record):
         """Initialize state."""
-        self._needs = set()
-
         super(ReadRecordPermission, self).__init__(record, 'read')
 
 
@@ -173,13 +206,19 @@ class RecordFilesPermission(Permission):
             'object-delete',
             'object-delete-version',
             'multipart-delete',
-        ]
+        ],
     }
 
     access_needs = {
         "read": record_read_need,
         "update": record_update_need,
         "admin": record_admin_need,
+    }
+
+    schema_actions = {
+        "read": record_schema_read_action,
+        "update": record_schema_update_action,
+        "admin": record_schema_admin_action,
     }
 
     def __init__(self, record, action):
@@ -199,4 +238,9 @@ class RecordFilesPermission(Permission):
             if action in actions:
                 _needs.add(self.access_needs[access](record))
 
+                _needs.add(
+                    self.schema_actions[access](
+                        resolve_schema_by_url(record.json['$schema']).id
+                    )
+                )
         super(RecordFilesPermission, self).__init__(*_needs)

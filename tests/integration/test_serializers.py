@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
-'''Integration tests for records serializers.'''
+"""Integration tests for records serializers."""
 
 from six import BytesIO
 
@@ -244,7 +244,7 @@ def test_users_with_user_profile_serializers(client, users, auth_headers_for_sup
 
     resp = client.get('/users', headers=headers)
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 9
+    assert resp.json['hits']['total'] == 10
 
     resp = client.get('/users/1', headers=headers)
     assert resp.status_code == 200

@@ -1,8 +1,4 @@
 
-from typing import Mapping
-import pytest
-from jsonschema.exceptions import ValidationError
-from flask import url_for
 import json
 from time import sleep
 
@@ -10,7 +6,7 @@ def test_deposit_validation_with_same_cadi_id(
         client, users, auth_headers_for_user, json_headers, create_schema,
         create_deposit, das_datasets_index, cms_triggers_index):
     owner = users['cms_user']
-    create_schema('cms-analysis',
+    schema = create_schema('cms-analysis',
                 experiment='CMS',
                 deposit_schema={
                     'type': 'object',
@@ -43,6 +39,8 @@ def test_deposit_validation_with_same_cadi_id(
                 })
 
     headers = auth_headers_for_user(owner)
+    schema.process_action_users('allow', 
+                         [('deposit-schema-create', owner.email)])
 
     # create a deposit with a specific CADI ID
     first = client.post("/deposits",

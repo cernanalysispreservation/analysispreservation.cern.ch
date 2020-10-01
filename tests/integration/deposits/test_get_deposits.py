@@ -1593,6 +1593,7 @@ def test_x_cap_field_validation(
             },
         },
         deposit_mapping=deposit_mapping,
+        schema_record_permissions={ "create": {"users": [example_user.email]}}
     )
     deposit = create_deposit(
         example_user,
@@ -1684,5 +1685,42 @@ def test_x_cap_field_validation(
         'title': "my title"
     }
     resp = client.put(f'/deposits/{pid_2}', data=json.dumps(wrong_data), headers=headers+json_headers)
+
+    assert resp.status_code == 200
+
+
+def test_get_deposit_when_user_has_no_access_to_schema_can_still_see_deposit_that_got_access_to(
+    client, users, auth_headers_for_user, deposit):
+    pid = deposit['_deposit']['id']
+    other_user = users['lhcb_user2']
+
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-read'
+    }]
+    deposit.edit_permissions(permissions)
+    resp = client.get(f'/deposits/{pid}',
+                      headers=auth_headers_for_user(other_user) +
+                      [('Accept', 'application/form+json')])
+
+    assert resp.status_code == 200
+
+def test_get_deposit_when_user_has_no_access_to_schema_can_still_see_deposit_that_got_access_to(
+    client, users, auth_headers_for_user, deposit):
+    pid = deposit['_deposit']['id']
+    other_user = users['random']
+
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-read'
+    }]
+    deposit.edit_permissions(permissions)
+    resp = client.get(f'/deposits/{pid}',
+                      headers=auth_headers_for_user(other_user) +
+                      [('Accept', 'application/form+json')])
 
     assert resp.status_code == 200

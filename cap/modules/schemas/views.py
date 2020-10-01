@@ -41,6 +41,7 @@ from cap.modules.access.permissions import admin_permission_factory
 from cap.modules.access.utils import login_required
 
 from .helpers import ValidationError
+from .imp import get_schemas_for_user
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
 from .serializers import (
@@ -51,7 +52,7 @@ from .serializers import (
 from .utils import (
     check_allowed_patch_operation,
     check_allowed_patch_path,
-    get_schemas_for_user,
+    get_default_mapping,
 )
 
 blueprint = Blueprint(
@@ -60,7 +61,7 @@ blueprint = Blueprint(
     url_prefix='/jsonschemas',
 )
 
-_admin_permission = admin_permission_factory(None)
+super_admin_permission = admin_permission_factory(None)
 
 
 @blueprint.route('/<string:name>/versions', methods=['GET'])
@@ -78,6 +79,40 @@ def get_all_versions(name=None):
             'latest': link_serializer.dump(latest).data,
         }
     return jsonify(response)
+
+
+@blueprint.route(
+    '/<string:name>/permissions', methods=['GET', 'POST', 'DELETE']
+)
+@blueprint.route(
+    '/<string:name>/<string:version>/permissions',
+    methods=['GET', 'POST', 'DELETE'],
+)
+# @login_required
+@super_admin_permission.require(http_exception=403)
+def permissions(name=None, version=None):
+    """Get all versions of a schema that user has access to."""
+    if name:
+        try:
+            if version:
+                schema = Schema.get(name, version)
+            else:
+                schema = Schema.get_latest(name)
+        except JSONSchemaNotFound:
+            abort(404)
+
+    if not AdminSchemaPermission(schema).can():
+        abort(403)
+
+    if request.method == "GET":
+        schema_permissions = schema.get_schema_permissions()
+        return jsonify(schema_permissions)
+    elif request.method == "POST":
+        data = request.json
+        schema.modify_record_permissions(data)
+        return jsonify({}), 201
+    elif request.method == "DELETE":
+        return jsonify({}), 204
 
 
 class SchemaAPI(MethodView):
@@ -120,7 +155,7 @@ class SchemaAPI(MethodView):
 
         return jsonify(response)
 
-    @_admin_permission.require(http_exception=403)
+    @super_admin_permission.require(http_exception=403)
     def post(self):
         """Create new schema."""
         data = request.get_json()
@@ -130,6 +165,10 @@ class SchemaAPI(MethodView):
         if errors:
             raise abort(400, errors)
 
+        if not serialized_data.get('deposit_mapping', {}):
+            serialized_data['deposit_mapping'] = get_default_mapping(
+                serialized_data.get('name'), serialized_data.get('version')
+            )
         try:
             with db.session.begin_nested():
                 with db.session.begin_nested():
@@ -149,7 +188,7 @@ class SchemaAPI(MethodView):
 
         return jsonify(schema.config_serialize())
 
-    @_admin_permission.require(http_exception=403)
+    @super_admin_permission.require(http_exception=403)
     def put(self, name, version):
         """Update schema."""
         try:
@@ -179,7 +218,7 @@ class SchemaAPI(MethodView):
 
             return jsonify(schema.config_serialize())
 
-    @_admin_permission.require(http_exception=403)
+    @super_admin_permission.require(http_exception=403)
     def delete(self, name, version):
         """Delete schema."""
         try:
@@ -193,7 +232,7 @@ class SchemaAPI(MethodView):
 
             return 'Schema deleted.', 204
 
-    @_admin_permission.require(http_exception=403)
+    @super_admin_permission.require(http_exception=403)
     def patch(self, name, version):
         try:
             schema = Schema.get(name, version)

@@ -27,6 +27,8 @@
 import json
 
 from invenio_search import current_search
+from invenio_access import ActionUsers
+
 from invenio_records.api import RecordMetadata
 from pytest import mark
 
@@ -34,7 +36,11 @@ from cap.modules.deposit.api import CAPDeposit
 
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import schema_name_to_url
-from conftest import add_role_to_user
+from conftest import add_role_to_user, _datastore, get_default_mapping
+
+from flask import current_app
+from werkzeug.local import LocalProxy
+
 
 # #######################################
 # # api/deposits/{pid}  [PUT]
@@ -519,5 +525,119 @@ def test_update_deposit_with_required_field_success(
         }
     }
 
+ 
+def test_schema_deposit_permissions(
+        client, db, users, create_deposit, create_schema, json_headers, auth_headers_for_user, clean_schema_acceess_cache):
+    schema_name = 'test-analysis'
+
+    owner = users['cms_user']
+    random_user = users['random']
+    lhcb_user = users['lhcb_user']
+
+    random_headers = auth_headers_for_user(users['random']) + json_headers
+    lhcb_headers = auth_headers_for_user(users['lhcb_user']) + json_headers
+
+    deposit_mapping = get_default_mapping(schema_name, "1.0.0")
+    schema = create_schema(schema_name,
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'required': ['title'],
+            'properties': {
+                'title': {'type': 'string'}
+            }
+        },
+        deposit_mapping=deposit_mapping)
+    schema.process_action_users('allow', [("deposit-schema-create", "cms_user@cern.ch")])
+
+    deposit = create_deposit(owner, schema_name,
+                             {
+                                 '$ana_type': schema_name,
+                                 'title': 'test'
+                             },
+                             experiment='CMS')
+
+    depid = deposit['_deposit']['id']
+
+    resp = client.put(f'/deposits/{depid}', headers=random_headers,
+                      data=json.dumps({
+                          'title': 'test1'
+                      }))
+
+    assert resp.status_code == 403
+
+    role = _datastore.find_or_create_role('cap-schema-admin@cern.ch')
+
+    schema.process_action_roles('allow', [("deposit-schema-update", "cap-schema-admin@cern.ch")])
+
+    resp = client.put(f'/deposits/{depid}', headers=random_headers,
+                      data=json.dumps({
+                          'title': 'test1'
+                      }))
+
+    assert resp.status_code == 403
+
+    allowed_actions = current_app.extensions['invenio-access'].actions
+
+    schema.process_action_users('allow',
+                         [
+                             ("deposit-schema-update", random_user.email),
+                             ("deposit-schema-read", random_user.email)
+                         ])
+
+    resp = client.put(f'/deposits/{depid}', headers=random_headers,
+                      data=json.dumps({
+                          'title': 'test1'
+                      }))
+
+    assert resp.status_code == 200
+
+    # Add role to user
+    _datastore.add_role_to_user(lhcb_user, role)
+
+    resp = client.put(f'/deposits/{depid}', headers=lhcb_headers,
+                      data=json.dumps({
+                          'title': 'test lhcb'
+                      }))
+
+    assert resp.status_code == 200
+
+    # process_action_users('allow', 'test-analysis',
+    #                      [('deposit-schema-read', random_user.email)])
+    # fetch deposits from random - should get 1 result
+    resp = client.get('/deposits', headers=random_headers)
+    result_deposits = resp.json
+    assert result_deposits.get("hits", {}).get("total") == 1
+
+    # fetch deposits_groups from random - should have 0
+    resp = client.get('/me', headers=random_headers)
+    resp_deposit_groups = resp.json.get("deposit_groups", [])
+    
+    assert len(resp_deposit_groups) == 0
+
+    # fetch deposits_groups from random - should have 'test-analysis'
+    with db.session.begin_nested():
+        db.session.add(
+            ActionUsers.allow(
+                allowed_actions["deposit-schema-create"],
+                argument=schema.id,
+                user_id=random_user.id
+            )
+        )
+
+    resp = client.get('/me', headers=random_headers)
+    resp_deposit_groups = resp.json.get("deposit_groups", [])
+    
+    assert resp_deposit_groups[0] == {
+        'deposit_group': 'test-analysis',
+        'name': None,
+        'schema_path': 'deposits/records/test-analysis-v1.0.0.json'
+    }
+
+    random_headers = auth_headers_for_user(lhcb_user) + json_headers
+    resp = client.get(f'/me', headers=random_headers)
+    resp_deposit_groups = resp.json.get("deposit_groups", [])
+    
+    assert len(resp_deposit_groups) == 0
 
 # @TODO add tests to check if put validates properly

@@ -35,6 +35,9 @@ from cap.modules.schemas.models import Schema
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from pytest import mark, raises
 
+# from cap.modules.schemas.utils import process_action_users
+from conftest import add_role_to_user
+
 
 #######################
 # api/deposits/  [POST]
@@ -54,6 +57,8 @@ def test_create_deposit_when_user_is_member_of_schema_experiment_can_create_depo
     metadata = {
         '$schema': 'http://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json'
     }
+
+    schema.process_action_users('allow', [('deposit-schema-create', user.email)])
 
     resp = client.post('/deposits/',
                        data=json.dumps(metadata),
@@ -75,6 +80,9 @@ def test_create_deposit_when_user_is_member_of_egroup_that_has_read_access_to_sc
     user = users['lhcb_user']
     schema = create_schema('cms', experiment='LHCb')
     metadata = {'$ana_type': 'cms'}
+
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', user.email)])
 
     resp = client.post('/deposits/',
                        data=json.dumps(metadata),
@@ -264,6 +272,8 @@ def test_create_deposit_set_fields_correctly(client, location, users,
             'analysis_number': 'dream_team'
         }
     }
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', owner.email)])
 
     resp = client.post('/deposits/',
                        headers=auth_headers_for_user(owner) + json_headers,
@@ -340,6 +350,7 @@ def test_create_deposit_set_fields_correctly(client, location, users,
 def test_create_deposit_when_schema_with_refs_works_correctly(
         client, location, users, create_schema, auth_headers_for_user,
         json_headers):
+    user = users['cms_user']
     create_schema('nested-schema',
                   experiment='CMS',
                   deposit_schema={
@@ -350,7 +361,7 @@ def test_create_deposit_when_schema_with_refs_works_correctly(
                           }
                       }
                   })
-    create_schema(
+    schema = create_schema(
         'test-analysis',
         experiment='CMS',
         deposit_schema={
@@ -361,10 +372,12 @@ def test_create_deposit_when_schema_with_refs_works_correctly(
                 }
             }
         })
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', user.email)])
 
     resp = client.post(
         '/deposits/',
-        headers=auth_headers_for_user(users['cms_user']) + json_headers,
+        headers=auth_headers_for_user(user) + json_headers,
         data=json.dumps({
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json',
             'nested': {
@@ -379,7 +392,7 @@ def test_create_deposit_with_required_fields_success(
         client, location, users, create_schema, auth_headers_for_user, json_headers):
     owner = users['cms_user']
     headers = auth_headers_for_user(users['cms_user']) + json_headers
-    create_schema('test-analysis',
+    schema = create_schema('test-analysis',
                   experiment='CMS',
                   deposit_schema={
                       'type': 'object',
@@ -389,6 +402,8 @@ def test_create_deposit_with_required_fields_success(
                           'abstract': {'type': 'string'}
                       }
                   })
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', owner.email)])
 
     resp = client.post('/deposits/', headers=headers,
                        data=json.dumps(
@@ -455,8 +470,9 @@ def test_create_deposit_with_required_fields_success(
 
 def test_create_deposit_with_required_fields_not_filled_validates_succesfully(
         client, location, users, create_schema, auth_headers_for_user, json_headers):
-    headers = auth_headers_for_user(users['cms_user']) + json_headers
-    create_schema('test-analysis',
+    user = users['cms_user']
+    headers = auth_headers_for_user(user) + json_headers
+    schema = create_schema('test-analysis',
                   experiment='CMS',
                   deposit_schema={
                       'type': 'object',
@@ -470,6 +486,8 @@ def test_create_deposit_with_required_fields_not_filled_validates_succesfully(
                           }
                       }
                   })
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', user.email)])
 
     resp = client.post('/deposits/', headers=headers,
                        data=json.dumps(
@@ -515,7 +533,8 @@ def test_create_deposit_with_x_cap_copy_simple_path(
                                 }
                           }
                       }
-                  })
+                  },
+                  schema_record_permissions={ "create": {"users": [users['cms_user'].email]}})
 
     resp = client.post('/deposits/', headers=headers,
                        data=json.dumps(
@@ -583,7 +602,8 @@ def test_create_deposit_with_x_cap_copy_multiple_path(
                             "type": "object"
                         }
                       } 
-                  })
+                  },
+                  schema_record_permissions={ "create": {"users": [users['cms_user'].email]}})
 
     resp = client.post('/deposits/', headers=headers,
                        data=json.dumps(

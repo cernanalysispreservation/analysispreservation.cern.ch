@@ -65,6 +65,7 @@ from cap.modules.experiments.utils.cms import \
     cache_cms_triggers_in_es_from_file
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file
+
 from cap.modules.repos.models import (GitRepository, GitWebhook,
                                       GitWebhookSubscriber)
 from cap.modules.schemas.models import Schema
@@ -223,6 +224,7 @@ def users(db):
                                               'lhcb-access'),
         'superuser': create_user_with_access(db.session, 'superuser@cern.ch',
                                              'superuser-access'),
+        'random': create_user_with_access(db.session, 'random@cern0.ch'),
     }
 
     db.session.commit()
@@ -287,6 +289,7 @@ def create_schema(db, clear_caches):
                     use_deposit_as_record=True,
                     version="1.0.0",
                     config=None,
+                    schema_record_permissions=None,
                     **kwargs):
         """Add new schema into db."""
         default_json = {'title': {'type': 'string'}}
@@ -304,6 +307,8 @@ def create_schema(db, clear_caches):
             db.session.add(schema)
             db.session.commit()
 
+            if schema_record_permissions:
+                schema.modify_record_permissions(schema_record_permissions)
             if not schema.experiment:
                 schema.add_read_access_for_all_users()
                 db.session.commit()
@@ -654,13 +659,14 @@ def get_record_pid_uuid(app, users, create_deposit, create_schema):
     return pid, str(uuid)
 
 
-def create_user_with_access(session, username, action):
+def create_user_with_access(session, username, action=None):
     user = _datastore.find_user(email=username)
 
     if not user:
         user = create_test_user(email=username, password='pass')
 
-    session.add(ActionUsers.allow(ActionNeed(action), user=user))
+    if action:
+        session.add(ActionUsers.allow(ActionNeed(action), user=user))
 
     return user
 
@@ -693,6 +699,25 @@ def github_repo(db, github_token):
     db.session.add(repo)
     db.session.commit()
     return repo
+
+
+@pytest.fixture()
+def clean_schema_acceess_cache(base_app, db, github_repo):
+    from cap.modules.schemas.imp import (get_cached_indexed_schemas_for_user_create,
+                                       get_cached_indexed_schemas_for_user_read,
+                                       get_cached_indexed_record_schemas_for_user_create,
+                                       get_cached_indexed_record_schemas_for_user_read
+                                       )
+    get_cached_indexed_schemas_for_user_create.delete_memoized()
+    get_cached_indexed_schemas_for_user_read.delete_memoized()
+    get_cached_indexed_record_schemas_for_user_create.delete_memoized()
+    get_cached_indexed_record_schemas_for_user_read.delete_memoized()
+    yield
+    get_cached_indexed_schemas_for_user_create.delete_memoized()
+    get_cached_indexed_schemas_for_user_read.delete_memoized()
+    get_cached_indexed_record_schemas_for_user_create.delete_memoized()
+    get_cached_indexed_record_schemas_for_user_read.delete_memoized()
+
 
 
 @pytest.fixture

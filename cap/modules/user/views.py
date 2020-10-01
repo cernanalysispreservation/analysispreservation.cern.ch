@@ -25,19 +25,19 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, current_app, jsonify, request, g
+import os
+
+from flask import Blueprint, current_app, g, jsonify, request
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
 from flask_security.views import logout
-from werkzeug.local import LocalProxy
-
 from invenio_userprofiles.models import UserProfile
+from werkzeug.local import LocalProxy
 
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-from cap.modules.schemas.utils import get_indexed_schemas_for_user
+from cap.modules.schemas.imp import get_cached_indexed_schemas_for_user_create
 from cap.modules.user.utils import get_remote_account_by_id
-import os
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -61,7 +61,7 @@ def get_user():
         "id": current_user.id,
         "email": current_user.email,
         "deposit_groups": deposit_groups,
-        "profile": extra_data
+        "profile": extra_data,
     }
 
     response = jsonify(_user)
@@ -72,13 +72,18 @@ def get_user():
 def get_user_deposit_groups():
     """Get Deposit Groups."""
     # Set deposit groups for user
-    schemas = get_indexed_schemas_for_user(latest=True)
+    schemas = get_cached_indexed_schemas_for_user_create(
+        latest=True, user_id=current_user.id
+    )
 
-    dep_groups = [{
-        'name': schema.fullname,
-        'deposit_group': schema.name,
-        'schema_path': schema.deposit_path
-    } for schema in schemas]
+    dep_groups = [
+        {
+            'name': schema.fullname,
+            'deposit_group': schema.name,
+            'schema_path': schema.deposit_path,
+        }
+        for schema in schemas
+    ]
 
     return dep_groups
 
@@ -102,38 +107,43 @@ def login():
             login_user(user)
             return jsonify({"user": current_user.email, "next": next})
         except Exception:
-            return jsonify({
-                "error":
-                "Something went wrong with the login. Please try again"
-            }), 400
+            return (
+                jsonify(
+                    {
+                        "error": "Something went wrong with the"
+                        + " login. Please try again"
+                    }
+                ),
+                400,
+            )
     else:
-        return jsonify({
-            "error":
-            "The credentials you enter are not correct. Please try again"
-        }), 403
+        return (
+            jsonify(
+                {
+                    "error": "The credentials you enter are not correct."
+                    + " Please try again"
+                }
+            ),
+            403,
+        )
 
 
 if DEBUG or os.environ.get("ENABLE_E2E"):
-    user_blueprint.add_url_rule('/login/local',
-                                'local_login',
-                                login,
-                                methods=['POST'])
+    user_blueprint.add_url_rule(
+        '/login/local', 'local_login', login, methods=['POST']
+    )
 
 
 @login_required
 def get_identity():
     """Return identity of logged in user."""
-    data = [
-        {"method": d.method, "value": d.value}
-        for d in g.identity.provides
-    ]
+    data = [{"method": d.method, "value": d.value} for d in g.identity.provides]
     response = jsonify(data)
     response.status_code = 200
     return response
 
 
 if os.environ.get("CAP_IDENTITY_VIEW_ENABLE"):
-    user_blueprint.add_url_rule('/identity',
-                                'identity',
-                                get_identity,
-                                methods=['GET'])
+    user_blueprint.add_url_rule(
+        '/identity', 'identity', get_identity, methods=['GET']
+    )

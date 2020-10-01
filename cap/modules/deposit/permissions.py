@@ -33,11 +33,20 @@ from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_files.models import RecordsBuckets
 from sqlalchemy.orm.exc import NoResultFound
 
+from cap.modules.experiments.permissions import cms_pag_convener_action
 from cap.modules.records.permissions import RecordFilesPermission
 from cap.modules.schemas.models import Schema
-from cap.modules.schemas.permissions import ReadSchemaPermission
+from cap.modules.schemas.permissions import (
+    deposit_schema_admin_action,
+    deposit_schema_clone_action,
+    deposit_schema_create_action,
+    deposit_schema_delete_action,
+    deposit_schema_read_action,
+    deposit_schema_review_action,
+    deposit_schema_update_action,
+    deposit_schema_upload_action,
+)
 from cap.modules.schemas.resolvers import resolve_schema_by_url
-from cap.modules.experiments.permissions import cms_pag_convener_action
 
 from .errors import WrongJSONSchemaError
 
@@ -50,6 +59,18 @@ DepositUpdateActionNeed = partial(ParameterizedActionNeed, 'deposit-update')
 DepositAdminActionNeed = partial(ParameterizedActionNeed, 'deposit-admin')
 """Action need for administrating a record."""
 
+DepositCloneActionNeed = partial(ParameterizedActionNeed, 'deposit-clone')
+"""Action need for administrating a record."""
+
+DepositReviewActionNeed = partial(ParameterizedActionNeed, 'deposit-review')
+"""Action need for reviewing a record."""
+
+DepositUploadActionNeed = partial(ParameterizedActionNeed, 'deposit-upload')
+"""Action need for administrating a record."""
+
+DepositDeleteActionNeed = partial(ParameterizedActionNeed, 'deposit-delete')
+"""Action need for administrating a record."""
+
 
 def deposit_read_need(record):
     """Deposit read action need."""
@@ -59,6 +80,11 @@ def deposit_read_need(record):
 def deposit_update_need(record):
     """Deposit update action need."""
     return DepositUpdateActionNeed(str(record.id))
+
+
+def deposit_review_need(record):
+    """Deposit admin action need."""
+    return DepositReviewActionNeed(str(record.id))
 
 
 def deposit_admin_need(record):
@@ -76,6 +102,11 @@ def update_permission_factory(record):
     return Permission(deposit_update_need(record.id))
 
 
+def review_permission_factory(record):
+    """Deposit admin permission factory."""
+    return Permission(deposit_review_need(record.id))
+
+
 def admin_permission_factory(record):
     """Deposit admin permission factory."""
     return Permission(deposit_admin_need(record.id))
@@ -87,7 +118,18 @@ class DepositPermission(Permission):
     actions = {
         "read": deposit_read_need,
         "update": deposit_update_need,
+        "review": deposit_review_need,
         "admin": deposit_admin_need,
+    }
+
+    schema_actions = {
+        "read": deposit_schema_read_action,
+        "update": deposit_schema_update_action,
+        "review": deposit_schema_review_action,
+        "admin": deposit_schema_admin_action,
+        "upload": deposit_schema_upload_action,
+        "clone": deposit_schema_clone_action,
+        "delete": deposit_schema_delete_action,
     }
 
     def __init__(self, deposit, action, extra_needs=None):
@@ -105,6 +147,9 @@ class DepositPermission(Permission):
         if action in self.actions:
             _needs.add(self.actions[action](deposit))
 
+        if action in self.schema_actions:
+            _needs.add(self.schema_actions[action](deposit.schema.id))
+
         super(DepositPermission, self).__init__(*_needs)
 
 
@@ -113,35 +158,41 @@ class CreateDepositPermission(Permission):
 
     def __init__(self, record):
         """Initialize state."""
-        _needs = set()
-
+        # Get deposit data from request and get the schema
+        # from the $schema or $ana_type fields to get required permissions
         data = request.get_json(force=True)
-        _needs.update(self._get_schema_needs(data))
+        deposit_create_needs = self.get_schema_access(data)
 
-        super(CreateDepositPermission, self).__init__(*_needs)
+        super(CreateDepositPermission, self).__init__(*deposit_create_needs)
 
-    def _get_schema_needs(self, deposit):
+    @staticmethod
+    def get_schema_access(data):
         """Create deposit permissions are based on schema's permissions."""
-        if '$schema' in deposit:
+        if '$schema' in data:
             try:
-                schema = resolve_schema_by_url(deposit['$schema'])
-            except JSONSchemaNotFound:
-                raise WrongJSONSchemaError('Schema {} doesnt exist.'.format(
-                    deposit['$schema']))
-
-        elif '$ana_type' in deposit:
-            try:
-                schema = Schema.get_latest(deposit['$ana_type'])
+                schema = resolve_schema_by_url(data['$schema'])
             except JSONSchemaNotFound:
                 raise WrongJSONSchemaError(
-                    'Schema with name {} doesnt exist.'.format(
-                        deposit['$ana_type']))
+                    f'Schema {data["$schema"]} doesnt exist.'
+                )
+
+        elif '$ana_type' in data:
+            try:
+                schema = Schema.get_latest(data['$ana_type'])
+            except JSONSchemaNotFound:
+                raise WrongJSONSchemaError(
+                    f'Schema with name {data["$ana_type"]} doesnt exist.'
+                )
 
         else:
             raise WrongJSONSchemaError(
-                'You have to specify either $schema or $ana_type')
+                'You have to specify either $schema or $ana_type'
+            )
 
-        return ReadSchemaPermission(schema).needs
+        _needs = set()
+        _needs.add(deposit_schema_create_action(schema.id))
+
+        return _needs
 
 
 class ReadDepositPermission(DepositPermission):
@@ -149,21 +200,23 @@ class ReadDepositPermission(DepositPermission):
 
     def __init__(self, record):
         """Initialize state."""
-        extra_needs = self._get_schema_needs(record, 'read')
-        super(ReadDepositPermission, self).__init__(record, 'read',
-                                                    extra_needs)
+        extra_needs = self.get_schema_needs_for_questionnaire(record)
 
-    def _get_schema_needs(self, deposit, action):
+        super(ReadDepositPermission, self).__init__(record, 'read', extra_needs)
+
+    @staticmethod
+    def get_schema_needs_for_questionnaire(record):
         """Create deposit permissions are based on schema's permissions."""
-        if "/records/cms-stats-questionnaire" in deposit.get('$schema'):
-            _needs = set()
+        _needs = set()
+
+        if record.schema.name == 'cms-stats-questionnaire':
             _needs.add(cms_pag_convener_action(None))
 
-            wg = deposit.get("analysis_context", {}).get("wg")
+            wg = record.get("analysis_context", {}).get("wg")
             if wg:
                 _needs.add(cms_pag_convener_action(wg.lower()))
 
-            return _needs
+        return _needs
 
 
 class UpdateDepositPermission(DepositPermission):
@@ -190,10 +243,12 @@ class CloneDepositPermission(DepositPermission):
         super(CloneDepositPermission, self).__init__(record, 'read')
 
 
-class ReviewDepositPermission(ReadDepositPermission):
+class ReviewDepositPermission(DepositPermission):
     """Review deposit permission."""
 
-    pass
+    def __init__(self, record):
+        """Initialize state."""
+        super(ReviewDepositPermission, self).__init__(record, 'review')
 
 
 class DepositFilesPermission(Permission):
@@ -218,13 +273,19 @@ class DepositFilesPermission(Permission):
             'object-delete',
             'object-delete-version',
             'multipart-delete',
-        ]
+        ],
     }
 
     access_needs = {
         "read": deposit_read_need,
         "update": deposit_update_need,
         "admin": deposit_admin_need,
+    }
+
+    schema_actions = {
+        "read": deposit_schema_read_action,
+        "update": deposit_schema_update_action,
+        "admin": deposit_schema_admin_action,
     }
 
     def __init__(self, deposit, action):
@@ -240,6 +301,12 @@ class DepositFilesPermission(Permission):
             if action in actions:
                 _needs.add(self.access_needs[access](deposit))
 
+                _needs.add(
+                    self.schema_actions[access](
+                        resolve_schema_by_url(deposit.json['$schema']).id
+                    )
+                )
+
         super(DepositFilesPermission, self).__init__(*_needs)
 
 
@@ -253,7 +320,7 @@ def files_permission_factory(obj, action=None):
 
         return {
             'recid': RecordFilesPermission(bucket.record, action),
-            'depid': DepositFilesPermission(bucket.record, action)
+            'depid': DepositFilesPermission(bucket.record, action),
         }[record_type]
 
     except (NoResultFound, KeyError):
@@ -263,7 +330,8 @@ def files_permission_factory(obj, action=None):
 def _get_record_type(record_metadata_uuid):
     try:
         pid = PersistentIdentifier.query.filter_by(
-            object_uuid=record_metadata_uuid).one()
+            object_uuid=record_metadata_uuid
+        ).one()
         return pid.pid_type
     except NoResultFound:
         return None

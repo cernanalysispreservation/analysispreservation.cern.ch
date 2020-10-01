@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Schema cli."""
 
+import itertools
 import json
 import os
 
@@ -30,17 +31,17 @@ import click
 import requests
 from flask import current_app
 from flask_cli import with_appcontext
-from invenio_accounts.models import User
+from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_oauth2server.models import Token
 from invenio_search import current_search_client
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 
 from cap.cli import MutuallyExclusiveOption
 from cap.modules.deposit.errors import DepositValidationError
 from cap.modules.fixtures.cli import fixtures
-from cap.modules.records.api import CAPRecord
 from cap.modules.schemas.helpers import ValidationError
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import (
@@ -48,7 +49,7 @@ from cap.modules.schemas.resolvers import (
     resolve_schema_by_url,
     schema_name_to_url,
 )
-from cap.modules.schemas.utils import is_later_version
+from cap.modules.schemas.utils import actions_from_type, is_later_version
 
 DEPOSIT_REQUIRED_FIELDS = [
     '_buckets',
@@ -59,6 +60,116 @@ DEPOSIT_REQUIRED_FIELDS = [
     '_user_edited',
     '_access',
 ]
+
+
+@fixtures.command()
+@click.option(
+    '--permissions',
+    '-p',
+    required=True,
+    multiple=True,
+    help='Role permission actions. Accepts multiple options.',
+)
+@click.option(
+    '--role',
+    '-r',
+    'roles',
+    multiple=True,
+    cls=MutuallyExclusiveOption,
+    mutually_exclusive=[
+        "users",
+    ],
+    help='Roles with access to the record',
+)
+@click.option(
+    '--user',
+    '-u',
+    'users',
+    multiple=True,
+    cls=MutuallyExclusiveOption,
+    mutually_exclusive=[
+        "roles",
+    ],
+    help='User with access to the record',
+)
+# deposit / record / schema
+@click.option('--deposit', '_type', flag_value='deposit', default=True)
+@click.option('--record', '_type', flag_value='record')
+@click.option('--schema', '_type', flag_value='schema')
+# allow / remove / deny
+@click.option('--allow', 'schema_action', flag_value='allow', default=True)
+@click.option('--deny', 'schema_action', flag_value='deny')
+@click.option('--remove', 'schema_action', flag_value='remove')
+@click.option(
+    '--schema-version', '-v', 'schema_version', help='The schema version.'
+)
+@click.argument('schema-name')
+@with_appcontext
+def permissions(
+    schema_name, permissions, roles, users, _type, schema_action, schema_version
+):
+    """Schema permission command group.
+
+    Allows/Denies/Removes certain actions to roles, in order to
+    have access to a deposit/record/schema.
+    Examples:
+        cap fixtures permissions
+            -p read -p admin -r testegroup@cern.ch --allow --deposit SCHEMA_NAME
+            -p read -r test-egroup@cern.ch --deny --deposit SCHEMA_NAME
+            -p read -r test-egroup@cern.ch --allow --record SCHEMA_NAME
+            -p read -p admin -r test-egroup@cern.ch --allow --schema SCHEMA_NAME
+            -p read -p admin -u test-user@cern.ch --allow --deposit SCHEMA_NAME
+            -p read -u test-user@cern.ch --deny --deposit SCHEMA_NAME
+            -p read -u test-user@cern.ch --allow --record SCHEMA_NAME
+            -p read -p admin -u test-user@cern.ch --allow --schema SCHEMA_NAME
+    """
+    if not (roles or users):
+        raise click.BadParameter(
+            'ERROR: Users (-u) or roles (-r) are required arguments'
+        )
+    msg = f'{schema_name}'
+    try:
+        if schema_version:
+            msg += f'-v{schema_version}'
+            schema = Schema.get(schema_name, schema_version)
+        else:
+            schema = Schema.get_latest(schema_name)
+    except JSONSchemaNotFound:
+        raise click.secho(f'Schema {msg} does not exist.', fg='red')
+
+    # create the correct action names, and
+    # check if action is subscribed and can be used
+    requested_actions = actions_from_type(_type, permissions)
+    allowed_actions = current_app.extensions['invenio-access'].actions
+
+    for action in requested_actions:
+        if action not in allowed_actions.keys():
+            raise click.secho(f'Action {action} is not registered.', fg='red')
+
+    # check if roles exist
+    for role in roles:
+        try:
+            Role.query.filter_by(name=role).one()
+        except NoResultFound:
+            raise click.secho(f'Role with name {role} not found.', fg='red')
+
+    # check if users exist
+    for user in users:
+        try:
+            User.query.filter_by(email=user).one()
+        except NoResultFound:
+            raise click.secho(f'User with email {user} not found.', fg='red')
+
+    # create all combinations of actions and roles
+    try:
+        actions_roles = list(itertools.product(requested_actions, roles))
+        schema.process_action_roles(schema_action, actions_roles)
+        # create all combinations of actions and users
+        actions_users = list(itertools.product(requested_actions, users))
+        schema.process_action_users(schema_action, actions_users)
+    except IntegrityError:
+        return click.secho("Action user/role already exists.", fg="red")
+    click.secho("Process finished.", fg="green")
 
 
 @fixtures.command()
@@ -176,6 +287,7 @@ def validate(
 
     # differentiate between drafts/published
     from cap.modules.deposit.api import CAPDeposit
+    from cap.modules.records.api import CAPRecord
 
     if status == 'draft':
         search_path = 'deposits-records'

@@ -26,12 +26,9 @@
 
 import json
 
-from invenio_access.models import ActionRoles, ActionUsers
 from pytest import mark
 
-from cap.modules.experiments.permissions import exp_need_factory
-from conftest import _datastore, add_role_to_user
-
+from conftest import add_role_to_user
 
 @mark.skip
 def test_deposit_validation_when_schema_not_specified(client, users,
@@ -85,7 +82,7 @@ def test_deposit_validation_on_additional_properties(client, users,
                                                      create_deposit):
     owner = users['cms_user']
     headers = auth_headers_for_user(owner)
-    create_schema('test-analysis',
+    schema = create_schema('test-analysis',
                   experiment='CMS',
                   deposit_schema={
                       'type': 'object',
@@ -105,6 +102,8 @@ def test_deposit_validation_on_additional_properties(client, users,
                           }
                       },
                   })
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', owner.email)])
 
     resp = client.post('/deposits',
                        headers=headers + json_headers,
@@ -133,7 +132,7 @@ def test_deposit_validation_on_validate_das_path(client, users,
                                                  das_datasets_index):
     owner = users['cms_user']
     headers = auth_headers_for_user(owner)
-    create_schema('test-analysis-with-das-validation',
+    schema = create_schema('test-analysis-with-das-validation',
                   experiment='CMS',
                   deposit_schema={
                       'type': 'object',
@@ -154,6 +153,8 @@ def test_deposit_validation_on_validate_das_path(client, users,
                           }
                       },
                   })
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', owner.email)])
 
     resp = client.post('/deposits',
                        headers=headers + json_headers,
@@ -187,7 +188,7 @@ def test_deposit_validation_on_validate_das_path_and_triggers(
         create_deposit, das_datasets_index, cms_triggers_index):
     owner = users['cms_user']
     headers = auth_headers_for_user(owner)
-    create_schema(
+    schema = create_schema(
         'test-schema-with-das-and-trigger-validation',
         experiment='CMS',
         deposit_schema={
@@ -247,6 +248,8 @@ def test_deposit_validation_on_validate_das_path_and_triggers(
                 }
             },
         })
+    schema.process_action_users('allow',
+                         [('deposit-schema-create', owner.email)])
 
     resp = client.post('/deposits',
                        headers=headers + json_headers,
@@ -656,7 +659,8 @@ def test_deposit_validation_on_schema_field_user_cannot_edit_post(client, users,
                               },
                           },
                       },
-                  })
+                  },
+                  schema_record_permissions={ "create": {"users": [owner.email]}})
 
     resp = client.post('/deposits/',
                       headers=headers + json_headers,
@@ -686,7 +690,9 @@ def test_deposit_validation_on_schema_field_user_can_edit_post(client, location,
                               },
                           },
                       },
-                  })
+                  },
+                  schema_record_permissions={ "create": {"users": [owner.email]}}
+                  )
 
     resp = client.post('/deposits/',
                       headers=headers + json_headers,

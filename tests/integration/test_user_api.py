@@ -24,7 +24,7 @@
 # or submit itself to any jurisdiction.
 """Integration tests for CAP api."""
 import json
-
+from conftest import add_role_to_user
 
 ##########
 # api/me
@@ -39,7 +39,6 @@ def test_me_when_superuser_returns_correct_user_data(
         client, create_schema, superuser, auth_headers_for_superuser):
     create_schema('cms', fullname='CMS analysis', experiment='CMS')
     create_schema('lhcb', fullname='LHCb analysis', experiment='LHCb')
-
     resp = client.get('/me', headers=auth_headers_for_superuser)
 
     assert resp.status_code == 200
@@ -63,10 +62,15 @@ def test_me_when_cms_user_returns_correct_user_data(client, create_schema,
                                                     users,
                                                     auth_headers_for_user):
     user = users['cms_user']
-    create_schema('cms', fullname='CMS analysis', experiment='CMS')
-    create_schema('lhcb', fullname='LHCb analysis', experiment='LHCb')
+    add_role_to_user(user, 'cms-members@cern.ch')
+    cms_schema = create_schema('cms', fullname='CMS analysis', experiment='CMS')
+    lhcb_schema = create_schema('lhcb', fullname='LHCb analysis', experiment='LHCb')
     create_schema('alice', fullname='Alice analysis', experiment='Alice')
     create_schema('atlas', fullname='ATLAS analysis', experiment='ATLAS')
+
+    # with app.app_context():
+    cms_schema.process_action_roles('allow',
+                         [('deposit-schema-create', 'cms-members@cern.ch')])
 
     resp = client.get('/me', headers=auth_headers_for_user(user))
 
@@ -76,6 +80,27 @@ def test_me_when_cms_user_returns_correct_user_data(client, create_schema,
             "deposit_group": "cms",
             "name": "CMS analysis",
             "schema_path": "deposits/records/cms-v1.0.0.json"
+        }],
+        "email": user.email,
+        "id": user.id,
+        "profile": {}
+    }
+
+    lhcb_schema.process_action_roles('allow',
+                         [('deposit-schema-create', 'cms-members@cern.ch')])
+
+    resp = client.get('/me', headers=auth_headers_for_user(user))
+
+    assert resp.status_code == 200
+    assert json.loads(resp.data) == {
+        "deposit_groups": [{
+            "deposit_group": "cms",
+            "name": "CMS analysis",
+            "schema_path": "deposits/records/cms-v1.0.0.json"
+        }, {
+            "deposit_group": "lhcb",
+            "name": 'LHCb analysis',
+            "schema_path": "deposits/records/lhcb-v1.0.0.json"
         }],
         "email": user.email,
         "id": user.id,

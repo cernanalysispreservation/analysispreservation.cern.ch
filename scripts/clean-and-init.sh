@@ -48,6 +48,7 @@ cap fixtures schemas
 cap users create info@inveniosoftware.org -a --password infoinfo
 
 cap users create cms@inveniosoftware.org -a --password cmscms
+cap users create cms2@inveniosoftware.org -a --password cmscms
 cap users create lhcb@inveniosoftware.org -a --password lhcblhcb
 cap users create atlas@inveniosoftware.org -a --password atlasatlas
 cap users create alice@inveniosoftware.org -a --password alicealice
@@ -73,3 +74,14 @@ cap access allow cms-access role cms-members@cern.ch
 cap access allow lhcb-access role lhcb-general@cern.ch
 cap access allow alice-access role alice-member@cern.ch
 cap access allow atlas-access role atlas-active-members-all@cern.ch
+
+# test user (with no privileges)
+cap users create test@inveniosoftware.org -a --password testtest
+cap roles create test-users@cern.ch
+cap roles add test@inveniosoftware.org test-users@cern.ch
+
+cap fixtures permissions --allow -r cms-members@cern.ch -p create --deposit cms-stats-questionnaire
+cap fixtures permissions --allow -r cms-members@cern.ch -p create --deposit cms-analysis
+cap fixtures permissions --allow -r alice-member@cern.ch -p create --deposit alice-analysis
+cap fixtures permissions --allow -r lhcb-general@cern.ch -p create --deposit lhcb
+cap fixtures permissions --allow -r atlas-active-members-all@cern.ch -p create --deposit atlas-analysis
