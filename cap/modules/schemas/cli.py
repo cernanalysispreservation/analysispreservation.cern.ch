@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Schema cli."""
 
+import itertools
 import json
 import os
 
@@ -30,19 +31,22 @@ import click
 import requests
 from flask import current_app
 from flask_cli import with_appcontext
+
+from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search_client
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 
 from cap.cli import MutuallyExclusiveOption
 from cap.modules.deposit.errors import DepositValidationError
 from cap.modules.fixtures.cli import fixtures
-from cap.modules.records.api import CAPRecord
-from cap.modules.schemas.models import Schema
-from cap.modules.schemas.resolvers import resolve_schema_by_url,\
+
+from .models import Schema
+from .resolvers import resolve_schema_by_url, \
     resolve_schema_by_name_and_version, schema_name_to_url
-from cap.modules.schemas.utils import is_later_version
+from .utils import is_later_version, process_action
 
 DEPOSIT_REQUIRED_FIELDS = [
     '_buckets',
@@ -53,6 +57,60 @@ DEPOSIT_REQUIRED_FIELDS = [
     '_user_edited',
     '_access'
 ]
+
+
+@click.command()
+@click.option('--permissions', '-p',
+              required=True,
+              help='Role permission actions. Accepts multiple options.')
+@click.option('--roles', '-r',
+              required=True,
+              help='Role name(s) (mails) for use. Accepts multiple options.')
+@click.option('--record',
+              is_flag=True,
+              help='Select if the permissions will be applied to '
+                   'deposits or records. Default: deposit.')
+@click.option('--allow', 'schema_action',
+              flag_value='allow',
+              default=True)
+@click.option('--deny', 'schema_action',
+              flag_value='deny')
+@click.option('--remove', 'schema_action',
+              flag_value='remove')
+@click.argument('schema-name')
+@with_appcontext
+def schema(schema_name, permissions, roles, record, schema_action):
+    """
+    Schema permission command group. Allows/Denies/Removes certain actions
+    to roles, in order to provide access to a schema.
+    Use:
+        cap schema -p read,update -r test-users@cern.ch --allow SCHEMA_NAME
+        cap schema -p read -r test-users@cern.ch --record --deny SCHEMA_NAME
+        cap schema -p read -r test-users@cern.ch --record --remove SCHEMA_NAME
+    """
+    type_ = 'record' if record else 'deposit'
+    permissions = permissions.split(',')
+    roles = roles.split(',')
+
+    # create the correct action names, and
+    # check if action is subscribed and can be used
+    requested_actions = [f'{type_}-schema-{perm}' for perm in permissions]
+    allowed_actions = current_app.extensions['invenio-access'].actions
+
+    for action in requested_actions:
+        if action not in allowed_actions.keys():
+            raise click.BadParameter(f'Action {action} is not registered.')
+
+    # check if roles exist
+    for role in roles:
+        try:
+            Role.query.filter_by(name=role).one()
+        except NoResultFound:
+            raise click.BadParameter(f'Role with name {role} not found.')
+
+    actions_roles = list(itertools.product(requested_actions, roles))
+    process_action(schema_action, schema_name,
+                   actions_roles, allowed_actions)
 
 
 @fixtures.command()
@@ -112,6 +170,8 @@ def validate(schema_url, ana_type, ana_version, compare_with,
 
     # differentiate between drafts/published
     from cap.modules.deposit.api import CAPDeposit
+    from cap.modules.records.api import CAPRecord
+
     if status == 'draft':
         search_path = 'deposits-records'
         cap_record_class = CAPDeposit
