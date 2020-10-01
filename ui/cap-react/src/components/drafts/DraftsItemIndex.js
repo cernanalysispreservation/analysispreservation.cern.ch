@@ -60,7 +60,11 @@ class DraftsItemIndex extends React.Component {
 
     return (
       <DocumentTitle
-        title={`${this.props.metadata.general_title || "Untitled"} | Draft`}
+        title={
+          this.props.metadata.general_title
+            ? `${this.props.metadata.general_title} | Draft`
+            : "Draft"
+        }
       >
         <Box flex={true} wrap={false} colorIndex="grey-3">
           <DraftsRouteGuard draft_id={draft_id} />
