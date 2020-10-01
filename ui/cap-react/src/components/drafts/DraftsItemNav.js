@@ -10,10 +10,9 @@ import Anchor from "../partials/Anchor";
 import Box from "grommet/components/Box";
 
 import {
-  AiOutlineDelete,
   AiOutlineAppstore,
   AiOutlineTag,
-  AiOutlineShareAlt,
+  AiOutlineSetting,
   AiOutlinePlayCircle,
   AiOutlineBranches
 } from "react-icons/ai";
@@ -28,14 +27,8 @@ class DraftsItemNav extends React.Component {
     super(props);
   }
 
-  _actionHandler = type => () => {
-    this.props.toggleActionsLayer(type);
-  };
-
   render() {
     let { draft_id } = this.props.match.params;
-    let isDraft = this.props.status == "draft" ? true : false;
-    let isPublishedOnce = this.props.recid ? true : false;
 
     return (
       <Box
@@ -152,7 +145,7 @@ class DraftsItemNav extends React.Component {
           <Box className="animated-nav-row">
             <Anchor path={`/drafts/${draft_id}/settings`}>
               <Box
-                justify="betweceen"
+                justify="center"
                 className="animated-nav-container"
                 align="center"
                 pad="small"
@@ -167,37 +160,13 @@ class DraftsItemNav extends React.Component {
                 }
               >
                 <Box flex>
-                  <AiOutlineShareAlt size={NAV_IMAGE_SIZE} color="#000" />
+                  <AiOutlineSetting size={NAV_IMAGE_SIZE} color="#000" />
                 </Box>
                 <Box flex className="animated-nav-text">
-                  Share
+                  Settings
                 </Box>
               </Box>
             </Anchor>
-          </Box>
-
-          <Box className="nav-delete-div">
-            {isDraft &&
-              !isPublishedOnce && (
-                <Box className="animated-nav-row ">
-                  <Anchor onClick={this._actionHandler("delete")}>
-                    <Box
-                      justify="center"
-                      className="animated-nav-container"
-                      align="center"
-                      pad="small"
-                      direction="row"
-                    >
-                      <Box flex>
-                        <AiOutlineDelete size={NAV_IMAGE_SIZE} color="#000" />
-                      </Box>
-                      <Box flex className=" animated-nav-text ">
-                        Delete
-                      </Box>
-                    </Box>
-                  </Anchor>
-                </Box>
-              )}
           </Box>
         </Box>
       </Box>
@@ -215,8 +184,7 @@ DraftsItemNav.propTypes = {
   id: PropTypes.string,
   toggleActionsLayer: PropTypes.func,
   recid: PropTypes.string,
-  location: PropTypes.object,
-  canAdmin: PropTypes.bool
+  location: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -224,8 +192,7 @@ function mapStateToProps(state) {
     id: state.draftItem.get("id"),
     status: state.draftItem.get("status"),
     errors: state.draftItem.get("errors"),
-    recid: state.draftItem.get("recid"),
-    canAdmin: state.draftItem.get("can_admin")
+    recid: state.draftItem.get("recid")
   };
 }
 

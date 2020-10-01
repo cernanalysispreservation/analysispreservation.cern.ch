@@ -140,7 +140,7 @@ class DraftActionsLayer extends React.Component {
                 this.props.type.charAt(0).toUpperCase() +
                 this.props.type.slice(1)
               }
-              primary
+              primaryPublished
               critical={this.props.type === "delete"}
               onClick={() => this.renderAction(this.props.type)}
             />

@@ -40,10 +40,47 @@ const ButtonWrapper = styled.div`
       }
     `};
 
+  ${({ primaryPublished }) =>
+    primaryPublished &&
+    css`
+      color: #fff;
+      background-color: rgba(146, 109, 146, 1);
+
+      &:hover {
+        background-color: rgba(146, 109, 146, 0.9);
+      }
+    `};
+
   ${({ secondary }) =>
     secondary &&
     css`
       border: 1px solid rgba(0, 0, 0, 0.2);
+    `};
+
+  ${({ tertiary }) =>
+    tertiary &&
+    css`
+      text-decoration: underline;
+    `};
+
+  ${({ critical }) =>
+    critical &&
+    css`
+      background: rgba(179, 53, 52, 1);
+      color: #ffffff;
+      &:hover {
+        background-color: rgba(179, 53, 52, 0.8);
+      }
+    `};
+  ${({ criticalOutline }) =>
+    criticalOutline &&
+    css`
+      color: rgba(179, 53, 52, 1);
+      border: 1px solid #e6e6e6;
+      &:hover {
+        background: rgba(179, 53, 52, 1);
+        color: #fff;
+      }
     `};
 
   ${({ disabled }) =>
@@ -58,22 +95,6 @@ const ButtonWrapper = styled.div`
         background: #f5f5f5;
       }
     `};
-
-  ${({ tertiary }) =>
-    tertiary &&
-    css`
-      text-decoration: underline;
-    `};
-
-  ${({ critical }) =>
-    critical &&
-    css`
-      background: #f4282d;
-      color: #ffffff;
-      &:hover {
-        background-color: #ff324d;
-      }
-    `};
 `;
 
 const Button = ({
@@ -84,6 +105,8 @@ const Button = ({
   disabled = false,
   tertiary = false,
   critical = false,
+  criticalOutline = false,
+  primaryPublished = false,
   icon = null,
   background = "#f5f5f5",
   hoverColor = "#e6e6e6",
@@ -204,9 +227,11 @@ const Button = ({
       onClick={loading || disabled ? null : onClick}
       secondary={secondary}
       disabled={loading ? true : disabled}
-      primary={primary}
-      tertiary={tertiary}
-      critical={critical}
+      primary={!disabled && primary}
+      primaryPublished={!disabled && primaryPublished}
+      tertiary={!disabled && tertiary}
+      critical={!disabled && critical}
+      criticalOutline={!disabled && criticalOutline}
       background={background}
       hoverColor={hoverColor}
       color={color}
@@ -237,6 +262,8 @@ Button.propTypes = {
   pad: PropTypes.object,
   margin: PropTypes.object,
   loading: PropTypes.bool,
+  criticalOutline: PropTypes.bool,
+  primaryPublished: PropTypes.bool,
   size: PropTypes.oneOf([
     "small",
     "medium",

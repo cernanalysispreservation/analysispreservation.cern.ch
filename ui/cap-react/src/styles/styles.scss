@@ -540,11 +540,6 @@ label {
 
 // medium
 @media only screen and (min-width: 720px) {
-  .nav-delete-div {
-    display: flex !important;
-    flex: 1 !important;
-    justify-content: flex-end !important;
-  }
   .small-row-medium-column {
     flex-direction: column !important;
     justify-content: flex-start !important;
