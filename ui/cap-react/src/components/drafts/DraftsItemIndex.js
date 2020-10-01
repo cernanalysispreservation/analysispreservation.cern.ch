@@ -27,6 +27,7 @@ import { getDraftByIdAndInitForm } from "../../actions/draftItem";
 import DraftsItemNav from "./DraftsItemNav";
 
 import DocumentTitle from "../partials/Title";
+import DepositFileManager from "./components/DepositFileManager";
 
 class DraftsItemIndex extends React.Component {
   constructor(props) {
@@ -68,6 +69,7 @@ class DraftsItemIndex extends React.Component {
       >
         <Box flex={true} wrap={false} colorIndex="grey-3">
           <DraftsRouteGuard draft_id={draft_id} />
+          <DepositFileManager />
           <DraftHeader
             formRef={this.formRef}
             expanded={this.state.expanded}

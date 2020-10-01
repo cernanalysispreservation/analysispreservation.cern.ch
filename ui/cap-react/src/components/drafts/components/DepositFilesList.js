@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import FileManager from "./DepositFileManager";
-
 import ArchiveIcon from "grommet/components/icons/base/Archive";
 import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
 import PieChartIcon from "grommet/components/icons/base/PieChart";
@@ -37,7 +35,6 @@ class DepositFilesList extends React.Component {
 
   render() {
     return [
-      <FileManager key="filesManager" files={this.props.files} />,
       <Box key="filesList" style={{ paddingLeft: "3px", paddingRight: "10px" }}>
         <FileTree files={this.props.files.toJS()} />
       </Box>

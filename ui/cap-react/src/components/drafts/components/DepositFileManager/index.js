@@ -4,18 +4,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
 
 import { toggleFilemanagerLayer, selectPath } from "../../../../actions/files";
 
-import FileTree from "../FileTree";
-
-import { Label } from "grommet";
 import DropzoneUploader from "./DropzoneUploader";
 
 import Modal from "../../../partials/Modal";
 
-class FileManager extends React.Component {
+class DepositFileManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,75 +29,78 @@ class FileManager extends React.Component {
     this.props.selectableActionLayer(path);
   };
 
-  _renderSidebar = () => {
-    return (
-      <Box flex={false} size={{ width: "medium" }}>
-        <Box flex={false} pad="small" colorIndex="light-1" separator="bottom">
-          <Label size="medium" margin="none">
-            File Manager
-          </Label>
-        </Box>
-        <Box flex={true} margin={{ top: "small", right: "small" }}>
-          <FileTree
-            files={this.props.files.toJS()}
-            onDirectoryClick={
-              this.props.selectableActionLayer ? this._onDirectoryClick : null
-            }
-            onFileClick={
-              this.props.selectableActionLayer ? this._onFileClick : null
-            }
-          />
-        </Box>
+  // TODO: this code is commented due to updates
+  // most likely it will be used again when the upload files will examined closely
 
-        {this.props.selectableActionLayer ? (
-          <Box
-            colorIndex="light-2"
-            direction="row"
-            flex={false}
-            pad="small"
-            separator="top"
-          >
-            <Box>
-              <Label size="small">
-                <strong>
-                  {this.props.message
-                    ? this.props.message
-                    : "Please select a file from the list, to add it to the field"}
-                </strong>
-              </Label>
-              {this.props.pathSelected &&
-                this.props.pathSelected.type == "file" && (
-                  <Box>
-                    <Label size="small">
-                      <strong>Selected file:</strong>{" "}
-                      {this.props.pathSelected && this.props.pathSelected.path}
-                    </Label>
-                  </Box>
-                )}
-              <Box
-                colorIndex="light-2"
-                margin={{ top: "small" }}
-                pad={{ between: "small" }}
-                direction="row"
-                flex={false}
-              >
-                <Button
-                  primary
-                  label="Add to field"
-                  onClick={this.props.pathSelected ? this.props.onSelect : null}
-                />
-                <Button
-                  label="Cancel"
-                  critical
-                  onClick={this.props.toggleFilemanagerLayer}
-                />
-              </Box>
-            </Box>
-          </Box>
-        ) : null}
-      </Box>
-    );
-  };
+  // _renderSidebar = () => {
+  //   return (
+  //     <Box flex={false} size={{ width: "medium" }}>
+  //       <Box flex={false} pad="small" colorIndex="light-1" separator="bottom">
+  //         <Label size="medium" margin="none">
+  //           File Manager
+  //         </Label>
+  //       </Box>
+  //       <Box flex={true} margin={{ top: "small", right: "small" }}>
+  //         <FileTree
+  //           files={this.props.files.toJS()}
+  //           onDirectoryClick={
+  //             this.props.selectableActionLayer ? this._onDirectoryClick : null
+  //           }
+  //           onFileClick={
+  //             this.props.selectableActionLayer ? this._onFileClick : null
+  //           }
+  //         />
+  //       </Box>
+
+  //       {this.props.selectableActionLayer ? (
+  //         <Box
+  //           colorIndex="light-2"
+  //           direction="row"
+  //           flex={false}
+  //           pad="small"
+  //           separator="top"
+  //         >
+  //           <Box>
+  //             <Label size="small">
+  //               <strong>
+  //                 {this.props.message
+  //                   ? this.props.message
+  //                   : "Please select a file from the list, to add it to the field"}
+  //               </strong>
+  //             </Label>
+  //             {this.props.pathSelected &&
+  //               this.props.pathSelected.type == "file" && (
+  //                 <Box>
+  //                   <Label size="small">
+  //                     <strong>Selected file:</strong>{" "}
+  //                     {this.props.pathSelected && this.props.pathSelected.path}
+  //                   </Label>
+  //                 </Box>
+  //               )}
+  //             <Box
+  //               colorIndex="light-2"
+  //               margin={{ top: "small" }}
+  //               pad={{ between: "small" }}
+  //               direction="row"
+  //               flex={false}
+  //             >
+  //               <Button
+  //                 primary
+  //                 label="Add to field"
+  //                 onClick={this.props.pathSelected ? this.props.onSelect : null}
+  //               />
+  //               <Button
+  //                 label="Cancel"
+  //                 critical
+  //                 onClick={this.props.toggleFilemanagerLayer}
+  //               />
+  //             </Box>
+  //           </Box>
+  //         </Box>
+  //       ) : null}
+  //     </Box>
+  //   );
+  // };
 
   render() {
     return this.props.activeLayer ? (
@@ -120,7 +119,7 @@ class FileManager extends React.Component {
   }
 }
 
-FileManager.propTypes = {
+DepositFileManager.propTypes = {
   activeLayer: PropTypes.bool,
   toggleFilemanagerLayer: PropTypes.func,
   selectableActionLayer: PropTypes.func,
@@ -154,4 +153,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FileManager);
+)(DepositFileManager);
