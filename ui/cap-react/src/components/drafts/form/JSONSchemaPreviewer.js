@@ -77,7 +77,7 @@ class JSONShemaPreviewer extends React.Component {
       <Box
         flex={true}
         pad={{ horizontal: "small" }}
-        style={{ position: "relative", height: "1px" }}
+        style={{ position: "relative", height: "1vh" }}
       >
         {!this.props.draft && (
           <Box

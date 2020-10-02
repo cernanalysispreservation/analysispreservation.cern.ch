@@ -9,7 +9,14 @@ import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 
 function SectionBox(props) {
-  let { headerActions, header = "", body, emptyMessage = null, more } = props;
+  let {
+    headerActions,
+    header = "",
+    body,
+    emptyMessage = null,
+    more,
+    className = ""
+  } = props;
 
   return (
     <Box flex={false} margin={{ bottom: "small" }}>
@@ -37,11 +44,7 @@ function SectionBox(props) {
         <ReactTooltip />
       </Box>
 
-      <Box
-        colorIndex="light-2"
-        flex={false}
-        size={{ height: { max: "large" } }}
-      >
+      <Box colorIndex="light-2" flex={false} className={className}>
         {body}
       </Box>
       {more && (
@@ -59,7 +62,8 @@ SectionBox.propTypes = {
   body: PropTypes.node,
   headerActions: PropTypes.node,
   emptyMessage: PropTypes.string,
-  history: PropTypes.object
+  history: PropTypes.object,
+  className: PropTypes.string
 };
 
 export default SectionBox;
