@@ -45,7 +45,7 @@ class JSONShemaPreviewer extends React.Component {
 
     this.state = {
       formData: {},
-      uiObject: shouldDisplayTabViewButton ? "tabView" : "",
+      uiObject: this.props.draft ? "" : (shouldDisplayTabViewButton ? "tabView" : ""),
       uiAvailableList: shouldDisplayTabViewButton
         ? [
             {

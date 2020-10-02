@@ -84,7 +84,7 @@ class DraftPreview extends React.Component {
               }
               body={
                 this.props.schemas && this.props.schemas.schema ? (
-                  <Box flex={true} pad="small">
+                  <Box flex={true}>
                     <JSONSchemaPreviewer
                       formData={this.props.metadata}
                       schema={_schema}
