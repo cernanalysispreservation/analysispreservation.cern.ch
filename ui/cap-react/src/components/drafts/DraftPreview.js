@@ -71,6 +71,7 @@ class DraftPreview extends React.Component {
           <Box flex={true} size={{ width: { min: "medium" } }} basis="3/4">
             <SectionBox
               header="Metadata"
+              className="box-large-height"
               headerActions={
                 this.props.canUpdate ? (
                   <Anchor
