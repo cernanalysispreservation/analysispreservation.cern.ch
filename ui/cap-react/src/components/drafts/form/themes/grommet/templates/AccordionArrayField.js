@@ -53,18 +53,16 @@ class AccordionArrayField extends React.Component {
                   <Box key={index} direction="row" flex={true}>
                     <Box flex={true}>{element.children}</Box>
                     <Box flex={false}>
-                      <Button
-                        margin="0 0 0 5px"
-                        onClick={event =>
-                          element.onDropIndexClick(element.index)(event)
-                        }
-                        size="icon"
-                        icon={
-                          this.props.readonly ? null : (
-                            <AiOutlineDelete size={20} />
-                          )
-                        }
-                      />
+                      {!this.props.readonly && (
+                        <Button
+                          margin="0 0 0 5px"
+                          onClick={event =>
+                            element.onDropIndexClick(element.index)(event)
+                          }
+                          size="icon"
+                          icon={<AiOutlineDelete size={20} />}
+                        />
+                      )}
                     </Box>
                   </Box>
                 ))}

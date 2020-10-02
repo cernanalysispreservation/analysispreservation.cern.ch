@@ -174,18 +174,19 @@ class ArrayFieldTemplate extends React.Component {
     this.props.onAddClick(event);
   }
 
-  _renderAddButton = () => (
-    <Box align="center">
-      <Button
-        margin="5px 0 0 0 "
-        icon={<AiOutlinePlus size={20} />}
-        text="Add Item"
-        size="small"
-        onClick={this._onAddClick.bind(this)}
-        className="fieldTemplate-btn"
-      />
-    </Box>
-  );
+  _renderAddButton = () =>
+    !this.props.readonly && (
+      <Box align="center">
+        <Button
+          margin="5px 0 0 0 "
+          icon={<AiOutlinePlus size={20} />}
+          text="Add Item"
+          size="small"
+          onClick={this._onAddClick.bind(this)}
+          className="fieldTemplate-btn"
+        />
+      </Box>
+    );
 
   _getArrayField = _label => {
     let _pastable = this.props.uiSchema && !this.props.uiSchema["ui:pastable"];
