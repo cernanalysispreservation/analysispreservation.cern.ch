@@ -125,7 +125,7 @@ class FileItem extends React.Component {
       file.data || file;
 
     // TO_REMOVE after fixings links from backend
-    file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
+    file_link = file_link ? file_link : null;
 
     const timeOptions = {
       day: "numeric",
@@ -282,10 +282,7 @@ class FileItem extends React.Component {
                       <Box>
                         <Anchor
                           icon={<DownloadIcon size="xsmall" />}
-                          href={item.links.self.replace(
-                            "/files/",
-                            "/api/files/"
-                          )}
+                          href={item.links.self}
                           download
                         />
                       </Box>
@@ -295,6 +292,7 @@ class FileItem extends React.Component {
             </Box>
           </Modal>
         )}
+
 
         {this.state.menu ? (
           <Box colorIndex="light-2" alignSelf="end" pad="small">
