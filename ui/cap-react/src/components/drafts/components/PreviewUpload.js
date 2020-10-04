@@ -30,7 +30,6 @@ const formatted_date = time =>
 
 const PreviewUpload = ({ file, open, toggle, deleteFile }) => {
   let { links: { self: file_link = null } = {}, key: filePath } = file;
-  file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
 
   if (open) return null;
   return (
