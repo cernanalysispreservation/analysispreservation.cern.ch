@@ -51,8 +51,9 @@ def get_user():
 
     profile = UserProfile.get_by_userid(current_user.id)
     extra_data = {}
-    if profile:
-        extra_data = profile.extra_data
+    # TODO: Fix userprofiles in docker
+    # if profile:
+    #     extra_data = profile.extra_data
     _user = {
         "id": current_user.id,
         "email": current_user.email,

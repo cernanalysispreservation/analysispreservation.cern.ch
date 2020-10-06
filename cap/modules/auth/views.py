@@ -26,12 +26,13 @@
 """Authentication views for CAP."""
 
 from flask import Blueprint, url_for, current_app, jsonify, \
-                  request, redirect, session, abort
+                  request, redirect, session, abort, render_template
 from flask_login import current_user
 
 from invenio_db import db
 from invenio_userprofiles.models import UserProfile
 from sqlalchemy.orm.attributes import flag_modified
+from werkzeug.exceptions import HTTPException
 
 from .config import OAUTH_SERVICES, USER_PROFILE
 from .models import OAuth2Token
@@ -87,10 +88,17 @@ def disconnect(name):
         db.session.delete(_token)
         db.session.commit()
 
-        return jsonify({'message': 'Disconnected from {} '
-                                   'successfully.'.format(name)}), 200
+        return render_template(
+            current_app.config['AUTH_SUCCESS_TEMPLATE'],
+            **{
+                'msg': f'Successfully disconnected from {name} service.'
+            }), 200
     else:
-        abort(403, "Unable to disconnect from {} service.".format(name))
+        return render_template(
+            current_app.config['AUTH_FAILURE_TEMPLATE'],
+            **{
+                'msg': f'Error: Unable to disconnect from {name} service.'
+            }), 403
 
 
 @blueprint.route('/authorize/<name>')
@@ -99,7 +107,14 @@ def authorize(name):
     ui_flag = session.pop('ui', None)
 
     client = current_auth.create_client(name)
-    token = client.authorize_access_token()
+    try:
+        token = client.authorize_access_token()
+    except HTTPException:
+        return render_template(
+            current_app.config['AUTH_FAILURE_TEMPLATE'],
+            **{
+                'msg': f'Access not provided to {name} service.'
+            }), 400
 
     configs = OAUTH_SERVICES.get(name.upper(), {})
     extra_data_method = configs.get('extra_data_method')
@@ -123,25 +138,27 @@ def authorize(name):
 
     profile_data = get_oauth_profile(name, token=_token, client=client)
 
-    if _profile.extra_data:
-        profile_services = _profile.extra_data.get("services", {})
-    else:
-        profile_services = {}
+    # TODO: Fix userprofiles in docker
+    # if _profile.extra_data:
+    #     profile_services = _profile.extra_data.get("services", {})
+    # else:
+    #     profile_services = {}
+    profile_services = {}
     profile_services[name] = profile_data
     _profile.extra_data = {"services": profile_services}
-    flag_modified(_profile, "extra_data")
+    # flag_modified(_profile, "extra_data")
 
     db.session.commit()
 
     if ui_flag:
-        if current_app.config['DEBUG']:
-            redirect_url = "http://localhost:3000/settings/auth/connect"
-        else:
-            redirect_url = "/settings/auth/connect"
-        return redirect(redirect_url)
+        return render_template(
+            current_app.config['AUTH_SUCCESS_TEMPLATE'],
+            **{
+                'msg': f'Authorization to {name} succeeded.'
+            }), 302
     else:
         return jsonify({
-            "message": "Authorization to {} succeeded".format(name)
+            "message": "Authorization to {} succeeded.".format(name)
         }), 200
 
 
