@@ -16,9 +16,9 @@ ARG DEBUG=False
 ENV DEBUG=${DEBUG}
 
 # copy everything inside /src
-RUN mkdir -p ${WORKING_DIR}/src
-COPY ./ ${WORKING_DIR}/src
-WORKDIR ${WORKING_DIR}/src
+#RUN mkdir -p ${WORKING_DIR}/src
+#COPY ./ ${WORKING_DIR}/src
+WORKDIR ${WORKING_DIR}/src/cap
 
 ADD setup.py setup.py
 ADD cap/version.py cap/version.py
@@ -29,13 +29,22 @@ RUN python -m site --user-site
 # Install/create static files
 RUN mkdir -p ${INVENIO_INSTANCE_PATH}
 
+RUN pip install --upgrade wheel uwsgi uwsgitop uwsgi-tools
+
+# Install/create static files
+RUN mkdir -p ${INVENIO_INSTANCE_PATH}
 
 RUN pip install --upgrade wheel uwsgi uwsgitop uwsgi-tools
 
 # RUN if [ "$DEBUG" = "True" ]; then pip install -r requirements-devel.txt; fi;
-RUN pip install -r requirements-local-forks.txt
+COPY requirements.txt .
 RUN pip install -r requirements.txt
-RUN pip install -e .[all,xrootd]
+
+COPY README.rst .
+RUN pip install -e .[all]
+
+COPY requirements-local-forks.txt .
+RUN pip install -r requirements-local-forks.txt
 
 # copy uwsgi config files
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}

@@ -25,22 +25,29 @@ services:
     links:
       - web-api
   # API Rest Application
+  wdb:
+    image: kozea/wdb-server
+    ports:
+      - "1984:1984"
   web-api:
     extends:
       file: docker-services.yml
       service: app
-    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini
+    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3600 --socket-timeout=3600 --honour-stdin
     image: cap-web-api
     ports:
       - "5000"
     volumes:
       - static_data:/opt/cap/var/instance/static
       - ./var/data:/var/data
+      - ./:/opt/cap/src/cap
     links:
       - cache
       - es
       - mq
       - db
+    stdin_open: true
+    tty: true
   # API Files Application
   files-api:
     extends:
