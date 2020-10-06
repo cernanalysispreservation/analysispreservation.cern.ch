@@ -29,9 +29,8 @@ from __future__ import absolute_import, print_function
 from functools import partial, wraps
 
 import six
-from flask import current_app, flash, redirect, render_template, request, \
+from flask import current_app, redirect, render_template, request, \
     session, url_for
-from flask_babelex import gettext as _
 from flask_login import current_user
 from invenio_db import db
 from werkzeug.utils import import_string
@@ -45,6 +44,7 @@ from invenio_oauthclient.signals import account_info_received, \
 from invenio_oauthclient.utils import create_csrf_disabled_registrationform, \
     create_registrationform, fill_form, oauth_authenticate, oauth_get_user, \
     oauth_register
+from invenio_oauthclient.views.client import blueprint as bp
 
 
 #
@@ -240,17 +240,25 @@ def oauth_error_handler(f):
             return f(*args, **kwargs)
         except OAuthClientError as e:
             current_app.logger.warning(e.message, exc_info=True)
-            return oauth2_handle_error(
-                e.remote, e.response, e.code, e.uri, e.description
-            )
+            return render_template(
+                current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
+                **{
+                    'msg': 'Authorization with remote service failed.'
+                }), 400
         except OAuthRejectedRequestError:
-            flash(_('You rejected the authentication request.'),
-                  category='info')
-            return redirect('/')
+            return render_template(
+                current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
+                **{
+                    'msg': 'You rejected the '
+                           'authentication request.'
+                }), 400
         except AlreadyLinkedError:
-            flash(_('External service is already linked to another account.'),
-                  category='danger')
-            return redirect('/')
+            return render_template(
+                current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
+                **{
+                    'msg': 'External service is already '
+                           'linked to another account.'
+                }), 400
     return inner
 
 
@@ -348,11 +356,18 @@ def authorized_signup_handler(resp, remote, *args, **kwargs):
     else:
         db.session.commit()
 
+    # TODO: Fix redirection, to work with the templated popup
     # Redirect to next
-    next_url = get_session_next_url(remote.name)
-    if next_url:
-        return redirect(next_url)
-    return redirect('/')
+    # next_url = get_session_next_url(remote.name)
+    # if next_url:
+    #     return redirect(next_url)
+    # return redirect('/')
+
+    return render_template(
+        current_app.config['OAUTHCLIENT_SUCCESS_TEMPLATE'],
+        **{
+            'msg': 'Linked succesfully.'
+        }), 200
 
 
 def disconnect_handler(remote, *args, **kwargs):
@@ -502,8 +517,25 @@ def make_token_getter(remote):
     return partial(token_getter, remote)
 
 
-def oauth2_handle_error(remote, resp, error_code, error_uri,
-                        error_description):
-    """Handle errors during exchange of one-time code for an access tokens."""
-    flash(_('Authorization with remote service failed.'))
-    return redirect('/')
+@bp.app_errorhandler(404)
+def handle_404(err):
+    return render_template(current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
+                           **{
+                               'msg': 'Error 404'
+                           }), 404
+
+
+@bp.app_errorhandler(403)
+def handle_403(err):
+    return render_template(current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
+                           **{
+                               'msg': 'Error 403'
+                           }), 403
+
+
+@bp.app_errorhandler(500)
+def handle_500(err):
+    return render_template(current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
+                           **{
+                               'msg': 'Error 500'
+                           }), 500

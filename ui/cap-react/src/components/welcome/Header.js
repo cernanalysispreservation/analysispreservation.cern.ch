@@ -29,7 +29,8 @@ class WelcomePage extends React.Component {
     this.state = {
       showLogin: false,
       next: next,
-      oauthLink: `/api/oauth/login/cern?next=${next}`
+      oauthLink: process.env.NODE_ENV === "development" ?
+        `/oauth/login/cern?next=${next}` : `/api/oauth/login/cern?next=${next}`
     };
   }
 
@@ -41,6 +42,18 @@ class WelcomePage extends React.Component {
 
     this.props.loginLocalUser(formData);
   };
+
+  renderLoginPopup(oauthLink) {
+    // in order to test locally, url neeeds to be ngrok_url + oauthLink
+    const { title = "", width = 500, height = 450 } = this.props;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2.5;
+    window.open(
+      oauthLink,
+      title,
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+  }
 
   render() {
     return (
@@ -87,6 +100,9 @@ class WelcomePage extends React.Component {
                 background="transparent"
                 href={this.state.oauthLink}
                 className="menuItem"
+                onClick={() =>
+                  this.renderLoginPopup(this.state.oauthLink)
+                }
               />
             </MediaQuery>
             <MediaQuery maxWidth={1069}>
@@ -153,7 +169,10 @@ WelcomePage.propTypes = {
   authError: PropTypes.object,
   history: PropTypes.object,
   nav: PropTypes.object,
-  scrollToRef: PropTypes.func
+  scrollToRef: PropTypes.func,
+  title: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number
 };
 
 function mapStateToProps(state) {

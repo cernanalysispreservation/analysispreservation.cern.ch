@@ -539,6 +539,14 @@ CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 #: Defintion of OAuth client applications.
 OAUTHCLIENT_REMOTE_APPS = dict(cern=CERN_REMOTE_APP, )
 
+#: Defintion of OAuth client templates.
+OAUTHCLIENT_SUCCESS_TEMPLATE = 'oauthclient/oauth_success.html'
+OAUTHCLIENT_FAILURE_TEMPLATE = 'oauthclient/oauth_failure.html'
+
+#: Defintion of Auth error template.
+AUTH_FAILURE_TEMPLATE = 'auth/auth_failure.html'
+AUTH_SUCCESS_TEMPLATE = 'auth/auth_success.html'
+
 # JSON Schemas
 # ============
 #: Path to where JSON metadata exist
@@ -738,7 +746,7 @@ if DEBUG and TEST_WITH_NGROK == 'True':
         NGROK_HOST = resp.json()['tunnels'][0]['public_url']
         APP_ALLOWED_HOSTS.append(NGROK_HOST.split('//')[-1])
         WEBHOOK_NGROK_URL = '{}/repos/event'.format(NGROK_HOST)
-        print('* Webhook url at {}'.format(WEBHOOK_NGROK_URL))
+        print(' * Webhook url at {}'.format(WEBHOOK_NGROK_URL))
     except Exception as e:
         print('Cannot fetch ngrok host.\n'
               'Use CAP_TEST_WITH_NGROK=False if dont want to use it.\n'
