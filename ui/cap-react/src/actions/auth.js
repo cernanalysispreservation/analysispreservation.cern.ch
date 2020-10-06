@@ -1,6 +1,5 @@
 import axios from "axios";
 import { history } from "../store/configureStore";
-import cogoToast from "cogo-toast";
 
 import { piwik } from "../components/Root";
 
@@ -163,10 +162,23 @@ export function updateIntegrations() {
 }
 
 export function removeIntegrations(service) {
+  function renderPopupAndClose(resp_data) {
+    let width = 500;
+    let height = 450;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2.5;
+    let authPopup = window.open(
+      '',
+      '',
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+    authPopup.document.write(resp_data);
+  }
+
   return function(dispatch) {
     axios
       .get(`/api/auth/disconnect/${service}`)
-      .then(function() {
+      .then(function(response) {
         axios
           .get("/api/me")
           .then(function(response) {
@@ -179,13 +191,10 @@ export function removeIntegrations(service) {
             });
           })
           .catch(function() {});
+        renderPopupAndClose(response.data);
       })
       .catch(function(error) {
-        cogoToast.error(error.response.data.message, {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3
-        });
+        renderPopupAndClose(error.response.data);
       });
   };
 }
