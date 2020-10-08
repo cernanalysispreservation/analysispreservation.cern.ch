@@ -95,7 +95,7 @@ class SearchResults extends React.Component {
                       </Anchor>
                     </Box>
 
-                    <Label
+                    {/* <Label
                       margin="none"
                       size="small"
                       style={{ color: "rgba(0,0,0,0.3)" }}
@@ -103,7 +103,7 @@ class SearchResults extends React.Component {
                       {labels.map((item, index) => (
                         <span key={index}> {item}</span>
                       ))}
-                    </Label>
+                    </Label> */}
                   </Box>
                   <Box>
                     <Label margin="none" size="small">
@@ -117,7 +117,11 @@ class SearchResults extends React.Component {
                       responsive={false}
                     >
                       {labels.map((item, index) => {
-                        return <Tag key={index} text={item} />;
+                        return (
+                          <Box key={index} style={{ margin: "2px 4px 2px 0" }}>
+                            <Tag text={item} />
+                          </Box>
+                        );
                       })}
                     </Box>
                   </Box>
