@@ -25,13 +25,7 @@ class FileUploadProgressItem extends React.Component {
         <Box flex={true}>{this.props.file.key}</Box>
         <Box flex={false}>
           {_progress == 100 ? (
-            <Box
-              flex={false}
-              direction="row"
-              wrap={false}
-              align="center"
-              responsive={false}
-            >
+            <Box flex={false} direction="row" wrap={false} align="center" responsive={false}>
               <span style={{ paddingRight: "5px" }}>File uploaded</span>
               <AiFillCheckCircle size={15} color="rgb(96,143,68)" />
             </Box>
