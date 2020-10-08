@@ -9,6 +9,7 @@ import Anchor from "grommet/components/Anchor";
 import DepositFileManager from "../../../../components/DepositFileManager/FileManager";
 
 import { selectPath } from "../../../../../../actions/files";
+import { AiOutlineWarning } from "react-icons/ai";
 
 class CapFile extends React.Component {
   constructor(props) {
@@ -41,6 +42,9 @@ class CapFile extends React.Component {
   };
 
   render() {
+    let keys = Object.keys(this.props.files.toJS());
+    let missedFileError = !keys.includes(this.props.formData);
+
     return (
       <Box
         pad={{ horizontal: "medium" }}
@@ -56,6 +60,19 @@ class CapFile extends React.Component {
               <Box margin={{ right: "small" }}>{this.props.formData}</Box>
               <Anchor label="Edit" onClick={this._toggleActiveLayer} />
             </Box>
+            {missedFileError && (
+              <Box
+                margin={{ right: "small" }}
+                align="center"
+                direction="row"
+                style={{ color: "rgba(179, 53, 52, 1)" }}
+              >
+                <Box style={{ marginRight: "5px" }}>
+                  <AiOutlineWarning size={13} />
+                </Box>
+                This file is deleted
+              </Box>
+            )}
             <Anchor label="Remove" onClick={this._removeData} />
           </Box>
         ) : (
@@ -70,6 +87,7 @@ class CapFile extends React.Component {
             />
           </React.Fragment>
         )}
+
         <DepositFileManager
           activeLayer={this.state.activeLayer}
           toggleLayer={this._toggleActiveLayer}
