@@ -9,7 +9,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "cap-react":"0.1.0",
+    "cap-react": "*",
     "react-redux": "^6.0.0",
     "react-ace": "8.0.0",
     "grommet": "1.0.0",

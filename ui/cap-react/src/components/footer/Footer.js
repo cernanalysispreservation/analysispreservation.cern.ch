@@ -4,10 +4,12 @@ import Footer from "grommet/components/Footer";
 import Paragraph from "grommet/components/Paragraph";
 import Anchor from "../partials/Anchor";
 
+import capPackageJSON from "../../../package";
+
 class GrommetFooter extends React.Component {
   render() {
     return (
-      <Footer size="small" justify="center" colorIndex="neutral-1-a">
+      <Footer size="small" justify="center" colorIndex="neutral-1-a" pad={{ horizontal: "small" }}>
         <Box
           direction="row"
           align="center"
@@ -42,11 +44,23 @@ class GrommetFooter extends React.Component {
                 href="/docs/general/"
               />
             </Box>
+            <div style={styles.version}>ver. {capPackageJSON.version}</div>
           </Box>
         </Box>
       </Footer>
     );
   }
 }
+
+const styles = {
+  version: {
+    padding: "0 10px",
+    fontSize: "11px",
+    color: "#ccc",
+    justifySelf: "flex-end",
+    alignContent: "flex-end",
+    flex: 1
+  }
+};
 
 export default GrommetFooter;
