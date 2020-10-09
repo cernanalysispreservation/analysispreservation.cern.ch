@@ -33,9 +33,11 @@ RUN mkdir -p ${INVENIO_INSTANCE_PATH}
 RUN pip install --upgrade wheel uwsgi uwsgitop uwsgi-tools
 
 # RUN if [ "$DEBUG" = "True" ]; then pip install -r requirements-devel.txt; fi;
-RUN pip install -r requirements-local-forks.txt
 RUN pip install -r requirements.txt
 RUN pip install -e .[all,xrootd]
+RUN pip install -r requirements-local-forks.txt
+# install debuger packages (only for dev use)
+RUN pip install ipdb wdb
 
 # copy uwsgi config files
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}

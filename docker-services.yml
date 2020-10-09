@@ -25,6 +25,9 @@ services:
       - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://cap:cap@db/cap"
       - "INVENIO_WSGI_PROXIES=2"
       - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
+      - "INVENIO_CERN_APP_CREDENTIALS_KEY=CHANGE_ME"
+      - "INVENIO_CERN_APP_CREDENTIALS_SECRET=CHANGE_ME"
+      - "DEV_HOST=CHANGE_ME"
   lb:
     build: ./docker/haproxy/
     image: cap-lb

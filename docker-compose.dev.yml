@@ -1,0 +1,106 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2018 CERN.
+#
+# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+version: '2.3'
+services:
+  # Load balancer
+  lb:
+    extends:
+      file: docker-services.yml
+      service: lb
+    links:
+      - frontend
+  # Frontend
+  frontend:
+    extends:
+      file: docker-services.yml
+      service: frontend
+    volumes:
+      - ./ui/cap-react/dist:/usr/share/nginx/html
+    links:
+      - web-api
+  # API Rest Application
+  web-api:
+    extends:
+      file: docker-services.yml
+      service: app
+    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
+    image: cap-web-api
+    ports:
+      - "5000"
+    volumes:
+      - static_data:/opt/cap/var/instance/static
+      - uploaded_data:/opt/cap/var/instance/data
+      - ./cap:/opt/cap/src/cap
+    links:
+      - cache
+      - es
+      - mq
+      - db
+    stdin_open: true
+    tty: true
+  # API Files Application
+  files-api:
+    extends:
+      file: docker-services.yml
+      service: app
+    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
+    image: cap-files-api
+    ports:
+      - "5000"
+    volumes:
+      - static_data:/opt/cap/var/instance/static
+      - uploaded_data:/opt/cap/var/instance/data
+      - ./cap:/opt/cap/src/cap
+    links:
+      - cache
+      - es
+      - mq
+      - db
+    stdin_open: true
+    tty: true
+  # Worker
+  worker:
+    extends:
+      file: docker-services.yml
+      service: app
+    restart: "always"
+    command: "celery worker -A cap.celery --loglevel=INFO"
+    image: cap-worker
+    links:
+      - cache
+      - es
+      - mq
+      - db
+      
+  # Monitoring
+  flower:
+    extends:
+      file: docker-services.yml
+      service: flower
+    links:
+      - mq
+  # Base services
+  cache:
+    extends:
+      file: docker-services.yml
+      service: cache
+  db:
+    extends:
+      file: docker-services.yml
+      service: db
+  mq:
+    extends:
+      file: docker-services.yml
+      service: mq
+  es:
+    extends:
+      file: docker-services.yml
+      service: es
+volumes:
+  static_data:
+  uploaded_data:
