@@ -1,18 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
    <head>
-       <script>
-           setTimeout(() => {
-               if (window.opener) {
-                   window.opener.focus();
-                   if (window.opener.loginCallBack) {
-                       window.opener.loginCallBack();
-                   }
-               }
-               window.close();
-               }, 5000);
-       </script>
       <!--[if gte mso 9]>
+
       <xml>
          <o:OfficeDocumentSettings>
             <o:AllowPNG/>
@@ -110,7 +100,21 @@
          max-height: none !important;
          }
          }
-      </style>
+      </style>   
+      <script>
+      setTimeout(() => {
+          if (window.opener) {
+             console.log("-------------RUNING")
+             console.log(window.opener)
+             console.log(window.opener.loginCallBack)
+              window.opener.focus();
+              if (window.opener.loginCallBack) {
+                  window.opener.loginCallBack();
+              }
+          }
+          window.close();
+          }, 5000);
+      </script>
    </head>
    <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #eceff4;">
       <!--[if IE]>

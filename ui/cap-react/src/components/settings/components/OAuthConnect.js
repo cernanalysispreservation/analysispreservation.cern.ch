@@ -1,7 +1,7 @@
 // import * as React from 'react'
 import React from "react";
 
-export default class OauthPopup extends React.PureComponent {
+export default class OAuthConnect extends React.PureComponent {
   componentDidMount() {
     setTimeout(() => {
       if (window.opener) {

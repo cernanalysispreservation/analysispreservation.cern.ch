@@ -9,7 +9,7 @@ import Header from "grommet/components/Header";
 
 import LoginForm from "grommet/components/LoginForm";
 
-import { loginLocalUser } from "../../actions/auth";
+import { loginLocalUser, initCurrentUser } from "../../actions/auth";
 
 import CAPLogoDark from "../../img/cap-logo-dark.svg";
 
@@ -18,6 +18,7 @@ import MenuItem from "../partials/MenuItem";
 
 import MediaQuery from "react-responsive";
 import { AiOutlineLogin, AiOutlineMenu } from "react-icons/ai";
+import OauthPopup from "../settings/components/OAuthPopup";
 
 class WelcomePage extends React.Component {
   constructor(props) {
@@ -34,8 +35,13 @@ class WelcomePage extends React.Component {
     };
   }
 
-  componentDidMount() {}
-
+  loginCallBack = () => {
+    // const path = this.props.location.pathname;
+    let {
+      location: { state: { next: next = undefined } = {} }
+    } = this.props.history;
+    this.props.initCurrentUser(next);
+  }
   onFormSubmit = formData => {
     // fetch the next from history
     formData["next"] = this.state.next;
@@ -43,18 +49,19 @@ class WelcomePage extends React.Component {
     this.props.loginLocalUser(formData);
   };
 
-  renderLoginPopup(oauthLink) {
-    // in order to test locally, url neeeds to be ngrok_url + oauthLink
-    const { title = "", width = 500, height = 450 } = this.props;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2.5;
-    window.open(
-      oauthLink,
-      title,
-      `width=${width},height=${height},left=${left},top=${top}`
+  renderOAuthConnectPopup = () => {
+    return (
+      <OauthPopup url={this.state.oauthLink} loginCallBack={this.loginCallBack}>
+        <div>
+          <MenuItem
+            title="Log in"
+            background="transparent"z
+            className="menuItem"
+          />
+        </div>
+      </OauthPopup>
     );
   }
-
   render() {
     return (
       <Header
@@ -95,24 +102,10 @@ class WelcomePage extends React.Component {
                   />
                 </Box>
               ))}
-              <MenuItem
-                title="Log in"
-                background="transparent"
-                href={this.state.oauthLink}
-                className="menuItem"
-                onClick={() =>
-                  this.renderLoginPopup(this.state.oauthLink)
-                }
-              />
+              {this.renderOAuthConnectPopup()}
             </MediaQuery>
             <MediaQuery maxWidth={1069}>
-              <MenuItem
-                title="Log in"
-                href={this.state.oauthLink}
-                hovered
-                background="transparent"
-                icon={<AiOutlineLogin size={23} color="rgb(110,110,110)" />}
-              />
+              {this.renderOAuthConnectPopup()}
               <Menu top={55} right={0} icon={<AiOutlineMenu size={23} />}>
                 {Object.keys(this.props.nav).map((key, index) => (
                   <Box key={index}>
@@ -184,7 +177,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginLocalUser: data => dispatch(loginLocalUser(data))
+    loginLocalUser: data => dispatch(loginLocalUser(data)),
+    initCurrentUser: next => dispatch(initCurrentUser(next))
   };
 }
 
