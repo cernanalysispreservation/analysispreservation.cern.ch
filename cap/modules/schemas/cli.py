@@ -31,22 +31,22 @@ import click
 import requests
 from flask import current_app
 from flask_cli import with_appcontext
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search_client
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import NoResultFound
 
 from cap.cli import MutuallyExclusiveOption
 from cap.modules.deposit.errors import DepositValidationError
 from cap.modules.fixtures.cli import fixtures
 
 from .models import Schema
-from .resolvers import resolve_schema_by_url, \
+from .resolvers import resolve_schema_by_url,\
     resolve_schema_by_name_and_version, schema_name_to_url
-from .utils import is_later_version, process_action
+from .utils import is_later_version, process_action, actions_from_type
 
 DEPOSIT_REQUIRED_FIELDS = [
     '_buckets',
@@ -59,17 +59,22 @@ DEPOSIT_REQUIRED_FIELDS = [
 ]
 
 
-@click.command()
+@fixtures.command()
 @click.option('--permissions', '-p',
               required=True,
               help='Role permission actions. Accepts multiple options.')
 @click.option('--roles', '-r',
               required=True,
               help='Role name(s) (mails) for use. Accepts multiple options.')
-@click.option('--record',
-              is_flag=True,
-              help='Select if the permissions will be applied to '
-                   'deposits or records. Default: deposit.')
+# deposit / record / schema
+@click.option('--deposit', '_type',
+              flag_value='deposit',
+              default=True)
+@click.option('--record', '_type',
+              flag_value='record')
+@click.option('--schema', '_type',
+              flag_value='schema')
+# allow / remove / deny
 @click.option('--allow', 'schema_action',
               flag_value='allow',
               default=True)
@@ -79,22 +84,23 @@ DEPOSIT_REQUIRED_FIELDS = [
               flag_value='remove')
 @click.argument('schema-name')
 @with_appcontext
-def schema(schema_name, permissions, roles, record, schema_action):
+def permissions(schema_name, permissions, roles, _type, schema_action):
     """
     Schema permission command group. Allows/Denies/Removes certain actions
-    to roles, in order to provide access to a schema.
-    Use:
-        cap schema -p read,update -r test-users@cern.ch --allow SCHEMA_NAME
-        cap schema -p read -r test-users@cern.ch --record --deny SCHEMA_NAME
-        cap schema -p read -r test-users@cern.ch --record --remove SCHEMA_NAME
+    to roles, in order to have access to a deposit/record/schema.
+    Examples:
+        cap fixtures permissions
+            -p read,admin -r test-users@cern.ch --allow --deposit SCHEMA_NAME
+            -p read -r test-users@cern.ch --deny --deposit SCHEMA_NAME
+            -p read -r test-users@cern.ch --allow --record SCHEMA_NAME
+            -p read,admin -r test-users@cern.ch --allow --schema SCHEMA_NAME
     """
-    type_ = 'record' if record else 'deposit'
-    permissions = permissions.split(',')
+    perms = permissions.split(',')
     roles = roles.split(',')
 
     # create the correct action names, and
     # check if action is subscribed and can be used
-    requested_actions = [f'{type_}-schema-{perm}' for perm in permissions]
+    requested_actions = actions_from_type(_type, perms)
     allowed_actions = current_app.extensions['invenio-access'].actions
 
     for action in requested_actions:
@@ -108,9 +114,9 @@ def schema(schema_name, permissions, roles, record, schema_action):
         except NoResultFound:
             raise click.BadParameter(f'Role with name {role} not found.')
 
+    # create all combinations of actions and roles
     actions_roles = list(itertools.product(requested_actions, roles))
-    process_action(schema_action, schema_name,
-                   actions_roles, allowed_actions)
+    process_action(schema_action, schema_name, actions_roles)
 
 
 @fixtures.command()
