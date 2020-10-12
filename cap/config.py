@@ -781,3 +781,32 @@ def get_cms_stats_questionnaire_contacts():
 
 PDF_FORUM_MAIL = os.environ.get("CAP_PDF_FORUM_MAIL", None)
 CMS_STATS_COMMITEE_AND_PAGS = get_cms_stats_questionnaire_contacts()
+
+APP_DEFAULT_SECURE_HEADERS = {
+    'force_https': True,
+    'force_https_permanent': False,
+    'force_file_save': False,
+    'frame_options': 'sameorigin',
+    'frame_options_allow_from': None,
+    'strict_transport_security': True,
+    'strict_transport_security_preload': False,
+    'strict_transport_security_max_age': 31556926,  # One year in seconds
+    'strict_transport_security_include_subdomains': True,
+    'content_security_policy': {
+        'default-src': [
+            "'self'",
+            'fonts.googleapis.com',  # for fonts
+            '*.gstatic.com',    # for fonts
+            'data:', # for fonts
+            "'unsafe-inline'",  # for inline scripts and styles
+            "'unsafe-eval'", # for webpack build
+            "blob:",            # for pdf preview
+            # Add your own policies here (e.g. analytics)
+        ],
+    },
+
+    'content_security_policy_report_uri': None,
+    'content_security_policy_report_only': False,
+    'session_cookie_secure': True,
+    'session_cookie_http_only': True
+}
