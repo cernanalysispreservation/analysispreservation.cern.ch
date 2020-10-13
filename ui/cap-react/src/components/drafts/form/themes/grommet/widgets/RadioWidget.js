@@ -33,7 +33,7 @@ const RadioWidget = function(props) {
   };
 
   return (
-    <Box direction="row" pad={{ horizontal: "medium" }} flex={false}>
+    <Box direction="row" pad={{ horizontal: "medium" }} responsive={false}>
       {options.enumOptions.length > 0
         ? options.enumOptions.map(item => (
             <RadioButton

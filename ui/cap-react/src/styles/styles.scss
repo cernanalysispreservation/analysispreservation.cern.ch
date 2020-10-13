@@ -358,6 +358,12 @@ label {
 
 // xsmall
 @media only screen and (min-width: 320px) {
+  // grommet padding changes when smaller screens
+  // make sure to keep it consistent
+  .grommetux-form-field__contents > div.grommetux-box--pad-horizontal-medium {
+    padding: 0 24px;
+  }
+
   //TODO: Update for better handling with grid
   .box-large-height {
     max-width: 100%;

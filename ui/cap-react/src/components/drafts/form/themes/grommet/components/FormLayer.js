@@ -26,7 +26,12 @@ class FormLayer extends React.Component {
           <Box pad="medium" size="large">
             <Box>{this.props.properties}</Box>
 
-            <Box direction="row" justify="between" pad={{ vertical: "small" }}>
+            <Box
+              direction="row"
+              justify="between"
+              pad={{ vertical: "small" }}
+              responsive={false}
+            >
               <Box>
                 {this.props.remove ? (
                   <Button
