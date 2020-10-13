@@ -52,9 +52,9 @@ def ping(service=None):
             with open(test_file_path, 'r'):
                 pass
 
-        return {'message': 'OK'}, 200
-    except (OperationalError, IOError, ConnectionError) as err:
-        return {'message': str(err)}, 500
+        return 'OK!', 200
+    except (OperationalError, IOError, ConnectionError):
+        return 'ERROR', 500
 
 
 @blueprint.route('/dashboard')
