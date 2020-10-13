@@ -241,24 +241,22 @@ def oauth_error_handler(f):
         except OAuthClientError as e:
             current_app.logger.warning(e.message, exc_info=True)
             return render_template(
-                current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
-                **{
-                    'msg': 'Authorization with remote service failed.'
-                }), 400
+                current_app.config[
+                    'AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+                msg='Authorization with remote service failed.'
+            ), 400
         except OAuthRejectedRequestError:
             return render_template(
-                current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
-                **{
-                    'msg': 'You rejected the '
-                           'authentication request.'
-                }), 400
+                current_app.config[
+                    'AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+                msg='You rejected the authentication request.'
+            ), 400
         except AlreadyLinkedError:
             return render_template(
-                current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
-                **{
-                    'msg': 'External service is already '
-                           'linked to another account.'
-                }), 400
+                current_app.config[
+                    'AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+                msg='External service is already linked to another account.'
+            ), 400
     return inner
 
 
@@ -331,12 +329,19 @@ def authorized_signup_handler(resp, remote, *args, **kwargs):
                 session[token_session_key(remote.name) +
                         '_response'] = resp
                 db.session.commit()
-                return redirect('/')
+                return render_template(
+                    current_app.config['AUTHENTICATION_POPUP_TEMPLATE'],
+                    msg='Registration to the service failed.'
+                ), 400
 
         # Authenticate user
         if not oauth_authenticate(remote.consumer_key, user,
                                   require_existing_link=False):
-            return current_app.login_manager.unauthorized()
+            return render_template(
+                current_app.config[
+                    'AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+                msg='Error: Unauthorized user.'
+            ), 401
 
         # Link account
         # ------------
@@ -356,18 +361,10 @@ def authorized_signup_handler(resp, remote, *args, **kwargs):
     else:
         db.session.commit()
 
-    # TODO: Fix redirection, to work with the templated popup
-    # Redirect to next
-    # next_url = get_session_next_url(remote.name)
-    # if next_url:
-    #     return redirect(next_url)
-    # return redirect('/')
-
     return render_template(
-        current_app.config['OAUTHCLIENT_SUCCESS_TEMPLATE'],
-        **{
-            'msg': 'Linked succesfully.'
-        }), 200
+        current_app.config['AUTHENTICATION_POPUP_TEMPLATE'],
+        msg='Account linked successfully.'
+    ), 200
 
 
 def disconnect_handler(remote, *args, **kwargs):
@@ -519,23 +516,23 @@ def make_token_getter(remote):
 
 @bp.app_errorhandler(404)
 def handle_404(err):
-    return render_template(current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
-                           **{
-                               'msg': 'Error 404'
-                           }), 404
+    return render_template(
+        current_app.config['AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+        msg='Something went wrong: Error 404'
+    ), 404
 
 
 @bp.app_errorhandler(403)
 def handle_403(err):
-    return render_template(current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
-                           **{
-                               'msg': 'Error 403'
-                           }), 403
+    return render_template(
+        current_app.config['AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+        msg='Something went wrong: Error 403'
+    ), 403
 
 
 @bp.app_errorhandler(500)
 def handle_500(err):
-    return render_template(current_app.config['OAUTHCLIENT_FAILURE_TEMPLATE'],
-                           **{
-                               'msg': 'Error 500'
-                           }), 500
+    return render_template(
+        current_app.config['AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+        msg='Something went wrong: Error 500'
+    ), 500

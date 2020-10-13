@@ -40,12 +40,6 @@ def config_loader(app, **kwargs_config):
         app.jinja_loader,
     ])
 
-    # oauthclient templates
-    app.jinja_loader = ChoiceLoader([
-        FileSystemLoader('cap/modules/oauthclient/templates'),
-        app.jinja_loader,
-    ])
-
     # auth templates
     app.jinja_loader = ChoiceLoader([
         FileSystemLoader('cap/modules/auth/templates'),

@@ -104,16 +104,13 @@
       <script>
       setTimeout(() => {
           if (window.opener) {
-             console.log("-------------RUNING")
-             console.log(window.opener)
-             console.log(window.opener.loginCallBack)
               window.opener.focus();
               if (window.opener.loginCallBack) {
                   window.opener.loginCallBack();
               }
           }
           window.close();
-          }, 5000);
+      }, 5000);
       </script>
    </head>
    <body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #eceff4;">
