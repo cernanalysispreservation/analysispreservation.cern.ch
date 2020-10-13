@@ -26,6 +26,7 @@
 """Integration tests for CAP api."""
 
 from __future__ import absolute_import, print_function
+import responses
 from mock import patch
 
 from cap.modules.experiments.errors import ExternalAPIException
@@ -56,40 +57,49 @@ def test_indico_exception(mock_indico, app, auth_headers_for_superuser):
         assert resp.json['message'] == 'External API replied with an error.'
 
 
-@patch('cap.modules.services.views.indico._indico')
-def test_indico(mock_indico, app, auth_headers_for_superuser):
-    mock_indico_id = '848989'
-    mock_indico.return_value = ({
-        '_type': 'HTTPAPIResult', 'additionalInfo': {}, 'count': 1,
-        'results': [{'_fossil': 'conferenceMetadata', '_type': 'Conference',
-                     'address': '', 'category': 'TEST Category', 'categoryId': 2,
-                     'chairs': [], 'material': [], 'references': [], 'note': {},
-                     'creator': {'_fossil': 'conferenceChairMetadata', '_type': 'Avatar',
-                                 'affiliation': '', 'emailHash': '514487040d28517d3c94700dd987e10e',
-                                 'first_name': 'Ilias', 'fullName': 'Koutsakis, Ilias',
-                                 'id': '77851', 'last_name': 'Koutsakis'},
-                     'description': '', 'room': '', 'roomFullname': '', 'roomMapURL': None, 'title': 'test',
-                     'creationDate': {'date': '2019-09-16', 'time': '13:46:47.701463', 'tz': 'Europe/Zurich'},
-                     'endDate': {'date': '2019-09-16', 'time': '16:00:00', 'tz': 'Europe/Zurich'},
-                     'startDate': {'date': '2019-09-16', 'time': '14:00:00', 'tz': 'Europe/Zurich'},
-                     'folders': [], 'hasAnyProtection': False, 'id': '848989',
-                     'location': 'CERN', 'timezone': 'Europe/Zurich', 'type': 'simple_event',
-                     'url': 'https://indico.cern.ch/event/848989/',
-                     'visibility': {'id': '', 'name': 'Everywhere'}}],
-        'ts': 1568634418, 'url': 'https://indico.cern.ch/export/event/848989.json'}, 200)
+@responses.activate
+def test_get_indico_by_event_id(app, auth_headers_for_superuser):
+    indico_url = 'https://indico.cern.ch/export/event/{}.json'
+    indico_event_id = '845525'
+    indico_resp = {
+        "count": 1, "additionalInfo": {}, "_type": "HTTPAPIResult", "ts": 1567434578,
+        "url": "https:\/\/indico.cern.ch\/export\/event\/845525.json?pretty=yes",
+        "results": [{
+            "folders": [],
+            "creationDate": {"date": "2019-09-02", "tz": "Europe/Zurich", "time": "16:28:54.167656"},
+            "startDate":{"date": "2019-09-02", "tz": "Europe/Zurich", "time": "17:00:00"},
+            "endDate": {"date": "2019-09-02", "tz": "Europe/Zurich", "time": "19:00:00"},
+            "_type": "Conference", "hasAnyProtection": False, "description": "",
+            "roomMapURL": "https:\/\/maps.cern.ch\/mapsearch\/mapsearch.htm?n=['3\/R-002']",
+            "creator": {
+                "affiliation": "", "_type": "Avatar", "last_name": "Koutsakis",
+                "emailHash": "514487040d28517d3c94700dd987e10e",
+                "_fossil": "conferenceChairMetadata", "fullName": "Koutsakis, Ilias",
+                "first_name": "Ilias", "id": "77851"
+            },
+            "material": [], "note":{},
+            "visibility":{"id": "", "name": "Everywhere"},
+            "roomFullname": "3/R-002 - Teacher Training Room",
+            "references": [], "address":"", "timezone": "Europe/Zurich",
+            "id":"845525", "category":"TEST Category", "room":"3/R-002",
+            "title":"cap-test-event", "url":"https://indico.cern.ch/event/845525/",
+            "chairs": [{
+              "person_id": 4680087, "affiliation": "CERN", "_type": "ConferenceChair",
+              "last_name": "Fokianos", "db_id": 771323, "_fossil": "conferenceChairMetadata",
+              "emailHash": "0bc625725a7099d0e24b738432077ba2",
+              "fullName": "Fokianos, Pamfilos", "first_name": "Pamfilos", "id": "771323"
+            }],
+            "location": "CERN", "_fossil": "conferenceMetadata", "type": "simple_event", "categoryId": 2
+        }]
+    }
+
+    responses.add(responses.GET,
+                  indico_url.format(indico_event_id),
+                  json=indico_resp, status=200)
 
     with app.test_client() as client:
-        resp = client.get('services/indico/{}'.format(mock_indico_id), headers=auth_headers_for_superuser)
+        resp = client.get('/services/indico/{}'.format(indico_event_id),
+                          headers=auth_headers_for_superuser)
 
         assert resp.status_code == 200
-        assert resp.json == {
-            "address": "", "category": "TEST Category", "description": "", "indico_event_id": "848989",
-            "room_map_url": "", "title": "test", "url": "https://indico.cern.ch/event/848989/",
-            "chairs": [], "folders": [], "location": "CERN", "room": "",
-            "creation_date": "2019-09-16T13:46:47.701463+02:00",
-            "end_date": "2019-09-16T16:00:00+02:00",
-            "start_date": "2019-09-16T14:00:00+02:00",
-            "creator": {"affiliation": "", "creator_id": "77851", "first_name": "Ilias",
-                        "full_name": "Koutsakis, Ilias",
-                        "last_name": "Koutsakis"}
-        }
+        assert resp.json['indico_event_id'] == indico_event_id
