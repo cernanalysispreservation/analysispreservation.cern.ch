@@ -6,7 +6,7 @@ import Label from "grommet/components/Label";
 
 let FieldHeader = function(props) {
   return props.title ? (
-    <Box flex={true} style={{ overflow: "hidden" }}>
+    <Box flex={!props.notFlex} style={{ overflow: "hidden" }}>
       <Label
         size="small"
         // uppercase={true}

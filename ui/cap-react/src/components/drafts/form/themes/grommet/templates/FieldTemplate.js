@@ -55,19 +55,21 @@ let FieldTemplate = function(props) {
       </Box>
     );
   }
+  
 
   return (
     <FormField
       label={
-        <span>
-          <span
-            style={{ color: "#000" }}
-            dangerouslySetInnerHTML={{ __html: label }}
+        <Box direction="row" >
+          <FieldHeader
+            bold
+            title={label}
+            notFlex
           />
           {rawDescription ? (
-            <span dangerouslySetInnerHTML={{ __html: rawDescription }} />
-          ) : null}
-        </span>
+            <span style={{marginLeft:"5px"}} dangerouslySetInnerHTML={{ __html: rawDescription }} />
+            ) : null}
+        </Box>
       }
       key={id + label}
       error={props.rawErrors && props.rawErrors.length ? true : false}
