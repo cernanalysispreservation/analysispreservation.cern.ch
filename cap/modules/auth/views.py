@@ -88,17 +88,10 @@ def disconnect(name):
         db.session.delete(_token)
         db.session.commit()
 
-        return render_template(
-            current_app.config['AUTH_SUCCESS_TEMPLATE'],
-            **{
-                'msg': f'Successfully disconnected from {name} service.'
-            }), 200
+        return jsonify({'message': 'Disconnected from {} '
+                                   'successfully.'.format(name)}), 200
     else:
-        return render_template(
-            current_app.config['AUTH_FAILURE_TEMPLATE'],
-            **{
-                'msg': f'Error: Unable to disconnect from {name} service.'
-            }), 403
+        abort(403, "Unable to disconnect from {} service.".format(name))
 
 
 @blueprint.route('/authorize/<name>')
@@ -111,10 +104,9 @@ def authorize(name):
         token = client.authorize_access_token()
     except HTTPException:
         return render_template(
-            current_app.config['AUTH_FAILURE_TEMPLATE'],
-            **{
-                'msg': f'Access not provided to {name} service.'
-            }), 400
+            current_app.config['AUTHENTICATION_POPUP_TEMPLATE'],
+            msg=f'Access not provided to {name} service.'
+        ), 400
 
     configs = OAUTH_SERVICES.get(name.upper(), {})
     extra_data_method = configs.get('extra_data_method')
@@ -138,27 +130,24 @@ def authorize(name):
 
     profile_data = get_oauth_profile(name, token=_token, client=client)
 
-    # TODO: Fix userprofiles in docker
-    # if _profile.extra_data:
-    #     profile_services = _profile.extra_data.get("services", {})
-    # else:
-    #     profile_services = {}
-    profile_services = {}
+    if _profile.extra_data:
+        profile_services = _profile.extra_data.get("services", {})
+    else:
+        profile_services = {}
     profile_services[name] = profile_data
     _profile.extra_data = {"services": profile_services}
-    # flag_modified(_profile, "extra_data")
+    flag_modified(_profile, "extra_data")
 
     db.session.commit()
 
     if ui_flag:
         return render_template(
-            current_app.config['AUTH_SUCCESS_TEMPLATE'],
-            **{
-                'msg': f'Authorization to {name} succeeded.'
-            }), 302
+            current_app.config['AUTHENTICATION_POPUP_TEMPLATE'],
+            msg=f'Authorization to {name} succeeded.'
+        ), 302
     else:
         return jsonify({
-            "message": "Authorization to {} succeeded.".format(name)
+            "message": f"Authorization to {name} succeeded."
         }), 200
 
 

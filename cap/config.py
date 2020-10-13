@@ -539,13 +539,10 @@ CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 #: Defintion of OAuth client applications.
 OAUTHCLIENT_REMOTE_APPS = dict(cern=CERN_REMOTE_APP, )
 
-#: Defintion of OAuth client templates.
-OAUTHCLIENT_SUCCESS_TEMPLATE = 'oauthclient/oauth_success.html'
-OAUTHCLIENT_FAILURE_TEMPLATE = 'oauthclient/oauth_failure.html'
-
-#: Defintion of Auth error template.
-AUTH_FAILURE_TEMPLATE = 'auth/auth_failure.html'
-AUTH_SUCCESS_TEMPLATE = 'auth/auth_success.html'
+#: Defintion of OAuth/Auth client template.
+AUTHENTICATION_POPUP_TEMPLATE = 'auth/authentication_popup.html'
+AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE = \
+    'auth/authentication_popup_no_redirect.html'
 
 # JSON Schemas
 # ============
@@ -797,9 +794,10 @@ APP_DEFAULT_SECURE_HEADERS = {
             "'self'",
             'fonts.googleapis.com',  # for fonts
             '*.gstatic.com',    # for fonts
-            'data:', # for fonts
+            '*.githubusercontent.com',  # for cap icon
+            'data:',  # for fonts
             "'unsafe-inline'",  # for inline scripts and styles
-            "'unsafe-eval'", # for webpack build
+            "'unsafe-eval'",  # for webpack build
             "blob:",            # for pdf preview
             # Add your own policies here (e.g. analytics)
         ],
