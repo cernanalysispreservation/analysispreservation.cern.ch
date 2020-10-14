@@ -63,8 +63,8 @@ Redis (``cache``) and RabbitMQ (``mq``).
 
 Docker installation
 -------------------
-The easiest way to run Zenodo locally is to use the provided docker-compose
-configuration containing full Zenodo stack. First checkout the source code,
+The easiest way to run CERN Analysis Preservation locally is to use the provided docker-compose
+configuration containing full CERN Analysis Preservation stack. First checkout the source code,
 build all docker images and boot them up using ``docker-compose``:
 
 .. code-block:: console
@@ -80,7 +80,7 @@ tables, search indexes and some data fixtures:
 
 .. code-block:: console
 
-    $ docker-compose -f docker-compose.full.yml run web sh scripts/init.sh
+    $ docker-compose -f docker-compose.full.yml run web-api sh scripts/init.sh
 
 Now visit the following URL in your browser:
 
@@ -99,6 +99,50 @@ Now visit the following URL in your browser:
 
         $ docker-machine ip <machine-name>
 
+Docker Dev Environment installation
+-----------------------------------
+
+It is possible to use a docker development environment, for testing purposes. You can create and run it
+by following the next steps:
+
+- Build your ui by using the command `yarn build`, after installing the dependencies. The ``index.html``
+  file should be inside the ``ui/cap-react/dist folder``, in order to be mounted and used by the containers.
+- Build and start the containers, by using the following command:
+
+    .. code-block:: console
+
+        $ docker-compose -f docker-compose.dev.yml up
+
+- In order to initialize the necessary services (e.g. build and connect to the db, etc), open another
+  cell and use the following command, while the services are running:
+
+    .. code-block:: console
+
+        $ docker-compose -f docker-compose.dev.yml run web-api sh scripts/init.sh
+
+Now you have a dev environment that can automatically reload changed code in the backend, and will also
+accept changes in the frontend, after rebuilding the ``index.html`` file.
+
+use the a Python debugger, e.g. `import pdb; pdb.set_trace()`,
+
+If you want to debug your backend code, you will need to attach a new shell to the ``web-api`` container. Find
+the container id for ``web-api``, by using the command `docker ps` and copying the `CONTAINER_ID` of
+the image. Now do:
+
+    .. code-block:: console
+
+        $ docker attach <CONTAINER_ID>
+
+and use the a Python debugger, e.g. `import pdb; pdb.set_trace()`, somewhere in your code. The project will be reloaded,
+with the breakpoint now set. The next time the debugger is triggered, you will be able to debug inside the attached shell.
+
+**Using Redirect URLs**
+
+You may need to use a redirect url, for OAuth testing or similar purposes. In order to do that, you need first to create
+an OAuth app, and then change the following environment variables in the ``docker-services.yml`` file:
+- ``INVENIO_CERN_APP_CREDENTIALS_KEY`` (the app id/key)
+- ``INVENIO_CERN_APP_CREDENTIALS_SECRET`` (the app secret)
+- ``DEV_HOST`` (the host that will be used for testing, could be ngrok, localhost, or by using the ``/etc/hosts`` file to add a name to it)
 
 Development installation
 ------------------------
