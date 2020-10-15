@@ -98,12 +98,17 @@ def parse_path(string):
     return match.groups() if match else None
 
 
-def schema_name_to_url(schema_name):
+def schema_name_to_url(schema_name, version=None):
     """Return url eg. https://host.com/schemas/schema-v0.0.1.json."""
-    schema = Schema.get_latest(schema_name)
+    schema = resolve_schema_by_name_and_version(schema_name, version)
     url = current_jsonschemas.path_to_url(schema.deposit_path)
-
     return url
+
+
+def resolve_schema_by_name_and_version(schema_name, version=None):
+    """Get Schema object for given name and (optionally) version."""
+    return Schema.get(schema_name, version) if version \
+        else Schema.get_latest(schema_name)
 
 
 @lru_cache(maxsize=1024)
