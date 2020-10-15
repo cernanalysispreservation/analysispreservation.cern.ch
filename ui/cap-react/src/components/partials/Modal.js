@@ -51,7 +51,7 @@ const Content = styled.div`
   background: ${props => props.background};
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: ${props => (props.overflowVisible ? "visible" : "auto")};
 
   position: absolute;
   top: ${props => props.position.top};
@@ -125,7 +125,8 @@ const Modal = ({
   full = false,
   animated = false,
   flush = false,
-  disableCloseHandlers = false
+  disableCloseHandlers = false,
+  overflowVisible = false
 }) => {
   const modal = useRef(null);
 
@@ -197,6 +198,7 @@ const Modal = ({
         full={full}
         animated={animated}
         align={position}
+        overflowVisible={overflowVisible}
       >
         {flush ? (
           <RelativeBody>
@@ -237,7 +239,8 @@ Modal.propTypes = {
   full: PropTypes.bool,
   animated: PropTypes.bool,
   flush: PropTypes.bool,
-  disableCloseHandlers: PropTypes.bool
+  disableCloseHandlers: PropTypes.bool,
+  overflowVisible: PropTypes.bool
 };
 
 export default Modal;

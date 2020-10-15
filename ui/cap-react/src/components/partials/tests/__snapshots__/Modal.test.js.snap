@@ -23,6 +23,7 @@ ShallowWrapper {
         animated={false}
         background="rgb(255,255,255)"
         full={false}
+        overflowVisible={false}
         position={
                 Object {
                         "left": "50%",
@@ -91,6 +92,7 @@ ShallowWrapper {
           />
 </Unknown>,
         "full": false,
+        "overflowVisible": false,
         "position": Object {
           "left": "50%",
           "top": "50%",
@@ -357,7 +359,9 @@ ShallowWrapper {
             ";
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: ",
+            [Function],
+            ";
 
   position: absolute;
   top: ",
@@ -433,6 +437,7 @@ ShallowWrapper {
           animated={false}
           background="rgb(255,255,255)"
           full={false}
+          overflowVisible={false}
           position={
                     Object {
                               "left": "50%",
@@ -501,6 +506,7 @@ ShallowWrapper {
             />
 </Unknown>,
           "full": false,
+          "overflowVisible": false,
           "position": Object {
             "left": "50%",
             "top": "50%",
@@ -767,7 +773,9 @@ ShallowWrapper {
               ";
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: ",
+              [Function],
+              ";
 
   position: absolute;
   top: ",

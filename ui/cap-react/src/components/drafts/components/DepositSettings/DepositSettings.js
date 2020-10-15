@@ -5,22 +5,24 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
-import DepositAccess from "./DepositAccess";
-import DepositReviews from "./DepositReviews";
+import DepositAccess from "../DepositAccess";
+import DepositReviews from "../DepositReviews";
 import { Paragraph, Heading } from "grommet";
 import { connect } from "react-redux";
 // Actions
-import { toggleActionsLayer } from "../../../actions/draftItem";
+import { toggleActionsLayer } from "../../../../actions/draftItem";
 
 import ReactTooltip from "react-tooltip";
 
-import Anchor from "../../partials/Anchor";
-import Button from "../../partials/Button";
+import Anchor from "../../../partials/Anchor";
+import Button from "../../../partials/Button";
 import {
   AiOutlineDelete,
   AiOutlineLink,
   AiOutlineNotification
 } from "react-icons/ai";
+
+import "./DepositSettings.css";
 
 const BUTTON_IMAGE_SIZE = 18;
 
@@ -35,20 +37,19 @@ class DepositSettings extends React.Component {
     return (
       <Box
         flex={false}
-        size={{ width: "xxlarge" }}
         alignSelf="center"
         pad="small"
+        className="deposit-settings"
       >
         <Box margin={{ vertical: "small" }}>
           <Heading tag="h3">Publish your analysis</Heading>
           <Box
-            direction="row"
+            className="deposit-settings-row-to-column"
             style={{
               border: "1px solid #e6e6e6",
               borderRadius: "3px",
               padding: "10px"
             }}
-            justify="between"
           >
             <Box>
               <Paragraph margin="none">
@@ -64,62 +65,63 @@ class DepositSettings extends React.Component {
             </Box>
             <Box
               flex
-              align="end"
+              className="deposit-settings-publish-button"
               justify={isPublishedOnce ? "between" : "center"}
             >
-              <React.Fragment>
-                <Box
-                  align="center"
-                  margin={{ top: "small" }}
-                  data-tip={
-                    this.props.canUpdate
-                      ? null
-                      : "your account has no permissions to publish"
-                  }
-                >
-                  <Button
-                    text={isPublishedOnce ? "Publish New Version" : "Publish"}
-                    onClick={isDraft ? this.props.publishDraft : null}
-                    disabled={!this.props.canUpdate || !isDraft}
-                    icon={<AiOutlineNotification />}
-                    primaryPublished
-                  />
-                  <ReactTooltip />
-                </Box>
+              <Box
+                align="center"
+                margin={{ top: "small" }}
+                data-tip={
+                  this.props.canUpdate
+                    ? null
+                    : "your account has no permissions to publish"
+                }
+              >
+                <Button
+                  text={isPublishedOnce ? "Publish New Version" : "Publish"}
+                  onClick={isDraft ? this.props.publishDraft : null}
+                  disabled={!this.props.canUpdate || !isDraft}
+                  icon={<AiOutlineNotification />}
+                  primaryPublished
+                />
+                <ReactTooltip />
+              </Box>
 
-                <Box>
-                  {isPublishedOnce && (
-                    <Box data-tip="Latest published version" align="end">
-                      <Label size="small">Current Version</Label>
-                      <Anchor path={`/published/${this.props.recid}`}>
-                        <Box direction="row" align="center" responsive={false}>
-                          <Label
-                            size="small"
-                            uppercase
-                            style={{
-                              color: "rgba(146,109,146,1)"
-                            }}
-                          >
-                            {this.props.recid}
-                          </Label>
-                          <AiOutlineLink color="rgba(146,109,146,1)" />
-                        </Box>
-                      </Anchor>
-                    </Box>
-                  )}
-                </Box>
-              </React.Fragment>
+              <Box>
+                {isPublishedOnce && (
+                  <Box data-tip="Latest published version" align="end">
+                    <Label size="small">Current Version</Label>
+                    <Anchor path={`/published/${this.props.recid}`}>
+                      <Box direction="row" align="center" responsive={false}>
+                        <Label
+                          size="small"
+                          uppercase
+                          style={{
+                            color: "rgba(146,109,146,1)"
+                          }}
+                        >
+                          {this.props.recid}
+                        </Label>
+                        <AiOutlineLink color="rgba(146,109,146,1)" />
+                      </Box>
+                    </Anchor>
+                  </Box>
+                )}
+              </Box>
             </Box>
           </Box>
         </Box>
-        <Box flex={false}>
+        <Box
+          margin={{ bottom: "small" }}
+          style={{ maxWidth: "920px", width: "100%" }}
+        >
           <DepositAccess />
         </Box>
-        <Box flex={false}>
+        <Box margin={{ bottom: "small" }}>
           <DepositReviews />
         </Box>
         {this.props.canAdmin && (
-          <Box flex>
+          <Box>
             <Heading tag="h3">Delete your analysis</Heading>
             <Box
               style={{
