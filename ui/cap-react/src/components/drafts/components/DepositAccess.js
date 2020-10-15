@@ -120,10 +120,16 @@ class DepositAccess extends React.Component {
         <Box margin={{ bottom: "medium" }}>
           <Heading tag="h3">Access & Permissions</Heading>
           <Box pad="small" colorIndex="light-2">
-            <Box flex={false} pad={{ between: "small" }}>
+            <Box pad={{ between: "small" }}>
               {this.props.canAdmin && (
                 <Box flex={true} direction="row" justify="center">
-                  <Box direction="row" pad="small">
+                  <Box
+                    direction="row"
+                    pad="small"
+                    responsive={false}
+                    justify="center"
+                    align="center"
+                  >
                     <RadioButton
                       id="user"
                       name="user"
@@ -143,11 +149,12 @@ class DepositAccess extends React.Component {
                   </Box>
                   <Box
                     direction="row"
+                    responsive={false}
                     flex={true}
                     justify="center"
                     align="center"
                   >
-                    <Box size="medium">
+                    <Box flex>
                       <FormField>
                         <TextInput
                           placeHolder={`Type to  ADD access rights`}
@@ -167,7 +174,8 @@ class DepositAccess extends React.Component {
                     ) : (
                       <Button
                         icon={<AddIcon />}
-                        size="small"
+                        size="icon"
+                        margin="0 0 0 3px"
                         onClick={() => {
                           this.addPermissions(draft_id);
                         }}
@@ -177,11 +185,32 @@ class DepositAccess extends React.Component {
                 </Box>
               )}
               <Box>
-                <Table>
+                <Table
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    width: "100%"
+                  }}
+                >
                   <TableHeader
                     labels={["User/Role", "Read", "Write", "Admin"]}
+                    style={{
+                      flex: "0 0 auto",
+                      width: "100%",
+                      display: "table",
+                      tableLayout: "fixed"
+                    }}
                   />
-                  <tbody>
+
+                  <tbody
+                    style={{
+                      flex: "1 1 auto",
+                      display: "block",
+                      overflowY: "auto",
+                      maxHeight: "500px"
+                    }}
+                  >
                     {users_roles.map((key, index) => {
                       let { actions: actions = [], type: type } = access[key];
                       let canRead = actions.indexOf("deposit-read") > -1;
@@ -189,7 +218,14 @@ class DepositAccess extends React.Component {
                       let canAdmin = actions.indexOf("deposit-admin") > -1;
 
                       return (
-                        <TableRow key={`${key}-${index}`}>
+                        <TableRow
+                          key={`${key}-${index}`}
+                          style={{
+                            width: "100%",
+                            display: "table",
+                            tableLayout: "fixed"
+                          }}
+                        >
                           <td>
                             {key}
                             {owner && owner === key ? (

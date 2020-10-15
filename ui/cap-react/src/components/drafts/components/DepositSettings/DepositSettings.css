@@ -1,0 +1,26 @@
+@media only screen and (min-width: 320px) {
+  .deposit-settings-row-to-column {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between;
+  }
+  .deposit-settings-publish-button {
+    align-items: center !important;
+  }
+
+  .deposit-settings {
+    max-width: 95% !important;
+  }
+}
+
+@media only screen and (min-width: 940px) {
+  .deposit-settings-row-to-column {
+    flex-direction: row !important;
+  }
+  .deposit-settings-publish-button {
+    align-items: flex-end !important;
+  }
+  .deposit-settings {
+    width: unset !important;
+  }
+}
