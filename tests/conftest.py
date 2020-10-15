@@ -31,8 +31,10 @@ from uuid import uuid4
 
 import pytest
 from flask import current_app
+from flask.cli import ScriptInfo
 from flask_principal import ActionNeed
 from flask_security import login_user
+
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.testutils import create_test_user
 from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
@@ -47,9 +49,12 @@ from invenio_oauth2server.models import Client, Token
 from invenio_oauthclient.models import RemoteAccount
 from invenio_pidstore.resolver import Resolver
 from invenio_search import current_search, current_search_client
+
+from click.testing import CliRunner
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
+from cap.cli import cli
 from cap.factory import create_api
 from cap.modules.auth.models import OAuth2Token
 from cap.modules.deposit.api import CAPDeposit as Deposit
@@ -67,6 +72,19 @@ from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
+
+
+@pytest.fixture()
+def cli_runner(app):
+    runner = CliRunner()
+    script_info = ScriptInfo(create_app=lambda info: app)
+
+    def run(command):
+        """Run the command from the CLI."""
+        command_args = command.split()
+        return runner.invoke(cli, command_args, obj=script_info)
+
+    yield run
 
 
 @pytest.fixture(scope='session')
