@@ -9,7 +9,10 @@ import {
 import {
   PUBLISHED_ITEM_REQUEST,
   PUBLISHED_ITEM_SUCCESS,
-  PUBLISHED_ITEM_ERROR
+  PUBLISHED_ITEM_ERROR,
+  REVIEW_PUBISHED_ERROR,
+  REVIEW_PUBISHED_REQUEST,
+  REVIEW_PUBISHED_SUCCESS
 } from "../actions/published";
 
 const initialState = Map({
@@ -47,6 +50,12 @@ export default function publishedReducer(state = initialState, action) {
         );
     case PUBLISHED_ITEM_ERROR:
       return state.set("loading", false).set("error", action.error);
+    case REVIEW_PUBISHED_REQUEST:
+      return state.set("loading", true);
+    case REVIEW_PUBISHED_SUCCESS:
+      return state.set("loading", false);
+    case REVIEW_PUBISHED_ERROR:
+      return state.set("loading", false).set("reviewError", action.error);
     default:
       return state;
   }

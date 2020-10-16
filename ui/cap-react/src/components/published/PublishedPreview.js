@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import _omit from "lodash/omit";
-import axios from "axios";
 
 import { connect } from "react-redux";
 
@@ -14,19 +13,15 @@ import FileTree from "../drafts/components/FileTree";
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
 
-import Anchor from "../partials/Anchor";
-import Label from "grommet/components/Label";
-import Edit from "grommet/components/icons/base/Edit";
-
 import Tag from "../partials/Tag";
 
 import RunsIndex from "../published/RunsIndex";
 import { Route } from "react-router-dom";
-import { ValidateIcon } from "grommet/components/icons/base";
-import DepositReviewCreateLayer from "../drafts/components/DepositReviewCreateLayer";
-import cogoToast from "cogo-toast";
 
 import FormHeader from "../partials/FormHeader";
+import Button from "../partials/Button";
+import Review from "../partials/Review/ReviewModal";
+import { AiOutlineTag } from "react-icons/ai";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -57,41 +52,7 @@ const transformSchema = schema => {
 class PublishedPreview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      addReviewLayer: false
-    };
   }
-
-  toggleAddReview = () => {
-    this.setState({
-      addReviewLayer: !this.state.addReviewLayer,
-      reviewError: null
-    });
-  };
-
-  _addReview = review => {
-    let uri = this.props.review_link;
-    this.setState({ reviewError: null });
-    axios
-      .post(uri, review, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/form+json"
-        }
-      })
-      .then(() => {
-        cogoToast.success("Your review has been submitted", {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3
-        });
-
-        this.setState({ reviewSuccess: true, addReviewLayer: false });
-      })
-      .catch(error => {
-        this.setState({ reviewError: error.response.data });
-      });
-  };
 
   _discoverSchema = item => {
     let type;
@@ -99,44 +60,6 @@ class PublishedPreview extends React.Component {
       ? item.$ana_type
       : ((type = item.$schema.split("/")),
         type[type.length - 1].replace("-v0.0.1.json", ""));
-  };
-
-  getEditAnchor = () => {
-    let comp = this.props.canUpdate ? (
-      <Anchor
-        pad={{ horizontal: "small" }}
-        justify="end"
-        primary
-        path={`/drafts/${this.props.draft_id}/edit`}
-        icon={<Edit size="xsmall" />}
-        label={
-          <Label size="small" uppercase>
-            Edit
-          </Label>
-        }
-      />
-    ) : null;
-
-    return comp;
-  };
-
-  getReviewAnchor = () => {
-    let comp = this.props.canReview ? (
-      <Anchor
-        pad={{ horizontal: "small" }}
-        justify="end"
-        primary
-        onClick={this.toggleAddReview}
-        icon={<ValidateIcon size="xsmall" />}
-        label={
-          <Label size="small" uppercase>
-            Review
-          </Label>
-        }
-      />
-    ) : null;
-
-    return comp;
   };
 
   getTagsList = () => {
@@ -196,19 +119,26 @@ class PublishedPreview extends React.Component {
           </Sidebar>
           {this.props.schemas ? (
             <Box flex={true}>
-              {this.state.addReviewLayer && (
-                <DepositReviewCreateLayer
-                  addReview={this._addReview}
-                  toggleAddReview={this.toggleAddReview}
-                  reviewSuccess={this.state.reviewSuccess}
-                  error={this.state.reviewError}
-                />
-              )}
               <FormHeader
                 title={this.props.metadata.toJS().general_title}
                 tags={this.getTagsList()}
-                reviewAnchor={this.getReviewAnchor()}
-                editAnchor={this.getEditAnchor()}
+                reviewAnchor={
+                  this.props.canReview && <Review isReviewingPublished />
+                }
+                editAnchor={
+                  this.props.canUpdate && (
+                    <Button
+                      text="Edit"
+                      margin="0 10px"
+                      icon={<AiOutlineTag />}
+                      onClick={() =>
+                        this.props.history.push(
+                          `/drafts/${this.props.draft_id}/edit`
+                        )
+                      }
+                    />
+                  )
+                }
               />
               <Box flex={true} direction="row" justify="between">
                 <Box flex={true}>
@@ -239,13 +169,8 @@ class PublishedPreview extends React.Component {
 }
 
 PublishedPreview.propTypes = {
-  match: PropTypes.object,
   draft_id: PropTypes.string,
   schemas: PropTypes.object,
-  schemaId: PropTypes.string,
-  formData: PropTypes.object,
-  schemasLoading: PropTypes.bool,
-  getPublishedItem: PropTypes.func,
   item: PropTypes.object,
   schema: PropTypes.object,
   uiSchema: PropTypes.object,
@@ -255,7 +180,6 @@ PublishedPreview.propTypes = {
   status: PropTypes.string,
   canUpdate: PropTypes.bool,
   canReview: PropTypes.bool,
-  review_link: PropTypes.string,
   schemaType: PropTypes.object
 };
 
@@ -269,7 +193,6 @@ const mapStateToProps = state => {
     files: state.published.get("files"),
     schemas: state.published.get("schemas"),
     schemaType: state.published.get("schema"),
-    review_link: state.published.getIn(["links", "review"]),
     status: state.published.get("status")
   };
 };

@@ -426,7 +426,7 @@ export function discardDraft(draft_id) {
   };
 }
 
-export function reviewDraft(draft_id, review) {
+export function reviewDraft(draft_id, review, message = "submitted") {
   return dispatch => {
     dispatch(reviewDraftRequest());
 
@@ -440,9 +440,8 @@ export function reviewDraft(draft_id, review) {
         }
       })
       .then(response => {
-        cogoToast.success("Your review has been discarded", {
+        cogoToast.success(`Your review has been ${message}`, {
           position: "top-center",
-          heading: "Draft reviewed",
           bar: { size: "0" },
           hideAfter: 3
         });

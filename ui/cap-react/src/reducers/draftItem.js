@@ -143,7 +143,11 @@ export default function draftsReducer(state = initialState, action) {
         .set("formData", action.draft.metadata)
         .merge(Map(action.draft));
     case draftItemActions.REVIEW_DRAFT_SUCCESS:
-      return state.set("review", action.draft.review);
+      return state.set("review", action.draft.review).set("loading", false);
+    case draftItemActions.REVIEW_DRAFT_ERROR:
+      return state.set("reviewError", action.error).set("loading", false);
+    case draftItemActions.REVIEW_DRAFT_REQUEST:
+      return state.set("loading", true);
     case draftItemActions.EDIT_PUBLISHED_REQUEST:
       return state.set("loading", true);
     // .set("error", null);

@@ -124,12 +124,16 @@ const Modal = ({
   background = "rgb(255,255,255)",
   full = false,
   animated = false,
-  flush = false
+  flush = false,
+  disableCloseHandlers = false
 }) => {
   const modal = useRef(null);
 
   useEffect(() => {
-    document.addEventListener("keydown", escFunction, false);
+    {
+      !disableCloseHandlers &&
+        document.addEventListener("keydown", escFunction, false);
+    }
     return () => {
       document.removeEventListener("keydown", escFunction, false);
     };
@@ -153,7 +157,10 @@ const Modal = ({
         }
       }
       // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
+      {
+        !disableCloseHandlers &&
+          document.addEventListener("mousedown", handleClickOutside);
+      }
       return () => {
         // Unbind the event listener on clean up
         document.removeEventListener("mousedown", handleClickOutside);
@@ -229,7 +236,8 @@ Modal.propTypes = {
   position: PropTypes.string,
   full: PropTypes.bool,
   animated: PropTypes.bool,
-  flush: PropTypes.bool
+  flush: PropTypes.bool,
+  disableCloseHandlers: PropTypes.bool
 };
 
 export default Modal;
