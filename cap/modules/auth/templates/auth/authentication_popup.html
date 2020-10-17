@@ -5,3 +5,17 @@
         <h3>{{msg}}</h3>
     {% endif %}
 {% endblock %}
+
+{% block javascript %}
+<script>
+    setTimeout(() => {
+        if (window.opener) {
+            window.opener.focus();
+            if (window.opener.loginCallBack) {
+                window.opener.loginCallBack();
+            }
+        }
+        window.close();
+        }, 5000);
+    </script>
+{% endblock %}
