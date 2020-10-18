@@ -29,7 +29,8 @@ from __future__ import absolute_import, print_function
 
 from flask_login import current_user
 
-from authlib.flask.client import OAuth
+from authlib.integrations.flask_client import OAuth
+
 from .config import OAUTH_SERVICES
 from .models import OAuth2Token
 from .utils import _create_or_update_token

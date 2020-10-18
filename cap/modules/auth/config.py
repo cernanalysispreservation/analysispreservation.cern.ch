@@ -97,6 +97,20 @@ OAUTH_SERVICES = {
     #         'token_endpoint_auth_method': 'client_secret_post',
     #     }
     # ),
+    "CERN": dict(
+        name='cern',
+        server_metadata_url='https://auth.cern.ch/auth/realms/cern/.well-known/openid-configuration',
+        issuer='https://auth.cern.ch/auth/realms/cern',
+        authorization_endpoint='https://auth.cern.ch/auth/realms/cern/protocol/openid-connect/auth',
+        token_endpoint='https://auth.cern.ch/auth/realms/cern/protocol/openid-connect/token',
+        token_introspection_endpoint='https://auth.cern.ch/auth/realms/cern/protocol/openid-connect/token/introspect',
+        userinfo_endpoint='https://auth.cern.ch/auth/realms/cern/protocol/openid-connect/userinfo',
+        end_session_endpoint='https://auth.cern.ch/auth/realms/cern/protocol/openid-connect/logout',
+        jwks_uri='https://auth.cern.ch/auth/realms/cern/protocol/openid-connect/certs',
+        client_kwargs={
+            'scope': 'openid profile email cern-login-info offline_access',
+        }
+    ),
     "ORCID":
     dict(name='orcid',
          access_token_url='https://orcid.org/oauth/token',

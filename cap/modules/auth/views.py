@@ -168,17 +168,21 @@ def get_oauth_profile(name, token=None, client=None):
     extra_data = _token.extra_data
     _client = client if client else current_auth.create_client(name)
 
-    if name == 'orcid':
+    if _client.userinfo and _client.userinfo():
+        resp = _client.userinfo()
+    elif name == 'orcid':
         orcid = extra_data.get('orcid_id')
         resp = None
         if orcid:
             resp = _client.get('/{}/record'.format(orcid),
                                headers={'Accept': 'application/json'})
+            resp = resp.json()
     else:
         resp = _client.get(USER_PROFILE[name]['path'])
+        resp = resp.json()
 
     try:
-        res_json = USER_PROFILE[name]['serializer'].dump(resp.json()).data
+        res_json = USER_PROFILE[name]['serializer'].dump(resp).data
     except AttributeError:
         res_json = {}
     return res_json
