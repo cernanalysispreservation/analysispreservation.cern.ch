@@ -4,4 +4,5 @@
     {% if msg %}
         <h3>{{msg}}</h3>
     {% endif %}
+    <p>Something has happened. Please try again in a bit or <a href="mailto:{{config.get('SUPPORT_EMAIL')}}">contact our support team</a></p>
 {% endblock %}

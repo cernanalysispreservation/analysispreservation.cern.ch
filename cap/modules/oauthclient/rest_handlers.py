@@ -92,6 +92,7 @@ def response_token_setter(remote, resp):
         authorized request.
     :returns: The token.
     """
+
     if resp is None:
         raise OAuthRejectedRequestError('User rejected request.', remote, resp)
     else:
@@ -244,6 +245,12 @@ def oauth_error_handler(f):
                 current_app.config[
                     'AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
                 msg='Authorization with remote service failed.'
+            ), 400
+        except OAuthResponseError as e:
+            return render_template(
+                current_app.config[
+                    'AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE'],
+                msg=e.message or 'Authorization with remote service failed.'
             ), 400
         except OAuthRejectedRequestError:
             return render_template(

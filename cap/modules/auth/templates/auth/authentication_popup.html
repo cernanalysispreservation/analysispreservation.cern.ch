@@ -4,6 +4,9 @@
     {% if msg %}
         <h3>{{msg}}</h3>
     {% endif %}
+    <p>
+        This window should close automatically. If it doesn't close in a few seconds, please close it manually and refresh the page
+    </p>
 {% endblock %}
 
 {% block javascript %}
@@ -16,6 +19,6 @@
             }
         }
         window.close();
-        }, 5000);
+        }, 0);
     </script>
 {% endblock %}
