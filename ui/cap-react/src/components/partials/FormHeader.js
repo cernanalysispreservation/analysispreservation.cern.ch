@@ -7,30 +7,28 @@ const FormHeader = ({
   title = "Untitled",
   tags = null,
   editAnchor = null,
-  reviewAnchor = null
+  reviewAnchor = null,
+  showFiles = null
 }) => {
   return (
-    <Box>
-      <Box
-        direction="row"
-        justify="between"
-        align="center"
-        pad={{ vertical: "small", horizontal: "medium" }}
-        separator="bottom"
-        margin={{ bottom: "medium" }}
-        responsive={false}
-      >
-        <Box flex direction="row" align="center" justify="start" >
-          <Heading tag="h3" margin="none" style={{ marginRight: "12px", fontStyle: "italic" }}>
-            {title}
-          </Heading>
-          {tags}
-        </Box>
+    <Box pad="small" separator="bottom" direction="row" justify="between">
+      <Box className="center-small">
+        <Heading
+          tag="h3"
+          margin="none"
+          style={{ fontStyle: "italic", marginRight: "5px" }}
+        >
+          {title}
+        </Heading>
+        <Box margin={{ top: "small" }}>{tags}</Box>
+      </Box>
 
-        <Box direction="row">
+      <Box justify="between" className="button-align mt-small">
+        <Box direction="row" responsive={false}>
           {editAnchor}
           {reviewAnchor}
         </Box>
+        {showFiles}
       </Box>
     </Box>
   );

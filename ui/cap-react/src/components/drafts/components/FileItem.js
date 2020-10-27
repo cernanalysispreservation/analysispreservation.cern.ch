@@ -125,7 +125,9 @@ class FileItem extends React.Component {
       file.data || file;
 
     // TO_REMOVE after fixings links from backend
-    file_link = file_link ? file_link : null;
+    file_link = file_link
+      ? file_link
+      : `/api/files/${this.props.file.bucket}/${this.props.file.key}`;
 
     const timeOptions = {
       day: "numeric",
@@ -294,15 +296,21 @@ class FileItem extends React.Component {
         )}
         {this.state.menu ? (
           <Box colorIndex="light-2" alignSelf="end" pad="small">
-            <Anchor
-              size="small"
-              icon={<Info size="xsmall" />}
-              label={<Label size="small">Info</Label>}
-              onClick={() => {
-                this.props.getFileVersions();
-                this.setState({ fileInfo: true });
-              }}
+            <Route
+              path="/drafts/:draft_id"
+              render={() => (
+                <Anchor
+                  size="small"
+                  icon={<Info size="xsmall" />}
+                  label={<Label size="small">Info</Label>}
+                  onClick={() => {
+                    this.props.getFileVersions();
+                    this.setState({ fileInfo: true });
+                  }}
+                />
+              )}
             />
+
             <Anchor
               size="small"
               icon={<DownloadIcon size="xsmall" />}

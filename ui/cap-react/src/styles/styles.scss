@@ -636,11 +636,12 @@ label {
 }
 
 @media only screen and (min-width: 800px) {
-  #list {
+  #draft-editor-page #list {
     overflow-x: auto;
     justify-content: flex-start;
     max-width: 90vw;
   }
+
   .tabs-list-items {
     display: flex !important;
     flex-direction: row !important;
@@ -664,9 +665,10 @@ label {
 }
 
 @media only screen and (min-width: 910px) {
-  #list {
+  #draft-editor-page #list {
     max-width: 90.5vw;
   }
+
   .footer-order {
     display: flex !important;
     flex-direction: row !important;
@@ -674,15 +676,16 @@ label {
 }
 
 @media only screen and (min-width: 920px) {
-  #list {
+  #draft-editor-page #list {
     max-width: 91vw;
   }
 }
 
 @media only screen and (min-width: 992px) {
-  #list {
+  #draft-editor-page #list {
     max-width: 92vw;
   }
+
   .search_result_box {
     min-width: 615px !important;
   }

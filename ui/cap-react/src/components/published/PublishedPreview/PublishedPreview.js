@@ -8,20 +8,28 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 import Sidebar from "grommet/components/Sidebar";
 
-import FileTree from "../drafts/components/FileTree";
+import FileTree from "../../drafts/components/FileTree";
 
-import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
-import SectionHeader from "../drafts/components/SectionHeader";
+import JSONSchemaPreviewer from "../../drafts/form/JSONSchemaPreviewer";
+import SectionHeader from "../../drafts/components/SectionHeader";
 
-import Tag from "../partials/Tag";
+import Tag from "../../partials/Tag";
 
-import RunsIndex from "../published/RunsIndex";
+import RunsIndex from "../RunsIndex";
 import { Route } from "react-router-dom";
 
-import FormHeader from "../partials/FormHeader";
-import Button from "../partials/Button";
-import Review from "../partials/Review/ReviewModal";
-import { AiOutlineTag } from "react-icons/ai";
+import FormHeader from "../../partials/FormHeader";
+import Button from "../../partials/Button";
+import Review from "../../partials/Review/ReviewModal";
+import MediaQuery from "react-responsive";
+
+import "./PublishedPreview.css";
+
+import {
+  AiOutlineEdit,
+  AiOutlineFolderOpen,
+  AiOutlineFolder
+} from "react-icons/ai";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -52,6 +60,9 @@ const transformSchema = schema => {
 class PublishedPreview extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showFiles: window.innerWidth > 1409
+    };
   }
 
   _discoverSchema = item => {
@@ -69,8 +80,10 @@ class PublishedPreview extends React.Component {
         align="center"
         pad={{ between: "small" }}
         responsive={false}
+        wrap
       >
         <Tag
+          size="small"
           text="Published"
           color={{
             bgcolor: "#f9f0ff",
@@ -78,9 +91,10 @@ class PublishedPreview extends React.Component {
             color: "rgba(146,109,146,1)"
           }}
         />
-        <Tag text={this.props.id} />
+        <Tag text={this.props.id} size="small" />
         {this.props.schemaType && (
           <Tag
+            size="small"
             text={`${this.props.schemaType.get(
               "fullname"
             )} v${this.props.schemaType.get("version")}`}
@@ -106,41 +120,63 @@ class PublishedPreview extends React.Component {
         id="published-preview-page"
       >
         <Box direction="row" flex={true}>
-          <Sidebar full={false} size="medium" colorIndex="light-2">
-            <SectionHeader label="Files | Data | Source Code" />
-            <Box flex={true}>
-              <FileTree
-                files={this.props.files.toJS()}
-                status={this.props.status}
-                background="#f5f5f5"
-                color="#000"
-              />
-            </Box>
-          </Sidebar>
           {this.props.schemas ? (
             <Box flex={true}>
               <FormHeader
                 title={this.props.metadata.toJS().general_title}
                 tags={this.getTagsList()}
                 reviewAnchor={
-                  this.props.canReview && <Review isReviewingPublished />
+                  this.props.canReview && (
+                    <Review
+                      isReviewingPublished
+                      buttonProps={{ size: "small" }}
+                    />
+                  )
                 }
                 editAnchor={
                   this.props.canUpdate && (
                     <Button
                       text="Edit"
+                      size="small"
                       margin="0 10px"
-                      icon={<AiOutlineTag />}
+                      icon={<AiOutlineEdit />}
                       onClick={() =>
-                        this.props.history.push(
-                          `/drafts/${this.props.draft_id}`
-                        )
+                        this.props.history.push({
+                          pathname: `/drafts/${this.props.draft_id}`,
+                          from: this.props.location.pathname,
+                          pageFrom: "Published Preview"
+                        })
                       }
                     />
                   )
                 }
+                showFiles={
+                  <MediaQuery maxWidth={1409}>
+                    <Button
+                      text="Files"
+                      size="smalls"
+                      margin="0 0 0 10px"
+                      background="#fff"
+                      icon={
+                        this.state.showFiles ? (
+                          <AiOutlineFolderOpen size={20} />
+                        ) : (
+                          <AiOutlineFolder size={20} />
+                        )
+                      }
+                      onClick={() =>
+                        this.setState({ showFiles: !this.state.showFiles })
+                      }
+                    />
+                  </MediaQuery>
+                }
               />
-              <Box flex={true} direction="row" justify="between">
+              <Box
+                flex={true}
+                direction="row"
+                justify="between"
+                style={{ position: "relative" }}
+              >
                 <Box flex={true}>
                   <JSONSchemaPreviewer
                     formData={this.props.metadata.toJS()}
@@ -159,6 +195,32 @@ class PublishedPreview extends React.Component {
                   path={`/published/:id/runs/`}
                   component={RunsIndex}
                 />
+                <MediaQuery
+                  minWidth={1410}
+                  onChange={matches => this.setState({ showFiles: matches })}
+                >
+                  <span />
+                </MediaQuery>
+                <Box
+                  style={{ background: "#f5f5f5" }}
+                  className={
+                    this.state.showFiles
+                      ? "published-hide-sidebar show-sidebar"
+                      : "published-hide-sidebar hide-sidebar"
+                  }
+                >
+                  <Sidebar full={false} colorIndex="light-2" className="lg-row">
+                    <SectionHeader label="Files | Data | Source Code" />
+                    <Box flex={true}>
+                      <FileTree
+                        files={this.props.files.toJS()}
+                        status={this.props.status}
+                        background="#f5f5f5"
+                        color="#000"
+                      />
+                    </Box>
+                  </Sidebar>
+                </Box>
               </Box>
             </Box>
           ) : null}
@@ -180,7 +242,9 @@ PublishedPreview.propTypes = {
   status: PropTypes.string,
   canUpdate: PropTypes.bool,
   canReview: PropTypes.bool,
-  schemaType: PropTypes.object
+  schemaType: PropTypes.object,
+  history: PropTypes.object,
+  location: PropTypes.object
 };
 
 const mapStateToProps = state => {

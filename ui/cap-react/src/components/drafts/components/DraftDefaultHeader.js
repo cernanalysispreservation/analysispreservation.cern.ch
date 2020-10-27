@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import Anchor from "../../partials/Anchor";
 import Box from "grommet/components/Box";
@@ -16,6 +17,7 @@ import EditableTitle from "./EditableTitle";
 class DraftDefaultHeader extends React.Component {
   render() {
     if (this.props.error && this.props.error.status == 403) return null;
+
     return (
       <Box flex={true} direction="row">
         <Box direction="row" flex={true} wrap={false} responsive={false}>
@@ -23,10 +25,16 @@ class DraftDefaultHeader extends React.Component {
             align="center"
             justify="center"
             style={{ padding: "12px" }}
-            data-tip="Dashboard"
+            data-tip={this.props.location.pageFrom || "Dashboard"}
             data-place="right"
           >
-            <Anchor path={{ path: `/` }}>
+            <Anchor
+              path={
+                this.props.location.from
+                  ? { path: this.props.location.from }
+                  : { path: `/` }
+              }
+            >
               <AiOutlineArrowLeft
                 style={{ height: "24px", width: "24px", color: "black" }}
               />
@@ -88,7 +96,8 @@ DraftDefaultHeader.propTypes = {
   draft_id: PropTypes.string,
   canUpdate: PropTypes.bool,
   expanded: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  location: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -103,4 +112,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(DraftDefaultHeader);
+export default connect(mapStateToProps)(withRouter(DraftDefaultHeader));

@@ -61,7 +61,8 @@ class JSONShemaPreviewer extends React.Component {
                 right: 20,
                 bottom: 20,
                 border: "1px solid #e6e6e6",
-                background: "#fff"
+                background: "#fff",
+                zIndex: 10
               }}
             >
               <Box
