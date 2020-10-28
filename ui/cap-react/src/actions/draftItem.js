@@ -344,6 +344,34 @@ export function editPublished(data = {}, schema, draft_id) {
   };
 }
 
+export const publishedToDraftStatus = draft_id => dispatch => {
+  dispatch(editPublishedRequest());
+  let uri = `/api/deposits/${draft_id}/actions/edit`;
+  return axios
+    .post(uri)
+    .then(resp => {
+      dispatch(editPublishedSuccess(draft_id, resp.data));
+      cogoToast.success("Your record status successfully changed to Draft", {
+        position: "top-center",
+        heading: "Draft Status",
+        bar: { size: "0" },
+        hideAfter: 3
+      });
+    })
+    .catch(error => {
+      cogoToast.error(
+        "There is an error, please make sure you are connected and try again",
+        {
+          position: "top-center",
+          heading: error.message,
+          bar: { size: "0" },
+          hideAfter: 3
+        }
+      );
+      throw error;
+    });
+};
+
 export function postAndPutPublished(data = {}, schema, draft_id) {
   return dispatch => {
     dispatch(editPublishedRequest());

@@ -133,7 +133,7 @@ class PublishedPreview extends React.Component {
                       icon={<AiOutlineTag />}
                       onClick={() =>
                         this.props.history.push(
-                          `/drafts/${this.props.draft_id}/edit`
+                          `/drafts/${this.props.draft_id}`
                         )
                       }
                     />

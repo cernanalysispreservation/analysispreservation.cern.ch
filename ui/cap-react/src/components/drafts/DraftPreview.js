@@ -18,7 +18,8 @@ import InfoArrayBox from "../partials/InfoArrayBox";
 import { BsCodeSlash } from "react-icons/bs";
 import { AiOutlineInbox, AiOutlineTag } from "react-icons/ai";
 import Button from "../partials/Button";
-
+import Notification from "../partials/Notification";
+import { publishedToDraftStatus } from "../../actions/draftItem";
 import ReviewModal from "../partials/Review/ReviewModal";
 import ReviewList from "../partials/Review/ReviewList";
 
@@ -191,6 +192,21 @@ const DraftPreview = props => {
             ))}
           </Box>
         </Box>
+        {props.status === "published" && (
+          <Box pad={{ horizontal: "medium" }}>
+            <Notification
+              text="This is a published version. If you want to upload files and repos or update form metadata and the title you have to change to Draft mode"
+              type="warning"
+              action={
+                <Button
+                  text="Change to Draft"
+                  size="small"
+                  onClick={() => props.edit(props.draft_id)}
+                />
+              }
+            />
+          </Box>
+        )}
         <Box pad={{ horizontal: "medium" }}>
           <SectionBox
             header="Metadata"
@@ -383,9 +399,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps() {
-  return {};
-}
+const mapDispatchToProps = dispatch => ({
+  edit: draft_id => dispatch(publishedToDraftStatus(draft_id))
+});
 
 export default connect(
   mapStateToProps,

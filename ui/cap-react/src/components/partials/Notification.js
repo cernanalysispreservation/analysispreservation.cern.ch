@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   border-radius: 3px;
   padding: ${props => props.padding};
   display: flex;
+
   align-items: center;
 
   ${({ type }) =>
@@ -30,6 +31,12 @@ const Wrapper = styled.div`
     type === "success" &&
     css`
       background: #e6ffed;
+    `};
+  ${({ type }) =>
+    type === "published" &&
+    css`
+      background: rgba(194, 165, 194, 1);
+      
     `};
 `;
 
@@ -54,7 +61,8 @@ const Notification = ({
   text,
   type = "",
   background = "#f5f5f5",
-  padding = "10px"
+  padding = "10px",
+  action = null
 }) => {
   return (
     <Wrapper type={type} background={background} padding={padding}>
@@ -68,6 +76,7 @@ const Notification = ({
       <Box flex>
         <Text>{text}</Text>
       </Box>
+      <Box justify="center">{action}</Box>
     </Wrapper>
   );
 };
