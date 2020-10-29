@@ -34,7 +34,13 @@ const ReviewOptions = props => {
         background: props.reviewType === item.type ? "#E6F7FF" : "#f5f5f5"
       }}
     >
-      <Box pad="small" align="center" justify="between" direction="row">
+      <Box
+        pad="small"
+        align="center"
+        justify="between"
+        direction="row"
+        responsive={false}
+      >
         <Heading tag="h4" margin="none">
           {item.title}
         </Heading>

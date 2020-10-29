@@ -18,7 +18,7 @@ class DepositReviews extends React.Component {
 
     return (
       <Box margin={{ bottom: "medium" }}>
-        <Box direction="row" wrap={false} justify="between">
+        <Box direction="row" wrap={false} justify="between" responsive={false}>
           <Heading tag="h3">Reviews</Heading>
           {this.props.canReview && <ReviewModal />}
         </Box>

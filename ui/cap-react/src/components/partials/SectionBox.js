@@ -29,7 +29,7 @@ function SectionBox(props) {
         <Box
           flex={false}
           direction="row"
-          pad={header && "small"}
+          pad="small"
           justify="between"
           responsive={false}
         >

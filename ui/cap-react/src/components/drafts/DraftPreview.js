@@ -18,8 +18,9 @@ import InfoArrayBox from "../partials/InfoArrayBox";
 import { BsCodeSlash } from "react-icons/bs";
 import { AiOutlineInbox, AiOutlineTag } from "react-icons/ai";
 import Button from "../partials/Button";
-import DepositReviews from "./components/DepositReviews";
-import Heading from "grommet/components/Heading";
+
+import ReviewModal from "../partials/Review/ReviewModal";
+import ReviewList from "../partials/Review/ReviewList";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -190,7 +191,7 @@ const DraftPreview = props => {
             ))}
           </Box>
         </Box>
-        <Box flex={true} pad={{ horizontal: "medium" }}>
+        <Box pad={{ horizontal: "medium" }}>
           <SectionBox
             header="Metadata"
             className="box-large-height"
@@ -219,7 +220,7 @@ const DraftPreview = props => {
             }
             body={
               props.schemas && props.schemas.schema ? (
-                <Box flex={true} style={{ padding: "0 0 10px 0" }}>
+                <Box flex={true} style={{ padding: "0 0 12px 0" }}>
                   <JSONSchemaPreviewer
                     formData={props.metadata}
                     schema={_schema}
@@ -238,23 +239,11 @@ const DraftPreview = props => {
         {props.canReview && (
           <Box pad={{ horizontal: "medium" }}>
             <SectionBox
-              header={null}
-              headerActions={null}
+              header="Reviews"
+              headerActions={<ReviewModal />}
               body={
-                <Box pad={{ horizontal: "small" }}>
-                  <DepositReviews
-                    heading={
-                      <Heading
-                        tag="h4"
-                        align="start"
-                        justify="center"
-                        margin="none"
-                        truncate={true}
-                      >
-                        Reviews
-                      </Heading>
-                    }
-                  />
+                <Box pad="small">
+                  <ReviewList />
                 </Box>
               }
             />

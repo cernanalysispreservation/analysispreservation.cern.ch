@@ -292,8 +292,6 @@ class FileItem extends React.Component {
             </Box>
           </Modal>
         )}
-
-
         {this.state.menu ? (
           <Box colorIndex="light-2" alignSelf="end" pad="small">
             <Anchor

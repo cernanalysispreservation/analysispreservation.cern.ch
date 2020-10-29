@@ -25,7 +25,7 @@ const ReviewListItem = ({ review, reviewDraft, draft_id, loading }) => {
         pad={{ horizontal: "small", vertical: "small", between: "small" }}
       >
         <Box flex={true}>
-          <Box direction="row">
+          <Box direction="row" responsive={false}>
             <Heading tag="h5" margin={review.resolved ? "none" : null}>
               {renderReviewTypeHeading(review.type)} by{" "}
               <a href={`mailto:${review.reviewer}`}>{review.reviewer}</a>
@@ -69,7 +69,12 @@ const ReviewListItem = ({ review, reviewDraft, draft_id, loading }) => {
           </Box>
         </Box>
         {!review.resolved && (
-          <Box direction="row" justify="between" margin={{ top: "small" }}>
+          <Box
+            direction="row"
+            justify="between"
+            margin={{ top: "small" }}
+            responsive={false}
+          >
             <Button
               key="Delete"
               text="Delete"

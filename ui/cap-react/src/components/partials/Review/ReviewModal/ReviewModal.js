@@ -54,6 +54,7 @@ const ReviewModal = props => {
                 direction="row"
                 justify="between"
                 margin={{ top: "large" }}
+                responsive={false}
               >
                 <Button text="Cancel" onClick={props.onClose} secondary />
                 <Button
