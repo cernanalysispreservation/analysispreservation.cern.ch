@@ -9,7 +9,12 @@ import capPackageJSON from "../../../package";
 class GrommetFooter extends React.Component {
   render() {
     return (
-      <Footer size="small" justify="center" colorIndex="neutral-1-a" pad={{ horizontal: "small" }}>
+      <Footer
+        size="small"
+        justify="center"
+        colorIndex="neutral-1-a"
+        pad={{ horizontal: "small" }}
+      >
         <Box
           direction="row"
           align="center"
@@ -28,9 +33,9 @@ class GrommetFooter extends React.Component {
             <Box margin={{ horizontal: "small" }}>
               <Anchor label="Policy" path="/policy" />
             </Box>
-            <Box margin={{ horizontal: "small" }}>
+            {/* <Box margin={{ horizontal: "small" }}>
               <Anchor label="Status" path="/status" />
-            </Box>
+            </Box> */}
             <Box margin={{ horizontal: "small" }}>
               <Anchor
                 label="Contact"
