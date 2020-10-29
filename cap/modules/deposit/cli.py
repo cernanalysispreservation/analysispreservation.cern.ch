@@ -38,7 +38,8 @@ from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.fetchers import cap_deposit_fetcher
 from cap.modules.deposit.minters import cap_deposit_minter
 from cap.modules.fixtures.cli import fixtures
-from cap.modules.user.utils import get_existing_or_register_user
+from cap.modules.user.utils import get_existing_or_register_user, \
+    get_existing_or_register_role
 
 from .utils import add_read_permission_for_egroup
 
@@ -87,3 +88,78 @@ def add(file_path, schema, version, egroup, usermail, limit):
                             fg='green')
 
         db.session.commit()
+
+
+@fixtures.command('create-deposit')
+@click.option('--file', '-f',
+              type=click.Path(exists=True),
+              required=True,
+              help='JSON data file')
+@click.option('--ana', '-a',
+              help='Type of analysis',)
+@click.option('--role', '-r',
+              help='Role with access to the record')
+@click.option('--user', '-u',
+              help='User with access to the record')
+@click.option('--owner', '-o',
+              help='Owner of the record')
+@with_appcontext
+def create_deposit(file, ana, role, user, owner):
+    """
+    Create a new deposit through the CLI.
+    Usage:
+        cap fixtures create-deposit --f DATAFILE --r ROLE --u USER --o OWNER
+    """
+    try:
+        with open(file) as datafile:
+            data = json.load(datafile)
+    except (KeyError, ValueError):
+        raise click.BadParameter('Not a valid JSON file.')
+
+    if isinstance(data, dict):
+        update_data_with_schema(data, ana)
+        create_deposit_with_permissions(data, user, role, owner)
+    else:
+        for rec in data:
+            update_data_with_schema(rec, ana)
+            create_deposit_with_permissions(rec, user, role, owner)
+
+    click.secho(f"Record(s) added.", fg='green')
+
+
+def update_data_with_schema(data, ana):
+    """Checks if the analysis type is included in the schema, or adds it."""
+    if data.get('$schema') and ana:
+        click.secho("Your data already provide a $schema, --ana will not be used.")  # noqa
+    elif ana:
+        data['$ana_type'] = ana
+    else:
+        raise click.UsageError(
+            'You need to provide the --ana/-a parameter '
+            'OR add the $schema field in your JSON')
+
+
+def create_deposit_with_permissions(data, user, role, owner):
+    """Create a deposit and add privileges and owner information."""
+    from cap.modules.deposit.api import CAPDeposit
+
+    with db.session.begin_nested():
+        owner = get_existing_or_register_user(owner) if owner else None
+        deposit = CAPDeposit.create(data=data, owner=owner)
+
+        # add role and user
+        if role:
+            _role = get_existing_or_register_role(role)
+            deposit._add_egroup_permissions(_role,
+                                            ['deposit-read'],
+                                            db.session)
+        if user:
+            _user = get_existing_or_register_user(user)
+            deposit._add_user_permissions(_user,
+                                          ['deposit-read'],
+                                          db.session)
+        deposit.commit()
+    db.session.commit()
+
+    click.secho(
+        f"Created deposit with id: {deposit['_deposit']['id']}", fg='green')
