@@ -11,7 +11,7 @@ import CMSIndex from "./cms";
 import HowToSearchPage from "./about/HowToSearch";
 import AboutPage from "./about/AboutPage";
 import PolicyPage from "./policy";
-import StatusPage from "./status/StatusPage";
+// import StatusPage from "./status/StatusPage";
 import noRequireAuth from "./auth/NoAuthorizationRequired";
 import requireAuth from "./auth/AuthorizationRequired";
 
@@ -50,7 +50,7 @@ class App extends React.Component {
               <Route path="/login" component={noRequireAuth(WelcomePage)} />
               <Route path="/about" component={AboutPage} />
               <Route path="/policy" component={PolicyPage} />
-              <Route path="/status" component={StatusPage} />
+              {/* <Route path="/status" component={StatusPage} /> */}
               <Route path="/cms" component={CMSIndex} />
               <Route path="/search-tips" component={HowToSearchPage} />
               <Route path="/" component={requireAuth(IndexPage)} />
