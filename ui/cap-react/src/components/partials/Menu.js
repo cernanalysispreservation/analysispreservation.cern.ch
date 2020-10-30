@@ -7,7 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  padding: 5px;
+  padding: ${props => props.padding};
   border-radius: 50%;
   background: ${props => (props.expanded ? props.hover : "inherit")};
   &:hover {
@@ -24,7 +24,10 @@ const Menu = ({
   bottom = null,
   left = null,
   background = "",
-  hoverColor = "rgba(235, 235, 235, 1)"
+  hoverColor = "rgba(235, 235, 235, 1)",
+  padding = "5px",
+  minWidth = "120px",
+  shadow = false
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dropDownMenu = useRef(null);
@@ -68,6 +71,7 @@ const Menu = ({
       <Wrapper
         hover={hoverColor}
         expanded={expanded}
+        padding={padding}
         onClick={() => setExpanded(!expanded)}
       >
         {icon}
@@ -80,8 +84,9 @@ const Menu = ({
           left: `${left}px`,
           bottom: `${bottom}px`,
           zIndex: 10000,
-          minWidth: "120px",
-          background: background
+          minWidth: minWidth,
+          background: background,
+          boxShadow: shadow && " 1px 1px 49px -22px rgba(0,0,0,0.3)"
         }}
       >
         {expanded && children}
@@ -98,7 +103,10 @@ Menu.propTypes = {
   left: PropTypes.number,
   right: PropTypes.number,
   background: PropTypes.string,
-  hoverColor: PropTypes.string
+  hoverColor: PropTypes.string,
+  padding: PropTypes.string,
+  minWidth: PropTypes.string,
+  shadow: PropTypes.bool
 };
 
 export default Menu;

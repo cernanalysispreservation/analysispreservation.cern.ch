@@ -1,0 +1,37 @@
+.deposit-access .grommetux-text-input {
+  padding: 10px !important;
+  height: 26px;
+  width: 70%;
+  min-width: 300px;
+  border-radius: 3px;
+}
+
+.permission_checkbox .grommetux-check-box__control {
+  border-radius: 0px !important;
+  border: 1px solid #666;
+  height: 16px !important;
+  width: 16px !important;
+  margin-right: 8px !important;
+}
+.permission-pop-up label.grommetux-check-box {
+  margin: 0 !important;
+  white-space: unset !important;
+}
+
+.permission_checkbox .grommetux-check-box__control-check {
+  height: 16px !important;
+  width: 16px !important;
+
+  top: -1px !important;
+  left: -1px !important;
+}
+
+.permission-li-item:last-of-type {
+  border: 0 !important;
+}
+
+.deposit-access .deposit-acccess-table {
+  max-height: 400px;
+  height: 100%;
+  overflow: auto;
+}

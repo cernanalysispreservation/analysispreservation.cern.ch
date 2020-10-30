@@ -51,6 +51,17 @@ const ButtonWrapper = styled.div`
       }
     `};
 
+  ${({ primaryOutline }) =>
+    primaryOutline &&
+    css`
+      color: #007298;
+      background-color: rgba(0, 114, 152, 0.15);
+
+      &:hover {
+        background-color: rgba(0, 114, 152, 0.3);
+      }
+    `};
+
   ${({ secondary }) =>
     secondary &&
     css`
@@ -107,6 +118,7 @@ const Button = ({
   critical = false,
   criticalOutline = false,
   primaryPublished = false,
+  primaryOutline = false,
   icon = null,
   background = "#f5f5f5",
   hoverColor = "#e6e6e6",
@@ -228,6 +240,7 @@ const Button = ({
       secondary={secondary}
       disabled={loading ? true : disabled}
       primary={!disabled && primary}
+      primaryOutline={!disabled && primaryOutline}
       primaryPublished={!disabled && primaryPublished}
       tertiary={!disabled && tertiary}
       critical={!disabled && critical}
@@ -251,6 +264,7 @@ const Button = ({
 Button.propTypes = {
   text: PropTypes.string,
   primary: PropTypes.bool,
+  primaryOutline: PropTypes.bool,
   onClick: PropTypes.func,
   secondary: PropTypes.bool,
   disabled: PropTypes.bool,

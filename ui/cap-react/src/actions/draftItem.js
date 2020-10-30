@@ -730,14 +730,21 @@ export function handlePermissions(draft_id, type, email, action, operation) {
 }
 
 function _get_permissions_data(type, email, action, operation) {
-  return [
-    {
-      type: `${type}`,
-      email: `${email}`,
-      op: `${operation}`,
-      action: `${action}`
-    }
-  ];
+  return Array.isArray(action)
+    ? action.map(item => ({
+        type: `${type}`,
+        email: `${email}`,
+        op: `${operation}`,
+        action: `${item}`
+      }))
+    : [
+        {
+          type: `${type}`,
+          email: `${email}`,
+          op: `${operation}`,
+          action: `${action}`
+        }
+      ];
 }
 
 export function getDraftByIdAndInitForm(draft_id) {
