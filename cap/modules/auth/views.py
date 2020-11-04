@@ -25,6 +25,10 @@
 """Authentication views for CAP."""
 
 from functools import wraps
+from json import JSONDecodeError
+
+import requests
+from authlib.integrations.base_client.errors import OAuthError
 from flask import Blueprint, url_for, current_app, jsonify, \
                   request, session, abort, render_template
 from flask_login import current_user
@@ -34,14 +38,12 @@ from invenio_userprofiles.models import UserProfile
 from sqlalchemy.orm.attributes import flag_modified
 from werkzeug.exceptions import HTTPException
 
-from .config import OAUTH_SERVICES, USER_PROFILE
+from .config import OAUTH_SERVICES, OIDC_API, USER_PROFILE
 from .models import OAuth2Token
 from .proxies import current_auth
-from .utils import _create_or_update_token
+from .utils import _create_or_update_token, get_oidc_token, get_bearer_headers
 
 from cap.modules.access.utils import login_required
-
-from authlib.integrations.base_client.errors import OAuthError
 
 blueprint = Blueprint(
     'cap_auth',
@@ -193,6 +195,8 @@ def get_oauth_profile(name, token=None, client=None):
     # Check if OIDC and can get useerInfo
     if _client.load_server_metadata().get('userinfo_endpoint'):
         resp = _client.userinfo()
+        if name == 'cern':
+            groups = _client.parse_id_token(_client.token).get('groups')
     elif name == 'orcid':
         orcid = extra_data.get('orcid_id')
         resp = None

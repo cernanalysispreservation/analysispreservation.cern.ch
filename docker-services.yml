@@ -28,6 +28,8 @@ services:
       - "INVENIO_CERN_APP_CREDENTIALS_KEY=CHANGE_ME"
       - "INVENIO_CERN_APP_CREDENTIALS_SECRET=CHANGE_ME"
       - "DEV_HOST=CHANGE_ME"
+      - "INVENIO_CERN_CLIENT_ID=CHANGE_ME"
+      - "INVENIO_CERN_CLIENT_SECRET=CHANGE_ME"
   lb:
     build: ./docker/haproxy/
     image: cap-lb
