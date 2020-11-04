@@ -120,15 +120,27 @@ OAUTH_SERVICES = {
             'scope': 'openid profile email cern-login-info offline_access',
         }),
     "ORCID":
-    dict(name='orcid',
-         access_token_url='https://orcid.org/oauth/token',
-         authorize_url='https://orcid.org/oauth/authorize',
-         api_base_url='https://pub.orcid.org/v2.0',
-         client_kwargs={
-             'scope': '/authenticate',
-             'token_endpoint_auth_method': 'client_secret_post'
-         },
-         extra_data_method=orcid_extra_data)
+    dict(
+        name='orcid',
+        access_token_url='https://orcid.org/oauth/token',
+        authorize_url='https://orcid.org/oauth/authorize',
+        api_base_url='https://pub.orcid.org/v2.0',
+        client_kwargs={
+            'scope': '/authenticate',
+            'token_endpoint_auth_method': 'client_secret_post'
+        },
+        extra_data_method=orcid_extra_data
+    )
+}
+
+#: CERN OIDC Auth endpoints
+OIDC_API = {
+    'IDENTITY':
+        'https://authorization-service-api.web.cern.ch/api/v1.0/Identity',
+    'GROUP':
+        'https://authorization-service-api.web.cern.ch/api/v1.0/Group',
+    'TOKEN':
+        'https://auth.cern.ch/auth/realms/cern/api-access/token'
 }
 
 # return the user profile based on the service
