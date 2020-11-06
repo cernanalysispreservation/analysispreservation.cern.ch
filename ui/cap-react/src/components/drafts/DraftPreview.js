@@ -167,7 +167,7 @@ const DraftPreview = props => {
       wrap={true}
       align="start"
       justify="center"
-      colorIndex="light-2"
+      colorIndex="light-1"
     >
       {props.error ? showToaster(props.error.message) : null}
 
@@ -175,14 +175,14 @@ const DraftPreview = props => {
         flex={true}
         pad={{ between: "medium" }}
         direction="column"
-        style={{ width: "100%", maxWidth: "1200px" }}
+        style={{ width: "100%", maxWidth: "960px" }}
       >
         <Box pad={{ horizontal: "medium" }}>
           <Box
             direction="row"
             responsive={false}
             justify="between"
-            colorIndex="light-1"
+            colorIndex="light-2"
             pad={{ horizontal: "medium" }}
             margin={{ vertical: "small" }}
             style={{ borderRadius: "3px" }}
