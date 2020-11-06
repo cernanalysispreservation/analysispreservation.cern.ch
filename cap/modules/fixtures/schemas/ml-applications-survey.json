@@ -1,0 +1,445 @@
+{
+  "experiment": "CMS",
+  "use_deposit_as_record": false,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "type":"object",
+    "additionalProperties":false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+      "general": {
+        "type":"object",
+        "additionalProperties":false,
+        "properties": {
+          "ml_use": {
+            "type": "string",
+            "title": "If you said that your analysis does not make use of any ML applications, why not? Is it due to a lack of expertise or a lack of access to resources for training/inferencing? Would you employ ML methods if you had more expertise and/or resources in your group? What are your major concerns in using ML methods and do you have suggestions to address these?"
+          },
+          "knowledge_lack": {
+            "type": "string",
+            "title": "What ML knowledge and/or skills do you feel your or your group are lacking (if any)?"
+          }
+        },
+        "title": "General"
+      },
+      "apps": {
+        "type":"object",
+        "properties": {
+          "development": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "Select the answer that applies."
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [{
+                  "properties": {
+                    "options": {
+                      "enum": ["Yes"]
+                    }
+                  }
+                }, {
+                  "properties": {
+                    "options": {
+                      "enum": ["No"]
+                    },
+                    "other":{
+                      "type":"object",
+                      "additionalProperties":false,
+                      "properties": {
+                        "options": {
+                          "type": "array",
+                          "uniqueItems": true,
+                          "items":{
+                            "type":"string",
+                            "enum": [
+                              "Stored in CMS data format (AOD)",
+                              "Stored in CMS data format (MiniAOD)",
+                              "Stored in CMS data format (NanoAOD)",
+                              "Stored in CMS data format (Other)",
+                              "Inference on the fly"
+                            ]
+                          },
+                          "description": "Multiple choices allowed",
+                          "title": "Select the answers that apply."
+                        },
+                        "other": {
+                          "type": "string",
+                          "title": "If you selected \"Inference on the fly\" in the question above, but you did not develop the ML model, please explain this incongruity."
+                        }
+                      },
+                      "title":"If you said no to the question above, how do you access the inference?"
+                    }
+                  }
+                }]
+              }
+            },
+            "title": "Did you develop/train this ML application?"
+          }
+        },
+        "title": "ML Applications Use"
+      },
+      "development": {
+        "type":"object",
+        "properties": {
+          "language": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Python",
+                  "C++",
+                  "Other (please specify)"
+                ],
+                "title": "Select the answer that applies."
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [{
+                  "properties": {
+                    "options": {
+                      "enum": ["Python"]
+                    }
+                  }
+                },{
+                  "properties": {
+                    "options": {
+                      "enum": ["C++"]
+                    }
+                  }
+                },{
+                  "properties": {
+                    "options": {
+                      "enum": ["Other (please specify)"]
+                    },
+                    "other": {
+                      "type": "string",
+                      "title": "If the software is not listed above, please specify it here"
+                    }
+                  }
+                }]
+              }
+            },
+            "title": "What language are you using for development?"
+          },
+          "tools_training": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "TMVA",
+                    "Caffe",
+                    "Scikit-learn",
+                    "Tensorflow",
+                    "Theano",
+                    "MXNet",
+                    "ONNX",
+                    "PyTorch",
+                    "ML as a service (Azure ML)",
+                    "ML as a service (Amazon ML)",
+                    "ML as a service (Google ML)",
+                    "ML as a Service (IBM)",
+                    "ML as a Service (CMS)",
+                    "R",
+                    "None",
+                    "Other (please specify)"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the software from the list."
+              },
+              "other": {
+                "type": "string",
+                "title": "If the software is not listed above, please specify it here."
+              }
+            },
+            "title": "What ML libraries or services have you used for training?"
+          },
+          "tools_inference": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "TMVA",
+                    "Caffe",
+                    "Scikit-learn",
+                    "Tensorflow",
+                    "Theano",
+                    "MXNet",
+                    "ONNX",
+                    "PyTorch",
+                    "ML as a service (Azure ML)",
+                    "ML as a service (Amazon ML)",
+                    "ML as a service (Google ML)",
+                    "ML as a Service (IBM)",
+                    "ML as a Service (CMS)",
+                    "R",
+                    "None",
+                    "Other (please specify)"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the software from the list."
+              },
+              "other": {
+                "type": "string",
+                "title": "If the software is not listed above, please specify it here."
+              }
+            },
+            "title": "What ML libraries or services have you used for inference?"
+          },
+          "tools_other": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Was there any library you wanted to use, but to which you didn't have access?"
+          },
+          "hardware_training": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "CPU",
+                "GPU",
+                "FPGA",
+                "TPU",
+                "Other"
+              ]
+            },
+            "description": "Multiple choices allowed",
+            "title": "What hardware did you use for training?"
+          },
+          "hardware_inference": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "CPU",
+                "GPU",
+                "FPGA",
+                "TPU",
+                "Other"
+              ]
+            },
+            "description": "Multiple choices allowed",
+            "title": "What hardware did you use for inference?"
+          },
+          "resource_access": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "Local (university or independent lab)",
+                "National Lab (eg Fermilab, INFN, etc)",
+                "CERN/LXPLUS infrastructure",
+                "Other"
+              ]
+            },
+            "description": "Multiple choices allowed",
+            "title": "Where are you accessing these resources?"
+          },
+          "hardware_no_access": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "CPU",
+                "GPU",
+                "FPGA",
+                "TPU",
+                "No, I had access to all of the hardware I needed"
+              ]
+            },
+            "description": "Multiple choices allowed",
+            "title": "Was there a hardware platform that you would have used, but to which you didn't have access?"
+          },
+          "data_access": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "CMS data format (AOD)",
+                "CMS data format (MiniAOD)",
+                "CMS data format (NanoAOD)",
+                "Private NTuple format (ROOT File format)",
+                "HDF5",
+                "Other"
+              ]
+            },
+            "description": "Multiple choices allowed",
+            "title": "How did you access your training/validation/testing data?"
+          },
+          "different_model": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "Select the answer that applies."
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [{
+                  "properties": {
+                    "options": {
+                      "enum": ["No"]
+                    }
+                  }
+                }, {
+                  "properties": {
+                    "options": {
+                      "enum": ["Yes"]
+                    },
+                    "other": {
+                      "type": "string",
+                      "title": "If yes, please specify how you settled on your current model. Was there an upside to using this architecture? A downside to using a different architecture?"
+                    }
+                  }
+                }]
+              }
+            },
+            "title": "Did you consider using a different ML model?"
+          },
+          "input_selection": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Yes, we use the correlation matrix and remove highly correlated variables",
+                    "No, we keep the complete list",
+                    "Other (please specify in the field below)"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the answer that applies."
+              },
+              "other": {
+                "type": "string",
+                "title": "If you selected 'Other', please specify."
+              }
+            },
+            "title": "How do you select the input variables? Do you perform any pruning of your initial list of input variables, based on the correlations or dependencies between the input variables?"
+          },
+          "cmssw_integration": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Yes (in the future)",
+                    "Yes (in progress)",
+                    "Yes (it’s currently integrated)",
+                    "No"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the answer that applies."
+              },
+              "other": {
+                "type": "string",
+                "title": "If you said no to the question above, please explain why the model shouldn't be integrated into CMSSW."
+              }
+            },
+            "title": "Is this model going to be integrated into CMSSW?"
+          },
+          "group_interactions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "options": {
+                "type":"array",
+                "uniqueItems": true,
+                "items": {
+                  "type":"string",
+                  "enum":[
+                    "CERN IML",
+                    "CMS ML group",
+                    "Industry Collaborators (DeepMind, FAIR, etc)",
+                    "Academic Collaborators (CS researchers at your or other universities)",
+                    "No",
+                    "Other"
+                  ]
+                },
+                "description":"Multiple choices allowed",
+                "title":"Select the answer that applies."
+              },
+              "other": {
+                "type": "string",
+                "title": "If you selected any of the groups above, please describe your interaction."
+              }
+            },
+            "title": "Have you developed or discussed this method/application with any of the following groups?"
+          },
+          "presentations": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Major ML conference main session (NeurIPS, ICLR, ICML, etc)",
+                    "Major ML conference topical workshop",
+                    "ML for Science/ML for Physics conference or workshop",
+                    "CERN IML meeting or conference",
+                    "University or lab specific ML conference/meeting/workshop",
+                    "No, we have not presented this work at one of these conferences",
+                    "Other"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the answers that apply."
+              },
+              "other": {
+                "type": "string",
+                "title": "If you selected any of the locations above, please describe where the presentation took place."
+              },
+              "url": {
+                "type": "string",
+                "title": "Include a link to the talk, if possible."
+              }
+            },
+            "title": "Have you presented this work at any of the following?"
+          }
+        },
+        "title": "ML Applications Development"
+      }
+    },
+    "title": "Survey Questions"
+  },
+  "name": "ml-applications-survey"
+}

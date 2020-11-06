@@ -1,0 +1,490 @@
+{
+  "experiment": "CMS",
+  "use_deposit_as_record": false,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "type":"object",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+      "model_general_type": {
+        "type":"array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "enum": [
+            "Classification",
+            "Regression",
+            "Generative",
+            "Other"
+          ]
+        },
+        "description":"Multiple choices allowed",
+        "title":"What is the general type of ML model you use?"
+      },
+      "model_type": {
+        "type":"array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "enum": [
+            "Decision Tree (boosted/random forest)",
+            "Fisher Discriminant (FD)",
+            "Product of Projected Likelihoods",
+            "Fully Connected Network (FCN)",
+            "Convolutional Neural Network (CNN)",
+            "Recurrent Neural Network (RNN)",
+            "Graph Neural Network (GNN)",
+            "Generative Adversarial Network (GAN)",
+            "(Variational) Autoencoder ((V)AE)",
+            "Other"
+          ]
+        },
+        "description":"Multiple choices allowed",
+        "title":"What type of ML model did you use?"
+      },
+      "predefined_network_use":{
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "other": {
+                  "type": "string",
+                  "enum": ["Yes", "No", "I don’t know"],
+                  "title": "If you answered yes to the question above, did you perform some sort of transfer learning?"
+                }
+              }
+            }]
+          }
+        },
+        "title": "Did you make use of a pre-defined network (i.e. ResNet-50)?"
+      },
+      "learning_type": {
+        "type": "string",
+        "enum": [
+          "Supervised",
+          "Semi-supervised",
+          "Unsupervised",
+          "Reinforcement Learning",
+          "Other"
+        ],
+        "title": "What type of learning did you use?"
+      },
+      "hyperparameter_optimization": {
+        "type":"object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "other": {
+                  "type": "string",
+                  "description": "For example, did you optimize by hand or use something automated, like a Bayesian method?",
+                  "title": "If you answered yes to the question above, please explain."
+                }
+              }
+            }]
+          }
+        },
+        "title": "Did you do a hyper-parameter optimization?"
+      },
+      "sample_mixing": {
+        "type":"array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "enum": [
+            "Undecided",
+            "Yes, we select portions of our dataset",
+            "Yes, we use weights to reweight signal and background to be represented appropriately",
+            "Does not apply: we have only one background process",
+            "We do not mix the samples"
+          ]
+        },
+        "description":"Multiple choices allowed",
+        "title":"When training with more than one signal/background, do you mix all samples in the proportions you expect in data? Select the way you mix the samples."
+      },
+      "overtraining": {
+        "type":"array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "enum": [
+            "We do not perform any check",
+            "We divide the sample in three subsamples: training, validation, and testing",
+            "Other"
+          ]
+        },
+        "title":"How do you make sure you are not affected by overtraining?"
+      },
+      "cross_validation": {
+        "type":"object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "comments_yes": {
+                  "type": "string",
+                  "description": "i.e. 80% 10-fold x-validation / 20% testing",
+                  "title": "If yes, please describe how you performed your cross validation"
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                },
+                "comments_no": {
+                  "type": "object",
+                  "additionalProperties":false,
+                  "properties": {
+                    "training": {
+                      "type": "integer",
+                      "title": "Training"
+                    },
+                    "testing": {
+                      "type": "integer",
+                      "title": "Testing"
+                    },
+                    "validation": {
+                      "type": "integer",
+                      "title": "Validation"
+                    }
+                  },
+                  "title": "If no, how many entries did you use for training/validation/testing?"
+                }
+              }
+            }]
+          }
+        },
+        "title": "Did you perform a cross validation?"
+      },
+      "mva_stability": {
+        "type": "string",
+        "title": "Which steps to test the stability and/or robustness of your MVA did you undertake? For example, to test stability, you might train multiple times with different initial weights. To test robustness you might shift the inputs slightly to see how much the outputs change."
+      },
+      "training_bias_check": {
+        "type":"object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "other": {
+                  "type": "string",
+                  "title": "If you answered yes to the question above, please explain."
+                }
+              }
+            }]
+          }
+        },
+        "description": "i.e. did you ensure your method performs well on edge cases, equally across all classes, etc",
+        "title": "Do you perform a check for training bias?"
+      },
+      "input":{
+        "type":"object",
+        "properties":{
+          "options":{
+            "type":"array",
+            "uniqueItems": true,
+            "items":{
+              "type":"string",
+              "enum":[
+                "We study all 1D distributions",
+                "We study all 2D distributions",
+                "Other"
+              ]
+            },
+            "description":"Multiple choices allowed",
+            "title":"Select the check you performed, from the list."
+          },
+          "other":{
+            "type":"string",
+            "title":"If the check is not listed above, please specify it here"
+          }
+        },
+        "title":"How have you checked that the input variables, including their dependencies, are well-modeled?"
+      },
+      "correlation":{
+        "type":"object",
+        "properties":{
+          "options":{
+            "type":"array",
+            "uniqueItems": true,
+            "items": {
+              "type":"string",
+              "enum":[
+                "We study the correlation matrix between the input variables",
+                "We also study dependence beyond linear correlation",
+                "Other"
+              ]
+            },
+            "description":"Multiple choices allowed",
+            "title":"Select the study you performed from the list"
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["We study the correlation matrix between the input variables"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["Other"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["We also study dependence beyond linear correlation"]
+                },
+                "other":{
+                  "type":"string",
+                  "title":"If you chose \"We also study dependence beyond linear correlation\" in the previous question, please share details."
+                }
+              }
+            }]
+          }
+        },
+        "title":"Do you study the correlations and dependencies between the input variables?"
+      },
+      "mva_techniques":{
+        "type":"object",
+        "properties":{
+          "options":{
+            "type":"string",
+            "enum":[
+              "We do not study that",
+              "Yes, but this does not apply to my analysis",
+              "Yes, I make training samples large enough and I checked that this does not occur",
+              "Yes, and I need to check whether this applies to my analysis",
+              "Other (please specify in the field below)"
+            ],
+            "title":"Select the way you deal with this issue."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["We do not study that"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["Yes, but this does not apply to my analysis"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["Yes, I make training samples large enough and I checked that this does not occur"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["Yes, and I need to check whether this applies to my analysis"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["Other (please specify in the field below)"]
+                },
+                "other":{
+                  "type":"string",
+                  "title":"If none of the above, please specify here"
+                }
+              }
+            }]
+          }
+        },
+        "title":"Are you aware that some MVA techniques may classify data events as very signal-like if any of their variables take values in regions where the background training samples have no events?"
+      },
+      "event_weights": {
+        "type": "string",
+        "description": "i.e. negatively weighted events in the training as e.g. produced by amc@nlo",
+        "title": "How do you treat event weights during training?"
+      },
+      "phase_space":{
+        "type":"object",
+        "properties":{
+          "options":{
+            "type":"string",
+            "enum":[
+              "Yes",
+              "Close enough",
+              "No"
+            ],
+            "title":"Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Close enough"]
+                },
+                "other":{
+                  "type":"string",
+                  "title":"If you answered \"close enough\" or \"no\" above, please explain."
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                },
+                "other":{
+                  "type":"string",
+                  "title":"If you answered \"close enough\" or \"no\" above, please explain."
+                }
+              }
+            }]
+          }
+        },
+        "title":"Are your training and analysis / evaluation phase space identical?"
+      },
+      "data_driven_analysis_methods": {
+        "type": "string",
+        "title": "Does the analysis depend on data-driven methods such as background estimations? If so, how do you ensure that phase space extrapolations are appropriately modeled in your training set?"
+      },
+      "data_mc_sf_development": {
+        "type":"object",
+        "properties":{
+          "options":{
+            "type":"string",
+            "enum":["Yes", "No"],
+            "title":"Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                },
+                "other":{
+                  "type":"array",
+                  "uniqueItems": true,
+                  "items":{
+                    "type":"string",
+                    "enum": [
+                      "The SF were already present",
+                      "This task was left for future work",
+                      "We didn't want to",
+                      "Other"
+                    ]
+                  },
+                  "description": "Multiple choices allowed",
+                  "title":"If you answered no to the question above, why?"
+                }
+              }
+            }]
+          }
+        },
+        "title":"Did you develop data/MC SF for your ML application?"
+      },
+      "model_metrics": {
+        "type": "object",
+        "properties": {
+          "answer": {
+            "type": "string",
+            "title": "Write your answer."
+          },
+          "attachment": {
+            "x-cap-file": {},
+            "type": "string",
+            "title": "Attachment"
+          }
+        },
+        "title": "Please give us an idea of the accuracy/precision of your model. You can enter specific measurements in the text box or upload a ROC curve, confusion matrix, etc. For analyses which have performed cross-validations, you might provide us with an uncertainty for your accuracy. Other examples of metrics might include: Accuracy (A=(TP+TN)/(TP+TN+FP+FN)), Precision (P=TP/(TP+FP)), Recall (R=TP/(TP+FN)), F1 score (F1=2* (P*R)/(P+R))"
+      },
+      "other": {
+        "type": "string",
+        "title": "Please share any other details about the training or use of this model. This could be innovative input features, unusual network architectures, custom loss functions, special training methods, etc."
+      }
+    },
+    "title": "Development of the ML Application"
+  },
+  "name": "ml-applications-development"
+}
