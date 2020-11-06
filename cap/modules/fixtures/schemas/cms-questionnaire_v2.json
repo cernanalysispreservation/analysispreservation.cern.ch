@@ -1,0 +1,1973 @@
+{
+  "name":"cms-stats-questionnaire",
+  "version":"0.0.2",
+  "fullname":"CMS Statistics Questionnaire",
+  "experiment":"CMS",
+  "is_indexed":true,
+  "use_deposit_as_record":true,
+  "deposit_schema":{
+    "additionalProperties":false,
+    "$schema":"http://json-schema.org/draft-04/schema#",
+    "type":"object",
+    "properties":{
+      "_user_edited": {
+        "type": "boolean"
+      },
+      "_deposit": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/deposit-v0.0.1.json"
+      },
+      "_buckets": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/buckets-v0.0.1.json"
+      },
+      "_experiment": {
+        "type": "string"
+      },
+      "_fetched_from": {
+        "type": "string"
+      },
+      "_access": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
+      },
+      "_files": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
+      },
+      "_review": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/review-v0.0.1.json"
+      },
+      "control_number": {
+        "type": "string"
+      },
+      "$ana_type": {
+        "type": "string"
+      },
+      "$schema": {
+        "type": "string"
+      },
+      "general_title": {
+        "type": "string"
+      },
+      "analysis_context":{
+        "type":"object",
+        "additionalProperties":false,
+        "properties":{
+          "name":{
+            "type":"string",
+            "description":"Please insert the name of the person filling up the questionnaire.",
+            "title":"1.1 Your name"
+          },
+          "email":{
+            "type":"string",
+            "title":"1.2 Your email address"
+          },
+          "wg":{
+            "type":"string",
+            "enum":[
+              "BPH",
+              "FTR",
+              "B2G",
+              "EXO",
+              "HIG",
+              "HIN",
+              "SMP",
+              "SUS",
+              "TOP",
+              "PPS",
+              "other"
+            ],
+            "enumNames":[
+              "B physics and quarkonia (BPH)",
+              "Future (FTR)",
+              "Beyond-two-generations (B2G)",
+              "Exotica (EXO)",
+              "Higgs physics (HIG)",
+              "Heavy ions physics (HIN)",
+              "Standard Model physics (SMP)",
+              "Supersymmetry (SUS)",
+              "Top physics (TOP)",
+              "Physics of the CMS-Totem Precision Proton Spectometer (PPS)",
+              "Other (please specify)"
+            ],
+            "description":"PAG/POG identifier",
+            "title":"1.3. Working group"
+          },
+          "cadi_id": {
+            "pattern": "^[A-Z0-9]{3}-[0-9]{2}-[0-9]{3}$",
+            "type": "string",
+            "x-validate-cadi-id": {},
+            "placeholder": "e.g. JME-10-107",
+            "description":"If a CADI entry is available, please make sure you fill it correctly, as an email will be sent to the review Hypernews associated to the CADI line. If no CADI entry is available, please provide below the title and applicable references (analysis note numbers, etc.)",
+            "title": "1.4. CADI entry number, if available"
+          },
+          "title_references":{
+            "type":"string",
+            "description":"If you don't have a CADI entry number yet, please fill this field with the title of the analysis and the applicable references (Analysis Note numbers, etc.)",
+            "title":"1.5. Title and references (if CADI number not available)"
+          },
+          "next_deadline_date":{
+            "type":"string",
+            "format": "date",
+            "description":"Please cite the preapproval date (if it has been set), or the closest next deadline (approval, freezing, etc.). It defaults to one week (assuming you fill it when freezing for preapproval)",
+            "title":"1.6. Next deadline date (typically, preapproval date)"
+          },
+          "analysis_summary":{
+            "type":"string",
+            "description":"Please describe briefly the analysis (what is being measured or sought for, what dataset, and how)",
+            "title":"1.7. Three-line summary of the analysis "
+          },
+          "related_cadi_ids":{
+            "type":"string",
+            "description":"Please include here earlier versions of this analysis, if applicable. Please point out all relevant similarities/differences.",
+            "title":"1.8. CADI entry numbers of analysis with same/similar statistical treatment"
+          }
+        },
+        "title":"1. Analysis Context"
+      },
+      "general_information":{
+        "type":"object",
+        "additionalProperties":false,
+        "properties":{
+          "aware_twiki":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "description":"The main Statistics Committee <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee'>TWiki</a> page. The <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>Frequently Asked Questions</a>. The <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences'>statistics-related references</a>.",
+            "title":"2.1. Are you aware that the Statistics Committee has a TWiki page which links a number of short documents describing recommendations for statistical techniques?"
+          },
+          "aware_sc_answer":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "description":"You can send your questions to the <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html'>Statistics Discussions Hypernews forum</a>, or to the Committee's mailing list cms-statistics-committee@cern.ch.",
+            "title":"2.2. Are you aware that the Statistics Committee will make an effort to promptly answer your question on statistics issues?"
+          },
+          "hn_subscription":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "title":"2.3. Have you subscribed yet to the Statistics Discussions Hypernews forum (if not, we suggest that you do)?"
+          },
+          "sc_interaction":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "title":"2.4. Have you interacted with the Statistics Committee in the past (via email, HN, or in person) to discuss an issue with a CMS analysis?"
+          },
+          "aware_sc_meetings":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "title":"2.5. Are you aware that the Statistics Committee meets regularly (Vidyo only; look for announcement in Statistics Discussions HN forum) and that everybody is welcome to participate?"
+          }
+        },
+        "title":"2. General Information"
+      },
+      "multivariate_discriminants":{
+        "type":"object",
+        "additionalProperties":false,
+        "properties":{
+          "read_sc_twiki":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "title":"3.1. Have you read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection'>SC TWiki page on MVA recommendations</a>?"
+          },
+          "read_ml_groups_page":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "title":"3.2. Have you read the ML Groups page on MVA recommendations?"
+          },
+          "use_of_centralized_cms_apps":{
+            "type":"object",
+            "additionalProperties":false,
+            "properties":{
+              "options":{
+                "type":"array",
+                "uniqueItems": true,
+                "items":{
+                  "type":"string",
+                  "enum":[
+                    "EGM ID",
+                    "BEST",
+                    "DeepMET",
+                    "DeepTau",
+                    "DeepCSV",
+                    "DeepAK8",
+                    "DeepJet",
+                    "Deep Double-x (v1)",
+                    "Deep Double-x (v2)",
+                    "ParticleNet",
+                    "No",
+                    "Other (please specify in the field below)"
+                  ]
+                },
+                "description":"Multiple choices allowed",
+                "title":"Select the answers that apply."
+              },
+              "other":{
+                "type":"string",
+                "title":"For any other software, please specify it here."
+              }
+            },
+            "title":"3.3. Are you making use of any of the centralized CMS ML applications?"
+          },
+          "mva_use":{
+            "type":"string",
+            "enum": ["Yes", "No"],
+            "description":"If the answer is \"No\", please proceed with the next page of the questionnaire",
+            "title":"3.4. Are you using a multi-variate discriminant in your data analysis to discriminate between signal and background?"
+          },
+          "equivalent_cut_based_analysis":{
+            "type":"string",
+            "enum":[
+              "Yes",
+              "No",
+              "N/A"
+            ],
+            "title":"3.5 Is there currently an equivalent cut based analysis?"
+          },
+          "ml_use_description": {
+            "type":"string",
+            "title":"3.6 Please give us a short description of why and how you are using machine learning in your analysis."
+          },
+          "ml_app_use": {
+            "items": {
+              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-use-v0.0.1.json"
+            },
+            "type": "array",
+            "title": "3.7. Use of ML Applications"
+          },
+          "ml_survey": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "Are you willing to spend a few minutes answering a short survey by the ML group?"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [{
+                  "properties": {
+                    "options": {
+                      "enum": ["No"]
+                    }
+                  }
+                }, {
+                  "properties": {
+                    "options": {
+                      "enum": ["Yes"]
+                    },
+                    "questions":{
+                      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-survey-v0.0.1.json"
+                    }
+                  }
+                }]
+              }
+            },
+            "title": "3.8. Optional ML Survey"
+          }
+        },
+        "title": "3. Multivariate Discriminants (ML)"
+      },
+      "data_fitting": {
+        "type": "object",
+        "additionalProperties":false,
+        "properties": {
+          "analysis_fitting": {
+            "type": "string",
+            "enum": [
+              "Undecided",
+              "Yes",
+              "No"
+            ],
+            "description": "If the answer is \"No\", please proceed with Section 5.",
+            "title": "4.1. Does the analysis include fitting of data distributions?"
+          },
+          "analysis_fitting_specifics": {
+            "type": "string",
+            "description": "If you perform many different fits, please use for the following questions the \"Additional Comments\" fields for specifying details\n",
+            "title": "4.2. Which fits are you performing in your analysis?"
+          },
+          "functional_forms": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Histograms/Templates",
+                    "Parametric curves/pdfs",
+                    "Other"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the functional forms"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "4.3. Which functional forms are used?"
+          },
+          "fitting_model": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Histograms/Templates from MC",
+                    "Histograms/Templates from a data sideband",
+                    "Theory curve(s)",
+                    "Theory-inspired curve(s)",
+                    "Ad-hoc curves",
+                    "Other"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the fitting model"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "4.4. How do you choose the fitting model?"
+          },
+          "stats": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Chi-square",
+                    "Binned likelihood",
+                    "Unbinned likelihood",
+                    "Other"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Select the test statistic"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              },
+              "other": {
+                "type": "string",
+                "title": "4.5.1. What drove you to this particular choice?"
+              }
+            },
+            "title": "4.5. Which test statistic are you using to perform the fit(s)?"
+          },
+          "gof": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "use_options": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "description": "If the answer is \"No\", please explain in \"Additional Comments\" why you deem such tests unnecessary for the fits in your analysis. Otherwise, please provide some details of how this test is performed, in \"Additional Comments\".",
+                "title": "Select whether you perform a GoF test"
+
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              },
+              "p_values": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Don't know",
+                    "<0.1%",
+                    "0.1%-1%",
+                    "1%-5%",
+                    "5%-99%",
+                    "99%-99.9%",
+                    ">99.9%"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "4.6.1. What is/are the resulting p-value(s)?"
+              }
+            },
+            "title": "4.6. Do you perform a goodness-of-fit test for the fit(s)?"
+          },
+          "pd_check": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "We do no check that",
+                  "No, but we do not use the uncertainty returned by the fit anyway",
+                  "Yes, and the result is that the method is unbiased",
+                  "Yes, and there are some deviations we account for (please specify in \"Additional Comments\")",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Do you check it?"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "4.7. Do you check that the pull distribution in toy experiments is distributed as expected for an unbiased method (mean 0, width 1)?"
+          },
+          "covariance_matrix": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: we do not use the parameters/uncertainties elsewhere",
+                  "Yes",
+                  "No"
+                ],
+                "title": "Are you accounting for the covariance matrix?"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "4.8. In case you are using the returned parameters in other parts of your analysis: are you accounting for the covariance matrix (error and off-diagonal correlation terms) of the parameter uncertainties?"
+          },
+          "func_form": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: we do not perform this kind of fitting",
+                  "We perform robustness checks to show that we are insensitive to the choice of the functional form.",
+                  "We tried different options and assign a systematic uncertainty from the difference.",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Select the way you choose your functional form"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "4.9. In case you perform a fit to the background shape with a function: How do you choose the functional form?"
+          },
+          "nop": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: we do not use such a function for fitting",
+                  "We choose what looks more or less OK",
+                  "We perform robustness checks to show that we are insensitive to this choice",
+                  "We tried different options and chose the most \"conservative\" one",
+                  "We applied a formal decision procedure (such as Fisher F-Test, LR test, please specify in \"Additional Comments\")",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Select the way you choose the number of parameters"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "4.10. In case you perform a fit using a functional form which exists for many different number of parameters (such as polynomials): How are you choosing the number of parameters?"
+          },
+          "close_physical_boundaries": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "We do not check that",
+                  "No",
+                  "Yes, but we do not use the uncertainty",
+                  "Yes, and we check that the error calculation is robust anyways",
+                  "Yes, and we trust the errors from the fitter without further checks",
+                  "Other"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "4.11. Are any of the parameters returned by the fit close (less than 3 sigma) to their physical or pre-defined boundary?"
+          }
+        },
+        "title": "4. Data Fitting"
+        },
+      "confidence_intervals_limits": {
+        "type": "object",
+        "properties": {
+          "limits_on_parameters": {
+            "type": "string",
+            "enum": [
+              "Undecided",
+              "Yes",
+              "No"
+            ],
+            "description": "If the answer is \"No\", please proceed with Section 6. If the answer is \"Yes\", then in many cases the confidence interval estimation will involve data fitting (e.g. fitting with a signal plus background model); in this case, please fill also Section 4.",
+            "title": "5.1. Does the analysis include the setting of limits on some parameter or placing a confidence interval on some parameter? *"
+          },
+          "two_sided_select": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Completely undecided",
+                  "We will only cite a limit",
+                  "We will only cite a two-sided interval",
+                  "We will decide that after looking at data",
+                  "We will cite both",
+                  "Does not apply: we use a unified interval construction approach (Feldman-Cousins)"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "5.2. Will you cite a limit or a two-sided confidence interval?"
+          },
+          "aware_agreement_cms_atlas": {
+            "type": "string",
+            "enum": [
+              "Does not apply: we do not perform limit computation",
+              "Yes",
+              "No"
+            ],
+            "title": "5.3. Are you aware of the agreement between ATLAS and CMS regarding limit setting, which — among other things — requires the CLs method for Higgs and SUSY analyses?"
+          },
+          "aware_sc_support": {
+            "type": "string",
+            "enum": [
+              "Does not apply: we do not perform limit computation",
+              "Yes",
+              "No"
+            ],
+            "title": "5.4. Are you aware that the Statistics Committee provides support and a simple recipe to include the derivation of Feldman-Cousins confidence intervals in RooStats jobs that are currently used to compute CLs limits?"
+          },
+          "aware_bayesian": {
+            "type": "string",
+            "enum": [
+              "Does not apply: we do not use Bayesian methods",
+              "Yes",
+              "No"
+            ],
+            "title": "5.5. If you are using a Bayesian technique, are you aware that the SC recommends to perform a prior sensitivity analysis, both on the PDFs of parameters describing the systematic uncertainties (nuisance parameters) and on the PDF of the parameter to be estimated?"
+          },
+          "bayesian_approaches": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Frequentist limits",
+                    "Frequentist intervals",
+                    "Modified frequentist limits (CLs)",
+                    "Profile likelihood limits",
+                    "Profile likelihood intervals",
+                    "Unified approach (Feldman-Cousins)",
+                    "Bayesian limits/intervals, with a flat priori for the parameter of interest",
+                    "Bayesian limits/intervals, with a reference prior for the parameter of interest",
+                    "Other"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Mark the approach(es) you are using"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "5.6. Which approach(es) are you using?"
+          },
+          "confidence_interval_tools": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "The CMS Higgs Combination Tool (\"combine\")",
+                    "LandS",
+                    "RooStats (by hand)",
+                    "Theta",
+                    "Other"
+                  ]
+                },
+                "description": "Multiple choices allowed",
+                "title": "Mark the software(s) you are using"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "5.7. What software tool are you using for your confidence interval calculations?"
+          },
+          "frequentist_stats": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: the construction does not make use of a test statistic.",
+                  "Likelihood ratio in which nuisance parameters and signal cross section are all fixed to a nominal value (\"LEP-like\").",
+                  "Profile likelihood ratio in which nuisance parameters are varied in the maximization and the signal cross section parameter is fixed (\"Tevatron-like\").",
+                  "Profile likelihood ratio modified for upper limits in which nuisance parameters are varied in the nominator and denominator. The signal cross section mu is fixed to the currently tested point mu* in the nominator and is varied but constrained to 0 <= mu < mu* in the denominator (sometimes called the \"LHC-like\" test statistic; this is used in the Higgs combination).",
+                  "Other (please specify in question 5.8.1)"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "other": {
+                "type": "string",
+                "title": "5.8.1. If you chose \"other\" in the previous question, please specify the test statistic used here."
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "5.8. In the case of frequentist/CLs confidence interval construction: which test statistic do you use?"
+          },
+          "asymptotic_formulae": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "Select the answer that applies"
+              },
+              "cross_check": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "5.9.1. If you choose \"Yes\" in the previous question, did you make a cross check with toys, e.g. checking the agreement of toy and asymptotics based upper limits for some exemplary values of new physics model parameters such as the mass of a new particle?"
+              }
+            },
+            "title": "5.9. Do you use asymptotic formulae from the paper <a target='_blank' href='https://arxiv.org/abs/1007.1727v3'>https://arxiv.org/abs/1007.1727v3</a> for your confidence interval estimations?"
+          },
+          "toy_data": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: the method does not require toys",
+                  "Nuisance parameters are sampled from their priors",
+                  "A fit to data is performed, and the fitted nuisance parameter values are used for toy data generation (this is sometimes called \"bootstrapping\")",
+                  "Nuisance parameters are not varied",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "5.10. In the case toy data is generated as part of the procedure—e.g. to determine the test statistic distribution or to compute the expected limit / expected limit bands—please specify how the nuisance parameter are chosen for the toys:"
+          },
+          "limit_conversion": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: we do not cite a limit / only cite a limit on the cross section itself",
+                  "We do not account for theory uncertainties",
+                  "We vary the theory prediction by one sigma up/down and cite the most \"conservative\" limit",
+                  "We introduce an additional nuisance parameter in the statistical model which modifies the cross section within the theory uncertainty",
+                  "We perform a Bayesian integration over the theory prediction and cite the prior-averaged limit",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "5.11. In case you convert a limit on a signal cross section into a limit on the mass (or another parameter; we call it \"mass\" here): how do you account for the theory error on the signal cross section?"
+          }
+        },
+        "title": "5. Confidence intervals and limits"
+      },
+      "discovery": {
+        "type": "object",
+        "properties": {
+          "discovery_twiki": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "description": "Page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures'>Search Procedures</a>, page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations'>Sensitivity Calculations</a>, page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect'>Look-Elsewhere Effect</a>.",
+            "title": "6.1. Have you read the discovery-related TWiki pages on Search Procedures, Sensitivity Calculations, and Look-Elsewhere Effect (if applicable)?"
+          },
+          "discovery_related_statements": {
+            "type": "string",
+            "enum": [
+              "Undecided",
+              "Yes",
+              "No"
+            ],
+            "description": "If the answer is \"No\", please proceed with Section 7.",
+            "title": "6.2. Does the analysis include discovery-related statements, such as citing p-values of the null hypothesis or a \"significance\"?"
+          },
+          "test_statistic": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Likelihood ratio in which all nuisance parameters and parameter of interest are fixed to a nominal value",
+                  "Profile likelihood ratio in which nuisance parameters and parameter of interest are varied in the maximisation",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "6.3. To evaluate the p-value(s) of the null hypothesis, what test statistic was used?"
+          },
+          "look_elsewhere_effect": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: we only look for one signal which is completely specified (i.e., mass, width, etc. is known)",
+                  "No",
+                  "Yes (please specify how in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "6.4. Do you account for the look-elsewhere effect?\n"
+          }
+        },
+        "title": "6. Discovery"
+      },
+      "unfolding": {
+        "type": "object",
+        "properties": {
+          "is_used": {
+            "type": "string",
+            "enum": [
+              "Undecided",
+              "Yes",
+              "No"
+            ],
+            "description": "If the answer is \"No\", please proceed with Section 8.",
+            "title": "7.1. Is unfolding used in parts of the analysis?"
+          },
+          "twiki": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "7.2. Have you read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/ScrecUnfolding'>SC TWiki page on recommendations for unfolding techniques</a>?"
+          },
+          "correlation_neglect": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "7.3. Are you aware that the SC discourages the use of bin-by-bin unfolding, or correction factors, and in general on techniques neglecting correlations?"
+          },
+          "techniques": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Bin-by-bin factor",
+                  "Matrix inversion",
+                  "Generalized Matrix inversion with Tikhonov regularization (SVD by Höcker and Kartvelishvili)",
+                  "Generalized Matrix inversion with Tikhonov regularization (TUnfold)",
+                  "D'Agostinin iterative",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "7.4. Which unfolding technique are you using?"
+          },
+          "tools": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "RooUnfold (deprecated)",
+                  "TUnfold (without the RooUnfold interface) (recommended)",
+                  "Other (please specify in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "7.5. Which software are you using?"
+          },
+          "generalization": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": ["Yes", "No (please justify in \"Additional Comments\")"],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "7.6. We recommend to try unfolding without regularization, have you tested this?"
+          },
+          "response_matrix_condition": {
+            "type": "string",
+            "title": "7.7. The condition number of the response matrix (it can be determined using e.g. the TDecompSVD class in ROOT) can be a good indicator of whether regularization is needed or not. What is its value?"
+          },
+          "parameter": {
+            "type": "string",
+            "title": "7.8. If you have performed unfolding with regularization, by which objective criterion have you chosen the regularization parameter (number of iterations in case of D'Agostini or other iterative unfolding methods)?"
+          },
+          "validation": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "7.9.1. Have you used toy experiments to verify the coverage of the unfolded uncertainties?"
+              },
+              "comments": {
+                "type": "string",
+                "title": "7.9.2. Which other checks have you performed for validation (e.g. comparison with other techniques, unfolding reweighted MCs, unfolding one fully simulated MC using a MC with a different physics model for the response matrix and regularization, etc.)?"
+              },
+              "bottom_line_test": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "type": "string",
+                    "enum": ["Yes (please describe the outcome in \"Additional Comments\")", "No"],
+                    "title": "Select the answer that applies"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "title": "Additional comments"
+                  }
+                },
+                "title": "7.9.3. Have you performed the bottom line test?"
+              }
+            },
+            "title": "7.9. Validation of unfolding"
+          },
+          "weights_applied": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: We do not use event weights for data.",
+                  "We first apply the event weight to get the new (weighted) \"observed\" spectrum, which is then unfolded.",
+                  "The unfolding is based on the spectrum built from unweighted events; any weight is handled as part of the smearing matrix."
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "7.10. In case you apply weights to the number of observed (real data) events, e.g. to correct for trigger prescales:"
+          },
+          "public_info": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "histogram": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "7.11.1. The unfolded histogram and its total covariance matrix"
+              },
+              "response_matrix": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "7.11.2. The response matrix K as a coloured 2D histogram"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "7.11. Which information do you intend to make publicly available?"
+          }
+        },
+        "title": "7. Unfolding"
+      },
+      "systematic_uncertainties": {
+        "type": "object",
+        "properties": {
+          "twiki": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "8.1. Have you read the SC recommendation TWiki pages on systematic uncertainties?"
+          },
+          "statistic_uncertainties": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "8.2. Have you considered that systematic uncertainties constrained by sideband measurements in the data, and whose estimate thus depends on the size of the analyzed dataset, should be treated as statistical uncertainties?"
+          },
+          "systematic_effect": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "8.3. If including a systematic effect as nuisance parameter in the model, are you aware that the SC recommends the use of Gamma or Log-Normal priors instead of truncated Gaussians?"
+          },
+          "cross_check": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Undecided",
+                  "Yes",
+                  "No"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "uncertainty": {
+                "type": "string",
+                "enum": [
+                  "Undecided",
+                  "Yes",
+                  "No"
+                ],
+                "title": "8.4.1. Are you deriving a systematic uncertainty on your main measurement from the level of agreement you observe in the cross-check?"
+              },
+              "failure": {
+                "type": "string",
+                "title": "8.4.2. What would you have done if the cross-check failed (e.g. p-value below 0.01, or other pre-defined criterion)?"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "8.4. Does your analysis include \"cross-checks\" of your method, e.g. the verification of a technique on a subsidiary set of data?"
+          },
+          "template_morphing": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "No, we do not perform template morphing",
+                  "Yes (please specify how in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "8.5. Do you use \"template morphing\" in you analysis, e.g. to model a systematic uncertainty in the statistical model?"
+          }
+        },
+        "title": "8. Systematic Uncertainties"
+      },
+      "parton_distribution_functions": {
+        "type": "object",
+        "properties": {
+          "pdf_uncertainty": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "You are using one of the recent PDFs from one the global PDF groups (ABMP, CT, HERAPDF, MMHT, NNPDF) with their own values for alpha_s, quark masses and uncertainty",
+                  "You are using one of the PDF4LHC15 sets, which is a combination of CT14, MMHT14 and NNPDF3.0",
+                  "You are using a different procedure"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              },
+              "profile_over_pdf_uncertainty": {
+                "type": "string",
+                "title": "Do you profile over the PDF uncertainties? Beware that using the envelope of the PDF uncertainties for MC replicas in this way (eg when using Combine) provides wrong and unphysical PDF uncertainty, and you should consider using more degrees of freedom rather than combining all of the variations into one"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": [
+                          "You are using one of the recent PDFs from one the global PDF groups (ABMP, CT, HERAPDF, MMHT, NNPDF) with their own values for alpha_s, quark masses and uncertainty"
+                        ]
+                      },
+                      "usage": {
+                        "title": "Specify the PDF you are using and the method of uncertainty estimate",
+                        "type": "string",
+                        "enum": ["Hessian eigenvectors", "MC replicas"]
+                      },
+                      "data": {
+                        "title": "Do you find a reasonable description of the data by the SM MC? If not,did you consider to use an alternative PDF set?",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": [
+                          "You are using one of the PDF4LHC15 sets, which is a combination of CT14, MMHT14 and NNPDF3.0"
+                        ]
+                      },
+                      "usage": {
+                        "type": "string",
+                        "title": "Specify the PDF set used",
+                        "enum": ["PDF4LHC15_MC", "PDF4LHC_30", "PDF4LHC_100"]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "title": "Please elaborate why you are using this specific choice"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": [
+                          "You are using a different procedure"
+                        ]
+                      },
+                      "reason": {
+                        "title": "Please specify",
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              }              
+            },
+            "title": "9.1. How do you estimate the PDF uncertainty on your measurement, e.g. effects on the acceptance?"
+          },
+          "sm": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "use": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "description": "If the answer is \"No\", please proceed with the next question (9.3).",
+                "title": "Select the answer that applies"
+              },
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Calculated the correlation coefficients or performed a phenomenological analysis comparing predictions using different PDFs / varying QCD parameters",
+                  "Used the reweighting of HERAFitter",
+                  "Used another MC reweighting technique",
+                  "Used HERAFitter to perform a full PDF extraction",
+                  "Has not been estimated"
+                ],
+                "title": "9.2.1. How do you estimate the sensitivity of Your observable to QCD parameters/PDFs?"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              },
+              "hepdata": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "9.2.2. Do you plan to provide Your measurement to HEPDATA including correlation matrices to be used by PDF groups? (The PDF forum provides support for pushing measurements to HEPDATA.)"
+              }
+            },
+            "title": "9.2. Do you perform a SM measurement to test QCD or to determine SM parameters like proton PDFs, heavy-quark masses, or the strong coupling constant alpha_s?"
+          },
+          "pdf": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "order": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "type": "string",
+                    "enum": [
+                      "Yes",
+                      "No",
+                      "Multiple orders are used (please explain in \"Additional Comments\")"
+                    ],
+                    "title": "Select the answer that applies"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "title": "Additional comments"
+                  }
+                },
+                "title": "9.3.1. Does the order of the PDF you use (LO, NLO, NNLO) correspond to the order of the calculation you are using?"
+              },
+              "selection": {
+                "type": "object",
+                "additionalProperties":false,
+                "properties": {
+                  "options": {
+                    "type": "string",
+                    "enum": [
+                      "Latest sets from all PDF groups (ABM, CT, HERAPDF, MMHT, NNPDF)",
+                      "Latest PDFs from PDF4LHC recommendation",
+                      "PDFs listed on the web page of the CMS PDF forum",
+                      "Earlier PDF sets not derived with LHC data (please explain in \"Additional comments\")",
+                      "Custom choice (please explain in \"Additional Comments\")"
+                    ],
+                    "title": "Select the answer that applies"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "title": "Additional comments"
+                  }
+                },
+                "title": "9.3.2. How did you choose the PDFs to compare your measurements to the theory prediction?"
+              },
+              "citations": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "9.3.3. Did you properly cite every PDF set employed even when used only within the context of the PDF4LHC recommendation or CMS or META PDFs?"
+              },
+              "uncertainty": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "title": "9.3.4. Do you estimate the PDF uncertainty on your prediction using the procedure described in the publication of the particular PDF you use?"
+              }
+            },
+            "title": "9.3. Comparison of Your measurement to theory predictions for the interpretation of the results:"
+          }
+        },
+        "description": "Information about the use of parton distribution functions of the proton (PDF in this section) in your analysis. CMS PDF forum provides help for those topics and can be contacted via <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/pdfs.html'>HyperNews</a> or mailing list at <a href='mailto:cms-pdf-forum@cern.ch>cms-pdf-forum@cern.ch</a>. Useful information is provided in the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/PDFatCMS'>TWiki page</a>.",
+        "title": "9. Parton Distribution Functions"
+      },
+      "other_stats": {
+        "type": "object",
+        "additionalProperties":false,
+        "properties": {
+          "blind_analysis": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "We do not perform a blind analysis: we didn't see how to do that practically",
+                  "We do not perform a blind analysis",
+                  "Yes (please specify how in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "10.1. Do you perform a blind analysis? If so, can you succinctly describe what was done?"
+          },
+          "combined_measurements": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply: we do not perform a combination",
+                  "BLUE",
+                  "Combined likelihood function",
+                  "Other (please specify in \"Additional Comments\")",
+                  "Custom choice (please explain in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "10.2. In case you combine measurements in your analysis: what method is used?"
+          },
+          "analysis_correlations": {
+            "type": "object",
+            "additionalProperties":false,
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Does not apply",
+                  "Yes, this applies (please specify how in \"Additional Comments\")"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "10.3. In case you use the results of another CMS analysis: how did you treat correlations from common systematic uncertainties and from potential overlap in the datasets?"
+          }
+        },
+        "title": "10. Other Statistics-related Items"
+      },
+      "comments_and_feedback": {
+        "type": "object",
+        "additionalProperties":false,
+        "properties": {
+          "feedback_not_frozen": {
+            "type": "object",
+            "properties": {
+              "options": {
+                "type": "string",
+                "enum": [
+                  "Almost nothing is decided, we still expect major changes",
+                  "We already tried some methods, but not yet taken a final decision on which one to use",
+                  "Decision has been taken on methods, but still need some improvements (such as refining an implementation, etc.)",
+                  "Everything is frozen"
+                ],
+                "title": "Select the answer that applies"
+              },
+              "comments": {
+                "type": "string",
+                "title": "Additional comments"
+              }
+            },
+            "title": "11.1. What statistical element of your analysis is not yet frozen (what changes can be expected)?"
+          },
+          "comments": {
+            "type": "string",
+            "title": "11.2. Do you have any additional comment related to the analysis? Is there a statistic-related element of your analysis not covered by this questionnaire?"
+          },
+          "suggestions": {
+          "type": "string",
+          "title": "11.3. Do you have a suggestion for improving this questionnaire? Do you have a suggestion for improving interaction with the CMS Statistics Committee in general or documentation of statistical recommendations?"
+        }
+        },
+        "title": "11. Comments and feedback"
+      }
+    },
+    "title":"CMS Statistics Questionnaire"
+  },
+  "deposit_mapping":{
+    "settings":{
+      "analysis":{
+        "analyzer":{
+          "lowercase_whitespace_analyzer":{
+            "type":"custom",
+            "tokenizer":"whitespace",
+            "filter":[
+              "lowercase"
+            ]
+          }
+        }
+      }
+    },
+    "mappings":{
+      "cms-stats-questionnaire-v0.0.1":{
+        "_all":{
+          "enabled":true,
+          "analyzer":"lowercase_whitespace_analyzer"
+        },
+        "properties":{
+          "next_deadline_date": {
+            "type": "date"
+          },
+          "analysis_context": {
+            "type": "object",
+            "properties": {
+              "next_deadline_date": {
+                "type": "date",
+                "format": "yyyy-MM-dd",
+                "copy_to": "next_deadline_date"
+              }
+            }
+          },
+          "_deposit":{
+            "type":"object",
+            "properties":{
+              "created_by":{
+                "type":"integer",
+                "copy_to":"created_by"
+              },
+              "status":{
+                "type":"text",
+                "fields":{
+                  "keyword":{
+                    "type":"keyword"
+                  }
+                },
+                "copy_to":"status"
+              }
+            }
+          },
+          "_experiment":{
+            "type":"text"
+          },
+          "_fetched_from": {
+            "type": "text",
+            "copy_to": "fetched_from"
+          },
+          "_created":{
+            "type":"date",
+            "copy_to":"created"
+          },
+          "_updated":{
+            "type":"date",
+            "copy_to":"updated"
+          },
+          "created":{
+            "type":"date"
+          }
+        }
+      }
+    }
+  },
+  "deposit_options":{
+    "ui:object": "tabView",
+    "ui:options": {
+      "display": "grid",
+      "full": true,
+      "view": {
+        "vertical": true,
+        "sidebarColor": "grey-5-a"
+      }
+    },
+    "ui:order": [
+      "analysis_context",
+      "general_information",
+      "multivariate_discriminants",
+      "data_fitting",
+      "confidence_intervals_limits",
+      "discovery",
+      "unfolding",
+      "systematic_uncertainties",
+      "parton_distribution_functions",
+      "other_stats",
+      "comments_and_feedback"
+    ],
+    "analysis_context": {
+      "ui:order": [
+        "name",
+        "email",
+        "wg",
+        "cadi_id",
+        "title_references",
+        "next_deadline_date",
+        "analysis_summary",
+        "related_cadi_ids"
+      ],
+      "analysis_summary": {
+        "ui:widget": "textarea",
+        "ui:options": {
+          "rows": 3
+        }
+      },
+      "related_cadi_ids": {
+        "ui:widget": "textarea",
+        "ui:options": {
+          "rows": 3
+        }
+      }
+    },
+    "general_information": {
+      "ui:order": [
+        "aware_twiki",
+        "aware_sc_answer",
+        "hn_subscription",
+        "sc_interaction",
+        "aware_sc_meetings"
+      ],
+      "aware_twiki": {
+        "ui:widget": "radio"
+      },
+      "aware_sc_answer": {
+        "ui:widget": "radio"
+      },
+      "hn_subscription": {
+        "ui:widget": "radio"
+      },
+      "sc_interaction": {
+        "ui:widget": "radio"
+      },
+      "aware_sc_meetings": {
+        "ui:widget": "radio"
+      }
+    },
+    "multivariate_discriminants": {
+      "ui:order": [
+        "read_sc_twiki",
+        "read_ml_groups_page",
+        "use_of_centralized_cms_apps",
+        "mva_use",
+        "equivalent_cut_based_analysis",
+        "ml_use_description",
+        "ml_app_use",
+        "ml_survey"
+      ],
+      "read_sc_twiki": {
+        "ui:widget": "radio"
+      },
+      "read_ml_groups_page": {
+        "ui:widget": "radio"
+      },
+      "mva_use": {
+        "ui:widget": "radio"
+      },
+      "ml_use_description": {
+        "ui:widget": "textarea",
+        "ui:options": {
+          "rows": 3
+        }
+      },
+      "ml_app_use": {
+        "items": {
+          "ui:order": [
+            "app_name",
+            "use",
+            "development",
+            "systematic_evaluation",
+            "signal_events_reuse"
+          ],
+          "development": {
+            "ui:order": ["options", "dev"],
+            "options": {
+              "ui:widget": "radio"
+            },
+            "dev": {
+              "ui:order": [
+                "model_general_type",
+                "model_type",
+                "predefined_network_use",
+                "learning_type",
+                "hyperparameter_optimization",
+                "sample_mixing",
+                "overtraining",
+                "cross_validation",
+                "mva_stability",
+                "training_bias_check",
+                "input",
+                "correlation",
+                "mva_techniques",
+                "event_weights",
+                "phase_space",
+                "data_driven_analysis_methods",
+                "data_mc_sf_development",
+                "model_metrics",
+                "other"
+              ],
+              "predefined_network_use": {
+                "options": {
+                  "ui:widget": "radio"
+                }
+              },
+              "hyperparameter_optimization": {
+                "options": {
+                  "ui:widget": "radio"
+                },
+                "other": {
+                  "ui:widget": "textarea",
+                  "ui:options": {
+                    "rows": 3
+                  }
+                }
+              },
+              "cross_validation": {
+                "options": {
+                  "ui:widget": "radio"
+                }
+              },
+              "mva_stability": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              },
+              "training_bias_check": {
+                "options": {
+                  "ui:widget": "radio"
+                },
+                "other": {
+                  "ui:widget": "textarea",
+                  "ui:options": {
+                    "rows": 3
+                  }
+                }
+              },
+              "correlation": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              },
+              "event_weights": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              },
+              "phase_space": {
+                "other": {
+                  "ui:widget": "textarea",
+                  "ui:options": {
+                    "rows": 3
+                  }
+                }
+              },
+              "data_driven_analysis_methods": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              },
+              "data_mc_sf_development": {
+                "options": {
+                  "ui:widget": "radio"
+                }
+              },
+              "model_metrics": {
+                "answer": {
+                  "ui:widget": "textarea",
+                  "ui:options": {
+                    "rows": 3
+                  }
+                },
+                "attachment": {
+                  "ui:field": "CapFiles"
+                }
+              },
+              "other": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              }
+            }
+          },
+          "systematic_evaluation": {
+            "options": {
+              "ui:widget": "radio"
+            }
+          }
+        }
+      },
+      "ml_survey": {
+        "options": {
+          "ui:widget": "radio"
+        },
+        "questions": {
+          "ui:order": ["general", "apps", "development"],
+          "general": {
+            "ui:order": ["ml_use", "knowledge_lack"],
+            "ml_use": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
+              }
+            },
+            "knowledge_lack": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
+              }
+            }
+          },
+          "apps": {
+            "development": {
+              "options": {
+                "ui:widget": "radio"
+              }
+            }
+          },
+          "development": {
+            "ui:order": [
+              "language",
+              "tools_training",
+              "tools_inference",
+              "tools_other",
+              "hardware_training",
+              "hardware_inference",
+              "resource_access",
+              "hardware_no_access",
+              "data_access",
+              "different_model",
+              "input_selection",
+              "cmssw_integration",
+              "group_interactions",
+              "presentations"
+            ],
+            "tools_other": {
+              "ui:widget": "radio"
+            },
+            "different_model": {
+              "options": {
+                "ui:widget": "radio"
+              },
+              "other": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              }
+            },
+            "cmssw_integration": {
+              "other": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              }
+            },
+            "group_interactions": {
+              "other": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              }
+            },
+            "presentations": {
+              "other": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "data_fitting": {
+      "ui:order": [
+        "analysis_fitting",
+        "analysis_fitting_specifics",
+        "functional_forms",
+        "fitting_model",
+        "stats",
+        "gof",
+        "pd_check",
+        "covariance_matrix",
+        "func_form",
+        "nop",
+        "close_physical_boundaries"
+      ],
+      "functional_forms": {
+        "ui:order": ["options", "comments"]
+      },
+      "fitting_model": {
+        "ui:order": ["options", "comments"]
+      },
+      "stats": {
+        "ui:order": ["options", "comments", "other"]
+      },
+      "gof": {
+        "ui:order": ["use_options", "comments", "p_values"],
+        "use_options": {
+          "ui:widget": "radio"
+        }
+      },
+      "pd_check": {
+        "ui:order": ["options", "comments"]
+      },
+      "cov_matrix": {
+        "ui:order": ["options", "comments"]
+      },
+      "func_form": {
+        "ui:order": ["options", "comments"]
+      },
+      "nop": {
+        "ui:order": ["options", "comments"]
+      },
+      "close_physical_boundaries": {
+        "ui:order": ["options", "comments"]
+      }
+    },
+    "confidence_intervals_limits": {
+      "ui:order": [
+        "limits_on_parameters",
+        "two_sided_select",
+        "aware_agreement_cms_atlas",
+        "aware_sc_support",
+        "aware_bayesian",
+        "bayesian_approaches",
+        "confidence_interval_tools",
+        "frequentist_stats",
+        "asymptotic_formulae",
+        "toy_data",
+        "limit_conversion"
+      ],
+      "two_sided_select": {
+        "ui:order": ["options", "comments"]
+      },
+      "bayesian_approaches": {
+        "ui:order": ["options", "comments"]
+      },
+      "confidence_interval_tools": {
+        "ui:order": ["options", "comments"]
+      },
+      "frequentist_stats": {
+        "ui:order": ["options", "other", "comments"]
+      },
+      "asymptotic_formulae": {
+        "ui:order": ["options", "cross_check"],
+        "options": {
+          "ui:widget": "radio"
+        },
+        "cross_check": {
+          "ui:widget": "radio"
+        }
+      },
+      "toy_data": {
+        "ui:order": ["options", "comments"]
+      },
+      "limit_conversion": {
+        "ui:order": ["options", "comments"]
+      }
+    },
+    "discovery": {
+      "ui:order": [
+        "discovery_twiki",
+        "discovery_related_statements",
+        "test_statistic",
+        "look_elsewhere_effect"
+      ],
+      "discovery_twiki": {
+        "ui:widget": "radio"
+      },
+      "test_statistic": {
+        "ui:order": ["options", "comments"]
+      },
+      "look_elsewhere_effect": {
+        "ui:order": ["options", "comments"]
+      }
+    },
+    "unfolding": {
+      "ui:order": [
+        "is_used",
+        "twiki",
+        "correlation_neglect",
+        "techniques",
+        "tools",
+        "generalization",
+        "response_matrix_condition",
+        "parameter",
+        "validation",
+        "weights_applied",
+        "public_info"
+      ],
+      "twiki": {
+        "ui:widget": "radio"
+      },
+      "correlation_neglect": {
+        "ui:widget": "radio"
+      },
+      "techniques": {
+        "ui:order": ["options", "comments"]
+      },
+      "tools": {
+        "ui:order": ["options", "comments"]
+      },
+      "generalization": {
+        "ui:order": ["options", "comments"],
+        "options": {
+          "ui:widget": "radio"
+        }
+      },
+      "validation": {
+        "ui:order": [
+          "options",
+          "comments",
+          "bottom_line_test"
+        ],
+        "options": {
+          "ui:widget": "radio"
+        },
+        "bottom_line_test": {
+          "ui:order": ["options", "comments"],
+          "options": {
+            "ui:widget": "radio"
+          }
+        }
+      },
+      "weights_applied": {
+        "ui:order": ["options", "comments"]
+      },
+      "public_info": {
+        "ui:order": ["histogram", "response_matrix", "comments"],
+        "histogram": {
+          "ui:widget": "radio"
+        },
+        "response_matrix": {
+          "ui:widget": "radio"
+        }
+      }
+    },
+    "systematic_uncertainties": {
+      "ui:order": [
+        "twiki",
+        "statistic_uncertainties",
+        "systematic_effect",
+        "cross_check",
+        "template_morphing"
+      ],
+      "twiki": {
+        "ui:widget": "radio"
+      },
+      "statistic_uncertainties": {
+        "ui:widget": "radio"
+      },
+      "systematic_effect": {
+        "ui:widget": "radio"
+      },
+      "cross_check": {
+        "ui:order": [
+          "options",
+          "uncertainty",
+          "failure",
+          "comments"
+        ]
+      },
+      "template_morphing": {
+        "ui:order": ["options", "comments"]
+      }
+    },
+    "parton_distribution_functions": {
+      "ui:order": [
+        "pdf_uncertainty",
+        "sm",
+        "pdf"
+      ],
+      "pdf_uncertainty": {
+        "ui:order": ["options", "usage", "reason", "data", "profile_over_pdf_uncertainty", "comments"],
+        "profile_over_pdf_uncertainty": {
+          "ui:widget": "textarea"
+        },
+        "comment": {
+          "ui:widget": "textarea"
+        },
+        "reason": {
+          "ui:widget": "textarea"
+        }
+      },
+      "sm": {
+        "ui:order": ["use", "options", "comments", "hepdata"],
+        "use": {
+          "ui:widget": "radio"
+        },
+        "hepdata": {
+          "ui:widget": "radio"
+        }
+      },
+      "pdf": {
+        "ui:order": ["order", "selection", "citations", "uncertainty"],
+        "citations": {
+          "ui:widget": "radio"
+        },
+        "uncertainty": {
+          "ui:widget": "radio"
+        }
+      }
+    },
+    "other_stats": {
+      "ui:order": [
+        "blind_analysis",
+        "combined_measurements",
+        "analysis_correlations"
+      ],
+      "blind_analysis": {
+        "ui:order": ["options", "comments"]
+      },
+      "combined_measurements": {
+        "ui:order": ["options", "comments"]
+      },
+      "analysis_correlations": {
+        "ui:order": ["options", "comments"]
+      }
+    },
+    "comments_and_feedback": {
+      "ui:order": [
+        "feedback_not_frozen",
+        "comments",
+        "suggestions"
+      ],
+      "feedback_not_frozen": {
+        "ui:order": ["options", "comments"],
+        "options": {
+          "ui:widget": "textarea",
+          "ui:options": {
+            "rows": 3
+          }
+        }
+      },
+      "comments": {
+        "ui:widget": "textarea",
+        "ui:options": {
+          "rows": 3
+        }
+      }
+    }
+  }
+}

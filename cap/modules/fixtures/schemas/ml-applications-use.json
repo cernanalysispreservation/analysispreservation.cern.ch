@@ -1,0 +1,164 @@
+{
+  "experiment": "CMS",
+  "use_deposit_as_record": false,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "type":"object",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+      "app_name": {
+        "type": "string",
+        "description": "For example, you might enter something like \"DeepCSV.\"",
+        "title": "What is the name of the ML application?"
+      },
+      "use": {
+        "type": "object",
+        "additionalProperties":false,
+        "properties": {
+          "options": {
+            "type":"array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "Tagger",
+                "Correction",
+                "Event discriminant",
+                "Systematics",
+                "Background estimation",
+                "Other"
+              ]
+            },
+            "description":"Multiple choices allowed",
+            "title":"Select the applicable answers."
+          },
+          "other": {
+            "type": "string",
+            "enum": [
+              "We cut on the output to improve S/B",
+              "We fit the output distribution to get the signal fraction",
+              "Other"
+            ],
+            "title": "If you selected \"Event discriminant\", how do you make use of the MVA output in the analysis?"
+          }
+        },
+        "title":"How is this ML application being used?"
+      },
+      "development": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "dev": {
+                  "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-development-v0.0.1.json"
+                }
+              }
+            }]
+          }
+        },
+        "title": "Did you develop/train this ML application?"
+      },
+      "systematic_evaluation":{
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "other": {
+                  "type": "string",
+                  "title": "If you answered yes to the previous question, please specify."
+                }
+              }
+            }]
+          }
+        },
+        "title": "Do you evaluate a systematic specifically for your ML application"
+      },
+      "signal_events_reuse":{
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No",
+              "Unknown",
+              "N/A"
+            ],
+            "title": "Select the answer that applies."
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["Unknown"]
+                }
+              }
+            },{
+              "properties": {
+                "options": {
+                  "enum": ["N/A"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "other": {
+                  "type": "string",
+                  "title": "If you answered yes to the previous question, please explain why you do this."
+                }
+              }
+            }]
+          }
+        },
+        "title": "Do you \"re-use\" the signal events from the training while building your templates? Ideally, those should be statistically independent (i.e. from the testing sample or a different CMS sample entirely)."
+      }
+    }
+  },
+  "name": "ml-applications-use"
+}
