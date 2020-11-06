@@ -85,14 +85,7 @@ class DraftsItemIndex extends React.Component {
             <DraftsItemNav />
 
             <Box flex={true} className="lg-column">
-              <Box
-                flex={true}
-                colorIndex="light-1"
-                style={{
-                  margin: "5px"
-                }}
-                responsive={false}
-              >
+              <Box flex={true} colorIndex="light-1" responsive={false}>
                 <Switch>
                   <Route
                     exact
@@ -121,7 +114,7 @@ class DraftsItemIndex extends React.Component {
                   />
                 </Switch>
               </Box>
-              <Box colorIndex="light-1">
+              <Box colorIndex="light-2">
                 <MediaQuery
                   minWidth={1450}
                   onChange={matches => this.setState({ expanded: matches })}
@@ -129,7 +122,6 @@ class DraftsItemIndex extends React.Component {
                   <span />
                 </MediaQuery>
                 <Box
-                  colorIndex="light-1"
                   className={
                     this.state.expanded
                       ? "sidebar-hide-small show-sidebar"

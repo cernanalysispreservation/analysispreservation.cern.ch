@@ -22,7 +22,7 @@ const InfoHeaderBox = ({ type = "info", content = null }) => {
         borderRadius: "3px",
         padding: "7px"
       }}
-      colorIndex="light-1"
+      colorIndex="light-2"
       direction="row"
       align="center"
       justify="center"

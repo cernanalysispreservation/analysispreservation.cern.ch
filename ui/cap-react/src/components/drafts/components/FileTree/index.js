@@ -78,8 +78,8 @@ class FileTree extends React.Component {
           {displayTitle && (
             <HorizontalWithText
               text="All Repositories"
-              background={this.props.background}
-              color={this.props.color}
+              background={this.props.background || "#f5f5f5"}
+              color={this.props.color || "#000"}
             />
           )}
           <RepoTree
@@ -94,8 +94,8 @@ class FileTree extends React.Component {
           {displayTitle && (
             <HorizontalWithText
               text="All Files"
-              background={this.props.background}
-              color={this.props.color}
+              background={this.props.background || "#f5f5f5"}
+              color={this.props.color || "#000"}
             />
           )}
           {files.children && files.children.length > 0 ? (

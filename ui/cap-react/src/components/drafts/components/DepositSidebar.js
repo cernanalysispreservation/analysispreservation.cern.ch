@@ -38,6 +38,8 @@ class DepositSidebar extends React.Component {
                 size="icon"
                 icon={<AiOutlinePlus size={20} />}
                 onClick={this.props.toggleFilemanagerLayer}
+                hoverColor="#e6e6e6"
+                background="#d9d9d9"
               />
             )}
           />
@@ -57,6 +59,8 @@ class DepositSidebar extends React.Component {
                 size="icon"
                 onClick={this._refreshFileList}
                 icon={<AiOutlineReload size={20} />}
+                hoverColor="#e6e6e6"
+                background="#d9d9d9"
               />
             )}
           />
@@ -91,23 +95,27 @@ class DepositSidebar extends React.Component {
     return (
       <Sidebar
         full={false}
-        size="medium"
         colorIndex="light-2"
-        separator="left"
         className="lg-row"
+        style={{ height: "100%" }}
       >
-        <Box flex={false} pad="none" size={{ width: { min: "medium" } }}>
+        <Box
+          flex={false}
+          pad="none"
+          size={{ width: { min: "medium" } }}
+          separator="bottom"
+          margin={{ bottom: "medium" }}
+        >
           <Box flex={false} pad="small" style={{ fontWeight: "100" }}>
             <Box
-              direction="row"
-              wrap={false}
               justify="between"
+              direction="row"
               margin={{ bottom: "small" }}
               responsive={false}
+              wrap={false}
             >
               ID <span>{this.props.id}</span>
             </Box>
-
             {this.props.schema && (
               <Box
                 direction="row"
@@ -122,14 +130,13 @@ class DepositSidebar extends React.Component {
                   text={`${this.props.schema.fullname} v${
                     this.props.schema.version
                   }`}
+                  size="small"
                 />
               </Box>
             )}
-
             <Box
-              direction="row"
-              wrap={false}
               justify="between"
+              direction="row"
               margin={{ bottom: "small" }}
               responsive={false}
               align="center"
@@ -138,24 +145,25 @@ class DepositSidebar extends React.Component {
               <Tag
                 text={this.props.status}
                 color={this._getColorByStatus(this.props.status)}
+                size="small"
               />
             </Box>
-
             <Box
-              direction="row"
-              wrap={false}
               justify="between"
+              direction="row"
               margin={{ bottom: "small" }}
               responsive={false}
+              align="center"
             >
-              Creator <span>{this.props.created_by}</span>
+              Creator
+              <span>{this.props.created_by}</span>
             </Box>
             <Box
-              direction="row"
-              wrap={false}
               justify="between"
+              direction="row"
               margin={{ bottom: "small" }}
               responsive={false}
+              align="center"
             >
               Created:
               {this.props.created && (
@@ -165,10 +173,11 @@ class DepositSidebar extends React.Component {
               )}
             </Box>
             <Box
-              direction="row"
-              wrap={false}
               justify="between"
+              direction="row"
+              margin={{ bottom: "small" }}
               responsive={false}
+              align="center"
             >
               Last Updated:
               {this.props.updated && (
@@ -179,7 +188,7 @@ class DepositSidebar extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box flex={true} pad="none" colorIndex="light-1">
+        <Box flex={true} pad="none" colorIndex="light-2">
           <SectionHeader
             label="Files | Data | Repos"
             uppercase={true}
@@ -214,7 +223,8 @@ DepositSidebar.propTypes = {
   id: PropTypes.string,
   canUpdate: PropTypes.bool,
   links: PropTypes.object,
-  getBucketById: PropTypes.func
+  getBucketById: PropTypes.func,
+  schema: PropTypes.object
 };
 
 function mapStateToProps(state) {

@@ -29,12 +29,12 @@ function SectionBox(props) {
         <Box
           flex={false}
           direction="row"
-          pad="small"
+          pad={{ vertical: "small" }}
           justify="between"
           responsive={false}
         >
           <Heading
-            tag="h4"
+            tag="h3"
             align="start"
             justify="center"
             margin="none"
@@ -53,6 +53,8 @@ function SectionBox(props) {
         flex={false}
         style={{ borderRadius: "3px" }}
         className={className}
+        separator="all"
+        pad="small"
       >
         {body}
       </Box>
