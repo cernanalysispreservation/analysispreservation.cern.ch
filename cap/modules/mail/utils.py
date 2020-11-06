@@ -50,6 +50,19 @@ def get_cms_stat_recipients(record, config):
     if pdf_mail and record.get('parton_distribution_functions', None):
         recipients.append(pdf_mail)
 
+    # mail for ML surveys
+    conveners_ml_mail = current_app.config.get('CONVENERS_ML_MAIL')
+    centralized_apps = record \
+        .get('multivariate_discriminants', {}) \
+        .get('use_of_centralized_cms_apps', {}) \
+        .get('options', [])
+    mva_use = record.get('multivariate_discriminants', {}).get('mva_use')
+
+    if conveners_ml_mail and (
+            (centralized_apps and 'No' not in centralized_apps) or
+            mva_use == 'Yes'):
+        recipients.append(conveners_ml_mail)
+
     cadi_id = record.get('analysis_context', {}).get('cadi_id')
 
     message = ""
