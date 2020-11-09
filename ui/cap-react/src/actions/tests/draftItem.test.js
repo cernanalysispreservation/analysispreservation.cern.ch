@@ -4,6 +4,7 @@ import * as actions from "../draftItem";
 import * as commonActions from "../common";
 import axios from "axios";
 import { Map } from "immutable";
+import { act } from "react-dom/test-utils";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -246,15 +247,15 @@ describe("Action Creators => draftItem", () => {
       })
     });
 
-    await store.dispatch(actions.postPublishDraft()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
+    act(() => {
+      store.dispatch(actions.postPublishDraft()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 
   it("Async Publish Draft Error", async () => {
-    const expectedActions = [
-      { type: actions.PUBLISH_DRAFT_REQUEST }
-    ];
+    const expectedActions = [{ type: actions.PUBLISH_DRAFT_REQUEST }];
 
     axios.post = jest.fn(() => {
       return Promise.reject({
@@ -269,15 +270,19 @@ describe("Action Creators => draftItem", () => {
         }
       })
     });
-    await store.dispatch(actions.postPublishDraft()).catch(() => {
-      expect(store.getActions()).toEqual(expectedActions);
+
+    act(() => {
+      store.dispatch(actions.postPublishDraft()).catch(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 
   it("Async Publish Draft Validation Error", async () => {
     const expectedActions = [
       { type: actions.PUBLISH_DRAFT_REQUEST },
-      { type: commonActions.FORM_ERRORS, 
+      {
+        type: commonActions.FORM_ERRORS,
         errors: ["root_basic_info_cadi_id"]
       }
     ];
@@ -287,11 +292,11 @@ describe("Action Creators => draftItem", () => {
         response: {
           status: 422,
           data: {
-            "message": "Validation error. Try again with valid data",
-            "errors": [
+            message: "Validation error. Try again with valid data",
+            errors: [
               {
-                "field": ["basic_info", "cadi_id"],
-                "message": "'cadi_id' is a required property"
+                field: ["basic_info", "cadi_id"],
+                message: "'cadi_id' is a required property"
               }
             ]
           }
@@ -306,8 +311,11 @@ describe("Action Creators => draftItem", () => {
         }
       })
     });
-    await store.dispatch(actions.postPublishDraft()).catch(() => {
-      expect(store.getActions()).toEqual(expectedActions);
+
+    act(() => {
+      store.dispatch(actions.postPublishDraft()).catch(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 });
