@@ -108,7 +108,10 @@ def default_config():
                 DEBUG=False,
                 TESTING=True,
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken',
-                MAIL_DEFAULT_SENDER="analysis-preservation-support@cern.ch")
+                MAIL_DEFAULT_SENDER="analysis-preservation-support@cern.ch",
+                CMS_STATS_COMMITEE_AND_PAGS={'key': {'contacts': []}},
+                PDF_FORUM_MAIL='pdf-forum-test@cern0.ch',
+                CONVENERS_ML_MAIL='ml-conveners-test@cern0.ch')
 
 
 @pytest.fixture(scope='session')

@@ -407,7 +407,6 @@
           },
           "pd_check": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -419,10 +418,55 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Do you check it?"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We do no check that"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["No, but we do not use the uncertainty returned by the fit anyway"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes, and the result is that the method is unbiased"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes, and there are some deviations we account for (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "4.7. Do you check that the pull distribution in toy experiments is distributed as expected for an unbiased method (mean 0, width 1)?"
@@ -449,7 +493,6 @@
           },
           "func_form": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -460,17 +503,50 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Select the way you choose your functional form"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply: we do not perform this kind of fitting"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We perform robustness checks to show that we are insensitive to the choice of the functional form."]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We tried different options and assign a systematic uncertainty from the difference."]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "4.9. In case you perform a fit to the background shape with a function: How do you choose the functional form?"
           },
           "nop": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -483,10 +559,62 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Select the way you choose the number of parameters"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply: we do not use such a function for fitting"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We choose what looks more or less OK"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We perform robustness checks to show that we are insensitive to this choice"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We tried different options and chose the most \"conservative\" one"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We applied a formal decision procedure (such as Fisher F-Test, LR test, please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "4.10. In case you perform a fit using a functional form which exists for many different number of parameters (such as polynomials): How are you choosing the number of parameters?"
@@ -640,7 +768,6 @@
           },
           "frequentist_stats": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -653,37 +780,96 @@
                 ],
                 "title": "Select the answer that applies"
               },
-              "other": {
-                "type": "string",
-                "title": "5.8.1. If you chose \"other\" in the previous question, please specify the test statistic used here."
-              },
               "comments": {
                 "type": "string",
                 "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply: the construction does not make use of a test statistic."]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Likelihood ratio in which nuisance parameters and signal cross section are all fixed to a nominal value (\"LEP-like\")."]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Profile likelihood ratio in which nuisance parameters are varied in the maximization and the signal cross section parameter is fixed (\"Tevatron-like\")."]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Profile likelihood ratio modified for upper limits in which nuisance parameters are varied in the nominator and denominator. The signal cross section mu is fixed to the currently tested point mu* in the nominator and is varied but constrained to 0 <= mu < mu* in the denominator (sometimes called the \"LHC-like\" test statistic; this is used in the Higgs combination)."]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in question 5.8.1)"]
+                      },
+                      "other": {
+                        "type": "string",
+                        "title": "5.8.1. If you chose \"other\" in the previous question, please specify the test statistic used here."
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "5.8. In the case of frequentist/CLs confidence interval construction: which test statistic do you use?"
           },
           "asymptotic_formulae": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
                 "enum": ["Yes", "No"],
                 "title": "Select the answer that applies"
-              },
-              "cross_check": {
-                "type": "string",
-                "enum": ["Yes", "No"],
-                "title": "5.9.1. If you choose \"Yes\" in the previous question, did you make a cross check with toys, e.g. checking the agreement of toy and asymptotics based upper limits for some exemplary values of new physics model parameters such as the mass of a new particle?"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["No"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes"]
+                      },
+                      "cross_check": {
+                        "type": "string",
+                        "enum": ["Yes", "No"],
+                        "title": "5.9.1. If you choose \"Yes\" in the previous question, did you make a cross check with toys, e.g. checking the agreement of toy and asymptotics based upper limits for some exemplary values of new physics model parameters such as the mass of a new particle?"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "5.9. Do you use asymptotic formulae from the paper <a target='_blank' href='https://arxiv.org/abs/1007.1727v3'>https://arxiv.org/abs/1007.1727v3</a> for your confidence interval estimations?"
           },
           "toy_data": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -695,17 +881,57 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply: the method does not require toys"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Nuisance parameters are sampled from their priors"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["A fit to data is performed, and the fitted nuisance parameter values are used for toy data generation (this is sometimes called \"bootstrapping\")"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Nuisance parameters are not varied"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "5.10. In the case toy data is generated as part of the procedure—e.g. to determine the test statistic distribution or to compute the expected limit / expected limit bands—please specify how the nuisance parameter are chosen for the toys:"
           },
           "limit_conversion": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -718,10 +944,58 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+              "dependencies": {
+               "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply: we do not cite a limit / only cite a limit on the cross section itself"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We do not account for theory uncertainties"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We vary the theory prediction by one sigma up/down and cite the most \"conservative\" limit"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We introduce an additional nuisance parameter in the statistical model which modifies the cross section within the theory uncertainty"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We perform a Bayesian integration over the theory prediction and cite the prior-averaged limit"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "5.11. In case you convert a limit on a signal cross section into a limit on the mass (or another parameter; we call it \"mass\" here): how do you account for the theory error on the signal cross section?"
@@ -750,7 +1024,6 @@
           },
           "test_statistic": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -760,17 +1033,43 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+             "dependencies": {
+               "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Likelihood ratio in which all nuisance parameters and parameter of interest are fixed to a nominal value"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Profile likelihood ratio in which nuisance parameters and parameter of interest are varied in the maximisation"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "6.3. To evaluate the p-value(s) of the null hypothesis, what test statistic was used?"
           },
           "look_elsewhere_effect": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -780,10 +1079,37 @@
                   "Yes (please specify how in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+             "dependencies": {
+               "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply: we only look for one signal which is completely specified (i.e., mass, width, etc. is known)"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["No"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes (please specify how in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "6.4. Do you account for the look-elsewhere effect?\n"
@@ -816,7 +1142,6 @@
           },
           "techniques": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -829,17 +1154,64 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Bin-by-bin factor"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Matrix inversion"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Generalized Matrix inversion with Tikhonov regularization (SVD by Höcker and Kartvelishvili)"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Generalized Matrix inversion with Tikhonov regularization (TUnfold)"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["D'Agostinin iterative"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "7.4. Which unfolding technique are you using?"
           },
           "tools": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -849,26 +1221,72 @@
                   "Other (please specify in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["RooUnfold (deprecated)"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["TUnfold (without the RooUnfold interface) (recommended)"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "7.5. Which software are you using?"
           },
           "generalization": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
                 "enum": ["Yes", "No (please justify in \"Additional Comments\")"],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["No (please justify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "7.6. We recommend to try unfolding without regularization, have you tested this?"
@@ -883,7 +1301,6 @@
           },
           "validation": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -901,10 +1318,30 @@
                     "type": "string",
                     "enum": ["Yes (please describe the outcome in \"Additional Comments\")", "No"],
                     "title": "Select the answer that applies"
-                  },
-                  "comments": {
-                    "type": "string",
-                    "title": "Additional comments"
+                  }
+                },
+                "dependencies": {
+                  "options": {
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["No"]
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["Yes (please describe the outcome in \"Additional Comments\")"]
+                          },
+                          "comments": {
+                            "type": "string",
+                            "title": "Additional comments"
+                          }
+                        }
+                      }
+                    ]
                   }
                 },
                 "title": "7.9.3. Have you performed the bottom line test?"
@@ -1009,7 +1446,6 @@
           },
           "template_morphing": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -1018,10 +1454,30 @@
                   "Yes (please specify how in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+             "dependencies": {
+               "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["No, we do not perform template morphing"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes (please specify how in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "8.5. Do you use \"template morphing\" in you analysis, e.g. to model a systematic uncertainty in the statistical model?"
@@ -1145,7 +1601,6 @@
           },
           "pdf": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "order": {
                 "type": "object",
@@ -1158,17 +1613,43 @@
                       "Multiple orders are used (please explain in \"Additional Comments\")"
                     ],
                     "title": "Select the answer that applies"
-                  },
-                  "comments": {
-                    "type": "string",
-                    "title": "Additional comments"
+                  }
+                },
+                "dependencies": {
+                  "options": {
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["Yes"]
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["No"]
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["Multiple orders are used (please explain in \"Additional Comments\")"]
+                          },
+                          "comments": {
+                            "type": "string",
+                            "title": "Additional comments"
+                          }
+                        }
+                      }
+                    ]
                   }
                 },
                 "title": "9.3.1. Does the order of the PDF you use (LO, NLO, NNLO) correspond to the order of the calculation you are using?"
               },
               "selection": {
                 "type": "object",
-                "additionalProperties":false,
                 "properties": {
                   "options": {
                     "type": "string",
@@ -1180,10 +1661,55 @@
                       "Custom choice (please explain in \"Additional Comments\")"
                     ],
                     "title": "Select the answer that applies"
-                  },
-                  "comments": {
-                    "type": "string",
-                    "title": "Additional comments"
+                  }
+                },
+                "dependencies": {
+                  "options": {
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["Latest sets from all PDF groups (ABM, CT, HERAPDF, MMHT, NNPDF)"]
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["Latest PDFs from PDF4LHC recommendation"]
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["PDFs listed on the web page of the CMS PDF forum"]
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["Earlier PDF sets not derived with LHC data (please explain in \"Additional comments\")"]
+                          },
+                          "comments": {
+                            "type": "string",
+                            "title": "Additional comments"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "options": {
+                            "enum": ["Custom choice (please explain in \"Additional Comments\")"]
+                          },
+                          "comments": {
+                            "type": "string",
+                            "title": "Additional comments"
+                          }
+                        }
+                      }
+                    ]
                   }
                 },
                 "title": "9.3.2. How did you choose the PDFs to compare your measurements to the theory prediction?"
@@ -1211,7 +1737,6 @@
         "properties": {
           "blind_analysis": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -1221,17 +1746,43 @@
                   "Yes (please specify how in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
               }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We do not perform a blind analysis: we didn't see how to do that practically"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["We do not perform a blind analysis"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes (please specify how in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
+             }
             },
             "title": "10.1. Do you perform a blind analysis? If so, can you succinctly describe what was done?"
           },
           "combined_measurements": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -1243,17 +1794,61 @@
                   "Custom choice (please explain in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply: we do not perform a combination"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["BLUE"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Combined likelihood function"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Other (please specify in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Custom choice (please explain in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "10.2. In case you combine measurements in your analysis: what method is used?"
           },
           "analysis_correlations": {
             "type": "object",
-            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
@@ -1262,10 +1857,30 @@
                   "Yes, this applies (please specify how in \"Additional Comments\")"
                 ],
                 "title": "Select the answer that applies"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
+              }
+            },
+            "dependencies": {
+              "options": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Does not apply"]
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "options": {
+                        "enum": ["Yes, this applies (please specify how in \"Additional Comments\")"]
+                      },
+                      "comments": {
+                        "type": "string",
+                        "title": "Additional comments"
+                      }
+                    }
+                  }
+                ]
               }
             },
             "title": "10.3. In case you use the results of another CMS analysis: how did you treat correlations from common systematic uncertainties and from potential overlap in the datasets?"
@@ -1732,14 +2347,20 @@
       "pd_check": {
         "ui:order": ["options", "comments"]
       },
-      "cov_matrix": {
+      "covariance_matrix": {
         "ui:order": ["options", "comments"]
       },
       "func_form": {
-        "ui:order": ["options", "comments"]
+        "ui:order": ["options", "comments"],
+        "comments": {
+          "ui:widget": "textarea"
+        }
       },
       "nop": {
-        "ui:order": ["options", "comments"]
+        "ui:order": ["options", "comments"],
+        "comments": {
+          "ui:widget": "textarea"
+        }
       },
       "close_physical_boundaries": {
         "ui:order": ["options", "comments"]
@@ -1923,6 +2544,12 @@
       },
       "pdf": {
         "ui:order": ["order", "selection", "citations", "uncertainty"],
+        "order": {
+          "ui:order": ["options", "comments"]
+        },
+        "selection": {
+          "ui:order": ["options", "comments"]
+        },
         "citations": {
           "ui:widget": "radio"
         },
