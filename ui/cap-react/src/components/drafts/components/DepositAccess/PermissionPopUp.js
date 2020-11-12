@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Paragraph, Heading, Box } from "grommet";
 import { AiOutlineDown } from "react-icons/ai";
@@ -19,8 +19,11 @@ const PermissionPopUp = ({
   addPermissionsModal,
   hideMenu = false,
   updatePermissionsModalObj,
-  loading
+  loading,
+  listTop
 }) => {
+  const elRef = useRef(null);
+  const [elementTop, setElementTop] = useState(0);
   const updateModalPermissions = permission => {
     if (permissions.includes(permission)) {
       permissions = permissions.filter(item => item !== permission);
@@ -97,29 +100,37 @@ const PermissionPopUp = ({
   ];
 
   return (
-    <Box
-      direction="row"
-      responsive={false}
-      align="center"
-      justify="center"
+    <div
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        display: "flex"
+      }}
       className="permission-pop-up"
-      style={{ overflow: "visible" }}
+      ref={elRef}
+      onMouseOver={() => {
+        setElementTop({
+          top: elRef.current.getBoundingClientRect().top,
+          left: elRef.current.getBoundingClientRect().left
+        });
+      }}
     >
       <Box>{title}</Box>
+      <Box style={{ margin: "0 0 0 5px" }}>
+        <AiOutlineDown size={15} />
+      </Box>
       {!hideMenu && (
         <Menu
           shadow
-          icon={
-            <Box style={{ margin: "0 0 0 5px" }}>
-              <AiOutlineDown size={15} />
-            </Box>
-          }
-          padding=""
-          top={23}
-          right={0}
+          icon={<Box />}
+          padding="0"
+          top={elRef.current && elementTop.top - listTop}
+          right={65}
           background="#fff"
           hoverColor="#fff"
           minWidth="250px"
+          controlWithHover
         >
           {contentDetails.map((item, index) => (
             <Box
@@ -141,7 +152,7 @@ const PermissionPopUp = ({
           ))}
         </Menu>
       )}
-    </Box>
+    </div>
   );
 };
 
@@ -157,7 +168,8 @@ PermissionPopUp.propTypes = {
   addPermissionsModal: PropTypes.bool,
   hideMenu: PropTypes.bool,
   updatePermissionsModalObj: PropTypes.func,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  listTop: PropTypes.number
 };
 
 const mapStateToProps = state => ({

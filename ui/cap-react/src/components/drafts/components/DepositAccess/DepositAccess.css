@@ -29,9 +29,3 @@
 .permission-li-item:last-of-type {
   border: 0 !important;
 }
-
-.deposit-access .deposit-acccess-table {
-  max-height: 400px;
-  height: 100%;
-  overflow: auto;
-}

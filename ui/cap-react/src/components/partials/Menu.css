@@ -1,0 +1,12 @@
+.controlWithHover {
+  display: none !important;
+}
+
+.permission-pop-up:hover .controlWithHover {
+  display: inline-block !important;
+}
+
+.parentMenuHover {
+  position: absolute !important;
+  z-index: 10 !important;
+}

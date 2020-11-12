@@ -6,6 +6,8 @@ import ReactDOM from "react-dom";
 import { AiOutlineUser } from "react-icons/ai";
 import styled from "styled-components";
 
+import "./Menu.css";
+
 const Wrapper = styled.div`
   padding: ${props => props.padding};
   border-radius: 50%;
@@ -27,7 +29,8 @@ const Menu = ({
   hoverColor = "rgba(235, 235, 235, 1)",
   padding = "5px",
   minWidth = "120px",
-  shadow = false
+  shadow = false,
+  controlWithHover = false
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dropDownMenu = useRef(null);
@@ -67,7 +70,14 @@ const Menu = ({
   );
 
   return (
-    <Box ref={dropDownMenu}>
+    <Box
+      style={{
+        top: controlWithHover && `${top}px`,
+        right: controlWithHover && `${right}px`
+      }}
+      ref={dropDownMenu}
+      className={controlWithHover && "parentMenuHover"}
+    >
       <Wrapper
         hover={hoverColor}
         expanded={expanded}
@@ -79,17 +89,18 @@ const Menu = ({
       <Box
         style={{
           position: "absolute",
-          top: `${top}px`,
-          right: `${right}px`,
-          left: `${left}px`,
-          bottom: `${bottom}px`,
+          top: !controlWithHover && `${top}px`,
+          right: !controlWithHover && `${right}px`,
+          left: !controlWithHover && `${left}px`,
+          bottom: !controlWithHover && `${bottom}px`,
           zIndex: 10000,
           minWidth: minWidth,
           background: background,
           boxShadow: shadow && " 1px 1px 49px -22px rgba(0,0,0,0.3)"
         }}
+        className={controlWithHover && "controlWithHover"}
       >
-        {expanded && children}
+        {controlWithHover ? children : expanded && children}
       </Box>
     </Box>
   );

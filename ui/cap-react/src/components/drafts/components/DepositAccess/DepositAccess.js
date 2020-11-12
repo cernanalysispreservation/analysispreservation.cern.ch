@@ -143,7 +143,7 @@ class DepositAccess extends React.Component {
                   />
                 </Box>
               </Box>
-              <Box className="deposit-acccess-table">
+              <Box >
                 {users_roles.length > 0 ? (
                   <PermissionTable users={users_roles} access={access} />
                 ) : (

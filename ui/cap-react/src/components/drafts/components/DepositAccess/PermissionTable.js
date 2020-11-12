@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import List from "grommet/components/List";
 import Box from "grommet/components/Box";
@@ -28,7 +28,7 @@ const PermissionTable = ({
   const [currentPermissionObj, setCurrentPermissionObj] = useState({});
   const [updated, setUpdated] = useState({});
   const [itemToDelete, setItemToDelete] = useState(null);
-
+  const listRef = useRef(null);
   const getTextFromPermission = perm => {
     let permission = "deposit-read";
     if (perm.includes("deposit-update")) permission = "deposit-update";
@@ -56,8 +56,15 @@ const PermissionTable = ({
   );
 
   return (
-    <Box>
-      <List style={{ overflow: "visible" }}>
+    <div style={{ position: "relative" }} ref={listRef}>
+      <List
+        style={{
+          maxHeight: "800px",
+          width: "800px",
+          overflowX: "hidden",
+          overflowY: "auto"
+        }}
+      >
         {addPermissionsModal
           ? Object.entries(currentPermissionObj).map((item, index) => (
               <ListItem
@@ -79,7 +86,7 @@ const PermissionTable = ({
                   align="center"
                   responsive={false}
                 >
-                  <Box style={{ position: "relative", overflow: "visible" }}>
+                  <Box>
                     <Tag
                       size="small"
                       text={
@@ -143,6 +150,7 @@ const PermissionTable = ({
                 responsive={false}
                 key={index}
                 className="permission-li-item"
+                style={{ position: "static", padding: "16px" }}
               >
                 <Box align="center" direction="row" responsive={false}>
                   {item}{" "}
@@ -160,15 +168,8 @@ const PermissionTable = ({
 
                 {created_by &&
                   created_by != item && (
-                    <Box
-                      align="center"
-                      style={{ overflow: "visible" }}
-                      direction="row"
-                      responsive={false}
-                    >
-                      <Box
-                        style={{ position: "relative", overflow: "visible" }}
-                      >
+                    <Box align="center" direction="row" responsive={false}>
+                      <Box>
                         <Tag
                           size="small"
                           text={
@@ -180,6 +181,10 @@ const PermissionTable = ({
                               email={item}
                               permissions={access[item].actions}
                               hideMenu={created_by && created_by === item}
+                              listTop={
+                                listRef.current &&
+                                listRef.current.getBoundingClientRect().top
+                              }
                             />
                           }
                         />
@@ -211,7 +216,7 @@ const PermissionTable = ({
           setItemToDelete(null);
         }}
       />
-    </Box>
+    </div>
   );
 };
 
