@@ -68,7 +68,7 @@ const PermissionTable = ({
                 <Box direction="row" align="center" responsive={false}>
                   {item[0]}
                   <Box pad={{ horizontal: "small" }}>
-                    <Tag text={target} size="small" />
+                    <Tag text={`${target}`} size="small" />
                   </Box>
                 </Box>
 
