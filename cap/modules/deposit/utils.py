@@ -25,9 +25,14 @@
 
 from __future__ import absolute_import, print_function
 
+import requests
+from flask import current_app
+from flask_login import current_user
 from invenio_access.models import Role
 from invenio_db import db
 
+from cap.modules.deposit.errors import AuthorizationError, \
+    DataValidationError, FileUploadError
 from cap.modules.records.utils import url_to_api_url
 
 
@@ -75,3 +80,43 @@ def fix_bucket_links(response):
             item['links'] = add_api_to_links(item.get('links'))
 
     return response
+
+
+def create_zenodo_deposit(token, data):
+    """Create a Zenodo deposit using the logged in user's credentials."""
+    zenodo_url = current_app.config.get("ZENODO_SERVER_URL")
+    deposit = requests.post(
+        url=f'{zenodo_url}/deposit/depositions',
+        params=dict(access_token=token),
+        json={'metadata': data},
+        headers={'Content-Type': 'application/json'}
+    )
+
+    if not deposit.ok:
+        if deposit.status_code == 401:
+            raise AuthorizationError(
+                'Authorization to Zenodo failed. Please reconnect.')
+        if deposit.status_code == 400:
+            data = deposit.json()
+            if data.get('message') == 'Validation error.':
+                raise DataValidationError(
+                    'Validation error on creating the Zenodo deposit.',
+                    errors=data.get('errors'))
+        raise FileUploadError(
+            'Something went wrong, Zenodo deposit not created.')
+
+    # TODO: fix with serializers
+    data = deposit.json()
+    zenodo_deposit = {
+        'id': data['id'],
+        'title': data.get('metadata', {}).get('title'),
+        'creator': current_user.id,
+        'created': data['created'],
+        'links': {
+            'self': data['links']['self'],
+            'bucket': data['links']['bucket'],
+            'html': data['links']['html'],
+            'publish': data['links']['publish'],
+        }
+    }
+    return zenodo_deposit

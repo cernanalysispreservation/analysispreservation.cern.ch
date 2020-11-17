@@ -49,6 +49,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
+from cap.modules.auth.ext import _fetch_token
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
@@ -75,6 +76,8 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           UpdateDepositPermission)
 
 from .review import Reviewable
+from .tasks import upload_to_zenodo
+from .utils import create_zenodo_deposit
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -254,53 +257,82 @@ class CAPDeposit(Deposit, Reviewable):
                 _, rec = request.view_args.get('pid_value').data
                 record_uuid = str(rec.id)
                 data = request.get_json()
-                webhook = data.get('webhook', False)
-                event_type = data.get('event_type', 'release')
+                target = data.get('target')
 
-                try:
-                    url = data['url']
-                except KeyError:
-                    raise FileUploadError('Missing url parameter.')
+                if target == 'zenodo':
+                    # check for token
+                    token = _fetch_token('zenodo')
+                    if not token:
+                        raise FileUploadError(
+                            'Please connect your Zenodo account '
+                            'before creating a deposit.')
 
-                try:
-                    host, owner, repo, branch, filepath = parse_git_url(url)
-                    api = create_git_api(host, owner, repo, branch,
-                                         current_user.id)
+                    files = data.get('files')
+                    bucket = data.get('bucket')
+                    zenodo_data = data.get('zenodo_data', {})
 
-                    if filepath:
-                        if webhook:
-                            raise FileUploadError(
-                                'You cannot create a webhook on a file')
+                    if files and bucket:
+                        zenodo_deposit = create_zenodo_deposit(token, zenodo_data)  # noqa
+                        self.setdefault('_zenodo', []).append(zenodo_deposit)
+                        self.commit()
 
-                        download_repo_file(
-                            record_uuid,
-                            f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
-                            *api.get_file_download(filepath),
-                            api.auth_headers,
-                        )
-                    elif webhook:
-                        if event_type == 'release':
-                            if branch:
-                                raise FileUploadError(
-                                    'You cannot create a release webhook'
-                                    ' for a specific branch or sha.')
-
-                        if event_type == 'push' and \
-                                api.branch is None and api.sha:
-                            raise FileUploadError(
-                                'You cannot create a push webhook'
-                                ' for a specific sha.')
-
-                        create_webhook(record_uuid, api, event_type)
+                        # upload files to zenodo deposit
+                        upload_to_zenodo.delay(
+                            files, bucket, token,
+                            zenodo_deposit['id'],
+                            zenodo_deposit['links']['bucket'])
                     else:
-                        download_repo.delay(
-                            record_uuid,
-                            f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
-                            api.get_repo_download(),
-                            api.auth_headers)
+                        raise FileUploadError(
+                            'You cannot create an empty Zenodo deposit. '
+                            'Please add some files.')
+                else:
+                    webhook = data.get('webhook', False)
+                    event_type = data.get('event_type', 'release')
 
-                except GitError as e:
-                    raise FileUploadError(str(e))
+                    try:
+                        url = data['url']
+                    except KeyError:
+                        raise FileUploadError('Missing url parameter.')
+
+                    try:
+                        host, owner, repo, branch, filepath = parse_git_url(url)  # noqa
+                        api = create_git_api(host, owner, repo, branch,
+                                             current_user.id)
+
+                        if filepath:
+                            if webhook:
+                                raise FileUploadError(
+                                    'You cannot create a webhook on a file')
+
+                            download_repo_file(
+                                record_uuid,
+                                f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
+                                *api.get_file_download(filepath),
+                                api.auth_headers,
+                            )
+                        elif webhook:
+                            if event_type == 'release':
+                                if branch:
+                                    raise FileUploadError(
+                                        'You cannot create a release webhook'
+                                        ' for a specific branch or sha.')
+
+                            if event_type == 'push' and \
+                                    api.branch is None and api.sha:
+                                raise FileUploadError(
+                                    'You cannot create a push webhook'
+                                    ' for a specific sha.')
+
+                            create_webhook(record_uuid, api, event_type)
+                        else:
+                            download_repo.delay(
+                                record_uuid,
+                                f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
+                                api.get_repo_download(),
+                                api.auth_headers)
+
+                    except GitError as e:
+                        raise FileUploadError(str(e))
 
             return self
 
@@ -584,16 +616,15 @@ class CAPDeposit(Deposit, Reviewable):
 
                 validator = NoRequiredValidator(schema, resolver=resolver)
 
-                result = {}
-                result['errors'] = [
+                errors = [
                     FieldError(
                         list(error.path)+error.validator_value,
                         str(error.message))
                     for error in validator.iter_errors(self)
                 ]
 
-                if result['errors']:
-                    raise DepositValidationError(None, errors=result['errors'])
+                if errors:
+                    raise DepositValidationError(None, errors=errors)
             except RefResolutionError:
                 raise DepositValidationError('Schema {} not found.'.format(
                     self['$schema']))

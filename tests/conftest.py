@@ -28,6 +28,7 @@ import shutil
 import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
+from six import BytesIO
 
 import pytest
 from flask import current_app
@@ -108,7 +109,8 @@ def default_config():
                 DEBUG=False,
                 TESTING=True,
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken',
-                MAIL_DEFAULT_SENDER="analysis-preservation-support@cern.ch")
+                MAIL_DEFAULT_SENDER="analysis-preservation-support@cern.ch",
+                ZENODO_SERVER_URL='https://zenodo-test.org')
 
 
 @pytest.fixture(scope='session')
@@ -399,6 +401,21 @@ def deposit(example_user, create_deposit):
         'cms-analysis',
         experiment='CMS',
     )
+
+
+@pytest.fixture
+def deposit_with_file(example_user, create_schema, create_deposit):
+    """New deposit with files."""
+    create_schema('test-schema', experiment='CMS')
+    return create_deposit(
+        example_user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'title': 'test title'
+        },
+        files={'test-file.txt': BytesIO(b'Hello world!')},
+        experiment='CMS')
 
 
 @pytest.fixture
