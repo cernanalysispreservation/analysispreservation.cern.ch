@@ -21,29 +21,36 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
+"""Tasks."""
 
-
-"""CAP Zenodo service views."""
+from __future__ import absolute_import, print_function
 
 import requests
-from flask import current_app, jsonify
-
-from . import blueprint
-
-
-def _get_zenodo_record(zenodo_id):
-    """Get record from zenodo."""
-    zenodo_server_url = current_app.config.get('ZENODO_SERVER_URL')
-    url = "{}/records/{}".format(zenodo_server_url, zenodo_id)
-    params = {"access_token": current_app.config.get('ZENODO_ACCESS_TOKEN')}
-
-    resp = requests.get(url, headers={'Content-Type': 'application/json'},
-                        params=params)
-    return resp.json(), resp.status_code
+from flask import current_app
+from celery import shared_task
+from invenio_db import db
+from invenio_files_rest.models import FileInstance, ObjectVersion
 
 
-@blueprint.route('/zenodo/record/<zenodo_id>')
-def get_zenodo_record(zenodo_id):
-    """Get record from zenodo (route)."""
-    resp, status = _get_zenodo_record(zenodo_id)
-    return jsonify(resp), status
+@shared_task(autoretry_for=(Exception, ),
+             retry_kwargs={
+                 'max_retries': 5,
+                 'countdown': 10
+             })
+def upload_to_zenodo(files, bucket, token, zenodo_depid, zenodo_bucket_url):
+    """Upload to Zenodo the files the user selected."""
+    for filename in files:
+        file_obj = ObjectVersion.get(bucket, filename)
+        file_ins = FileInstance.get(file_obj.file_id)
+
+        with open(file_ins.uri, 'rb') as fp:
+            file = requests.put(
+                url=f'{zenodo_bucket_url}/{filename}',
+                data=fp,
+                params=dict(access_token=token),
+            )
+
+            if not file.ok:
+                current_app.logger.error(
+                    f'Uploading file {filename} to deposit {zenodo_depid} '
+                    f'failed with {file.status_code}.')
