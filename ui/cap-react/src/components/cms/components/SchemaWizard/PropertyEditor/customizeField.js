@@ -239,6 +239,7 @@ class CustomizeField extends React.Component {
                   onClick={() => this.gridColumnChange(gridColumns)}
                   style={{
                     border:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].grid &&
                       gridColumns ===
@@ -247,6 +248,7 @@ class CustomizeField extends React.Component {
                         ? "1px solid black"
                         : null,
                     background:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].grid &&
                       gridColumns ===
@@ -255,6 +257,7 @@ class CustomizeField extends React.Component {
                         ? "black"
                         : null,
                     color:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].grid &&
                       gridColumns ===
@@ -263,6 +266,7 @@ class CustomizeField extends React.Component {
                         ? "white"
                         : null,
                     padding:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].grid &&
                       gridColumns ===
@@ -271,6 +275,7 @@ class CustomizeField extends React.Component {
                         ? "0 2px"
                         : null,
                     borderRadius:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].grid &&
                       gridColumns ===
@@ -301,30 +306,35 @@ class CustomizeField extends React.Component {
                   onClick={() => this.sizeChange(size)}
                   style={{
                     border:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].size &&
                       size === this.props.uiSchema.toJS()["ui:options"].size
                         ? "1px solid black"
                         : null,
                     background:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].size &&
                       size === this.props.uiSchema.toJS()["ui:options"].size
                         ? "black"
                         : null,
                     color:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].size &&
                       size === this.props.uiSchema.toJS()["ui:options"].size
                         ? "white"
                         : null,
                     padding:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].size &&
                       size === this.props.uiSchema.toJS()["ui:options"].size
                         ? "0 2px"
                         : null,
                     borderRadius:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].size &&
                       size === this.props.uiSchema.toJS()["ui:options"].size
@@ -353,30 +363,35 @@ class CustomizeField extends React.Component {
                   onClick={() => this.alignChange(align)}
                   style={{
                     border:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].align &&
                       align === this.props.uiSchema.toJS()["ui:options"].align
                         ? "1px solid black"
                         : null,
                     background:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].align &&
                       align === this.props.uiSchema.toJS()["ui:options"].align
                         ? "black"
                         : null,
                     color:
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].align &&
                       align === this.props.uiSchema.toJS()["ui:options"].align
                         ? "white"
                         : null,
                     padding:
+                    this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].align &&
                       align === this.props.uiSchema.toJS()["ui:options"].align
                         ? "0 2px"
                         : null,
                     borderRadius:
+                    this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].align &&
                       align === this.props.uiSchema.toJS()["ui:options"].align
