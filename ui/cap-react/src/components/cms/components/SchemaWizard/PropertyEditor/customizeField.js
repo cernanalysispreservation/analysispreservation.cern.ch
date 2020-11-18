@@ -75,7 +75,7 @@ class CustomizeField extends React.Component {
 
   gridChange = new_grid => {
     let { uiSchema } = this.props;
-    uiSchema = uiSchema.toJS();
+    uiSchema = uiSchema ? uiSchema.toJS() : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { grid = {}, ...restUIOptions } = uiOptions;
@@ -91,7 +91,7 @@ class CustomizeField extends React.Component {
 
   gridColumnChange = new_gridColumn => {
     let { uiSchema } = this.props;
-    uiSchema = uiSchema.toJS();
+    uiSchema = uiSchema ? uiSchema.toJS() : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { grid = {}, ...restUIOptions } = uiOptions;
@@ -112,7 +112,7 @@ class CustomizeField extends React.Component {
     if (SIZE_OPTIONS.indexOf(newSize) < 0) return;
 
     let { uiSchema } = this.props;
-    uiSchema = uiSchema.toJS();
+    uiSchema = uiSchema ? uiSchema.toJS() : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { size, ...restUIOptions } = uiOptions;
@@ -130,7 +130,7 @@ class CustomizeField extends React.Component {
     if (["center", "start", "end"].indexOf(newAlign) < 0) return;
 
     let { uiSchema } = this.props;
-    uiSchema = uiSchema.toJS();
+    uiSchema = uiSchema ? uiSchema.toJS() : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { align, ...restUIOptions } = uiOptions;
