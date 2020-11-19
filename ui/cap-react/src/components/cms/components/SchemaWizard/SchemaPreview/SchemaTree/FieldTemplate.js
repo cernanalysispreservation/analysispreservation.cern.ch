@@ -52,8 +52,8 @@ const FieldTemplate = props => {
         <div
           style={{
             position: "absolute",
-            top: "15px",
-            left: "-15px",
+            top: "10px",
+            left: "5px",
             cursor: "pointer"
           }}
           onClick={() => setDisplay(!display)}

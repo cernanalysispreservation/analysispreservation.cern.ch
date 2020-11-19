@@ -40,7 +40,7 @@ class SchemaTreeItem extends React.Component {
         <Box
           colorIndex={this.props.colorIndex || "light-2"}
           separator="all"
-          pad={{ horizontal: "small" }}
+          pad={{ horizontal: "medium" }}
           direction="row"
           align="center"
           justify="between"
@@ -51,7 +51,6 @@ class SchemaTreeItem extends React.Component {
               onClick={this._onClick.bind(this)}
               direction="row"
               align="center"
-              wrap={false}
             >
               <Label size="small" margin="none">
                 <strong>
@@ -59,7 +58,17 @@ class SchemaTreeItem extends React.Component {
                 </strong>
               </Label>
               <Box flex={false} pad={{ horizontal: "small" }} align="start">
-                <div>{this.props.schema.title || "Untitled field"}</div>
+                <div
+                  style={{
+                    width: "185px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    textAlign: "left"
+                  }}
+                >
+                  {this.props.schema.title || "Untitled field"}
+                </div>
                 <div
                   style={{
                     padding: "0 3px",
