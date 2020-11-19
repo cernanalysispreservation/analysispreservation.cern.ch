@@ -1,12 +1,10 @@
 import React from "react";
 
 import Box from "grommet/components/Box";
-import Paragraph from "grommet/components/Paragraph";
 
 import Form from "../../../../drafts/form/GrommetForm";
 import { PropTypes } from "prop-types";
 import Button from "../../../../partials/Button";
-import Modal from "../../../../partials/Modal";
 
 import Image1 from "./svg/AccordionField";
 import Image2 from "./svg/TabObjectField";
@@ -18,6 +16,8 @@ import Image7 from "./svg/SidebarTwoColLayout";
 
 import { schemaSchema } from "../../utils/schemas";
 import { Label } from "grommet";
+
+import DeleteModal from "./DeletePropertyModal";
 
 const GRID_COLUMNS_OPTIONS = [
   "1/1",
@@ -147,46 +147,20 @@ class CustomizeField extends React.Component {
   render() {
     return (
       <Box flex={false}>
-        {this.state.showDeleteLayer && (
-          <Modal
-            title="Delete Item"
-            separator
-            onClose={() => this.setState({ showDeleteLayer: false })}
-          >
-            <Box pad={{ vertical: "medium", horizontal: "small" }}>
-              <Box align="center" justify="center" colorIndex="light-1">
-                <Paragraph margin="none">
-                  Are you sure you want to delete
-                </Paragraph>
-                <Paragraph margin="none">
-                  {this.props.path
-                    .toJS()
-                    .path.filter(
-                      item => item != "properties" && item != "items"
-                    )
-                    .map(item => item)
-                    .join(" > ")}
-                </Paragraph>
-              </Box>
+        <DeleteModal
+          show={this.state.showDeleteLayer}
+          text={this.props.path
+            .toJS()
+            .path.filter(item => item != "properties" && item != "items")
+            .map(item => item)
+            .join(" > ")}
+          onClose={() => this.setState({ showDeleteLayer: false })}
+          onDelete={() => {
+            this.props.deleteByPath(this.props.path.toJS());
+            this.setState({ showDeleteLayer: false });
+          }}
+        />
 
-              <Box margin={{ top: "medium" }} direction="row" justify="between">
-                <Button
-                  text="Cancel"
-                  secondary
-                  onClick={() => this.setState({ showDeleteLayer: false })}
-                />
-                <Button
-                  text="Delete"
-                  critical
-                  onClick={() => {
-                    this.props.deleteByPath(this.props.path.toJS());
-                    this.setState({ showDeleteLayer: false });
-                  }}
-                />
-              </Box>
-            </Box>
-          </Modal>
-        )}
         <Box flex={true} margin={{ bottom: "small" }}>
           <Box
             colorIndex="accent-2"
@@ -384,14 +358,14 @@ class CustomizeField extends React.Component {
                         ? "white"
                         : null,
                     padding:
-                    this.props.uiSchema &&
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].align &&
                       align === this.props.uiSchema.toJS()["ui:options"].align
                         ? "0 2px"
                         : null,
                     borderRadius:
-                    this.props.uiSchema &&
+                      this.props.uiSchema &&
                       this.props.uiSchema.toJS()["ui:options"] &&
                       this.props.uiSchema.toJS()["ui:options"].align &&
                       align === this.props.uiSchema.toJS()["ui:options"].align
