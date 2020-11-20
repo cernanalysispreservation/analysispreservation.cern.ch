@@ -28,8 +28,7 @@ from __future__ import absolute_import, print_function
 import requests
 from flask import current_app
 from celery import shared_task
-from invenio_db import db
-from invenio_files_rest.models import FileInstance, ObjectVersion
+from invenio_files_rest.models import FileInstance
 
 
 @shared_task(autoretry_for=(Exception, ),
@@ -37,20 +36,23 @@ from invenio_files_rest.models import FileInstance, ObjectVersion
                  'max_retries': 5,
                  'countdown': 10
              })
-def upload_to_zenodo(files, bucket, token, zenodo_depid, zenodo_bucket_url):
+def upload_to_zenodo(files, recid, token, zenodo_depid, zenodo_bucket_url):
     """Upload to Zenodo the files the user selected."""
+    from cap.modules.deposit.api import CAPDeposit
+    rec = CAPDeposit.get_record(recid)
+
     for filename in files:
-        file_obj = ObjectVersion.get(bucket, filename)
+        file_obj = rec.files[filename]
         file_ins = FileInstance.get(file_obj.file_id)
 
         with open(file_ins.uri, 'rb') as fp:
-            file = requests.put(
+            resp = requests.put(
                 url=f'{zenodo_bucket_url}/{filename}',
                 data=fp,
                 params=dict(access_token=token),
             )
 
-            if not file.ok:
+            if not resp.ok:
                 current_app.logger.error(
                     f'Uploading file {filename} to deposit {zenodo_depid} '
-                    f'failed with {file.status_code}.')
+                    f'failed with {resp.status_code}.')

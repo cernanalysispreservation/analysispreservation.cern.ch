@@ -173,7 +173,15 @@ def test_create_and_upload_to_zenodo_with_data(mock_token, app, users, deposit_w
                                                 files=['test-file.txt'],
                                                 zenodo_data={
                                                     'title': 'test-title',
-                                                    'description': 'This is my first upload'
+                                                    'description': 'This is my first upload',
+                                                    'upload_type': 'poster',
+                                                    'creators': [
+                                                        {'name': 'User Tester', 'affiliation': 'Zenodo CAP'}
+                                                    ],
+                                                    'access_right': 'open',
+                                                    'license': 'CC-BY-4.0',
+                                                    'publication_date': '2020-11-20',
+                                                    'embargo_date': '2050-09-09'
                                                 })),
                            headers=headers)
         assert resp.status_code == 201
@@ -191,7 +199,6 @@ def test_create_and_upload_to_zenodo_with_data(mock_token, app, users, deposit_w
 
 
 @patch('cap.modules.deposit.api._fetch_token', return_value='test-token')
-@responses.activate
 def test_create_deposit_with_wrong_data(mock_token, app, users, deposit_with_file,
                                      auth_headers_for_user, json_headers):
     user = users['cms_user']
@@ -200,26 +207,79 @@ def test_create_deposit_with_wrong_data(mock_token, app, users, deposit_with_fil
     pid = deposit_with_file['_deposit']['id']
     bucket = deposit_with_file.files.bucket
 
-    responses.add(responses.POST,
-                  f'{zenodo_server_url}/deposit/depositions',
-                  json={
-                      'status': 400,
-                      'message': 'Validation error.',
-                      'errors': [
-                          {'field': 'test', 'message': 'Unknown field name.'}
-                      ]},
-                  status=400)
-
     with app.test_client() as client:
         resp = client.post(f'/deposits/{pid}/actions/upload',
                            data=json.dumps(dict(target='zenodo',
                                                 bucket=str(bucket),
-                                                files=['test-file.txt'],
-                                                zenodo_data={'test': 'test'})),
+                                                files=['test-file.txt', 'not-found.txt'],
+                                                zenodo_data={
+                                                    'description': 'This is my first upload',
+                                                    'creators': [
+                                                        {'name': 'User Tester', 'affiliation': 'Zenodo CAP'}
+                                                    ],
+                                                    'access_right': 'open',
+                                                    'license': 'CC-BY-4.0',
+                                                    'publication_date': '2020-11-20'
+                                                })),
                            headers=headers)
         assert resp.status_code == 400
-        assert resp.json['message'] == 'Validation error on creating the Zenodo deposit.'
-        assert resp.json['errors'] == [{'field': 'test', 'message': 'Unknown field name.'}]
+        assert resp.json['message'] == 'Validation error in Zenodo input data.'
+        assert resp.json['errors'] == [{
+            'field': 'data',
+            'message': {
+                'upload_type': ['Missing data for required field.'],
+                'title': ['Missing data for required field.']}
+        }, {
+            'field': 'files',
+            'message': ['File `not-found.txt` not found in record.']
+        }]
+
+
+@patch('cap.modules.deposit.api._fetch_token', return_value='test-token')
+@responses.activate
+def test_create_and_upload_to_zenodo_with_wrong_files(mock_token, app, users, deposit_with_file,
+                                                      auth_headers_for_user, json_headers):
+    user = users['cms_user']
+    headers = auth_headers_for_user(user) + json_headers
+    zenodo_server_url = current_app.config.get('ZENODO_SERVER_URL')
+    pid = deposit_with_file['_deposit']['id']
+    bucket = deposit_with_file.files.bucket
+
+    # MOCK RESPONSES FROM ZENODO SERVER
+    # first the deposit creation
+    responses.add(responses.POST,
+                  f'{zenodo_server_url}/deposit/depositions',
+                  json={
+                      'id': 111,
+                      'record_id': 111,
+                      'title': '',
+                      'links': {
+                          'bucket': 'http://zenodo-test.com/test-bucket',
+                          'html': 'https://sandbox.zenodo.org/deposit/111',
+                          'publish': 'https://sandbox.zenodo.org/api/deposit/depositions/111/actions/publish',
+                          'self': 'https://sandbox.zenodo.org/api/deposit/depositions/111'
+                      },
+                      'files': [],
+                      'created': '2020-11-20T11:49:39.147767+00:00'
+                  },
+                  status=200)
+
+    # create the zenodo deposit
+    with app.test_client() as client:
+        resp = client.post(f'/deposits/{pid}/actions/upload',
+                           data=json.dumps(dict(target='zenodo',
+                                                bucket=str(bucket),
+                                                files=['test-file.txt', 'not-exists.txt'])),
+                           headers=headers)
+
+        assert resp.status_code == 400
+        assert resp.json['message'] == 'Validation error in Zenodo input data.'
+        assert resp.json['errors'] == [{
+            'field': 'files',
+            'message': ['File `not-exists.txt` not found in record.']
+        }]
+
+
 
 
 @patch('cap.modules.deposit.api._fetch_token', return_value='test-token')

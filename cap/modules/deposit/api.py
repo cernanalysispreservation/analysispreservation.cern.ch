@@ -61,6 +61,7 @@ from cap.modules.repos.factory import create_git_api
 from cap.modules.repos.tasks import download_repo, download_repo_file
 from cap.modules.repos.utils import (create_webhook, disconnect_subscriber,
                                      parse_git_url)
+from cap.modules.services.serializers.zenodo import ZenodoUploadSchema
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
                                            schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
@@ -68,7 +69,7 @@ from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
 from .errors import (DepositValidationError, UpdateDepositPermissionsError,
-                     ReviewError)
+                     ReviewError, InputValidationError)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
@@ -257,7 +258,7 @@ class CAPDeposit(Deposit, Reviewable):
         with UpdateDepositPermission(self).require(403):
             if request:
                 _, rec = request.view_args.get('pid_value').data
-                record_uuid = str(rec.id)
+                recid = str(rec.id)
                 data = request.get_json()
                 target = data.get('target')
 
@@ -269,20 +270,26 @@ class CAPDeposit(Deposit, Reviewable):
                             'Please connect your Zenodo account '
                             'before creating a deposit.')
 
-                    files = data.get('files')
-                    bucket = data.get('bucket')
-                    zenodo_data = data.get('zenodo_data', {})
+                    files = data.get('files', [])
+                    zenodo_data = data.get('zenodo_data')
+                    input = dict(files=files, data=zenodo_data) \
+                        if zenodo_data else dict(files=files)
 
-                    if files and bucket:
-                        zenodo_deposit = create_zenodo_deposit(token, zenodo_data)  # noqa
-                        self.setdefault('_zenodo', []).append(zenodo_deposit)
+                    if files:
+                        _, errors = ZenodoUploadSchema(recid=recid).load(input)
+                        if errors:
+                            raise InputValidationError(
+                                'Validation error in Zenodo input data.',
+                                errors=errors)
+
+                        deposit = create_zenodo_deposit(token, zenodo_data)
+                        self.setdefault('_zenodo', []).append(deposit)
                         self.commit()
 
                         # upload files to zenodo deposit
-                        upload_to_zenodo.delay(
-                            files, bucket, token,
-                            zenodo_deposit['id'],
-                            zenodo_deposit['links']['bucket'])
+                        upload_to_zenodo.delay(files, recid, token,
+                                               deposit['id'],
+                                               deposit['links']['bucket'])
                     else:
                         raise FileUploadError(
                             'You cannot create an empty Zenodo deposit. '
@@ -307,7 +314,7 @@ class CAPDeposit(Deposit, Reviewable):
                                     'You cannot create a webhook on a file')
 
                             download_repo_file(
-                                record_uuid,
+                                recid,
                                 f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
                                 *api.get_file_download(filepath),
                                 api.auth_headers,
@@ -325,10 +332,10 @@ class CAPDeposit(Deposit, Reviewable):
                                     'You cannot create a push webhook'
                                     ' for a specific sha.')
 
-                            create_webhook(record_uuid, api, event_type)
+                            create_webhook(recid, api, event_type)
                         else:
                             download_repo.delay(
-                                record_uuid,
+                                recid,
                                 f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
                                 api.get_repo_download(),
                                 api.auth_headers)

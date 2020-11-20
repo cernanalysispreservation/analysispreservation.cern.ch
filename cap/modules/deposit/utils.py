@@ -27,13 +27,13 @@ from __future__ import absolute_import, print_function
 
 import requests
 from flask import current_app
-from flask_login import current_user
 from invenio_access.models import Role
 from invenio_db import db
 
 from cap.modules.deposit.errors import AuthorizationError, \
     DataValidationError, FileUploadError
 from cap.modules.records.utils import url_to_api_url
+from cap.modules.services.serializers.zenodo import ZenodoDepositSchema
 
 
 def clean_empty_values(data):
@@ -82,13 +82,15 @@ def fix_bucket_links(response):
     return response
 
 
-def create_zenodo_deposit(token, data):
+def create_zenodo_deposit(token, data=None):
     """Create a Zenodo deposit using the logged in user's credentials."""
     zenodo_url = current_app.config.get("ZENODO_SERVER_URL")
+    zenodo_data = {'metadata': data} if data else {}
+
     deposit = requests.post(
         url=f'{zenodo_url}/deposit/depositions',
         params=dict(access_token=token),
-        json={'metadata': data},
+        json=zenodo_data,
         headers={'Content-Type': 'application/json'}
     )
 
@@ -105,18 +107,5 @@ def create_zenodo_deposit(token, data):
         raise FileUploadError(
             'Something went wrong, Zenodo deposit not created.')
 
-    # TODO: fix with serializers
-    data = deposit.json()
-    zenodo_deposit = {
-        'id': data['id'],
-        'title': data.get('metadata', {}).get('title'),
-        'creator': current_user.id,
-        'created': data['created'],
-        'links': {
-            'self': data['links']['self'],
-            'bucket': data['links']['bucket'],
-            'html': data['links']['html'],
-            'publish': data['links']['publish'],
-        }
-    }
-    return zenodo_deposit
+    data = ZenodoDepositSchema().dump(deposit.json()).data
+    return data
