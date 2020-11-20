@@ -32,8 +32,8 @@ from cap.modules.experiments.validators import (validate_cadi_id,
 
 deposit_validators = dict(Draft4Validator.VALIDATORS)
 
-# deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
-# deposit_validators['x-validate-das-path'] = validate_das_path
+deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
+deposit_validators['x-validate-das-path'] = validate_das_path
 # deposit_validators['x-validate-cadi-id'] = validate_cadi_id
 
 DepositValidator = extend(Draft4Validator, validators=deposit_validators)

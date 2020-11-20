@@ -33,15 +33,19 @@ def validate_cms_trigger(validator, value, instance, schema):
     errors = []
     path = instance.get('path')
     year = instance.get('year')
-    for trigger in instance.get('triggers', []):
+    for index, trigger in enumerate(instance.get('triggers', [])):
         search = CMSTriggerSearch().exact_search(trigger['trigger'], path,
                                                  year)
         if search.count() == 0:
-            errors.append("{} is not a valid trigger for this dataset.".format(
-                trigger['trigger']))
+            errors.append({
+                "message":
+                "{} is not a valid trigger for this dataset.".format(
+                    trigger['trigger']),
+                "path": ["triggers", index, "trigger"]
+            }),
 
-    if errors:
-        yield ValidationError(errors)
+    for error in errors:
+        yield ValidationError(**error)
 
 
 def validate_das_path(validator, value, instance, schema):

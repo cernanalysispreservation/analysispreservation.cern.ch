@@ -512,6 +512,11 @@ def cms_triggers_index(es):
             'trigger': 'Trigger_2'
         },
         {
+            'dataset': 'dataset2',
+            'year': 2012,
+            'trigger': 'Trigger_2'
+        },
+        {
             'dataset': 'Dataset1',
             'year': 2011,
             'trigger': 'Another_Trigger'
