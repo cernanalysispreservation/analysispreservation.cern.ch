@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Record API."""
 
 from __future__ import absolute_import, print_function
@@ -38,11 +37,11 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.errors import RecordValidationError
+from cap.modules.records.errors import get_error_path
 from cap.modules.records.permissions import (RecordAdminActionNeed,
                                              RecordReadActionNeed,
                                              RecordUpdateActionNeed)
 from cap.modules.records.validators import RecordValidator
-
 
 RECORD_ACTIONS = [
     'record-read',
@@ -68,7 +67,6 @@ def RECORD_ACTION_NEEDS(id):
 
 class CAPRecord(Record):
     """Record API class for CAP."""
-
     def get_record_metadata(self):
         """Get Record Metadata instance for deposit."""
         return RecordMetadata.query.filter_by(id=self.id).one_or_none()
@@ -103,33 +101,23 @@ class CAPRecord(Record):
             for role in permission['roles']:
                 role = Role.query.filter_by(id=role).one()
                 try:
-                    ActionRoles.query.filter_by(
-                        action=action,
-                        argument=str(id_),
-                        role_id=role.id
-                    ).one()
+                    ActionRoles.query.filter_by(action=action,
+                                                argument=str(id_),
+                                                role_id=role.id).one()
                 except NoResultFound:
                     db.session.add(
-                        ActionRoles.allow(
-                            RECORD_ACTION_NEEDS(id_)[action],
-                            role=role
-                        )
-                    )
+                        ActionRoles.allow(RECORD_ACTION_NEEDS(id_)[action],
+                                          role=role))
             for user in permission['users']:
                 user = User.query.filter_by(id=user).one()
                 try:
-                    ActionUsers.query.filter_by(
-                        action=action,
-                        argument=str(id_),
-                        user_id=user.id
-                    ).one()
+                    ActionUsers.query.filter_by(action=action,
+                                                argument=str(id_),
+                                                user_id=user.id).one()
                 except NoResultFound:
                     db.session.add(
-                        ActionUsers.allow(
-                            RECORD_ACTION_NEEDS(id_)[action],
-                            user=user
-                        )
-                    )
+                        ActionUsers.allow(RECORD_ACTION_NEEDS(id_)[action],
+                                          user=user))
 
     @classmethod
     def _add_experiment_permissions(cls, data, id_):
@@ -140,30 +128,24 @@ class CAPRecord(Record):
         for au in ActionUsers.query_by_action(exp_need).all():
             try:
                 ActionUsers.query_by_action(
-                    RECORD_ACTION_NEEDS(id_)['record-read']
-                ).filter_by(user=au.user).one()
+                    RECORD_ACTION_NEEDS(id_)['record-read']).filter_by(
+                        user=au.user).one()
             except NoResultFound:
                 db.session.add(
-                    ActionUsers.allow(
-                        RECORD_ACTION_NEEDS(id_)['record-read'],
-                        user=au.user
-                    )
-                )
+                    ActionUsers.allow(RECORD_ACTION_NEEDS(id_)['record-read'],
+                                      user=au.user))
             if au.user.id not in data['_access']['record-read']['users']:
                 data['_access']['record-read']['users'].append(au.user.id)
 
         for ar in ActionRoles.query_by_action(exp_need).all():
             try:
                 ActionRoles.query_by_action(
-                    RECORD_ACTION_NEEDS(id_)['record-read']
-                ).filter_by(role=ar.role).one()
+                    RECORD_ACTION_NEEDS(id_)['record-read']).filter_by(
+                        role=ar.role).one()
             except NoResultFound:
                 db.session.add(
-                    ActionRoles.allow(
-                        RECORD_ACTION_NEEDS(id_)['record-read'],
-                        role=ar.role
-                    )
-                )
+                    ActionRoles.allow(RECORD_ACTION_NEEDS(id_)['record-read'],
+                                      role=ar.role))
             if ar.role.id not in data['_access']['record-read']['roles']:
                 data['_access']['record-read']['roles'].append(ar.role.id)
 
@@ -179,9 +161,7 @@ class CAPRecord(Record):
 
                 validator = RecordValidator(schema, resolver=resolver)
                 errors = [
-                    FieldError(
-                        list(error.path)+error.validator_value,
-                        str(error.message))
+                    FieldError(get_error_path(error), str(error.message))
                     for error in validator.iter_errors(self)
                 ]
 

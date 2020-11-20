@@ -39,3 +39,11 @@ class RecordValidationError(RESTValidationError):
 
         self.description = description or self.description
         self.errors = errors
+
+
+def get_error_path(error):
+    """Helper to return correct error path"""
+    if isinstance(error.validator_value, str):
+        return list(error.path) + error.validator_value
+    else:
+        return list(error.path)

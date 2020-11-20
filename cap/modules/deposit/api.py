@@ -54,6 +54,7 @@ from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.mail.utils import post_action_notifications
 from cap.modules.records.api import CAPRecord
+from cap.modules.records.errors import get_error_path
 from cap.modules.repos.errors import GitError
 from cap.modules.repos.factory import create_git_api
 from cap.modules.repos.tasks import download_repo, download_repo_file
@@ -231,8 +232,9 @@ class CAPDeposit(Deposit, Reviewable):
 
             try:
                 deposit = super(CAPDeposit, self).publish(*args, **kwargs)
-                post_action_notifications(
-                    "publish", deposit, host_url=request.host_url)
+                post_action_notifications("publish",
+                                          deposit,
+                                          host_url=request.host_url)
 
                 return deposit
             except ValidationError as e:
@@ -584,16 +586,13 @@ class CAPDeposit(Deposit, Reviewable):
 
                 validator = NoRequiredValidator(schema, resolver=resolver)
 
-                result = {}
-                result['errors'] = [
-                    FieldError(
-                        list(error.path)+error.validator_value,
-                        str(error.message))
+                errors = [
+                    FieldError(get_error_path(error), str(error.message))
                     for error in validator.iter_errors(self)
                 ]
 
-                if result['errors']:
-                    raise DepositValidationError(None, errors=result['errors'])
+                if errors:
+                    raise DepositValidationError(None, errors=errors)
             except RefResolutionError:
                 raise DepositValidationError('Schema {} not found.'.format(
                     self['$schema']))
