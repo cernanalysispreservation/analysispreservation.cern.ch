@@ -8,20 +8,22 @@ import { updateUiSchemaByPath } from "../../../../../../actions/schemaWizard";
 
 const ObjectFieldTemplate = function(props) {
   const [cards, setCards] = useState([]);
-  useEffect(
-    () => {
-      if (props.properties.length === cards.length) {
-        cards.map((card, index) => {
-          card.prop = props.properties[index];
-        });
-      }
-    },
-    [props.properties]
-  );
 
   useEffect(
     () => {
-      if (props.properties.length < cards.length) {
+      let propsLength = props.properties.length;
+      let cardsLength = cards.length;
+      let uiCards = cards.map(item => item.name);
+      let uiProperties = props.properties.map(item => item.name);
+      let different = false;
+      uiProperties.map(item => {
+        if (!uiCards.includes(item)) different = true;
+      });
+
+      if (
+        propsLength < cardsLength ||
+        (propsLength === cardsLength && different)
+      ) {
         let temp = [];
         props.properties.map((prop, index) => {
           let item = {
@@ -33,6 +35,12 @@ const ObjectFieldTemplate = function(props) {
           temp.push(item);
         });
         setCards(temp);
+      }
+
+      if (props.properties.length === cards.length && !different) {
+        cards.map((card, index) => {
+          card.prop = props.properties[index];
+        });
       }
     },
     [props.properties]
