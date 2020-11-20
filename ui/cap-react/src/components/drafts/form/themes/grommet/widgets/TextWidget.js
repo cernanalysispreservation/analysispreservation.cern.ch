@@ -261,6 +261,8 @@ class TextWidget extends Component {
             defaultOptions={false}
             value={{ label: this.props.value, value: this.props.value }}
             loadOptions={debounce(this.updateSuggestions, 500)}
+            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+            menuPortalTarget={document.body.getElementsByClassName("rjsf")[0]}
           />
         </Box>
       );
