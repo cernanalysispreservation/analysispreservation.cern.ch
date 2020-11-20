@@ -15,7 +15,7 @@ import Image6 from "./svg/SidebatLayout";
 import Image7 from "./svg/SidebarTwoColLayout";
 
 import { schemaSchema } from "../../utils/schemas";
-import { Label } from "grommet";
+import { Label, TextInput, FormField } from "grommet";
 
 import DeleteModal from "./DeletePropertyModal";
 
@@ -51,7 +51,8 @@ class CustomizeField extends React.Component {
     this.state = {
       schema: props.schema ? props.schema.toJS() : {},
       uiSchema: props.uiSchema ? props.uiSchema.toJS() : {},
-      showDeleteLayer: false
+      showDeleteLayer: false,
+      updateId: ""
     };
   }
 
@@ -419,6 +420,25 @@ class CustomizeField extends React.Component {
               Actions
             </Label>
           </Box>
+          <FormField>
+            <Box direction="row" flex>
+              <TextInput
+                id="pattern"
+                name="pattern"
+                placeHolder="Update the id of the field"
+                onDOMChange={e => this.setState({ updateId: e.target.value })}
+              />
+              <Button
+                text="Update"
+                onClick={() =>
+                  this.props.renameId(
+                    this.props.path.toJS(),
+                    this.state.updateId
+                  )
+                }
+              />
+            </Box>
+          </FormField>
           <Button
             text="Delete"
             margin={{ top: "small" }}

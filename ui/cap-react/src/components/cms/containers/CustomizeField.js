@@ -3,7 +3,8 @@ import CustomizeField from "../components/SchemaWizard/PropertyEditor/customizeF
 import {
   updateSchemaByPath,
   updateUiSchemaByPath,
-  deleteByPath
+  deleteByPath,
+  renameIdByPath
 } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
@@ -24,7 +25,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateSchemaByPath(path, schema)),
     onUiSchemaChange: (path, schema) =>
       dispatch(updateUiSchemaByPath(path, schema)),
-    deleteByPath: item => dispatch(deleteByPath(item))
+    deleteByPath: item => dispatch(deleteByPath(item)),
+    renameId: (item, newName) => dispatch(renameIdByPath(item, newName))
   };
 }
 export default connect(

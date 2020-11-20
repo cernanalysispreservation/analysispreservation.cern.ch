@@ -1,6 +1,6 @@
 import axios from "axios";
 import { replace, push } from "connected-react-router";
-
+import cogoToast from "cogo-toast";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
 export const LIST_UPDATE = "LIST_UPDATE";
@@ -308,6 +308,93 @@ export function deleteByPath(item) {
       tempUiSchema["ui:order"] = tempUiSchema["ui:order"].filter(
         item => item !== uiItemToDelete
       );
+    }
+
+    // ********* update changes **********
+    dispatch(updateByPath({ schema: [], uiSchema: [] }, { schema, uiSchema }));
+    dispatch(enableCreateMode());
+  };
+}
+
+// update the id field of a property
+export function renameIdByPath(item, newName) {
+  return function(dispatch, getState) {
+    let schema = getState()
+      .schemaWizard.getIn(["current", "schema"])
+      .toJS();
+
+    let uiSchema = getState()
+      .schemaWizard.getIn(["current", "uiSchema"])
+      .toJS();
+
+    const path = item.path;
+    const uiPath = item.uiPath;
+
+    // ********* schema **********
+
+    let itemToDelete = path.pop();
+    // if the last item is items then pop again since it is an array, in order to fetch the proper id
+    itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
+
+    if (newName === itemToDelete || newName === "") return;
+
+    // shallow copy schema object in order to navigate through the object
+    // but the changes will reflect to the original one --> schema
+    let tempSchema = Object.assign({}, schema);
+
+    // schema update
+    for (let p in path) {
+      tempSchema = tempSchema[path[p]];
+    }
+
+    let keys = Object.keys(tempSchema);
+    if (keys.includes(newName)) {
+      cogoToast.error("The id should be unique, this name already exists", {
+        position: "top-center",
+        bar: { size: "0" },
+        hideAfter: 3
+      });
+      return;
+    }
+
+    tempSchema[newName] = tempSchema[itemToDelete];
+
+    delete tempSchema[itemToDelete];
+
+    // ********* uiSchema **********
+
+    if (uiPath.length === 1) {
+      // remove from the uiSchema
+      uiSchema[newName] = uiSchema[uiPath[0]];
+      // update the uiOrder array
+      let pos = uiSchema["ui:order"].indexOf(uiPath[0]);
+
+      if (pos > -1) {
+        uiSchema["ui:order"][pos] = newName;
+      }
+      delete uiSchema[uiPath[0]];
+    } else {
+      let tempUiSchema = Object.assign({}, uiSchema);
+      const uiItemToDelete = uiPath.pop();
+
+      for (let i in uiPath) {
+        tempUiSchema = tempUiSchema[uiPath[i]];
+      }
+
+      if (!tempUiSchema["ui:order"]) {
+        tempUiSchema["ui:order"] = [];
+      }
+      // update the uiOrder array
+      let pos = tempUiSchema["ui:order"].indexOf(uiItemToDelete);
+      if (pos > -1) {
+        tempUiSchema["ui:order"][pos] = newName;
+      }
+
+      if (tempUiSchema[uiItemToDelete]) {
+        tempUiSchema[newName] = tempUiSchema[uiItemToDelete];
+        delete tempUiSchema[uiItemToDelete];
+      }
+      // remove from the uiSchema
     }
 
     // ********* update changes **********
