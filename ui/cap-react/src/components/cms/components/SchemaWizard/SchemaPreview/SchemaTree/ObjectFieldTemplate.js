@@ -20,10 +20,7 @@ const ObjectFieldTemplate = function(props) {
         if (!uiCards.includes(item)) different = true;
       });
 
-      if (
-        propsLength < cardsLength ||
-        (propsLength === cardsLength && different)
-      ) {
+      if (propsLength < cardsLength) {
         let temp = [];
         props.properties.map((prop, index) => {
           let item = {
@@ -35,6 +32,30 @@ const ObjectFieldTemplate = function(props) {
           temp.push(item);
         });
         setCards(temp);
+      }
+
+      if (propsLength === cardsLength && different) {
+        let diffIndex;
+        let diffItem;
+        uiCards.map((item, index) => {
+          if (!uiProperties.includes(item)) diffIndex = index;
+        });
+        uiProperties.map(item => {
+          if (!uiCards.includes(item)) diffItem = item;
+        });
+
+        let propss;
+        props.properties.map(item => {
+          if (item.name === diffItem) propss = item;
+        });
+
+        let item = {
+          id: diffIndex + 1,
+          name: diffItem,
+          prop: propss
+        };
+        cards[diffIndex] = item;
+        setCards(cards);
       }
 
       if (props.properties.length === cards.length && !different) {

@@ -376,17 +376,25 @@ export function renameIdByPath(item, newName) {
     } else {
       let tempUiSchema = Object.assign({}, uiSchema);
       const uiItemToDelete = uiPath.pop();
+
       for (let i in uiPath) {
         tempUiSchema = tempUiSchema[uiPath[i]];
       }
-      tempUiSchema[newName] = tempUiSchema[uiItemToDelete];
+
+      if (!tempUiSchema["ui:order"]) {
+        tempUiSchema["ui:order"] = [];
+      }
       // update the uiOrder array
       let pos = tempUiSchema["ui:order"].indexOf(uiItemToDelete);
       if (pos > -1) {
         tempUiSchema["ui:order"][pos] = newName;
       }
+
+      if (tempUiSchema[uiItemToDelete]) {
+        tempUiSchema[newName] = tempUiSchema[uiItemToDelete];
+        delete tempUiSchema[uiItemToDelete];
+      }
       // remove from the uiSchema
-      delete tempUiSchema[uiItemToDelete];
     }
 
     // ********* update changes **********
