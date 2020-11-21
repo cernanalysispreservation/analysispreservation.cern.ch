@@ -32,7 +32,11 @@ from cap.modules.records.search import CAPRecordSearch
 from cap.modules.records.serializers import record_json_v1
 from cap.modules.workflows.utils import get_user_workflows
 
-blueprint = Blueprint('cap', __name__, )
+blueprint = Blueprint(
+    'cap',
+    __name__,
+    template_folder='templates',
+)
 
 
 @blueprint.route('/ping', methods=['GET'])
