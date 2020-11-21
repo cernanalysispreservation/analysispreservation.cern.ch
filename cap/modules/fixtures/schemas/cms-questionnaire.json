@@ -1179,79 +1179,22 @@
         "properties": {
           "pdf_uncertainty": {
             "type": "object",
+            "additionalProperties":false,
             "properties": {
               "options": {
                 "type": "string",
                 "enum": [
-                  "You are using one of the recent PDFs from one the global PDF groups (ABMP, CT, HERAPDF, MMHT, NNPDF) with their own values for alpha_s, quark masses and uncertainty",
-                  "You are using one of the PDF4LHC15 sets, which is a combination of CT14, MMHT14 and NNPDF3.0",
-                  "You are using a different procedure"
+                  "You checked that the differences between the predictions using the central eigenvectors of different PDFs are significantly larger than the uncertainties of each PDF set separately and you use an envelope of PDFs recommended by PDF4LHC page: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PDFatCMS",
+                  "Most PDFs result in very similar predictions in the full phase space of your analysis and you use the PDF which describes the data best and estimate uncertainties using its eigenvectors",
+                  "You use the method of META PDFs (applies only to searches)",
+                  "You use the method of Compressed Monte Carlo (CMC) PDFs (applies only to searches)"
                 ],
                 "title": "Select the answer that applies"
               },
               "comments": {
                 "type": "string",
                 "title": "Additional comments"
-              },
-              "profile_over_pdf_uncertainty": {
-                "type": "string",
-                "title": "Do you profile over the PDF uncertainties? Beware that using the envelope of the PDF uncertainties for MC replicas in this way (eg when using Combine) provides wrong and unphysical PDF uncertainty, and you should consider using more degrees of freedom rather than combining all of the variations into one"
               }
-            },
-            "dependencies": {
-              "options": {
-                "oneOf": [
-                  {
-                    "properties": {
-                      "options": {
-                        "enum": [
-                          "You are using one of the recent PDFs from one the global PDF groups (ABMP, CT, HERAPDF, MMHT, NNPDF) with their own values for alpha_s, quark masses and uncertainty"
-                        ]
-                      },
-                      "usage": {
-                        "title": "Specify the PDF you are using and the method of uncertainty estimate",
-                        "type": "string",
-                        "enum": ["Hessian eigenvectors", "MC replicas"]
-                      },
-                      "data": {
-                        "title": "Do you find a reasonable description of the data by the SM MC? If not,did you consider to use an alternative PDF set?",
-                        "type": "string"
-                      }
-                    }
-                  },
-                  {
-                    "properties": {
-                      "options": {
-                        "enum": [
-                          "You are using one of the PDF4LHC15 sets, which is a combination of CT14, MMHT14 and NNPDF3.0"
-                        ]
-                      },
-                      "usage": {
-                        "type": "string",
-                        "title": "Specify the PDF set used",
-                        "enum": ["PDF4LHC15_MC", "PDF4LHC_30", "PDF4LHC_100"]
-                      },
-                      "reason": {
-                        "type": "string",
-                        "title": "Please elaborate why you are using this specific choice"
-                      }
-                    }
-                  },
-                  {
-                    "properties": {
-                      "options": {
-                        "enum": [
-                          "You are using a different procedure"
-                        ]
-                      },
-                      "reason": {
-                        "title": "Please specify",
-                        "type": "string"
-                      }
-                    }
-                  }
-                ]
-              }              
             },
             "title": "9.1. How do you estimate the PDF uncertainty on your measurement, e.g. effects on the acceptance?"
           },
@@ -1824,16 +1767,7 @@
         "pdf"
       ],
       "pdf_uncertainty": {
-        "ui:order": ["options", "usage", "reason", "data", "profile_over_pdf_uncertainty", "comments"],
-        "profile_over_pdf_uncertainty": {
-          "ui:widget": "textarea"
-        },
-        "comment": {
-          "ui:widget": "textarea"
-        },
-        "reason": {
-          "ui:widget": "textarea"
-        }
+        "ui:order": ["options", "comments"]
       },
       "sm": {
         "ui:order": ["use", "options", "comments", "hepdata"],
