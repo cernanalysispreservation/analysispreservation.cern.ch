@@ -260,7 +260,7 @@ class ArrayFieldTemplate extends React.Component {
         title={this.props.title}
         required={this.props.required}
         readonly={this.props.readonly}
-        description={this.props.description}
+        description={this.props.schema && this.props.schema.description}
         onArrayAddClick={this._onAddClick.bind(this)}
         pasteable={this.uiOptionImport}
         enableImport={this.uiOptionImport && this._enableImport}
