@@ -125,7 +125,7 @@ def test_validate_with_different_version_records(
                       'title': 'test-schema',
                       'type': 'object',
                       'properties': {
-                          'basic_info': {
+                          'basic': {
                               'type': 'string',
                               'enum': ['test1', 'test2']
                           }
@@ -134,7 +134,7 @@ def test_validate_with_different_version_records(
     create_deposit(users['cms_user'], 'test',
                    {
                        "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-v1.0.0.json",
-                       'basic_info': 'test1'
+                       'basic': 'test1'
                    },
                    experiment='CMS')
 
@@ -144,7 +144,7 @@ def test_validate_with_different_version_records(
                       'title': 'test-schema',
                       'type': 'object',
                       'properties': {
-                          'basic_info': {
+                          'basic': {
                               'type': 'string',
                               'enum': ['test3', 'test4']
                           }
@@ -152,7 +152,6 @@ def test_validate_with_different_version_records(
                   })
 
     res = cli_runner('fixtures validate -a test -v 1.0.0 -c 2.0.0')
-
     assert res.exit_code == 0
     assert '1 record(s) of test found.' in res.output
     assert "'test1' is not one of ['test3', 'test4']" in res.output
@@ -166,7 +165,7 @@ def test_validate_with_different_version_records_and_exported_file(
                       'title': 'test-schema',
                       'type': 'object',
                       'properties': {
-                          'basic_info': {
+                          'basic': {
                               'type': 'string',
                               'enum': ['test1', 'test2']
                           }
@@ -175,7 +174,7 @@ def test_validate_with_different_version_records_and_exported_file(
     create_deposit(users['cms_user'], 'test',
                    {
                        "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-v1.0.0.json",
-                       'basic_info': 'test1'
+                       'basic': 'test1'
                    },
                    experiment='CMS')
 
@@ -185,7 +184,7 @@ def test_validate_with_different_version_records_and_exported_file(
                       'title': 'test-schema',
                       'type': 'object',
                       'properties': {
-                          'basic_info': {
+                          'basic': {
                               'type': 'string',
                               'enum': ['test3', 'test4']
                           }

@@ -63,8 +63,13 @@ from cap.modules.schemas.resolvers import resolve_schema_by_url,\
 @click.option('--export', '-e',
               type=click.Path(),
               help='A file where, the validation errors can be saved.')
+@click.option('--export-type', '-et',
+              default=None,
+              type=click.Choice(['md'], case_sensitive=False),
+              help='The export type that will be used for output.')
 @with_appcontext
-def validate(schema_url, ana_type, ana_version, compare_with, status, export):
+def validate(schema_url, ana_type, ana_version, compare_with,
+             status, export, export_type):
     """
     Validate deposit or record metadata based on their schema. Provide the
     schema url OR ana-type and version, as well as the schema version that you
@@ -116,7 +121,9 @@ def validate(schema_url, ana_type, ana_version, compare_with, status, export):
     total_errors = []
     for pid in pids:
         cap_record = cap_record_class.get_record(pid)
-
+        cap_record_pid = cap_record.get('_deposit', {}).get('id')
+        cap_record_cadi_id = cap_record.get('basic_info', {}).get('cadi_id')
+        cap_host = 'https://analysispreservation.cern.ch/drafts'
         # get the url of the schema version, used for validation
         if compare_with:
             cap_record['$schema'] = schema_name_to_url(
@@ -125,8 +132,22 @@ def validate(schema_url, ana_type, ana_version, compare_with, status, export):
             cap_record.validate()
             click.secho(f'No errors found in record {pid}', fg='green')
         except DepositValidationError as exc:
-            error_list = '\n'.join(str(err.res) for err in exc.errors)
-            msg = f'Errors in {pid}:\n{error_list}'
+            if export_type == 'md':
+                msg = '- [ ] Errors in **CADI ID:** ' + \
+                    f'{cap_record_cadi_id or "?"}' + \
+                    f' - **[link]({cap_host}/{cap_record_pid})** :\n'
+                msg += "\n| Field Path | Error | \n| ---------- | ----- | \n"
+                for err in exc.errors:
+                    _err = err.res
+                    msg += f"| ```{_err.get('field')}``` |"
+                    msg += f" {_err.get('message')}  | \n"
+                msg += "----\n"
+            else:
+                error_list = '\n'.join(str(err.res) for err in exc.errors)
+                msg = f'Errors in {pid} - CADI ' + \
+                      f'id: {cap_record_cadi_id or "?"}' + \
+                      f' - {cap_host}/{cap_record_pid} :\n{error_list}'
+
             click.secho(msg, fg='red')
 
             if export:
