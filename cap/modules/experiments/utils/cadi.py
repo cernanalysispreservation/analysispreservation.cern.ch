@@ -33,7 +33,8 @@ from invenio_db import db
 from invenio_search import RecordsSearch
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.errors import DepositDoesNotExist
+from cap.modules.deposit.errors import (DepositDoesNotExist,
+                                        DepositValidationError)
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user,
@@ -83,17 +84,20 @@ def synchronize_cadi_entries(limit=None):
 
         try:  # update if cadi deposit already exists
             deposit = get_deposit_by_cadi_id(cadi_id)
-
             if deposit.get('cadi_info') == cadi_info:
                 current_app.logger.info(f'No changes in entry {cadi_id}.')
 
             else:
                 deposit['cadi_info'] = cadi_info
-                deposit.commit()
+                try:
+                    deposit.commit()
+                except DepositValidationError:
+                    current_app.logger.exception(
+                        f'Error during updating cadi info in {cadi_id}.')
+                    continue
                 db.session.commit()
 
                 current_app.logger.info(f'Cadi entry {cadi_id} updated.')
-
         except DepositDoesNotExist:
             try:
                 with db.session.begin_nested():
