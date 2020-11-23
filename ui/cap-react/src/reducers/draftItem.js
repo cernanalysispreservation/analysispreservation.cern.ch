@@ -65,7 +65,7 @@ export default function draftsReducer(state = initialState, action) {
         .set("formErrors", Set([]))
         .set("extraErrors", {});
     case commonActions.FORM_ERRORS:
-      return state.set("formErrors", Set(action.errors));
+      return state.set("formErrors", state.get('formErrors').union(action.errors));
     case commonActions.FETCH_SCHEMA_ERROR:
       return state.set("schemaErrors", [
         ...state.get("schemaErrors"),
@@ -120,6 +120,8 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("formData", action.draft.metadata)
         .set("loading", false)
+        .set("formErrors", Set([]))
+        .set("extraErrors", {})
         .set("message", {
           status: "ok",
           msg: "All changes saved"
@@ -127,13 +129,8 @@ export default function draftsReducer(state = initialState, action) {
         .merge(Map(action.draft));
     case draftItemActions.UPDATE_DRAFT_ERROR:
       return state
+        .set("extraErrors", action.error)
         .set("loading", false)
-        .set("errors", [...state.get("errors"), action.error])
-        .set("message", {
-          status: "critical",
-          msg: "Error while updating.."
-        });
-
     case draftItemActions.DELETE_DRAFT_REQUEST:
       return state.set("loading", true);
     case draftItemActions.DELETE_DRAFT_SUCCESS:

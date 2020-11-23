@@ -161,6 +161,7 @@ DraftEditor.propTypes = {
   schemaErrors: PropTypes.array,
   // schemaId: PropTypes.string,
   error: PropTypes.object,
+  extraErrors: PropTypes.object,
   formData: PropTypes.object,
   draft_id: PropTypes.string,
   formDataChange: PropTypes.func,

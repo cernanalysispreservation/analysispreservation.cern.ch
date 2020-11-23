@@ -484,10 +484,10 @@ export function reviewDraft(draft_id, review, message = "submitted") {
 
 export function updateDraft(data, draft_id) {
   return dispatch => {
-    return dispatch(putUpdateDraft(data, draft_id)).catch(error => {
-      dispatch(updateDraftError(error.response));
-      throw error;
-    });
+    return dispatch(putUpdateDraft(data, draft_id))
+      .catch(error => {
+        dispatch(updateDraftError(error));
+      });
   };
 }
 
@@ -504,7 +504,7 @@ export function putUpdateDraft(data, draft_id) {
       .then(response => {
         dispatch(updateDraftSuccess(draft_id, response.data));
 
-        cogoToast.success("Your Draft has been successfully submitted", {
+        cogoToast.success("Your Draft has been updated successfully", {
           position: "top-center",
           heading: "Draft saved",
           bar: { size: "0" },
@@ -512,17 +512,52 @@ export function putUpdateDraft(data, draft_id) {
         });
       })
       .catch(error => {
-        dispatch(updateDraftError(error));
+        let errorHeading = "Error while updating";
+        let errorDescription;
+        let errorHideAfter = 6;
+        let errorThrow = "Error while updating";
+
+        if (error.response.status == 422) {
+          let _errors = error.response.data.errors;
+          let errorTree = {};
+          _errors.map(e => {
+            let tmp = errorTree;
+            e.field.map(field => {
+              if (!tmp[field]) tmp[field] = {}
+              tmp = tmp[field];
+            });
+
+            if (!tmp["__errors"]) tmp["__errors"] = []
+            tmp["__errors"].push(e.message);
+          });
+
+          dispatch(formErrorsChange(_toErrorList(errorTree)));
+          errorHeading = "Validation Error while updating";
+          errorDescription = "Please fix the errors before saving again";
+          errorThrow = errorTree;
+        }
+        else if (error.response.status == 403 && error.response.data && error.response.data.message == "Invalid action") {
+          errorDescription = "Either you need permissions or you are trying to publish an already published item";
+        }
+        else if (error.response) {
+          errorDescription = error.response.data && error.response.data.message ?
+              error.response.data.message : "";
+        } else if (error.request) {
+          // client never received a response, or request never left
+          errorHeading = "Something went wrong";
+          errorDescription = "There is an error, please make sure you are connected and try again";
+        } else {
+          // anything else
+        }
         cogoToast.error(
-          "There is an error, please make sure you are connected and try again",
+          errorDescription,
           {
             position: "top-center",
-            heading: error.message,
+            heading: errorHeading,
             bar: { size: "0" },
-            hideAfter: 3
-          }
-        );
-        throw error;
+            hideAfter: errorHideAfter
+          });
+        throw errorThrow;
       });
   };
 }
@@ -629,7 +664,6 @@ export function publishDraft(draft_id) {
       })
       .catch(error => {
         dispatch(publishDraftError(error));
-        // throw error;
       });
   };
 }
