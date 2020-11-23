@@ -58,14 +58,14 @@ from cap.modules.schemas.resolvers import resolve_schema_by_url,\
                    'records should be compared to.')
 @click.option('--status', '-s',
               default='draft',
-              type=click.Choice(['draft', 'published'], case_sensitive=False),
+              type=click.Choice(['draft', 'published']),
               help='The metadata type that will be used for validation.')
 @click.option('--export', '-e',
               type=click.Path(),
               help='A file where, the validation errors can be saved.')
 @click.option('--export-type', '-et',
               default=None,
-              type=click.Choice(['md'], case_sensitive=False),
+              type=click.Choice(['md']),
               help='The export type that will be used for output.')
 @with_appcontext
 def validate(schema_url, ana_type, ana_version, compare_with,
