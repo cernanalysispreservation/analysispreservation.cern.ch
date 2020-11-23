@@ -49,7 +49,7 @@ const ArrayFieldTemplate = props => {
             <div style={{ borderBottom: "5px solid #e6e6e6" }} />
             <Form
               schema={props.schema.items}
-              uiSchema={{}}
+              uiSchema={props.uiSchema.items}
               formData={{}}
               tagName="div"
               widgets={widgets}
@@ -76,6 +76,7 @@ ArrayFieldTemplate.propTypes = {
   formContext: PropTypes.object,
   addProperty: PropTypes.func,
   schema: PropTypes.object,
+  uiSchema: PropTypes.object,
   id: PropTypes.string
 };
 function mapDispatchToProps(dispatch) {

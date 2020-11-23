@@ -13,13 +13,9 @@ const ObjectFieldTemplate = function(props) {
     () => {
       let propsLength = props.properties.length;
       let cardsLength = cards.length;
-      let uiCards = cards.map(item => item.name);
-      let uiProperties = props.properties.map(item => item.name);
-      let different = false;
-      uiProperties.map(item => {
-        if (!uiCards.includes(item)) different = true;
-      });
 
+      // if there is difference between the two arrays means that something changed
+      // an item might be deleted, and we want to re fetch everything from properties and update the cards
       if (propsLength < cardsLength) {
         let temp = [];
         props.properties.map((prop, index) => {
@@ -34,34 +30,45 @@ const ObjectFieldTemplate = function(props) {
         setCards(temp);
       }
 
-      if (propsLength === cardsLength && different) {
+      // if there is no change with the number of the items it means that either there is a re ordering
+      // or some update at each props data
+      if (propsLength === cardsLength) {
         let diffIndex;
-        let diffItem;
-        uiCards.map((item, index) => {
-          if (!uiProperties.includes(item)) diffIndex = index;
-        });
+        let uiCards = cards.map(item => item.name);
+        let uiProperties = props.properties.map(item => item.name);
+        let different = false;
+        let differentItem;
         uiProperties.map(item => {
-          if (!uiCards.includes(item)) diffItem = item;
+          if (!uiCards.includes(item)) {
+            different = true;
+            differentItem = item;
+          }
         });
 
-        let propss;
-        props.properties.map(item => {
-          if (item.name === diffItem) propss = item;
-        });
+        // the different variable will define if there was a change in the prop keys or there is just a re ordering
+        // if the value is true it means that there is change at the prop key, if not just re order the cards
+        if (different) {
+          uiCards.map((item, index) => {
+            if (!uiProperties.includes(item)) diffIndex = index;
+          });
 
-        let item = {
-          id: diffIndex + 1,
-          name: diffItem,
-          prop: propss
-        };
-        cards[diffIndex] = item;
-        setCards(cards);
-      }
+          let propss;
+          props.properties.map(item => {
+            if (item.name === differentItem) propss = item;
+          });
 
-      if (props.properties.length === cards.length && !different) {
-        cards.map((card, index) => {
-          card.prop = props.properties[index];
-        });
+          let item = {
+            id: diffIndex + 1,
+            name: differentItem,
+            prop: propss
+          };
+          cards[diffIndex] = item;
+          setCards(cards);
+        } else {
+          cards.map((card, index) => {
+            card.prop = props.properties[index];
+          });
+        }
       }
     },
     [props.properties]
