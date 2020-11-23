@@ -420,25 +420,27 @@ class CustomizeField extends React.Component {
               Actions
             </Label>
           </Box>
-          <FormField>
-            <Box direction="row" flex>
-              <TextInput
-                id="pattern"
-                name="pattern"
-                placeHolder="Update the id of the field"
-                onDOMChange={e => this.setState({ updateId: e.target.value })}
-              />
-              <Button
-                text="Update"
-                onClick={() =>
-                  this.props.renameId(
-                    this.props.path.toJS(),
-                    this.state.updateId
-                  )
-                }
-              />
-            </Box>
-          </FormField>
+          {this.props.path.toJS().uiPath.pop() !== "items" && (
+            <FormField>
+              <Box direction="row" flex>
+                <TextInput
+                  id="pattern"
+                  name="pattern"
+                  placeHolder="Update the id of the field"
+                  onDOMChange={e => this.setState({ updateId: e.target.value })}
+                />
+                <Button
+                  text="Update"
+                  onClick={() =>
+                    this.props.renameId(
+                      this.props.path.toJS(),
+                      this.state.updateId
+                    )
+                  }
+                />
+              </Box>
+            </FormField>
+          )}
           <Button
             text="Delete"
             margin={{ top: "small" }}
