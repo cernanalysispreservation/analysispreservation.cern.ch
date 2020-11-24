@@ -23,7 +23,7 @@ class FormLayer extends React.Component {
     return this.props.layerActive ? (
       <Modal onClose={this.props.onClose}>
         <Box justify="center" align="center" pad="small">
-          <Box pad="medium" size="large">
+          <Box pad="medium" size={this.props.size || "large"}>
             <Box>{this.props.properties}</Box>
 
             <Box
