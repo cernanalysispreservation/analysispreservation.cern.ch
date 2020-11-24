@@ -59,8 +59,8 @@ def get_cms_stat_recipients(record, config):
     mva_use = record.get('multivariate_discriminants', {}).get('mva_use')
 
     if conveners_ml_mail and (
-            (centralized_apps and 'No' not in centralized_apps) or
-            mva_use == 'Yes'):
+        (centralized_apps and 'No' not in centralized_apps)
+            or mva_use == 'Yes'):
         recipients.append(conveners_ml_mail)
 
     cadi_id = record.get('analysis_context', {}).get('cadi_id')
@@ -74,6 +74,7 @@ def get_cms_stat_recipients(record, config):
         f" is {params.get('primary', '-')} ({params.get('secondary', '-')}). "
 
     submitter_email = current_user.email
+    recipients.append(submitter_email)
     message += f"Submitted by {submitter_email}"
 
     return message, recipients
@@ -86,12 +87,21 @@ GENERATE_RECIPIENT_METHODS = {
 
 NOTIFICATION_RECEPIENT = {
     "https://analysispreservation.cern.ch/schemas/deposits/"
-    "records/cms-stats-questionnaire-v0.0.1.json":
-    {
+    "records/cms-stats-questionnaire-v0.0.1.json": {
         "publish": {
             "type": "method",
             "method": "get_cms_stat_recipients",
             "path": "analysis_context.wg",
+            "emailSubject": "CMS Statistics Committee - "
+        }
+    },
+    "https://analysispreservation.cern.ch/schemas/deposits/"
+    "records/cms-stats-questionnaire-v0.0.2.json": {
+        "publish": {
+            "type": "method",
+            "method": "get_cms_stat_recipients",
+            "path": "analysis_context.wg",
+            "emailSubject": "CMS Statistics Committee - "
         }
     }
 }
@@ -123,17 +133,28 @@ def post_action_notifications(action=None, deposit=None, host_url=None):
 
         if recipients:
             if action == "publish":
-                send_mail_on_publish(recipients, record_pid, host_url,
-                                     record.revision_id, message)
+                send_mail_on_publish(
+                    recipients,
+                    record_pid,
+                    host_url,
+                    record.revision_id,
+                    message,
+                    subjectPrefix=recipients_config.get("emailSubject"))
 
 
-def send_mail_on_publish(recipients, recid, url, revision, message):
+def send_mail_on_publish(recipients,
+                         recid,
+                         url,
+                         revision,
+                         message,
+                         subjectPrefix=''):
     if revision > 0:
-        subject = \
-            "CERN Analysis Preservation: New Version of Published Analysis"
+        subject = subjectPrefix + \
+            "New Version of Published Analysis | CERN Analysis Preservation"
         template = "mail/analysis_published_revision.html"
     else:
-        subject = 'CERN Analysis Preservation: New Published Analysis'
+        subject = subjectPrefix + \
+            "New Published Analysis | CERN Analysis Preservation"
         template = "mail/analysis_published_new.html"
 
     create_and_send.delay(template, dict(recid=recid, url=url,
