@@ -6,10 +6,8 @@ import Header from "grommet/components/Header";
 import Paragraph from "grommet/components/Paragraph";
 import Label from "grommet/components/Label";
 
-import Tabs from "grommet/components/Tabs";
-import Tab from "grommet/components/Tab";
-
-import Spinning from "grommet/components/icons/Spinning";
+import { connect } from "react-redux";
+import Button from "../../../partials/Button";
 
 class SelectContentType extends React.Component {
   constructor(props) {
@@ -38,6 +36,7 @@ class SelectContentType extends React.Component {
 
   render() {
     let that = this;
+
     return (
       <Box size="large">
         <Header
@@ -55,83 +54,33 @@ class SelectContentType extends React.Component {
           </Paragraph>
         </Header>
         <Box colorIndex="light-2" pad={{ vertical: "small" }} align="center">
-          <Tabs>
-            <Tab title="recommended">
-              <Box
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  align: "center"
-                }}
-              >
-                {this.state.recommended.map(schema => {
-                  return (
-                    <Box
-                      onClick={that.props.select.bind(
-                        this,
-                        schema.schemaId,
-                        schema.schemaVersion
-                      )}
-                      margin="small"
-                      flex={true}
-                      pad="small"
-                      size="small"
-                      colorIndex="grey-4"
-                      key={schema.schemaId}
-                      align="center"
-                    >
-                      {schema.schemaId} {schema.schemaVersion}
-                    </Box>
-                  );
-                })}
-              </Box>
-            </Tab>
-            <Tab title="all">
-              <Box
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)"
-                }}
-              >
-                {this.props.list.size > 0 ? (
-                  this.props.list.entrySeq().map(([schemaId, schema]) => {
-                    return Object.keys(schema).map(schemaVersion => {
-                      return (
-                        <Box
-                          onClick={that.props.select.bind(
-                            this,
-                            schemaId,
-                            schemaVersion
-                          )}
-                          align="center"
-                          margin="small"
-                          flex={true}
-                          pad="small"
-                          size="small"
-                          colorIndex="grey-4"
-                          key={schemaId}
-                        >
-                          {schemaId} {schemaVersion}
-                        </Box>
-                      );
-                    });
-                  })
-                ) : (
-                  <Box
-                    align="center"
-                    style={{
-                      gridColumn: "2/3"
-                    }}
-                  >
-                    <Paragraph justify="center" align="center">
-                      No content type has been created yet
-                    </Paragraph>
-                    <Spinning />
-                  </Box>
-                )}
-              </Box>
-            </Tab>
-          </Tabs>
+          <Box
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                this.props.contentTypes && this.props.contentTypes.size > 1
+                  ? "repeat(2, 1fr)"
+                  : "repeat(1, 1fr)",
+              alignItems: "center",
+              gridGap: "10px"
+            }}
+          >
+            {this.props.contentTypes &&
+              this.props.contentTypes.map(item => (
+                <Button
+                  size="large"
+                  key={item.get("deposit_group")}
+                  onClick={that.props.select.bind(
+                    this,
+                    item.get("deposit_group"),
+                    "0.0.1"
+                  )}
+                  text={item.get("name")}
+                  background="#e6e6e6"
+                  hoverColor="#d9d9d9"
+                />
+              ))}
+          </Box>
         </Box>
       </Box>
     );
@@ -141,7 +90,17 @@ class SelectContentType extends React.Component {
 SelectContentType.propTypes = {
   list: PropTypes.object,
   select: PropTypes.func,
-  getSchemas: PropTypes.func
+  getSchemas: PropTypes.func,
+  contentTypes: PropTypes.object
 };
 
-export default SelectContentType;
+const mapStateToProps = state => ({
+  contentTypes: state.auth.getIn(["currentUser", "depositGroups"])
+});
+
+const mapDispatchToProps = () => ({});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectContentType);
