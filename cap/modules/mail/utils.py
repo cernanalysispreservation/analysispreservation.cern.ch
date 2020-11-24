@@ -59,8 +59,8 @@ def get_cms_stat_recipients(record, config):
     mva_use = record.get('multivariate_discriminants', {}).get('mva_use')
 
     if conveners_ml_mail and (
-        (centralized_apps and 'No' not in centralized_apps)
-            or mva_use == 'Yes'):
+        (centralized_apps and 'No' not in centralized_apps) or mva_use == 'Yes'
+    ):
         recipients.append(conveners_ml_mail)
 
     cadi_id = record.get('analysis_context', {}).get('cadi_id')
