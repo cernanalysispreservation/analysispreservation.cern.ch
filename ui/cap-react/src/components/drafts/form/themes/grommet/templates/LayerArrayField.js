@@ -64,6 +64,7 @@ class ArrayFieldTemplate extends React.Component {
                     layerActive={this.state.layers[element.index]}
                     onClose={this._onFormLayerClose.bind(this, element.index)}
                     properties={element.children}
+                    size={this.props.size}
                     remove={
                       element.hasRemove && !this.props.readonly
                         ? element.onDropIndexClick(element.index)

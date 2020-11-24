@@ -2129,6 +2129,9 @@
       }
     },
     "ml_app_use": {
+      "ui:options": {
+        "layerSize": "xxlarge"
+      },
       "items": {
         "ui:order": [
           "app_name",

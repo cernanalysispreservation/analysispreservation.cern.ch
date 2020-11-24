@@ -38,6 +38,7 @@ class ArrayFieldTemplate extends React.Component {
       this.formRenderType = "LayerArrayField";
     }
     let { ["ui:options"]: uiOptions = {} } = this.props.uiSchema;
+    this.uiOptions = uiOptions;
     this.uiOptionImport = uiOptions.import;
     this.uiOptionLatex = uiOptions.latex;
     this._delimiter = uiOptions.delimeter || "\n";
@@ -223,6 +224,7 @@ class ArrayFieldTemplate extends React.Component {
           <Box flex={false}>
             <LayerArrayField
               _onAddClick={this._onAddClick.bind(this)}
+              size={this.uiOptions.layerSize}
               {...this.props}
             />
             {this._renderAddButton()}
