@@ -45,7 +45,7 @@ class Create extends React.Component {
         >
           <Box
             pad="small"
-            justify="end"
+            justify="between"
             align="center"
             direction="row"
             margin={{ top: "small" }}
