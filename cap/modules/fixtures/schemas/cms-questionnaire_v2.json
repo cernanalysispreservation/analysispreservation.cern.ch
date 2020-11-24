@@ -213,6 +213,35 @@
             "description":"If the answer is \"No\", please proceed with the next page of the questionnaire",
             "title":"3.4. Are you using a multi-variate discriminant in your data analysis to discriminate between signal and background?"
           },
+          "tools":{
+            "type":"object",
+            "additionalProperties":false,
+            "properties":{
+              "options":{
+                "type":"array",
+                "uniqueItems": true,
+                "items":{
+                  "type":"string",
+                  "enum":[
+                    "R",
+                    "TMVA",
+                    "Sklearn",
+                    "Keras",
+                    "Theano",
+                    "Tensorflow",
+                    "Other"
+                  ]
+                },
+                "description":"Multiple choices allowed",
+                "title":"Select the software from the list"
+              },
+              "other":{
+                "type":"string",
+                "title":"If the software is not listed above, please specify it here"
+              }
+            },
+            "title":"3.5. What software are you using?"
+          },
           "equivalent_cut_based_analysis":{
             "type":"string",
             "enum":[
@@ -220,52 +249,52 @@
               "No",
               "N/A"
             ],
-            "title":"3.5 Is there currently an equivalent cut based analysis?"
+            "title":"3.6 Is there currently an equivalent cut based analysis?"
           },
           "ml_use_description": {
             "type":"string",
-            "title":"3.6 Please give us a short description of why and how you are using machine learning in your analysis."
-          },
-          "ml_app_use": {
-            "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-use-v0.0.1.json"
-            },
-            "type": "array",
-            "title": "3.7. Use of ML Applications"
-          },
-          "ml_survey": {
-            "type": "object",
-            "properties": {
-              "options": {
-                "type": "string",
-                "enum": ["Yes", "No"],
-                "title": "Are you willing to spend a few minutes answering a short survey by the ML group?"
-              }
-            },
-            "dependencies": {
-              "options": {
-                "oneOf": [{
-                  "properties": {
-                    "options": {
-                      "enum": ["No"]
-                    }
-                  }
-                }, {
-                  "properties": {
-                    "options": {
-                      "enum": ["Yes"]
-                    },
-                    "questions":{
-                      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-survey-v0.0.1.json"
-                    }
-                  }
-                }]
-              }
-            },
-            "title": "3.8. Optional ML Survey"
+            "title":"3.7 Please give us a short description of why and how you are using machine learning in your analysis."
           }
         },
         "title": "3. Multivariate Discriminants (ML)"
+      },
+      "ml_app_use": {
+        "items": {
+          "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-use-v0.0.1.json"
+        },
+        "type": "array",
+        "title": "3.a Use of ML Applications"
+      },
+      "ml_survey": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "title": "Are you willing to spend a few minutes answering a short survey by the ML group?"
+          }
+        },
+        "dependencies": {
+          "options": {
+            "oneOf": [{
+              "properties": {
+                "options": {
+                  "enum": ["No"]
+                }
+              }
+            }, {
+              "properties": {
+                "options": {
+                  "enum": ["Yes"]
+                },
+                "questions":{
+                  "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-survey-v0.0.1.json"
+                }
+              }
+            }]
+          }
+        },
+        "title": "3.b Optional ML Survey"
       },
       "data_fitting": {
         "type": "object",
@@ -2014,6 +2043,8 @@
       "analysis_context",
       "general_information",
       "multivariate_discriminants",
+      "ml_app_use",
+      "ml_survey",
       "data_fitting",
       "confidence_intervals_limits",
       "discovery",
@@ -2077,10 +2108,9 @@
         "read_ml_groups_page",
         "use_of_centralized_cms_apps",
         "mva_use",
+        "tools",
         "equivalent_cut_based_analysis",
-        "ml_use_description",
-        "ml_app_use",
-        "ml_survey"
+        "ml_use_description"
       ],
       "read_sc_twiki": {
         "ui:widget": "radio"
@@ -2096,122 +2126,52 @@
         "ui:options": {
           "rows": 3
         }
-      },
-      "ml_app_use": {
-        "items": {
-          "ui:order": [
-            "app_name",
-            "use",
-            "development",
-            "systematic_evaluation",
-            "signal_events_reuse"
-          ],
-          "development": {
-            "ui:order": ["options", "dev"],
-            "options": {
-              "ui:widget": "radio"
+      }
+    },
+    "ml_app_use": {
+      "items": {
+        "ui:order": [
+          "app_name",
+          "use",
+          "development",
+          "systematic_evaluation",
+          "signal_events_reuse"
+        ],
+        "development": {
+          "ui:order": ["options", "dev"],
+          "options": {
+            "ui:widget": "radio"
+          },
+          "dev": {
+            "ui:order": [
+              "model_general_type",
+              "model_type",
+              "predefined_network_use",
+              "learning_type",
+              "hyperparameter_optimization",
+              "sample_mixing",
+              "overtraining",
+              "cross_validation",
+              "mva_stability",
+              "training_bias_check",
+              "input",
+              "correlation",
+              "mva_techniques",
+              "event_weights",
+              "phase_space",
+              "data_driven_analysis_methods",
+              "data_mc_sf_development",
+              "model_metrics",
+              "other"
+            ],
+            "predefined_network_use": {
+              "options": {
+                "ui:widget": "radio"
+              }
             },
-            "dev": {
-              "ui:order": [
-                "model_general_type",
-                "model_type",
-                "predefined_network_use",
-                "learning_type",
-                "hyperparameter_optimization",
-                "sample_mixing",
-                "overtraining",
-                "cross_validation",
-                "mva_stability",
-                "training_bias_check",
-                "input",
-                "correlation",
-                "mva_techniques",
-                "event_weights",
-                "phase_space",
-                "data_driven_analysis_methods",
-                "data_mc_sf_development",
-                "model_metrics",
-                "other"
-              ],
-              "predefined_network_use": {
-                "options": {
-                  "ui:widget": "radio"
-                }
-              },
-              "hyperparameter_optimization": {
-                "options": {
-                  "ui:widget": "radio"
-                },
-                "other": {
-                  "ui:widget": "textarea",
-                  "ui:options": {
-                    "rows": 3
-                  }
-                }
-              },
-              "cross_validation": {
-                "options": {
-                  "ui:widget": "radio"
-                }
-              },
-              "mva_stability": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
-              },
-              "training_bias_check": {
-                "options": {
-                  "ui:widget": "radio"
-                },
-                "other": {
-                  "ui:widget": "textarea",
-                  "ui:options": {
-                    "rows": 3
-                  }
-                }
-              },
-              "correlation": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
-              },
-              "event_weights": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
-              },
-              "phase_space": {
-                "other": {
-                  "ui:widget": "textarea",
-                  "ui:options": {
-                    "rows": 3
-                  }
-                }
-              },
-              "data_driven_analysis_methods": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
-              },
-              "data_mc_sf_development": {
-                "options": {
-                  "ui:widget": "radio"
-                }
-              },
-              "model_metrics": {
-                "answer": {
-                  "ui:widget": "textarea",
-                  "ui:options": {
-                    "rows": 3
-                  }
-                },
-                "attachment": {
-                  "ui:field": "CapFiles"
-                }
+            "hyperparameter_optimization": {
+              "options": {
+                "ui:widget": "radio"
               },
               "other": {
                 "ui:widget": "textarea",
@@ -2219,96 +2179,166 @@
                   "rows": 3
                 }
               }
+            },
+            "cross_validation": {
+              "options": {
+                "ui:widget": "radio"
+              }
+            },
+            "mva_stability": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
+              }
+            },
+            "training_bias_check": {
+              "options": {
+                "ui:widget": "radio"
+              },
+              "other": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              }
+            },
+            "correlation": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
+              }
+            },
+            "event_weights": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
+              }
+            },
+            "phase_space": {
+              "other": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              }
+            },
+            "data_driven_analysis_methods": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
+              }
+            },
+            "data_mc_sf_development": {
+              "options": {
+                "ui:widget": "radio"
+              }
+            },
+            "model_metrics": {
+              "answer": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                  "rows": 3
+                }
+              },
+              "attachment": {
+                "ui:field": "CapFiles"
+              }
+            },
+            "other": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
+              }
+            }
+          }
+        },
+        "systematic_evaluation": {
+          "options": {
+            "ui:widget": "radio"
+          }
+        }
+      }
+    },
+    "ml_survey": {
+      "options": {
+        "ui:widget": "radio"
+      },
+      "questions": {
+        "ui:order": ["general", "apps", "development"],
+        "general": {
+          "ui:order": ["ml_use", "knowledge_lack"],
+          "ml_use": {
+            "ui:widget": "textarea",
+            "ui:options": {
+              "rows": 3
             }
           },
-          "systematic_evaluation": {
+          "knowledge_lack": {
+            "ui:widget": "textarea",
+            "ui:options": {
+              "rows": 3
+            }
+          }
+        },
+        "apps": {
+          "development": {
             "options": {
               "ui:widget": "radio"
             }
           }
-        }
-      },
-      "ml_survey": {
-        "options": {
-          "ui:widget": "radio"
         },
-        "questions": {
-          "ui:order": ["general", "apps", "development"],
-          "general": {
-            "ui:order": ["ml_use", "knowledge_lack"],
-            "ml_use": {
-              "ui:widget": "textarea",
-              "ui:options": {
-                "rows": 3
-              }
-            },
-            "knowledge_lack": {
-              "ui:widget": "textarea",
-              "ui:options": {
-                "rows": 3
-              }
-            }
+        "development": {
+          "ui:order": [
+            "language",
+            "tools_training",
+            "tools_inference",
+            "tools_other",
+            "hardware_training",
+            "hardware_inference",
+            "resource_access",
+            "hardware_no_access",
+            "data_access",
+            "different_model",
+            "input_selection",
+            "cmssw_integration",
+            "group_interactions",
+            "presentations"
+          ],
+          "tools_other": {
+            "ui:widget": "radio"
           },
-          "apps": {
-            "development": {
-              "options": {
-                "ui:widget": "radio"
-              }
-            }
-          },
-          "development": {
-            "ui:order": [
-              "language",
-              "tools_training",
-              "tools_inference",
-              "tools_other",
-              "hardware_training",
-              "hardware_inference",
-              "resource_access",
-              "hardware_no_access",
-              "data_access",
-              "different_model",
-              "input_selection",
-              "cmssw_integration",
-              "group_interactions",
-              "presentations"
-            ],
-            "tools_other": {
+          "different_model": {
+            "options": {
               "ui:widget": "radio"
             },
-            "different_model": {
-              "options": {
-                "ui:widget": "radio"
-              },
-              "other": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
+            "other": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
               }
-            },
-            "cmssw_integration": {
-              "other": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
+            }
+          },
+          "cmssw_integration": {
+            "other": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
               }
-            },
-            "group_interactions": {
-              "other": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
+            }
+          },
+          "group_interactions": {
+            "other": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
               }
-            },
-            "presentations": {
-              "other": {
-                "ui:widget": "textarea",
-                "ui:options": {
-                  "rows": 3
-                }
+            }
+          },
+          "presentations": {
+            "other": {
+              "ui:widget": "textarea",
+              "ui:options": {
+                "rows": 3
               }
             }
           }
