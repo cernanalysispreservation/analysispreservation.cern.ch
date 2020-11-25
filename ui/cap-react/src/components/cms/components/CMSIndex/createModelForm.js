@@ -8,7 +8,6 @@ import Form from "../../../drafts/form/GrommetForm";
 import PropTypes from "prop-types";
 
 const createContentTypeSchema = {
-  title: "Create Content Type",
   type: "object",
   properties: {
     name: {
@@ -36,7 +35,7 @@ class Create extends React.Component {
 
   render() {
     return (
-      <Box colorIndex="light-2" pad="medium">
+      <Box pad="medium">
         <Form
           schema={createContentTypeSchema}
           uiSchema={createContentTypeUISchema}
@@ -45,13 +44,12 @@ class Create extends React.Component {
         >
           <Box
             pad="small"
-            justify="between"
+            justify="center"
             align="center"
             direction="row"
             margin={{ top: "small" }}
             wrap={false}
           >
-            <Button text="Cancel" onClick={this.props.cancel} secondary />
             <Button
               text="Create"
               primary

@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
-import Paragraph from "grommet/components/Paragraph";
-import Label from "grommet/components/Label";
+import Heading from "grommet/components/Heading";
 
 import { connect } from "react-redux";
 import Button from "../../../partials/Button";
@@ -38,22 +37,11 @@ class SelectContentType extends React.Component {
     let that = this;
 
     return (
-      <Box size="large">
-        <Header
-          flex={true}
-          colorIndex="neutral-1"
-          pad="small"
-          direction="column"
-          wrap={true}
-        >
-          <Label flex="true" size="medium" margin="none">
-            Your content types
-          </Label>
-          <Paragraph flex="true" size="small" align="center">
-            Choose from one of the existing schemas
-          </Paragraph>
+      <Box size="medium">
+        <Header justify="center">
+          <Heading tag="h3">Select a pre defined Schema</Heading>
         </Header>
-        <Box colorIndex="light-2" pad={{ vertical: "small" }} align="center">
+        <Box colorIndex="light-1" pad={{ vertical: "small" }} align="center">
           <Box
             style={{
               display: "grid",
@@ -68,7 +56,7 @@ class SelectContentType extends React.Component {
             {this.props.contentTypes &&
               this.props.contentTypes.map(item => (
                 <Button
-                  size="large"
+                  size="small"
                   key={item.get("deposit_group")}
                   onClick={that.props.select.bind(
                     this,
