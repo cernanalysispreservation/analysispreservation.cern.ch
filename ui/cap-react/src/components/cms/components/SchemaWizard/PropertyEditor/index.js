@@ -66,7 +66,7 @@ class PropertyEditor extends React.Component {
   render() {
     return (
       <Box size="medium" pad="medium" flex={false} colorIndex="grey-2">
-        <Box margin={{ bottom: "large" }}>
+        <Box margin={{ bottom: "small" }}>
           <Box
             direction="row"
             wrap={false}
@@ -77,7 +77,7 @@ class PropertyEditor extends React.Component {
             <div>add new</div>
           </Box>
         </Box>
-        <Box margin={{ bottom: "large" }}>
+        <Box margin={{ bottom: "small" }}>
           <Box wrap={false}>
             <Heading tag="h4">Selected field</Heading>
             <div>{renderPath(this.props.path.getIn(["path"]).toJS())}</div>

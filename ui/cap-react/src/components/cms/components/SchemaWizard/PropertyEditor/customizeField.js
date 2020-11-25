@@ -20,16 +20,13 @@ import { Label, TextInput, FormField } from "grommet";
 import DeleteModal from "./DeletePropertyModal";
 
 const GRID_COLUMNS_OPTIONS = [
-  "1/1",
   "1/2",
   "1/3",
   "1/4",
   "1/5",
-  "2/2",
   "2/3",
   "2/4",
   "2/5",
-  "3/3",
   "3/4",
   "3/5"
 ];
@@ -162,13 +159,8 @@ class CustomizeField extends React.Component {
           }}
         />
 
-        <Box flex={true} margin={{ bottom: "small" }}>
-          <Box
-            colorIndex="accent-2"
-            flex={false}
-            pad="small"
-            margin={{ bottom: "small" }}
-          >
+        <Box flex={true}>
+          <Box colorIndex="accent-2" flex={false} pad="small">
             <Label size="medium" margin="none">
               Basic field info
             </Label>
@@ -187,12 +179,7 @@ class CustomizeField extends React.Component {
           </Box>
         </Box>
         <Box>
-          <Box
-            colorIndex="accent-2"
-            flex={false}
-            pad="small"
-            margin={{ bottom: "small" }}
-          >
+          <Box colorIndex="accent-2" flex={false} pad="small">
             <Label size="medium" margin="none">
               Field Layout
             </Label>
@@ -417,36 +404,46 @@ class CustomizeField extends React.Component {
             margin={{ top: "small" }}
           >
             <Label size="medium" margin="none">
-              Actions
+              Item Actions
             </Label>
           </Box>
-          {this.props.path.toJS().uiPath.pop() !== "items" && (
-            <FormField>
-              <Box direction="row" flex>
-                <TextInput
-                  id="pattern"
-                  name="pattern"
-                  placeHolder="Update the id of the field"
-                  onDOMChange={e => this.setState({ updateId: e.target.value })}
-                />
-                <Button
-                  text="Update"
-                  onClick={() =>
-                    this.props.renameId(
-                      this.props.path.toJS(),
-                      this.state.updateId
-                    )
-                  }
-                />
+          <Box colorIndex="light-1" pad="small">
+            {this.props.path.toJS().uiPath.pop() !== "items" && (
+              <Box margin={{ bottom: "small" }}>
+                Update ID
+                <Box direction="row">
+                  <FormField>
+                    <Box direction="row" flex>
+                      <TextInput
+                        id="pattern"
+                        name="pattern"
+                        placeHolder="New field id"
+                        onDOMChange={e =>
+                          this.setState({ updateId: e.target.value })
+                        }
+                      />
+                    </Box>
+                  </FormField>
+                  <Button
+                    text="Update"
+                    background="#e9e9e9"
+                    onClick={() =>
+                      this.props.renameId(
+                        this.props.path.toJS(),
+                        this.state.updateId
+                      )
+                    }
+                  />
+                </Box>
               </Box>
-            </FormField>
-          )}
-          <Button
-            text="Delete"
-            margin={{ top: "small" }}
-            critical
-            onClick={() => this.setState({ showDeleteLayer: true })}
-          />
+            )}
+            <Button
+              text="Delete Item"
+              margin={{ top: "small" }}
+              critical
+              onClick={() => this.setState({ showDeleteLayer: true })}
+            />
+          </Box>
         </Box>
       </Box>
     );
