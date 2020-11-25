@@ -25,10 +25,6 @@ class SchemaWizard extends React.Component {
       showModal: false
     };
   }
-  componentDidMount() {
-    // let { schema_name, schema_version } = this.props.match.params;
-    // if (schema_name) this.props.getSchema(schema_name, schema_version);
-  }
 
   render() {
     if (this.props.current) {
