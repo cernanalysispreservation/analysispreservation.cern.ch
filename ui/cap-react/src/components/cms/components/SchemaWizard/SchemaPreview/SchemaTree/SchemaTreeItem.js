@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
-import FormAddIcon from "grommet/components/icons/base/FormAdd";
 import { PropTypes } from "prop-types";
 import { selectProperty } from "../../../../../../actions/schemaWizard";
+import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
 
 class SchemaTreeItem extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class SchemaTreeItem extends React.Component {
         <Box
           colorIndex={this.props.colorIndex || "light-2"}
           separator="all"
-          pad={{ horizontal: "medium" }}
+          pad={{ horizontal: "small" }}
           direction="row"
           align="center"
           justify="between"
@@ -85,10 +85,24 @@ class SchemaTreeItem extends React.Component {
           {this.props.schema ? (
             <Box direction="row" align="center" wrap={false} flex={false}>
               {this.props.schema.type == "object" ? (
-                <FormAddIcon onClick={this._addProperty} />
+                <Box
+                  direction="row"
+                  responsive={false}
+                  onClick={this.props.updateDisplay}
+                  align="center"
+                >
+                  {this.props.display ? <AiOutlineUp /> : <AiOutlineDown />}
+                </Box>
               ) : null}
               {this.props.schema.type == "array" ? (
-                <FormAddIcon onClick={this._addItem} />
+                <Box
+                  direction="row"
+                  responsive={false}
+                  onClick={this.props.updateDisplay}
+                  align="center"
+                >
+                  {this.props.display ? <AiOutlineUp /> : <AiOutlineDown />}
+                </Box>
               ) : null}
             </Box>
           ) : null}
@@ -106,7 +120,9 @@ SchemaTreeItem.propTypes = {
   addProperty: PropTypes.func,
   addItem: PropTypes.func,
   type: PropTypes.string,
-  colorIndex: PropTypes.string
+  colorIndex: PropTypes.string,
+  display: PropTypes.bool,
+  updateDisplay: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
@@ -124,5 +140,5 @@ let mapType2Icon = {
   array: "[ ]",
   boolean: "0/1",
   string: "abc",
-  number: "123.45"
+  number: "123"
 };

@@ -10,7 +10,6 @@ import { addByPath } from "../../../../../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
 import { _validate } from "./utils/validate";
-import ViewIcon from "grommet/components/icons/base/View";
 
 const widgets = {
   TextWidget: TextWidget
@@ -31,18 +30,13 @@ const ArrayFieldTemplate = props => {
 
   return (
     <Box flex={true} style={{ position: "relative" }}>
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          left: "5px",
-          cursor: "pointer"
-        }}
-        onClick={() => setDisplay(!display)}
-      >
-        <ViewIcon size="xsmall" colorIndex={display ? "grey-1" : "grey-3-a"} />
-      </div>
-      <SchemaTreeItem type="array" {...props} path={__path} />
+      <SchemaTreeItem
+        type="array"
+        {...props}
+        path={__path}
+        display={display}
+        updateDisplay={() => setDisplay(!display)}
+      />
       {display && (
         <Box flex={true} margin={{ left: "medium" }}>
           <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>

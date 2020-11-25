@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import HoverBox from "./HoverBox";
-import ViewIcon from "grommet/components/icons/base/View";
 import SchemaTreeItem from "./SchemaTreeItem";
 import Form from "react-jsonschema-form";
 import TextWidget from "./TextWidget";
@@ -49,22 +48,13 @@ const FieldTemplate = props => {
   } else if (["object"].indexOf(schema.type) > -1) {
     _renderObjectArray = (
       <Box flex={true} style={{ position: "relative", overflow: "visible" }}>
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: "5px",
-            cursor: "pointer"
-          }}
-          onClick={() => setDisplay(!display)}
-        >
-          <ViewIcon
-            size="xsmall"
-            colorIndex={display ? "grey-1" : "grey-3-a"}
-          />
-        </div>
-
-        <SchemaTreeItem type="object" {...props} path={path} />
+        <SchemaTreeItem
+          type="object"
+          {...props}
+          path={path}
+          display={display}
+          updateDisplay={() => setDisplay(!display)}
+        />
         {display ? (
           <Box flex={true} margin={{ left: "medium" }}>
             <Form
