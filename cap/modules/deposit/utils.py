@@ -82,6 +82,20 @@ def fix_bucket_links(response):
     return response
 
 
+def get_zenodo_deposit_from_record(record, pid):
+    """Get the related Zenodo information from a record."""
+    try:
+        index = [idx for idx, deposit in enumerate(record['_zenodo'])
+                 if deposit['id'] == pid][0]
+
+        # set an empty dict as tasks if there is none
+        record['_zenodo'][index].setdefault('tasks', {})
+        return record['_zenodo'][index]
+    except IndexError:
+        raise FileUploadError(
+            'The Zenodo pid you provided is not associated with this record.')
+
+
 def create_zenodo_deposit(token, data=None):
     """Create a Zenodo deposit using the logged in user's credentials."""
     zenodo_url = current_app.config.get("ZENODO_SERVER_URL")

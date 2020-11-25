@@ -1,0 +1,69 @@
+{
+  "name": "zenodo",
+  "version": "0.0.1",
+  "fullname": "",
+  "experiment": null,
+  "is_indexed": false,
+  "use_deposit_as_record": true,
+  "allow_all": true,
+  "deposit_schema": {
+    "additionalProperties": "False",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "created": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "creator": {
+          "type": "string"
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "self": {
+              "type": "string"
+            },
+            "html": {
+              "type": "string"
+            },
+            "publish": {
+              "type": "string"
+            },
+            "bucket": {
+              "type": "string"
+            }
+          }
+        },
+        "tasks": {
+          "type": "object",
+          "patternProperties": {
+            "^[0-F]{8}-([0-F]{4}-){3}[0-F]{12}$": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "title": "Zenodo Deposit"
+    }
+  },
+  "deposit_mapping": {},
+  "deposit_options": {}
+}

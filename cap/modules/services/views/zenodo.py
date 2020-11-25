@@ -27,8 +27,11 @@
 
 import requests
 from flask import current_app, jsonify
+from invenio_pidstore.resolver import Resolver
 
 from . import blueprint
+from cap.modules.access.utils import login_required
+from cap.modules.deposit.api import CAPDeposit
 
 
 def _get_zenodo_record(zenodo_id):
@@ -47,3 +50,18 @@ def get_zenodo_record(zenodo_id):
     """Get record from zenodo (route)."""
     resp, status = _get_zenodo_record(zenodo_id)
     return jsonify(resp), status
+
+
+@blueprint.route('/zenodo/tasks/<depid>')
+@login_required
+def get_zenodo_tasks(depid):
+    """Get record from zenodo (route)."""
+    resolver = Resolver(pid_type='depid',
+                        object_type='rec',
+                        getter=lambda x: x)
+
+    _, uuid = resolver.resolve(depid)
+    record = CAPDeposit.get_record(uuid)
+    tasks = record.get('_zenodo', {}).get('tasks', [])
+
+    return jsonify(tasks), 200

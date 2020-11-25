@@ -78,7 +78,7 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           UpdateDepositPermission)
 
 from .review import Reviewable
-from .tasks import upload_to_zenodo
+from .tasks import create_zenodo_upload_tasks
 from .utils import create_zenodo_deposit
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
@@ -287,9 +287,9 @@ class CAPDeposit(Deposit, Reviewable):
                         self.commit()
 
                         # upload files to zenodo deposit
-                        upload_to_zenodo.delay(files, recid, token,
-                                               deposit['id'],
-                                               deposit['links']['bucket'])
+                        create_zenodo_upload_tasks(files, recid, token,
+                                                   deposit['id'],
+                                                   deposit['links']['bucket'])
                     else:
                         raise FileUploadError(
                             'You cannot create an empty Zenodo deposit. '

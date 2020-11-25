@@ -104,7 +104,7 @@ def test_create_and_upload_to_zenodo(mock_token, app, users, deposit_with_file,
 
         assert len(record['_zenodo']) == 1
         assert record['_zenodo'][0]['id'] == 111
-        assert record['_zenodo'][0]['title'] == None
+        assert record['_zenodo'][0]['title'] is None
         assert record['_zenodo'][0]['created'] == '2020-11-20T11:49:39.147767+00:00'
 
 
@@ -382,8 +382,7 @@ def test_zenodo_upload_file_not_uploaded_error(mock_token, app, users, deposit_w
         assert resp.status_code == 201
 
         captured = capsys.readouterr()
-        assert 'Uploading file test-file.txt to deposit 111 failed with 500' \
-               in captured.err
+        assert 'Zenodo upload of file `test-file.txt`: 500.' in captured.err
 
 
 @patch('cap.modules.deposit.api._fetch_token', return_value='test-token')
