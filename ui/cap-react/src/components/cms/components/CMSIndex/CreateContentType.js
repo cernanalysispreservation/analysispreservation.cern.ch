@@ -1,10 +1,8 @@
 import React from "react";
-// import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
-import Paragraph from "grommet/components/Paragraph";
-import Label from "grommet/components/Label";
+import Heading from "grommet/components/Heading";
 
 import CreateForm from "./createModelForm";
 import PropTypes from "prop-types";
@@ -16,16 +14,9 @@ class Create extends React.Component {
 
   render() {
     return (
-      <Box size="large">
-        <Header pad="small" justify="center" wrap={true} colorIndex="neutral-1">
-          <Label size="medium" margin="none">
-            Create a new content type
-          </Label>
-          <Paragraph size="small" align="center">
-            Provide a name and a description for the content type you want to
-            create. Give access to specific users and groups now, or do i t on a
-            later stage from the <strong>Settings</strong> page
-          </Paragraph>
+      <Box size="medium">
+        <Header justify="center">
+          <Heading tag="h3">Create your own Schema</Heading>
         </Header>
         <CreateForm
           onSubmit={this.props.createContentType}
