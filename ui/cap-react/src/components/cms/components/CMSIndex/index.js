@@ -5,6 +5,7 @@ import Box from "grommet/components/Box";
 
 import SelectContentType from "../../containers/SelectContentType";
 import CreateContentType from "../../containers/CreateContentType";
+import DropZoneForm from "./DropZoneForm";
 
 class CMSIndex extends React.Component {
   render() {
@@ -18,6 +19,7 @@ class CMSIndex extends React.Component {
       >
         <SelectContentType />
         <CreateContentType />
+        <DropZoneForm />
       </Box>
     );
   }

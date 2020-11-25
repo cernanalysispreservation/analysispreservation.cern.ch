@@ -79,6 +79,20 @@ export function getSchemas() {
   };
 }
 
+export function initSchemaWizard(data) {
+  return function(dispatch) {
+    const { deposit_schema, deposit_options, name, version } = data;
+
+    dispatch(
+      schemaInit(
+        { id: name || "New Form", version: version || "0.0.1" },
+        { schema: deposit_schema, uiSchema: deposit_options }
+      )
+    );
+    dispatch(push("/cms/edit"));
+  };
+}
+
 export function getSchema(name, version = null) {
   let schemaLink;
 
