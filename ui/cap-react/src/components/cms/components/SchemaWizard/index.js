@@ -14,11 +14,6 @@ import SelectFieldType from "../../containers/SelectFieldType";
 import Anchor from "../../../partials/Anchor";
 
 class SchemaWizard extends React.Component {
-  componentDidMount() {
-    // let { schema_name, schema_version } = this.props.match.params;
-    // if (schema_name) this.props.getSchema(schema_name, schema_version);
-  }
-
   render() {
     if (this.props.current) {
       return (
