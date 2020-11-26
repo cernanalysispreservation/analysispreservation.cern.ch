@@ -25,10 +25,6 @@ class SchemaWizard extends React.Component {
       showModal: false
     };
   }
-  // componentDidMount() {
-  //   let { schema_name, schema_version } = this.props.match.params;
-  //   if (schema_name) this.props.getSchema(schema_name, schema_version);
-  // }
 
   render() {
     if (this.props.current) {
@@ -102,23 +98,27 @@ class SchemaWizard extends React.Component {
                 <SchemaPreview />
               )}
             </Box>
-            <Box flex style={{ gridColumn: "5/9" }}>
-              {this.props.loader ? (
-                <Box flex align="center" justify="center">
-                  <Spinning size="large" />
-                </Box>
-              ) : (
-                <FormPreview />
-              )}
-            </Box>
-
-            {!this.props.selected &&
-              !this.props.loader && (
-                <Box align="center" justify="center" flex>
-                  Your form is not created properly, please try again
-                  <Anchor label="here" path="/cms" />
-                </Box>
-              )}
+            {!this.props.selected && !this.props.loader ? (
+              <Box
+                align="center"
+                justify="center"
+                flex
+                style={{ gridColumn: "5/9" }}
+              >
+                Your form is not created properly, please try again
+                <Anchor label="here" path="/cms" />
+              </Box>
+            ) : (
+              <Box flex style={{ gridColumn: "5/9" }}>
+                {this.props.loader ? (
+                  <Box flex align="center" justify="center">
+                    <Spinning size="large" />
+                  </Box>
+                ) : (
+                  <FormPreview />
+                )}
+              </Box>
+            )}
           </Box>
         </DndProvider>
       );

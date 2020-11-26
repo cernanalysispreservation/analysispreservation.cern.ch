@@ -36,15 +36,20 @@ class TabField extends React.Component {
     let active;
     let activeLabel;
 
-    if (this.options.initTab) {
-      active = this.options.initTab;
-      activeLabel = this.options.initTab;
+    if (availableTabs.length > 0) {
+      if (this.options.initTab) {
+        active = this.options.initTab;
+        activeLabel = this.options.initTab;
+      } else {
+        active = availableTabs[0].name;
+        activeLabel =
+          availableTabs[0].title ||
+          availableTabs[0].content.props.schema.title ||
+          active;
+      }
     } else {
-      active = availableTabs[0].name;
-      activeLabel =
-        availableTabs[0].title ||
-        availableTabs[0].content.props.schema.title ||
-        active;
+      active = null;
+      activeLabel = null;
     }
 
     this.state = {

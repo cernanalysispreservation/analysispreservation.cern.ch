@@ -23,9 +23,8 @@ let ObjectFieldTemplate = function(props) {
         style={{
           display: "grid",
           justifyContent:
-            props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
-              ? props.uiSchema["ui:options"].align
-              : "center"
+            props.uiSchema["ui:options"] &&
+            props.uiSchema["ui:options"].align 
         }}
         className="obj-fld-tml"
       >

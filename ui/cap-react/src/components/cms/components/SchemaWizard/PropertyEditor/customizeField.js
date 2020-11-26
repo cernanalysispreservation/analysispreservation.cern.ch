@@ -14,7 +14,7 @@ import Image5 from "./svg/TabTwoColLayoutField";
 import Image6 from "./svg/SidebatLayout";
 import Image7 from "./svg/SidebarTwoColLayout";
 
-import { schemaSchema } from "../../utils/schemas";
+import { schemaSchema, uiSchema } from "../../utils/schemas";
 import { Label, TextInput, FormField } from "grommet";
 
 import DeleteModal from "./DeletePropertyModal";
@@ -174,6 +174,7 @@ class CustomizeField extends React.Component {
           >
             <Form
               schema={schemaSchema}
+              uiSchema={uiSchema}
               formData={this.state.schema}
               onChange={_debounce(this._onSchemaChange.bind(this), 500)}
             />

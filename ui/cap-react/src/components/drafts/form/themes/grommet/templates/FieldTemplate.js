@@ -6,7 +6,7 @@ import Box from "grommet/components/Box";
 import FieldHeader from "../../grommet-preview/components/FieldHeader";
 import { Paragraph } from "grommet";
 
-let FieldTemplate = function (props) {
+let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema, required } = props;
 
   let gridColumns = null;
@@ -37,7 +37,7 @@ let FieldTemplate = function (props) {
         }}
         flex={
           props.uiSchema["ui:object"] &&
-            props.uiSchema["ui:object"] === "tabView"
+          props.uiSchema["ui:object"] === "tabView"
             ? true
             : null
         }
@@ -64,14 +64,23 @@ let FieldTemplate = function (props) {
             style={{ color: "#000" }}
             dangerouslySetInnerHTML={{ __html: label }}
           />
-          {required && (
-            label ? <strong style={{ padding: "0 3px" }}>*</strong> :
-              <div style={{position: 'absolute', marginLeft: '10px', left: 0}}>
-                <div><strong>*</strong></div>
+          {required &&
+            (label ? (
+              <strong style={{ padding: "0 3px" }}>*</strong>
+            ) : (
+              <div
+                style={{ position: "absolute", marginLeft: "10px", left: 0 }}
+              >
+                <div>
+                  <strong>*</strong>
+                </div>
               </div>
-          )}
+            ))}
           {rawDescription ? (
-            <span style={{marginLeft: '10px'}} dangerouslySetInnerHTML={{ __html: rawDescription }} />
+            <span
+              style={{ marginLeft: "10px" }}
+              dangerouslySetInnerHTML={{ __html: rawDescription }}
+            />
           ) : null}
         </span>
       }
