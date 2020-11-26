@@ -17,13 +17,7 @@ class SchemaPreview extends React.Component {
 
   render() {
     return (
-      <Box
-        dirrection="column"
-        flex={false}
-        size={{ width: "medium" }}
-        justify="between"
-        colorIndex="grey-3"
-      >
+      <Box flex justify="between" colorIndex="grey-3">
         <Header
           size="small"
           margin="none"
