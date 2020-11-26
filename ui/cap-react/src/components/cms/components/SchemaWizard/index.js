@@ -86,23 +86,32 @@ class SchemaWizard extends React.Component {
           <Box
             colorIndex="light-2"
             flex={true}
-            direction="row"
-            wrap={false}
-            justify="between"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(8, 1fr)"
+            }}
           >
             {this.props.field ? <PropertyEditor /> : <SelectFieldType />}
-            {this.props.loader ? (
-              <Box align="center" justify="center" flex>
-                <Spinning size="large" />
-              </Box>
-            ) : (
-              <Box direction="row" wrap={false} flex={true}>
-                <SchemaPreview />
-                <Box flex={true}>
-                  <FormPreview />
+
+            <Box style={{ gridColumn: "3/5" }} flex>
+              {this.props.loader ? (
+                <Box flex align="center" justify="center">
+                  <Spinning size="large" />
                 </Box>
-              </Box>
-            )}
+              ) : (
+                <SchemaPreview />
+              )}
+            </Box>
+            <Box flex style={{ gridColumn: "5/9" }}>
+              {this.props.loader ? (
+                <Box flex align="center" justify="center">
+                  <Spinning size="large" />
+                </Box>
+              ) : (
+                <FormPreview />
+              )}
+            </Box>
+
             {!this.props.selected &&
               !this.props.loader && (
                 <Box align="center" justify="center" flex>
