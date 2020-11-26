@@ -18,6 +18,7 @@ import { schemaSchema } from "../../utils/schemas";
 import { Label, TextInput, FormField } from "grommet";
 
 import DeleteModal from "./DeletePropertyModal";
+import _debounce from "lodash/debounce";
 
 const GRID_COLUMNS_OPTIONS = [
   "1/2",
@@ -174,7 +175,7 @@ class CustomizeField extends React.Component {
             <Form
               schema={schemaSchema}
               formData={this.state.schema}
-              onChange={this._onSchemaChange.bind(this)}
+              onChange={_debounce(this._onSchemaChange.bind(this), 500)}
             />
           </Box>
         </Box>
