@@ -58,4 +58,10 @@ export const schemaSchema = {
   }
 };
 
-export const uiSchema = {};
+export const uiSchema = {
+  type: {
+    "ui:options": {
+      hidden: true
+    }
+  }
+};
