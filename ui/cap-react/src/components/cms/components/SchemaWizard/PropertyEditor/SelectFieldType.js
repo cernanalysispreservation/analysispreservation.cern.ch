@@ -40,7 +40,7 @@ class SelectFieldType extends React.Component {
 
   render() {
     return (
-      <Box flex={false} size="medium" colorIndex="grey-2" pad="medium">
+      <Box style={{ gridColumn: "1/3" }} colorIndex="grey-2" pad="medium">
         <Paragraph>
           Select the field type you want to use and drag and drop it to the
           desired location in the form

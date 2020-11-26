@@ -65,8 +65,8 @@ const renderPath = path => {
 class PropertyEditor extends React.Component {
   render() {
     return (
-      <Box size="medium" pad="medium" flex={false} colorIndex="grey-2">
-        <Box margin={{ bottom: "small" }}>
+      <Box style={{ gridColumn: "1/3" }} flex colorIndex="grey-2" pad="medium">
+        <Box margin={{ bottom: "large" }}>
           <Box
             direction="row"
             wrap={false}
