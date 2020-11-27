@@ -403,7 +403,10 @@ export function renameIdByPath(item, newName) {
   };
 }
 
-export function moveFieldToOtherParent(item, newPath = ["properties"]) {
+export function moveFieldToOtherParent(
+  item,
+  newPath = ["properties", "basic_info", "properties"]
+) {
   return function(dispatch, getState) {
     let schema = getState()
       .schemaWizard.getIn(["current", "schema"])
@@ -415,25 +418,31 @@ export function moveFieldToOtherParent(item, newPath = ["properties"]) {
 
     const { path, uiPath } = item;
 
-    // ********* schema **********
-    let itemToDelete = path.pop();
+    // ******** uiSchema ********
 
-    // Make sure the movement to the same path is not needed
-    let isTheSamePath = path.filter(item => !newPath.includes(item));
-    if (isTheSamePath.length === 0) {
-      cogoToast.warn(
-        "It seems that you want to move the field in the exact same path",
-        {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 4
-        }
-      );
-      return;
+    let tempUiSchema = Object.assign({}, uiSchema);
+    const uiItemToDelete = uiPath.pop();
+
+    for (let i in uiPath) {
+      tempUiSchema = tempUiSchema[uiPath[i]];
     }
 
-    // if the last item is items then pop again since it is an array, in order to fetch the proper id
+    // remove from the current uiOrder
+    tempUiSchema["ui:order"] = tempUiSchema["ui:order"].filter(
+      item => item !== uiItemToDelete
+    );
+
+    // if there is uiInformation then remove these details
+    if (tempUiSchema[uiItemToDelete]) {
+      delete tempUiSchema[uiItemToDelete];
+    }
+
+    // ********* schema **********
+    let itemToDelete = path.pop();
     itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
+
+    // if the last item is items then pop again since it is an array, in order to fetch the proper id
+    // itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
 
     // shallow copy schema object in order to navigate through the object
     // but the changes will reflect to the original one --> schema
