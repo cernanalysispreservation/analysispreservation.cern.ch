@@ -402,3 +402,56 @@ export function renameIdByPath(item, newName) {
     dispatch(enableCreateMode());
   };
 }
+
+export function moveFieldToOtherParent(item, newPath = ["properties"]) {
+  return function(dispatch, getState) {
+    let schema = getState()
+      .schemaWizard.getIn(["current", "schema"])
+      .toJS();
+
+    let uiSchema = getState()
+      .schemaWizard.getIn(["current", "uiSchema"])
+      .toJS();
+
+    const { path, uiPath } = item;
+
+    // ********* schema **********
+    let itemToDelete = path.pop();
+
+    // Make sure the movement to the same path is not needed
+    let isTheSamePath = path.filter(item => !newPath.includes(item));
+    if (isTheSamePath.length === 0) {
+      cogoToast.warn(
+        "It seems that you want to move the field in the exact same path",
+        {
+          position: "top-center",
+          bar: { size: "0" },
+          hideAfter: 4
+        }
+      );
+      return;
+    }
+
+    // if the last item is items then pop again since it is an array, in order to fetch the proper id
+    itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
+
+    // shallow copy schema object in order to navigate through the object
+    // but the changes will reflect to the original one --> schema
+    let tempSchema = Object.assign({}, schema);
+    let newSchemaPath = Object.assign({}, schema);
+
+    // schema update
+    for (let p in path) {
+      tempSchema = tempSchema[path[p]];
+    }
+    for (let p in newPath) {
+      newSchemaPath = newSchemaPath[newPath[p]];
+    }
+    // now that we have the element we can just pass it to the path we want
+    newSchemaPath[`${itemToDelete}`] = tempSchema[itemToDelete];
+
+    delete tempSchema[itemToDelete];
+
+    dispatch(updateByPath({ schema: [], uiSchema: [] }, { schema, uiSchema }));
+  };
+}
