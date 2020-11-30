@@ -22,7 +22,7 @@
             "title": "What ML knowledge and/or skills do you feel your or your group are lacking (if any)?"
           }
         },
-        "title": "General"
+        "title": "3.b.1 General"
       },
       "apps": {
         "type":"object",
@@ -83,7 +83,7 @@
             "title": "Did you develop/train this ML application?"
           }
         },
-        "title": "ML Applications Use"
+        "title": "3.b.2 ML Applications Use"
       },
       "development": {
         "type":"object",
@@ -128,7 +128,7 @@
                 }]
               }
             },
-            "title": "What language are you using for development?"
+            "title": "3.b.3.1 What language are you using for development?"
           },
           "tools_training": {
             "type": "object",
@@ -166,7 +166,7 @@
                 "title": "If the software is not listed above, please specify it here."
               }
             },
-            "title": "What ML libraries or services have you used for training?"
+            "title": "3.b.3.2 What ML libraries or services have you used for training?"
           },
           "tools_inference": {
             "type": "object",
@@ -204,12 +204,12 @@
                 "title": "If the software is not listed above, please specify it here."
               }
             },
-            "title": "What ML libraries or services have you used for inference?"
+            "title": "3.b.3.3 What ML libraries or services have you used for inference?"
           },
           "tools_other": {
             "type": "string",
             "enum": ["Yes", "No"],
-            "title": "Was there any library you wanted to use, but to which you didn't have access?"
+            "title": "3.b.3.4 Was there any library you wanted to use, but to which you didn't have access?"
           },
           "hardware_training": {
             "type": "array",
@@ -225,7 +225,7 @@
               ]
             },
             "description": "Multiple choices allowed",
-            "title": "What hardware did you use for training?"
+            "title": "3.b.3.5 What hardware did you use for training?"
           },
           "hardware_inference": {
             "type": "array",
@@ -241,7 +241,7 @@
               ]
             },
             "description": "Multiple choices allowed",
-            "title": "What hardware did you use for inference?"
+            "title": "3.b.3.6 What hardware did you use for inference?"
           },
           "resource_access": {
             "type": "array",
@@ -256,7 +256,7 @@
               ]
             },
             "description": "Multiple choices allowed",
-            "title": "Where are you accessing these resources?"
+            "title": "3.b.3.7 Where are you accessing these resources?"
           },
           "hardware_no_access": {
             "type": "array",
@@ -272,7 +272,7 @@
               ]
             },
             "description": "Multiple choices allowed",
-            "title": "Was there a hardware platform that you would have used, but to which you didn't have access?"
+            "title": "3.b.3.8 Was there a hardware platform that you would have used, but to which you didn't have access?"
           },
           "data_access": {
             "type": "array",
@@ -289,7 +289,7 @@
               ]
             },
             "description": "Multiple choices allowed",
-            "title": "How did you access your training/validation/testing data?"
+            "title": "3.b.3.9 How did you access your training/validation/testing data?"
           },
           "different_model": {
             "type": "object",
@@ -321,58 +321,26 @@
                 }]
               }
             },
-            "title": "Did you consider using a different ML model?"
+            "title": "3.b.3.10 Did you consider using a different ML model?"
           },
           "input_selection": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "options": {
-                "type": "array",
-                "uniqueItems": true,
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "Yes, we use the correlation matrix and remove highly correlated variables",
-                    "No, we keep the complete list",
-                    "Other (please specify in the field below)"
-                  ]
-                },
-                "description": "Multiple choices allowed",
-                "title": "Select the answer that applies."
-              },
-              "other": {
-                "type": "string",
-                "title": "If you selected 'Other', please specify."
-              }
-            },
-            "title": "How do you select the input variables? Do you perform any pruning of your initial list of input variables, based on the correlations or dependencies between the input variables?"
+            "type": "string",
+            "enum": [
+              "Yes, we use the correlation matrix and remove highly correlated variables",
+              "No, we keep the complete list",
+              "Other"
+            ],
+            "title": "3.b.3.11 How do you select the input variables? Do you perform any pruning of your initial list of input variables, based on the correlations or dependencies between the input variables?"
           },
           "cmssw_integration": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "options": {
-                "type": "array",
-                "uniqueItems": true,
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "Yes (in the future)",
-                    "Yes (in progress)",
-                    "Yes (it’s currently integrated)",
-                    "No"
-                  ]
-                },
-                "description": "Multiple choices allowed",
-                "title": "Select the answer that applies."
-              },
-              "other": {
-                "type": "string",
-                "title": "If you said no to the question above, please explain why the model shouldn't be integrated into CMSSW."
-              }
-            },
-            "title": "Is this model going to be integrated into CMSSW?"
+            "type": "string",
+            "enum": [
+              "Yes (in the future)",
+              "Yes (in progress)",
+              "Yes (it’s currently integrated)",
+              "No"
+            ],
+            "title": "3.b.3.12 Is this model going to be integrated into CMSSW?"
           },
           "group_interactions": {
             "type": "object",
@@ -400,7 +368,7 @@
                 "title": "If you selected any of the groups above, please describe your interaction."
               }
             },
-            "title": "Have you developed or discussed this method/application with any of the following groups?"
+            "title": "3.b.3.13 Have you developed or discussed this method/application with any of the following groups?"
           },
           "presentations": {
             "type": "object",
@@ -433,10 +401,51 @@
                 "title": "Include a link to the talk, if possible."
               }
             },
-            "title": "Have you presented this work at any of the following?"
+            "title": "3.b.3.14 Have you presented this work at any of the following?"
           }
         },
-        "title": "ML Applications Development"
+        "dependencies": {
+          "tools_other": {
+            "oneOf": [{
+              "properties": {
+                "tools_other": {
+                  "enum": ["Yes"]
+                },
+                "tools_other_comment": {
+                  "type": "string",
+                  "title": "Please specify software"
+                }
+              }
+            }]
+          },
+          "input_selection": {
+            "oneOf": [{
+              "properties": {
+                "input_selection": {
+                  "enum": ["Other"]
+                },
+                "input_selection_comment": {
+                  "type": "string",
+                  "title": "If you selected 'Other', please specify"
+                }
+              }
+            }]
+          },
+          "cmssw_integration": {
+            "oneOf": [{
+              "properties": {
+                "cmssw_integration": {
+                  "enum": ["No"]
+                },
+                "cmssw_integration_comment": {
+                  "type": "string",
+                  "title": "If you said no to the question above, please explain why the model shouldn't be integrated into CMSSW."
+                }
+              }
+            }]
+          }
+        },
+        "title": "3.b.3 ML Applications Development"
       }
     },
     "title": "Survey Questions"

@@ -2149,6 +2149,8 @@
             "ui:order": [
               "model_general_type",
               "model_type",
+              "model_type_other",
+              "*",
               "predefined_network_use",
               "learning_type",
               "hyperparameter_optimization",
@@ -2296,6 +2298,7 @@
             "tools_training",
             "tools_inference",
             "tools_other",
+            "tools_other_comment",
             "hardware_training",
             "hardware_inference",
             "resource_access",
@@ -2303,12 +2306,13 @@
             "data_access",
             "different_model",
             "input_selection",
+            "input_selection_comment",
             "cmssw_integration",
+            "cmssw_integration_comment",
             "group_interactions",
             "presentations"
           ],
           "tools_other": {
-            "ui:widget": "radio"
           },
           "different_model": {
             "options": {
@@ -2321,12 +2325,10 @@
               }
             }
           },
-          "cmssw_integration": {
-            "other": {
-              "ui:widget": "textarea",
-              "ui:options": {
-                "rows": 3
-              }
+          "cmssw_integration_comment": {
+            "ui:widget": "textarea",
+            "ui:options": {
+              "rows": 3
             }
           },
           "group_interactions": {

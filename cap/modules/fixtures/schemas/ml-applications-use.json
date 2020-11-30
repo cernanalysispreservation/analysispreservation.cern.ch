@@ -11,11 +11,10 @@
       "app_name": {
         "type": "string",
         "description": "For example, you might enter something like \"DeepCSV.\"",
-        "title": "What is the name of the ML application?"
+        "title": "3.a.1 What is the name of the ML application?"
       },
       "use": {
         "type": "object",
-        "additionalProperties":false,
         "properties": {
           "options": {
             "type":"array",
@@ -33,8 +32,8 @@
             },
             "description":"Multiple choices allowed",
             "title":"Select the applicable answers."
-          },
-          "other": {
+        },
+        "other": {
             "type": "string",
             "enum": [
               "We cut on the output to improve S/B",
@@ -44,7 +43,31 @@
             "title": "If you selected \"Event discriminant\", how do you make use of the MVA output in the analysis?"
           }
         },
-        "title":"How is this ML application being used?"
+        "dependencies": {
+          "other": {
+            "oneOf": [{
+              "properties": {
+                "other": {
+                  "enum": [
+                    "We cut on the output to improve S/B",
+                    "We fit the output distribution to get the signal fraction"
+                  ]
+                }
+              }
+            },{
+              "properties": {
+                "other": {
+                  "enum": ["Other"]
+                },
+                "other_option": {
+                  "type": "string",
+                  "title": "If you selected \"Other\", please specify more below"
+                }
+              }
+            }]
+          }
+        },
+        "title":"3.a.2 How is this ML application being used?"
       },
       "development": {
         "type": "object",
@@ -75,7 +98,7 @@
             }]
           }
         },
-        "title": "Did you develop/train this ML application?"
+        "title": "3.a.3 Did you develop/train this ML application?"
       },
       "systematic_evaluation":{
         "type": "object",
@@ -107,7 +130,7 @@
             }]
           }
         },
-        "title": "Do you evaluate a systematic specifically for your ML application"
+        "title": "3.a.4 Do you evaluate a systematic specifically for your ML application"
       },
       "signal_events_reuse":{
         "type": "object",
@@ -156,7 +179,7 @@
             }]
           }
         },
-        "title": "Do you \"re-use\" the signal events from the training while building your templates? Ideally, those should be statistically independent (i.e. from the testing sample or a different CMS sample entirely)."
+        "title": "3.a.5 Do you \"re-use\" the signal events from the training while building your templates? Ideally, those should be statistically independent (i.e. from the testing sample or a different CMS sample entirely)."
       }
     }
   },

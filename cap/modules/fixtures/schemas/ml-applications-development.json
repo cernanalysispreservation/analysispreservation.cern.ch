@@ -44,6 +44,10 @@
         "description":"Multiple choices allowed",
         "title":"What type of ML model did you use?"
       },
+      "model_type_other": {
+        "type": "string",
+        "title": "If you selected \"Other\", please specify more below"
+      },
       "predefined_network_use":{
         "type": "object",
         "properties": {
@@ -66,10 +70,14 @@
                 "options": {
                   "enum": ["Yes"]
                 },
+                "network": {
+                  "type": "string",
+                  "title": "Provide pre-defined network"
+                },
                 "other": {
                   "type": "string",
                   "enum": ["Yes", "No", "I don’t know"],
-                  "title": "If you answered yes to the question above, did you perform some sort of transfer learning?"
+                  "title": "Did you perform some sort of transfer learning?"
                 }
               }
             }]
@@ -122,32 +130,23 @@
         "title": "Did you do a hyper-parameter optimization?"
       },
       "sample_mixing": {
-        "type":"array",
-        "uniqueItems": true,
-        "items": {
-          "type": "string",
-          "enum": [
-            "Undecided",
-            "Yes, we select portions of our dataset",
-            "Yes, we use weights to reweight signal and background to be represented appropriately",
-            "Does not apply: we have only one background process",
-            "We do not mix the samples"
-          ]
-        },
-        "description":"Multiple choices allowed",
+        "type": "string",
+        "enum": [
+          "Undecided",
+          "Yes, we select portions of our dataset",
+          "Yes, we use weights to reweight signal and background to be represented appropriately",
+          "Does not apply: we have only one background process",
+          "We do not mix the samples"
+        ],
         "title":"When training with more than one signal/background, do you mix all samples in the proportions you expect in data? Select the way you mix the samples."
       },
       "overtraining": {
-        "type":"array",
-        "uniqueItems": true,
-        "items": {
-          "type": "string",
-          "enum": [
-            "We do not perform any check",
-            "We divide the sample in three subsamples: training, validation, and testing",
-            "Other"
-          ]
-        },
+        "type": "string",
+        "enum": [
+          "We do not perform any check",
+          "We divide the sample in three subsamples: training, validation, and testing",
+          "Other"
+        ],
         "title":"How do you make sure you are not affected by overtraining?"
       },
       "cross_validation": {
@@ -182,15 +181,15 @@
                   "additionalProperties":false,
                   "properties": {
                     "training": {
-                      "type": "integer",
+                      "type": "number",
                       "title": "Training"
                     },
                     "testing": {
-                      "type": "integer",
+                      "type": "number",
                       "title": "Testing"
                     },
                     "validation": {
-                      "type": "integer",
+                      "type": "number",
                       "title": "Validation"
                     }
                   },
