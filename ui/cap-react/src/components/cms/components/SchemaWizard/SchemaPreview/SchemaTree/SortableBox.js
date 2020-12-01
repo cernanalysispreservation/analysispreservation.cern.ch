@@ -13,10 +13,10 @@ function getStyle(opacity) {
   };
 }
 
-function SortableBox({ parent, children, id, index, moveCard }) {
+function SortableBox({ parent, children, id, index, moveCard, card }) {
   const ref = useRef(null);
   const [, drop] = useDrop({
-    accept: `RE-${parent}`,
+    accept: `FIELD_TYPE`,
     hover: (item, monitor) => {
       if (!ref.current) {
         return;
@@ -60,9 +60,11 @@ function SortableBox({ parent, children, id, index, moveCard }) {
 
   const [{ isDragging }, drag] = useDrag({
     item: {
-      type: `RE-${parent}`,
+      type: `FIELD_TYPE`,
       index,
-      id
+      id,
+      card,
+      parent
     },
     collect: monitor => ({
       isDragging: monitor.isDragging()

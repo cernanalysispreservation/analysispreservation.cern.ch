@@ -213,7 +213,12 @@ export function updateByPath(path, value) {
   };
 }
 
-export function addByPath({ schema: path, uiSchema: uiPath }, data) {
+export function addByPath(
+  { schema: path, uiSchema: uiPath },
+  data,
+  name = "",
+  deletePrevious = null
+) {
   return function(dispatch, getState) {
     let schema = getState()
       .schemaWizard.getIn(["current", "schema", ...path])
@@ -229,8 +234,8 @@ export function addByPath({ schema: path, uiSchema: uiPath }, data) {
     if (schema.type) {
       if (schema.type == "object") {
         if (!schema.properties) schema.properties = {};
-        _path = [...path, "properties", random_name];
-        _uiPath = [...uiPath, random_name];
+        _path = [...path, "properties", name || random_name];
+        _uiPath = [...uiPath, name || random_name];
       } else if (schema.type == "array") {
         if (!schema.items) schema.items = {};
         _path = [...path, "items"];
@@ -238,6 +243,32 @@ export function addByPath({ schema: path, uiSchema: uiPath }, data) {
       }
 
       dispatch(updateByPath({ schema: _path, uiSchema: _uiPath }, data));
+    }
+
+    if (deletePrevious) {
+      let schema = getState()
+        .schemaWizard.getIn(["current", "schema", ...deletePrevious.schema])
+        .toJS();
+
+      let p = deletePrevious.schema;
+      let uiP = deletePrevious.uiSchema;
+      if (schema.type) {
+        if (schema.type === "object") {
+          p = [...p, "properties", name];
+          uiP = [...uiP, name];
+        }
+        if (schema.type === "array") {
+          p = [...p, "items", name];
+          uiP = [...uiP, name];
+        }
+      }
+
+      dispatch(
+        deleteByPath({
+          path:p,
+          uiPath:uiP
+        })
+      );
     }
   };
 }
@@ -403,64 +434,84 @@ export function renameIdByPath(item, newName) {
   };
 }
 
-export function moveFieldToOtherParent(
-  item,
-  newPath = ["properties", "basic_info", "properties"]
-) {
+export function moveFieldToOtherParent({
+  schema: pathSchema,
+  uiSchema: pathUiSchema
+}) {
   return function(dispatch, getState) {
     let schema = getState()
       .schemaWizard.getIn(["current", "schema"])
+      .toJS();
+    let schemaPath = getState()
+      .schemaWizard.getIn(["current", "schema", ...pathSchema])
       .toJS();
 
     let uiSchema = getState()
       .schemaWizard.getIn(["current", "uiSchema"])
       .toJS();
 
-    const { path, uiPath } = item;
-
-    // ******** uiSchema ********
-
-    let tempUiSchema = Object.assign({}, uiSchema);
-    const uiItemToDelete = uiPath.pop();
-
-    for (let i in uiPath) {
-      tempUiSchema = tempUiSchema[uiPath[i]];
+    let newSchemaPath = [];
+    let newUiSchemaPath = [];
+    if (schemaPath.type) {
+      if (schemaPath.type === "object") {
+        newSchemaPath = [...pathSchema, "properties"];
+        newUiSchemaPath = [...pathUiSchema];
+      } else if (schemaPath.type === "array") {
+        newSchemaPath = [...pathSchema, "items"];
+        newUiSchemaPath = [...pathUiSchema, "items"];
+      }
     }
 
-    // remove from the current uiOrder
-    tempUiSchema["ui:order"] = tempUiSchema["ui:order"].filter(
-      item => item !== uiItemToDelete
-    );
+    console.log("====================================");
+    console.log("PPPPPP", newSchemaPath);
+    console.log("UUUUUU", newUiSchemaPath);
+    console.log("====================================");
 
-    // if there is uiInformation then remove these details
-    if (tempUiSchema[uiItemToDelete]) {
-      delete tempUiSchema[uiItemToDelete];
-    }
+    // const { path, uiPath } = item;
 
-    // ********* schema **********
-    let itemToDelete = path.pop();
-    itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
+    // // ******** uiSchema ********
 
-    // if the last item is items then pop again since it is an array, in order to fetch the proper id
+    // let tempUiSchema = Object.assign({}, uiSchema);
+    // const uiItemToDelete = uiPath.pop();
+
+    // for (let i in uiPath) {
+    //   tempUiSchema = tempUiSchema[uiPath[i]];
+    // }
+
+    // // remove from the current uiOrder
+    // tempUiSchema["ui:order"] = tempUiSchema["ui:order"].filter(
+    //   item => item !== uiItemToDelete
+    // );
+
+    // // if there is uiInformation then remove these details
+    // if (tempUiSchema[uiItemToDelete]) {
+    //   delete tempUiSchema[uiItemToDelete];
+    // }
+
+    // // ********* schema **********
+    // let itemToDelete = path.pop();
     // itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
 
-    // shallow copy schema object in order to navigate through the object
-    // but the changes will reflect to the original one --> schema
-    let tempSchema = Object.assign({}, schema);
-    let newSchemaPath = Object.assign({}, schema);
+    // // if the last item is items then pop again since it is an array, in order to fetch the proper id
+    // // itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
 
-    // schema update
-    for (let p in path) {
-      tempSchema = tempSchema[path[p]];
-    }
-    for (let p in newPath) {
-      newSchemaPath = newSchemaPath[newPath[p]];
-    }
-    // now that we have the element we can just pass it to the path we want
-    newSchemaPath[`${itemToDelete}`] = tempSchema[itemToDelete];
+    // // shallow copy schema object in order to navigate through the object
+    // // but the changes will reflect to the original one --> schema
+    // let tempSchema = Object.assign({}, schema);
+    // let newSchemaPath = Object.assign({}, schema);
 
-    delete tempSchema[itemToDelete];
+    // // schema update
+    // for (let p in path) {
+    //   tempSchema = tempSchema[path[p]];
+    // }
+    // for (let p in newPath) {
+    //   newSchemaPath = newSchemaPath[newPath[p]];
+    // }
+    // // now that we have the element we can just pass it to the path we want
+    // newSchemaPath[`${itemToDelete}`] = tempSchema[itemToDelete];
 
-    dispatch(updateByPath({ schema: [], uiSchema: [] }, { schema, uiSchema }));
+    // delete tempSchema[itemToDelete];
+
+    // dispatch(updateByPath({ schema: [], uiSchema: [] }, { schema, uiSchema }));
   };
 }
