@@ -168,6 +168,9 @@ SCHEMAS_DEPOSIT_PREFIX = 'deposits/records/'
 SCHEMAS_RECORD_PREFIX = 'records/'
 SCHEMAS_OPTIONS_PREFIX = 'options/'
 
+#: Path of the folder that contains the default CAP schemas.
+SCHEMAS_DEFAULT_PATH = 'cap/modules/fixtures/schemas'
+
 # Flask configuration
 # ===================
 # See details on

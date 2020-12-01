@@ -27,6 +27,8 @@ import json
 import os
 
 import click
+import requests
+from flask import current_app
 from flask_cli import with_appcontext
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
@@ -40,6 +42,17 @@ from cap.modules.records.api import CAPRecord
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url,\
     resolve_schema_by_name_and_version, schema_name_to_url
+from cap.modules.schemas.utils import is_later_version
+
+DEPOSIT_REQUIRED_FIELDS = [
+    '_buckets',
+    '_deposit',
+    '_files',
+    '_experiment',
+    '_fetched_from',
+    '_user_edited',
+    '_access'
+]
 
 
 @fixtures.command()
@@ -161,55 +174,126 @@ def validate(schema_url, ana_type, ana_version, compare_with,
 
 
 @fixtures.command()
-@with_appcontext
-@click.option('--dir',
-              '-d',
+@click.option('--dir', '-d',
               type=click.Path(exists=True),
-              default='cap/modules/fixtures/schemas')
-def schemas(dir):
-    """Load default schemas."""
+              help='The directory of the schemas to be added to the db.')
+@click.option('--url', '-u',
+              help='The url of the schema to be added to the db.')
+@click.option('--force', '-f',
+              is_flag=True,
+              help='Force add the schema without validation.')
+@click.option('--replace', '-r',
+              is_flag=True,
+              help='It this schema/version exists, update it.')
+@with_appcontext
+def schemas(dir, url, force, replace):
+    """
+    Add schemas to CAP, either by downloading them from a url, or by adding
+    them from a path. if no args are provided, then the schemas from the
+    default path will be added to CAP.
+
+    examples:
+        cap fixtures schemas
+        cap fixtures schemas --dir cap/folder/schemas
+        cap fixtures schemas --url https://schemas.org/my-schema.json
+    """
+    if dir:
+        add_fixtures_from_path(dir)
+    if url:
+        resp = requests.get(url)
+        if not resp.ok:
+            click.secho(f'Please provide a public url to a json file. '
+                        f'Error {resp.status_code}.', fg='red')
+            return
+
+        try:
+            data = resp.json()
+            if not has_all_required_fields(data) and not force:
+                click.secho(f'Missing required fields. Make sure that all of: '
+                            f'{DEPOSIT_REQUIRED_FIELDS} are in the json.', fg='red')  # noqa
+                return
+            add_schema_from_json(data, replace=replace)
+        except (json.JSONDecodeError, ValueError):
+            click.secho('Error in decoding the returned json.', fg='red')
+
+    # by default, just add the fixtures from the default path
+    if not dir and not url:
+        add_fixtures_from_path(
+            current_app.config.get('SCHEMAS_DEFAULT_PATH'),
+            replace=replace)
+
+
+def add_fixtures_from_path(dir, replace=None):
+    """Add fixtures from a specified path to CAP."""
     for root, dirs, files in os.walk(dir):
-        for file in files:
-            if file.endswith(".json"):
-                fullpath = os.path.join(root, file)
-                with open(fullpath, 'r') as f:
-                    try:
-                        json_content = json.load(f)
-                        add_schema_from_fixture(data=json_content)
-                    except ValueError:
-                        click.secho(
-                            "Not valid json in {} file".format(fullpath),
-                            fg='red')
-                        continue
+        json_filepaths = [
+            os.path.join(root, f) for f in files
+            if f.endswith(".json")
+        ]
+
+        for filepath in json_filepaths:
+            with open(filepath, 'r') as f:
+                try:
+                    json_content = json.load(f)
+                    add_schema_from_json(json_content, replace=replace)
+                except ValueError:
+                    click.secho(f'Not valid json in {filepath} file', fg='red')
 
 
-def add_schema_from_fixture(data=None):
-    """Add or update schema."""
+def add_schema_from_json(data, replace=None):
+    """Add or update schema, using a json file."""
     allow_all = data.pop("allow_all", False)
+    version = data['version']
     name = data['name']
 
     try:
         with db.session.begin_nested():
-            with db.session.begin_nested():
-                try:
-                    schema = Schema.get(name=data['name'],
-                                        version=data['version'])
-                    click.secho('{} already exist in the db.'.format(
-                        str(name)))
+            try:
+                _schema = Schema.get(name=name, version=version)
+                if replace:
+                    _schema.update(**data)
+                    db.session.add(_schema)
+                else:
+                    click.secho(f'{name}-{version} already exists in the db.')
                     return
-
+            except JSONSchemaNotFound:
+                try:
+                    _schema = Schema.get_latest(name=name)
+                    if is_later_version(_schema.version, version):
+                        click.secho(
+                            f'A later version ({_schema.version}) of '
+                            f'{name} is already in the db.', fg='red')
+                        return
+                    else:
+                        _schema = Schema(**data)
+                        db.session.add(_schema)
                 except JSONSchemaNotFound:
-                    schema = Schema(**data)
-                    db.session.add(schema)
+                    _schema = Schema(**data)
+                    db.session.add(_schema)
 
-            if allow_all:
-                schema.add_read_access_for_all_users()
+        # throws error if you try to re-insert the same action roles
+        if allow_all and not replace:
+            _schema.add_read_access_for_all_users()
 
+        db.session.commit()
+        click.secho(f'{name} has been added.', fg='green')
     except IntegrityError:
-        click.secho('Error occured during adding {} to the db. \n'.format(
-            str(name)),
-                    fg='red')
-        return
+        click.secho(f'An db error occurred while adding {name}.', fg='red')
 
-    db.session.commit()
-    click.secho('{} has been added.'.format(str(name)), fg='green')
+
+def has_all_required_fields(data):
+    """Check if there are any missing required fields in a json schema."""
+    deposit_as_record = data.get('use_deposit_as_record')
+    schemas_to_check = [data['deposit_schema']] \
+        if deposit_as_record \
+        else [data['deposit_schema'], data['record_schema']]
+
+    for _schema in schemas_to_check:
+        schema_fields = _schema.get('properties', {}).keys()
+
+        # if there are no properties, we do not check
+        if schema_fields:
+            for req_field in DEPOSIT_REQUIRED_FIELDS:
+                if req_field not in schema_fields:
+                    return False
+    return True

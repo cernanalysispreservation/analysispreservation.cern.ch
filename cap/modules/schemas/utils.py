@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Utils for Schemas module."""
 
+import re
 from itertools import groupby
 
 from .models import Schema
@@ -74,3 +75,32 @@ def get_indexed_schemas_for_user(latest=True):
         schemas = _filter_only_latest(schemas)
 
     return schemas
+
+
+def is_later_version(version1, version2):
+    matched1 = re.match(r"(\d+)\.(\d+)\.(\d+)", version1)
+    matched2 = re.match(r"(\d+)\.(\d+)\.(\d+)", version2)
+
+    if not matched1 or not matched2:
+        raise ValueError(
+            'Version has to be passed as string <major>.<minor>.<patch>')
+
+    major1, minor1, patch1 = matched1.groups()
+    major2, minor2, patch2 = matched2.groups()
+
+    if major1 > major2:
+        return True
+    elif major1 < major2:
+        return False
+    elif major1 == major2:
+        if minor1 > minor2:
+            return True
+        elif minor1 < minor2:
+            return False
+        elif minor1 == minor2:
+            if patch1 > patch2:
+                return True
+            elif patch1 < patch2:
+                return False
+            elif patch1 == patch2:
+                return False
