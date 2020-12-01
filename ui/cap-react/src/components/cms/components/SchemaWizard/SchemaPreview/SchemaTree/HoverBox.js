@@ -30,9 +30,27 @@ function HoverBox({
     accept: "FIELD_TYPE",
     drop: (item, monitor) => {
       const didDrop = monitor.didDrop();
+      if (!didDrop) {
+        if (!item.data) {
+          let names = [...item.parent.uiSchema, item.card.name];
+          let shouldWeAdd = names.filter(i => !path.uiSchema.includes(i));
 
-      if (!didDrop && !shouldHideChildren) {
-        addProperty(path, item.data.default);
+          shouldWeAdd.length > 0 &&
+            addProperty(
+              path,
+              {
+                schema: item.card.prop.content.props.schema,
+                uiSchema: item.card.prop.content.props.uiSchema
+              },
+              item.card.name,
+              {
+                schema: item.parent.schema,
+                uiSchema: item.parent.uiSchema
+              }
+            );
+        } else {
+          addProperty(path, item.data.default);
+        }
         return { item, path, propKey };
       }
     },
