@@ -99,22 +99,22 @@ class DepositAccess extends React.Component {
             }}
           >
             <Box pad={{ between: "small" }}>
-              {this.props.canAdmin && (
-                <Box direction="row" justify="center">
-                  <Box
-                    flex
-                    direction="row"
-                    align="center"
-                    justify="between"
-                    responsive={false}
-                  >
-                    <TextInput
-                      placeHolder="Filter list by name or group"
-                      value={this.state.inputValue}
-                      onDOMChange={e =>
-                        this.setState({ inputValue: e.target.value })
-                      }
-                    />
+              <Box direction="row" justify="center">
+                <Box
+                  flex
+                  direction="row"
+                  align="center"
+                  justify="between"
+                  responsive={false}
+                >
+                  <TextInput
+                    placeHolder="Filter list by name or group"
+                    value={this.state.inputValue}
+                    onDOMChange={e =>
+                      this.setState({ inputValue: e.target.value })
+                    }
+                  />
+                  {this.props.canAdmin && (
                     <Button
                       size="small"
                       text="Add"
@@ -122,9 +122,9 @@ class DepositAccess extends React.Component {
                       icon={<AiOutlinePlus color="#fff" />}
                       onClick={() => this.setState({ showModal: true })}
                     />
-                  </Box>
+                  )}
                 </Box>
-              )}
+              </Box>
               <Box pad="small" align="start" margin={{ top: "small" }}>
                 <Box direction="row" responsive={false}>
                   <Button
