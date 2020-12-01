@@ -22,7 +22,8 @@ const PermissionTable = ({
   created_by,
   permissionsObj,
   target,
-  access
+  access,
+  canAdmin
 }) => {
   const [currentPermissionObj, setCurrentPermissionObj] = useState({});
   const [updated, setUpdated] = useState({});
@@ -163,35 +164,32 @@ const PermissionTable = ({
                   </Box>
                 </Box>
 
-                {created_by &&
-                  created_by != item && (
-                    <Box align="center" direction="row" responsive={false}>
-                      <Box style={{ position: "relative" }}>
-                        <Tag
-                          size="small"
-                          text={
-                            <PermissionPopUp
-                              title={getTextFromPermission(
-                                access[item].actions
-                              )}
-                              type={access[item].type}
-                              email={item}
-                              permissions={access[item].actions}
-                              hideMenu={created_by && created_by === item}
-                            />
-                          }
+                <Box align="center" direction="row" responsive={false}>
+                  <Box style={{ position: "relative" }}>
+                    <Tag
+                      size="small"
+                      text={
+                        <PermissionPopUp
+                          title={getTextFromPermission(access[item].actions)}
+                          type={access[item].type}
+                          email={item}
+                          permissions={access[item].actions}
+                          hideMenu={!canAdmin}
                         />
-                      </Box>
-                      <Button
-                        icon={<AiOutlineDelete />}
-                        size="iconSmall"
-                        criticalOutline
-                        margin="0 0 0 5px"
-                        disabled={created_by && created_by === item}
-                        onClick={() => setItemToDelete(item)}
-                      />
-                    </Box>
+                      }
+                    />
+                  </Box>
+                  {canAdmin && (
+                    <Button
+                      icon={<AiOutlineDelete />}
+                      size="iconSmall"
+                      criticalOutline
+                      margin="0 0 0 5px"
+                      disabled={created_by && created_by === item}
+                      onClick={() => setItemToDelete(item)}
+                    />
                   )}
+                </Box>
               </ListItem>
             ))}
       </List>
