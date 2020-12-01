@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-from cap.modules.schemas.cli import add_schema_from_fixture
+from cap.modules.schemas.cli import add_schema_from_json
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import (AdminSchemaPermission,
                                              ReadSchemaPermission)
@@ -65,7 +65,7 @@ def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
                 is_indexed=True,
                 use_deposit_as_record=False)
 
-    add_schema_from_fixture(data=data)
+    add_schema_from_json(data=data)
 
     schema = Schema.get('new-schema', version='1.2.3')
     for key, value in data.items():
@@ -123,7 +123,7 @@ def test_add_schema_from_fixture_when_schema_already_exist_updates_json_for_sche
         }))
     db.session.commit()
 
-    add_schema_from_fixture(data=updated_data)
+    add_schema_from_json(data=updated_data)
 
     schema = Schema.get('new-schema', version='1.1.1')
     for key, value in updated_data.items():
