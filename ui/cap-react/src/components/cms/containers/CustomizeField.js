@@ -4,8 +4,7 @@ import {
   updateSchemaByPath,
   updateUiSchemaByPath,
   deleteByPath,
-  renameIdByPath,
-  moveFieldToOtherParent
+  renameIdByPath
 } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
@@ -27,8 +26,8 @@ function mapDispatchToProps(dispatch) {
     onUiSchemaChange: (path, schema) =>
       dispatch(updateUiSchemaByPath(path, schema)),
     deleteByPath: item => dispatch(deleteByPath(item)),
-    renameId: (item, newName) => dispatch(renameIdByPath(item, newName)),
-    moveField: item => dispatch(moveFieldToOtherParent(item))
+    renameId: (item, newName) => dispatch(renameIdByPath(item, newName))
+    // moveField: item => dispatch(moveFieldToOtherParent(item))
   };
 }
 export default connect(
