@@ -26,7 +26,13 @@ function HoverBox({ path, propKey, addProperty, children, index }) {
           let names = [...item.parent.uiSchema, item.card.name];
           let shouldWeAdd = names.filter(i => !path.uiSchema.includes(i));
 
-          if (item.parent.schema.length === path.schema.length) return;
+          console.log("====================================");
+          console.log(path);
+          console.log(item);
+          console.log("====================================");
+          let d = item.parent.schema.filter(i => i !== "items");
+
+          if (d.length === path.schema.length) return;
 
           shouldWeAdd.length > 0 &&
             addProperty(
