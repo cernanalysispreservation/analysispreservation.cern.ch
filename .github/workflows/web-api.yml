@@ -4,10 +4,7 @@ on:
   push:
     branches: [ $default-branch ]
   pull_request:
-    branches: 
-      - $default-branch
-    paths-ignore:
-      - 'ui/**'
+    branches: [ $default-branch ]
 
 jobs:
   build:
