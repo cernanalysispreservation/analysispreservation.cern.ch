@@ -51,7 +51,7 @@ before_install:
   - "./scripts/ci/prebuild.sh"
   - "travis_retry pip install kwalitee --pre"
   - "echo ${TRAVIS_COMMIT_RANGE}"
-  - "travis_retry pip install --upgrade pip setuptools==45.3.0 py"
+  - "travis_retry pip install --upgrade pip==20.2.4 setuptools==45.3.0 py"
   - "travis_retry pip install twine wheel requirements-builder"
   - "cat requirements.txt > .travis-lowest-requirements.txt"
 
