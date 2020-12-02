@@ -1,0 +1,32 @@
+name: UI test
+on:
+  push:
+    branches: [master]
+    paths: 
+      - 'ui/**'
+      - '.github/workflows/ui-test.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'ui/**'
+      - '.github/workflows/ui-test.yml'
+jobs:
+  UITest:
+    name: UI Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '10'
+
+      - name: Build
+        working-directory: ./ui
+        run: yarn
+
+      - name: Test
+        working-directory: ./ui/cap-react
+        run: yarn prebuild

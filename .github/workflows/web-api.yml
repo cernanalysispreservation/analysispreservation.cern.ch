@@ -1,0 +1,82 @@
+name: Backend tests
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+    - 'ui/**'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+    - 'ui/**'
+
+jobs:
+  BackendSuite:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_USER: cap
+          POSTGRES_PASSWORD: cap
+          POSTGRES_DB: cap
+        ports:
+        - 5432:5432
+      rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+          - 5672:5672
+      elasticsearchd:
+        image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
+        env:
+          bootstrap.memory_lock: true
+          ES_JAVA_OPTS: -Xms1024m -Xmx1024m
+          discovery.type: single-node
+          xpack.security.enabled: false
+
+        ports:
+          - 9200:9200
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup python 3.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Checking commit quality (messages, signatures, etc)
+        run: |
+          ./scripts/ci/prebuild.sh
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev libkrb5-dev
+      - name: Install dependencies
+        run: |
+          python -V
+          pip -V
+          pip install --upgrade pip==20.2.4
+          # pip install flake8 pip==20.2.4
+          pip install -r requirements.txt
+          pip install -e .[all,docs,tests,ldap]
+          pip install -r requirements-local-forks.txt
+      # - name: Lint with flake8
+      #   run: |
+      #     # stop the build if there are Python syntax errors or undefined names
+      #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+      #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Run integration and  unit tests
+        run: |
+          ./run-tests.sh

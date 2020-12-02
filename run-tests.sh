@@ -7,8 +7,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 # pydocstyle cap && \
-python setup.py test && \
-cd ui/cap-react && yarn prebuild
+python setup.py test
 
 #pydocstyle cap tests docs && \
 #isort -rc -c -df && \
