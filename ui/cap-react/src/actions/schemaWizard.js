@@ -213,6 +213,19 @@ export function updateByPath(path, value) {
   };
 }
 
+function updateUiOrderByPath(path, name) {
+  return function(dispatch, getState) {
+    let uiSchema = getState()
+      .schemaWizard.getIn(["current", "uiSchema", ...path])
+      .toJS();
+
+    // update the uiOrder with the name of the newly added item
+    uiSchema["ui:order"].push(name);
+
+    dispatch(updateUiSchemaByPath(path, uiSchema));
+  };
+}
+
 export function addByPath(
   { schema: path, uiSchema: uiPath },
   data,
@@ -238,8 +251,12 @@ export function addByPath(
         _uiPath = [...uiPath, name || random_name];
       } else if (schema.type == "array") {
         if (!schema.items) schema.items = {};
-        _path = [...path, "items"];
-        _uiPath = [...uiPath, "items"];
+        _path = [...path, "items", "properties", name || random_name];
+        _uiPath = [...uiPath, "items", name || random_name];
+        // make sure that the parent will update the uiOrder with the new item
+        dispatch(
+          updateUiOrderByPath([...uiPath, "items"], name || random_name)
+        );
       }
 
       dispatch(updateByPath({ schema: _path, uiSchema: _uiPath }, data));
@@ -265,8 +282,8 @@ export function addByPath(
 
       dispatch(
         deleteByPath({
-          path:p,
-          uiPath:uiP
+          path: p,
+          uiPath: uiP
         })
       );
     }
