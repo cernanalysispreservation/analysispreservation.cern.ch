@@ -178,6 +178,7 @@ function updateUiOrderByPath(path, name) {
       .toJS();
 
     // update the uiOrder with the name of the newly added item
+    if (!uiSchema["ui:order"]) uiSchema["ui:order"] = [];
     uiSchema["ui:order"].push(name);
 
     dispatch(updateUiSchemaByPath(path, uiSchema));
@@ -209,7 +210,10 @@ export function addByPath(
         _uiPath = [...uiPath, name || random_name];
       } else if (schema.type == "array") {
         if (!schema.items) schema.items = {};
-        _path = [...path, "items", "properties", name || random_name];
+
+        _path = schema.items.properties
+          ? [...path, "items", "properties", name || random_name]
+          : [...path, "items", name || random_name];
         _uiPath = [...uiPath, "items", name || random_name];
         // make sure that the parent will update the uiOrder with the new item
         dispatch(
