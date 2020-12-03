@@ -143,7 +143,7 @@ pygithub==1.39
 pyngrok==1.4.2
 pygments==2.2.0           # via ipython
 pyjwt==1.6.4              # via invenio-accounts, invenio-oauth2server, pygithub
-pyopenssl==18.0.0         # via urllib3
+pyopenssl==19.1.0         # via urllib3
 pypeg2==2.15.2            # via invenio-query-parser
 python-dateutil==2.7.3    # via alembic, arrow, elasticsearch-dsl, invenio-records-rest
 python-editor==1.0.3      # via alembic
