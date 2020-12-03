@@ -598,6 +598,7 @@ class CAPDeposit(Deposit, Reviewable):
                     self['$schema']))
         else:
             raise DepositValidationError('You need to provide a valid schema.')
+        # adding comment
 
     def save_file(self, content, filename, size, failed=False):
         """Save file with given content in deposit bucket.
