@@ -218,10 +218,10 @@ function updateUiOrderByPath(path, name) {
     let uiSchema = getState()
       .schemaWizard.getIn(["current", "uiSchema", ...path])
       .toJS();
-
+    path = path.length === 0 ? ["properties"]:path;
     // update the uiOrder with the name of the newly added item
     uiSchema["ui:order"].push(name);
-
+    
     dispatch(updateUiSchemaByPath(path, uiSchema));
   };
 }
@@ -249,6 +249,9 @@ export function addByPath(
         if (!schema.properties) schema.properties = {};
         _path = [...path, "properties", name || random_name];
         _uiPath = [...uiPath, name || random_name];
+        dispatch(
+          updateUiOrderByPath([...uiPath], name || random_name)
+        );
       } else if (schema.type == "array") {
         if (!schema.items) schema.items = {};
         // if the array has not properties place the new item then
