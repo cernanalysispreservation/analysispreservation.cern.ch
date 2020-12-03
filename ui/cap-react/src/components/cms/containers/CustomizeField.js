@@ -27,7 +27,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateUiSchemaByPath(path, schema)),
     deleteByPath: item => dispatch(deleteByPath(item)),
     renameId: (item, newName) => dispatch(renameIdByPath(item, newName))
-    // moveField: item => dispatch(moveFieldToOtherParent(item))
   };
 }
 export default connect(
