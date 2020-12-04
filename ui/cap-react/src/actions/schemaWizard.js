@@ -402,3 +402,23 @@ export function renameIdByPath(item, newName) {
     dispatch(enableCreateMode());
   };
 }
+
+export function updateSchemaProps(prop) {
+  return function(dispatch, getState) {
+    const { title, description } = prop;
+
+    let schema = getState()
+      .schemaWizard.getIn(["current", "schema"])
+      .toJS();
+
+    if (title) {
+      schema.title = title;
+    }
+
+    if (description) {
+      schema.description = description;
+    }
+
+    dispatch(updateSchemaByPath([], schema));
+  };
+}

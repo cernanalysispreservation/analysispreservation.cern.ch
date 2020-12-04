@@ -9,8 +9,6 @@ import DraggableBox from "./DraggableBox";
 import { PropTypes } from "prop-types";
 
 import fields from "../../utils/fieldTypes";
-import Anchor from "../../../../partials/Anchor";
-import Download from "grommet/components/icons/base/Download";
 
 class SelectFieldType extends React.Component {
   _onClick = type => {
@@ -39,22 +37,6 @@ class SelectFieldType extends React.Component {
       { schema, uiSchema }
     );
   };
-
-  _getSchema() {
-    const fileData = JSON.stringify(
-      {
-        schema: this.props.schema.toJS(),
-        uiSchema: this.props.uiSchema.toJS()
-      },
-      null,
-      4
-    );
-
-    const blob = new Blob([fileData], { type: "text/json" });
-    const url = URL.createObjectURL(blob);
-
-    return url;
-  }
 
   render() {
     return (
@@ -95,17 +77,6 @@ class SelectFieldType extends React.Component {
             </Box>
           ))}
         </Box>
-        {this.props.selected &&
-          this.props.selected.id && (
-            <Box align="center">
-              <Anchor
-                label="Export Schema"
-                download={`schema_${this.props.selected.id}.json`}
-                href={this._getSchema()}
-                icon={<Download size="small" />}
-              />
-            </Box>
-          )}
       </Box>
     );
   }
