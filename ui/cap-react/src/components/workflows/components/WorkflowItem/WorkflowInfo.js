@@ -6,7 +6,6 @@ import Box from "grommet/components/Box";
 import { Heading, ListItem, List } from "grommet";
 
 import Accordion from "grommet/components/Accordion";
-// import AccordionPanel from 'grommet/components/AccordionPanel';
 import AccordionPanel from "../../../partials/AccordionPanel";
 
 import AceEditor from "react-ace";
