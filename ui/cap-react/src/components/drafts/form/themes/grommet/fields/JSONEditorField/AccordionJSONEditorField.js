@@ -7,7 +7,7 @@ import JSONDropzone from "./components/JSONDropzone";
 import JSONEditorLayer from "./components/JSONEditorLayer";
 
 import Accordion from "grommet/components/Accordion";
-import AccordionPanel from "grommet/components/AccordionPanel";
+import AccordionPanel from "../../../../../../partials/AccordionPanel";
 
 import FieldHeader from "../../components/FieldHeader";
 

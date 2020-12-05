@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Accordion from "grommet/components/Accordion";
-import AccordionPanel from "grommet/components/AccordionPanel";
+import AccordionPanel from "../../../../../partials/AccordionPanel";
 
 import FieldHeader from "../components/FieldHeader";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";

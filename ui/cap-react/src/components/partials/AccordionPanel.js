@@ -47,7 +47,7 @@ class _AccordionPanel extends AccordionPanel {
             <Box
               pad="small"
               direction="row"
-              colorIndex={headingColor || "neutral-1"}
+              colorIndex={headingColor}
               justify="between"
               align="center"
               responsive={false}
