@@ -27,3 +27,7 @@ services:
     extends:
       file: docker-services.yml
       service: kibana
+  redis-commander:
+    extends:
+      file: docker-services.yml
+      service: redis-commander
