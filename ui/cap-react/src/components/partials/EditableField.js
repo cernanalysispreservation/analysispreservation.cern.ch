@@ -6,7 +6,8 @@ import Label from "grommet/components/Label";
 
 import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
 import CloseIcon from "grommet/components/icons/base/Close";
-import { EditIcon } from "grommet/components/icons/base";
+
+import {AiOutlineEdit} from "react-icons/ai";
 
 class EditableField extends React.Component {
   constructor(props) {
@@ -123,7 +124,7 @@ class EditableField extends React.Component {
         >
           <Box flex={true}>
             {this.props.renderDisplay ? (
-              this.props.renderDisplay(this.state.displayValue)
+              this.props.renderDisplay(this.state.value)
             ) : (
               <Label
                 size={this.props.size || null}
@@ -135,7 +136,7 @@ class EditableField extends React.Component {
               </Label>
             )}
           </Box>
-          <EditIcon size="xsmall" />
+          <AiOutlineEdit size="10" />
         </Box>
       </Box>
     );

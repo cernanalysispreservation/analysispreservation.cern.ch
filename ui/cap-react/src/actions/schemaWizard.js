@@ -1,5 +1,5 @@
 import axios from "axios";
-import { replace, push } from "connected-react-router";
+import { push } from "connected-react-router";
 import cogoToast from "cogo-toast";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
@@ -16,6 +16,7 @@ export const SCHEMA_INIT_REQUEST = "SCHEMA_INIT_REQUEST";
 export const SCHEMA_INIT = "SCHEMA_INIT";
 export const SCHEMA_ERROR = "SCHEMA_ERROR";
 
+export const CURRENT_UPDATE_CONFIG = "CURRENT_UPDATE_CONFIG";
 export const CURRENT_UPDATE_PATH = "CURRENT_UPDATE_PATH";
 export const CURRENT_UPDATE_SCHEMA_PATH = "CURRENT_UPDATE_SCHEMA_PATH";
 export const CURRENT_UPDATE_UI_SCHEMA_PATH = "CURRENT_UPDATE_UI_SCHEMA_PATH";
@@ -33,11 +34,12 @@ export function schemaInitRequest() {
   };
 }
 
-export function schemaInit(id, data) {
+export function schemaInit(id, data, configs = {}) {
   return {
     type: SCHEMA_INIT,
     id,
-    data
+    data,
+    configs
   };
 }
 
@@ -81,12 +83,13 @@ export function getSchemas() {
 
 export function initSchemaWizard(data) {
   return function(dispatch) {
-    const { deposit_schema, deposit_options, name, version } = data;
+    const {  id, deposit_schema, deposit_options, ...configs } = data;
 
     dispatch(
       schemaInit(
-        { id: name || "New Form", version: version || "0.0.1" },
-        { schema: deposit_schema, uiSchema: deposit_options }
+        id || "Schema Name",
+        { schema: deposit_schema, uiSchema: deposit_options },
+        configs
       )
     );
     dispatch(push("/cms/edit"));
@@ -104,13 +107,13 @@ export function getSchema(name, version = null) {
       .get(schemaLink)
       .then(resp => {
         let schema = resp.data;
-        let { id, version, deposit_schema, deposit_options, name } = schema;
-        id = id || name;
+        let { id, deposit_schema, deposit_options, ...configs } = schema;
         if (deposit_schema && deposit_options)
           dispatch(
             schemaInit(
-              { id, version },
-              { schema: deposit_schema, uiSchema: deposit_options }
+              id || "Schema Name",
+              { schema: deposit_schema, uiSchema: deposit_options },
+              configs
             )
           );
       })
@@ -134,7 +137,7 @@ export function createContentType(content_type) {
     let description = content_type.formData.description;
     const _id = slugify(Math.random().toString() + "_" + name);
 
-    dispatch(schemaInit({ id: _id }, _initSchemaStructure(name, description)));
+    dispatch(schemaInit(_id, _initSchemaStructure(name, description), {fullname: name}));
     dispatch(push("/cms/edit"));
   };
 }
@@ -143,48 +146,6 @@ export function selectContentType(id) {
   return function(dispatch) {
     dispatch(getSchema(id));
     dispatch(push(`/cms/edit`));
-  };
-}
-
-// export function selectContentType(id, version=null) {
-//   return function(dispatch, getState) {
-//     let state = getState();
-//     let data = state.schemaWizard.getIn(["list", id]);
-
-//     if (data && data[version]) {
-//       let { deposit_schema, deposit_options } = data[version];
-
-//       if (deposit_schema && deposit_options)
-//         dispatch(
-//           schemaInit(
-//             { id, version },
-//             { schema: deposit_schema, uiSchema: deposit_options }
-//           )
-//         );
-//       }
-//     dispatch(push(`/cms/edit/${id}`));
-//   };
-// }
-
-export function fetchAndSelectContentType(id, version) {
-  return function(dispatch, getState) {
-    // dispatch(schemasListRequest());
-    dispatch(schemaInitRequest());
-    let state = getState();
-    let data = state.schemaWizard.getIn(["list", id]);
-
-    if (data && data[version]) {
-      let { deposit_schema, deposit_options } = data[version];
-
-      if (deposit_schema && deposit_options)
-        dispatch(
-          schemaInit(
-            { id, version },
-            { schema: deposit_schema, uiSchema: deposit_options }
-          )
-        );
-      dispatch(replace("/cms/edit"));
-    }
   };
 }
 
@@ -201,6 +162,13 @@ export function updateCurrentSchemaWithField(schema) {
 
     const pathToChange = propKey ? [...path, propKey] : path;
     dispatch(updateSchemaByPath(pathToChange, schema));
+  };
+}
+
+export function updateSchemaConfig(config) {
+  return {
+    type: CURRENT_UPDATE_CONFIG,
+    config
   };
 }
 
@@ -403,11 +371,16 @@ export function renameIdByPath(item, newName) {
 
 export function updateSchemaProps(prop) {
   return function(dispatch, getState) {
-    const { title, description } = prop;
+    const { title, description, configs } = prop;
 
     let schema = getState()
       .schemaWizard.getIn(["current", "schema"])
       .toJS();
+
+    if (configs) {
+      dispatch(updateSchemaConfig(configs));
+      return;
+    }
 
     if (title) {
       schema.title = title;
