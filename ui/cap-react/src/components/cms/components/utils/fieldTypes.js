@@ -113,6 +113,19 @@ const advanced = {
       }
     }
   },
+  switch: {
+    title: "Switch",
+    description: "Yes or no, 1 or 0, true or false",
+    child: {},
+    default: {
+      schema: {
+        type: "boolean"
+      },
+      uiSchema: {
+        "ui:widget": "switch"
+      }
+    }
+  },
   zenodo: {
     title: "Zenodo Field",
     description: "Data in JSON format, Grouped section",
