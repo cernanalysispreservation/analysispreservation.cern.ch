@@ -15,6 +15,7 @@ const widgets = {
   checkboxes: CheckboxWidget,
   textarea: TextAreaWidget,
   switch: SwitchWidget,
+  checkbox: SwitchWidget,
   tags: TagsWidget
 };
 
