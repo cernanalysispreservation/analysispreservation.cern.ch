@@ -71,6 +71,7 @@
     "react-json-editor-ajrm": "2.5.9",
     "react-json-view": "^1.16.1",
     "react-jsonschema-form": "v2.0.0-alpha.1",
+    "jsondiffpatch": "0.3.11",
     "react-lazylog": "4.3.2",
     "react-paginate": "6.5.0",
     "react-redux": "6.0.0",
