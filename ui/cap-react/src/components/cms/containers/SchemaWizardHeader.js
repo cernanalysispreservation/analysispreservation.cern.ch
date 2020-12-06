@@ -1,0 +1,26 @@
+import { connect } from "react-redux";
+
+import SchemaWizardHeader from "../components/SchemaWizard/SchemaWizardHeader";
+import { withRouter } from "react-router-dom";
+import { updateSchemaProps } from "../../../actions/schemaWizard";
+
+function mapStateToProps(state) {
+  return {
+    schema: state.schemaWizard.getIn(["current", "schema"]),
+    uiSchema: state.schemaWizard.getIn(["current", "uiSchema"]),
+    initialSchema: state.schemaWizard.getIn(["initial", "schema"]),
+    initialUiSchema: state.schemaWizard.getIn(["initial", "uiSchema"]),
+    config: state.schemaWizard.get("config")
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateSchemaProps: prop => dispatch(updateSchemaProps(prop))
+  };
+}
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+  )(SchemaWizardHeader));

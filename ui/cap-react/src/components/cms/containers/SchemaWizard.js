@@ -1,9 +1,7 @@
 import { connect } from "react-redux";
 
 import SchemaWizard from "../components/SchemaWizard";
-import { getSchema, updateSchemaProps } from "../../../actions/schemaWizard";
-
-import { withRouter } from "react-router-dom";
+import { getSchema } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
   return {
@@ -17,14 +15,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getSchema: (name, version) => dispatch(getSchema(name, version)),
-    updateSchemaProps: prop => dispatch(updateSchemaProps(prop))
+    getSchema: (name, version) => dispatch(getSchema(name, version))
   };
 }
 
-export default withRouter(
-  connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(SchemaWizard)
-);
+  )(SchemaWizard);

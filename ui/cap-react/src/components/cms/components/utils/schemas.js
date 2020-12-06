@@ -33,26 +33,18 @@ export const schemaSchema = {
     },
     title: {
       title: "Title",
-      description:
-        "The title of the form field. How it will be displayed on the rendered form.",
       type: "string"
     },
     description: {
       title: "Description",
-      description:
-        "The title of the form field. How it will be displayed on the rendered form.",
       type: "string"
     },
     placeholder: {
       title: "Placeholder",
-      description:
-        "The title of the form field. How it will be displayed on the rendered form.",
       type: "string"
     },
     format: {
       title: "Format/Widget",
-      description:
-        "The title of the form field. How it will be displayed on the rendered form.",
       type: "string"
     }
   }
@@ -65,3 +57,86 @@ export const uiSchema = {
     }
   }
 };
+
+export const configSchema = {
+    "schema": {
+        "title": "Schema Configuration",
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                "title": "Name",
+                "description": "Schema name"
+            },
+            "version": {
+                "type": "string",
+                "title": "Version",
+              "pattern": "^[\\d]{1,}\\.[\\d]{1,}\\.[\\d]{1,}$"
+            },
+            "fullname": {
+                "type": "string",
+                "title": "Fullname"
+            },
+            "experiment": {
+                "type": "string",
+                "title": "Experiment",
+                "enum": ["CMS", "LHCb", "ATLAS", "ALICE"]
+            },
+            "is_indexed": {
+                "type": "boolean",
+                "title": "Is Indexed?"
+            },
+            "use_deposit_as_record": {
+                "type": "boolean",
+                "title": "Use deposit as record?"
+            }
+        }
+    },
+    "uiSchema": {
+        "use_deposit_as_record": {
+            "ui:widget": "switch",
+            "ui:options": {
+                "grid": {
+                    "gridColumns": "3/5"
+                }
+            }
+        },
+        "ui:order": [
+            "name",
+            "version",
+            "fullname",
+            "experiment",
+            "is_indexed",
+            "use_deposit_as_record",
+            "*"
+        ],
+        "name": {
+            "ui:options": {
+                "grid": {
+                    "gridColumns": "1/3"
+                }
+            }
+        },
+        "version": {
+            "ui:options": {
+                "grid": {
+                    "gridColumns": "3/5"
+                }
+            }
+        },
+        "ui:options": {
+            "size": "large",
+            "align": "center"
+        },
+        "fullname": {},
+        "is_indexed": {
+            "ui:widget": "switch",
+            "ui:options": {
+                "grid": {
+                    "gridColumns": "1/3"
+                }
+            }
+        },
+        "experiment": {}
+    }
+}

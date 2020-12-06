@@ -6,9 +6,15 @@ import Box from "grommet/components/Box";
 import Paragraph from "grommet/components/Paragraph";
 import { connect } from "react-redux";
 import { AiOutlineDownload } from "react-icons/ai";
+import CleanForm from "../../../drafts/form/CleanForm";
+import {configSchema} from "../utils/schemas";
+import { updateSchemaConfig } from "../../../../actions/schemaWizard";
+import Button from "../../../partials/Button";
 
-const SettingsModal = ({ show, onClose, selected, schema, uiSchema }) => {
-  const _getSchema = () => {
+const SettingsModal = ({ show, onClose, selected, schema, uiSchema, configs, updateSchemaConfig }) => {
+    let formRef = React.createRef();
+
+    const _getSchema = () => {
     const fileData = JSON.stringify(
       {
         schema: schema.toJS(),
@@ -23,6 +29,13 @@ const SettingsModal = ({ show, onClose, selected, schema, uiSchema }) => {
 
     return url;
   };
+
+  const _updateConfigs = (data) => {
+    let { formData, errors } = data;
+    if (errors.length > 0) return;
+
+    updateSchemaConfig(formData)
+  }
   return (
     show && (
       <Modal onClose={onClose} separator title="Form Actions">
@@ -47,6 +60,11 @@ const SettingsModal = ({ show, onClose, selected, schema, uiSchema }) => {
                 </Anchor>
               </Box>
             )}
+            <CleanForm formRef={f => (formRef = f)} {...configSchema} formData={configs} onSubmit={_updateConfigs}>
+                  <Box pad="small">
+                    <Button type="submit" text="Save" onClick={() => formRef.submit()}/>
+                  </Box>
+            </CleanForm>
         </Box>
       </Modal>
     )
@@ -71,11 +89,16 @@ const mapStateToProps = state => {
       "current",
       "uiSchema",
       ...(_uiPath || [])
-    ])
+    ]),
+    configs: state.schemaWizard.get("config")
   };
 };
 
-const mapDispatchToProps = {};
+function mapDispatchToProps(dispatch) {
+  return {
+    updateSchemaConfig: config => dispatch(updateSchemaConfig(config))
+  };
+}
 
 export default connect(
   mapStateToProps,

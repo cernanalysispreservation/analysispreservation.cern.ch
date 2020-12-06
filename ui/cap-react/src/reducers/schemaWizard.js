@@ -2,6 +2,7 @@ import { Map, fromJS } from "immutable";
 
 import {
   SCHEMA_INIT,
+  CURRENT_UPDATE_CONFIG,
   CURRENT_UPDATE_PATH,
   CURRENT_UPDATE_SCHEMA_PATH,
   CURRENT_UPDATE_UI_SCHEMA_PATH,
@@ -17,11 +18,15 @@ import {
 const initialState = Map({
   list: {},
   selected: null,
-  init: null,
   current: fromJS({
     schema: {},
     uiSchema: {}
   }),
+  initial: fromJS({
+    schema: {},
+    uiSchema: {}
+  }),
+  config: {},
   field: null,
   propKeyEditor: null,
   editView: false,
@@ -36,8 +41,9 @@ export default function schemaReducer(state = initialState, action) {
     case SCHEMA_INIT:
       return state
         .set("selected", action.id)
-        .set("init", Map(action.data))
         .set("current", fromJS(action.data))
+        .set("initial", fromJS(action.data))
+        .set("config", action.configs)
         .set("loader", false);
     case SCHEMA_ERROR:
       return state.set("error", action.payload).set("loader", false);
@@ -88,6 +94,8 @@ export default function schemaReducer(state = initialState, action) {
         ["current", "uiSchema", ...action.path],
         fromJS(action.value)
       );
+    case CURRENT_UPDATE_CONFIG:
+      return state.set("config", action.config);
     default:
       return state;
   }
