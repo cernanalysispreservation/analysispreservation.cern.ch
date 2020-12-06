@@ -63,7 +63,7 @@ class TagsWidget extends Component {
   render() {
     let TAGS_REGEX = this.props.options.pattern
       ? new RegExp(this.props.options.pattern)
-      : null;
+      : /.*/;
 
     return (
       <Box pad={{ horizontal: "medium" }}>
