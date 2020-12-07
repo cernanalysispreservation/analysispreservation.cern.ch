@@ -13,11 +13,17 @@ import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 import { DownloadIcon } from "grommet/components/icons/base";
 import SettingsModal from "./SettingsModal";
-import { AiOutlineSetting, AiOutlineArrowLeft } from "react-icons/ai";
+import {
+  AiOutlineSetting,
+  AiOutlineArrowLeft,
+  AiOutlineInfoCircle
+} from "react-icons/ai";
 import { FaCode } from "react-icons/fa";
 import JsonDiff from "./JSONDiff";
 
 import Truncate from "react-truncate";
+import GuidelinesPopUp from "./GuidelinesPopUp";
+import { shoudDisplayGuideLinePopUp } from "../utils/common";
 
 ["json"].forEach(lang => {
   require(`ace-builds/src-noconflict/mode-${lang}`);
@@ -30,7 +36,8 @@ class SchemaWizardHeader extends React.Component {
     this.state = {
       schemaPreviewEnabled: false,
       schemaPreviewDisplay: "schema",
-      showModal: false
+      showModal: false,
+      showGuidelines: false
     };
   }
   _getSchema = () => {
@@ -106,10 +113,10 @@ class SchemaWizardHeader extends React.Component {
   render() {
     return [
       <Header
+        key="header"
         pad={{ vertical: "none", horizontal: "small" }}
         size="small"
         fixed
-        key="Heading"
       >
         <Box
           justify="between"
@@ -144,6 +151,13 @@ class SchemaWizardHeader extends React.Component {
               size="small"
               onClick={this._toggleSchemaPreviewEnabled}
             />
+            {!shoudDisplayGuideLinePopUp(this.props.schema) && (
+              <Button
+                size="small"
+                onClick={() => this.setState({ showGuidelines: true })}
+                icon={<AiOutlineInfoCircle size={20} />}
+              />
+            )}
             <Button
               icon={<AiOutlineSetting size={20} />}
               size="small"
@@ -218,6 +232,11 @@ class SchemaWizardHeader extends React.Component {
           >
             {this._renderSchemaPreview()}
           </Box>
+        </Modal>
+      ),
+      this.state.showGuidelines && (
+        <Modal flush onClose={() => this.setState({ showGuidelines: false })}>
+          <GuidelinesPopUp />
         </Modal>
       )
     ];

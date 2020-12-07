@@ -1,6 +1,11 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Box, Label } from "grommet";
+import { AiOutlineDownload } from "react-icons/ai";
+
+import { shoudDisplayGuideLinePopUp } from "../../../utils/common";
 
 function getStyle(isOverCurrent) {
   return {
@@ -18,7 +23,8 @@ function HoverBox({
   addProperty,
   children,
   index,
-  shouldHideChildren
+  shouldHideChildren,
+  schema
 }) {
   const [{ isOverCurrent }, drop] = useDrop({
     accept: "FIELD_TYPE",
@@ -29,8 +35,6 @@ function HoverBox({
         addProperty(path, item.data.default);
         return { item, path, propKey };
       }
-      // setHasDropped(true);
-      // setHasDroppedOnChild(didDrop);
     },
     collect: monitor => ({
       isOver: monitor.isOver(),
@@ -44,6 +48,18 @@ function HoverBox({
       style={getStyle(isOverCurrent && !shouldHideChildren)}
       index={index}
     >
+      {shoudDisplayGuideLinePopUp(schema) && (
+        <Box
+          style={{ border: "1px dotted black", color: "#000" }}
+          pad="medium"
+          margin="medium"
+          align="center"
+          justify="center"
+        >
+          <Label>Drop Area</Label>
+          <AiOutlineDownload size={20} />
+        </Box>
+      )}
       {children}
     </div>
   );
@@ -55,7 +71,15 @@ HoverBox.propTypes = {
   addProperty: PropTypes.func,
   propKey: PropTypes.string,
   index: PropTypes.number,
-  shouldHideChildren: PropTypes.bool
+  shouldHideChildren: PropTypes.bool,
+  schema: PropTypes.object
 };
 
-export default HoverBox;
+const mapStateToProps = state => ({
+  schema: state.schemaWizard.getIn(["current", "schema"])
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(HoverBox);
