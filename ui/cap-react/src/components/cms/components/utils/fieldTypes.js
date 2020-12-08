@@ -21,25 +21,55 @@ const simple = {
       uiSchema: {}
     }
   },
-  textArea: {
+  textarea: {
     title: "Text Area",
     description: "Text Area field",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Text Area Options Schema",
+      properties: {
+        "ui:readonly": {
+          type: "string",
+          enum: [true, false],
+          title: "Readonly"
+        },
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            rows: {
+              title: "Rows",
+              description: "The number of the textarea rows",
+              type: "number"
+            },
+            maxLength: {
+              title: "Max Length",
+              description:
+                "Provide a number as the maximum limit of characters, infinity if not provided",
+              type: "number"
+            },
+            minLength: {
+              title: "Min Length",
+              description:
+                "Provide a number as the minimum limit of charactes, empty if not provded",
+              type: "number"
+            },
+            placeholder: {
+              title: "Placeholder",
+              description: "Provide a placeholder for the field",
+              type: "string"
+            }
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "string"
       },
       uiSchema: {
-        "ui:widget": "textarea",
-        "ui:options": {
-          rows: 1,
-          maxLength: "100",
-          minLength: "0",
-          disabled: false,
-          readOnly: false,
-          placeholder: "",
-          style: {}
-        }
+        "ui:widget": "textarea"
       }
     }
   },
