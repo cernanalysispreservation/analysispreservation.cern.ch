@@ -446,6 +446,7 @@ class RxInputBase extends Component {
         onPaste={this._onPaste}
         onFocus={this._onFocus}
         onBlur={this._onBlur}
+        autoComplete="off"
         placeholder={placeholder || this.state.mask.emptyValue}
         size={size || patternLength}
         value={this._getDisplayValue()}
