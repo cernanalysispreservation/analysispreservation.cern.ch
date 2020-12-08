@@ -85,8 +85,7 @@ SchemaWizard.propTypes = {
   selected: PropTypes.object,
   history: PropTypes.object,
   loader: PropTypes.bool,
-  schema: PropTypes.object,
-  updateSchemaProps: PropTypes.func
+  schema: PropTypes.object
 };
 
 export default SchemaWizard;

@@ -1,7 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 
-import EditableField from "../../../partials/EditableField";
 import Modal from "../../../partials/Modal";
 import Button from "../../../partials/Button";
 import Header from "grommet/components/Header";
@@ -17,6 +16,8 @@ import SettingsModal from "./SettingsModal";
 import { AiOutlineSetting, AiOutlineArrowLeft } from "react-icons/ai";
 import { FaCode } from "react-icons/fa";
 import JsonDiff from "./JSONDiff";
+
+import Truncate from "react-truncate";
 
 ["json"].forEach(lang => {
   require(`ace-builds/src-noconflict/mode-${lang}`);
@@ -116,14 +117,9 @@ class SchemaWizardHeader extends React.Component {
               <AiOutlineArrowLeft size={15} />
             </Box>
             {!this.props.loader && (
-              <EditableField
-                size="small"
-                value={this.props.schema.get("title")}
-                emptyValue="add title"
-                onUpdate={value =>
-                  this.props.updateSchemaProps({ title: value })
-                }
-              />
+              <Truncate lines={1} width={200} ellipsis={<span>...</span>}>
+                {this.props.config && this.props.config.fullname || "Untitled Schema"}
+              </Truncate>
             )}
           </Box>
           <Box direction="row" wrap={false} pad={{ between: "small" }}>
@@ -148,14 +144,14 @@ class SchemaWizardHeader extends React.Component {
 
       </Header>,
       this.state.showModal &&
-        <SettingsModal
-          show={this.state.showModal}
-          onClose={() =>
-            this.setState({
-              showModal: false
-            })
-          }
-        />,
+      <SettingsModal
+        show={this.state.showModal}
+        onClose={() =>
+          this.setState({
+            showModal: false
+          })
+        }
+      />,
       this.state.schemaPreviewEnabled &&
       <Modal full onClose={this._toggleSchemaPreviewEnabled}
         title={
@@ -215,6 +211,7 @@ class SchemaWizardHeader extends React.Component {
 
 
 SchemaWizardHeader.propTypes = {
+  config: PropTypes.object,
   schema: PropTypes.object,
   uiSchema: PropTypes.object
 };
