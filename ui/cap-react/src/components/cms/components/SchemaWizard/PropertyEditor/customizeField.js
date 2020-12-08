@@ -7,6 +7,7 @@ import { PropTypes } from "prop-types";
 import Button from "../../../../partials/Button";
 
 import { schemaSchema, uiSchema } from "../../utils/schemas";
+import fieldTypes from "../../utils/fieldTypes";
 import { Label, TextInput, FormField } from "grommet";
 import Select from "react-select";
 import DeleteModal from "./DeletePropertyModal";
@@ -134,6 +135,42 @@ class CustomizeField extends React.Component {
       ...rest,
       "ui:options": _uiOptions
     });
+  };
+
+  getUISchemaForm = uiSchema => {
+    // check if there is not uiSchema
+    if (!uiSchema) return;
+    let type;
+    if (uiSchema["ui:widget"]) {
+      type = uiSchema["ui:widget"];
+    }
+    if (uiSchema["ui:field"]) {
+      type = uiSchema["ui:field"];
+    }
+
+    // if there is no type then there is nothing to return
+    if (!type) return;
+    const objs = {
+      ...fieldTypes.advanced.fields,
+      ...fieldTypes.simple.fields
+    };
+
+    if (!objs[type]) return;
+
+    return (
+      <Box
+        flex={true}
+        colorIndex="light-2"
+        pad="none"
+        margin={{ bottom: "medium" }}
+      >
+        <Form
+          schema={objs[type].optionsSchema}
+          formData={uiSchema}
+          onChange={_debounce(this._onUiSchemaChange.bind(this), 500)}
+        />
+      </Box>
+    );
   };
 
   render() {
@@ -280,6 +317,9 @@ class CustomizeField extends React.Component {
                 </Box>
               ))}
           </Box>
+          {this.getUISchemaForm(
+            this.props.uiSchema && this.props.uiSchema.toJS()
+          )}
           <Box
             direction="row"
             wrap={true}
@@ -400,7 +440,8 @@ CustomizeField.propTypes = {
   onSchemaChange: PropTypes.func,
   onUiSchemaChange: PropTypes.func,
   path: PropTypes.array,
-  deleteByPath: PropTypes.func
+  deleteByPath: PropTypes.func,
+  optionsSchema: PropTypes.object
 };
 
 export default CustomizeField;

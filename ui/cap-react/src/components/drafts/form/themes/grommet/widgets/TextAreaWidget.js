@@ -46,12 +46,10 @@ class TextAreaWidget extends Component {
         onBlur={this.props.onBlur}
         value={this.props.value ? this.props.value : ""}
         onChange={this._onChange.bind(this)}
-        style={{ fontSize: "1em", ...this.props.options.style }}
+        style={{ fontSize: "1em" }}
         placeholder={this.props.placeholder}
         maxLength={this.props.options.maxLength}
         minLength={this.props.options.minLength}
-        disabled={this.props.options.disabled}
-        readOnly={this.props.options.readOnly}
       />
     ) : (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
