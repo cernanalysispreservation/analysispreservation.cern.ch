@@ -12,16 +12,20 @@ function getStyle(isOverCurrent) {
   };
 }
 
-function HoverBox({ path, propKey, addProperty, children, index }) {
-  // const [hasDropped, setHasDropped] = useState(false);
-  // const [results, setResults] = useState({});
-  // const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false);
-  // const ref = useRef(null);
+function HoverBox({
+  path,
+  propKey,
+  addProperty,
+  children,
+  index,
+  shouldHideChildren
+}) {
   const [{ isOverCurrent }, drop] = useDrop({
     accept: "FIELD_TYPE",
     drop: (item, monitor) => {
       const didDrop = monitor.didDrop();
-      if (!didDrop) {
+
+      if (!didDrop && !shouldHideChildren) {
         addProperty(path, item.data.default);
         return { item, path, propKey };
       }
@@ -33,8 +37,13 @@ function HoverBox({ path, propKey, addProperty, children, index }) {
       isOverCurrent: monitor.isOver({ shallow: true })
     })
   });
+
   return (
-    <div ref={drop} style={getStyle(isOverCurrent)} index={index}>
+    <div
+      ref={drop}
+      style={getStyle(isOverCurrent && !shouldHideChildren)}
+      index={index}
+    >
       {children}
     </div>
   );
@@ -45,7 +54,8 @@ HoverBox.propTypes = {
   path: PropTypes.array,
   addProperty: PropTypes.func,
   propKey: PropTypes.string,
-  index: PropTypes.number
+  index: PropTypes.number,
+  shouldHideChildren: PropTypes.bool
 };
 
 export default HoverBox;

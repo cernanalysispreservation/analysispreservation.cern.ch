@@ -24,9 +24,18 @@ const FieldTemplate = props => {
     uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])]
   };
 
+  const shouldBoxHideChildren = uiSchema => {
+    return uiSchema["ui:field"] !== undefined;
+  };
+
   if (props.id == "root") {
     return (
-      <HoverBox addProperty={props.addProperty} key={props.id} path={path}>
+      <HoverBox
+        addProperty={props.addProperty}
+        key={props.id}
+        path={path}
+        shouldHideChildren={shouldBoxHideChildren(uiSchema)}
+      >
         <Box
           flex={true}
           pad={formContext.schema.length == 0 ? "medium" : "none"}
@@ -40,11 +49,7 @@ const FieldTemplate = props => {
   let _renderObjectArray = undefined;
 
   if (["array"].indexOf(schema.type) > -1) {
-    _renderObjectArray = (
-      <HoverBox addProperty={props.addProperty} key={props.id} path={path}>
-        <Box>{children}</Box>
-      </HoverBox>
-    );
+    _renderObjectArray = <Box>{children}</Box>;
   } else if (["object"].indexOf(schema.type) > -1) {
     _renderObjectArray = (
       <Box flex={true} style={{ position: "relative", overflow: "visible" }}>
@@ -82,7 +87,12 @@ const FieldTemplate = props => {
 
   if (_renderObjectArray) {
     return (
-      <HoverBox addProperty={props.addProperty} key={props.id} path={path}>
+      <HoverBox
+        addProperty={props.addProperty}
+        key={props.id}
+        path={path}
+        shouldHideChildren={shouldBoxHideChildren(uiSchema)}
+      >
         {_renderObjectArray}
       </HoverBox>
     );

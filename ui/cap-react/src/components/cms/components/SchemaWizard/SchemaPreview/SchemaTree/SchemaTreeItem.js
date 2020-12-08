@@ -26,6 +26,10 @@ class SchemaTreeItem extends React.Component {
     this.props.addItem(this.props.path);
   };
 
+  shouldBoxAcceptChildren = uiSchema => {
+    return uiSchema["ui:field"] !== undefined;
+  };
+
   render() {
     let _id =
       this.props.type == "array"
@@ -84,7 +88,8 @@ class SchemaTreeItem extends React.Component {
           ) : null}
           {this.props.schema ? (
             <Box direction="row" align="center" wrap={false} flex={false}>
-              {this.props.schema.type == "object" ? (
+              {this.props.schema.type == "object" &&
+              !this.shouldBoxAcceptChildren(this.props.uiSchema) ? (
                 <Box
                   direction="row"
                   responsive={false}
@@ -122,7 +127,8 @@ SchemaTreeItem.propTypes = {
   type: PropTypes.string,
   colorIndex: PropTypes.string,
   display: PropTypes.bool,
-  updateDisplay: PropTypes.func
+  updateDisplay: PropTypes.func,
+  uiSchema: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {
