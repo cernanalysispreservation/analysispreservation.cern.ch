@@ -13,7 +13,8 @@ import TextWidget from "./TextWidget";
 import { _validate } from "./utils/validate";
 
 const widgets = {
-  TextWidget: TextWidget
+  text: TextWidget,
+  textarea: TextWidget
 };
 
 class SchemaTree extends React.Component {

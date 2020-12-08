@@ -21,6 +21,28 @@ const simple = {
       uiSchema: {}
     }
   },
+  textArea: {
+    title: "Text Area",
+    description: "Text Area field",
+    child: {},
+    default: {
+      schema: {
+        type: "string"
+      },
+      uiSchema: {
+        "ui:widget": "textarea",
+        "ui:options": {
+          rows: 1,
+          maxLength: "100",
+          minLength: "0",
+          disabled: false,
+          readOnly: false,
+          placeholder: "",
+          style: {}
+        }
+      }
+    }
+  },
   object: {
     title: "JSON Object",
     description: "Data in JSON format, Grouped section",

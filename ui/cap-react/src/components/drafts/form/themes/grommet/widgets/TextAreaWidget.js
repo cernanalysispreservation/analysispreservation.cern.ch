@@ -39,14 +39,19 @@ class TextAreaWidget extends Component {
   render() {
     return !this.props.readonly ? (
       <textarea
-        rows="3"
+        rows={this.props.options.rows || 3}
         type="text"
         id={this.props.id}
         name={this.props.id}
         onBlur={this.props.onBlur}
         value={this.props.value ? this.props.value : ""}
         onChange={this._onChange.bind(this)}
-        style={{ fontSize: "1em" }}
+        style={{ fontSize: "1em", ...this.props.options.style }}
+        placeholder={this.props.placeholder}
+        maxLength={this.props.options.maxLength}
+        minLength={this.props.options.minLength}
+        disabled={this.props.options.disabled}
+        readOnly={this.props.options.readOnly}
       />
     ) : (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
@@ -65,7 +70,8 @@ TextAreaWidget.propTypes = {
   id: PropTypes.string,
   onBlur: PropTypes.func,
   readonly: PropTypes.bool,
-  pad: PropTypes.string
+  pad: PropTypes.string,
+  placeholder: PropTypes.string
 };
 
 export default TextAreaWidget;
