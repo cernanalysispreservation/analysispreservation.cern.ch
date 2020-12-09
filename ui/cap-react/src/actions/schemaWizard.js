@@ -334,35 +334,36 @@ export function deleteByPath(item) {
 // update the id field of a property
 export function renameIdByPath(item, newName) {
   return function(dispatch, getState) {
-    let schema = getState()
-      .schemaWizard.getIn(["current", "schema"])
-      .toJS();
-
-    let uiSchema = getState()
-      .schemaWizard.getIn(["current", "uiSchema"])
-      .toJS();
-
     const path = item.path;
     const uiPath = item.uiPath;
-
-    // ********* schema **********
 
     let itemToDelete = path.pop();
     // if the last item is items then pop again since it is an array, in order to fetch the proper id
     itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
 
-    if (newName === itemToDelete || newName === "") return;
+    const uiItemToDelete = uiPath.pop();
 
-    // shallow copy schema object in order to navigate through the object
-    // but the changes will reflect to the original one --> schema
-    let tempSchema = Object.assign({}, schema);
-
-    // schema update
-    for (let p in path) {
-      tempSchema = tempSchema[path[p]];
+    // check if the new id is empty or exact same with the current id
+    if (newName === itemToDelete || newName === "") {
+      cogoToast.warn("Make sure that the new id is different and not empty", {
+        position: "top-center",
+        bar: { size: "0" },
+        hideAfter: 3
+      });
+      return;
     }
 
-    let keys = Object.keys(tempSchema);
+    // navigate to the correct path
+    let schema = getState()
+      .schemaWizard.getIn(["current", "schema", ...path])
+      .toJS();
+    let uiSchema = getState()
+      .schemaWizard.getIn(["current", "uiSchema", ...uiPath])
+      .toJS();
+
+    // ********* schema **********
+    let keys = Object.keys(schema);
+    // make sure that the new name is unique among sibling widgets
     if (keys.includes(newName)) {
       cogoToast.error("The id should be unique, this name already exists", {
         position: "top-center",
@@ -372,48 +373,30 @@ export function renameIdByPath(item, newName) {
       return;
     }
 
-    tempSchema[newName] = tempSchema[itemToDelete];
-
-    delete tempSchema[itemToDelete];
+    // create new obj with the information and then delete the old one
+    schema[newName] = schema[itemToDelete];
+    delete schema[itemToDelete];
 
     // ********* uiSchema **********
-
-    if (uiPath.length === 1) {
-      // remove from the uiSchema
-      uiSchema[newName] = uiSchema[uiPath[0]];
-      // update the uiOrder array
-      let pos = uiSchema["ui:order"].indexOf(uiPath[0]);
-
-      if (pos > -1) {
-        uiSchema["ui:order"][pos] = newName;
-      }
-      delete uiSchema[uiPath[0]];
-    } else {
-      let tempUiSchema = Object.assign({}, uiSchema);
-      const uiItemToDelete = uiPath.pop();
-
-      for (let i in uiPath) {
-        tempUiSchema = tempUiSchema[uiPath[i]];
-      }
-
-      if (!tempUiSchema["ui:order"]) {
-        tempUiSchema["ui:order"] = [];
-      }
-      // update the uiOrder array
-      let pos = tempUiSchema["ui:order"].indexOf(uiItemToDelete);
-      if (pos > -1) {
-        tempUiSchema["ui:order"][pos] = newName;
-      }
-
-      if (tempUiSchema[uiItemToDelete]) {
-        tempUiSchema[newName] = tempUiSchema[uiItemToDelete];
-        delete tempUiSchema[uiItemToDelete];
-      }
-      // remove from the uiSchema
+    if (!uiSchema["ui:order"]) {
+      uiSchema["ui:order"] = [];
+    }
+    // update the uiOrder array
+    let pos = uiSchema["ui:order"].indexOf(uiItemToDelete);
+    if (pos > -1) {
+      uiSchema["ui:order"][pos] = newName;
     }
 
+    if (uiSchema[uiItemToDelete]) {
+      uiSchema[newName] = uiSchema[uiItemToDelete];
+    }
+    // remove from the uiSchema
+    delete uiSchema[uiItemToDelete];
+
     // ********* update changes **********
-    dispatch(updateByPath({ schema: [], uiSchema: [] }, { schema, uiSchema }));
+    dispatch(
+      updateByPath({ schema: path, uiSchema: uiPath }, { schema, uiSchema })
+    );
     dispatch(enableCreateMode());
   };
 }
