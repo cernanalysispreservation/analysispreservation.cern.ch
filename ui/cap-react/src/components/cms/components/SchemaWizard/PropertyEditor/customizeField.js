@@ -14,7 +14,7 @@ import Image5 from "./svg/TabTwoColLayoutField";
 import Image6 from "./svg/SidebatLayout";
 import Image7 from "./svg/SidebarTwoColLayout";
 
-import { schemaSchema, uiSchema } from "../../utils/schemas";
+// import { schemaSchema, uiSchema } from "../../utils/schemas";
 import fieldTypes from "../../utils/fieldTypes";
 import { Label, TextInput, FormField } from "grommet";
 

@@ -78,6 +78,69 @@ const simple = {
       }
     }
   },
+  checkboxes: {
+    title: "Checkbox Widget",
+    description: "IDs, order number, rating, quantity",
+    child: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Radio Widget UI Options",
+      properties: {
+        "ui:readonly": {
+          type: "string",
+          enum: [true, false],
+          title: "Readonly"
+        },
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {}
+        }
+      }
+    },
+    optionsSchema: {
+      type: "object",
+      title: "Checkboxes Widget Title",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        type: {
+          title: "Type of the checkbox",
+          enum: ["boolean", "string"],
+          enumNames: ["One Option", "Multiple Options"],
+          type: "string"
+        },
+        enum: {
+          title: "Define your options",
+          type: "array",
+          description: "The options for the widget",
+          items: {
+            title: "Option",
+            type: "string"
+          }
+        }
+      }
+    },
+    default: {
+      schema: {
+        type: "boolean",
+        enum: ["Option A", "Option B"]
+      },
+      uiSchema: {
+        "ui:widget": "checkboxes"
+      }
+    }
+  },
   textarea: {
     title: "Text Area",
     description: "Text Area field",

@@ -39,7 +39,10 @@ const CheckBoxWidget = function(props) {
 
   let _optionSelected = option => {
     if (props.value || props.value === false || props.value === 0) {
-      if (type == "array" || (type == "string" && props.value.indexOf)) {
+      if (
+        type == "array" ||
+        (type == "string" && props.value.indexOf(props.options.enumOptions))
+      ) {
         return props.value.indexOf(option) > -1;
       } else {
         return props.value == option || props.value === option;
@@ -72,6 +75,7 @@ const CheckBoxWidget = function(props) {
               inline="true"
               name={props.id + item.value}
               label={item.label}
+              value={item.label}
               checked={_optionSelected(item.value)}
               onChange={_onChange}
             />
