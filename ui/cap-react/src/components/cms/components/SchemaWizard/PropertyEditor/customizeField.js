@@ -6,7 +6,6 @@ import Form from "../../../../drafts/form/GrommetForm";
 import { PropTypes } from "prop-types";
 import Button from "../../../../partials/Button";
 
-import { schemaSchema, uiSchema } from "../../utils/schemas";
 import fieldTypes from "../../utils/fieldTypes";
 import { Label, TextInput, FormField } from "grommet";
 import Select from "react-select";
