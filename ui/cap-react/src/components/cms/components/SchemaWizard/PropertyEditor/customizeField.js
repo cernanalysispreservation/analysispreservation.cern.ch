@@ -137,6 +137,34 @@ class CustomizeField extends React.Component {
     });
   };
 
+  getSchemaForm = uiSchema => {
+    // check if there is not uiSchema
+    if (!uiSchema) return;
+    let type;
+    if (uiSchema["ui:widget"]) {
+      type = uiSchema["ui:widget"];
+    }
+    if (uiSchema["ui:field"]) {
+      type = uiSchema["ui:field"];
+    }
+
+    // if there is no type then there is nothing to return
+    if (!type) return;
+    const objs = {
+      ...fieldTypes.advanced.fields,
+      ...fieldTypes.simple.fields
+    };
+
+    return (
+      <Form
+        schema={objs[type].optionsSchema}
+        uiSchema={uiSchema}
+        formData={this.state.schema}
+        onChange={_debounce(this._onSchemaChange.bind(this), 500)}
+      />
+    );
+  };
+
   getUISchemaForm = uiSchema => {
     // check if there is not uiSchema
     if (!uiSchema) return;
@@ -165,7 +193,7 @@ class CustomizeField extends React.Component {
         margin={{ bottom: "medium" }}
       >
         <Form
-          schema={objs[type].optionsSchema}
+          schema={objs[type].optionsUiSchema}
           formData={uiSchema}
           onChange={_debounce(this._onUiSchemaChange.bind(this), 500)}
         />
@@ -202,12 +230,9 @@ class CustomizeField extends React.Component {
             pad="none"
             margin={{ bottom: "medium" }}
           >
-            <Form
-              schema={schemaSchema}
-              uiSchema={uiSchema}
-              formData={this.state.schema}
-              onChange={_debounce(this._onSchemaChange.bind(this), 500)}
-            />
+            {this.getSchemaForm(
+              this.props.uiSchema && this.props.uiSchema.toJS()
+            )}
           </Box>
         </Box>
         <Box>
