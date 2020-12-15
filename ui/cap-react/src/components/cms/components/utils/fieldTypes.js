@@ -21,6 +21,73 @@ const simple = {
       uiSchema: {}
     }
   },
+  select: {
+    title: "Select Widget",
+    description: "IDs, order number, rating, quantity",
+    child: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Switch Widget UI Options",
+      properties: {
+        "ui:readonly": {
+          type: "string",
+          enum: [true, false],
+          title: "Readonly"
+        },
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {}
+        }
+      }
+    },
+    optionsSchema: {
+      type: "object",
+      title: "Radio Widget Title",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        type: {
+          type: "string",
+          enum: ["string", "array"],
+          enumNames: ["Select one value", "Select multiple values"]
+        },
+        enum: {
+          title: "Define your options",
+          type: "array",
+          description: "The options for the widget",
+          items: {
+            title: "Option",
+            type: "string"
+          }
+        }
+      }
+    },
+    default: {
+      schema: {
+        enum: ["Option A", "Option B"],
+        type: "string",
+        uniqueItems: true,
+        items: {
+          type: "string",
+          enum: ["Option A", "Option B", "Option C", "Option D", "Option E"]
+        }
+      },
+      uiSchema: {
+        "ui:widget": "select"
+      }
+    }
+  },
   radio: {
     title: "Radio Widget",
     description: "IDs, order number, rating, quantity",
@@ -75,6 +142,53 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "radio"
+      }
+    }
+  },
+  switch: {
+    title: "Switch Widget",
+    description: "IDs, order number, rating, quantity",
+    child: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Switch Widget UI Options",
+      properties: {
+        "ui:readonly": {
+          type: "string",
+          enum: [true, false],
+          title: "Readonly"
+        },
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {}
+        }
+      }
+    },
+    optionsSchema: {
+      type: "object",
+      title: "Radio Widget Title",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        }
+      }
+    },
+    default: {
+      schema: {
+        type: "string"
+      },
+      uiSchema: {
+        "ui:widget": "switch"
       }
     }
   },
@@ -181,6 +295,24 @@ const simple = {
               type: "string"
             }
           }
+        }
+      }
+    },
+    optionsSchema: {
+      type: "object",
+      title: "Checkboxes Widget Title",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
         }
       }
     },
