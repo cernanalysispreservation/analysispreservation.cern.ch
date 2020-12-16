@@ -233,15 +233,35 @@ const simple = {
           enum: ["boolean", "string"],
           enumNames: ["One Option", "Multiple Options"],
           type: "string"
-        },
-        enum: {
-          title: "Define your options",
-          type: "array",
-          description: "The options for the widget",
-          items: {
-            title: "Option",
-            type: "string"
-          }
+        }
+      },
+      dependencies: {
+        type: {
+          oneOf: [
+            {
+              properties: {
+                type: {
+                  enum: ["boolean"]
+                }
+              }
+            },
+            {
+              properties: {
+                type: {
+                  enum: ["string"]
+                },
+                enum: {
+                  title: "Define your options",
+                  type: "array",
+                  description: "The options for the widget",
+                  items: {
+                    title: "Option",
+                    type: "string"
+                  }
+                }
+              }
+            }
+          ]
         }
       }
     },
