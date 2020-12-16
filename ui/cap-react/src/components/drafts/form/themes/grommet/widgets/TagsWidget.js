@@ -25,7 +25,7 @@ class TagsWidget extends Component {
     if (type == "array") return this.props.onChange(tags);
     else
       return this.props.onChange(
-        tags.join(this.props.options.delimiter || ", ")
+        tags.join(this.props.schema.delimiter || ", ")
       );
   }
 

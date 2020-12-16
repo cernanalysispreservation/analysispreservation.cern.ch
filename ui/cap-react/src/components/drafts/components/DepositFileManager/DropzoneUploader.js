@@ -35,18 +35,16 @@ const schema = {
       title: "File tags",
       description:
         "Tag additional information. Format `label=value` ( label: letters, digits, undescores). ex my_label=Proof that 1+1=11",
-      type: "string"
+      type: "string",
+      pattern: "^\\w{1,255}=(.{1,100})$",
+      delimiter: ";"
     }
   }
 };
 
 const uiSchema = {
   file_tags: {
-    "ui:widget": "tags",
-    "ui:options": {
-      pattern: "^\\w{1,255}=(.{1,100})$",
-      delimiter: ";"
-    }
+    "ui:widget": "tags"
   }
 };
 

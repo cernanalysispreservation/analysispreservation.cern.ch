@@ -542,6 +542,44 @@ const advanced = {
     title: "Tags Field",
     description: "Add keywords, tags, etc",
     child: {},
+    optionsSchema: {
+      title: "Tags Schema",
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        pattern: {
+          type: "string",
+          title: "Pattern",
+          description: "Provide a regex expression for your pattern"
+        },
+        delimeter: {
+          type: "string",
+          descritpion: "Provide a delimeter for your input",
+          title: "Delimeter"
+        }
+      }
+    },
+    optionsUiSchema: {
+      type: "object",
+      properties: {
+        "ui:readonly": {
+          type: "string",
+          enum: [true, false],
+          title: "Readonly"
+        }
+      }
+    },
     default: {
       schema: {
         type: "string"
