@@ -17,22 +17,9 @@ import Image7 from "./svg/SidebarTwoColLayout";
 // import { schemaSchema, uiSchema } from "../../utils/schemas";
 import fieldTypes from "../../utils/fieldTypes";
 import { Label, TextInput, FormField } from "grommet";
-import Select from "react-select";
+
 import DeleteModal from "./DeletePropertyModal";
 import _debounce from "lodash/debounce";
-
-const GRID_COLUMNS_OPTIONS = [
-  { value: "1/2", label: "12" },
-  { value: "1/3", label: "13" },
-  { value: "1/4", label: "14" },
-  { value: "1/5", label: "15" },
-  { value: "2/3", label: "23" },
-  { value: "2/4", label: "24" },
-  { value: "2/5", label: "25" },
-  { value: "3/4", label: "34" },
-  { value: "3/5", label: "35" },
-  { value: "4/5", label: "45" }
-];
 
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
 
@@ -202,6 +189,7 @@ class CustomizeField extends React.Component {
       >
         <Form
           schema={objs[type].optionsUiSchema}
+          uiSchema={objs[type].optionsUiSchemaUiSchema}
           formData={uiSchema}
           onChange={_debounce(this._onUiSchemaChange.bind(this), 500)}
         />
@@ -254,44 +242,6 @@ class CustomizeField extends React.Component {
             <Label size="small" margin="none">
               Select the in-line position of your field
             </Label>
-          </Box>
-          <Box pad={{ horizontal: "small" }} colorIndex="light-1">
-            <Select
-              placeholder="Select position"
-              value={{
-                value:
-                  this.props.uiSchema &&
-                  this.props.uiSchema.toJS() &&
-                  this.props.uiSchema.toJS()["ui:options"] &&
-                  this.props.uiSchema.toJS()["ui:options"].grid &&
-                  this.props.uiSchema.toJS()["ui:options"].grid.gridColumns,
-                label: this.props.uiSchema &&
-                  this.props.uiSchema.toJS() &&
-                  this.props.uiSchema.toJS()["ui:options"] &&
-                  this.props.uiSchema.toJS()["ui:options"].grid &&
-                  this.props.uiSchema.toJS()["ui:options"].grid.gridColumns && (
-                    <img
-                      src={require(`../../../../../img/field_layout_${this.props.uiSchema.toJS()["ui:options"].grid.gridColumns.replace("/", "")}.png`)}
-                      style={{ width: "100%" }}
-                    />
-                  )
-              }}
-              options={GRID_COLUMNS_OPTIONS.map(column => {
-                return {
-                  value: column.value,
-                  label: (
-                    <div onClick={() => this.gridColumnChange(column.value)}>
-                      <img
-                        src={require(`../../../../../img/field_layout_${
-                          column.label
-                        }.png`)}
-                        style={{ width: "100%" }}
-                      />
-                    </div>
-                  )
-                };
-              })}
-            />
           </Box>
           <Box
             direction="row"

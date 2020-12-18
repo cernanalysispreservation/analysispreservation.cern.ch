@@ -11,6 +11,7 @@ import widgets from "./themes/grommet/widgets";
 import fields from "./themes/grommet/fields";
 import objectPath from "object-path";
 import Form from "react-jsonschema-form";
+import CmsWidgets from "../../cms/components/widgets";
 
 class GrommetForm extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class GrommetForm extends React.Component {
         ObjectFieldTemplate={ObjectFieldTemplate}
         ArrayFieldTemplate={ArrayFieldTemplate}
         ErrorList={ErrorListTemplate}
-        widgets={widgets}
+        widgets={{ ...widgets, ...CmsWidgets }}
         fields={fields}
         ref={this.props.formRef}
         schema={this.props.schema}

@@ -37,7 +37,27 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
-          properties: {}
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
         }
       }
     },
@@ -84,7 +104,12 @@ const simple = {
         }
       },
       uiSchema: {
-        "ui:widget": "select"
+        "ui:widget": "select",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -104,7 +129,27 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
-          properties: {}
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
         }
       }
     },
@@ -141,7 +186,12 @@ const simple = {
         enum: ["Option A", "Option B"]
       },
       uiSchema: {
-        "ui:widget": "radio"
+        "ui:widget": "radio",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -161,7 +211,27 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
-          properties: {}
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
         }
       }
     },
@@ -188,7 +258,12 @@ const simple = {
         type: "string"
       },
       uiSchema: {
-        "ui:widget": "switch"
+        "ui:widget": "switch",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -208,7 +283,27 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
-          properties: {}
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
         }
       }
     },
@@ -271,7 +366,12 @@ const simple = {
         enum: ["Option A", "Option B"]
       },
       uiSchema: {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -313,7 +413,26 @@ const simple = {
               title: "Placeholder",
               description: "Provide a placeholder for the field",
               type: "string"
+            },
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
             }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
           }
         }
       }
@@ -341,7 +460,12 @@ const simple = {
         type: "string"
       },
       uiSchema: {
-        "ui:widget": "textarea"
+        "ui:widget": "textarea",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -354,7 +478,13 @@ const simple = {
         type: "object",
         properties: {}
       },
-      uiSchema: {}
+      uiSchema: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
+      }
     }
   },
   reference: {
@@ -365,7 +495,13 @@ const simple = {
       schema: {
         type: "string"
       },
-      uiSchema: {}
+      uiSchema: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
+      }
     }
   },
   boolean: {
@@ -376,7 +512,13 @@ const simple = {
       schema: {
         type: "boolean"
       },
-      uiSchema: {}
+      uiSchema: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
+      }
     }
   },
   array: {
@@ -389,7 +531,13 @@ const simple = {
         type: "array",
         items: {}
       },
-      uiSchema: {}
+      uiSchema: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
+      }
     }
   }
 };
@@ -405,7 +553,12 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "accordionObjectField"
+        "ui:object": "accordionObjectField",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -433,7 +586,12 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "layerObjectField"
+        "ui:object": "layerObjectField",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -453,7 +611,12 @@ const advanced = {
             label: "ZENODO"
           }
         ],
-        "ui:field": "idFetcher"
+        "ui:field": "idFetcher",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -473,7 +636,12 @@ const advanced = {
             label: "ORCID"
           }
         ],
-        "ui:field": "idFetcher"
+        "ui:field": "idFetcher",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -501,7 +669,12 @@ const advanced = {
             label: "ZENODO"
           }
         ],
-        "ui:field": "idFetcher"
+        "ui:field": "idFetcher",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -521,7 +694,12 @@ const advanced = {
             label: "ROR"
           }
         ],
-        "ui:field": "idFetcher"
+        "ui:field": "idFetcher",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
@@ -572,7 +750,12 @@ const advanced = {
         type: "string"
       },
       uiSchema: {
-        "ui:widget": "tags"
+        "ui:widget": "tags",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   }
