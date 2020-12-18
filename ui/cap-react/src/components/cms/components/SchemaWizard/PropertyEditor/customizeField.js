@@ -6,14 +6,6 @@ import Form from "../../../../drafts/form/GrommetForm";
 import { PropTypes } from "prop-types";
 import Button from "../../../../partials/Button";
 
-import Image1 from "./svg/AccordionField";
-import Image2 from "./svg/TabObjectField";
-import Image3 from "./svg/CenteredObjectField";
-import Image4 from "./svg/TwoColLayoutField";
-import Image5 from "./svg/TabTwoColLayoutField";
-import Image6 from "./svg/SidebatLayout";
-import Image7 from "./svg/SidebarTwoColLayout";
-
 import { schemaSchema, uiSchema } from "../../utils/schemas";
 import { Label, TextInput, FormField } from "grommet";
 
@@ -366,36 +358,6 @@ class CustomizeField extends React.Component {
                   {align}
                 </Box>
               ))}
-          </Box>
-          <Box
-            direction="row"
-            wrap={true}
-            align="start"
-            justify="start"
-            flex={false}
-            colorIndex="light-1"
-          >
-            <Box flex={false} margin="small">
-              <Image1 />
-            </Box>
-            <Box flex={false} margin="small">
-              <Image2 />
-            </Box>
-            <Box flex={false} margin="small">
-              <Image3 />
-            </Box>
-            <Box flex={false} margin="small">
-              <Image4 />
-            </Box>
-            <Box flex={false} margin="small">
-              <Image5 />
-            </Box>
-            <Box flex={false} margin="small">
-              <Image6 />
-            </Box>
-            <Box flex={false} margin="small">
-              <Image7 />
-            </Box>
           </Box>
         </Box>
         <Box>
