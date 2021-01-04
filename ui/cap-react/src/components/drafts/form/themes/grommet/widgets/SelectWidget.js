@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
@@ -26,6 +26,7 @@ const SelectWidget = function(props) {
     rawErrors = []
   } = props.schema;
   let _options = [];
+
   if (props.options && props.options.enumOptions)
     _options = props.options.enumOptions;
   else if (type == "boolean")
@@ -39,6 +40,15 @@ const SelectWidget = function(props) {
     _options = items.enum.map(i => ({ value: i.value, label: i.value })) || [];
 
   const [filteredOptions, setFilteredOptions] = useState(_options);
+
+  // update the filteredOptions when options are updated
+  // this case is mostly for the formBuilder when a new option is provided by the user
+  useEffect(
+    () => {
+      setFilteredOptions(_options);
+    },
+    [_options]
+  );
 
   // TOFIX onBlur, onFocus
   let _filterOptions = event => {

@@ -1,24 +1,64 @@
 const simple = {
-  string: {
+  text: {
     title: "Text",
     description: "Titles, names, paragraphs, IDs, list of names",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Text Widget Title",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        }
+      }
+    },
     default: {
       schema: {
         type: "string"
       },
-      uiSchema: {}
+      uiSchema: {
+        "ui:widget": "text"
+      }
     }
   },
   number: {
     title: "Number",
     description: "IDs, order number, rating, quantity",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Number Widget Title",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        }
+      }
+    },
     default: {
       schema: {
         type: "number"
       },
-      uiSchema: {}
+      uiSchema: {
+        "ui:widget": "number"
+      }
     }
   },
   select: {
@@ -32,7 +72,7 @@ const simple = {
         "ui:readonly": {
           type: "string",
           enum: [true, false],
-          title: "Readonly"
+          title: "ReadOnly"
         },
         "ui:options": {
           type: "object",
@@ -63,7 +103,7 @@ const simple = {
     },
     optionsSchema: {
       type: "object",
-      title: "Radio Widget Title",
+      title: "Select Widget Title",
       properties: {
         title: {
           type: "string",
@@ -78,29 +118,61 @@ const simple = {
             "The title of the form field. How it will be displayed on the rendered form."
         },
         type: {
+          title: "Type",
           type: "string",
           enum: ["string", "array"],
           enumNames: ["Select one value", "Select multiple values"]
-        },
-        enum: {
-          title: "Define your options",
-          type: "array",
-          description: "The options for the widget",
-          items: {
-            title: "Option",
-            type: "string"
-          }
+        }
+      },
+      dependencies: {
+        type: {
+          oneOf: [
+            {
+              properties: {
+                type: {
+                  enum: ["string"]
+                },
+                enum: {
+                  title: "Define your options",
+                  type: "array",
+                  description: "The options for the widget",
+                  items: {
+                    title: "Option",
+                    type: "string"
+                  }
+                }
+              }
+            },
+            {
+              properties: {
+                type: {
+                  enum: ["array"]
+                },
+                items: {
+                  type: "object",
+                  title: "Define your options",
+                  properties: {
+                    enum: {
+                      title: "Options List",
+                      type: "array",
+                      items: { type: "string", title: "Option" }
+                    }
+                  }
+                }
+              }
+            }
+          ]
         }
       }
     },
     default: {
       schema: {
-        enum: ["Option A", "Option B"],
+        enum: ["Option A", "Option B", "Option C"],
         type: "string",
         uniqueItems: true,
         items: {
           type: "string",
-          enum: ["Option A", "Option B", "Option C", "Option D", "Option E"]
+          enum: ["Option A", "Option B", "Option C", "Option D"]
         }
       },
       uiSchema: {
@@ -205,8 +277,7 @@ const simple = {
       properties: {
         "ui:readonly": {
           type: "string",
-          enum: [true, false],
-          title: "Readonly"
+          title: "Should this element be readonly?"
         },
         "ui:options": {
           type: "object",
@@ -227,6 +298,9 @@ const simple = {
       }
     },
     optionsUiSchemaUiSchema: {
+      "ui:readonly": {
+        "ui:widget": "switch"
+      },
       "ui:options": {
         grid: {
           gridColumns: {
