@@ -23,10 +23,9 @@ const SelectWidget = props => {
         value: props.value,
         label: (
           <img
-            src={require(`../../../../img/field_layout_${props.value.replace(
-              "/",
-              ""
-            )}.png`)}
+            src={require(`../../../../img/field_layout_${
+              props.value ? props.value.replace("/", "") : "15"
+            }.png`)}
             style={{ width: "100%" }}
           />
         )

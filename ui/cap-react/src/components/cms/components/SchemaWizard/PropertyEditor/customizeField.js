@@ -142,12 +142,26 @@ class CustomizeField extends React.Component {
     };
 
     return (
-      <Form
-        schema={objs[type].optionsSchema}
-        uiSchema={uiSchema}
-        formData={this.state.schema}
-        onChange={_debounce(this._onSchemaChange.bind(this), 500)}
-      />
+      <Box flex={true}>
+        <Box colorIndex="accent-2" flex={false} pad="small">
+          <Label size="medium" margin="none">
+            Basic field info
+          </Label>
+        </Box>
+        <Box
+          flex={true}
+          colorIndex="light-2"
+          pad="none"
+          margin={{ bottom: "medium" }}
+        >
+          <Form
+            schema={objs[type].optionsSchema}
+            uiSchema={uiSchema}
+            formData={this.state.schema}
+            onChange={_debounce(this._onSchemaChange.bind(this), 500)}
+          />
+        </Box>
+      </Box>
     );
   };
 
@@ -204,24 +218,7 @@ class CustomizeField extends React.Component {
             this.setState({ showDeleteLayer: false });
           }}
         />
-
-        <Box flex={true}>
-          <Box colorIndex="accent-2" flex={false} pad="small">
-            <Label size="medium" margin="none">
-              Basic field info
-            </Label>
-          </Box>
-          <Box
-            flex={true}
-            colorIndex="light-2"
-            pad="none"
-            margin={{ bottom: "medium" }}
-          >
-            {this.getSchemaForm(
-              this.props.uiSchema && this.props.uiSchema.toJS()
-            )}
-          </Box>
-        </Box>
+        {this.getSchemaForm(this.props.uiSchema && this.props.uiSchema.toJS())}
         <Box>
           <Box colorIndex="accent-2" flex={false} pad="small">
             <Label size="medium" margin="none">
