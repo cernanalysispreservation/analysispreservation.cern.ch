@@ -14,7 +14,8 @@ import { _validate } from "./utils/validate";
 
 const widgets = {
   text: TextWidget,
-  textarea: TextWidget
+  textarea: TextWidget,
+  select: TextWidget
 };
 
 class SchemaTree extends React.Component {
