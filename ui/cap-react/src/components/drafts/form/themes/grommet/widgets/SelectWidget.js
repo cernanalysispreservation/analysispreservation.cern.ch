@@ -73,6 +73,7 @@ const SelectWidget = function(props) {
     } else {
       // when the type is string, check if the new selected value is the same as the one saved
       // then it means that the user wants to un select it. If not the same, then just pass the value to the function
+
       value === props.value
         ? props.onChange(undefined)
         : props.onChange(_value);
@@ -81,7 +82,7 @@ const SelectWidget = function(props) {
 
   let _optionSelected = option => {
     if (props.value || props.value === false || props.value === 0) {
-      if (type === "string" && props.value.indexOf) {
+      if (type === "boolean" || (type === "string" && props.value.indexOf)) {
         return props.value === option;
       }
       if (type === "array") {

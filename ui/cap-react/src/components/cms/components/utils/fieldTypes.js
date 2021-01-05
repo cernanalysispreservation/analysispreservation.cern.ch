@@ -18,7 +18,18 @@ const simple = {
           type: "string",
           description:
             "The title of the form field. How it will be displayed on the rendered form."
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
         }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
       }
     },
     default: {
@@ -49,7 +60,18 @@ const simple = {
           type: "string",
           description:
             "The title of the form field. How it will be displayed on the rendered form."
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
         }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
       }
     },
     default: {
@@ -69,11 +91,6 @@ const simple = {
       type: "object",
       title: "Switch Widget UI Options",
       properties: {
-        "ui:readonly": {
-          type: "string",
-          enum: [true, false],
-          title: "ReadOnly"
-        },
         "ui:options": {
           type: "object",
           title: "UI Options",
@@ -101,6 +118,7 @@ const simple = {
         }
       }
     },
+
     optionsSchema: {
       type: "object",
       title: "Select Widget Title",
@@ -122,6 +140,12 @@ const simple = {
           type: "string",
           enum: ["string", "array"],
           enumNames: ["Select one value", "Select multiple values"]
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
         }
       },
       dependencies: {
@@ -165,6 +189,11 @@ const simple = {
         }
       }
     },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
+      }
+    },
     default: {
       schema: {
         enum: ["Option A", "Option B", "Option C"],
@@ -193,11 +222,6 @@ const simple = {
       type: "object",
       title: "Radio Widget UI Options",
       properties: {
-        "ui:readonly": {
-          type: "string",
-          enum: [true, false],
-          title: "Readonly"
-        },
         "ui:options": {
           type: "object",
           title: "UI Options",
@@ -241,6 +265,12 @@ const simple = {
           description:
             "The title of the form field. How it will be displayed on the rendered form."
         },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
+        },
         enum: {
           title: "Define your options",
           type: "array",
@@ -250,6 +280,11 @@ const simple = {
             type: "string"
           }
         }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
       }
     },
     default: {
@@ -275,10 +310,6 @@ const simple = {
       type: "object",
       title: "Switch Widget UI Options",
       properties: {
-        "ui:readonly": {
-          type: "string",
-          title: "Should this element be readonly?"
-        },
         "ui:options": {
           type: "object",
           title: "UI Options",
@@ -298,9 +329,6 @@ const simple = {
       }
     },
     optionsUiSchemaUiSchema: {
-      "ui:readonly": {
-        "ui:widget": "switch"
-      },
       "ui:options": {
         grid: {
           gridColumns: {
@@ -324,7 +352,18 @@ const simple = {
           type: "string",
           description:
             "The title of the form field. How it will be displayed on the rendered form."
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
         }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
       }
     },
     default: {
@@ -349,11 +388,6 @@ const simple = {
       type: "object",
       title: "Radio Widget UI Options",
       properties: {
-        "ui:readonly": {
-          type: "string",
-          enum: [true, false],
-          title: "Readonly"
-        },
         "ui:options": {
           type: "object",
           title: "UI Options",
@@ -397,6 +431,12 @@ const simple = {
           description:
             "The title of the form field. How it will be displayed on the rendered form."
         },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
+        },
         type: {
           title: "Type of the checkbox",
           enum: ["boolean", "string"],
@@ -434,6 +474,11 @@ const simple = {
         }
       }
     },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
+      }
+    },
     default: {
       schema: {
         type: "boolean",
@@ -457,11 +502,6 @@ const simple = {
       type: "object",
       title: "Text Area Options Schema",
       properties: {
-        "ui:readonly": {
-          type: "string",
-          enum: [true, false],
-          title: "Readonly"
-        },
         "ui:options": {
           type: "object",
           title: "UI Options",
@@ -526,7 +566,18 @@ const simple = {
           type: "string",
           description:
             "The title of the form field. How it will be displayed on the rendered form."
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
         }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
       }
     },
     default: {
@@ -811,13 +862,7 @@ const advanced = {
     },
     optionsUiSchema: {
       type: "object",
-      properties: {
-        "ui:readonly": {
-          type: "string",
-          enum: [true, false],
-          title: "Readonly"
-        }
-      }
+      properties: {}
     },
     default: {
       schema: {

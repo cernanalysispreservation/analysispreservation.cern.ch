@@ -165,7 +165,7 @@ class CustomizeField extends React.Component {
         >
           <Form
             schema={objs[type].optionsSchema}
-            uiSchema={uiSchema}
+            uiSchema={objs[type].optionsSchemaUiSchema}
             formData={this.state.schema}
             onChange={_debounce(this._onSchemaChange.bind(this), 500)}
           />
