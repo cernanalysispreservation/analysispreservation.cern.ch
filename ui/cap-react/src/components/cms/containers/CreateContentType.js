@@ -4,7 +4,7 @@ import { createContentType } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
   return {
-    list: state.schemaWizard.get("list")
+    list: state.schemaWizard.present.get("list")
   };
 }
 

@@ -3,8 +3,8 @@ import ContentTypeDetails from "../components/SchemaWizard/ContentTypeDetails";
 
 function mapStateToProps(state) {
   return {
-    schema: state.schemaWizard.getIn(["current", "schema"]),
-    path: state.schemaWizard.getIn(["field", "path"])
+    schema: state.schemaWizard.present.getIn(["current", "schema"]),
+    path: state.schemaWizard.present.getIn(["field", "path"])
   };
 }
 

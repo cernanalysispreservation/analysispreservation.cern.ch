@@ -2,6 +2,7 @@ import axios from "axios";
 import { push } from "connected-react-router";
 import cogoToast from "cogo-toast";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
+import { ActionCreators } from "redux-undo";
 
 export const LIST_UPDATE = "LIST_UPDATE";
 
@@ -81,9 +82,12 @@ export function getSchemas() {
   };
 }
 
+// this function is mainly used for the DropZone uploader
 export function initSchemaWizard(data) {
   return function(dispatch) {
     const { id, deposit_schema, deposit_options, ...configs } = data;
+    // make sure that the past,present and future are reset before every new schema wizard
+    dispatch(ActionCreators.clearHistory());
 
     dispatch(
       schemaInit(
@@ -108,7 +112,8 @@ export function getSchema(name, version = null) {
       .then(resp => {
         let schema = resp.data;
         let { id, deposit_schema, deposit_options, ...configs } = schema;
-        if (deposit_schema && deposit_options)
+        if (deposit_schema && deposit_options) {
+          dispatch(ActionCreators.clearHistory());
           dispatch(
             schemaInit(
               id || "Schema Name",
@@ -116,6 +121,7 @@ export function getSchema(name, version = null) {
               configs
             )
           );
+        }
       })
       .catch(err => {
         dispatch(schemaError(err));
@@ -130,6 +136,7 @@ export function getSchemasLocalStorage() {
   };
 }
 
+// users can create from scratch their own schema
 export function createContentType(content_type) {
   return function(dispatch) {
     dispatch(schemaInitRequest());
@@ -137,6 +144,7 @@ export function createContentType(content_type) {
     let description = content_type.formData.description;
     const _id = slugify(Math.random().toString() + "_" + name);
 
+    dispatch(ActionCreators.clearHistory());
     dispatch(
       schemaInit(_id, _initSchemaStructure(name, description), {
         fullname: name
@@ -203,7 +211,7 @@ export function updateByPath(path, value) {
 export function addByPath({ schema: path, uiSchema: uiPath }, data) {
   return function(dispatch, getState) {
     let schema = getState()
-      .schemaWizard.getIn(["current", "schema", ...path])
+      .schemaWizard.present.getIn(["current", "schema", ...path])
       .toJS();
 
     let _path = path;
@@ -256,14 +264,14 @@ export function deleteByPath(item) {
     itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
 
     let schema = getState()
-      .schemaWizard.getIn(["current", "schema", ...path])
+      .schemaWizard.present.getIn(["current", "schema", ...path])
       .toJS();
 
     delete schema[itemToDelete];
 
     // ********* uiSchema **********
     let uiSchema = getState()
-      .schemaWizard.getIn(["current", "uiSchema", ...uiPath])
+      .schemaWizard.present.getIn(["current", "uiSchema", ...uiPath])
       .toJS();
 
     delete uiSchema[uiItemToDelete];
@@ -307,10 +315,10 @@ export function renameIdByPath(item, newName) {
 
     // navigate to the correct path
     let schema = getState()
-      .schemaWizard.getIn(["current", "schema", ...path])
+      .schemaWizard.present.getIn(["current", "schema", ...path])
       .toJS();
     let uiSchema = getState()
-      .schemaWizard.getIn(["current", "uiSchema", ...uiPath])
+      .schemaWizard.present.getIn(["current", "uiSchema", ...uiPath])
       .toJS();
 
     // ********* schema **********
@@ -358,7 +366,7 @@ export function updateSchemaProps(prop) {
     const { title, description, configs } = prop;
 
     let schema = getState()
-      .schemaWizard.getIn(["current", "schema"])
+      .schemaWizard.present.getIn(["current", "schema"])
       .toJS();
 
     if (configs) {

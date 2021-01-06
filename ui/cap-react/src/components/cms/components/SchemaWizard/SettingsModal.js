@@ -40,7 +40,7 @@ SettingsModal.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    configs: state.schemaWizard.get("config")
+    configs: state.schemaWizard.present.get("config")
   };
 };
 

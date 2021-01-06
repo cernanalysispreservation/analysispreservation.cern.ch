@@ -4,14 +4,18 @@ import SelectFieldType from "../components/SchemaWizard/PropertyEditor/SelectFie
 import { selectFieldType } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
-  const _path = state.schemaWizard.getIn(["field", "path"]);
-  const _uiPath = state.schemaWizard.getIn(["field", "uiPath"]);
+  const _path = state.schemaWizard.present.getIn(["field", "path"]);
+  const _uiPath = state.schemaWizard.present.getIn(["field", "uiPath"]);
 
   return {
     // propKey: state.schemaWizard.getIn(["field", "propKey"]),
-    path: state.schemaWizard.getIn(["field"]),
-    schema: state.schemaWizard.getIn(["current", "schema", ...(_path || [])]),
-    uiSchema: state.schemaWizard.getIn([
+    path: state.schemaWizard.present.getIn(["field"]),
+    schema: state.schemaWizard.present.getIn([
+      "current",
+      "schema",
+      ...(_path || [])
+    ]),
+    uiSchema: state.schemaWizard.present.getIn([
       "current",
       "uiSchema",
       ...(_uiPath || [])

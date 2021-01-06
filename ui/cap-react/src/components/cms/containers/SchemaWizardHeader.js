@@ -5,11 +5,11 @@ import { withRouter } from "react-router-dom";
 
 function mapStateToProps(state) {
   return {
-    schema: state.schemaWizard.getIn(["current", "schema"]),
-    uiSchema: state.schemaWizard.getIn(["current", "uiSchema"]),
-    initialSchema: state.schemaWizard.getIn(["initial", "schema"]),
-    initialUiSchema: state.schemaWizard.getIn(["initial", "uiSchema"]),
-    config: state.schemaWizard.get("config")
+    schema: state.schemaWizard.present.getIn(["current", "schema"]),
+    uiSchema: state.schemaWizard.present.getIn(["current", "uiSchema"]),
+    initialSchema: state.schemaWizard.present.getIn(["initial", "schema"]),
+    initialUiSchema: state.schemaWizard.present.getIn(["initial", "uiSchema"]),
+    config: state.schemaWizard.present.get("config")
   };
 }
 
@@ -17,7 +17,9 @@ function mapDispatchToProps() {
   return {};
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-  )(SchemaWizardHeader));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SchemaWizardHeader)
+);

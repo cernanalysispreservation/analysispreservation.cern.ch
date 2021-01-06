@@ -70,7 +70,6 @@ SchemaWizard.propTypes = {
   current: PropTypes.object,
   onFieldTypeSelect: PropTypes.func,
   field: PropTypes.object,
-  getSchema: PropTypes.func,
   match: PropTypes.object,
   selected: PropTypes.object,
   history: PropTypes.object,

@@ -4,8 +4,8 @@ import { addProperty, enableCreateMode } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
   return {
-    path: state.schemaWizard.getIn(["field"]),
-    propKeyEditor: state.schemaWizard.get("propKeyEditor")
+    path: state.schemaWizard.present.getIn(["field"]),
+    propKeyEditor: state.schemaWizard.present.get("propKeyEditor")
   };
 }
 
