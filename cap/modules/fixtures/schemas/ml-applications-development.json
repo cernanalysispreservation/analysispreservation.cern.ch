@@ -21,7 +21,11 @@
           ]
         },
         "description":"Multiple choices allowed",
-        "title":"What is the general type of ML model you use?"
+        "title":"3.a.3.1 What is the general type of ML model you use?"
+      },
+      "model_general_type_other": {
+        "type": "string",
+        "title": "If you selected \"Other\", please specify more below"
       },
       "model_type": {
         "type":"array",
@@ -42,7 +46,7 @@
           ]
         },
         "description":"Multiple choices allowed",
-        "title":"What type of ML model did you use?"
+        "title":"3.a.3.2 What type of ML model did you use?"
       },
       "model_type_other": {
         "type": "string",
@@ -83,7 +87,7 @@
             }]
           }
         },
-        "title": "Did you make use of a pre-defined network (i.e. ResNet-50)?"
+        "title": "3.a.3.3 Did you make use of a pre-defined network (i.e. ResNet-50)?"
       },
       "learning_type": {
         "type": "string",
@@ -94,7 +98,11 @@
           "Reinforcement Learning",
           "Other"
         ],
-        "title": "What type of learning did you use?"
+        "title": "3.a.3.4 What type of learning did you use?"
+      },
+      "learning_type_other": {
+        "type": "string",
+        "title": "If you selected \"Other\", please specify more below"
       },
       "hyperparameter_optimization": {
         "type":"object",
@@ -127,7 +135,7 @@
             }]
           }
         },
-        "title": "Did you do a hyper-parameter optimization?"
+        "title": "3.a.3.5 Did you do a hyper-parameter optimization?"
       },
       "sample_mixing": {
         "type": "string",
@@ -138,7 +146,7 @@
           "Does not apply: we have only one background process",
           "We do not mix the samples"
         ],
-        "title":"When training with more than one signal/background, do you mix all samples in the proportions you expect in data? Select the way you mix the samples."
+        "title":"3.a.3.6 When training with more than one signal/background, do you mix all samples in the proportions you expect in data? Select the way you mix the samples."
       },
       "overtraining": {
         "type": "string",
@@ -147,7 +155,7 @@
           "We divide the sample in three subsamples: training, validation, and testing",
           "Other"
         ],
-        "title":"How do you make sure you are not affected by overtraining?"
+        "title":"3.a.3.7 How do you make sure you are not affected by overtraining?"
       },
       "cross_validation": {
         "type":"object",
@@ -199,11 +207,11 @@
             }]
           }
         },
-        "title": "Did you perform a cross validation?"
+        "title": "3.a.3.8 Did you perform a cross validation?"
       },
       "mva_stability": {
         "type": "string",
-        "title": "Which steps to test the stability and/or robustness of your MVA did you undertake? For example, to test stability, you might train multiple times with different initial weights. To test robustness you might shift the inputs slightly to see how much the outputs change."
+        "title": "3.a.3.9 Which steps to test the stability and/or robustness of your MVA did you undertake? For example, to test stability, you might train multiple times with different initial weights. To test robustness you might shift the inputs slightly to see how much the outputs change."
       },
       "training_bias_check": {
         "type":"object",
@@ -236,7 +244,7 @@
           }
         },
         "description": "i.e. did you ensure your method performs well on edge cases, equally across all classes, etc",
-        "title": "Do you perform a check for training bias?"
+        "title": "3.a.3.10 Do you perform a check for training bias?"
       },
       "input":{
         "type":"object",
@@ -260,7 +268,7 @@
             "title":"If the check is not listed above, please specify it here"
           }
         },
-        "title":"How have you checked that the input variables, including their dependencies, are well-modeled?"
+        "title":"3.a.3.11 How have you checked that the input variables, including their dependencies, are well-modeled?"
       },
       "correlation":{
         "type":"object",
@@ -307,7 +315,7 @@
             }]
           }
         },
-        "title":"Do you study the correlations and dependencies between the input variables?"
+        "title":"3.a.3.12 Do you study the correlations and dependencies between the input variables?"
       },
       "mva_techniques":{
         "type":"object",
@@ -363,12 +371,12 @@
             }]
           }
         },
-        "title":"Are you aware that some MVA techniques may classify data events as very signal-like if any of their variables take values in regions where the background training samples have no events?"
+        "title":"3.a.3.13 Are you aware that some MVA techniques may classify data events as very signal-like if any of their variables take values in regions where the background training samples have no events?"
       },
       "event_weights": {
         "type": "string",
         "description": "i.e. negatively weighted events in the training as e.g. produced by amc@nlo",
-        "title": "How do you treat event weights during training?"
+        "title": "3.a.3.14 How do you treat event weights during training?"
       },
       "phase_space":{
         "type":"object",
@@ -414,11 +422,11 @@
             }]
           }
         },
-        "title":"Are your training and analysis / evaluation phase space identical?"
+        "title":"3.a.3.15 Are your training and analysis / evaluation phase space identical?"
       },
       "data_driven_analysis_methods": {
         "type": "string",
-        "title": "Does the analysis depend on data-driven methods such as background estimations? If so, how do you ensure that phase space extrapolations are appropriately modeled in your training set?"
+        "title": "3.a.3.16 Does the analysis depend on data-driven methods such as background estimations? If so, how do you ensure that phase space extrapolations are appropriately modeled in your training set?"
       },
       "data_mc_sf_development": {
         "type":"object",
@@ -461,7 +469,7 @@
             }]
           }
         },
-        "title":"Did you develop data/MC SF for your ML application?"
+        "title":"3.a.3.17 Did you develop data/MC SF for your ML application?"
       },
       "model_metrics": {
         "type": "object",
@@ -476,11 +484,11 @@
             "title": "Attachment"
           }
         },
-        "title": "Please give us an idea of the accuracy/precision of your model. You can enter specific measurements in the text box or upload a ROC curve, confusion matrix, etc. For analyses which have performed cross-validations, you might provide us with an uncertainty for your accuracy. Other examples of metrics might include: Accuracy (A=(TP+TN)/(TP+TN+FP+FN)), Precision (P=TP/(TP+FP)), Recall (R=TP/(TP+FN)), F1 score (F1=2* (P*R)/(P+R))"
+        "title": "3.a.3.18 Please give us an idea of the accuracy/precision of your model. You can enter specific measurements in the text box or upload a ROC curve, confusion matrix, etc. For analyses which have performed cross-validations, you might provide us with an uncertainty for your accuracy. Other examples of metrics might include: Accuracy (A=(TP+TN)/(TP+TN+FP+FN)), Precision (P=TP/(TP+FP)), Recall (R=TP/(TP+FN)), F1 score (F1=2* (P*R)/(P+R))"
       },
       "other": {
         "type": "string",
-        "title": "Please share any other details about the training or use of this model. This could be innovative input features, unusual network architectures, custom loss functions, special training methods, etc."
+        "title": "3.a.3.19 Please share any other details about the training or use of this model. This could be innovative input features, unusual network architectures, custom loss functions, special training methods, etc."
       }
     },
     "title": "Development of the ML Application"

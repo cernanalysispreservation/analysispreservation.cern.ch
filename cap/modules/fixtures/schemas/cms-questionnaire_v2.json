@@ -2148,11 +2148,13 @@
           "dev": {
             "ui:order": [
               "model_general_type",
+              "model_general_type_other",
               "model_type",
               "model_type_other",
               "*",
               "predefined_network_use",
               "learning_type",
+              "learning_type_other",
               "hyperparameter_optimization",
               "sample_mixing",
               "overtraining",
