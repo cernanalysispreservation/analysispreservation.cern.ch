@@ -34,7 +34,8 @@ from cap.modules.oauthclient.contrib.cern import disconnect_handler
 from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
 from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter, prefix_filter
+from cap.modules.search.facets import (nested_filter, prefix_filter,
+                                       regex_filter)
 
 
 def _(x):
@@ -265,8 +266,16 @@ CAP_FACETS = {
     'aggs': {
         'facet_type': {
             'terms': {
-                'field': '_type'
-            }
+                'size': 30,
+                'script': 'doc.containsKey("_type") ? doc["_type"].value?.substring(0,doc["_type"].value.lastIndexOf("-v")) : null'  # noqa
+            },
+            'aggs': {
+                'facet_type_version': {
+                    'terms': {
+                        'script': 'doc.containsKey("_type") ? doc["_type"].value?.substring(doc["_type"].value.lastIndexOf("-v") + 1, doc["_type"].value.length()) : null'  # noqa
+                    }
+                },
+            },
         },
         'facet_cms_working_group': {
             'terms': {
@@ -382,7 +391,8 @@ CAP_FACETS = {
         },
     },
     'post_filters': {
-        'type': terms_filter('_type'),
+        'type': regex_filter('_type'),
+        'type_version': terms_filter('_type'),
         'cms_working_group': prefix_filter('basic_info.cadi_id'),
         'cadi_status': terms_filter('cadi_info.status'),
         'next_deadline_date': range_filter(

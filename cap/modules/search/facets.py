@@ -62,6 +62,19 @@ def prefix_filter(field):
     return inner
 
 
+def regex_filter(field):
+    """
+    Create a regex filter, that uses the schema name to get all
+    the associated records (regardless of version).
+
+    :param field: Field name.
+    :returns: Function that returns the Regexp query.
+    """
+    def inner(values):
+        return Q('regexp', **{field: f'{values[0]}-v<0-9>*\.<0-9>*\.<0-9>*'})
+    return inner
+
+
 def _aggregations(search, definitions, urlkwargs, filters):
     """Add aggregations to query."""
     def without(d, keys):

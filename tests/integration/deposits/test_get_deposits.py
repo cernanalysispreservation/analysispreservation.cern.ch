@@ -23,9 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
 """Integration tests for GET deposits."""
-from urllib import parse
-
-from flask import current_app
+import json
 from invenio_search import current_search
 from pytest import mark
 from six import BytesIO
@@ -469,6 +467,82 @@ def test_get_deposits_with_facets_non_empty_buckets_keywords(
         {'doc_count': 1, 'key': 'C-hadrons'},
         {'doc_count': 1, 'key': 'Tracks'}
     ]
+
+
+def test_get_deposits_with_facets_get_types_and_versions(
+        client, users, auth_headers_for_user, json_headers, create_deposit, create_schema):
+    user = users['cms_user']
+
+    create_schema('test-analysis', experiment='CMS')
+    create_deposit(user, 'test-analysis',
+                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"},
+                   experiment='CMS')
+
+    create_schema('test-analysis', experiment='CMS', version='2.0.0')
+    create_deposit(user, 'test-analysis',
+                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v2.0.0.json"},
+                   experiment='CMS')
+
+    import time
+    time.sleep(1)
+
+    resp = client.get('/deposits/',
+                      headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+
+    assert resp.json['hits']['total'] == 2
+    assert resp.json['aggregations']['facet_type']['buckets'] == [{
+        'doc_count': 2,
+        'facet_type_version': {
+            'buckets': [{'doc_count': 1, 'key': 'v1.0.0'},
+                        {'doc_count': 1, 'key': 'v2.0.0'}],
+            'doc_count_error_upper_bound': 0,
+            'sum_other_doc_count': 0
+        },
+        'key': 'test-analysis'
+    }]
+
+
+def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
+        client, users, auth_headers_for_user, json_headers, create_deposit, create_schema):
+    # make sure that the naming of schemas doesnt confuse search, e.g. test-analysis facet
+    # is giving different results from test-ana facet, although they have the same prefix
+    user = users['cms_user']
+
+    create_schema('test-analysis', experiment='CMS')
+    create_deposit(user, 'test-analysis',
+                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"},
+                   experiment='CMS')
+
+    create_schema('test-ana', experiment='CMS', version='2.0.0')
+    create_deposit(user, 'test-ana',
+                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"},
+                   experiment='CMS')
+    create_deposit(user, 'test-ana',
+                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"},
+                   experiment='CMS')
+
+    import time
+    time.sleep(1)
+
+    # total should be 3
+    resp = client.get('/deposits/',
+                      headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+    assert resp.json['hits']['total'] == 3
+
+    # test-ana should return 2 results
+    url = '/deposits/?q=&type=test-ana&sort=mostrecent'
+    resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+
+    assert resp.status_code == 200
+    assert resp.json['hits']['total'] == 2
+
+    # test-analysis should return 1 result
+    url = '/deposits/?q=&type=test-analysis&sort=mostrecent'
+    resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+
+    assert resp.status_code == 200
+    assert resp.json['hits']['total'] == 1
+
 
 
 def test_get_deposits_with_facets_non_empty_buckets_dates(
