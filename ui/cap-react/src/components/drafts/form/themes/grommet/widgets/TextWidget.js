@@ -47,14 +47,17 @@ class TextWidget extends Component {
      * if you want to add orcid for the same object in analysis_proponents you refer to it by
      * ["basic_info", "analysis_proponents", "#", "orcid"]
      */
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    let { options = {} } = props;
+
     this.state = {
       suggestions: [],
       showSpinner: false,
       error: null,
       autofillSuccess: false,
-      enableWarningMessage: true
+      enableWarningMessage: true,
+      showRegex: options.disableRegex ? false : true
     };
   }
 
@@ -266,7 +269,7 @@ class TextWidget extends Component {
           />
         </Box>
       );
-    } else if (this.props.schema.pattern) {
+    } else if (this.props.schema.pattern && this.state.showRegex) {
       input = (
         <RegExInput
           key="regex-input"

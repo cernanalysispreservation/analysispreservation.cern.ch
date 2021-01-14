@@ -122,7 +122,8 @@ export const configSchema = {
       "ui:options": {
         "grid": {
           "gridColumns": "3/5"
-        }
+        },
+        "disableRegex": true
       }
     },
     "ui:options": {
