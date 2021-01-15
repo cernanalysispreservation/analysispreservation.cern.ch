@@ -71,6 +71,7 @@ function SortableBox({ parent, children, id, index, moveCard }) {
 
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
+
   return (
     <div ref={ref} style={getStyle(opacity)}>
       {children}

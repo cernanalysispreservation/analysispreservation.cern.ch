@@ -17,17 +17,19 @@ const widgets = {
 
 const ArrayFieldTemplate = props => {
   const [display, setDisplay] = useState(false);
-  let { schema: schemaPath, uiSchema: uiSchemaPath } = props.rawErrors[0];
-  let _path = {
-    schema: [...props.formContext.schema, ...schemaPath, "items"],
-    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath, "items"]
-  };
+  let _path, __path;
+  if (props.rawErrors) {
+    let { schema: schemaPath, uiSchema: uiSchemaPath } = props.rawErrors[0];
+    _path = {
+      schema: [...props.formContext.schema, ...schemaPath, "items"],
+      uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath, "items"]
+    };
 
-  let __path = {
-    schema: [...props.formContext.schema, ...schemaPath],
-    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath]
-  };
-
+    __path = {
+      schema: [...props.formContext.schema, ...schemaPath, "items"],
+      uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath]
+    };
+  }
   return (
     <Box flex={true} style={{ position: "relative" }}>
       <SchemaTreeItem

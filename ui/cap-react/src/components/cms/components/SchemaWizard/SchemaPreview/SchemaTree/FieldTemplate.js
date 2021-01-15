@@ -10,16 +10,23 @@ import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import { connect } from "react-redux";
 import { addByPath } from "../../../../../../actions/schemaWizard";
 import { _validate } from "./utils/validate";
+import DependenciesProperties from "./DependenciesProperties";
 
 const widgets = {
   TextWidget: TextWidget
 };
 
 const FieldTemplate = props => {
-  const { schema, uiSchema, rawErrors = [], children, formContext } = props;
+  const {
+    schema,
+    uiSchema,
+    rawErrors = [],
+    children,
+    formContext = {}
+  } = props;
 
   const [display, setDisplay] = useState(false);
-  let path = {
+  let path = !formContext.dependencyForm && {
     schema: [...formContext.schema, ...(rawErrors[0].schema || [])],
     uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])]
   };
@@ -28,21 +35,28 @@ const FieldTemplate = props => {
     return uiSchema["ui:field"] !== undefined;
   };
 
-  if (props.id == "root") {
+  if (props.id === "root") {
     return (
-      <HoverBox
-        addProperty={props.addProperty}
-        key={props.id}
-        path={path}
-        shouldHideChildren={shouldBoxHideChildren(uiSchema)}
-      >
-        <Box
-          flex={true}
-          pad={formContext.schema.length == 0 ? "medium" : "none"}
+      <div>
+        <HoverBox
+          addProperty={props.addProperty}
+          key={props.id}
+          path={path}
+          shouldHideChildren={shouldBoxHideChildren(uiSchema)}
         >
-          {children}
-        </Box>
-      </HoverBox>
+          <Box
+            flex={true}
+            pad={
+              formContext.schema.length == 0 && !formContext.dependencyForm
+                ? "medium"
+                : "none"
+            }
+          >
+            {children}
+          </Box>
+        </HoverBox>
+        <DependenciesProperties path={path.schema} />
+      </div>
     );
   }
 

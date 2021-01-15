@@ -125,7 +125,7 @@ class SchemaTreeItem extends React.Component {
               </Box>
             </Box>
           ) : null}
-          {this.props.schema ? (
+          {this.props.schema && !this.props.formContext.dependencyForm ? (
             <Box direction="row" align="center" wrap={false} flex={false}>
               {this.props.schema.type == "object" &&
               !this.shouldBoxAcceptChildren(this.props.uiSchema) ? (
