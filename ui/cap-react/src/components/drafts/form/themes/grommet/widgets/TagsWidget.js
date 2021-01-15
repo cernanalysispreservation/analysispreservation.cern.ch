@@ -61,8 +61,8 @@ class TagsWidget extends Component {
 
   onValidationReject = errors => this.setState({ errors: errors });
   render() {
-    let TAGS_REGEX = this.props.options.pattern
-      ? new RegExp(this.props.options.pattern)
+    let TAGS_REGEX = this.props.schema.pattern
+      ? new RegExp(this.props.schema.pattern)
       : /.*/;
 
     return (

@@ -77,9 +77,6 @@ const simple = {
     default: {
       schema: {
         type: "number"
-      },
-      uiSchema: {
-        "ui:widget": "number"
       }
     }
   },
