@@ -1946,9 +1946,9 @@
             "title": "11.2. Do you have any additional comment related to the analysis? Is there a statistic-related element of your analysis not covered by this questionnaire?"
           },
           "suggestions": {
-          "type": "string",
-          "title": "11.3. Do you have a suggestion for improving this questionnaire? Do you have a suggestion for improving interaction with the CMS Statistics Committee in general or documentation of statistical recommendations?"
-        }
+            "type": "string",
+            "title": "11.3. Do you have a suggestion for improving this questionnaire? Do you have a suggestion for improving interaction with the CMS Statistics Committee in general or documentation of statistical recommendations?"
+          }
         },
         "title": "11. Comments and feedback"
       }
@@ -2619,7 +2619,7 @@
       ],
       "feedback_not_frozen": {
         "ui:order": ["options", "comments"],
-        "options": {
+        "comments": {
           "ui:widget": "textarea",
           "ui:options": {
             "rows": 3
@@ -2627,6 +2627,12 @@
         }
       },
       "comments": {
+        "ui:widget": "textarea",
+        "ui:options": {
+          "rows": 3
+        }
+      },
+      "suggestions": {
         "ui:widget": "textarea",
         "ui:options": {
           "rows": 3
