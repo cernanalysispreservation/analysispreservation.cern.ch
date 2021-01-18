@@ -83,7 +83,7 @@ export function getSchemas() {
 
 export function initSchemaWizard(data) {
   return function(dispatch) {
-    const {  id, deposit_schema, deposit_options, ...configs } = data;
+    const { id, deposit_schema, deposit_options, ...configs } = data;
 
     dispatch(
       schemaInit(
@@ -137,7 +137,11 @@ export function createContentType(content_type) {
     let description = content_type.formData.description;
     const _id = slugify(Math.random().toString() + "_" + name);
 
-    dispatch(schemaInit(_id, _initSchemaStructure(name, description), {fullname: name}));
+    dispatch(
+      schemaInit(_id, _initSchemaStructure(name, description), {
+        fullname: name
+      })
+    );
     dispatch(push("/cms/edit"));
   };
 }

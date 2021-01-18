@@ -595,6 +595,56 @@ const simple = {
     title: "JSON Object",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Object Widget Properties",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "Provide the title you want to be displayed to your object"
+        },
+        description: {
+          type: "string",
+          title: "Description",
+          description:
+            "Provide the description you want to be displayed to your object"
+        }
+      }
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "Object UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
     default: {
       schema: {
         type: "object",
@@ -609,27 +659,85 @@ const simple = {
       }
     }
   },
-  reference: {
-    title: "Reference",
-    description: "For example, an analysis can reference its author(s)",
-    child: {},
-    default: {
-      schema: {
-        type: "string"
-      },
-      uiSchema: {
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
-  },
+  // reference: {
+  //   title: "Reference",
+  //   description: "For example, an analysis can reference its author(s)",
+  //   child: {},
+  //   default: {
+  //     schema: {
+  //       type: "string"
+  //     },
+  //     uiSchema: {
+  //       "ui:options": {
+  //         grid: {
+  //           gridColumns: "1/5"
+  //         }
+  //       }
+  //     }
+  //   }
+  // },
   boolean: {
     title: "Boolean",
     description: "Yes or no, 1 or 0, true or false",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Boolean Schema Options",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the element",
+          description: "This title will be used for the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a desctiption for the element",
+          description: "This description will be used for the form"
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
+        }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
+      }
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "Switch Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "boolean"
@@ -648,6 +756,55 @@ const simple = {
     description:
       "A list of things. List of strings, numbers, objects, references",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Array Schema Options",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for your array",
+          description: "This is the title that will be displayed for the array"
+        },
+        description: {
+          title: "Provide a descritpion for the element",
+          type: "string",
+          description:
+            "This description will be provided for this specific element"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Array UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "array",
