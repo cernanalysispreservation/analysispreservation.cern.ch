@@ -665,10 +665,58 @@ const simple = {
 };
 
 const advanced = {
-  accordion: {
+  accordionObjectField: {
     title: "Accordion Field",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Accordion Field Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the Accordion Field",
+          description: "This title will be used later in the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a description for the Accordrion Field",
+          description: "This description will be used later in the form"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Radio Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "object",
@@ -684,10 +732,58 @@ const advanced = {
       }
     }
   },
-  tabfield: {
+  tabView: {
     title: "Tab Field",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Tab Field Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the Tab Field",
+          description: "This title will be used later in the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a description for the Tab Field",
+          description: "This description will be used later in the form"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Radio Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "object",
@@ -698,10 +794,58 @@ const advanced = {
       }
     }
   },
-  layer: {
+  layerObjectField: {
     title: "Layer/Modal Field",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Layer Field Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the Layer Field",
+          description: "This title will be used later in the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a description for the Layer Field",
+          description: "This description will be used later in the form"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Radio Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "object",
@@ -717,23 +861,71 @@ const advanced = {
       }
     }
   },
-  switch: {
-    title: "Switch",
-    description: "Yes or no, 1 or 0, true or false",
-    child: {},
-    default: {
-      schema: {
-        type: "boolean"
-      },
-      uiSchema: {
-        "ui:widget": "switch"
-      }
-    }
-  },
+  // switch: {
+  //   title: "Switch",
+  //   description: "Yes or no, 1 or 0, true or false",
+  //   child: {},
+  //   default: {
+  //     schema: {
+  //       type: "boolean"
+  //     },
+  //     uiSchema: {
+  //       "ui:widget": "switch"
+  //     }
+  //   }
+  // },
   zenodo: {
     title: "Zenodo Field",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Zenodo Field Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the Zenodo Field",
+          description: "This title will be used later in the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a description for the Zenodo Field",
+          description: "This description will be used later in the form"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Zenodo UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "object",
@@ -759,6 +951,54 @@ const advanced = {
     title: "ORCiD Field",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Orcid Field Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the Orcid Field",
+          description: "This title will be used later in the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a description for the Orcid Field",
+          description: "This description will be used later in the form"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Orcid UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "object",
@@ -780,10 +1020,58 @@ const advanced = {
       }
     }
   },
-  getterId: {
+  idFetcher: {
     title: "Id Getter Field",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "ID Fetcher Field Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the IdFetcher Field",
+          description: "This title will be used later in the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a description for the Accordrion Field",
+          description: "This description will be used later in the form"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Radio Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "object",
@@ -817,6 +1105,54 @@ const advanced = {
     title: "ROR Field",
     description: "Data in JSON format, Grouped section",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Ror Field Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Provide a title for the Ror Field",
+          description: "This title will be used later in the form"
+        },
+        description: {
+          type: "string",
+          title: "Provide a description for the Ror Field",
+          description: "This description will be used later in the form"
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "Ror UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "object",
