@@ -24,7 +24,7 @@ const ArrayFieldTemplate = props => {
   };
 
   let __path = {
-    schema: [...props.formContext.schema, ...schemaPath, "items"],
+    schema: [...props.formContext.schema, ...schemaPath],
     uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath]
   };
 

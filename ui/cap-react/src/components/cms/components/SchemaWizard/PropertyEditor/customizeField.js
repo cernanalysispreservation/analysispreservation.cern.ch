@@ -123,7 +123,7 @@ class CustomizeField extends React.Component {
     });
   };
 
-  getSchemaForm = uiSchema => {
+  getSchemaForm = (uiSchema, schema) => {
     // check if there is not uiSchema
     if (!uiSchema) return;
     let type;
@@ -141,6 +141,12 @@ class CustomizeField extends React.Component {
     }
     if (uiSchema["ui:object"]) {
       type = uiSchema["ui:object"];
+    }
+
+    // in case we can not define the type of the element from the uiSchema,
+    // extract the type from the schema
+    if (!uiSchema["ui:widget"] && !uiSchema["ui:field"]) {
+      type = schema.type;
     }
 
     // if there is no type then there is nothing to return
@@ -174,7 +180,7 @@ class CustomizeField extends React.Component {
     );
   };
 
-  getUISchemaForm = uiSchema => {
+  getUISchemaForm = (uiSchema, schema) => {
     // check if there is not uiSchema
     if (!uiSchema) return;
     let type;
@@ -192,6 +198,11 @@ class CustomizeField extends React.Component {
     }
     if (uiSchema["ui:object"]) {
       type = uiSchema["ui:object"];
+    }
+    // in case we can not define the type of the element from the uiSchema,
+    // fetch the schema and extract the type from there
+    if (!uiSchema["ui:widget"] && !uiSchema["ui:field"]) {
+      type = schema.type;
     }
 
     // if there is no type then there is nothing to return
@@ -236,7 +247,10 @@ class CustomizeField extends React.Component {
             this.setState({ showDeleteLayer: false });
           }}
         />
-        {this.getSchemaForm(this.props.uiSchema && this.props.uiSchema.toJS())}
+        {this.getSchemaForm(
+          this.props.uiSchema && this.props.uiSchema.toJS(),
+          this.props.schema && this.props.schema.toJS()
+        )}
         <Box>
           <Box colorIndex="accent-2" flex={false} pad="small">
             <Label size="medium" margin="none">
@@ -307,7 +321,8 @@ class CustomizeField extends React.Component {
               ))}
           </Box>
           {this.getUISchemaForm(
-            this.props.uiSchema && this.props.uiSchema.toJS()
+            this.props.uiSchema && this.props.uiSchema.toJS(),
+            this.props.schema && this.props.schema.toJS()
           )}
           <Box
             direction="row"

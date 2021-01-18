@@ -13,17 +13,9 @@ class SchemaTreeItem extends React.Component {
     super(props);
   }
 
+  // selects the item for the property editor
   _onClick = () => {
-    // this.props.selectProperty(this.props.rawErrors[0]);
     this.props.selectProperty(this.props.path);
-  };
-
-  _addProperty = () => {
-    this.props.addProperty(this.props.path);
-  };
-
-  _addItem = () => {
-    this.props.addItem(this.props.path);
   };
 
   shouldBoxAcceptChildren = uiSchema => {
