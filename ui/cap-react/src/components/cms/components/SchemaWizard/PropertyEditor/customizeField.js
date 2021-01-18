@@ -132,6 +132,15 @@ class CustomizeField extends React.Component {
     }
     if (uiSchema["ui:field"]) {
       type = uiSchema["ui:field"];
+      if (
+        uiSchema["ui:field"] === "idFetcher" &&
+        uiSchema["ui:servicesList"].length < 3
+      ) {
+        type = uiSchema["ui:servicesList"][0].value;
+      }
+    }
+    if (uiSchema["ui:object"]) {
+      type = uiSchema["ui:object"];
     }
 
     // if there is no type then there is nothing to return
@@ -174,6 +183,15 @@ class CustomizeField extends React.Component {
     }
     if (uiSchema["ui:field"]) {
       type = uiSchema["ui:field"];
+      if (
+        uiSchema["ui:field"] === "idFetcher" &&
+        uiSchema["ui:servicesList"].length < 3
+      ) {
+        type = uiSchema["ui:servicesList"][0].value;
+      }
+    }
+    if (uiSchema["ui:object"]) {
+      type = uiSchema["ui:object"];
     }
 
     // if there is no type then there is nothing to return
