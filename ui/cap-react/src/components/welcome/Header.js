@@ -165,7 +165,8 @@ WelcomePage.propTypes = {
   authError: PropTypes.object,
   history: PropTypes.object,
   nav: PropTypes.object,
-  scrollToRef: PropTypes.func
+  scrollToRef: PropTypes.func,
+  initCurrentUser: PropTypes.func
 };
 
 function mapStateToProps(state) {

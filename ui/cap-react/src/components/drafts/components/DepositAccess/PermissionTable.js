@@ -220,7 +220,8 @@ PermissionTable.propTypes = {
   permissionsObj: PropTypes.object,
   target: PropTypes.string,
   access: PropTypes.object,
-  permissions: PropTypes.object
+  permissions: PropTypes.object,
+  canAdmin: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

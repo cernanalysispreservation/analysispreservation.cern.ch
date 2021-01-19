@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 const RORIcon = ({ size = "small" }) => (
@@ -35,5 +35,9 @@ const RORIcon = ({ size = "small" }) => (
     </g>
   </SVGIcon>
 );
+
+RORIcon.propTypes = {
+  size: PropTypes.string
+};
 
 export default RORIcon;

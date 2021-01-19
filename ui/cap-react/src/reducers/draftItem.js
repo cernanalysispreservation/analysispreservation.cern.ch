@@ -65,7 +65,10 @@ export default function draftsReducer(state = initialState, action) {
         .set("formErrors", Set([]))
         .set("extraErrors", {});
     case commonActions.FORM_ERRORS:
-      return state.set("formErrors", state.get('formErrors').union(action.errors));
+      return state.set(
+        "formErrors",
+        state.get("formErrors").union(action.errors)
+      );
     case commonActions.FETCH_SCHEMA_ERROR:
       return state.set("schemaErrors", [
         ...state.get("schemaErrors"),
@@ -128,9 +131,7 @@ export default function draftsReducer(state = initialState, action) {
         })
         .merge(Map(action.draft));
     case draftItemActions.UPDATE_DRAFT_ERROR:
-      return state
-        .set("extraErrors", action.error)
-        .set("loading", false)
+      return state.set("extraErrors", action.error).set("loading", false);
     case draftItemActions.DELETE_DRAFT_REQUEST:
       return state.set("loading", true);
     case draftItemActions.DELETE_DRAFT_SUCCESS:
@@ -178,9 +179,7 @@ export default function draftsReducer(state = initialState, action) {
         .set("formData", action.draft.metadata)
         .merge(Map(action.draft));
     case draftItemActions.PUBLISH_DRAFT_ERROR:
-      return state
-        .set("extraErrors", action.errors)
-        .set("loading", false);
+      return state.set("extraErrors", action.errors).set("loading", false);
 
     case draftItemActions.GENERAL_TITLE_REQUEST:
       return state.set("generalTitleLoading", true);

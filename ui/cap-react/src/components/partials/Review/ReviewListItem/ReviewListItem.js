@@ -127,7 +127,8 @@ const ReviewListItem = ({ review, reviewDraft, draft_id, loading }) => {
 ReviewListItem.propTypes = {
   review: PropTypes.object,
   draft_id: PropTypes.string,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  reviewDraft: PropTypes.func
 };
 
 export default ReviewListItem;

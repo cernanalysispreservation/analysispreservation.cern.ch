@@ -8,16 +8,20 @@ import { configSchema } from "../utils/schemas";
 import { updateSchemaConfig } from "../../../../actions/schemaWizard";
 
 const SettingsModal = ({ show, onClose, configs, updateSchemaConfig }) => {
-  const _updateConfigs = (data) => {
+  const _updateConfigs = data => {
     let { formData } = data;
 
-    updateSchemaConfig(formData)
-  }
+    updateSchemaConfig(formData);
+  };
   return (
     show && (
       <Modal onClose={onClose} separator title="Form Actions">
         <Box pad="small">
-          <CleanForm {...configSchema} formData={configs} onChange={_updateConfigs}>
+          <CleanForm
+            {...configSchema}
+            formData={configs}
+            onChange={_updateConfigs}
+          >
             <span />
           </CleanForm>
         </Box>

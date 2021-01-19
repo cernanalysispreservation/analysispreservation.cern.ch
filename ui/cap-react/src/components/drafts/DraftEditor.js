@@ -8,10 +8,7 @@ import { withRouter } from "react-router-dom";
 
 import Box from "grommet/components/Box";
 
-import {
-  initForm,
-  formDataChange
-} from "../../actions/draftItem";
+import { initForm, formDataChange } from "../../actions/draftItem";
 
 import { fetchSchemaByNameVersion } from "../../actions/common";
 
@@ -135,16 +132,16 @@ class DraftEditor extends React.Component {
                     <DraftJSONPreviewer />
                   </React.Fragment>
                 ) : (
-                    <JSONSchemaPreviewer
-                      formData={this.props.formData}
-                      schema={_schema}
-                      uiSchema={this.props.schemas.uiSchema || {}}
-                      onChange={() => { }}
-                      displayViewButtons
-                    >
-                      <span />
-                    </JSONSchemaPreviewer>
-                  )}
+                  <JSONSchemaPreviewer
+                    formData={this.props.formData}
+                    schema={_schema}
+                    uiSchema={this.props.schemas.uiSchema || {}}
+                    onChange={() => {}}
+                    displayViewButtons
+                  >
+                    <span />
+                  </JSONSchemaPreviewer>
+                )}
               </Box>
             </Box>
           )}
@@ -169,7 +166,8 @@ DraftEditor.propTypes = {
   fetchSchemaByNameVersion: PropTypes.func,
   formRef: PropTypes.object,
   errors: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  canUpdate: PropTypes.bool
+  canUpdate: PropTypes.bool,
+  location: PropTypes.object
 };
 
 function mapStateToProps(state) {

@@ -23,8 +23,7 @@ let ObjectFieldTemplate = function(props) {
         style={{
           display: "grid",
           justifyContent:
-            props.uiSchema["ui:options"] &&
-            props.uiSchema["ui:options"].align 
+            props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
         }}
         className="obj-fld-tml"
       >
@@ -93,7 +92,8 @@ ObjectFieldTemplate.propTypes = {
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
   properties: PropTypes.array,
-  schema: PropTypes.object
+  schema: PropTypes.object,
+  formContext: PropTypes.object
 };
 
 export default ObjectFieldTemplate;

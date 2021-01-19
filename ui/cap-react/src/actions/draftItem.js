@@ -523,11 +523,11 @@ export function putUpdateDraft(data, draft_id) {
           _errors.map(e => {
             let tmp = errorTree;
             e.field.map(field => {
-              if (!tmp[field]) tmp[field] = {}
+              if (!tmp[field]) tmp[field] = {};
               tmp = tmp[field];
             });
 
-            if (!tmp["__errors"]) tmp["__errors"] = []
+            if (!tmp["__errors"]) tmp["__errors"] = [];
             tmp["__errors"].push(e.message);
           });
 
@@ -580,7 +580,7 @@ let _toErrorList = function (errorSchema, fieldName = "root") {
     }
     return acc;
   }, errorList);
-}
+};
 
 export function postPublishDraft() {
   return (dispatch, getState) => {
@@ -614,11 +614,11 @@ export function postPublishDraft() {
             _errors.map(e => {
               let tmp = errorTree;
               e.field.map(field => {
-                if (!tmp[field]) tmp[field] = {}
+                if (!tmp[field]) tmp[field] = {};
                 tmp = tmp[field];
               });
 
-              if (!tmp["__errors"]) tmp["__errors"] = []
+              if (!tmp["__errors"]) tmp["__errors"] = [];
               tmp["__errors"].push(e.message);
             });
 

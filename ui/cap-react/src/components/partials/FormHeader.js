@@ -38,7 +38,8 @@ FormHeader.propTypes = {
   title: PropTypes.string,
   tags: PropTypes.element,
   editAnchor: PropTypes.element,
-  reviewAnchor: PropTypes.element
+  reviewAnchor: PropTypes.element,
+  showFiles: PropTypes.element
 };
 
 export default FormHeader;

@@ -207,13 +207,22 @@ const DraftPreview = props => {
             />
           </Box>
         )}
-        {props.schemaType && props.schemaType.name == "cms-stats-questionnaire" && (
-          <Box pad={{ horizontal: "medium" }}>
-            <Notification
-              text={<span><strong>ATTENTION: </strong>For your {props.schemaType && props.schemaType.fullname || "document"} to be <strong>reviewed</strong> you need to click on <strong>"Publish"</strong> (in the settings tab) first</span>}
-            />
-          </Box>
-        )}
+        {props.schemaType &&
+          props.schemaType.name == "cms-stats-questionnaire" && (
+            <Box pad={{ horizontal: "medium" }}>
+              <Notification
+                text={
+                  <span>
+                    <strong>ATTENTION: </strong>For your{" "}
+                    {(props.schemaType && props.schemaType.fullname) ||
+                      "document"}{" "}
+                    to be <strong>reviewed</strong> you need to click on{" "}
+                    <strong>"Publish"</strong> (in the settings tab) first
+                  </span>
+                }
+              />
+            </Box>
+          )}
         <Box pad={{ horizontal: "medium" }}>
           <SectionBox
             header="Metadata"
@@ -381,7 +390,9 @@ DraftPreview.propTypes = {
   access: PropTypes.object,
   webhooks: PropTypes.array,
   history: PropTypes.object,
-  canReview: PropTypes.bool
+  canReview: PropTypes.bool,
+  status: PropTypes.string,
+  edit: PropTypes.func
 };
 
 function mapStateToProps(state) {

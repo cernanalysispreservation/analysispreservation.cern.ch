@@ -146,7 +146,8 @@ ArrayFieldTemplate.propTypes = {
   onAddClick: PropTypes.func,
   reorder: PropTypes.bool,
   readonly: PropTypes.bool,
-  formContext: PropTypes.object
+  formContext: PropTypes.object,
+  size: PropTypes.string
 };
 
 export default ArrayFieldTemplate;

@@ -43,7 +43,8 @@ const ReviewList = ({ review, draft_id, reviewDraft, draftLoading }) => {
 ReviewList.propTypes = {
   review: PropTypes.array,
   draft_id: PropTypes.string,
-  draftLoading: PropTypes.bool
+  draftLoading: PropTypes.bool,
+  reviewDraft: PropTypes.func
 };
 
 const mapStateToProps = state => ({
