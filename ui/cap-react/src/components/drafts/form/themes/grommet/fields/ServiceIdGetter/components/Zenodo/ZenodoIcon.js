@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 const ZenodoIcon = ({ size = "small" }) => (
@@ -93,5 +93,8 @@ const ZenodoIcon = ({ size = "small" }) => (
     </g>
   </SVGIcon>
 );
+ZenodoIcon.propTypes = {
+  size: PropTypes.string
+};
 
 export default ZenodoIcon;

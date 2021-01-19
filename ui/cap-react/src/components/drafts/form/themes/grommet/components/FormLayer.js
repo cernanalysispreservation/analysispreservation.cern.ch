@@ -61,7 +61,8 @@ FormLayer.propTypes = {
   onClose: PropTypes.func,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.object
+  properties: PropTypes.object,
+  size: PropTypes.string
 };
 
 export default FormLayer;

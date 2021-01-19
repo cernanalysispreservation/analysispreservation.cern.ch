@@ -36,7 +36,6 @@ const Wrapper = styled.div`
     type === "published" &&
     css`
       background: rgba(194, 165, 194, 1);
-      
     `};
 `;
 
@@ -85,7 +84,8 @@ Notification.propTypes = {
   text: PropTypes.node,
   type: PropTypes.string,
   padding: PropTypes.string,
-  background: PropTypes.string
+  background: PropTypes.string,
+  action: PropTypes.element
 };
 
 export default Notification;

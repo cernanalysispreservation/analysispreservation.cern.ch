@@ -111,7 +111,8 @@ ReviewModal.propTypes = {
   publishedReviewLoading: PropTypes.bool,
   draftReviewLoading: PropTypes.bool,
   draft_id: PropTypes.string,
-  reviewDraft: PropTypes.func
+  reviewDraft: PropTypes.func,
+  reviewPublished: PropTypes.func
 };
 
 const mapStateToProps = state => ({

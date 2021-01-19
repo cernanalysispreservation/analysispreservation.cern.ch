@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 const ORCidIcon = ({ size = "small" }) => (
@@ -36,5 +36,9 @@ const ORCidIcon = ({ size = "small" }) => (
     </g>
   </SVGIcon>
 );
+
+ORCidIcon.propTypes = {
+  size: PropTypes.string
+};
 
 export default ORCidIcon;

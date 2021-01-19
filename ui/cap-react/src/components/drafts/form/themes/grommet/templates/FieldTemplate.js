@@ -117,7 +117,8 @@ FieldTemplate.propTypes = {
   schema: PropTypes.object,
   children: PropTypes.node,
   rawErrors: PropTypes.array,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
+  required: PropTypes.bool
 };
 
 export default FieldTemplate;

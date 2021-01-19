@@ -22,7 +22,9 @@ let FieldHeader = function(props) {
 };
 
 FieldHeader.propTypes = {
-  title: PropTypes.string
+  title: PropTypes.string,
+  bold: PropTypes.bool,
+  italic: PropTypes.bool
 };
 
 export default FieldHeader;

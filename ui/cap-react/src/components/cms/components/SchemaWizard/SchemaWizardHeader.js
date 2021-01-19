@@ -49,51 +49,59 @@ class SchemaWizardHeader extends React.Component {
     a.href = URL.createObjectURL(file);
     a.download = "fileName.json";
     a.click();
-  }
+  };
 
   _renderSchemaPreview = () => {
     let previews = {
-      "uiSchema": <AceEditor
-        value={JSON.stringify(this.props.uiSchema.toJS(), null, 4)}
-        mode="json"
-        width="100%"
-        height="100vh"
-        readonly
-      />,
-      "schema": <AceEditor
-        value={JSON.stringify(this.props.schema.toJS(), null, 4)}
-        mode="json"
-        width="100%"
-        height="100vh"
-        readonly
-      />,
-      "uiSchemaDiff": <JsonDiff
-        left={this.props.initialUiSchema.toJS()}
-        right={this.props.uiSchema.toJS()}
-        show={false}
-      />,
-      "schemaDiff": <JsonDiff
-        left={this.props.initialSchema.toJS()}
-        right={this.props.schema.toJS()}
-        show={false}
-      />
-    }
+      uiSchema: (
+        <AceEditor
+          value={JSON.stringify(this.props.uiSchema.toJS(), null, 4)}
+          mode="json"
+          width="100%"
+          height="100vh"
+          readonly
+        />
+      ),
+      schema: (
+        <AceEditor
+          value={JSON.stringify(this.props.schema.toJS(), null, 4)}
+          mode="json"
+          width="100%"
+          height="100vh"
+          readonly
+        />
+      ),
+      uiSchemaDiff: (
+        <JsonDiff
+          left={this.props.initialUiSchema.toJS()}
+          right={this.props.uiSchema.toJS()}
+          show={false}
+        />
+      ),
+      schemaDiff: (
+        <JsonDiff
+          left={this.props.initialSchema.toJS()}
+          right={this.props.schema.toJS()}
+          show={false}
+        />
+      )
+    };
 
-    return previews[this.state.schemaPreviewDisplay] //?
+    return previews[this.state.schemaPreviewDisplay]; //?
     // previews[this.state.schemaPreviewDisplay] :
     // previews["schema"]
-  }
+  };
   _updateSchemaTitle = value => {
-    alert(`Updating schema title to: ${value}`)
-  }
+    alert(`Updating schema title to: ${value}`);
+  };
 
   _toggleSchemaPreviewEnabled = () =>
     this.setState({
       schemaPreviewEnabled: !this.state.schemaPreviewEnabled
-    })
+    });
 
   _toggleSchemaPreviewDisplay = schemaPreviewDisplay =>
-    this.setState({ schemaPreviewDisplay })
+    this.setState({ schemaPreviewDisplay });
 
   render() {
     return [
@@ -101,6 +109,7 @@ class SchemaWizardHeader extends React.Component {
         pad={{ vertical: "none", horizontal: "small" }}
         size="small"
         fixed
+        key="Heading"
       >
         <Box
           justify="between"
@@ -118,7 +127,8 @@ class SchemaWizardHeader extends React.Component {
             </Box>
             {!this.props.loader && (
               <Truncate lines={1} width={200} ellipsis={<span>...</span>}>
-                {this.props.config && this.props.config.fullname || "Untitled Schema"}
+                {(this.props.config && this.props.config.fullname) ||
+                  "Untitled Schema"}
               </Truncate>
             )}
           </Box>
@@ -141,79 +151,87 @@ class SchemaWizardHeader extends React.Component {
             />
           </Box>
         </Box>
-
       </Header>,
-      this.state.showModal &&
-      <SettingsModal
-        show={this.state.showModal}
-        onClose={() =>
-          this.setState({
-            showModal: false
-          })
-        }
-      />,
-      this.state.schemaPreviewEnabled &&
-      <Modal full onClose={this._toggleSchemaPreviewEnabled}
-        title={
-          <Box direction="row" align="center" responsive={false} flex={false}>
-            <Label
-              size="small"
-              style={{
-                fontSize: "15px",
-                color: "#000",
-                fontWeight: "bold",
-                fontStyle: "italic"
-              }}
-            >
-              Mode:
-            </Label>
-            <Button
-              text="Schema"
-              margin="0 5px"
-              size="small"
-              primary={this.state.schemaPreviewDisplay === "schema"}
-              onClick={() => this._toggleSchemaPreviewDisplay("schema")
-              }
-            />
-            <Button
-              text="UI Schema"
-              margin="0 5px"
-              size="small"
-              primary={this.state.schemaPreviewDisplay === "uiSchema"}
-              onClick={() => this._toggleSchemaPreviewDisplay("uiSchema")
-              }
-            />
-            <Button
-              text="Schema Diff"
-              margin="0 5px"
-              size="small"
-              primary={this.state.schemaPreviewDisplay === "schemaDiff"}
-              onClick={() => this._toggleSchemaPreviewDisplay("schemaDiff")
-              }
-            />
-            <Button
-              text="UI Schema Diff"
-              margin="0 5px"
-              size="small"
-              primary={this.state.schemaPreviewDisplay === "uiSchemaDiff"}
-              onClick={() => this._toggleSchemaPreviewDisplay("uiSchemaDiff")
-              }
-            />
+      this.state.showModal && (
+        <SettingsModal
+          show={this.state.showModal}
+          onClose={() =>
+            this.setState({
+              showModal: false
+            })
+          }
+        />
+      ),
+      this.state.schemaPreviewEnabled && (
+        <Modal
+          full
+          onClose={this._toggleSchemaPreviewEnabled}
+          title={
+            <Box direction="row" align="center" responsive={false} flex={false}>
+              <Label
+                size="small"
+                style={{
+                  fontSize: "15px",
+                  color: "#000",
+                  fontWeight: "bold",
+                  fontStyle: "italic"
+                }}
+              >
+                Mode:
+              </Label>
+              <Button
+                text="Schema"
+                margin="0 5px"
+                size="small"
+                primary={this.state.schemaPreviewDisplay === "schema"}
+                onClick={() => this._toggleSchemaPreviewDisplay("schema")}
+              />
+              <Button
+                text="UI Schema"
+                margin="0 5px"
+                size="small"
+                primary={this.state.schemaPreviewDisplay === "uiSchema"}
+                onClick={() => this._toggleSchemaPreviewDisplay("uiSchema")}
+              />
+              <Button
+                text="Schema Diff"
+                margin="0 5px"
+                size="small"
+                primary={this.state.schemaPreviewDisplay === "schemaDiff"}
+                onClick={() => this._toggleSchemaPreviewDisplay("schemaDiff")}
+              />
+              <Button
+                text="UI Schema Diff"
+                margin="0 5px"
+                size="small"
+                primary={this.state.schemaPreviewDisplay === "uiSchemaDiff"}
+                onClick={() => this._toggleSchemaPreviewDisplay("uiSchemaDiff")}
+              />
+            </Box>
+          }
+        >
+          <Box
+            direction="row"
+            size="xxlarge"
+            wrap={false}
+            style={{ height: "100%" }}
+          >
+            {this._renderSchemaPreview()}
           </Box>
-        }>
-        <Box direction="row" size="xxlarge" wrap={false} style={{ height: "100%" }}>
-          {this._renderSchemaPreview()}
-        </Box>
-      </Modal>
-    ]
+        </Modal>
+      )
+    ];
   }
 }
-
 
 SchemaWizardHeader.propTypes = {
   config: PropTypes.object,
   schema: PropTypes.object,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
+  initialUiSchema: PropTypes.object,
+  initialSchema: PropTypes.object,
+  history: PropTypes.object,
+  loader: PropTypes.bool
 };
 
 export default SchemaWizardHeader;

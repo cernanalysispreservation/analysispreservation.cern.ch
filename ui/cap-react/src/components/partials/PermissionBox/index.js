@@ -50,7 +50,8 @@ PermissionBox.propTypes = {
   allEmails: PropTypes.array,
   updateUsers: PropTypes.array,
   readUsers: PropTypes.array,
-  adminUsers: PropTypes.array
+  adminUsers: PropTypes.array,
+  usersView: PropTypes.string
 };
 
 export default PermissionBox;

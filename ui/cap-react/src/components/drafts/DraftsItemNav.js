@@ -82,9 +82,20 @@ class DraftsItemNav extends React.Component {
                 }
               >
                 <Box flex direction="row">
-                  {this.props.formErrors.size ? <div  style={{position:"absolute", left: "5px", width: "6px", height: "6px", borderRadius:"50%", backgroundColor: "rgba(179, 53, 52, 1)"}}></div>:null}
+                  {this.props.formErrors.size ? (
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: "5px",
+                        width: "6px",
+                        height: "6px",
+                        borderRadius: "50%",
+                        backgroundColor: "rgba(179, 53, 52, 1)"
+                      }}
+                    />
+                  ) : null}
                   <AiOutlineTag size={NAV_IMAGE_SIZE} color="#000" />
-                  </Box>
+                </Box>
                 <Box flex className="animated-nav-text">
                   Edit
                 </Box>

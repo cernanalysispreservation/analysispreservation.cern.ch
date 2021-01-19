@@ -155,7 +155,8 @@ FileTree.propTypes = {
   onDirectoryClick: PropTypes.func,
   hideFiles: PropTypes.bool,
   hideRepos: PropTypes.bool,
-  hideTitle: PropTypes.bool
+  hideTitle: PropTypes.bool,
+  renderList: PropTypes.array
 };
 
 export default FileTree;

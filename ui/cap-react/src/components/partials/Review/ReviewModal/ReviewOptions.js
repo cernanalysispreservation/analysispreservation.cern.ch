@@ -29,6 +29,7 @@ const ReviewOptions = props => {
       colorIndex="light-1"
       onClick={() => props.updateReviewType(item.type)}
       flex
+      key={item.type}
       wrap={false}
       style={{
         background: props.reviewType === item.type ? "#E6F7FF" : "#f5f5f5"
