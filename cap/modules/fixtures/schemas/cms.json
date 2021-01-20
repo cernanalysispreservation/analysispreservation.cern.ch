@@ -1069,6 +1069,25 @@
       "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
       "cadi_id": {
         "ui:options": {
+          "masked_array": [
+            {
+              "length": 3,
+              "regexp": "^[A-Z0-9]{1,3}$",
+              "placeholder": "XXX"
+            },
+            { "fixed": "-" },
+            {
+              "length": 2,
+              "regexp": "^[0-9]{1,2}$",
+              "placeholder": "XX"
+            },
+            { "fixed": "-" },
+            {
+              "length": 3,
+              "regexp": "^[0-9]{1,3}$",
+              "placeholder": "XXX"
+            }
+          ],
           "autofill_from": "/api/cms/cadi/",
           "autofill_fields": [
             [["paper"], ["cadi_info", "paper"]],
@@ -1090,7 +1109,27 @@
         "ui:widget": "textarea"
       },
       "ana_notes": {
-        "ui:array": "StringArrayField"
+        "ui:array": "StringArrayField",
+        "items": {
+          "ui:options": {
+            "masked_array": [
+              {
+                "fixed": "AN-"
+              },
+              {
+                "length": 4,
+                "regexp": "^[0-9]{1,4}$",
+                "placeholder": "XXXX"
+              },
+              { "fixed": "/" },
+              {
+                "length": 3,
+                "regexp": "^[0-9]{1,3}$",
+                "placeholder": "XXX"
+              }
+            ]
+          }
+        }
       }
     },
     "input_data": {
