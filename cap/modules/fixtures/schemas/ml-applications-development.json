@@ -293,19 +293,66 @@
             "oneOf": [{
               "properties": {
                 "options": {
-                  "enum": ["We study the correlation matrix between the input variables"]
+                  "enum": [
+                    ["We study the correlation matrix between the input variables"],
+                    ["Other"],
+                    ["We study the correlation matrix between the input variables", "Other"],
+                    ["Other", "We study the correlation matrix between the input variables"]
+                  ]
                 }
               }
             },{
               "properties": {
                 "options": {
-                  "enum": ["Other"]
-                }
-              }
-            },{
-              "properties": {
-                "options": {
-                  "enum": ["We also study dependence beyond linear correlation"]
+                  "enum": [
+                    ["We also study dependence beyond linear correlation"],
+                    [
+                      "We study the correlation matrix between the input variables",
+                      "We also study dependence beyond linear correlation"
+                    ],
+                    [
+                      "We also study dependence beyond linear correlation",
+                      "We study the correlation matrix between the input variables"
+                    ],
+                    [
+                      "Other",
+                      "We also study dependence beyond linear correlation"
+                    ],
+                    [
+                      "We also study dependence beyond linear correlation",
+                      "Other"
+                    ],
+                    [
+                      "We study the correlation matrix between the input variables",
+                      "Other",
+                      "We also study dependence beyond linear correlation"
+                    ],
+                    [
+                      "We study the correlation matrix between the input variables",
+                      "We also study dependence beyond linear correlation",
+                      "Other"
+                    ],
+                    [
+                      "Other",
+                      "We study the correlation matrix between the input variables",
+                      "We also study dependence beyond linear correlation"
+                    ],
+                    [
+                      "Other",
+                      "We also study dependence beyond linear correlation",
+                      "We study the correlation matrix between the input variables"
+                    ],
+                    [
+                      "We also study dependence beyond linear correlation",
+                      "Other",
+                      "We study the correlation matrix between the input variables"
+                    ],
+                    [
+                      "We also study dependence beyond linear correlation",
+                      "We study the correlation matrix between the input variables",
+                      "Other"
+                    ]
+                  ]
                 },
                 "other":{
                   "type":"string",
