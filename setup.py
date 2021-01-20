@@ -19,12 +19,11 @@ INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
-    'coverage>=4.4.1',
+    'coverage>=5.2.1',
     'isort>=4.3',
     'mock>=2.0.0',
     'pydocstyle>=2.0.0',
     'pytest-cov>=2.5.1',
-    'pytest-invenio>=1.0.5',
     'pytest-invenio>=1.0.5,<=1.3.4',
     'pytest-mock>=1.6.0',
     'pytest-pep8>=1.0.6',
