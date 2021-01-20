@@ -13,7 +13,7 @@ import ReadOnlyText from "./ReadOnlyText";
 import AsyncSelect from "react-select/async";
 import Spinning from "grommet/components/icons/Spinning";
 
-import RegExInput from "./RegExInput";
+import MaskedInput from "./MaskedInput";
 
 import debounce from "lodash/debounce";
 import ReactTooltip from "react-tooltip";
@@ -271,10 +271,8 @@ class TextWidget extends Component {
       );
     } else if (this.props.schema.pattern && this.state.showRegex) {
       input = (
-        <RegExInput
+        <MaskedInput
           key="regex-input"
-          style={{ flexDirection: "row", flexWrap: "nowrap" }}
-          mask={this.props.schema.pattern.slice(1, -1)}
           id={this.props.id}
           name={this.props.id}
           value={this.props.value || ""}
@@ -284,7 +282,17 @@ class TextWidget extends Component {
             this.props.options &&
             this.props.options.warningMessage
           }
+          mask={this.props.options.masked_array}
+          schemaMask={this.props.schema.pattern}
           enableWarningMessage={!this.props.rawErrors}
+          buttons={
+            this.props.options &&
+            this.props.options.autofill_from &&
+            this.props.options.autofill_on &&
+            this.props.options.autofill_on.indexOf("onClick") > -1
+              ? enabled => this._renderAutofillButton(enabled)
+              : null
+          }
           onBlur={
             this.props.options &&
             this.props.options.autofill_from &&
@@ -299,14 +307,6 @@ class TextWidget extends Component {
             (!this.props.options.autofill_on ||
               this.props.options.autofill_on.indexOf("onEnter") > -1)
               ? this._onEnterAutofill
-              : null
-          }
-          buttons={
-            this.props.options &&
-            this.props.options.autofill_from &&
-            this.props.options.autofill_on &&
-            this.props.options.autofill_on.indexOf("onClick") > -1
-              ? enabled => this._renderAutofillButton(enabled)
               : null
           }
         />
