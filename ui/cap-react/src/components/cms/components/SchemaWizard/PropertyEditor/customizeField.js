@@ -320,10 +320,11 @@ class CustomizeField extends React.Component {
                 </Box>
               ))}
           </Box>
-          {this.getUISchemaForm(
-            this.props.uiSchema && this.props.uiSchema.toJS(),
-            this.props.schema && this.props.schema.toJS()
-          )}
+          {this.props.path.get("path").size > 0 &&
+            this.getUISchemaForm(
+              this.props.uiSchema && this.props.uiSchema.toJS(),
+              this.props.schema && this.props.schema.toJS()
+            )}
           <Box
             direction="row"
             wrap={true}
