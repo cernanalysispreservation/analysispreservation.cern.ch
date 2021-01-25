@@ -268,10 +268,12 @@ export function deleteByPath(item) {
 
     delete uiSchema[uiItemToDelete];
 
-    // remove the itemToDelete from the ui:order
-    uiSchema["ui:order"] = uiSchema["ui:order"].filter(
-      item => item !== uiItemToDelete
-    );
+    if (uiSchema["ui:order"]) {
+      // remove the itemToDelete from the ui:order
+      uiSchema["ui:order"] = uiSchema["ui:order"].filter(
+        item => item !== uiItemToDelete
+      );
+    }
 
     // ********* update changes **********
     dispatch(
