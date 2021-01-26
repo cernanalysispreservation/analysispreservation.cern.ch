@@ -1,6 +1,29 @@
+import React from "react";
+import Box from "grommet/components/Box";
+import {
+  BsType,
+  BsCheckBox,
+  BsToggleOff,
+  BsListOl,
+  BsCircle,
+  BsBraces,
+  BsLayoutSidebar,
+  BsSquareHalf,
+  BsGrid,
+  BsHash,
+  BsTag
+} from "react-icons/bs";
+import {
+  AiOutlineCloudDownload,
+  AiOutlineBorderTop,
+  AiOutlineFile,
+  AiOutlineContainer
+} from "react-icons/ai";
+
 const simple = {
   text: {
     title: "Text",
+    icon: <BsType size={16} />,
     description: "Titles, names, paragraphs, IDs, list of names",
     child: {},
     optionsSchema: {
@@ -41,8 +64,53 @@ const simple = {
       }
     }
   },
+  CapFiles: {
+    title: "File Upload",
+    icon: <AiOutlineFile size={16} />,
+    description: "Upload Files",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "File upload widget",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
+        }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
+      }
+    },
+    default: {
+      schema: {
+        type: "string"
+      },
+      uiSchema: {
+        "ui:field": "CapFiles"
+      }
+    }
+  },
+
   number: {
-    title: "Number",
+    title: "Number (Float or Integer)",
+    icon: <BsHash size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsSchema: {
@@ -74,14 +142,131 @@ const simple = {
         "ui:widget": "select"
       }
     },
+    optionsUiSchema: {
+      type: "object",
+      title: "Switch Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
     default: {
       schema: {
         type: "number"
+      },
+      uiSchema: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
+      }
+    }
+  },
+  integer: {
+    title: "Integer",
+    icon: <BsHash size={16} />,
+    description: "IDs, order number, rating, quantity",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Integer Widget Title",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "The title of the form field. How it will be displayed on the rendered form."
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
+        }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
+      }
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "Switch Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
+    default: {
+      schema: {
+        type: "integer"
+      },
+      uiSchema: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
       }
     }
   },
   select: {
     title: "Select Widget",
+    icon: <BsGrid size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -213,6 +398,7 @@ const simple = {
   },
   radio: {
     title: "Radio Widget",
+    icon: <BsCircle size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -301,6 +487,7 @@ const simple = {
   },
   switch: {
     title: "Switch Widget",
+    icon: <BsToggleOff size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -379,6 +566,7 @@ const simple = {
   },
   checkboxes: {
     title: "Checkbox Widget",
+    icon: <BsCheckBox size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -493,6 +681,7 @@ const simple = {
   },
   textarea: {
     title: "Text Area",
+    icon: <AiOutlineContainer size={16} />,
     description: "Text Area field",
     child: {},
     optionsUiSchema: {
@@ -593,6 +782,7 @@ const simple = {
   },
   object: {
     title: "JSON Object",
+    icon: <BsBraces size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -624,6 +814,7 @@ const simple = {
             grid: {
               type: "object",
               title: "Grid Options",
+              description: "Select the inline position of the field",
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
@@ -678,6 +869,7 @@ const simple = {
   // },
   boolean: {
     title: "Boolean",
+    icon: <Box>1|0</Box>,
     description: "Yes or no, 1 or 0, true or false",
     child: {},
     optionsSchema: {
@@ -753,6 +945,7 @@ const simple = {
   },
   array: {
     title: "Array",
+    icon: <BsListOl size={16} />,
     description:
       "A list of things. List of strings, numbers, objects, references",
     child: {},
@@ -824,6 +1017,7 @@ const simple = {
 const advanced = {
   accordionObjectField: {
     title: "Accordion Field",
+    icon: <AiOutlineBorderTop size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -891,6 +1085,7 @@ const advanced = {
   },
   tabView: {
     title: "Tab Field",
+    icon: <BsLayoutSidebar size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -953,6 +1148,7 @@ const advanced = {
   },
   layerObjectField: {
     title: "Layer/Modal Field",
+    icon: <BsSquareHalf size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1033,6 +1229,7 @@ const advanced = {
   // },
   zenodo: {
     title: "Zenodo Field",
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1106,6 +1303,7 @@ const advanced = {
   },
   orcid: {
     title: "ORCiD Field",
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1179,6 +1377,7 @@ const advanced = {
   },
   idFetcher: {
     title: "Id Getter Field",
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1260,6 +1459,7 @@ const advanced = {
   },
   ror: {
     title: "ROR Field",
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1333,6 +1533,7 @@ const advanced = {
   },
   tags: {
     title: "Tags Field",
+    icon: <BsTag size={16} />,
     description: "Add keywords, tags, etc",
     child: {},
     optionsSchema: {

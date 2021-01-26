@@ -62,12 +62,12 @@ class SelectFieldType extends React.Component {
                     <DraggableBox data={type} key={index}>
                       <Box
                         onClick={this._onClick.bind(this, type)}
-                        flex={false}
                         pad={{ horizontal: "small" }}
                         direction="row"
-                        justify="between"
-                        align="center"
+                        flex
+                        align="start"
                       >
+                        <Box margin={{ right: "small" }}>{type.icon}</Box>
                         {type.title}
                       </Box>
                     </DraggableBox>

@@ -10,9 +10,11 @@ const style = index => ({
   padding: "5px",
   cursor: "move",
   marginBottom: "6px",
-  color: "#fff",
+  backgroundColor: "#f5f5f5",
+  color: "#000",
   marginRight: index % 2 == 0 ? "0" : "10px",
-  marginLeft: index % 2 == 0 ? "10px" : "0"
+  marginLeft: index % 2 == 0 ? "10px" : "0",
+  borderRadius: "3px"
 });
 
 const DraggableBox = ({ data, children, key }) => {
