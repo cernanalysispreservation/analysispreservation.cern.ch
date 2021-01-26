@@ -24,7 +24,27 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# 1st step: commit message
+handle_test_result(){
+    EXIT_CODE=$1
+    RESULT="$2"
+    if [ $EXIT_CODE -eq 0 ]; then
+        echo "Commit check was succesfull."
+    else
+        echo "Errors in commit message."
+    fi
 
-echo "RUNNING COMMIT MESSAGE CHECKS"
-sh ./scripts/ci/commit-msg-check.sh
+    # Print RESULT if not empty
+    if [ -n "$RESULT" ] ; then
+        echo "$RESULT"
+    fi
+}
+
+run_git_check(){
+    RESULT=$(gitlint --commits $GIT_ORIGIN..$GIT_LAST 2>&1)
+    local exit_code=$?
+    handle_test_result $exit_code "$RESULT"
+    return $exit_code
+}
+
+pip install gitlint
+run_git_check
