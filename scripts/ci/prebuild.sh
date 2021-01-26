@@ -25,7 +25,7 @@ handle_test_result(){
 
 run_git_check(){
     echo "Running gitlint...${RED}"
-    RESULT=$(gitlint 2>&1)
+    RESULT=$(gitlint --commits "origin...HEAD" 2>&1)
     local exit_code=$?
     handle_test_result $exit_code "$RESULT"
     return $exit_code
