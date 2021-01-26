@@ -89,7 +89,8 @@ install_requires = [
     'uwsgitop==0.10',
     # needed version for future use of arguments
     'webargs==3.0.1',
-    'pyOpenSSL==19.1.0'
+    'pyOpenSSL==19.1.0',
+    'gitlint'
 ]
 
 packages = find_packages()

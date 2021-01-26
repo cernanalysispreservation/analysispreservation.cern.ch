@@ -1,0 +1,15 @@
+[general]
+ignore=body-is-missing
+
+ignore-merge-commits=true
+ignore-revert-commits=true
+ignore-fixup-commits=true
+ignore-squash-commits=true
+
+extra-path=gitlint_rules/
+
+[title-max-length]
+line-length=50
+
+[body-max-line-length]
+line-length=72
