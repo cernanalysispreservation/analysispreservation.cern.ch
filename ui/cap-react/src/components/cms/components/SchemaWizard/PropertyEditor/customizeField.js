@@ -123,30 +123,34 @@ class CustomizeField extends React.Component {
     });
   };
 
-  getSchemaForm = (uiSchema, schema) => {
-    // check if there is not uiSchema
-    if (!uiSchema) return;
+  getSchemaForm = (uiSchema = {}, schema = {}) => {
     let type;
-    if (uiSchema["ui:widget"]) {
-      type = uiSchema["ui:widget"];
-    }
-    if (uiSchema["ui:field"]) {
-      type = uiSchema["ui:field"];
-      if (
-        uiSchema["ui:field"] === "idFetcher" &&
-        uiSchema["ui:servicesList"].length < 3
-      ) {
-        type = uiSchema["ui:servicesList"][0].value;
-      }
-    }
-    if (uiSchema["ui:object"]) {
-      type = uiSchema["ui:object"];
-    }
 
     // in case we can not define the type of the element from the uiSchema,
     // extract the type from the schema
-    if (!uiSchema["ui:widget"] && !uiSchema["ui:field"]) {
-      type = schema.type;
+    if (
+      !uiSchema ||
+      (!uiSchema["ui:widget"] &&
+        !uiSchema["ui:field"] &&
+        !uiSchema["ui:object"])
+    ) {
+      type = schema.type === "string" ? "text" : schema.type;
+    } else {
+      if (uiSchema["ui:widget"]) {
+        type = uiSchema["ui:widget"];
+      }
+      if (uiSchema["ui:field"]) {
+        type = uiSchema["ui:field"];
+        if (
+          uiSchema["ui:field"] === "idFetcher" &&
+          uiSchema["ui:servicesList"].length < 3
+        ) {
+          type = uiSchema["ui:servicesList"][0].value;
+        }
+      }
+      if (uiSchema["ui:object"]) {
+        type = uiSchema["ui:object"];
+      }
     }
 
     // if there is no type then there is nothing to return
@@ -180,31 +184,34 @@ class CustomizeField extends React.Component {
     );
   };
 
-  getUISchemaForm = (uiSchema, schema) => {
-    // check if there is not uiSchema
-    if (!uiSchema) return;
+  getUISchemaForm = (uiSchema = {}, schema = {}) => {
     let type;
-    if (uiSchema["ui:widget"]) {
-      type = uiSchema["ui:widget"];
-    }
-    if (uiSchema["ui:field"]) {
-      type = uiSchema["ui:field"];
-      if (
-        uiSchema["ui:field"] === "idFetcher" &&
-        uiSchema["ui:servicesList"].length < 3
-      ) {
-        type = uiSchema["ui:servicesList"][0].value;
+    // in case we can not define the type of the element from the uiSchema,
+    // extract the type from the schema
+    if (
+      !uiSchema ||
+      (!uiSchema["ui:widget"] &&
+        !uiSchema["ui:field"] &&
+        !uiSchema["ui:object"])
+    ) {
+      type = schema.type === "string" ? "text" : schema.type;
+    } else {
+      if (uiSchema["ui:widget"]) {
+        type = uiSchema["ui:widget"];
+      }
+      if (uiSchema["ui:field"]) {
+        type = uiSchema["ui:field"];
+        if (
+          uiSchema["ui:field"] === "idFetcher" &&
+          uiSchema["ui:servicesList"].length < 3
+        ) {
+          type = uiSchema["ui:servicesList"][0].value;
+        }
+      }
+      if (uiSchema["ui:object"]) {
+        type = uiSchema["ui:object"];
       }
     }
-    if (uiSchema["ui:object"]) {
-      type = uiSchema["ui:object"];
-    }
-    // in case we can not define the type of the element from the uiSchema,
-    // fetch the schema and extract the type from there
-    if (!uiSchema["ui:widget"] && !uiSchema["ui:field"]) {
-      type = schema.type;
-    }
-
     // if there is no type then there is nothing to return
     if (!type) return;
     const objs = {
@@ -221,6 +228,11 @@ class CustomizeField extends React.Component {
         pad="none"
         margin={{ bottom: "medium" }}
       >
+        <Box colorIndex="accent-2" flex={false} pad="small">
+          <Label size="medium" margin="none">
+            Field Layout
+          </Label>
+        </Box>
         <Form
           schema={objs[type].optionsUiSchema}
           uiSchema={objs[type].optionsUiSchemaUiSchema}
@@ -252,17 +264,6 @@ class CustomizeField extends React.Component {
           this.props.schema && this.props.schema.toJS()
         )}
         <Box>
-          <Box colorIndex="accent-2" flex={false} pad="small">
-            <Label size="medium" margin="none">
-              Field Layout
-            </Label>
-          </Box>
-
-          <Box colorIndex="light-1" flex={false} pad="small">
-            <Label size="small" margin="none">
-              Select the in-line position of your field
-            </Label>
-          </Box>
           <Box
             direction="row"
             wrap={true}

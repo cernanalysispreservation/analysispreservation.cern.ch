@@ -35,6 +35,7 @@ class SchemaWizard extends React.Component {
               display: "grid",
               gridTemplateColumns: "repeat(8, 1fr)"
             }}
+            id="form_builder"
           >
             {this.props.field ? <PropertyEditor /> : <SelectFieldType />}
 

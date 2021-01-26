@@ -19,6 +19,7 @@ const SelectWidget = props => {
   return (
     <Select
       placeholder="Select position"
+      menuPortalTarget={document.querySelector("#form_builder")}
       value={{
         value: props.value,
         label: (

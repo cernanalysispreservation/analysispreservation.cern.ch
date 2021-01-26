@@ -2,11 +2,29 @@ import React from "react";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Label";
 
 import { PropTypes } from "prop-types";
 import { selectProperty } from "../../../../../../actions/schemaWizard";
-import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
+import {
+  AiOutlineUp,
+  AiOutlineDown,
+  AiOutlineCloudDownload,
+  AiOutlineBorderTop,
+  AiOutlineContainer,
+  AiOutlineFile
+} from "react-icons/ai";
+
+import {
+  BsType,
+  BsCheckBox,
+  BsToggleOff,
+  BsListOl,
+  BsCircle,
+  BsBraces,
+  BsHash,
+  BsGrid,
+  BsTag
+} from "react-icons/bs";
 
 class SchemaTreeItem extends React.Component {
   constructor(props) {
@@ -20,6 +38,38 @@ class SchemaTreeItem extends React.Component {
 
   shouldBoxAcceptChildren = uiSchema => {
     return uiSchema["ui:field"] !== undefined;
+  };
+
+  getIconByType = (uiSchema = {}, schema = {}) => {
+    let type;
+    // in case we can not define the type of the element from the uiSchema,
+    // extract the type from the schema
+    if (
+      !uiSchema ||
+      (!uiSchema["ui:widget"] &&
+        !uiSchema["ui:field"] &&
+        !uiSchema["ui:object"])
+    ) {
+      type = schema.type === "string" ? "text" : schema.type;
+    } else {
+      if (uiSchema["ui:widget"]) {
+        type = uiSchema["ui:widget"];
+      }
+      if (uiSchema["ui:field"]) {
+        type = uiSchema["ui:field"];
+        if (
+          uiSchema["ui:field"] === "idFetcher" &&
+          uiSchema["ui:servicesList"].length < 3
+        ) {
+          type = uiSchema["ui:servicesList"][0].value;
+        }
+      }
+      if (uiSchema["ui:object"]) {
+        type = uiSchema["ui:object"];
+      }
+    }
+
+    return mapType2Icon[type];
   };
 
   render() {
@@ -48,11 +98,7 @@ class SchemaTreeItem extends React.Component {
               direction="row"
               align="center"
             >
-              <Label size="small" margin="none">
-                <strong>
-                  {mapType2Icon[this.props.schema.type] || "missing"}
-                </strong>
-              </Label>
+              {this.getIconByType(this.props.uiSchema, this.props.schema)}
               <Box flex={false} pad={{ horizontal: "small" }} align="start">
                 <div
                   style={{
@@ -134,9 +180,22 @@ export default connect(
 )(SchemaTreeItem);
 
 let mapType2Icon = {
-  object: "{ }",
-  array: "[ ]",
-  boolean: "0/1",
-  string: "abc",
-  number: "123"
+  object: <BsBraces size={20} />,
+  array: <BsListOl size={20} />,
+  select: <BsGrid size={20} />,
+  boolean: <Box>1|0</Box>,
+  text: <BsType size={20} />,
+  number: <BsHash size={20} />,
+  integer: <BsHash size={20} />,
+  checkboxes: <BsCheckBox size={20} />,
+  radio: <BsCircle size={20} />,
+  switch: <BsToggleOff size={20} />,
+  textarea: <AiOutlineContainer size={20} />,
+  CapFiles: <AiOutlineFile size={20} />,
+  tags: <BsTag size={20} />,
+  idFetcher: <AiOutlineCloudDownload size={20} />,
+  ror: <AiOutlineCloudDownload size={20} />,
+  zenodo: <AiOutlineCloudDownload size={20} />,
+  orcid: <AiOutlineCloudDownload size={20} />,
+  accordionObjectField: <AiOutlineBorderTop size={20} />
 };
