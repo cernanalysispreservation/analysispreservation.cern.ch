@@ -1,0 +1,11 @@
+[general]
+ignore=body-is-missing
+extra-path=gitlint_rules/
+debug=true
+verbosity=3
+
+[title-max-length]
+line-length=50
+
+[body-max-line-length]
+line-length=72
