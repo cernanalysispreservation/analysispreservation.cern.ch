@@ -11,7 +11,6 @@ import FormPreview from "../../containers/FormPreview";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import SelectFieldType from "../../containers/SelectFieldType";
-import Anchor from "../../../partials/Anchor";
 
 import SchemaWizardHeader from "../../containers/SchemaWizardHeader";
 
@@ -23,57 +22,47 @@ class SchemaWizard extends React.Component {
     };
   }
 
-  render() {
-    if (this.props.current) {
-      return (
-        <DndProvider backend={HTML5Backend}>
-          <SchemaWizardHeader />
-          <Box
-            colorIndex="light-2"
-            flex={true}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(8, 1fr)"
-            }}
-            id="form_builder"
-          >
-            {this.props.field ? <PropertyEditor /> : <SelectFieldType />}
-
-            <Box style={{ gridColumn: "3/5" }} flex>
-              {this.props.loader ? (
-                <Box flex align="center" justify="center">
-                  <Spinning size="large" />
-                </Box>
-              ) : (
-                <SchemaPreview />
-              )}
-            </Box>
-            {!this.props.selected && !this.props.loader ? (
-              <Box
-                align="center"
-                justify="center"
-                flex
-                style={{ gridColumn: "5/9" }}
-              >
-                Your form is not created properly, please try again
-                <Anchor label="here" path="/cms" />
-              </Box>
-            ) : (
-              <Box flex style={{ gridColumn: "5/9" }}>
-                {this.props.loader ? (
-                  <Box flex align="center" justify="center">
-                    <Spinning size="large" />
-                  </Box>
-                ) : (
-                  <FormPreview />
-                )}
-              </Box>
-            )}
-          </Box>
-        </DndProvider>
-      );
+  componentDidMount() {
+    if (!this.props.loader && this.props.schema.size === 0) {
+      this.props.history.push("/cms");
     }
-    return null;
+  }
+
+  render() {
+    return (
+      <DndProvider backend={HTML5Backend}>
+        <SchemaWizardHeader />
+        <Box
+          colorIndex="light-2"
+          flex={true}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(8, 1fr)"
+          }}
+        >
+          {this.props.field ? <PropertyEditor /> : <SelectFieldType />}
+          {this.props.loader ? (
+            <Box
+              style={{ gridColumn: "3/9" }}
+              flex
+              align="center"
+              justify="center"
+            >
+              <Spinning size="large" />
+            </Box>
+          ) : (
+            <React.Fragment>
+              <Box style={{ gridColumn: "3/5" }} flex>
+                <SchemaPreview />
+              </Box>
+              <Box flex style={{ gridColumn: "5/9" }}>
+                <FormPreview />
+              </Box>
+            </React.Fragment>
+          )}
+        </Box>
+      </DndProvider>
+    );
   }
 }
 

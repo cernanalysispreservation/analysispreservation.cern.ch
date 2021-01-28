@@ -17,7 +17,6 @@ import {
 
 const initialState = Map({
   list: {},
-  selected: null,
   current: fromJS({
     schema: {},
     uiSchema: {}
@@ -40,7 +39,6 @@ export default function schemaReducer(state = initialState, action) {
       return state.set("loader", true);
     case SCHEMA_INIT:
       return state
-        .set("selected", action.id)
         .set("current", fromJS(action.data))
         .set("initial", fromJS(action.data))
         .set("config", action.configs)

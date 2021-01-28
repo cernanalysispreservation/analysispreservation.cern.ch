@@ -158,7 +158,7 @@ class SearchPage extends React.Component {
           <Empty />
           <Label style={{ textAlign: "center" }}>
             There was an error with your request <br />
-            pleaase try again
+            please try again
           </Label>
         </Box>
       ) : total === 0 ? (

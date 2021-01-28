@@ -96,8 +96,7 @@ SelectFieldType.propTypes = {
   path: PropTypes.array,
   propKey: PropTypes.string,
   schema: PropTypes.object,
-  uiSchema: PropTypes.object,
-  selected: PropTypes.object
+  uiSchema: PropTypes.object
 };
 
 export default SelectFieldType;

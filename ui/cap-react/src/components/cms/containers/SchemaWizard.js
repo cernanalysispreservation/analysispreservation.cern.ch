@@ -7,7 +7,6 @@ function mapStateToProps(state) {
   return {
     current: state.schemaWizard.get("current"),
     field: state.schemaWizard.get("field"),
-    selected: state.schemaWizard.get("selected"),
     loader: state.schemaWizard.get("loader"),
     schema: state.schemaWizard.getIn(["current", "schema"])
   };
@@ -20,6 +19,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SchemaWizard);
+  mapStateToProps,
+  mapDispatchToProps
+)(SchemaWizard);
