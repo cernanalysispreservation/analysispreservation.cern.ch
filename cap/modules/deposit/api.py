@@ -769,6 +769,6 @@ class CAPDeposit(Deposit, Reviewable):
             }
         else:
             data['_deposit']['owners'] = []
-            data['_access'] = EMPTY_ACCESS_OBJECT
+            data['_access'] = copy.deepcopy(EMPTY_ACCESS_OBJECT)
 
         return data
