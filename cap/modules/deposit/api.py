@@ -556,16 +556,6 @@ class CAPDeposit(Deposit, Reviewable):
             for ar in ActionRoles.query_by_action(exp_need).all():
                 self._add_egroup_permissions(ar.role, permissions, db.session)
 
-    def _init_owner_permissions(self, owner=current_user):
-        self['_access'] = copy.deepcopy(EMPTY_ACCESS_OBJECT)
-
-        if owner:
-            with db.session.begin_nested():
-                self._add_user_permissions(owner, DEPOSIT_ACTIONS, db.session)
-
-            self['_deposit']['created_by'] = owner.id
-            self['_deposit']['owners'] = [owner.id]
-
     def _set_experiment(self):
         schema = resolve_schema_by_url(self['$schema'])
         self['_experiment'] = schema.experiment
@@ -769,6 +759,6 @@ class CAPDeposit(Deposit, Reviewable):
             }
         else:
             data['_deposit']['owners'] = []
-            data['_access'] = EMPTY_ACCESS_OBJECT
+            data['_access'] = copy.deepcopy(EMPTY_ACCESS_OBJECT)
 
         return data
