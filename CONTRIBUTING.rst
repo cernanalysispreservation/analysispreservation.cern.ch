@@ -77,23 +77,38 @@ style guide <https://github.com/agis-/git-style-guide>`_.
 Formating Commit Messages
 -------------------------
 
-To check the conformity of your commit messages with kwalitee,
-you will need to install it using ``pip install kwalitee``. Then you can
-check your commit messages with ``kwalitee check message HEAD~3...``
-to check the last three or ``kwalitee check message`` to check only
-the last commit. You can also check a specific commit by attaching it's
-hash to the latter command.
+CAP uses `Gitlint <https://jorisroovers.com/gitlint/>`_, a library written in Python,
+that checks the commit messages for specified violations. You can install it through pip: ``pip install gitlint``.
 
-The format required by kwalitee follows the structure indicated below:
+Gitlint provides some out-of-the-box rules, found `here <https://jorisroovers.com/gitlint/rules/>`_,
+but it also allows the user to create new rules in Python, for more specific purposes.
+
+* The custom rules created for CAP can be found in ``gitlint_rules/rules.py``
+
+* The out-of-the-box rules are in the gitlint settings file ``.gitlint``.
+
+Most importantly, gitlints allows the user to create a ``pre-commit hook``, that checks the messages
+before commiting, and enables them to make fixes in an interactive environment.
+To enable this, after installing gitlint, simply use the command ``gitlint install-hook``
+and gitlint will work everytime the user makes a commit in that specific repo.
+
+Some useful commands:
+
+* To check the last commit message: ``gitlint``
+
+* To check all the commit messages, since the ``origin`` of the branch: ``gitlint --commits origin..HEAD``
+
+* You can also specify the start and end of the checks, by using ``git log`` and
+using the revision ids of the first and last commit you want to check, e.g. ``gitlint --commits a3808b47f99fbf79cb5f958e9a82a965935efc0b..9a502583d144bb835939318630f5169349b11a7e``
+
+
+The format required by CAP follows the structure indicated below:
 
 ::
 
     KEYWORD: description in imperative (<=50 chars)
 
-    * more detailed description that wraps after 72 chars and starts
-      with two spaces in the next line
-
-    * plus, there needs to be an empty line before every bullet point
+    * more detailed description that wraps after 72 chars
 
     Signed-off-by YOURSELF
 
@@ -102,13 +117,12 @@ The format required by kwalitee follows the structure indicated below:
 according to the type of change that you're introducing.
 
 To create the ``Signed-off-by`` with your name and email as configured
-with ``git config``, you can use `git commit -s` (see
+with ``git config``, you can use ``git commit -s`` (see
 https://help.github.com/articles/signing-commits-using-gpg/ for signing
 commits with a gpg key, verifying it was you who created this commit).
 
-For further reading, please refer to the `original repository on Github
-<https://github.com/inveniosoftware/kwalitee>`_ and the `official
-documentation <https://kwalitee.readthedocs.io/>`_.
+In case of an error, gitlint will also run in CI, and the checks will fail if the rules are not followed,
+making sure that there is conformity in the commit messages.
 
 Change Propagation
 ------------------
