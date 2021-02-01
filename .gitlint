@@ -1,6 +1,6 @@
 [general]
 ignore=body-is-missing
-extra-path=gitlint_rules/
+extra-path=./scripts/gitlint_rules/
 debug=true
 verbosity=3
 

@@ -63,7 +63,7 @@ We follow a typical `GitHub flow
    ``(references #123)``, if it does not close but address a part of
    the respective issue.
 5. Test your branch on a local site and check the conformity of your
-   commit messages with kwalitee, see the section on
+   commit messages with `gitlint`, see the section on
    `Formating Commit Messages`_. You can also check out `this blog post
    <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_
    on commit messages.
@@ -113,7 +113,7 @@ The format required by CAP follows the structure indicated below:
     Signed-off-by YOURSELF
 
 ``KEYWORD`` needs to be one of
-`these <https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/c4446015db6598a310b874371c8f5c62ba6f52ee/.kwalitee.yml>`_,
+`these <https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/master/scripts/gitlint_rules/rules.py>`_,
 according to the type of change that you're introducing.
 
 To create the ``Signed-off-by`` with your name and email as configured
