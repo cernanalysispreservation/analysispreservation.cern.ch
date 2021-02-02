@@ -31,6 +31,7 @@ import uuid
 import click
 from flask_cli import with_appcontext
 from invenio_db import db
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
 
@@ -40,6 +41,8 @@ from cap.modules.deposit.minters import cap_deposit_minter
 from cap.modules.fixtures.cli import fixtures
 from cap.modules.user.utils import get_existing_or_register_user, \
     get_existing_or_register_role
+from cap.modules.schemas.resolvers import resolve_schema_by_url, \
+    schema_name_to_url
 
 from .utils import add_read_permission_for_egroup
 
@@ -98,13 +101,15 @@ def add(file_path, schema, version, egroup, usermail, limit):
 @click.option('--ana', '-a',
               help='Type of analysis',)
 @click.option('--role', '-r',
+              'roles', multiple=True,
               help='Role with access to the record')
 @click.option('--user', '-u',
+              'users', multiple=True,
               help='User with access to the record')
 @click.option('--owner', '-o',
               help='Owner of the record')
 @with_appcontext
-def create_deposit(file, ana, role, user, owner):
+def create_deposit(file, ana, roles, users, owner):
     """
     Create a new deposit through the CLI.
     Usage:
@@ -116,30 +121,37 @@ def create_deposit(file, ana, role, user, owner):
     except (KeyError, ValueError):
         raise click.BadParameter('Not a valid JSON file.')
 
-    if isinstance(data, dict):
-        update_data_with_schema(data, ana)
-        create_deposit_with_permissions(data, user, role, owner)
-    else:
-        for rec in data:
-            update_data_with_schema(rec, ana)
-            create_deposit_with_permissions(rec, user, role, owner)
+    # create a list of all the records provided (even if it is just 1
+    records = [data] if isinstance(data, dict) else data
+    for rec in records:
+        update_data_with_schema(rec, ana)
+        create_deposit_with_permissions(rec, roles, users, owner)
 
     click.secho(f"Record(s) added.", fg='green')
 
 
 def update_data_with_schema(data, ana):
-    """Checks if the analysis type is included in the schema, or adds it."""
-    if data.get('$schema') and ana:
-        click.secho("Your data already provide a $schema, --ana will not be used.")  # noqa
-    elif ana:
-        data['$ana_type'] = ana
-    else:
-        raise click.UsageError(
-            'You need to provide the --ana/-a parameter '
-            'OR add the $schema field in your JSON')
+    """
+    Checks if the analysis type is included in the schema, or adds it. It also
+    checks if the schema provided is valid
+    """
+    schema = data.get('$schema')
+    try:
+        if schema:
+            resolve_schema_by_url(schema)
+            if ana:
+                click.secho("Your data already provide a $schema, --ana will not be used.")  # noqa
+        elif ana:
+            data['$schema'] = schema_name_to_url(ana)
+        else:
+            raise click.UsageError(
+                'You need to provide the --ana/-a parameter '
+                'OR add the $schema field in your JSON')
+    except JSONSchemaNotFound:
+        click.secho(f'Provided schema is not valid.', fg='red')
 
 
-def create_deposit_with_permissions(data, user, role, owner):
+def create_deposit_with_permissions(data, roles, users, owner):
     """Create a deposit and add privileges and owner information."""
     from cap.modules.deposit.api import CAPDeposit
 
@@ -147,19 +159,21 @@ def create_deposit_with_permissions(data, user, role, owner):
         owner = get_existing_or_register_user(owner) if owner else None
         deposit = CAPDeposit.create(data=data, owner=owner)
 
-        # add role and user
-        if role:
-            _role = get_existing_or_register_role(role)
-            deposit._add_egroup_permissions(_role,
-                                            ['deposit-read'],
-                                            db.session)
-        if user:
-            _user = get_existing_or_register_user(user)
-            deposit._add_user_permissions(_user,
-                                          ['deposit-read'],
-                                          db.session)
+        # add roles and users
+        if roles:
+            for role in roles:
+                _role = get_existing_or_register_role(role.strip())
+                deposit._add_egroup_permissions(_role,
+                                                ['deposit-read'],
+                                                db.session)
+        if users:
+            for user in users:
+                _user = get_existing_or_register_user(user.strip())
+                deposit._add_user_permissions(_user,
+                                              ['deposit-read'],
+                                              db.session)
         deposit.commit()
     db.session.commit()
 
-    click.secho(
-        f"Created deposit with id: {deposit['_deposit']['id']}", fg='green')
+    click.secho(f"Created deposit with id: {deposit['_deposit']['id']}",
+                fg='green')
