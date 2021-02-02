@@ -47,6 +47,31 @@ def test_no_ana_or_schema_given_fails(app, cli_runner):
            'OR add the $schema field in your JSON' in res.output
 
 
+def test_wrong_ana_fails(app, create_schema, cli_runner):
+    with NamedTemporaryFile('w+t') as tmp:
+        tmp.write('{"basic_info": {"analysis_title": "test"}}')
+        tmp.seek(0)
+        res = cli_runner(f'fixtures create-deposit --file {tmp.name} --ana test')
+
+    assert res.exit_code == 1
+    assert 'Provided schema is not valid.' in res.output
+
+
+def test_wrong_schema_fails(app, create_schema, cli_runner):
+    data = [{
+        "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-v0.0.1.json",
+        "basic_info": {"analysis_title": "test"}
+    }]
+
+    with NamedTemporaryFile('w+t') as tmp:
+        tmp.write(json.dumps(data))
+        tmp.seek(0)
+        res = cli_runner(f'fixtures create-deposit --file {tmp.name}')
+
+    assert res.exit_code == 1
+    assert 'Provided schema is not valid.' in res.output
+
+
 def test_create_record_success(app, db, location, cli_runner, create_schema, auth_headers_for_superuser):
     create_schema('test', experiment='CMS')
 
@@ -99,7 +124,7 @@ def test_create_record_success_with_multiple_records_schema_and_ana(
     assert "Your data already provide a $schema, --ana will not be used." in res.output
 
 
-def test_create_record_success_with_role_and_owner(
+def test_create_record_success_with_role_and_user(
         app, db, location, users, cli_runner, create_schema, auth_headers_for_superuser):
     user_mail = users['cms_user'].email
     create_schema('test', experiment='CMS')
@@ -167,3 +192,47 @@ def test_create_record_success_with_user_and_owner(
     assert resp.status_code == 200
     assert resp.json['access']['deposit-read']['users'] == [user_mail2, user_mail]
     assert resp.json['created_by'] == user_mail2
+
+
+def test_create_record_success_with_multiple_roles(
+        app, db, location, users, cli_runner, create_schema, auth_headers_for_superuser):
+    create_schema('test', experiment='CMS')
+    _datastore.find_or_create_role('test@cern.ch')
+    _datastore.find_or_create_role('test2@cern.ch')
+
+    with NamedTemporaryFile('w+t') as tmp:
+        tmp.write('{}')
+        tmp.seek(0)
+        res = cli_runner(
+            f'fixtures create-deposit --file {tmp.name} --ana test -r test@cern.ch -r test2@cern.ch')
+
+    assert res.exit_code == 0
+
+    with app.test_client() as client:
+        depid = re.search(r'id: (.*?)\n', res.output).group(1)
+        resp = client.get(f'/deposits/{depid}', headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+    assert resp.json['access']['deposit-read']['roles'] == ['test@cern.ch', 'test2@cern.ch']
+
+
+def test_create_record_success_with_multiple_users(
+        app, db, location, users, cli_runner, create_schema, auth_headers_for_superuser):
+    user_mail = users['cms_user'].email
+    user_mail2 = users['cms_user2'].email
+    create_schema('test', experiment='CMS')
+
+    with NamedTemporaryFile('w+t') as tmp:
+        tmp.write('{}')
+        tmp.seek(0)
+        res = cli_runner(
+            f'fixtures create-deposit --file {tmp.name} --ana test -u {user_mail} -u {user_mail2}')
+
+    assert res.exit_code == 0
+
+    with app.test_client() as client:
+        depid = re.search(r'id: (.*?)\n', res.output).group(1)
+        resp = client.get(f'/deposits/{depid}', headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+    assert resp.json['access']['deposit-read']['users'] == [user_mail, user_mail2]
