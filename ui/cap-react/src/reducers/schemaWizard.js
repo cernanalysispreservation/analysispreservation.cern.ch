@@ -29,7 +29,6 @@ const initialState = Map({
   config: {},
   field: null,
   propKeyEditor: null,
-  editView: false,
   error: null,
   loader: false
 });
@@ -37,7 +36,7 @@ const initialState = Map({
 export default function schemaReducer(state = initialState, action) {
   switch (action.type) {
     case SCHEMA_INIT_REQUEST:
-      return state.set("loader", true);
+      return initialState.set("loader", true);
     case SCHEMA_INIT:
       return state
         .set("selected", action.id)
@@ -68,10 +67,8 @@ export default function schemaReducer(state = initialState, action) {
         fromJS({
           path: action.path.schema,
           uiPath: action.path.uiSchema
-        }).set("editView", true)
+        })
       );
-    // case PROPERTY_SELECT_CLEAR:
-    //   return state.set("field", null);
     case CREATE_MODE_ENABLE:
       return state.set("field", null);
     case CURRENT_UPDATE_PATH:
