@@ -24,6 +24,7 @@
 #
 """Authentication views for CAP."""
 
+import os
 from functools import wraps
 from json import JSONDecodeError
 
@@ -192,11 +193,20 @@ def get_oauth_profile(name, token=None, client=None):
     extra_data = _token.extra_data
     _client = client if client else current_auth.create_client(name)
 
-    # Check if OIDC and can get useerInfo
+    # Check if OIDC and can get userInfo
     if _client.load_server_metadata().get('userinfo_endpoint'):
-        resp = _client.userinfo()
         if name == 'cern':
-            groups = _client.parse_id_token(_client.token).get('groups')
+            if 'id_token' in _client.token:
+                cern_token = _client.token
+            else:
+                cern_token = _client.fetch_access_token(
+                    refresh_token=_token.refresh_token,
+                    grant_type='refresh_token'
+                )
+                current_auth.update_token('cern', cern_token)
+            resp = _client.parse_id_token(cern_token)
+        else:
+            resp = _client.userinfo()
     elif name == 'orcid':
         orcid = extra_data.get('orcid_id')
         resp = None

@@ -135,8 +135,8 @@ OAUTH_SERVICES = {
 
 #: CERN OIDC Auth endpoints
 OIDC_API = {
-    'IDENTITY':
-        'https://authorization-service-api.web.cern.ch/api/v1.0/Identity',
+    'ACCOUNT':
+        'https://authorization-service-api.web.cern.ch/api/v1.0/Account',
     'GROUP':
         'https://authorization-service-api.web.cern.ch/api/v1.0/Group',
     'TOKEN':
