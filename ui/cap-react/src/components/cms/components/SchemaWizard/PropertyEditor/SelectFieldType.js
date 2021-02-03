@@ -56,9 +56,13 @@ class SelectFieldType extends React.Component {
                 justify="start"
                 align="between"
                 margin={{ bottom: "large" }}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))"
+                }}
               >
                 {Object.entries(type.fields).map(([key, type], index) => (
-                  <Box basis="1/2" key={key}>
+                  <Box key={key}>
                     <DraggableBox data={type} key={index}>
                       <Box
                         onClick={this._onClick.bind(this, type)}
@@ -66,9 +70,14 @@ class SelectFieldType extends React.Component {
                         direction="row"
                         flex
                         align="start"
+                        responsive={false}
                       >
                         <Box margin={{ right: "small" }}>{type.icon}</Box>
-                        {type.title}
+                        <Box
+                          style={{ fontSize: "clamp(0.9rem, 0.7rem, 0.9rem)" }}
+                        >
+                          {type.title}
+                        </Box>
                       </Box>
                     </DraggableBox>
                   </Box>
