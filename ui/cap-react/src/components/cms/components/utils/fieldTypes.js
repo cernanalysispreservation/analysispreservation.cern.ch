@@ -23,7 +23,7 @@ import {
 const simple = {
   text: {
     title: "Text",
-    icon: <BsType size={16} />,
+    icon: <BsType size={16}/>,
     description: "Titles, names, paragraphs, IDs, list of names",
     child: {},
     optionsSchema: {
@@ -66,7 +66,7 @@ const simple = {
   },
   CapFiles: {
     title: "File Upload",
-    icon: <AiOutlineFile size={16} />,
+    icon: <AiOutlineFile size={16}/>,
     description: "Upload Files",
     child: {},
     optionsSchema: {
@@ -109,8 +109,8 @@ const simple = {
   },
 
   number: {
-    title: "Number (Float or Integer)",
-    icon: <BsHash size={16} />,
+    title: "Float or Integer",
+    icon: <BsHash size={16}/>,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsSchema: {
@@ -188,7 +188,7 @@ const simple = {
   },
   integer: {
     title: "Integer",
-    icon: <BsHash size={16} />,
+    icon: <BsHash size={16}/>,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsSchema: {
@@ -266,7 +266,7 @@ const simple = {
   },
   select: {
     title: "Select Widget",
-    icon: <BsGrid size={16} />,
+    icon: <BsGrid size={16}/>,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -361,7 +361,7 @@ const simple = {
                     enum: {
                       title: "Options List",
                       type: "array",
-                      items: { type: "string", title: "Option" }
+                      items: {type: "string", title: "Option"}
                     }
                   }
                 }
@@ -398,7 +398,7 @@ const simple = {
   },
   radio: {
     title: "Radio Widget",
-    icon: <BsCircle size={16} />,
+    icon: <BsCircle size={16}/>,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -487,7 +487,7 @@ const simple = {
   },
   switch: {
     title: "Switch Widget",
-    icon: <BsToggleOff size={16} />,
+    icon: <BsToggleOff size={16}/>,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -566,7 +566,7 @@ const simple = {
   },
   checkboxes: {
     title: "Checkbox Widget",
-    icon: <BsCheckBox size={16} />,
+    icon: <BsCheckBox size={16}/>,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -681,7 +681,7 @@ const simple = {
   },
   textarea: {
     title: "Text Area",
-    icon: <AiOutlineContainer size={16} />,
+    icon: <AiOutlineContainer size={16}/>,
     description: "Text Area field",
     child: {},
     optionsUiSchema: {
@@ -782,7 +782,7 @@ const simple = {
   },
   object: {
     title: "JSON Object",
-    icon: <BsBraces size={16} />,
+    icon: <BsBraces size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -945,7 +945,7 @@ const simple = {
   },
   array: {
     title: "Array",
-    icon: <BsListOl size={16} />,
+    icon: <BsListOl size={16}/>,
     description:
       "A list of things. List of strings, numbers, objects, references",
     child: {},
@@ -1017,7 +1017,7 @@ const simple = {
 const advanced = {
   accordionObjectField: {
     title: "Accordion Field",
-    icon: <AiOutlineBorderTop size={16} />,
+    icon: <AiOutlineBorderTop size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1085,7 +1085,7 @@ const advanced = {
   },
   tabView: {
     title: "Tab Field",
-    icon: <BsLayoutSidebar size={16} />,
+    icon: <BsLayoutSidebar size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1147,8 +1147,8 @@ const advanced = {
     }
   },
   layerObjectField: {
-    title: "Layer/Modal Field",
-    icon: <BsSquareHalf size={16} />,
+    title: "Layer Field",
+    icon: <BsSquareHalf size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1229,7 +1229,7 @@ const advanced = {
   // },
   zenodo: {
     title: "Zenodo Field",
-    icon: <AiOutlineCloudDownload size={16} />,
+    icon: <AiOutlineCloudDownload size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1303,7 +1303,7 @@ const advanced = {
   },
   orcid: {
     title: "ORCiD Field",
-    icon: <AiOutlineCloudDownload size={16} />,
+    icon: <AiOutlineCloudDownload size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1377,7 +1377,7 @@ const advanced = {
   },
   idFetcher: {
     title: "Id Getter Field",
-    icon: <AiOutlineCloudDownload size={16} />,
+    icon: <AiOutlineCloudDownload size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1459,7 +1459,7 @@ const advanced = {
   },
   ror: {
     title: "ROR Field",
-    icon: <AiOutlineCloudDownload size={16} />,
+    icon: <AiOutlineCloudDownload size={16}/>,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1533,7 +1533,7 @@ const advanced = {
   },
   tags: {
     title: "Tags Field",
-    icon: <BsTag size={16} />,
+    icon: <BsTag size={16}/>,
     description: "Add keywords, tags, etc",
     child: {},
     optionsSchema: {
