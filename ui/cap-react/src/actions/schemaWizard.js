@@ -129,6 +129,7 @@ export function selectFieldType(path, change) {
     dispatch(updateByPath(path, change));
   };
 }
+
 export function updateCurrentSchemaWithField(schema) {
   return function(dispatch, getState) {
     let state = getState().schemaWizard;
