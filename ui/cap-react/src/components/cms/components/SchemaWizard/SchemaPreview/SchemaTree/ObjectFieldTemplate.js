@@ -1,12 +1,12 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import RenderSortable from "./renderSortable";
 import update from "immutability-helper";
-import {connect} from "react-redux";
-import {updateUiSchemaByPath} from "../../../../../../actions/schemaWizard";
+import { connect } from "react-redux";
+import { updateUiSchemaByPath } from "../../../../../../actions/schemaWizard";
 
-const ObjectFieldTemplate = function (props) {
+const ObjectFieldTemplate = function(props) {
   const [cards, setCards] = useState([]);
 
   useEffect(
@@ -81,7 +81,7 @@ const ObjectFieldTemplate = function (props) {
     () => {
       let uiCards = cards.map(item => item.name);
       let uiProperties = props.properties.map(item => item.name);
-      let {...rest} = props.uiSchema;
+      let { ...rest } = props.uiSchema;
 
       uiCards = uiProperties.length < uiCards.length ? uiProperties : uiCards;
 
@@ -124,7 +124,6 @@ const ObjectFieldTemplate = function (props) {
     },
     [cards]
   );
-
   if (props.idSchema.$id == "root") {
     return (
       <Box>
@@ -143,7 +142,6 @@ ObjectFieldTemplate.propTypes = {
   onUiSchemaChange: PropTypes.func,
   uiSchema: PropTypes.object
 };
-
 
 function mapDispatchToProps(dispatch) {
   return {

@@ -1,6 +1,5 @@
 let _addErrors = (errors, path) => {
   errors.addError({ schema: path.schema, uiSchema: path.uiSchema });
-
   Object.keys(errors).map(error => {
     if (error != "__errors" && error != "addError") {
       _addErrors(errors[error], {

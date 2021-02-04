@@ -20,15 +20,16 @@ const FieldTemplate = props => {
   const {
     schema,
     uiSchema,
-    rawErrors = [],
+    rawErrors = [{}],
     children,
     formContext = {}
   } = props;
 
   const [display, setDisplay] = useState(false);
-  let path = !formContext.dependencyForm && {
+
+  let path = {
     schema: [...formContext.schema, ...(rawErrors[0].schema || [])],
-    uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])]
+    uiSchema: [...formContext.schema, ...(rawErrors[0].uiSchema || [])]
   };
 
   const shouldBoxHideChildren = uiSchema => {
@@ -37,26 +38,24 @@ const FieldTemplate = props => {
 
   if (props.id === "root") {
     return (
-      <div>
-        <HoverBox
-          addProperty={props.addProperty}
-          key={props.id}
-          path={path}
-          shouldHideChildren={shouldBoxHideChildren(uiSchema)}
+      <HoverBox
+        addProperty={props.addProperty}
+        key={props.id}
+        path={path}
+        shouldHideChildren={shouldBoxHideChildren(uiSchema)}
+      >
+        <Box
+          flex={true}
+          pad={
+            formContext.schema.length == 0 && !formContext.dependencyForm
+              ? "medium"
+              : "none"
+          }
         >
-          <Box
-            flex={true}
-            pad={
-              formContext.schema.length == 0 && !formContext.dependencyForm
-                ? "medium"
-                : "none"
-            }
-          >
-            {children}
-          </Box>
-        </HoverBox>
-        <DependenciesProperties path={path.schema} />
-      </div>
+          {children}
+        </Box>
+        <DependenciesProperties path={path} formContext={formContext} />
+      </HoverBox>
     );
   }
 

@@ -18,6 +18,7 @@ const widgets = {
 const ArrayFieldTemplate = props => {
   const [display, setDisplay] = useState(false);
   let _path, __path;
+
   if (props.rawErrors) {
     let { schema: schemaPath, uiSchema: uiSchemaPath } = props.rawErrors[0];
     _path = {
