@@ -42,7 +42,7 @@ def test_no_ana_or_schema_given_fails(app, cli_runner):
         tmp.seek(0)
         res = cli_runner(f'fixtures create-deposit --file {tmp.name}')
 
-    assert res.exit_code == 2
+    assert res.exit_code == 0
     assert 'You need to provide the --ana/-a parameter ' \
            'OR add the $schema field in your JSON' in res.output
 
@@ -53,8 +53,8 @@ def test_wrong_ana_fails(app, create_schema, cli_runner):
         tmp.seek(0)
         res = cli_runner(f'fixtures create-deposit --file {tmp.name} --ana test')
 
-    assert res.exit_code == 1
-    assert 'Provided schema is not valid.' in res.output
+    assert res.exit_code == 0
+    assert 'Provided schema is not a valid option.' in res.output
 
 
 def test_wrong_schema_fails(app, create_schema, cli_runner):
@@ -68,8 +68,29 @@ def test_wrong_schema_fails(app, create_schema, cli_runner):
         tmp.seek(0)
         res = cli_runner(f'fixtures create-deposit --file {tmp.name}')
 
-    assert res.exit_code == 1
-    assert 'Provided schema is not valid.' in res.output
+    assert res.exit_code == 0
+    assert 'Provided schema is not a valid option.' in res.output
+
+
+def test_schema_validation_fails(app, create_schema, cli_runner):
+    create_schema(
+        'test', experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'title': {'type': 'integer'}
+            }
+        }
+    )
+    data = [{"title": "test"}]
+
+    with NamedTemporaryFile('w+t') as tmp:
+        tmp.write(json.dumps(data))
+        tmp.seek(0)
+        res = cli_runner(f'fixtures create-deposit --file {tmp.name} --ana test')
+
+    assert res.exit_code == 0
+    assert "'test' is not of type 'integer'" in res.output
 
 
 def test_create_record_success(app, db, location, cli_runner, create_schema, auth_headers_for_superuser):
@@ -102,8 +123,30 @@ def test_create_record_success_with_multiple_records(
     assert res.output.count('Created deposit') == 2
 
 
+def test_create_with_multiple_records_both_fails_and_succeeds(app, db, location, cli_runner, create_schema):
+    create_schema(
+        'test', experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'title': {'type': 'integer'}
+            },
+        }
+    )
+    data = [{"title": "test1"}, {"title": 10}]
+
+    with NamedTemporaryFile('w+t') as tmp:
+        tmp.write(json.dumps(data))
+        tmp.seek(0)
+        res = cli_runner(f'fixtures create-deposit --file {tmp.name} --ana test')
+
+    assert res.exit_code == 0
+    assert "'test1' is not of type 'integer'" in res.output
+    assert res.output.count('Created deposit') == 1
+
+
 def test_create_record_success_with_multiple_records_schema_and_ana(
-        app, db, location, cli_runner, create_schema, auth_headers_for_superuser):
+        app, db, location, cli_runner, create_schema):
     create_schema('test', experiment='CMS')
     create_schema('test2', experiment='CMS', version='0.0.1')
 
