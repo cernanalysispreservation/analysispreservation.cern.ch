@@ -25,8 +25,11 @@
 
 from __future__ import absolute_import, print_function
 
+import os
+import copy
 import json
 import uuid
+from datetime import datetime
 
 import click
 from flask_cli import with_appcontext
@@ -34,6 +37,7 @@ from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
+from jsonschema.exceptions import ValidationError
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.fetchers import cap_deposit_fetcher
@@ -108,8 +112,10 @@ def add(file_path, schema, version, egroup, usermail, limit):
               help='User with access to the record')
 @click.option('--owner', '-o',
               help='Owner of the record')
+@click.option('--save-errors-to', '-e', 'save_errors',
+              help="Provide a filename, that wrong records will be saved to.")
 @with_appcontext
-def create_deposit(file, ana, roles, users, owner):
+def create_deposit(file, ana, roles, users, owner, save_errors):
     """
     Create a new deposit through the CLI.
     Usage:
@@ -121,59 +127,92 @@ def create_deposit(file, ana, roles, users, owner):
     except (KeyError, ValueError):
         raise click.BadParameter('Not a valid JSON file.')
 
-    # create a list of all the records provided (even if it is just 1
+    # create a list of all the records provided (even if it is just 1)
     records = [data] if isinstance(data, dict) else data
+    click.secho(f"{len(records)} record(s) found in file.\n", fg='green')
+
+    errors = []
     for rec in records:
-        update_data_with_schema(rec, ana)
-        create_deposit_with_permissions(rec, roles, users, owner)
+        create_deposit_with_permissions(rec, roles, users, owner, ana, errors)
 
-    click.secho(f"Record(s) added.", fg='green')
+    # save errors to be fixed, in different json file
+    if save_errors and errors:
+        save_errors_to_json(save_errors, errors)
+
+    click.secho(f"\nProcess finished and record(s) added.", fg='green')
 
 
-def update_data_with_schema(data, ana):
+def save_errors_to_json(save_errors, errors):
+    """Saves the wrong records to a specified file."""
+    timestamp = datetime.now().strftime("%d-%b-%Y-%H:%M:%S")
+    wrong_records_path = os.path.join(
+        os.getcwd(),
+        f'{save_errors}_errors_{timestamp}.json'
+    )
+
+    with open(wrong_records_path, 'w') as _json:
+        json.dump(errors, _json, indent=4)
+
+    click.secho(f"\nErrors saved in {wrong_records_path}.", fg='green')
+
+
+def check_and_update_data_with_schema(data, ana):
     """
     Checks if the analysis type is included in the schema, or adds it. It also
-    checks if the schema provided is valid
+    checks if the schema provided is valid.
     """
     schema = data.get('$schema')
+    if not schema and not ana:
+        click.secho(
+            'You need to provide the --ana/-a parameter OR '
+            'add the $schema field in your JSON', fg='red')
+        return False
+
     try:
         if schema:
-            resolve_schema_by_url(schema)
             if ana:
                 click.secho("Your data already provide a $schema, --ana will not be used.")  # noqa
+            resolve_schema_by_url(schema)
         elif ana:
             data['$schema'] = schema_name_to_url(ana)
-        else:
-            raise click.UsageError(
-                'You need to provide the --ana/-a parameter '
-                'OR add the $schema field in your JSON')
+        return True
     except JSONSchemaNotFound:
-        click.secho(f'Provided schema is not valid.', fg='red')
+        click.secho('Provided schema is not a valid option.', fg='red')
+        return False
 
 
-def create_deposit_with_permissions(data, roles, users, owner):
+def create_deposit_with_permissions(data, roles, users, owner, ana, errors):
     """Create a deposit and add privileges and owner information."""
     from cap.modules.deposit.api import CAPDeposit
 
+    # make sure the schema is valid first
+    if not check_and_update_data_with_schema(data, ana):
+        return
+
     with db.session.begin_nested():
-        owner = get_existing_or_register_user(owner) if owner else None
-        deposit = CAPDeposit.create(data=data, owner=owner)
+        try:
+            # saving original to return to user if wrong
+            _data = copy.deepcopy(data)
+            owner = get_existing_or_register_user(owner) if owner else None
+            deposit = CAPDeposit.create(data=data, owner=owner)
 
-        # add roles and users
-        if roles:
-            for role in roles:
-                _role = get_existing_or_register_role(role.strip())
-                deposit._add_egroup_permissions(_role,
-                                                ['deposit-read'],
-                                                db.session)
-        if users:
-            for user in users:
-                _user = get_existing_or_register_user(user.strip())
-                deposit._add_user_permissions(_user,
-                                              ['deposit-read'],
-                                              db.session)
-        deposit.commit()
+            # add roles and users
+            if roles:
+                for role in roles:
+                    _role = get_existing_or_register_role(role.strip())
+                    deposit._add_egroup_permissions(
+                        _role, ['deposit-read'], db.session)
+            if users:
+                for user in users:
+                    _user = get_existing_or_register_user(user.strip())
+                    deposit._add_user_permissions(
+                        _user, ['deposit-read'], db.session)
+
+            deposit.commit()
+        except ValidationError as err:
+            click.secho(f'Validation Error: {err.message}', fg='red')
+            errors.append(_data)
+            return
+
     db.session.commit()
-
-    click.secho(f"Created deposit with id: {deposit['_deposit']['id']}",
-                fg='green')
+    click.secho(f"Created deposit with id: {deposit['_deposit']['id']}", fg='green')  # noqa
