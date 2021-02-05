@@ -4,6 +4,7 @@ import Box from "grommet/components/Box";
 import ShowMore from "../ShowMore";
 import CheckBox from "grommet/components/CheckBox";
 import Anchor from "../../partials/Anchor";
+import SubFacet from "./SubFacet/SubFacet";
 
 const FacetItem = ({
   limit,
@@ -54,39 +55,17 @@ const FacetItem = ({
                 {isAggSelected(selectedAggs[category], field.key) &&
                   Object.keys(field)
                     .filter(key => key.startsWith("facet_"))
-                    .map(key => {
-                      return field[key].buckets.map(nested_field => (
-                        <Box
-                          size="medium"
-                          key={String(nested_field.key)}
-                          direction="row"
-                          align="start"
-                          style={{
-                            fontSize: "0.8em"
-                          }}
-                        >
-                          <CheckBox
-                            id="search_checkbox"
-                            label={nested_field.key}
-                            key={nested_field.key}
-                            name={String(nested_field.key)}
-                            checked={
-                              isAggSelected(
-                                selectedAggs[key.replace("facet_", "")],
-                                nested_field.key
-                              )
-                                ? true
-                                : false
-                            }
-                            onChange={onChange(key.replace("facet_", ""))}
-                          />
-                          <Box align="end">
-                            {typeof nested_field.doc_count === "object"
-                              ? nested_field.doc_count.doc_count
-                              : nested_field.doc_count}
-                          </Box>
-                        </Box>
-                      ));
+                    .map((key, index) => {
+                      return (
+                        <SubFacet
+                          key={key + index}
+                          type={key}
+                          field={field}
+                          isAggSelected={isAggSelected}
+                          selectedAggs={selectedAggs}
+                          onChange={onChange}
+                        />
+                      );
                     })}
               </Box>
             </Box>
