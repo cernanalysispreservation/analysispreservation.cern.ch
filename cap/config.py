@@ -377,7 +377,7 @@ CAP_FACETS = {
                                 'field': 'main_measurements'
                                 '.signal_event_selection'
                                 '.physics_objects'
-                                '.object_type.keyword'
+                                '.object_type'
                             },
                             'aggs': {
                                 'doc_count': {
@@ -425,7 +425,7 @@ CAP_FACETS = {
         'physics_objects_type': nested_filter(
             'main_measurements.signal_event_selection.physics_objects',
             'main_measurements.signal_event_selection.physics_objects'
-            '.object_type.keyword',
+            '.object_type',
         ),
     },
 }

@@ -838,6 +838,10 @@
                         "type": "keyword",
                         "copy_to": "object"
                       },
+                      "object_type": {
+                        "type": "keyword",
+                        "copy_to": "object_type"
+                      },
                       "pt_cut": {
                         "type": "keyword",
                         "copy_to": "pt"
