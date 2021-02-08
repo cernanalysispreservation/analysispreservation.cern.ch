@@ -94,7 +94,13 @@ const parseValue = (mask, value) => {
 
         let length = maxLength;
         while (!found && length >= minLength) {
-          const part = value.slice(valueIndex, valueIndex + length);
+          // make sure that if the regex needs capidatl letters
+          // then transform them to upperCase so then is provided an easier UX
+          const part =
+            item.regexp.includes("A-Z") && !item.regexp.includes("a-z")
+              ? value.slice(valueIndex, valueIndex + length).toUpperCase()
+              : value.slice(valueIndex, valueIndex + length);
+
           let reg = new RegExp(item.regexp);
 
           if (reg.test(part)) {
@@ -167,9 +173,6 @@ const MaskedInput = forwardRef(
       buttons,
       reverse,
       value: valueProp,
-      enableWarningMessage,
-      warningMessage,
-      schemaMask,
       ...rest
     },
     ref
@@ -388,18 +391,6 @@ const MaskedInput = forwardRef(
           </Box>
         </Keyboard>
         <Box>{buttons}</Box>
-        {!focus &&
-          value.length > 0 &&
-          !new RegExp(schemaMask).test(value) &&
-          enableWarningMessage && (
-            <Box
-              pad={{ horizontal: "medium" }}
-              style={{ fontSize: "12px", color: "rgb(240, 75, 55)" }}
-            >
-              {warningMessage ||
-                "make sure your input follows the given pattern"}
-            </Box>
-          )}
       </Box>
     );
   }
