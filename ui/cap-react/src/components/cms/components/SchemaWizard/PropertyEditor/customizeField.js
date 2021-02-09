@@ -4,12 +4,10 @@ import Box from "grommet/components/Box";
 
 import Form from "../../../../drafts/form/GrommetForm";
 import { PropTypes } from "prop-types";
-import Button from "../../../../partials/Button";
 
 import fieldTypes from "../../utils/fieldTypes";
-import { Label, TextInput, FormField } from "grommet";
+import { Label } from "grommet";
 
-import DeleteModal from "./DeletePropertyModal";
 import _debounce from "lodash/debounce";
 
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
@@ -246,19 +244,6 @@ class CustomizeField extends React.Component {
   render() {
     return (
       <Box flex={false}>
-        <DeleteModal
-          show={this.state.showDeleteLayer}
-          text={this.props.path
-            .toJS()
-            .path.filter(item => item != "properties" && item != "items")
-            .map(item => item)
-            .join(" > ")}
-          onClose={() => this.setState({ showDeleteLayer: false })}
-          onDelete={() => {
-            this.props.deleteByPath(this.props.path.toJS());
-            this.setState({ showDeleteLayer: false });
-          }}
-        />
         {this.getSchemaForm(
           this.props.uiSchema && this.props.uiSchema.toJS(),
           this.props.schema && this.props.schema.toJS()
@@ -382,55 +367,6 @@ class CustomizeField extends React.Component {
                   {align}
                 </Box>
               ))}
-          </Box>
-        </Box>
-        <Box>
-          <Box
-            colorIndex="accent-2"
-            flex={false}
-            pad="small"
-            margin={{ top: "small" }}
-          >
-            <Label size="medium" margin="none">
-              Item Actions
-            </Label>
-          </Box>
-          <Box colorIndex="light-1" pad="small">
-            {this.props.path.toJS().uiPath.pop() !== "items" && (
-              <Box margin={{ bottom: "small" }}>
-                Update ID
-                <Box direction="row">
-                  <FormField>
-                    <Box direction="row" flex>
-                      <TextInput
-                        id="pattern"
-                        name="pattern"
-                        placeHolder="New field id"
-                        onDOMChange={e =>
-                          this.setState({ updateId: e.target.value })
-                        }
-                      />
-                    </Box>
-                  </FormField>
-                  <Button
-                    text="Update"
-                    background="#e9e9e9"
-                    onClick={() =>
-                      this.props.renameId(
-                        this.props.path.toJS(),
-                        this.state.updateId
-                      )
-                    }
-                  />
-                </Box>
-              </Box>
-            )}
-            <Button
-              text="Delete Item"
-              margin={{ top: "small" }}
-              critical
-              onClick={() => this.setState({ showDeleteLayer: true })}
-            />
           </Box>
         </Box>
       </Box>
