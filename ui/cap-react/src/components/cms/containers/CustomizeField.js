@@ -2,9 +2,7 @@ import { connect } from "react-redux";
 import CustomizeField from "../components/SchemaWizard/PropertyEditor/customizeField";
 import {
   updateSchemaByPath,
-  updateUiSchemaByPath,
-  deleteByPath,
-  renameIdByPath
+  updateUiSchemaByPath
 } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
@@ -24,9 +22,7 @@ function mapDispatchToProps(dispatch) {
     onSchemaChange: (path, schema) =>
       dispatch(updateSchemaByPath(path, schema)),
     onUiSchemaChange: (path, schema) =>
-      dispatch(updateUiSchemaByPath(path, schema)),
-    deleteByPath: item => dispatch(deleteByPath(item)),
-    renameId: (item, newName) => dispatch(renameIdByPath(item, newName))
+      dispatch(updateUiSchemaByPath(path, schema))
   };
 }
 export default connect(
