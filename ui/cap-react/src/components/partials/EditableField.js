@@ -7,7 +7,7 @@ import Label from "grommet/components/Label";
 import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
 import CloseIcon from "grommet/components/icons/base/Close";
 
-import {AiOutlineEdit} from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 
 class EditableField extends React.Component {
   constructor(props) {
@@ -66,7 +66,8 @@ class EditableField extends React.Component {
   _unedit = () => {
     this.setState({
       hoverTitle: false,
-      editTitle: false
+      editTitle: false,
+      value: this.props.value || ""
     });
   };
 
