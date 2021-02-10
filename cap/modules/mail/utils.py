@@ -262,3 +262,16 @@ def send_mail_on_review(recipients,
         subject,
         recipients
     )
+
+
+def send_mail_on_review(recipients,
+                        analysis_url,
+                        url,
+                        message,
+                        subject_prefix=''):
+    subject = subject_prefix + \
+        "New Review on Analysis | CERN Analysis Preservation"
+    template = "mail/analysis_review.html"
+
+    create_and_send.delay(template, dict(analysis_url=analysis_url, url=url,
+                                         message=message), subject, recipients)
