@@ -37,13 +37,10 @@ class WelcomePage extends React.Component {
     };
   }
 
-  loginCallBack = () => {
-    // const path = this.props.location.pathname;
-    let {
-      location: { state: { next: next = undefined } = {} }
-    } = this.props.history;
+  loginCallBack = (next) => {
     this.props.initCurrentUser(next);
   };
+
   onFormSubmit = formData => {
     // fetch the next from history
     formData["next"] = this.state.next;
