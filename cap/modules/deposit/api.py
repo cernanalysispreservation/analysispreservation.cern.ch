@@ -367,6 +367,9 @@ class CAPDeposit(Deposit, Reviewable):
                     self.update_review(data)
                 else:
                     self.create_review(data)
+
+                post_action_notifications(
+                    "review", self, host_url=request.host_url)
             else:
                 raise ReviewError(None)
 

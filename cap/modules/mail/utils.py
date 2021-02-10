@@ -22,10 +22,14 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+import re
 from flask import current_app
 from flask_login import current_user
 
+from invenio_accounts.models import User
 from .tasks import create_and_send
+
+CADI_REGEX = "^[A-Z]{3}-[0-9]{2}-[0-9]{3}$"
 
 
 def path_value_equals(element, JSON):
@@ -40,26 +44,58 @@ def path_value_equals(element, JSON):
     return data
 
 
+def get_review_recipients(deposit, config):
+    # mail of owner
+    owner = deposit['_deposit']['owners'][0]
+    owner_mail = User.query.filter_by(id=owner).one().email
+
+    # mail of reviewer
+    reviewer_mail = current_user.email
+
+    recipients = list({owner_mail, reviewer_mail})
+    cadi_id = deposit.get('analysis_context', {}).get('cadi_id')
+
+    if cadi_id:
+        # mail for reviews - Hypernews
+        # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed cadi id
+        hypernews_mail = current_app.config.get('CMS_HYPERNEWS_EMAIL_FORMAT')
+        if re.match(CADI_REGEX, cadi_id) and hypernews_mail:
+            recipients.append(hypernews_mail.format(cadi_id=cadi_id))
+
+    message = f"Submitted by {owner_mail}, and reviewed by {reviewer_mail}."
+    return message, recipients
+
+
 def get_cms_stat_recipients(record, config):
     data = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
     key = path_value_equals(config.get("path", ""), record)
     recipients = data.get(key, {}).get("contacts")
     params = data.get(key, {}).get("params", {})
 
+    # mail for PDF forum
     pdf_mail = current_app.config.get('PDF_FORUM_MAIL')
     if pdf_mail and record.get('parton_distribution_functions', None):
         recipients.append(pdf_mail)
 
-    # mail for ML surveys
+    # mail for ML surveys - CMS conveners
     conveners_ml_mail = current_app.config.get('CONVENERS_ML_MAIL')
+
+    # Some extra info for the CMS conveners recipients:
+    # 1. if uses centralized CMS ML applications (3.3) (not empty)
+    # 2. if 3.4 = Yes (mva_use = Yes)
+    # 3. if the user adds an app to 3.a (ml_app_use - not empty)
+    # 4. or if the user answers to 3.b (ml_survey.options = Yes)
     centralized_apps = record \
         .get('multivariate_discriminants', {}) \
         .get('use_of_centralized_cms_apps', {}) \
         .get('options', [])
     mva_use = record.get('multivariate_discriminants', {}).get('mva_use')
+    ml_app_use = record.get('ml_app_use', [])
+    ml_survey = record.get('ml_survey', {}).get('options')
 
     if conveners_ml_mail and (
-        (centralized_apps and 'No' not in centralized_apps) or mva_use == 'Yes'
+        (centralized_apps and 'No' not in centralized_apps) or mva_use == 'Yes' or  # noqa
+        ml_app_use or ml_survey == 'Yes'  # noqa
     ):
         recipients.append(conveners_ml_mail)
 
@@ -67,8 +103,14 @@ def get_cms_stat_recipients(record, config):
 
     message = ""
     if cadi_id:
+        # mail for ML surveys - Hypernews
+        # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed cadi id
+        hypernews_mail = current_app.config.get('CMS_HYPERNEWS_EMAIL_FORMAT')
+        if re.match(CADI_REGEX, cadi_id) and hypernews_mail:
+            recipients.append(hypernews_mail.format(cadi_id=cadi_id))
+
         message += "A CMS Statistical Questionnaire has been published " + \
-                    f"for analysis with CADI ID {cadi_id}. "
+                   f"for analysis with CADI ID {cadi_id}. "
     message += \
         "The primary (secondary) contact for reviewing your questionnaire" + \
         f" is {params.get('primary', '-')} ({params.get('secondary', '-')}). "
@@ -82,7 +124,8 @@ def get_cms_stat_recipients(record, config):
 
 GENERATE_RECIPIENT_METHODS = {
     "path_value_equals": path_value_equals,
-    "get_cms_stat_recipients": get_cms_stat_recipients
+    "get_cms_stat_recipients": get_cms_stat_recipients,
+    "get_review_recipients": get_review_recipients
 }
 
 NOTIFICATION_RECEPIENT = {
@@ -92,7 +135,12 @@ NOTIFICATION_RECEPIENT = {
             "type": "method",
             "method": "get_cms_stat_recipients",
             "path": "analysis_context.wg",
-            "emailSubject": "CMS Statistics Committee - "
+            "email_subject": "CMS Statistics Committee - "
+        },
+        "review": {
+            "type": "method",
+            "method": "get_review_recipients",
+            "email_subject": "CMS Statistics Questionnaire - "
         }
     },
     "https://analysispreservation.cern.ch/schemas/deposits/"
@@ -101,7 +149,12 @@ NOTIFICATION_RECEPIENT = {
             "type": "method",
             "method": "get_cms_stat_recipients",
             "path": "analysis_context.wg",
-            "emailSubject": "CMS Statistics Committee - "
+            "email_subject": "CMS Statistics Committee - "
+        },
+        "review": {
+            "type": "method",
+            "method": "get_review_recipients",
+            "email_subject": "CMS Statistics Questionnaire - "
         }
     }
 }
@@ -122,24 +175,39 @@ def generate_recipient_list(record, config):
 def post_action_notifications(action=None, deposit=None, host_url=None):
     """Method to run after a deposit action .
     """
-    recid, record = deposit.fetch_published()
-    record_pid = recid.pid_value
     schema = deposit.get("$schema")
-
     recipients_config = NOTIFICATION_RECEPIENT.get(schema, {}).get(action)
+
     if recipients_config:
-        message, recipients = generate_recipient_list(record,
-                                                      recipients_config)
+        message, recipients = generate_recipient_list(
+            deposit, recipients_config)
 
         if recipients:
+            subject = recipients_config.get("email_subject")
+
             if action == "publish":
+                recid, record = deposit.fetch_published()
+                record_pid = recid.pid_value
+
                 send_mail_on_publish(
                     recipients,
                     record_pid,
                     host_url,
                     record.revision_id,
                     message,
-                    subjectPrefix=recipients_config.get("emailSubject"))
+                    subject_prefix=subject)
+
+            if action == "review":
+                analysis_url = f'drafts/{deposit["_deposit"]["id"]}' \
+                    if deposit['_deposit']['status'] == 'draft' \
+                    else f'published/{deposit["control_number"]}'
+
+                send_mail_on_review(
+                    recipients,
+                    analysis_url,
+                    host_url,
+                    message,
+                    subject_prefix=subject)
 
 
 def send_mail_on_publish(recipients,
@@ -147,15 +215,28 @@ def send_mail_on_publish(recipients,
                          url,
                          revision,
                          message,
-                         subjectPrefix=''):
+                         subject_prefix=''):
     if revision > 0:
-        subject = subjectPrefix + \
+        subject = subject_prefix + \
             "New Version of Published Analysis | CERN Analysis Preservation"
         template = "mail/analysis_published_revision.html"
     else:
-        subject = subjectPrefix + \
+        subject = subject_prefix + \
             "New Published Analysis | CERN Analysis Preservation"
         template = "mail/analysis_published_new.html"
 
     create_and_send.delay(template, dict(recid=recid, url=url,
+                                         message=message), subject, recipients)
+
+
+def send_mail_on_review(recipients,
+                        analysis_url,
+                        url,
+                        message,
+                        subject_prefix=''):
+    subject = subject_prefix + \
+        "New Review on Analysis | CERN Analysis Preservation"
+    template = "mail/analysis_review.html"
+
+    create_and_send.delay(template, dict(analysis_url=analysis_url, url=url,
                                          message=message), subject, recipients)
