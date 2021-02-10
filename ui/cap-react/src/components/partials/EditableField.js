@@ -74,7 +74,8 @@ class EditableField extends React.Component {
   _unedit = () => {
     this.setState({
       hoverTitle: false,
-      editTitle: false
+      editTitle: false,
+      value: this.props.value || ""
     });
   };
 
