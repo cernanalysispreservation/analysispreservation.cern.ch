@@ -73,10 +73,6 @@ class SchemaTreeItem extends React.Component {
   };
 
   render() {
-    let _id =
-      this.props.type == "array"
-        ? this.props.path.schema[this.props.path.schema.length - 2]
-        : this.props.path.schema[this.props.path.schema.length - 1];
     return (
       <div
         style={{
@@ -119,7 +115,7 @@ class SchemaTreeItem extends React.Component {
                     fontSize: "11px"
                   }}
                 >
-                  {_id}
+                  {this.props.path.schema[this.props.path.schema.length - 1]}
                 </div>
               </Box>
             </Box>
