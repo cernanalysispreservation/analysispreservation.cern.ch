@@ -280,25 +280,11 @@ export function postCreateDraft(data = {}, ana_type) {
   };
 }
 
-export function createDraftFromCurrentItem(title, ana_type) {
+export function updateGeneralTitle(title) {
   return (dispatch, getState) => {
-    let state = getState();
-    let formData = state.draftItem.get("formData");
-
-    formData["general_title"] = title;
-
-    return dispatch(createDraft(formData, null, ana_type));
-  };
-}
-
-export function updateGeneralTitle(title, ana_type) {
-  return (dispatch, getState) => {
-    dispatch(generalTitleRequest());
-
     const draft_id = getState().draftItem.get("id");
 
     if (draft_id) return dispatch(patchGeneralTitle(draft_id, title));
-    else return dispatch(createDraftFromCurrentItem(title, ana_type));
   };
 }
 
@@ -317,7 +303,6 @@ export function patchGeneralTitle(draft_id, title) {
         value: title
       }
     ];
-
     return axios
       .patch(uri, patch_data, {
         headers: { "Content-Type": "application/json-patch+json" }
@@ -325,11 +310,22 @@ export function patchGeneralTitle(draft_id, title) {
       .then(response => {
         if (response.status == 200) {
           dispatch(generalTitleSuccess(response.data));
+          cogoToast.success("Your Title has successfully changed", {
+            position: "top-center",
+            heading: "General Title",
+            bar: { size: "0" },
+            hideAfter: 3
+          });
         }
       })
       .catch(error => {
         dispatch(generalTitleError(error.response));
-        throw error;
+        cogoToast.error(error.response.data.message, {
+          position: "top-center",
+          heading: "Your title was not changed",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
       });
   };
 }
@@ -484,10 +480,9 @@ export function reviewDraft(draft_id, review, message = "submitted") {
 
 export function updateDraft(data, draft_id) {
   return dispatch => {
-    return dispatch(putUpdateDraft(data, draft_id))
-      .catch(error => {
-        dispatch(updateDraftError(error));
-      });
+    return dispatch(putUpdateDraft(data, draft_id)).catch(error => {
+      dispatch(updateDraftError(error));
+    });
   };
 }
 
@@ -535,34 +530,38 @@ export function putUpdateDraft(data, draft_id) {
           errorHeading = "Validation Error while updating";
           errorDescription = "Please fix the errors before saving again";
           errorThrow = errorTree;
-        }
-        else if (error.response.status == 403 && error.response.data && error.response.data.message == "Invalid action") {
-          errorDescription = "Either you need permissions or you are trying to publish an already published item";
-        }
-        else if (error.response) {
-          errorDescription = error.response.data && error.response.data.message ?
-              error.response.data.message : "";
+        } else if (
+          error.response.status == 403 &&
+          error.response.data &&
+          error.response.data.message == "Invalid action"
+        ) {
+          errorDescription =
+            "Either you need permissions or you are trying to publish an already published item";
+        } else if (error.response) {
+          errorDescription =
+            error.response.data && error.response.data.message
+              ? error.response.data.message
+              : "";
         } else if (error.request) {
           // client never received a response, or request never left
           errorHeading = "Something went wrong";
-          errorDescription = "There is an error, please make sure you are connected and try again";
+          errorDescription =
+            "There is an error, please make sure you are connected and try again";
         } else {
           // anything else
         }
-        cogoToast.error(
-          errorDescription,
-          {
-            position: "top-center",
-            heading: errorHeading,
-            bar: { size: "0" },
-            hideAfter: errorHideAfter
-          });
+        cogoToast.error(errorDescription, {
+          position: "top-center",
+          heading: errorHeading,
+          bar: { size: "0" },
+          hideAfter: errorHideAfter
+        });
         throw errorThrow;
       });
   };
 }
 
-let _toErrorList = function (errorSchema, fieldName = "root") {
+let _toErrorList = function(errorSchema, fieldName = "root") {
   // XXX: We should transform fieldName as a full field path string.
   let errorList = [];
   if ("__errors" in errorSchema) {
@@ -574,9 +573,7 @@ let _toErrorList = function (errorSchema, fieldName = "root") {
   }
   return Object.keys(errorSchema).reduce((acc, key) => {
     if (key !== "__errors") {
-      acc = acc.concat(
-        _toErrorList(errorSchema[key], fieldName + "_" + key)
-      );
+      acc = acc.concat(_toErrorList(errorSchema[key], fieldName + "_" + key));
     }
     return acc;
   }, errorList);
@@ -589,68 +586,74 @@ export function postPublishDraft() {
 
     let links = state.draftItem.get("links");
     // let uri = `/api/deposits/${draft_id}/actions/publish`;
-    return cogoToast.loading('Publishing in progress...', { hideAfter: 1 }).then(() => {
+    return cogoToast
+      .loading("Publishing in progress...", { hideAfter: 1 })
+      .then(() => {
+        return axios
+          .post(links.publish)
+          .then(response => {
+            dispatch(publishDraftSuccess(response.data));
+            cogoToast.success("Your Draft has been successfully published", {
+              position: "top-center",
+              heading: "Draft published",
+              bar: { size: "0" },
+              hideAfter: 3
+            });
+          })
+          .catch(error => {
+            let errorHeading = "Error while publishing";
+            let errorDescription;
+            let errorHideAfter = 6;
+            let errorThrow = "Error while publishing";
 
-      return axios
-        .post(links.publish)
-        .then(response => {
-          dispatch(publishDraftSuccess(response.data));
-          cogoToast.success("Your Draft has been successfully published", {
-            position: "top-center",
-            heading: "Draft published",
-            bar: { size: "0" },
-            hideAfter: 3
-          });
-        })
-        .catch(error => {
-          let errorHeading = "Error while publishing";
-          let errorDescription;
-          let errorHideAfter = 6;
-          let errorThrow = "Error while publishing";
+            if (error.response.status == 422) {
+              let _errors = error.response.data.errors;
+              let errorTree = {};
+              _errors.map(e => {
+                let tmp = errorTree;
+                e.field.map(field => {
+                  if (!tmp[field]) tmp[field] = {};
+                  tmp = tmp[field];
+                });
 
-          if (error.response.status == 422) {
-            let _errors = error.response.data.errors;
-            let errorTree = {};
-            _errors.map(e => {
-              let tmp = errorTree;
-              e.field.map(field => {
-                if (!tmp[field]) tmp[field] = {};
-                tmp = tmp[field];
+                if (!tmp["__errors"]) tmp["__errors"] = [];
+                tmp["__errors"].push(e.message);
               });
 
-              if (!tmp["__errors"]) tmp["__errors"] = [];
-              tmp["__errors"].push(e.message);
-            });
-
-            dispatch(formErrorsChange(_toErrorList(errorTree)));
-            errorHeading = "Validation Error while publishing";
-            errorDescription = "Please fix the errors in 'Edit' tab before publishing again";
-            errorThrow = errorTree;
-          }
-          else if (error.response.status == 403 && error.response.data && error.response.data.message == "Invalid action") {
-            errorDescription = "Either you need permissions or you are trying to publish an already published item";
-          }
-          else if (error.response) {
-            errorDescription = error.response.data && error.response.data.message ?
-                error.response.data.message : "";
-          } else if (error.request) {
-            // client never received a response, or request never left
-            errorHeading = "Something went wrong";
-            errorDescription = "There is an error, please make sure you are connected and try again";
-          } else {
-            // anything else
-          }
-          cogoToast.error(
-            errorDescription,
-            {
+              dispatch(formErrorsChange(_toErrorList(errorTree)));
+              errorHeading = "Validation Error while publishing";
+              errorDescription =
+                "Please fix the errors in 'Edit' tab before publishing again";
+              errorThrow = errorTree;
+            } else if (
+              error.response.status == 403 &&
+              error.response.data &&
+              error.response.data.message == "Invalid action"
+            ) {
+              errorDescription =
+                "Either you need permissions or you are trying to publish an already published item";
+            } else if (error.response) {
+              errorDescription =
+                error.response.data && error.response.data.message
+                  ? error.response.data.message
+                  : "";
+            } else if (error.request) {
+              // client never received a response, or request never left
+              errorHeading = "Something went wrong";
+              errorDescription =
+                "There is an error, please make sure you are connected and try again";
+            } else {
+              // anything else
+            }
+            cogoToast.error(errorDescription, {
               position: "top-center",
               heading: errorHeading,
               bar: { size: "0" },
               hideAfter: errorHideAfter
             });
-          throw errorThrow;
-        });
-    });
+            throw errorThrow;
+          });
+      });
   };
 }
 
@@ -736,10 +739,10 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         const e = error.response
           ? error.response.data
           : {
-            status: 400,
-            message:
-              "Something went wrong with your request. Please try again"
-          };
+              status: 400,
+              message:
+                "Something went wrong with your request. Please try again"
+            };
 
         dispatch(draftsItemError(e));
       });
@@ -809,10 +812,10 @@ export function getDraftByIdAndInitForm(draft_id) {
         const e = error.response
           ? error.response.data
           : {
-            status: 400,
-            message:
-              "Something went wrong with your request. Please try again"
-          };
+              status: 400,
+              message:
+                "Something went wrong with your request. Please try again"
+            };
 
         dispatch(draftsItemError(e));
       });

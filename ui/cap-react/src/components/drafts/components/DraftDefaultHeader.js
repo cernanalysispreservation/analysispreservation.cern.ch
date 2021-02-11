@@ -12,7 +12,9 @@ import {
   AiOutlineFolder
 } from "react-icons/ai";
 
-import EditableTitle from "./EditableTitle";
+import { updateGeneralTitle } from "../../../actions/draftItem";
+
+import EditableField from "../../partials/EditableField";
 
 class DraftDefaultHeader extends React.Component {
   render() {
@@ -48,7 +50,12 @@ class DraftDefaultHeader extends React.Component {
             className="align-center-md"
             pad={{ horizontal: "small" }}
           >
-            <EditableTitle />
+            <EditableField
+              value={this.props.metadata.general_title}
+              emptyValue={"Untitled document"}
+              onUpdate={val => this.props.updateGeneralTitle(val)}
+              isEditable={this.props.canUpdate}
+            />
           </Box>
           <Box align="center" justify="center" pad={{ horizontal: "small" }}>
             {this.props.expanded ? (
@@ -97,7 +104,9 @@ DraftDefaultHeader.propTypes = {
   canUpdate: PropTypes.bool,
   expanded: PropTypes.bool,
   onClick: PropTypes.func,
-  location: PropTypes.object
+  location: PropTypes.object,
+  metadata: PropTypes.object,
+  updateGeneralTitle: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -108,8 +117,18 @@ function mapStateToProps(state) {
     draft: state.draftItem.get("metadata"),
     errors: state.draftItem.get("errors"),
     schema: state.draftItem.get("schema"),
-    formData: state.draftItem.get("formData")
+    formData: state.draftItem.get("formData"),
+    metadata: state.draftItem.get("metadata")
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    updateGeneralTitle: (title, anaType) =>
+      dispatch(updateGeneralTitle(title, anaType))
   };
 }
 
-export default connect(mapStateToProps)(withRouter(DraftDefaultHeader));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(DraftDefaultHeader));
