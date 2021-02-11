@@ -349,7 +349,13 @@ export function renameIdByPath(item, newName) {
     dispatch(
       updateByPath({ schema: path, uiSchema: uiPath }, { schema, uiSchema })
     );
-    dispatch(enableCreateMode());
+
+    dispatch(
+      selectProperty({
+        schema: [...path, newName],
+        uiSchema: [...uiPath, newName]
+      })
+    );
   };
 }
 
