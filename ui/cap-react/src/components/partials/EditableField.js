@@ -17,7 +17,6 @@ class EditableField extends React.Component {
       editTitle: false,
       hoverTitle: false,
       emptyValue: this.props.emptyValue || "no value",
-      displayValue: this.props.defaultValue || "",
       value: this.props.value || ""
     };
   }
@@ -31,9 +30,7 @@ class EditableField extends React.Component {
   }
 
   _focusInput = () => {
-    // let { general_title } = this.props.metadata;
     this.setState({
-      // value: "general_title" || "---",
       editTitle: true
     });
   };
@@ -56,19 +53,9 @@ class EditableField extends React.Component {
     }
 
     this.setState({
-      displayValue: this.state.value,
       hoverTitle: false,
       editTitle: false
     });
-
-    // Success
-    // this.setState({
-    //   hoverTitle: false,
-    //   editTitle: false
-    // });
-
-    // Error
-    // this.setState({ hoverTitle: false });
   };
 
   _unedit = () => {
@@ -77,6 +64,11 @@ class EditableField extends React.Component {
       editTitle: false,
       value: this.props.value || ""
     });
+  };
+
+  handleKeyDown = e => {
+    if (e.key === "Enter") this._update();
+    if (e.key === "Escape") this._unedit();
   };
 
   render() {
@@ -96,6 +88,7 @@ class EditableField extends React.Component {
             onChange={this._onChange}
             value={this.state.value}
             autoFocus={true}
+            onKeyDown={this.handleKeyDown}
             onClick={e => e.stopPropagation()}
           />
         </Label>
@@ -153,13 +146,8 @@ class EditableField extends React.Component {
 }
 
 EditableField.propTypes = {
-  metadata: PropTypes.object,
-  updateGeneralTitle: PropTypes.func,
-  anaType: PropTypes.string,
-  canUpdate: PropTypes.bool,
   renderDisplay: PropTypes.func,
   emptyValue: PropTypes.string,
-  defaultValue: PropTypes.string,
   value: PropTypes.string,
   onUpdate: PropTypes.func,
   size: PropTypes.string
