@@ -9,6 +9,7 @@ import { Heading } from "grommet";
 import ActionHeaderBox from "./ActionHeaderBox";
 import DeleteModal from "./DeletePropertyModal";
 import EditableField from "../../../../partials/EditableField";
+import Tag from "../../../../partials/Tag";
 
 const renderPath = (pathToUpdate, rename) => {
   let prev;
@@ -20,8 +21,8 @@ const renderPath = (pathToUpdate, rename) => {
   path &&
     path.map(item => {
       if (result.length == 0) {
-        if (item == "properties") content = "{ } #";
-        else if (item == "items") content = "[ ] #";
+        if (item == "properties") content = "{ } root";
+        else if (item == "items") content = "[ ] root";
       } else {
         if (item == "properties") {
           content = `{ } ${prev || ""}`;
@@ -34,39 +35,38 @@ const renderPath = (pathToUpdate, rename) => {
 
       if (!prev)
         result.push(
-          <div
-            style={{
-              border: "1px solid #fff",
-              borderRadius: "2px",
-              float: "left",
-              padding: "5px 10px",
-              marginRight: "5px"
+          <Tag
+            text={content}
+            size="large"
+            margin="0 5px 5px 0"
+            color={{
+              bgcolor: "#fff",
+              border: "rgba(0,0,0,0.5)",
+              color: "rgba(0,0,0,1)"
             }}
-          >
-            <span>{content}</span>
-          </div>
+          />
         );
     });
 
   if (prev)
     result.push(
-      <div
-        style={{
-          border: "1px solid #fff",
-          borderRadius: "2px",
-          float: "left",
-          backgroundColor: "#006996",
-          padding: "1px 3px",
-          marginRight: "5px"
+      <Tag
+        margin="0 5px 5px 0"
+        color={{
+          bgcolor: "#007298",
+          border: "#007298",
+          color: "#fff"
         }}
-      >
-        <EditableField
-          hoverTitle
-          value={prev}
-          emptyValue={prev}
-          onUpdate={value => rename(pathToUpdate.toJS(), value)}
-        />
-      </div>
+        maxWidth="100%"
+        text={
+          <EditableField
+            hoverTitle
+            value={prev}
+            emptyValue={prev}
+            onUpdate={value => rename(pathToUpdate.toJS(), value)}
+          />
+        }
+      />
     );
   return result;
 };
@@ -107,10 +107,24 @@ class PropertyEditor extends React.Component {
             onClick={() => this.setState({ showDeleteLayer: true })}
           />
         </Box>
-        <Box margin={{ bottom: "small" }}>
-          <Box wrap={false}>
-            <Heading tag="h4">Selected field</Heading>
-            <div>{renderPath(this.props.path, this.props.renameId)}</div>
+        <Box
+          colorIndex="light-2"
+          style={{ borderRadius: "5px" }}
+          margin={{ bottom: "small" }}
+        >
+          <Box flex={false} pad="small" separator="bottom">
+            <Heading tag="h3" margin="none">
+              Selected Field
+            </Heading>
+          </Box>
+          <Box
+            direction="row"
+            responsive={false}
+            wrap
+            pad="small"
+            align="center"
+          >
+            {renderPath(this.props.path, this.props.renameId)}
           </Box>
         </Box>
         <Box flex={true}>

@@ -19,7 +19,7 @@ const SelectWidget = props => {
   return (
     <Select
       placeholder="Select position"
-      menuPortalTarget={document.querySelector("#form_builder")}
+      menuPortalTarget={document.querySelector("#schema-wizard")}
       value={{
         value: props.value,
         label: (

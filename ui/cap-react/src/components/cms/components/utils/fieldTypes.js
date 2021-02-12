@@ -23,24 +23,24 @@ import {
 const simple = {
   text: {
     title: "Text",
-    icon: <BsType size={16}/>,
+    icon: <BsType size={16} />,
     description: "Titles, names, paragraphs, IDs, list of names",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Text Widget Title",
+      title: "Text Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your text field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your text field"
         },
         readOnly: {
           type: "boolean",
@@ -66,7 +66,7 @@ const simple = {
   },
   CapFiles: {
     title: "File Upload",
-    icon: <AiOutlineFile size={16}/>,
+    icon: <AiOutlineFile size={16} />,
     description: "Upload Files",
     child: {},
     optionsSchema: {
@@ -107,27 +107,26 @@ const simple = {
       }
     }
   },
-
   number: {
     title: "Float or Integer",
-    icon: <BsHash size={16}/>,
+    icon: <BsHash size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Number Widget Title",
+      title: "Number Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your number field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your number field"
         },
         readOnly: {
           type: "boolean",
@@ -144,7 +143,7 @@ const simple = {
     },
     optionsUiSchema: {
       type: "object",
-      title: "Switch Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -188,24 +187,24 @@ const simple = {
   },
   integer: {
     title: "Integer",
-    icon: <BsHash size={16}/>,
+    icon: <BsHash size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Integer Widget Title",
+      title: "Integer Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your integer field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your integer field"
         },
         readOnly: {
           type: "boolean",
@@ -222,7 +221,7 @@ const simple = {
     },
     optionsUiSchema: {
       type: "object",
-      title: "Switch Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -266,12 +265,12 @@ const simple = {
   },
   select: {
     title: "Select Widget",
-    icon: <BsGrid size={16}/>,
+    icon: <BsGrid size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
       type: "object",
-      title: "Switch Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -303,19 +302,19 @@ const simple = {
 
     optionsSchema: {
       type: "object",
-      title: "Select Widget Title",
+      title: "Select Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your select field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your select field"
         },
         type: {
           title: "Type",
@@ -361,7 +360,7 @@ const simple = {
                     enum: {
                       title: "Options List",
                       type: "array",
-                      items: {type: "string", title: "Option"}
+                      items: { type: "string", title: "Option" }
                     }
                   }
                 }
@@ -398,12 +397,12 @@ const simple = {
   },
   radio: {
     title: "Radio Widget",
-    icon: <BsCircle size={16}/>,
+    icon: <BsCircle size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
       type: "object",
-      title: "Radio Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -434,19 +433,19 @@ const simple = {
     },
     optionsSchema: {
       type: "object",
-      title: "Radio Widget Title",
+      title: "Radio Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your radio field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your radio field"
         },
         readOnly: {
           type: "boolean",
@@ -487,12 +486,12 @@ const simple = {
   },
   switch: {
     title: "Switch Widget",
-    icon: <BsToggleOff size={16}/>,
+    icon: <BsToggleOff size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
       type: "object",
-      title: "Switch Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -523,19 +522,19 @@ const simple = {
     },
     optionsSchema: {
       type: "object",
-      title: "Radio Widget Title",
+      title: "Switch Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your switch field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your switch field"
         },
         readOnly: {
           type: "boolean",
@@ -566,12 +565,12 @@ const simple = {
   },
   checkboxes: {
     title: "Checkbox Widget",
-    icon: <BsCheckBox size={16}/>,
+    icon: <BsCheckBox size={16} />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
       type: "object",
-      title: "Radio Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -602,19 +601,19 @@ const simple = {
     },
     optionsSchema: {
       type: "object",
-      title: "Checkboxes Widget Title",
+      title: "Checkbox Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your checkbox field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your checkbox field"
         },
         readOnly: {
           type: "boolean",
@@ -681,17 +680,27 @@ const simple = {
   },
   textarea: {
     title: "Text Area",
-    icon: <AiOutlineContainer size={16}/>,
+    icon: <AiOutlineContainer size={16} />,
     description: "Text Area field",
     child: {},
     optionsUiSchema: {
       type: "object",
-      title: "Text Area Options Schema",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
           title: "UI Options",
           properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            },
             rows: {
               title: "Rows",
               description: "The number of the textarea rows",
@@ -713,16 +722,6 @@ const simple = {
               title: "Placeholder",
               description: "Provide a placeholder for the field",
               type: "string"
-            },
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string"
-                }
-              }
             }
           }
         }
@@ -739,19 +738,19 @@ const simple = {
     },
     optionsSchema: {
       type: "object",
-      title: "Checkboxes Widget Title",
+      title: "TextArea Schema",
       properties: {
         title: {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the title you want to be displayed to your textarea field"
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "Provide the description you want to be displayed to your textarea field"
         },
         readOnly: {
           type: "boolean",
@@ -782,12 +781,12 @@ const simple = {
   },
   object: {
     title: "JSON Object",
-    icon: <BsBraces size={16}/>,
+    icon: <BsBraces size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Object Widget Properties",
+      title: "Object Schema",
       properties: {
         title: {
           type: "string",
@@ -805,7 +804,7 @@ const simple = {
     },
     optionsUiSchema: {
       type: "object",
-      title: "Object UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -874,17 +873,19 @@ const simple = {
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Boolean Schema Options",
+      title: "Boolean Schema ",
       properties: {
         title: {
           type: "string",
           title: "Provide a title for the element",
-          description: "This title will be used for the form"
+          description:
+            "Provide the title you want to be displayed to your boolean field"
         },
         description: {
           type: "string",
           title: "Provide a desctiption for the element",
-          description: "This description will be used for the form"
+          description:
+            "Provide the description you want to be displayed to your boolean field"
         },
         readOnly: {
           type: "boolean",
@@ -901,7 +902,7 @@ const simple = {
     },
     optionsUiSchema: {
       type: "object",
-      title: "Switch Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -945,31 +946,32 @@ const simple = {
   },
   array: {
     title: "Array",
-    icon: <BsListOl size={16}/>,
+    icon: <BsListOl size={16} />,
     description:
       "A list of things. List of strings, numbers, objects, references",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Array Schema Options",
+      title: "Array Schema",
       properties: {
         title: {
           type: "string",
           title: "Provide a title for your array",
-          description: "This is the title that will be displayed for the array"
+          description:
+            "Provide the title you want to be displayed to your array"
         },
         description: {
           title: "Provide a descritpion for the element",
           type: "string",
           description:
-            "This description will be provided for this specific element"
+            "Provide the description you want to be displayed to your array"
         }
       }
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
       type: "object",
-      title: "Array UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -1017,7 +1019,7 @@ const simple = {
 const advanced = {
   accordionObjectField: {
     title: "Accordion Field",
-    icon: <AiOutlineBorderTop size={16}/>,
+    icon: <AiOutlineBorderTop size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1085,7 +1087,7 @@ const advanced = {
   },
   tabView: {
     title: "Tab Field",
-    icon: <BsLayoutSidebar size={16}/>,
+    icon: <BsLayoutSidebar size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1148,7 +1150,7 @@ const advanced = {
   },
   layerObjectField: {
     title: "Layer Field",
-    icon: <BsSquareHalf size={16}/>,
+    icon: <BsSquareHalf size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1229,7 +1231,7 @@ const advanced = {
   // },
   zenodo: {
     title: "Zenodo Field",
-    icon: <AiOutlineCloudDownload size={16}/>,
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1303,7 +1305,7 @@ const advanced = {
   },
   orcid: {
     title: "ORCiD Field",
-    icon: <AiOutlineCloudDownload size={16}/>,
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1377,7 +1379,7 @@ const advanced = {
   },
   idFetcher: {
     title: "Id Getter Field",
-    icon: <AiOutlineCloudDownload size={16}/>,
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1459,7 +1461,7 @@ const advanced = {
   },
   ror: {
     title: "ROR Field",
-    icon: <AiOutlineCloudDownload size={16}/>,
+    icon: <AiOutlineCloudDownload size={16} />,
     description: "Data in JSON format, Grouped section",
     child: {},
     optionsSchema: {
@@ -1533,7 +1535,7 @@ const advanced = {
   },
   tags: {
     title: "Tags Field",
-    icon: <BsTag size={16}/>,
+    icon: <BsTag size={16} />,
     description: "Add keywords, tags, etc",
     child: {},
     optionsSchema: {

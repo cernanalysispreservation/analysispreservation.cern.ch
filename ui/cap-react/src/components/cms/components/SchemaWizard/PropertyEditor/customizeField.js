@@ -2,13 +2,11 @@ import React from "react";
 
 import Box from "grommet/components/Box";
 
-import Form from "../../../../drafts/form/GrommetForm";
 import { PropTypes } from "prop-types";
 
-import fieldTypes from "../../utils/fieldTypes";
-import { Label } from "grommet";
-
 import _debounce from "lodash/debounce";
+
+import PropKeyEditorForm from "./PropertyKeyEditorForm";
 
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
 
@@ -50,41 +48,6 @@ class CustomizeField extends React.Component {
     });
   };
 
-  gridChange = new_grid => {
-    let { uiSchema } = this.props;
-    uiSchema = uiSchema ? uiSchema.toJS() : {};
-
-    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
-    let { grid = {}, ...restUIOptions } = uiOptions;
-
-    grid = { ...grid, ...new_grid };
-    let _uiOptions = { grid, ...restUIOptions };
-
-    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
-      ...rest,
-      "ui:options": _uiOptions
-    });
-  };
-
-  gridColumnChange = new_gridColumn => {
-    let { uiSchema } = this.props;
-    uiSchema = uiSchema ? uiSchema.toJS() : {};
-
-    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
-    let { grid = {}, ...restUIOptions } = uiOptions;
-
-    // delete previous gridColumns
-    delete grid.gridColumns;
-
-    grid = { ...grid, gridColumns: new_gridColumn };
-
-    let _uiOptions = { grid, ...restUIOptions };
-    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
-      ...rest,
-      "ui:options": _uiOptions
-    });
-  };
-
   sizeChange = newSize => {
     if (SIZE_OPTIONS.indexOf(newSize) < 0) return;
 
@@ -121,133 +84,18 @@ class CustomizeField extends React.Component {
     });
   };
 
-  getSchemaForm = (uiSchema = {}, schema = {}) => {
-    let type;
-
-    // in case we can not define the type of the element from the uiSchema,
-    // extract the type from the schema
-    if (
-      !uiSchema ||
-      (!uiSchema["ui:widget"] &&
-        !uiSchema["ui:field"] &&
-        !uiSchema["ui:object"])
-    ) {
-      type = schema.type === "string" ? "text" : schema.type;
-    } else {
-      if (uiSchema["ui:widget"]) {
-        type = uiSchema["ui:widget"];
-      }
-      if (uiSchema["ui:field"]) {
-        type = uiSchema["ui:field"];
-        if (
-          uiSchema["ui:field"] === "idFetcher" &&
-          uiSchema["ui:servicesList"].length < 3
-        ) {
-          type = uiSchema["ui:servicesList"][0].value;
-        }
-      }
-      if (uiSchema["ui:object"]) {
-        type = uiSchema["ui:object"];
-      }
-    }
-
-    // if there is no type then there is nothing to return
-    if (!type) return;
-    const objs = {
-      ...fieldTypes.advanced.fields,
-      ...fieldTypes.simple.fields
-    };
-
-    return (
-      <Box flex={true}>
-        <Box colorIndex="accent-2" flex={false} pad="small">
-          <Label size="medium" margin="none">
-            Basic field info
-          </Label>
-        </Box>
-        <Box
-          flex={true}
-          colorIndex="light-2"
-          pad="none"
-          margin={{ bottom: "medium" }}
-        >
-          <Form
-            schema={objs[type].optionsSchema}
-            uiSchema={objs[type].optionsSchemaUiSchema}
-            formData={this.state.schema}
-            onChange={_debounce(this._onSchemaChange.bind(this), 500)}
-          />
-        </Box>
-      </Box>
-    );
-  };
-
-  getUISchemaForm = (uiSchema = {}, schema = {}) => {
-    let type;
-    // in case we can not define the type of the element from the uiSchema,
-    // extract the type from the schema
-    if (
-      !uiSchema ||
-      (!uiSchema["ui:widget"] &&
-        !uiSchema["ui:field"] &&
-        !uiSchema["ui:object"])
-    ) {
-      type = schema.type === "string" ? "text" : schema.type;
-    } else {
-      if (uiSchema["ui:widget"]) {
-        type = uiSchema["ui:widget"];
-      }
-      if (uiSchema["ui:field"]) {
-        type = uiSchema["ui:field"];
-        if (
-          uiSchema["ui:field"] === "idFetcher" &&
-          uiSchema["ui:servicesList"].length < 3
-        ) {
-          type = uiSchema["ui:servicesList"][0].value;
-        }
-      }
-      if (uiSchema["ui:object"]) {
-        type = uiSchema["ui:object"];
-      }
-    }
-    // if there is no type then there is nothing to return
-    if (!type) return;
-    const objs = {
-      ...fieldTypes.advanced.fields,
-      ...fieldTypes.simple.fields
-    };
-
-    if (!objs[type]) return;
-
-    return (
-      <Box
-        flex={true}
-        colorIndex="light-2"
-        pad="none"
-        margin={{ bottom: "medium" }}
-      >
-        <Box colorIndex="accent-2" flex={false} pad="small">
-          <Label size="medium" margin="none">
-            Field Layout
-          </Label>
-        </Box>
-        <Form
-          schema={objs[type].optionsUiSchema}
-          uiSchema={objs[type].optionsUiSchemaUiSchema}
-          formData={uiSchema}
-          onChange={_debounce(this._onUiSchemaChange.bind(this), 500)}
-        />
-      </Box>
-    );
-  };
-
   render() {
     return (
       <Box flex={false}>
-        {this.getSchemaForm(
-          this.props.uiSchema && this.props.uiSchema.toJS(),
-          this.props.schema && this.props.schema.toJS()
-        )}
+        <PropKeyEditorForm
+          schema={this.props.schema && this.props.schema.toJS()}
+          uiSchema={this.props.uiSchema && this.props.uiSchema.toJS()}
+          formData={this.state.schema}
+          onChange={_debounce(this._onSchemaChange.bind(this), 500)}
+          optionsSchemaObject="optionsSchema"
+          optionsUiSchemaObject="optionsSchemaUiSchema"
+          title="Schema Settings"
+        />
         <Box>
           <Box
             direction="row"
@@ -306,11 +154,17 @@ class CustomizeField extends React.Component {
                 </Box>
               ))}
           </Box>
-          {this.props.path.get("path").size > 0 &&
-            this.getUISchemaForm(
-              this.props.uiSchema && this.props.uiSchema.toJS(),
-              this.props.schema && this.props.schema.toJS()
-            )}
+          {this.props.path.get("path").size > 0 && (
+            <PropKeyEditorForm
+              schema={this.props.schema && this.props.schema.toJS()}
+              uiSchema={this.props.uiSchema && this.props.uiSchema.toJS()}
+              formData={this.props.uiSchema && this.props.uiSchema.toJS()}
+              onChange={_debounce(this._onUiSchemaChange.bind(this), 500)}
+              optionsSchemaObject="optionsUiSchema"
+              optionsUiSchemaObject="optionsUiSchemaUiSchema"
+              title="UI Schema Settings"
+            />
+          )}
           <Box
             direction="row"
             wrap={true}

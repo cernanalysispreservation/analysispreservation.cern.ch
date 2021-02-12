@@ -4,10 +4,7 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
-import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
-import CloseIcon from "grommet/components/icons/base/Close";
-
-import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 const EditableField = ({
   value,
@@ -55,7 +52,7 @@ const EditableField = ({
       <Label size={size} margin="none" direction="row">
         <input
           key="draft-input"
-          style={{ padding: 0, border: "1px solid #136994", borderRadius: 0 }}
+          style={{ padding: 0, border: "1px solid #007298", borderRadius: 0 }}
           onChange={_onChange}
           value={currentValue}
           autoFocus={true}
@@ -69,10 +66,10 @@ const EditableField = ({
           margin="none"
           onClick={() => _update()}
         >
-          <CheckmarkIcon colorIndex="neutral-1" size="xsmall" />
+          <AiOutlineCheck />
         </Box>
         <Box margin="none" onClick={() => _unedit()}>
-          <CloseIcon colorIndex="neutral-1" size="xsmall" />
+          <AiOutlineClose />
         </Box>
       </Box>
     </Box>
@@ -104,7 +101,7 @@ const EditableField = ({
       >
         <Box style={{ marginRight: "5px" }}>
           {renderDisplay ? (
-            renderDisplay(this.state.value)
+            renderDisplay(value)
           ) : (
             <Label size={size} align="start" pad="none" margin="none">
               {value || emptyValue}
