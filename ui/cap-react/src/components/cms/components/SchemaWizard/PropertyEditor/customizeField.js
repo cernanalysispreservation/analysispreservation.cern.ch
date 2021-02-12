@@ -6,7 +6,7 @@ import Form from "../../../../drafts/form/GrommetForm";
 import { PropTypes } from "prop-types";
 
 import fieldTypes from "../../utils/fieldTypes";
-import { Label } from "grommet";
+import { Heading } from "grommet";
 
 import _debounce from "lodash/debounce";
 
@@ -159,18 +159,18 @@ class CustomizeField extends React.Component {
     };
 
     return (
-      <Box flex={true}>
-        <Box colorIndex="accent-2" flex={false} pad="small">
-          <Label size="medium" margin="none">
-            Basic field info
-          </Label>
+      <Box
+        flex={true}
+        colorIndex="light-2"
+        margin={{ bottom: "small" }}
+        style={{ borderRadius: "5px" }}
+      >
+        <Box flex={false} pad="small" separator="bottom">
+          <Heading margin="none" tag="h3">
+            Schema Settings
+          </Heading>
         </Box>
-        <Box
-          flex={true}
-          colorIndex="light-2"
-          pad="none"
-          margin={{ bottom: "medium" }}
-        >
+        <Box pad="small">
           <Form
             schema={objs[type].optionsSchema}
             uiSchema={objs[type].optionsSchemaUiSchema}
@@ -225,18 +225,21 @@ class CustomizeField extends React.Component {
         colorIndex="light-2"
         pad="none"
         margin={{ bottom: "medium" }}
+        style={{ borderRadius: "5px" }}
       >
-        <Box colorIndex="accent-2" flex={false} pad="small">
-          <Label size="medium" margin="none">
-            Field Layout
-          </Label>
+        <Box flex={false} pad="small" separator="bottom">
+          <Heading tag="h3" margin="none">
+            UI Schema Settings
+          </Heading>
         </Box>
-        <Form
-          schema={objs[type].optionsUiSchema}
-          uiSchema={objs[type].optionsUiSchemaUiSchema}
-          formData={uiSchema}
-          onChange={_debounce(this._onUiSchemaChange.bind(this), 500)}
-        />
+        <Box pad="small">
+          <Form
+            schema={objs[type].optionsUiSchema}
+            uiSchema={objs[type].optionsUiSchemaUiSchema}
+            formData={uiSchema}
+            onChange={_debounce(this._onUiSchemaChange.bind(this), 500)}
+          />
+        </Box>
       </Box>
     );
   };

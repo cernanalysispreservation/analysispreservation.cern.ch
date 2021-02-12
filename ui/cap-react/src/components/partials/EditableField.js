@@ -4,10 +4,7 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
-import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
-import CloseIcon from "grommet/components/icons/base/Close";
-
-import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 
 const EditableField = ({
   value,
@@ -15,7 +12,8 @@ const EditableField = ({
   emptyValue = "Untitled Document",
   renderDisplay = null,
   onUpdate = null,
-  isEditable = true
+  isEditable = true,
+  iconsColor = "#007298"
 }) => {
   const [currentValue, setCurrentValue] = useState(value);
   const [hoverTitle, setHoverTitle] = useState(false);
@@ -69,10 +67,10 @@ const EditableField = ({
           margin="none"
           onClick={() => _update()}
         >
-          <CheckmarkIcon colorIndex="neutral-1" size="xsmall" />
+          <AiOutlineCheck color={iconsColor} />
         </Box>
         <Box margin="none" onClick={() => _unedit()}>
-          <CloseIcon colorIndex="neutral-1" size="xsmall" />
+          <AiOutlineClose color={iconsColor} />
         </Box>
       </Box>
     </Box>
@@ -124,7 +122,8 @@ EditableField.propTypes = {
   value: PropTypes.string,
   onUpdate: PropTypes.func,
   size: PropTypes.string,
-  isEditable: PropTypes.bool
+  isEditable: PropTypes.bool,
+  iconsColor: PropTypes.string
 };
 
 export default EditableField;
