@@ -61,7 +61,7 @@ def cache_cms_triggers_in_es_from_file(source):
 
 
 def extract_keywords_from_excel(file):
-    df = pd.read_excel(file)
+    df = pd.read_excel(file, engine='openpyxl')
     df.drop(['Timestamp', 'Email Address'], axis=1, inplace=True)
     df.rename(columns=NEW_COLUMN_NAMES, inplace=True)
 

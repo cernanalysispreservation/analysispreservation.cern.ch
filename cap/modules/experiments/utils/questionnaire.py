@@ -379,7 +379,7 @@ WG_MAP = {
 
 
 def extract_questionnaires_from_excel(file):
-    df = pd.read_excel(file, header=None, index=False)
+    df = pd.read_excel(file, header=None, index=False, engine='openpyxl')
     replaceable = {i: new_names[key] for i, key in enumerate(new_names.keys())}
 
     df = df.iloc[8:]
