@@ -128,7 +128,8 @@ const Button = ({
   size = "medium",
   reverse = false,
   className = "",
-  id = ""
+  id = "",
+  dataCy = ""
 }) => {
   const getPadFromSize = size => {
     const choices = {
@@ -250,6 +251,7 @@ const Button = ({
       color={color}
       className={className}
       id={id}
+      data-cy={dataCy}
     >
       {loading && (
         <Box style={{ position: "absolute", left: getLoadingLeft(size) }}>
@@ -262,6 +264,7 @@ const Button = ({
 };
 
 Button.propTypes = {
+  dataCy: PropTypes.string,
   text: PropTypes.string,
   primary: PropTypes.bool,
   primaryOutline: PropTypes.bool,

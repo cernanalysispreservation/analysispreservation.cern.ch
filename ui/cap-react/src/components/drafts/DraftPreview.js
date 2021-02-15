@@ -199,6 +199,7 @@ const DraftPreview = props => {
               type="warning"
               action={
                 <Button
+                  dataCy="change-to-draft"
                   text="Change to Draft"
                   size="small"
                   onClick={() => props.edit(props.draft_id)}

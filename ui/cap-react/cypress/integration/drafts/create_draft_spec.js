@@ -1,71 +1,75 @@
 describe("Create Draft", () => {
-  it("Update the general title of the draft", () => {
-    let firstTitle = "Random Title";
-    let updatedTitle = "This is my new title";
-
+  let firstTitle = "Random Title";
+  let updatedTitle = "This is my new title";
+  it("Create a new Draft", () => {
     // create a new ALICE Analysis
     // given a random tiltle
-    cy.createDraft("ALICE Analysis", firstTitle);
+    cy.createDraft("CMS Analysis", firstTitle);
+  });
 
+  it("Update the title but discard saving", () => {
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+
+    cy.get("[data-cy=drafts-list] a")
+      .first()
+      .click();
     // get the title div
     // and enable editing
-    cy.get("div")
+    cy.get("[data-cy=editable-title-wrapper]")
       .contains(firstTitle)
       .click();
 
-    // erase the previous title and insert the new one
-    cy.get("input.general-title-input")
-      .should("have.value", firstTitle)
-      .clear()
-      .type(updatedTitle);
-
-    // approve the changes
-    cy.get("div.general-title-checkmark").click();
+    // cancel the changes
+    cy.get("[data-cy=closeicon]").click();
 
     cy.wait(2000);
 
     // search the new title
-    cy.get("div")
-      .contains(updatedTitle)
+    cy.get("[data-cy=editable-title-wrapper]").contains(firstTitle);
+  });
+
+  it("Update the general title of the draft", () => {
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+
+    cy.get("[data-cy=drafts-list] a")
+      .first()
       .click();
+    // get the title div
+    // and enable editing
+    cy.get("[data-cy=editable-title-wrapper]")
+      .contains(firstTitle)
+      .click();
+
+    // erase the previous title and insert the new one
+    cy.get("[data-cy=general-title-input]")
+      .should("have.value", firstTitle)
+      .clear()
+      .type("This is my new title{enter}");
+
+    // search the new title
+    cy.get("[data-cy=editable-title-wrapper]").contains(updatedTitle);
+
     // make sure that the previous is not there and the update was succesfull
-    cy.get("div")
+    cy.get("[data-cy=editable-title-wrapper]")
       .contains(firstTitle)
       .should("not.exist");
   });
-  it("Update the title but discard saving", () => {
-    let firstTitle = "Random Title";
-    let updatedTitle = "This is my new title";
 
-    // create a new ALICE Analysis
-    // given a random tiltle
-    cy.createDraft("ALICE Analysis", firstTitle);
+  it("Delete Draft", () => {
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
-    // get the title div
-    // and enable editing
-    cy.get("div")
-      .contains(firstTitle)
+    cy.get("[data-cy=drafts-list] a")
+      .first()
       .click();
 
-    // erase the previous title and insert the new one
-    cy.get("input.general-title-input")
-      .should("have.value", firstTitle)
-      .clear()
-      .type(updatedTitle);
+    // navoigate to settings tab
+    cy.get("[data-cy=draft-settings]").click();
 
-    // approve the changes
-    cy.get("div.general-title-closeicon").click();
+    cy.get("[data-cy=draft-delete-btn]").click();
 
-    cy.wait(2000);
-
-    // search the new title
-    cy.get("div")
-      .contains(firstTitle)
-      .click();
-    // make sure that the previous is not there and the update was succesfull
-    cy.get("div")
-      .contains(updatedTitle)
-      .should("not.exist");
+    cy.get("[data-cy=layer-primary-action]").click();
+    cy.wait(1000);
+    cy.url().should("eq", "http://localhost:3000/");
   });
 
   it("Does not allow to continue when anatype is not selected", () => {

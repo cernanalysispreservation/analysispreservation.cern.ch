@@ -68,7 +68,7 @@ const Menu = ({
   );
 
   return (
-    <Box ref={dropDownMenu} className="menu">
+    <Box ref={dropDownMenu} className="menu" data-cy="header-menu">
       <Wrapper
         hover={hoverColor}
         expanded={expanded}

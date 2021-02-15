@@ -88,7 +88,12 @@ class SettingsIndex extends React.Component {
           this.setState({ layer: { active: false } });
         }}
       >
-        <Box flex={true} size="medium" pad={{ vertical: "large" }}>
+        <Box
+          flex={true}
+          size="medium"
+          pad={{ vertical: "large" }}
+          data-cy="settings-token-form"
+        >
           <Paragraph align="start" margin="none" />
           <Form
             schema={
@@ -160,12 +165,16 @@ class SettingsIndex extends React.Component {
                     <tbody>
                       {this.props.tokens.map((token, key) => {
                         return token && token.t_id ? (
-                          <TableRow key={token.t_id}>
+                          <TableRow
+                            key={token.name}
+                            data-cy="settings-table-token-id"
+                          >
                             <td key="id">{token.t_id}</td>
                             <td key="name">{token.name}</td>
                             <td key="access_token">{token.access_token}</td>
-                            <td key="action">
+                            <td key="action" data-cy={token.name}>
                               <Anchor
+                                dataCy={token.name}
                                 icon={<AiOutlineClose />}
                                 size="xsmall"
                                 onClick={this._revokeToken.bind(

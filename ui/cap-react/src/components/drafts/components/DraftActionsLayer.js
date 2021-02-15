@@ -71,7 +71,10 @@ class DraftActionsLayer extends React.Component {
       case "publish":
         return (
           <div>
-            {!equal(cleanDeep(this.props.formData), cleanDeep(this.props.metadata)) && (
+            {!equal(
+              cleanDeep(this.props.formData),
+              cleanDeep(this.props.metadata)
+            ) && (
               <Notification
                 type="warning"
                 text="Your analysis has unsaved changes. If you continue these changes will be saved and published."
@@ -81,7 +84,8 @@ class DraftActionsLayer extends React.Component {
               You will now create a <strong>new published version</strong>
             </Paragraph>
             <Paragraph>
-              Your published record will be visible to <strong>all members of the collaboration</strong>.
+              Your published record will be visible to{" "}
+              <strong>all members of the collaboration</strong>.
             </Paragraph>
           </div>
         );
@@ -138,6 +142,7 @@ class DraftActionsLayer extends React.Component {
             />
 
             <Button
+              dataCy="layer-primary-action"
               text={
                 this.props.type.charAt(0).toUpperCase() +
                 this.props.type.slice(1)

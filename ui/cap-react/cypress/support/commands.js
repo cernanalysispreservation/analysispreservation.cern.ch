@@ -26,7 +26,7 @@
 
 // Login mechanism with the UI
 Cypress.Commands.add("login", (email, password) => {
-  cy.visit("http://localhost:3000/");
+  cy.visit("/");
   cy.get("div.localLogin").click();
   cy.get("input[type='email']").clear();
   cy.get("input[type='email']").type(email);
@@ -40,7 +40,7 @@ Cypress.Commands.add("login", (email, password) => {
 Cypress.Commands.add("loginUrl", (email, password) => {
   cy.request({
     method: "POST",
-    url: "http://localhost:3000/api/login/local?next=/",
+    url: "/api/login/local?next=/",
     body: { username: email, password: password }
   })
     .then(resp => {
@@ -49,9 +49,9 @@ Cypress.Commands.add("loginUrl", (email, password) => {
     .then(resp => {
       cy.request({
         method: "GET",
-        url: "http://localhost:3000/api/me"
+        url: "/api/me"
       }).then(res => {
-        cy.visit("http://localhost:3000/");
+        cy.visit("/");
       });
     });
 });
@@ -69,9 +69,10 @@ Cypress.Commands.add("logout", () => {
 
 // Create draft with a specific title
 
-Cypress.Commands.add("createDraft", (anatype, generalTitle) => {
-  cy.login("info@inveniosoftware.org", "infoinfo");
-  cy.wait(2000);
+Cypress.Commands.add("createDraft", (anatype, generalTitle, user = "info") => {
+  cy.login(`${user}@inveniosoftware.org`, `${user}${user}`);
+
+  cy.wait(1000);
 
   // open the Create modal
   cy.get("div")
@@ -94,4 +95,14 @@ Cypress.Commands.add("createDraft", (anatype, generalTitle) => {
   cy.wait(1000);
 
   cy.url().should("include", "/drafts");
+});
+
+// Navigate to Form Builder
+Cypress.Commands.add("goToFormBuilder", () => {
+  cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+  cy.wait(2000);
+
+  cy.visit("/cms");
+
+  cy.wait(2000);
 });

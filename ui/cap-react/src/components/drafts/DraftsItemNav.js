@@ -154,7 +154,7 @@ class DraftsItemNav extends React.Component {
               </Box>
             </Anchor>
           </Box>
-          <Box className="animated-nav-row">
+          <Box className="animated-nav-row" data-cy="draft-settings">
             <Anchor path={`/drafts/${draft_id}/settings`}>
               <Box
                 justify="center"

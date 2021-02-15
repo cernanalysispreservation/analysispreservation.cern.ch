@@ -159,6 +159,7 @@ class Header extends React.Component {
                   right={3}
                   hoverColor="rgba(67,135,170,1)"
                   iconWrapperClassName="headerMenuAppp"
+                  dataCy="header-menu"
                 >
                   {this.props.permissions && (
                     <MediaQuery maxWidth={719}>
@@ -179,6 +180,7 @@ class Header extends React.Component {
                     icon={<AiOutlineSetting color="#000" />}
                     path="/settings"
                     href="#"
+                    dataCy="settings-menuitem"
                   />
                   <MenuItem
                     hovered
