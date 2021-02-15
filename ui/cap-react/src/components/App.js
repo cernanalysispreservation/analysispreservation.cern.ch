@@ -23,6 +23,8 @@ import { connect } from "react-redux";
 
 import DocumentTitle from "./partials/Title";
 
+import { HOME, WELCOME, ABOUT, POLICY, CMS, SEARCH_TIPS } from "./routes";
+
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
 // component at the top-level.
@@ -47,13 +49,13 @@ class App extends React.Component {
         <Box flex={false} full={true}>
           <DocumentTitle title="Dashboard">
             <Switch id="main-container">
-              <Route path="/login" component={noRequireAuth(WelcomePage)} />
-              <Route path="/about" component={AboutPage} />
-              <Route path="/policy" component={PolicyPage} />
-              {/* <Route path="/status" component={StatusPage} /> */}
-              <Route path="/cms" component={CMSIndex} />
-              <Route path="/search-tips" component={HowToSearchPage} />
-              <Route path="/" component={requireAuth(IndexPage)} />
+              <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
+              <Route path={ABOUT} component={AboutPage} />
+              <Route path={POLICY} component={PolicyPage} />
+              {/* <Route path={STATUS} component={StatusPage} /> */}
+              <Route path={CMS} component={CMSIndex} />
+              <Route path={SEARCH_TIPS} component={HowToSearchPage} />
+              <Route path={HOME} component={requireAuth(IndexPage)} />
               {/*
             <Route component={NotFoundPage} />
              */}

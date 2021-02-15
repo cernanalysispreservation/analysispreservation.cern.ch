@@ -21,6 +21,17 @@ import PublishedIndex from "../published/PublishedIndex";
 import GrommetFooter from "../footer/Footer";
 import NotFoundPage from "../errors/404";
 
+import {
+  HOME,
+  DRAFTS,
+  PUBLISHED,
+  SETTINGS,
+  WORKFLOWS,
+  CREATE_INDEX,
+  SEARCH,
+  DRAFT_ITEM
+} from "../routes";
+
 class IndexPage extends React.Component {
   constructor(props) {
     super(props);
@@ -32,14 +43,14 @@ class IndexPage extends React.Component {
         <Header />
         <Box flex={true}>
           <Switch>
-            <Route path="/drafts/:draft_id" component={DraftsItemIndex} />
-            <Route exact path="/" component={Dashboard} />
-            <Route path="/search/:anatype?" component={SearchPage} />
-            <Route exact path="/drafts" component={SearchPage} />
-            <Route path="/published" component={PublishedIndex} />
-            <Route path="/settings" component={SettingsIndex} />
-            <Route path="/workflows" component={WorkflowsIndex} />
-            <Route path="/create/:anatype?" component={CreateIndex} />
+            <Route path={DRAFT_ITEM} component={DraftsItemIndex} />
+            <Route exact path={HOME} component={Dashboard} />
+            <Route path={SEARCH} component={SearchPage} />
+            <Route exact path={DRAFTS} component={SearchPage} />
+            <Route path={PUBLISHED} component={PublishedIndex} />
+            <Route path={SETTINGS} component={SettingsIndex} />
+            <Route path={WORKFLOWS} component={WorkflowsIndex} />
+            <Route path={CREATE_INDEX} component={CreateIndex} />
             <Route component={NotFoundPage} />
           </Switch>
         </Box>
