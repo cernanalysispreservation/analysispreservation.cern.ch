@@ -5,7 +5,6 @@ import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 
-import { connect } from "react-redux";
 import Button from "../../../partials/Button";
 
 class SelectContentType extends React.Component {
@@ -27,10 +26,6 @@ class SelectContentType extends React.Component {
         }
       ]
     };
-  }
-
-  componentDidMount() {
-    this.props.getSchemas();
   }
 
   render() {
@@ -76,19 +71,8 @@ class SelectContentType extends React.Component {
 }
 
 SelectContentType.propTypes = {
-  list: PropTypes.object,
   select: PropTypes.func,
-  getSchemas: PropTypes.func,
   contentTypes: PropTypes.object
 };
 
-const mapStateToProps = state => ({
-  contentTypes: state.auth.getIn(["currentUser", "depositGroups"])
-});
-
-const mapDispatchToProps = () => ({});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectContentType);
+export default SelectContentType;
