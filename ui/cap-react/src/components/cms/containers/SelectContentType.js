@@ -1,17 +1,16 @@
 import { connect } from "react-redux";
 import SelectContentType from "../components/CMSIndex/SelectContentType";
-import { selectContentType, getSchemas } from "../../../actions/schemaWizard";
+import { selectContentType } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
   return {
-    list: state.schemaWizard.get("list")
+    contentTypes: state.auth.getIn(["currentUser", "depositGroups"])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    select: (id, version) => dispatch(selectContentType(id, version)),
-    getSchemas: () => dispatch(getSchemas())
+    select: (id, version) => dispatch(selectContentType(id, version))
   };
 }
 

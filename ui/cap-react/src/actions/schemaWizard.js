@@ -3,8 +3,6 @@ import { push } from "connected-react-router";
 import cogoToast from "cogo-toast";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
-export const LIST_UPDATE = "LIST_UPDATE";
-
 export const ADD_PROPERTY = "ADD_PROPERTY";
 export const ADD_PROPERTY_INIT = "ADD_PROPERTY_INIT";
 
@@ -43,13 +41,6 @@ export function schemaInit(id, data, configs = {}) {
   };
 }
 
-export function listUpdate(items) {
-  return {
-    type: LIST_UPDATE,
-    items
-  };
-}
-
 export function enableCreateMode() {
   return { type: CREATE_MODE_ENABLE };
 }
@@ -58,26 +49,6 @@ export function selectProperty(path) {
   return {
     type: PROPERTY_SELECT,
     path
-  };
-}
-
-export function getSchemas() {
-  return function(dispatch) {
-    axios
-      .get("/api/jsonschemas")
-      .then(resp => {
-        let schemas = resp.data;
-        let _schemas = {};
-        schemas.map(schema => {
-          _schemas[schema.name] = {
-            [schema.version]: schema
-          };
-        });
-        dispatch(listUpdate(_schemas));
-      })
-      .catch(err => {
-        dispatch(schemaError(err));
-      });
   };
 }
 

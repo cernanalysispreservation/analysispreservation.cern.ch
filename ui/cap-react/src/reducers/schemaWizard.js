@@ -6,7 +6,6 @@ import {
   CURRENT_UPDATE_PATH,
   CURRENT_UPDATE_SCHEMA_PATH,
   CURRENT_UPDATE_UI_SCHEMA_PATH,
-  LIST_UPDATE,
   PROPERTY_SELECT,
   CREATE_MODE_ENABLE,
   ADD_PROPERTY,
@@ -16,7 +15,6 @@ import {
 } from "../actions/schemaWizard";
 
 const initialState = Map({
-  list: {},
   current: fromJS({
     schema: {},
     uiSchema: {}
@@ -44,8 +42,6 @@ export default function schemaReducer(state = initialState, action) {
         .set("loader", false);
     case SCHEMA_ERROR:
       return state.set("error", action.payload).set("loader", false);
-    case LIST_UPDATE:
-      return state.set("list", Map(action.items));
 
     case ADD_PROPERTY_INIT:
       return state.set(
