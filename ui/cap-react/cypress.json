@@ -1,3 +1,6 @@
 {
-  "video": false
+  "video": false,
+  "downloadsFolder": "cypress/downloads",
+  "viewportHeight": 1300,
+  "viewportWidth": 1800
 }
