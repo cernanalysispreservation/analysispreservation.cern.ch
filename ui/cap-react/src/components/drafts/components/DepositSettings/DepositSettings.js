@@ -76,6 +76,7 @@ class DepositSettings extends React.Component {
                     ? null
                     : "your account has no permissions to publish"
                 }
+                data-cy="settings-publish-btn"
               >
                 <Button
                   text={isPublishedOnce ? "Publish New Version" : "Publish"}
@@ -149,6 +150,7 @@ class DepositSettings extends React.Component {
               )}
               <Box>
                 <Button
+                  dataCy="draft-delete-btn"
                   onClick={this._actionHandler("delete")}
                   icon={<AiOutlineDelete size={BUTTON_IMAGE_SIZE} />}
                   text="Delete"

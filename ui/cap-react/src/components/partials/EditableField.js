@@ -12,7 +12,8 @@ const EditableField = ({
   emptyValue = "Untitled Document",
   renderDisplay = null,
   onUpdate = null,
-  isEditable = true
+  isEditable = true,
+  dataCy = ""
 }) => {
   const [currentValue, setCurrentValue] = useState(value);
   const [hoverTitle, setHoverTitle] = useState(false);
@@ -52,7 +53,8 @@ const EditableField = ({
       <Label size={size} margin="none" direction="row">
         <input
           key="draft-input"
-          style={{ padding: 0, border: "1px solid #007298", borderRadius: 0 }}
+          data-cy={dataCy}
+          style={{ padding: 0, border: "1px solid #136994", borderRadius: 0 }}
           onChange={_onChange}
           value={currentValue}
           autoFocus={true}
@@ -65,11 +67,12 @@ const EditableField = ({
           pad={{ horizontal: "small" }}
           margin="none"
           onClick={() => _update()}
+          data-cy="checkmark"
         >
           <AiOutlineCheck />
         </Box>
-        <Box margin="none" onClick={() => _unedit()}>
-          <AiOutlineClose />
+        <Box margin="none" onClick={() => _unedit()} data-cy="closeicon">
+          <AiOutlineClose colorIndex="neutral-1" size="xsmall" />
         </Box>
       </Box>
     </Box>
@@ -83,6 +86,7 @@ const EditableField = ({
         wrap={false}
         onMouseEnter={() => setHoverTitle(true)}
         onMouseLeave={() => setHoverTitle(false)}
+        data-cy="editable-title-wrapper"
         onClick={
           isEditable
             ? () => {
@@ -120,7 +124,8 @@ EditableField.propTypes = {
   value: PropTypes.string,
   onUpdate: PropTypes.func,
   size: PropTypes.string,
-  isEditable: PropTypes.bool
+  isEditable: PropTypes.bool,
+  dataCy: PropTypes.string
 };
 
 export default EditableField;

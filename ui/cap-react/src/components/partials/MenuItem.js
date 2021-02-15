@@ -40,10 +40,11 @@ const MenuItem = ({
   className = "",
   separator = false,
   hovered = false,
-  background = "rgb(255, 255, 255)"
+  background = "rgb(255, 255, 255)",
+  dataCy = ""
 }) => {
   return (
-    <div className={className}>
+    <div className={className} data-cy={dataCy}>
       <Wrapper
         onClick={onClick}
         href={onClick ? null : href}
@@ -73,7 +74,8 @@ MenuItem.propTypes = {
   className: PropTypes.string,
   separator: PropTypes.bool,
   hovered: PropTypes.bool,
-  background: PropTypes.string
+  background: PropTypes.string,
+  dataCy: PropTypes.string
 };
 
 export default MenuItem;
