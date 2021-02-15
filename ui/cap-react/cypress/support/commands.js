@@ -95,3 +95,13 @@ Cypress.Commands.add("createDraft", (anatype, generalTitle) => {
 
   cy.url().should("include", "/drafts");
 });
+
+// Navigate to Form Builder
+Cypress.Commands.add("goToFormBuilder", () => {
+  cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+  cy.wait(2000);
+
+  cy.visit("http://localhost:3000/cms");
+
+  cy.wait(2000);
+});
