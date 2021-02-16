@@ -1,0 +1,2275 @@
+{
+  "Test Logout Process": {
+    "timestamp": 1613662370618,
+    "routes": [
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnRiw",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnRiw.0&sid=Oh8SNEyLv2gNnp0IAAAS",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "15:40/browser-sync",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnRiw.1&sid=Oh8SNEyLv2gNnp0IAAAS",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnRiw.2&sid=Oh8SNEyLv2gNnp0IAAAS",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "74:42/browser-sync,[\"ui:history:connected\",{\"href\":\"http://localhost:3000/\"}]",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnRiw.3&sid=Oh8SNEyLv2gNnp0IAAAS",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/api/me",
+        "method": "GET",
+        "status": 401,
+        "headers": {},
+        "body": null,
+        "response": {
+          "message": "The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.",
+          "status": 401
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/login/local?next=/",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": {
+          "username": "info@inveniosoftware.org",
+          "password": "infoinfo",
+          "next": "/"
+        },
+        "response": {
+          "next": "/",
+          "user": "info@inveniosoftware.org"
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/me",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {
+          "deposit_groups": [
+            {
+              "deposit_group": "alice-analysis",
+              "name": "ALICE Analysis",
+              "schema_path": "deposits/records/alice-analysis-v0.0.1.json"
+            },
+            {
+              "deposit_group": "antonis",
+              "name": "antonis",
+              "schema_path": "deposits/records/antonis-v0.0.2.json"
+            },
+            {
+              "deposit_group": "atlas-analysis",
+              "name": "ATLAS Analysis",
+              "schema_path": "deposits/records/atlas-analysis-v0.0.1.json"
+            },
+            {
+              "deposit_group": "cms-analysis",
+              "name": "CMS Analysis",
+              "schema_path": "deposits/records/cms-analysis-v0.0.1.json"
+            },
+            {
+              "deposit_group": "cms-stats-questionnaire",
+              "name": "CMS Statistics Questionnaire",
+              "schema_path": "deposits/records/cms-stats-questionnaire-v0.0.2.json"
+            },
+            {
+              "deposit_group": "lhcb",
+              "name": "LHCb Analysis",
+              "schema_path": "deposits/records/lhcb-v0.0.1.json"
+            }
+          ],
+          "email": "info@inveniosoftware.org",
+          "id": 1,
+          "profile": {
+            "services": {}
+          }
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/dashboard",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {
+          "drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:41.411764+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "9fc36457607d43fd92324a6d5c0816f0",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:41.411770+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:17.083799+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "51b0de3aaed44bdb946f8449cd813b49",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:19.879928+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "antonios.papadopoulos@cern.ch"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "antonios.papadopoulos@cern.ch"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "antonios.papadopoulos@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T14:10:23.428898+00:00",
+                "created_by": "antonios.papadopoulos@cern.ch",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "a2a516a2dca14cd58c7022a6d2e18d14",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "dsds"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T14:10:23.428921+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:30:09.676645+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "7fad788fa1d748438e483607bd963d4c",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:30:12.065492+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:02:19.946782+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "8a5bdcea142f410b946a3010c88ca20a",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:02:22.096489+00:00"
+              }
+            ],
+            "more": "/drafts?q="
+          },
+          "published": {
+            "data": [
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:41:01.301771+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "5db31e3ab3854f0c93d18860f30e0963",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.JBV9.FE3G",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "gdfs"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:41:01.301777+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:40:00.715919+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "18e4568770a34e8db472ceba79d8d904",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.UZ4J.AH3K",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "nvcbnfcnfnf"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:40:00.715926+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "maria.barroso.lopez@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch",
+                      "bosman@ifae.es",
+                      "bertrand.smaniotto@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:40.214211+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "d3d892aec11a462f966243eef700d076",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.3DNH.7P25",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:40.214222+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "wenaus@gmail.com",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "alessia.tricomi@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "acc-unicos-gcs@cern.ch",
+                      "acc-unicos-gcs-admin@cern.ch",
+                      "acc-unicos-gcs-cloud@cern.ch",
+                      "acc-unicos-gcs-linac@cern.ch",
+                      "acc-unicos-gcs-mixers@cern.ch",
+                      "1ka-2kasemi-conductorswitch@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "martine.desnyder-ivesdal@cern.ch",
+                      "veronique.favrot@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "piotraczyk@gmail.com",
+                      "paul.smith@cern.ch",
+                      "frank.locci@cern.ch",
+                      "bertrand.smaniotto@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "wenaus@gmail.com",
+                      "andre.jacquemod@cern.ch",
+                      "quentin.king@cern.ch",
+                      "jean-jacques.gras@cern.ch",
+                      "stephane.jezequel@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "jiangch@mail.ihep.ac.cn",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "arek.gorzawski@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "maria.barroso.lopez@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "wenaus@gmail.com",
+                      "ashiq.anjum@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "arek.gorzawski@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:13.241691+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "7f392ca10cb049a6b555d8ac0dae1690",
+                "experiment": "antonis",
+                "files": [],
+                "id": "CAP.antonis.59GN.MAEG",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "cadi_id": "546-36-543"
+                  },
+                  "general_title": "bb"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "antonis",
+                  "name": "antonis",
+                  "version": "0.0.2"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:13.241697+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "frank.locci@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "piotraczyk@gmail.com"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:37:18.627708+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "22454f6d473e4c08bd40d4238d4fbd2a",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.JEV8.FSVW",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:37:18.627714+00:00"
+              }
+            ],
+            "more": "/search?q="
+          },
+          "user_count": 377,
+          "user_drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:41.411764+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "9fc36457607d43fd92324a6d5c0816f0",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:41.411770+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:17.083799+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "51b0de3aaed44bdb946f8449cd813b49",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:19.879928+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:30:09.676645+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "7fad788fa1d748438e483607bd963d4c",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:30:12.065492+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:02:19.946782+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "8a5bdcea142f410b946a3010c88ca20a",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:02:22.096489+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:02:19.337569+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "ccc545825a564aee8724c499979201ed",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {},
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:02:19.337575+00:00"
+              }
+            ],
+            "more": "/drafts?q=&by_me=True"
+          },
+          "user_drafts_count": 303,
+          "user_published": {
+            "data": [
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:41:01.301771+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "5db31e3ab3854f0c93d18860f30e0963",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.JBV9.FE3G",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "gdfs"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:41:01.301777+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:40:00.715919+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "18e4568770a34e8db472ceba79d8d904",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.UZ4J.AH3K",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "nvcbnfcnfnf"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:40:00.715926+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "maria.barroso.lopez@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch",
+                      "bosman@ifae.es",
+                      "bertrand.smaniotto@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:40.214211+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "d3d892aec11a462f966243eef700d076",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.3DNH.7P25",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:40.214222+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "wenaus@gmail.com",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "alessia.tricomi@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "acc-unicos-gcs@cern.ch",
+                      "acc-unicos-gcs-admin@cern.ch",
+                      "acc-unicos-gcs-cloud@cern.ch",
+                      "acc-unicos-gcs-linac@cern.ch",
+                      "acc-unicos-gcs-mixers@cern.ch",
+                      "1ka-2kasemi-conductorswitch@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "martine.desnyder-ivesdal@cern.ch",
+                      "veronique.favrot@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "piotraczyk@gmail.com",
+                      "paul.smith@cern.ch",
+                      "frank.locci@cern.ch",
+                      "bertrand.smaniotto@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "wenaus@gmail.com",
+                      "andre.jacquemod@cern.ch",
+                      "quentin.king@cern.ch",
+                      "jean-jacques.gras@cern.ch",
+                      "stephane.jezequel@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "jiangch@mail.ihep.ac.cn",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "arek.gorzawski@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "maria.barroso.lopez@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "wenaus@gmail.com",
+                      "ashiq.anjum@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "arek.gorzawski@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:13.241691+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "7f392ca10cb049a6b555d8ac0dae1690",
+                "experiment": "antonis",
+                "files": [],
+                "id": "CAP.antonis.59GN.MAEG",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "cadi_id": "546-36-543"
+                  },
+                  "general_title": "bb"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "antonis",
+                  "name": "antonis",
+                  "version": "0.0.2"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:13.241697+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "frank.locci@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "piotraczyk@gmail.com"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:37:18.627708+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "22454f6d473e4c08bd40d4238d4fbd2a",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.JEV8.FSVW",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:37:18.627714+00:00"
+              }
+            ],
+            "more": "/search?q=&by_me=True"
+          },
+          "user_published_count": 74,
+          "user_workflows": {
+            "data": [],
+            "more": "#"
+          }
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/dashboard",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {
+          "drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:41.411764+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "9fc36457607d43fd92324a6d5c0816f0",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:41.411770+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:17.083799+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "51b0de3aaed44bdb946f8449cd813b49",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:19.879928+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "antonios.papadopoulos@cern.ch"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "antonios.papadopoulos@cern.ch"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "antonios.papadopoulos@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T14:10:23.428898+00:00",
+                "created_by": "antonios.papadopoulos@cern.ch",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "a2a516a2dca14cd58c7022a6d2e18d14",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "dsds"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T14:10:23.428921+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:30:09.676645+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "7fad788fa1d748438e483607bd963d4c",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:30:12.065492+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:02:19.946782+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "8a5bdcea142f410b946a3010c88ca20a",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:02:22.096489+00:00"
+              }
+            ],
+            "more": "/drafts?q="
+          },
+          "published": {
+            "data": [
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:41:01.301771+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "5db31e3ab3854f0c93d18860f30e0963",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.JBV9.FE3G",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "gdfs"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:41:01.301777+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:40:00.715919+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "18e4568770a34e8db472ceba79d8d904",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.UZ4J.AH3K",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "nvcbnfcnfnf"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:40:00.715926+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "maria.barroso.lopez@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch",
+                      "bosman@ifae.es",
+                      "bertrand.smaniotto@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:40.214211+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "d3d892aec11a462f966243eef700d076",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.3DNH.7P25",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:40.214222+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "wenaus@gmail.com",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "alessia.tricomi@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "acc-unicos-gcs@cern.ch",
+                      "acc-unicos-gcs-admin@cern.ch",
+                      "acc-unicos-gcs-cloud@cern.ch",
+                      "acc-unicos-gcs-linac@cern.ch",
+                      "acc-unicos-gcs-mixers@cern.ch",
+                      "1ka-2kasemi-conductorswitch@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "martine.desnyder-ivesdal@cern.ch",
+                      "veronique.favrot@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "piotraczyk@gmail.com",
+                      "paul.smith@cern.ch",
+                      "frank.locci@cern.ch",
+                      "bertrand.smaniotto@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "wenaus@gmail.com",
+                      "andre.jacquemod@cern.ch",
+                      "quentin.king@cern.ch",
+                      "jean-jacques.gras@cern.ch",
+                      "stephane.jezequel@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "jiangch@mail.ihep.ac.cn",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "arek.gorzawski@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "maria.barroso.lopez@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "wenaus@gmail.com",
+                      "ashiq.anjum@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "arek.gorzawski@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:13.241691+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "7f392ca10cb049a6b555d8ac0dae1690",
+                "experiment": "antonis",
+                "files": [],
+                "id": "CAP.antonis.59GN.MAEG",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "cadi_id": "546-36-543"
+                  },
+                  "general_title": "bb"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "antonis",
+                  "name": "antonis",
+                  "version": "0.0.2"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:13.241697+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "frank.locci@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "piotraczyk@gmail.com"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:37:18.627708+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "22454f6d473e4c08bd40d4238d4fbd2a",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.JEV8.FSVW",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:37:18.627714+00:00"
+              }
+            ],
+            "more": "/search?q="
+          },
+          "user_count": 377,
+          "user_drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:41.411764+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "9fc36457607d43fd92324a6d5c0816f0",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:41.411770+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T15:29:17.083799+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "51b0de3aaed44bdb946f8449cd813b49",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T15:29:19.879928+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:30:09.676645+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "7fad788fa1d748438e483607bd963d4c",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:30:12.065492+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:02:19.946782+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "8a5bdcea142f410b946a3010c88ca20a",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:02:22.096489+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2021-02-18T09:02:19.337569+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "ccc545825a564aee8724c499979201ed",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {},
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2021-02-18T09:02:19.337575+00:00"
+              }
+            ],
+            "more": "/drafts?q=&by_me=True"
+          },
+          "user_drafts_count": 303,
+          "user_published": {
+            "data": [
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:41:01.301771+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "5db31e3ab3854f0c93d18860f30e0963",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.JBV9.FE3G",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "gdfs"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:41:01.301777+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "cms-members@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:40:00.715919+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "18e4568770a34e8db472ceba79d8d904",
+                "experiment": "CMS",
+                "files": [],
+                "id": "CAP.CMS.UZ4J.AH3K",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "nvcbnfcnfnf"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "CMS Statistics Questionnaire",
+                  "name": "cms-stats-questionnaire",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:40:00.715926+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "maria.barroso.lopez@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch",
+                      "bosman@ifae.es",
+                      "bertrand.smaniotto@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:40.214211+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "d3d892aec11a462f966243eef700d076",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.3DNH.7P25",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "This is my new title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:40.214222+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "wenaus@gmail.com",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "alessia.tricomi@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "acc-unicos-gcs@cern.ch",
+                      "acc-unicos-gcs-admin@cern.ch",
+                      "acc-unicos-gcs-cloud@cern.ch",
+                      "acc-unicos-gcs-linac@cern.ch",
+                      "acc-unicos-gcs-mixers@cern.ch",
+                      "1ka-2kasemi-conductorswitch@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "martine.desnyder-ivesdal@cern.ch",
+                      "veronique.favrot@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "piotraczyk@gmail.com",
+                      "paul.smith@cern.ch",
+                      "frank.locci@cern.ch",
+                      "bertrand.smaniotto@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "wenaus@gmail.com",
+                      "andre.jacquemod@cern.ch",
+                      "quentin.king@cern.ch",
+                      "jean-jacques.gras@cern.ch",
+                      "stephane.jezequel@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "ashiq.anjum@cern.ch",
+                      "jiangch@mail.ihep.ac.cn",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "arek.gorzawski@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "maria.barroso.lopez@cern.ch",
+                      "sophie.baron@cern.ch",
+                      "pierre.baehler@cern.ch",
+                      "vipin.bhatnagar@cern.ch",
+                      "benoit.clement@cern.ch"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "bertrand.smaniotto@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "paul.smith@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "jacques.goldberg@cern.ch",
+                      "andre.jacquemod@cern.ch",
+                      "wenaus@gmail.com",
+                      "ashiq.anjum@cern.ch",
+                      "catherine.moine@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "yingchun.zhu@cern.ch",
+                      "hongcai.zhang@cern.ch",
+                      "bosman@ifae.es",
+                      "veronique.favrot@cern.ch",
+                      "francois.vasey@cern.ch",
+                      "arek.gorzawski@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:39:13.241691+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "7f392ca10cb049a6b555d8ac0dae1690",
+                "experiment": "antonis",
+                "files": [],
+                "id": "CAP.antonis.59GN.MAEG",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "cadi_id": "546-36-543"
+                  },
+                  "general_title": "bb"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "antonis",
+                  "name": "antonis",
+                  "version": "0.0.2"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:39:13.241697+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "frank.locci@cern.ch"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "alice-member@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "piotraczyk@gmail.com"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "veronique.favrot@cern.ch",
+                      "frank.locci@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-11-17T10:37:18.627708+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "22454f6d473e4c08bd40d4238d4fbd2a",
+                "experiment": "ALICE",
+                "files": [],
+                "id": "CAP.ALICE.JEV8.FSVW",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Random Title"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ALICE Analysis",
+                  "name": "alice-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-11-17T10:37:18.627714+00:00"
+              }
+            ],
+            "more": "/search?q=&by_me=True"
+          },
+          "user_published_count": 74,
+          "user_workflows": {
+            "data": [],
+            "more": "#"
+          }
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/logout",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": "<!DOCTYPE html><html lang=\"en\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta charset=\"utf-8\"><title>CERN Analysis Preservation</title><link rel=\"shortcut icon\" href=\"/favicon.ico\"></head><body><div id=\"app\"></div><script type=\"text/javascript\" src=\"/bundle.js\"></script></body></html>"
+      }
+    ]
+  }
+}

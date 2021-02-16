@@ -79,7 +79,7 @@ Cypress.Commands.add("createDraft", (anatype, generalTitle) => {
     .click();
 
   // type in a General Title
-  cy.get("input[type='text']").type(generalTitle);
+  cy.get("[data-cy=generalTitle]").type(generalTitle);
 
   // Select anatype
   cy.get("div")
@@ -98,7 +98,7 @@ Cypress.Commands.add("createDraft", (anatype, generalTitle) => {
 
 // Navigate to Form Builder
 Cypress.Commands.add("goToFormBuilder", () => {
-  cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+  cy.login("info@inveniosoftware.org", "infoinfo");
   cy.wait(2000);
 
   cy.visit("/cms");

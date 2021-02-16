@@ -1,4 +1,7 @@
+const autoRecord = require("cypress-autorecord"); // Require the autorecord function
+
 describe("Login Process", () => {
+  autoRecord();
   it("Login as Atlas member", () => {
     // login
     cy.login("atlas@inveniosoftware.org", "atlasatlas");

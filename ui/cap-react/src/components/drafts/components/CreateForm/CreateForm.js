@@ -58,7 +58,10 @@ const CreateForm = props => {
           <Box pad={{ vertical: "small" }}>
             <FormField label="General Title">
               <Box pad={{ horizontal: "medium" }}>
-                <TextInput onDOMChange={() => setTitle(event.target.value)} />
+                <TextInput
+                  onDOMChange={() => setTitle(event.target.value)}
+                  data-cy="generalTitle"
+                />
               </Box>
             </FormField>
           </Box>

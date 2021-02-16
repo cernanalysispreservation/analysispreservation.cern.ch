@@ -47,6 +47,7 @@ class SelectContentType extends React.Component {
               alignItems: "center",
               gridGap: "10px"
             }}
+            data-cy="contentType"
           >
             {this.props.contentTypes &&
               this.props.contentTypes.map(item => (

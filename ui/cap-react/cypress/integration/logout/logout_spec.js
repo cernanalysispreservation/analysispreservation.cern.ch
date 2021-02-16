@@ -1,7 +1,10 @@
+const autoRecord = require("cypress-autorecord"); // Require the autorecord function
+
 describe("Logout Process", () => {
+  autoRecord();
   it("Test Logout Process", () => {
     //login first
-    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+    cy.login("info@inveniosoftware.org", "infoinfo");
 
     // logout
     cy.wait(1000);

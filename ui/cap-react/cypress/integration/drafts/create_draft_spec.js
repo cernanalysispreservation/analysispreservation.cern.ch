@@ -1,4 +1,8 @@
+const autoRecord = require("cypress-autorecord"); // Require the autorecord function
+
 describe("Create Draft", () => {
+  autoRecord();
+
   it("Update the general title of the draft", () => {
     let firstTitle = "Random Title";
     let updatedTitle = "This is my new title";
@@ -14,13 +18,13 @@ describe("Create Draft", () => {
       .click();
 
     // erase the previous title and insert the new one
-    cy.get("input.general-title-input")
+    cy.get("[data-cy=general-title-input]")
       .should("have.value", firstTitle)
       .clear()
       .type(updatedTitle);
 
     // approve the changes
-    cy.get("div.general-title-checkmark").click();
+    cy.get("[data-cy=general-title-checkmark]").click();
 
     cy.wait(2000);
 
@@ -67,9 +71,8 @@ describe("Create Draft", () => {
       .contains(updatedTitle)
       .should("not.exist");
   });
-
   it("Does not allow to continue when anatype is not selected", () => {
-    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+    cy.login("info@inveniosoftware.org", "infoinfo");
 
     cy.get("div#ct-container").should("not.exist");
     // open the Create modal
@@ -78,7 +81,7 @@ describe("Create Draft", () => {
       .click();
 
     // type in a General Title
-    cy.get("input[type='text']").type("This is my new draft");
+    cy.get("[data-cy=generalTitle]").type("This is my new draft");
 
     // Start Preserving
     cy.get("div")

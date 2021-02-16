@@ -1,0 +1,1443 @@
+{
+  "Login as Atlas member": {
+    "timestamp": 1613662317586,
+    "routes": [
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnEmI",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnEmI.0&sid=MelUmiBzTb3V4PlgAAAO",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "15:40/browser-sync",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnEmI.1&sid=MelUmiBzTb3V4PlgAAAO",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnEmI.2&sid=MelUmiBzTb3V4PlgAAAO",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "74:42/browser-sync,[\"ui:history:connected\",{\"href\":\"http://localhost:3000/\"}]",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnEmI.3&sid=MelUmiBzTb3V4PlgAAAO",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/api/me",
+        "method": "GET",
+        "status": 401,
+        "headers": {},
+        "body": null,
+        "response": {
+          "message": "The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.",
+          "status": 401
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/login/local?next=/",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": {
+          "username": "atlas@inveniosoftware.org",
+          "password": "atlasatlas",
+          "next": "/"
+        },
+        "response": {
+          "next": "/",
+          "user": "atlas@inveniosoftware.org"
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/me",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {
+          "deposit_groups": [
+            {
+              "deposit_group": "atlas-analysis",
+              "name": "ATLAS Analysis",
+              "schema_path": "deposits/records/atlas-analysis-v0.0.1.json"
+            }
+          ],
+          "email": "atlas@inveniosoftware.org",
+          "id": 4,
+          "profile": {}
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/dashboard",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {
+          "drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "lhcb@inveniosoftware.org",
+                      "atlas@inveniosoftware.org",
+                      "alice@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "atlas@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-09T14:39:21.540987+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "antonis",
+                "files": [],
+                "id": "a7198c8310034859a974c233eed28dd5",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "abstract": "gfdsgdfsgfdsfcsd",
+                    "cadi_id": "674-37-654",
+                    "conclusion": "gfdsgfdsgf"
+                  },
+                  "general_title": "antonis"
+                },
+                "revision": 15,
+                "schema": {
+                  "fullname": "antonis",
+                  "name": "antonis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-11-10T14:07:15.502546+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "alice@inveniosoftware.org",
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org",
+                      "info@inveniosoftware.org",
+                      "alice@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "antonios.agapitos@cern.ch",
+                      "veronique.favrot@cern.ch",
+                      "antoine.kosmicki@cern.ch",
+                      "antonio@nikhef.nl",
+                      "grant.gorfine@cern.ch",
+                      "antonio.di.mauro@cern.ch",
+                      "anthony.grossir@cern.ch",
+                      "antonella.del.rosso@cern.ch",
+                      "antonella.vignes-magno@cern.ch",
+                      "pamfilos.fokianos@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "arek.gorzawski@cern.ch"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "cms@inveniosoftware.org",
+                      "alice@inveniosoftware.org",
+                      "atlas@inveniosoftware.org",
+                      "antonios.agapitos@cern.ch",
+                      "antonella.vignes-magno@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-10-29T08:36:39.431854+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "CMS",
+                "files": [
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:33acbc28e798837298632a180cd2512f",
+                    "key": "anto/sa/sa/macbook.jpg",
+                    "size": 9360,
+                    "version_id": "cedbba45-1c3d-431c-b323-a4fbf4a13a37"
+                  },
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:b1cabfb47ab3db3493d61af77c77fa83",
+                    "key": "cap-horizontal.svg",
+                    "size": 1680301,
+                    "version_id": "b2f463b4-0bd9-4b33-8e1c-62efad681686"
+                  },
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:0e0298736c45b21b1c53f351cd224b40",
+                    "key": "repositories/github.com/papadopan/keletronApp/master.tar.gz",
+                    "size": 1170034,
+                    "version_id": "35544e43-4937-42d0-af2e-babf02323ffe"
+                  },
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:d1ec47c184202d8749ba59f2e9660327",
+                    "key": "src/antonis/test/ANTONIS.pdf",
+                    "size": 130544,
+                    "version_id": "225e27b4-a594-4177-b8c3-dd3e3102ce91"
+                  }
+                ],
+                "id": "87d961c5c6bd4cafa10a686a3b79c754",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {},
+                "revision": 124,
+                "schema": {
+                  "fullname": "CMS Analysis",
+                  "name": "cms-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-11-04T09:37:09.565305+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-09-15T08:42:23.190420+00:00",
+                "created_by": "atlas@inveniosoftware.org",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "2c86ad8a66e04dd3a6a7cdddfe4dc77b",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Antonios"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-09-15T08:42:23.190425+00:00"
+              }
+            ],
+            "more": "/drafts?q="
+          },
+          "published": {
+            "data": [
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-01T11:38:38.583502+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "39e9841e052742e1a13dc2bd4ecbab08",
+                "experiment": "ATLAS",
+                "files": [
+                  {
+                    "bucket": "c991127e-29bf-4cfb-beb7-4223d7aaa9d9",
+                    "checksum": "md5:9a2aa48f59e10e02827036fe230e52d2",
+                    "key": "cap-horizontal.ai",
+                    "size": 4633673,
+                    "version_id": "c1b7e02e-f37a-4970-9ddc-cb52895daaba"
+                  }
+                ],
+                "id": "CAP.ATLAS.HE81.5LTT",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "asasas"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-28T17:14:16.951723+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-07T15:10:35.902536+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "0cbac0f5a38644b7a7347416b796d8fb",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.8IPD.QRR4",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "analysis_title": "gsdgdfs",
+                    "glance_id": "gvxz",
+                    "people_info": [
+                      {
+                        "email": "papadopan7@gmail.com",
+                        "name": "sa",
+                        "orcid": "5435-2353-4254-3253"
+                      }
+                    ]
+                  },
+                  "general_title": "sasasa"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-07T15:10:35.902542+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-05T07:50:05.103981+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "b8ccc150a63943569a43ea73fa09e916",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.S27R.94H1",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "analysis_title": "gfd",
+                    "glance_id": "gfs",
+                    "people_info": [
+                      {
+                        "email": "fdsafdsfasd@ds.ds",
+                        "name": "dklj",
+                        "orcid": "7482-3874-9823-7498"
+                      }
+                    ]
+                  },
+                  "general_title": "aaaaaa",
+                  "workflows": [
+                    {
+                      "workflow": {
+                        "stages": [
+                          {
+                            "last": "Papap",
+                            "name": "Antn"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-05T07:50:05.103986+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-02T07:19:10.982645+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "70f53e0097f64766a8521d88afd07eb9",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.T8MM.S9O9",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "atlas"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-02T07:19:10.982652+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-01T14:44:07.734970+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "0a523ecf3d9f4180a39587cfc93a1faf",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.Q02W.1RR5",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "abstract": "fd",
+                    "analysis_title": "sa",
+                    "glance_id": "sa",
+                    "people_info": [
+                      {
+                        "email": "antonios.papadopan@gmail.com",
+                        "name": "gfds",
+                        "orcid": "5243-5432-5345-3252"
+                      }
+                    ]
+                  },
+                  "general_title": "new atlas",
+                  "workflows": [
+                    {
+                      "workflow": {
+                        "stages": [
+                          {
+                            "name": "at"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-01T15:01:23.065083+00:00"
+              }
+            ],
+            "more": "/search?q="
+          },
+          "user_count": 1,
+          "user_drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-09-15T08:42:23.190420+00:00",
+                "created_by": "atlas@inveniosoftware.org",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "2c86ad8a66e04dd3a6a7cdddfe4dc77b",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Antonios"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-09-15T08:42:23.190425+00:00"
+              }
+            ],
+            "more": "/drafts?q=&by_me=True"
+          },
+          "user_drafts_count": 1,
+          "user_published": {
+            "data": [],
+            "more": "/search?q=&by_me=True"
+          },
+          "user_published_count": 0,
+          "user_workflows": {
+            "data": [],
+            "more": "#"
+          }
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/dashboard",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {
+          "drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "lhcb@inveniosoftware.org",
+                      "atlas@inveniosoftware.org",
+                      "alice@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "atlas@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-11-09T14:39:21.540987+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "antonis",
+                "files": [],
+                "id": "a7198c8310034859a974c233eed28dd5",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "abstract": "gfdsgdfsgfdsfcsd",
+                    "cadi_id": "674-37-654",
+                    "conclusion": "gfdsgfdsgf"
+                  },
+                  "general_title": "antonis"
+                },
+                "revision": 15,
+                "schema": {
+                  "fullname": "antonis",
+                  "name": "antonis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-11-10T14:07:15.502546+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "alice@inveniosoftware.org",
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org",
+                      "info@inveniosoftware.org",
+                      "alice@inveniosoftware.org",
+                      "cms@inveniosoftware.org",
+                      "antonios.agapitos@cern.ch",
+                      "veronique.favrot@cern.ch",
+                      "antoine.kosmicki@cern.ch",
+                      "antonio@nikhef.nl",
+                      "grant.gorfine@cern.ch",
+                      "antonio.di.mauro@cern.ch",
+                      "anthony.grossir@cern.ch",
+                      "antonella.del.rosso@cern.ch",
+                      "antonella.vignes-magno@cern.ch",
+                      "pamfilos.fokianos@cern.ch",
+                      "sophie.gardette@cern.ch",
+                      "frank.locci@cern.ch",
+                      "merethe.olafsen@cern.ch",
+                      "alessia.tricomi@cern.ch",
+                      "nathalie.knoors@cern.ch",
+                      "arek.gorzawski@cern.ch"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "cms@inveniosoftware.org",
+                      "alice@inveniosoftware.org",
+                      "atlas@inveniosoftware.org",
+                      "antonios.agapitos@cern.ch",
+                      "antonella.vignes-magno@cern.ch"
+                    ]
+                  }
+                },
+                "created": "2020-10-29T08:36:39.431854+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "experiment": "CMS",
+                "files": [
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:33acbc28e798837298632a180cd2512f",
+                    "key": "anto/sa/sa/macbook.jpg",
+                    "size": 9360,
+                    "version_id": "cedbba45-1c3d-431c-b323-a4fbf4a13a37"
+                  },
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:b1cabfb47ab3db3493d61af77c77fa83",
+                    "key": "cap-horizontal.svg",
+                    "size": 1680301,
+                    "version_id": "b2f463b4-0bd9-4b33-8e1c-62efad681686"
+                  },
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:0e0298736c45b21b1c53f351cd224b40",
+                    "key": "repositories/github.com/papadopan/keletronApp/master.tar.gz",
+                    "size": 1170034,
+                    "version_id": "35544e43-4937-42d0-af2e-babf02323ffe"
+                  },
+                  {
+                    "bucket": "7865e098-3fa8-4b9b-8a9f-08da35e6f608",
+                    "checksum": "md5:d1ec47c184202d8749ba59f2e9660327",
+                    "key": "src/antonis/test/ANTONIS.pdf",
+                    "size": 130544,
+                    "version_id": "225e27b4-a594-4177-b8c3-dd3e3102ce91"
+                  }
+                ],
+                "id": "87d961c5c6bd4cafa10a686a3b79c754",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {},
+                "revision": 124,
+                "schema": {
+                  "fullname": "CMS Analysis",
+                  "name": "cms-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-11-04T09:37:09.565305+00:00"
+              },
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-09-15T08:42:23.190420+00:00",
+                "created_by": "atlas@inveniosoftware.org",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "2c86ad8a66e04dd3a6a7cdddfe4dc77b",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Antonios"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-09-15T08:42:23.190425+00:00"
+              }
+            ],
+            "more": "/drafts?q="
+          },
+          "published": {
+            "data": [
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-01T11:38:38.583502+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "39e9841e052742e1a13dc2bd4ecbab08",
+                "experiment": "ATLAS",
+                "files": [
+                  {
+                    "bucket": "c991127e-29bf-4cfb-beb7-4223d7aaa9d9",
+                    "checksum": "md5:9a2aa48f59e10e02827036fe230e52d2",
+                    "key": "cap-horizontal.ai",
+                    "size": 4633673,
+                    "version_id": "c1b7e02e-f37a-4970-9ddc-cb52895daaba"
+                  }
+                ],
+                "id": "CAP.ATLAS.HE81.5LTT",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "asasas"
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-28T17:14:16.951723+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-07T15:10:35.902536+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "0cbac0f5a38644b7a7347416b796d8fb",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.8IPD.QRR4",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "analysis_title": "gsdgdfs",
+                    "glance_id": "gvxz",
+                    "people_info": [
+                      {
+                        "email": "papadopan7@gmail.com",
+                        "name": "sa",
+                        "orcid": "5435-2353-4254-3253"
+                      }
+                    ]
+                  },
+                  "general_title": "sasasa"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-07T15:10:35.902542+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-05T07:50:05.103981+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "b8ccc150a63943569a43ea73fa09e916",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.S27R.94H1",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "analysis_title": "gfd",
+                    "glance_id": "gfs",
+                    "people_info": [
+                      {
+                        "email": "fdsafdsfasd@ds.ds",
+                        "name": "dklj",
+                        "orcid": "7482-3874-9823-7498"
+                      }
+                    ]
+                  },
+                  "general_title": "aaaaaa",
+                  "workflows": [
+                    {
+                      "workflow": {
+                        "stages": [
+                          {
+                            "last": "Papap",
+                            "name": "Antn"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-05T07:50:05.103986+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-02T07:19:10.982645+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "70f53e0097f64766a8521d88afd07eb9",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.T8MM.S9O9",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "atlas"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-02T07:19:10.982652+00:00"
+              },
+              {
+                "access": {
+                  "record-admin": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-read": {
+                    "roles": [
+                      "atlas-active-members-all@cern.ch"
+                    ],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  },
+                  "record-update": {
+                    "roles": [],
+                    "users": [
+                      "info@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-10-01T14:44:07.734970+00:00",
+                "created_by": "info@inveniosoftware.org",
+                "draft_id": "0a523ecf3d9f4180a39587cfc93a1faf",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "CAP.ATLAS.Q02W.1RR5",
+                "is_owner": false,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "basic_info": {
+                    "abstract": "fd",
+                    "analysis_title": "sa",
+                    "glance_id": "sa",
+                    "people_info": [
+                      {
+                        "email": "antonios.papadopan@gmail.com",
+                        "name": "gfds",
+                        "orcid": "5243-5432-5345-3252"
+                      }
+                    ]
+                  },
+                  "general_title": "new atlas",
+                  "workflows": [
+                    {
+                      "workflow": {
+                        "stages": [
+                          {
+                            "name": "at"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "revision": 1,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "published",
+                "type": "record",
+                "updated": "2020-10-01T15:01:23.065083+00:00"
+              }
+            ],
+            "more": "/search?q="
+          },
+          "user_count": 1,
+          "user_drafts": {
+            "data": [
+              {
+                "access": {
+                  "deposit-admin": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-read": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  },
+                  "deposit-update": {
+                    "roles": [],
+                    "users": [
+                      "atlas@inveniosoftware.org"
+                    ]
+                  }
+                },
+                "created": "2020-09-15T08:42:23.190420+00:00",
+                "created_by": "atlas@inveniosoftware.org",
+                "experiment": "ATLAS",
+                "files": [],
+                "id": "2c86ad8a66e04dd3a6a7cdddfe4dc77b",
+                "is_owner": true,
+                "labels": [],
+                "links": {},
+                "metadata": {
+                  "general_title": "Antonios"
+                },
+                "revision": 0,
+                "schema": {
+                  "fullname": "ATLAS Analysis",
+                  "name": "atlas-analysis",
+                  "version": "0.0.1"
+                },
+                "status": "draft",
+                "type": "deposit",
+                "updated": "2020-09-15T08:42:23.190425+00:00"
+              }
+            ],
+            "more": "/drafts?q=&by_me=True"
+          },
+          "user_drafts_count": 1,
+          "user_published": {
+            "data": [],
+            "more": "/search?q=&by_me=True"
+          },
+          "user_published_count": 0,
+          "user_workflows": {
+            "data": [],
+            "more": "#"
+          }
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/logout",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": "<!DOCTYPE html><html lang=\"en\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta charset=\"utf-8\"><title>CERN Analysis Preservation</title><link rel=\"shortcut icon\" href=\"/favicon.ico\"></head><body><div id=\"app\"></div><script type=\"text/javascript\" src=\"/bundle.js\"></script></body></html>"
+      }
+    ]
+  },
+  "Password is required": {
+    "timestamp": 1613662333494,
+    "routes": [
+      {
+        "url": "http://localhost:3000/api/login/local?next=/",
+        "method": "POST",
+        "status": 403,
+        "headers": {},
+        "body": {
+          "username": "info@inveniosoftware.org",
+          "password": "",
+          "next": "/"
+        },
+        "response": {
+          "error": "The credentials you enter are not correct. Please try again"
+        }
+      }
+    ]
+  },
+  "Email is required": {
+    "timestamp": 1613662333913,
+    "routes": [
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnIlP",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnIlP.0&sid=bSXSnSWgnyoMWtX3AAAP",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "15:40/browser-sync",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnIlP.1&sid=bSXSnSWgnyoMWtX3AAAP",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnIlP.2&sid=bSXSnSWgnyoMWtX3AAAP",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "74:42/browser-sync,[\"ui:history:connected\",{\"href\":\"http://localhost:3000/\"}]",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnIlP.3&sid=bSXSnSWgnyoMWtX3AAAP",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/api/me",
+        "method": "GET",
+        "status": 401,
+        "headers": {},
+        "body": null,
+        "response": {
+          "message": "The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.",
+          "status": 401
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/login/local?next=/",
+        "method": "POST",
+        "status": 403,
+        "headers": {},
+        "body": {
+          "username": "",
+          "password": "",
+          "next": "/"
+        },
+        "response": {
+          "error": "The credentials you enter are not correct. Please try again"
+        }
+      }
+    ]
+  },
+  "Valid email is required": {
+    "timestamp": 1613662349635,
+    "routes": [
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnMb3",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnMb3.0&sid=zRsF5C9_JyZA4Ub9AAAQ",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "15:40/browser-sync",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnMb3.1&sid=zRsF5C9_JyZA4Ub9AAAQ",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnMb3.2&sid=zRsF5C9_JyZA4Ub9AAAQ",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "74:42/browser-sync,[\"ui:history:connected\",{\"href\":\"http://localhost:3000/\"}]",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnMb3.3&sid=zRsF5C9_JyZA4Ub9AAAQ",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/api/me",
+        "method": "GET",
+        "status": 401,
+        "headers": {},
+        "body": null,
+        "response": {
+          "message": "The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.",
+          "status": 401
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/login/local?next=/",
+        "method": "POST",
+        "status": 403,
+        "headers": {},
+        "body": {
+          "username": "vljknfjn@ckbdj.cdinfo@inveniosoftware.org",
+          "password": "",
+          "next": "/"
+        },
+        "response": {
+          "error": "The credentials you enter are not correct. Please try again"
+        }
+      }
+    ]
+  },
+  "Password and email are required": {
+    "timestamp": 1613662357572,
+    "routes": [
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnOX4",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnOX4.0&sid=-KJrBo3zSG9JYqMjAAAR",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "15:40/browser-sync",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnOX4.1&sid=-KJrBo3zSG9JYqMjAAAR",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnOX4.2&sid=-KJrBo3zSG9JYqMjAAAR",
+        "method": "POST",
+        "status": 200,
+        "headers": {},
+        "body": "74:42/browser-sync,[\"ui:history:connected\",{\"href\":\"http://localhost:3000/\"}]",
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/browser-sync/socket.io/?EIO=3&transport=polling&t=NUrnOX4.3&sid=-KJrBo3zSG9JYqMjAAAR",
+        "method": "GET",
+        "status": 200,
+        "headers": {},
+        "body": null,
+        "response": {}
+      },
+      {
+        "url": "http://localhost:3000/api/me",
+        "method": "GET",
+        "status": 401,
+        "headers": {},
+        "body": null,
+        "response": {
+          "message": "The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.",
+          "status": 401
+        }
+      },
+      {
+        "url": "http://localhost:3000/api/login/local?next=/",
+        "method": "POST",
+        "status": 403,
+        "headers": {},
+        "body": {
+          "username": "",
+          "password": "",
+          "next": "/"
+        },
+        "response": {
+          "error": "The credentials you enter are not correct. Please try again"
+        }
+      }
+    ]
+  }
+}

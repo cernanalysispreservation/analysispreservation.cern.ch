@@ -1,6 +1,9 @@
+const autoRecord = require("cypress-autorecord"); // Require the autorecord function
+
 describe("Search Integration Suite", () => {
+  autoRecord();
   it("Navigate to search page, from dashboard", () => {
-    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+    cy.login("info@inveniosoftware.org", "infoinfo");
 
     // find the search bar
     cy.get("input[type='search']")
@@ -21,7 +24,7 @@ describe("Search Integration Suite", () => {
 
   it("Navigate to the drafts page", () => {
     // login first
-    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+    cy.login("info@inveniosoftware.org", "infoinfo");
 
     // find the search bar
     cy.get('input[type="search"]')

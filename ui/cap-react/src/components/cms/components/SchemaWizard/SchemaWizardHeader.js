@@ -133,7 +133,12 @@ class SchemaWizardHeader extends React.Component {
               <AiOutlineArrowLeft size={15} />
             </Box>
             {!this.props.loader && (
-              <Truncate lines={1} width={200} ellipsis={<span>...</span>}>
+              <Truncate
+                lines={1}
+                width={200}
+                ellipsis={<span>...</span>}
+                data-cy="schemaTitle"
+              >
                 {(this.props.config && this.props.config.fullname) ||
                   "Untitled Schema"}
               </Truncate>

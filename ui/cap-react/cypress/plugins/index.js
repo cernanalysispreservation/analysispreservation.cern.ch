@@ -11,11 +11,19 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-
+const fs = require("fs");
+const autoRecord = require("cypress-autorecord/plugin");
 /**
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+  autoRecord(on, config, fs);
+  on("before:browser:launch", (browser, launchOptions) => {
+    if (browser.name === "chrome" && browser.isHeadless) {
+      launchOptions.args.push("--disable-gpu");
+      return launchOptions;
+    }
+  });
 };
