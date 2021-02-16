@@ -40,13 +40,20 @@ handle_test_result(){
 }
 
 run_git_check(){
-    RESULT=$(gitlint --commits $GIT_ORIGIN..$GIT_LAST 2>&1)
+    GIT_ORIGIN=$1
+    GIT_HEAD=$2
+    RESULT=$(gitlint --commits "$GIT_ORIGIN".."$GIT_HEAD" 2>&1)
     local exit_code=$?
     handle_test_result $exit_code "$RESULT"
     return $exit_code
 }
 
-echo "RUNNING COMMIT MESSAGE CHECKS"
+GITLINT=$(which gitlint)
+if [ $? -ne 0 ]; then
+    echo "Gitlint not installed. Installing now..." >&2
+    pip install gitlint
+else
+    echo "Gitlint found. Continuing..."
+fi
 
-pip install gitlint
-run_git_check
+run_git_check "$1" "$2"
