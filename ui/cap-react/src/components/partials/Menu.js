@@ -25,7 +25,7 @@ const Menu = ({
   left = null,
   background = "",
   hoverColor = "rgba(235, 235, 235, 1)",
-  iconWrapperClassName = "",
+  dataCypress = "",
   padding = "5px",
   minWidth = "120px",
   shadow = false
@@ -74,7 +74,7 @@ const Menu = ({
         expanded={expanded}
         padding={padding}
         onClick={() => setExpanded(!expanded)}
-        className={iconWrapperClassName}
+        data-cy={dataCypress}
       >
         {icon}
       </Wrapper>
@@ -109,7 +109,7 @@ Menu.propTypes = {
   padding: PropTypes.string,
   minWidth: PropTypes.string,
   shadow: PropTypes.bool,
-  iconWrapperClassName: PropTypes.string
+  dataCypress: PropTypes.string
 };
 
 export default Menu;

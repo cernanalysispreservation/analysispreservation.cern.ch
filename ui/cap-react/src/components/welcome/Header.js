@@ -37,7 +37,7 @@ class WelcomePage extends React.Component {
     };
   }
 
-  loginCallBack = (next) => {
+  loginCallBack = next => {
     this.props.initCurrentUser(next);
   };
 
@@ -130,7 +130,7 @@ class WelcomePage extends React.Component {
                   top={55}
                   right={0}
                   icon={<AiOutlineLogin size={23} />}
-                  iconWrapperClassName="localLogin"
+                  dataCypress="localLogin"
                 >
                   <LoginForm
                     usernameType="email"

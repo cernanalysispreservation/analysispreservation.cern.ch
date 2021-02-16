@@ -10,7 +10,7 @@ describe("Login Process", () => {
 
   it("Password is required", () => {
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
     cy.get("input[type='email']").type("{enter}");
 
@@ -18,9 +18,9 @@ describe("Login Process", () => {
   });
 
   it("Email is required", () => {
-    cy.visit("http://localhost:3000/");
+    cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
     cy.get("input[type='email']").clear();
     cy.get("input[type='email']").type("{enter}");
@@ -28,9 +28,9 @@ describe("Login Process", () => {
     cy.get("div.grommetux-background-color-index-critical");
   });
   it("Password is required", () => {
-    cy.visit("http://localhost:3000/");
+    cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
     cy.get("input[type='email']").type("{enter}");
 
@@ -38,9 +38,9 @@ describe("Login Process", () => {
   });
 
   it("Valid email is required", () => {
-    cy.visit("http://localhost:3000/");
+    cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
     cy.get("input[type='email']").type("vljknfjn@ckbdj.cd{enter}");
 
@@ -49,9 +49,9 @@ describe("Login Process", () => {
   });
 
   it("Password and email are required", () => {
-    cy.visit("http://localhost:3000/");
+    cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
     cy.get("input[type='email']").clear();
     cy.get("input[type='password']").clear();

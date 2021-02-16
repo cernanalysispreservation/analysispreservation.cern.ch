@@ -158,7 +158,7 @@ class Header extends React.Component {
                   top={48}
                   right={3}
                   hoverColor="rgba(67,135,170,1)"
-                  iconWrapperClassName="headerMenuAppp"
+                  dataCypress="headerMenuAnchor"
                 >
                   {this.props.permissions && (
                     <MediaQuery maxWidth={719}>
