@@ -9,19 +9,22 @@ import CMSIndex from "./components/CMSIndex";
 import SchemaWizard from "./containers/SchemaWizard";
 
 import DocumentTitle from "../partials/Title";
+import ErrorBoundary from "../partials/ErrorBoundary/ErrorBoundary";
 
 class IndexPage extends React.Component {
   render() {
     return (
       <Box flex={true}>
         <DocumentTitle title="Form Builder">
-          <Switch>
-            <Route exact path="/cms/" component={CMSIndex} />
-            <Route
-              path="/cms/edit/:schema_name?/:schema_version?"
-              component={SchemaWizard}
-            />
-          </Switch>
+          <ErrorBoundary>
+            <Switch>
+              <Route exact path="/cms/" component={CMSIndex} />
+              <Route
+                path="/cms/edit/:schema_name?/:schema_version?"
+                component={SchemaWizard}
+              />
+            </Switch>
+          </ErrorBoundary>
         </DocumentTitle>
       </Box>
     );
