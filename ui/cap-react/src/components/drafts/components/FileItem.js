@@ -42,6 +42,7 @@ import prettyBytes from "pretty-bytes";
 import { deleteFileByUri, getFileVersions } from "../../../actions/files";
 import Spinning from "grommet/components/icons/Spinning";
 import Tag from "../../partials/Tag";
+import { DRAFT_ITEM } from "../../routes";
 
 const uploadStatusMap = {
   uploading: "disabled",
@@ -297,7 +298,7 @@ class FileItem extends React.Component {
         {this.state.menu ? (
           <Box colorIndex="light-2" alignSelf="end" pad="small">
             <Route
-              path="/drafts/:draft_id"
+              path={DRAFT_ITEM}
               render={() => (
                 <Anchor
                   size="small"
@@ -319,7 +320,7 @@ class FileItem extends React.Component {
               download
             />
             <Route
-              path="/drafts/:draft_id"
+              path={DRAFT_ITEM}
               render={() =>
                 this.props.canUpdate && (
                   <Anchor

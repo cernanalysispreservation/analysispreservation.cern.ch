@@ -30,6 +30,7 @@ import {
   AiOutlineFolderOpen,
   AiOutlineFolder
 } from "react-icons/ai";
+import { PUBLISHED_ITEM_RUNS } from "../../routes";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -190,11 +191,7 @@ class PublishedPreview extends React.Component {
                     <span />
                   </JSONSchemaPreviewer>
                 </Box>
-                <Route
-                  exact
-                  path={`/published/:id/runs/`}
-                  component={RunsIndex}
-                />
+                <Route exact path={PUBLISHED_ITEM_RUNS} component={RunsIndex} />
                 <MediaQuery
                   minWidth={1410}
                   onChange={matches => this.setState({ showFiles: matches })}

@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 import WelcomePage from "./welcome/WelcomePage";
 import IndexPage from "./index/IndexPage";
 
-import CMSIndex from "./cms";
-
 import HowToSearchPage from "./about/HowToSearch";
 import AboutPage from "./about/AboutPage";
 import PolicyPage from "./policy";
@@ -23,11 +21,19 @@ import { connect } from "react-redux";
 
 import DocumentTitle from "./partials/Title";
 
+import Loadable from "react-loadable";
 import { HOME, WELCOME, ABOUT, POLICY, CMS, SEARCH_TIPS } from "./routes";
+import Loading from "./routes/Loading";
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
 // component at the top-level.
+
+const CMSIndex = Loadable({
+  loader: () => import("./cms"),
+  loading: Loading,
+  delay: 300
+});
 
 class App extends React.Component {
   constructor(props) {

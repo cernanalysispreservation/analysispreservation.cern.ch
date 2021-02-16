@@ -16,6 +16,7 @@ import HorizontalWithText from "../../../partials/HorizontalWithText";
 import { filter } from "lodash";
 import RepoTree from "./RepoTree";
 import { AiOutlineInbox } from "react-icons/ai";
+import { DRAFT_ITEM_EDIT } from "../../../routes";
 
 class FileTree extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class FileTree extends React.Component {
   _renderAddFileIcon() {
     return (
       <Route
-        path="/drafts/:draft_id/edit"
+        path={DRAFT_ITEM_EDIT}
         render={() => (
           <Anchor
             onClick={this.props.toggleFilemanagerLayer}

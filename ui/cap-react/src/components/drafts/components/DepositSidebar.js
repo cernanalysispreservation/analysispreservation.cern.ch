@@ -21,6 +21,7 @@ import { getBucketById } from "../../../actions/files";
 import Tag from "../../partials/Tag";
 import Button from "../../partials/Button";
 import { AiOutlinePlus, AiOutlineReload } from "react-icons/ai";
+import { DRAFT_ITEM } from "../../routes";
 
 class DepositSidebar extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class DepositSidebar extends React.Component {
       if (this.props.canUpdate) {
         return (
           <Route
-            path="/drafts/:draft_id/"
+            path={DRAFT_ITEM}
             render={() => (
               <Button
                 size="icon"
@@ -53,7 +54,7 @@ class DepositSidebar extends React.Component {
       if (this.props.canUpdate) {
         return (
           <Route
-            path="/drafts/:draft_id/"
+            path={DRAFT_ITEM}
             render={() => (
               <Button
                 size="icon"

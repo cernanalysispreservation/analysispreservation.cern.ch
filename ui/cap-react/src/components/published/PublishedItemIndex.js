@@ -17,6 +17,11 @@ import PublishedSidebar from "./components/PublishedSidebar";
 
 import DocumentTitle from "../partials/Title";
 import PermissionDenied from "../errors/403";
+import {
+  PUBLISHED_ITEM,
+  PUBLISHED_ITEM_RUNS,
+  PUBLISHED_ITEM_RUNS_CREATE
+} from "../routes";
 
 class PublishedItemIndex extends React.Component {
   componentDidMount() {
@@ -35,12 +40,12 @@ class PublishedItemIndex extends React.Component {
     return (
       <DocumentTitle title={`${this.props.match.params.id} | Published`}>
         <Box flex={true} direction="row">
-          <Route exact path={`/published/:id`} component={PublishedPreview} />
+          <Route exact path={PUBLISHED_ITEM} component={PublishedPreview} />
           {this.props.item &&
           this.props.item.metadata &&
           this.props.item.metadata.workflows &&
           this.props.item.metadata.workflows.length > 0 ? (
-            <Route exact path={`/published/:id/runs/`} component={RunsIndex} />
+            <Route exact path={PUBLISHED_ITEM_RUNS} component={RunsIndex} />
           ) : null}
           {this.props.item &&
           this.props.item.metadata &&
@@ -48,7 +53,7 @@ class PublishedItemIndex extends React.Component {
           this.props.item.metadata.workflows.length > 0 ? (
             <Route
               exact
-              path={`/published/:id/runs/create`}
+              path={PUBLISHED_ITEM_RUNS_CREATE}
               component={RerunPublished}
             />
           ) : null}

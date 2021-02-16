@@ -28,6 +28,13 @@ import DraftsItemNav from "./DraftsItemNav";
 
 import DocumentTitle from "../partials/Title";
 import DepositFileManager from "./components/DepositFileManager";
+import {
+  DRAFT_ITEM,
+  DRAFT_ITEM_EDIT,
+  DRAFT_ITEM_SETTINGS,
+  DRAFT_ITEM_INTEGRATIONS,
+  DRAFT_ITEM_WORKFLOWS
+} from "../routes";
 
 class DraftsItemIndex extends React.Component {
   constructor(props) {
@@ -87,27 +94,20 @@ class DraftsItemIndex extends React.Component {
             <Box flex={true} className="lg-column">
               <Box flex={true} colorIndex="light-1" responsive={false}>
                 <Switch>
+                  <Route exact path={DRAFT_ITEM} component={DraftPreview} />
                   <Route
-                    exact
-                    path={`/drafts/:draft_id`}
-                    component={DraftPreview}
-                  />
-                  <Route
-                    path={`/drafts/:draft_id/edit`}
+                    path={DRAFT_ITEM_EDIT}
                     render={props => (
                       <DraftEditor {...props} formRef={this.formRef} />
                     )}
                   />} />
+                  <Route path={DRAFT_ITEM_SETTINGS} component={DraftSettings} />
                   <Route
-                    path={`/drafts/:draft_id/settings`}
-                    component={DraftSettings}
-                  />
-                  <Route
-                    path={`/drafts/:draft_id/integrations`}
+                    path={DRAFT_ITEM_INTEGRATIONS}
                     component={DraftIntegrations}
                   />
                   <Route
-                    path={`/drafts/:draft_id/workflows`}
+                    path={DRAFT_ITEM_WORKFLOWS}
                     render={props => (
                       <DraftWorkflows draft_id={draft_id} {...props} />
                     )}
