@@ -23,12 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #
 """Authentication views for CAP."""
-
-import os
 from functools import wraps
-from json import JSONDecodeError
 
-import requests
 from authlib.integrations.base_client.errors import OAuthError
 from flask import Blueprint, url_for, current_app, jsonify, \
                   request, session, abort, render_template
@@ -39,10 +35,10 @@ from invenio_userprofiles.models import UserProfile
 from sqlalchemy.orm.attributes import flag_modified
 from werkzeug.exceptions import HTTPException
 
-from .config import OAUTH_SERVICES, OIDC_API, USER_PROFILE
+from .config import OAUTH_SERVICES, USER_PROFILE
 from .models import OAuth2Token
 from .proxies import current_auth
-from .utils import _create_or_update_token, get_oidc_token, get_bearer_headers
+from .utils import _create_or_update_token
 
 from cap.modules.access.utils import login_required
 

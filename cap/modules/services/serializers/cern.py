@@ -26,7 +26,24 @@
 
 from __future__ import absolute_import, print_function
 
-from marshmallow import Schema
+from marshmallow import fields, Schema
+
+
+class LDAPUserSchema(Schema):
+    """Schema for CERN LDAP."""
+    email = fields.Method('get_mail', dump_only=True)
+    profile = fields.Method('get_profile', dump_only=True)
+
+    def get_mail(self, obj):
+        return obj['mail'][0].decode('utf-8')
+
+    def get_profile(self, obj):
+        return {
+            'display_name': obj['displayName'][0].decode('utf-8'),
+            'common_name': obj['cn'][0].decode('utf-8'),
+            'department': obj['department'][0].decode('utf-8'),
+            'home_institute': obj['company'][0].decode('utf-8')
+        }
 
 
 class SimpleCERNUserSchema(Schema):

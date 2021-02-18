@@ -30,13 +30,15 @@ import ldap
 from ldap import LDAPError
 from flask import jsonify, request, abort
 
+from invenio_accounts.models import User
+
 from . import blueprint
 from cap.modules.access.utils import login_required
 from cap.modules.auth.utils import get_oidc_token, get_bearer_headers
 from cap.modules.auth.config import OIDC_API
 from cap.modules.experiments.errors import ExternalAPIException
 from cap.modules.services.serializers.cern import SimpleCERNGroupSchema,\
-    SimpleCERNUserSchema
+    SimpleCERNUserSchema, LDAPUserSchema
 
 LDAP_SERVER_URL = 'ldap://xldap.cern.ch'
 
@@ -67,7 +69,7 @@ def _ldap(query, sf=None, by=None):
 
     # different arguments depending on the query type
     if by == 'mail':
-        ldap_fields = ['mail']  # LDAP_USER_RESP_FIELDS alternative
+        ldap_fields = LDAP_USER_RESP_FIELDS
         search_at = 'OU=Users,OU=Organic Units,DC=cern,DC=ch'
         ldap_query = '(&(cernAccountType=Primary)(mail=*{}*))' \
             .format(query)
@@ -102,8 +104,12 @@ def ldap_user_by_mail():
         return jsonify([])
 
     resp, status = _ldap(query, by='mail')
-    data = [x[1]['mail'][0] for x in resp]
-    return jsonify(data)
+
+    user_info = [
+        LDAPUserSchema().dump(item[1]).data
+        for item in resp
+    ]
+    return jsonify(user_info)
 
 
 @blueprint.route('/ldap/egroup/mail')

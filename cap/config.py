@@ -36,6 +36,8 @@ from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
 from cap.modules.records.permissions import ReadRecordPermission
 from cap.modules.search.facets import (nested_filter, prefix_filter,
                                        regex_filter)
+from cap.modules.user.serializers import (user_account_serializer,
+                                          user_account_list_serializer)
 
 
 def _(x):
@@ -495,6 +497,18 @@ ACCOUNTS_REST_UPDATE_USER_PROPERTIES_PERMISSION_FACTORY = deny_all
 
 ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 """Default list users permission factory: reject any request."""
+
+ACCOUNTS_REST_ACCOUNT_SERIALIZERS = {
+    'GET': {
+        'application/json': user_account_serializer
+    }
+}
+
+ACCOUNTS_REST_ACCOUNTS_LIST_SERIALIZERS = {
+    'GET': {
+        'application/json': user_account_list_serializer
+    }
+}
 
 # Search
 # ======
