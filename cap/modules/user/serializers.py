@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2021 CERN.
+# Copyright (C) 2016 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,37 +22,21 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Serializers for CDS records."""
-
 from __future__ import absolute_import, print_function
 
-from marshmallow import fields, Schema
+from marshmallow import Schema, fields
 
 
-class LDAPUserSchema(Schema):
-    """Schema for CERN LDAP."""
-    email = fields.Method('get_mail', dump_only=True)
+class CERNProfileSchema(Schema):
+    display_name = fields.Str(dump_only=True)
+    common_name = fields.Str(dump_only=True)
+    department = fields.Str(dump_only=True)
+    home_institute = fields.Str(dump_only=True)
+
+
+class CERNRemoteSchema(Schema):
+    email = fields.Str(dump_only=True)
     profile = fields.Method('get_profile', dump_only=True)
 
-    def get_mail(self, obj):
-        return obj['mail'][0].decode('utf-8')
-
     def get_profile(self, obj):
-        return {
-            'display_name': obj['displayName'][0].decode('utf-8'),
-            'common_name': obj['cn'][0].decode('utf-8'),
-            'department': obj['department'][0].decode('utf-8'),
-            'home_institute': obj['company'][0].decode('utf-8')
-        }
-
-
-class SimpleCERNUserSchema(Schema):
-    """Schema for CERN OIDC Users."""
-    def dump(self, obj):
-        return [item['emailAddress'] for item in obj]
-
-
-class SimpleCERNGroupSchema(Schema):
-    """Schema for CERN OIDC Groups."""
-    def dump(self, obj):
-        return [f'{item["groupIdentifier"]}@cern.ch' for item in obj]
+        return CERNProfileSchema().dump(obj.get('profile', {})).data

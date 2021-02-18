@@ -26,12 +26,22 @@
 
 from __future__ import absolute_import, print_function
 
+import re
+import json
 import redis
-from flask import session
+
+from flask import session, request, current_app
 from flask_kvsession import KVSessionExtension
+from simplekv.memory.redisstore import RedisStore
+
+from invenio_accounts_rest.views import blueprint as accounts_blueprint
 from invenio_query_parser.ast import (AndOp, DoubleQuotedValue, Keyword,
                                       KeywordOp, OrOp)
-from simplekv.memory.redisstore import RedisStore
+
+from cap.modules.user.utils import get_remote_account_by_id
+
+ALL_USERS_REGEX = r'^.*\/users\/?$'
+SINGLE_USER_REGEX = r'^.*\/users\/[0-9]+$'
 
 
 class CAPAccess(object):
@@ -39,6 +49,29 @@ class CAPAccess(object):
 
     def __init__(self, app=None):
         """Extension initialization."""
+
+        @accounts_blueprint.after_request
+        def update_users(response):
+            """Update users with profile info."""
+            try:
+                if response.content_type == 'application/json':
+                    data = json.loads(response.data)
+
+                    # /users/<id>
+                    if re.match(SINGLE_USER_REGEX, request.base_url):
+                        data['profile'] = get_remote_account_by_id(
+                            data['id']).get('profile', {})
+
+                    # /users/ or /users
+                    if re.match(ALL_USERS_REGEX, request.base_url):
+                        for user in data['hits']['hits']:
+                            user['profile'] = get_remote_account_by_id(
+                                user['id']).get('profile', {})
+
+                    response.data = json.dumps(data, indent=4)
+            finally:
+                return response
+
         if app:
             self.init_app(app)
             store = RedisStore(redis.StrictRedis(

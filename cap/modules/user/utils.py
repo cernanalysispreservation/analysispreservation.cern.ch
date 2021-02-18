@@ -27,10 +27,12 @@ import ldap
 from cachetools.func import lru_cache
 from flask import current_app
 from invenio_accounts.models import Role, User
+from invenio_oauthclient.models import RemoteAccount
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from .errors import DoesNotExistInLDAP
+from cap.modules.user.serializers import CERNRemoteSchema
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -135,3 +137,18 @@ def get_user_email_by_id(user_id):
 def get_role_name_by_id(role_id):
     role = Role.query.filter_by(id=role_id).one()
     return role.name
+
+
+@lru_cache(maxsize=1024)
+def get_remote_account_by_id(user_id):
+    cern_app_id = current_app.config.get('CERN_APP_CREDENTIALS_KEY')
+    account = RemoteAccount.get(user_id=user_id, client_id=cern_app_id)
+
+    extra_data = account.extra_data if account else {}
+    profile_data = CERNRemoteSchema().dump(extra_data).data
+
+    if not profile_data.get('email'):
+        user = User.query.filter_by(id=user_id).one()
+        profile_data['email'] = user.email
+
+    return profile_data
