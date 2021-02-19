@@ -38,12 +38,12 @@ class DepositAccess extends React.Component {
     let access = {};
     Object.keys(permissions).map(action => {
       permissions[action].users.map(user => {
-        if (!access[user])
-          access[user] = {
+        if (!access[user.email])
+          access[user.email] = {
             actions: [],
             type: "user"
           };
-        access[user].actions.push(action);
+        access[user.email].actions.push(action);
       });
 
       permissions[action].roles.map(role => {

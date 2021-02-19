@@ -156,7 +156,9 @@ class DepositSidebar extends React.Component {
               align="center"
             >
               Creator
-              <span>{this.props.created_by}</span>
+              <span>
+                {this.props.created_by && this.props.created_by.email}
+              </span>
             </Box>
             <Box
               justify="between"
@@ -215,7 +217,7 @@ class DepositSidebar extends React.Component {
 DepositSidebar.propTypes = {
   toggleFilemanagerLayer: PropTypes.func,
   files: PropTypes.object,
-  created_by: PropTypes.string,
+  created_by: PropTypes.object,
   updated: PropTypes.string,
   created: PropTypes.string,
   experiment: PropTypes.string,

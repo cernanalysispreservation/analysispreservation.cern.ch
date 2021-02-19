@@ -19,7 +19,7 @@ const PermissionTable = ({
   addPermissionsModal = false,
   handlePermissions,
   draft_id,
-  created_by,
+  created_by = null,
   permissionsObj,
   target,
   access,
@@ -151,13 +151,13 @@ const PermissionTable = ({
                 className="permission-li-item"
               >
                 <Box align="center" direction="row" responsive={false}>
-                  {item}{" "}
+                  {item.email}{" "}
                   <Box pad={{ horizontal: "small" }}>
                     <Tag
                       text={
-                        created_by && created_by === item
+                        created_by && created_by.email === item
                           ? "owner"
-                          : access[item].type
+                          : access[item.email].type
                       }
                       size="small"
                     />
@@ -171,9 +171,9 @@ const PermissionTable = ({
                       text={
                         <PermissionPopUp
                           title={getTextFromPermission(access[item].actions)}
-                          type={access[item].type}
-                          email={item}
-                          permissions={access[item].actions}
+                          type={access[item.email].type}
+                          email={item.email}
+                          permissions={access[item.email].actions}
                           hideMenu={!canAdmin}
                         />
                       }
@@ -185,8 +185,8 @@ const PermissionTable = ({
                       size="iconSmall"
                       criticalOutline
                       margin="0 0 0 5px"
-                      disabled={created_by && created_by === item}
-                      onClick={() => setItemToDelete(item)}
+                      disabled={created_by && created_by.email === item}
+                      onClick={() => setItemToDelete(item.email)}
                     />
                   )}
                 </Box>

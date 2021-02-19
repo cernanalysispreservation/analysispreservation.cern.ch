@@ -47,7 +47,8 @@ const PermissionPopUp = ({
     },
     {
       checked: permissions.includes("deposit-update"),
-      disabled: loading || !canAdmin || (created_by && created_by === email),
+      disabled:
+        loading || !canAdmin || (created_by && created_by.email === email),
       onChange: () =>
         addPermissionsModal
           ? updateModalPermissions("deposit-update")
@@ -71,7 +72,8 @@ const PermissionPopUp = ({
     },
     {
       checked: permissions.includes("deposit-admin"),
-      disabled: loading || !canAdmin || (created_by && created_by === email),
+      disabled:
+        loading || !canAdmin || (created_by && created_by.email === email),
       onChange: () =>
         addPermissionsModal
           ? updateModalPermissions("deposit-admin")
