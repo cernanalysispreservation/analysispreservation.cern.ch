@@ -104,7 +104,6 @@ def ldap_user_by_mail():
         return jsonify([])
 
     resp, status = _ldap(query, by='mail')
-    import ipdb; ipdb.set_trace()
 
     user_info = [
         LDAPUserSchema().dump(item[1]).data

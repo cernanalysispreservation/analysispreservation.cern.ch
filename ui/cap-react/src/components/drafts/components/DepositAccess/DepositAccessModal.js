@@ -23,7 +23,8 @@ const DepositAccessModal = ({ open, onClose, access }) => {
     axios.get(url).then(({ data }) => {
       let perm = {};
       data.map(item => {
-        perm[item] = ["deposit-read"];
+        let objTarget = target === "user" ? item.email : item;
+        perm[objTarget] = ["deposit-read"];
       });
       setLoading(false);
       setPermissionsObj(perm);
