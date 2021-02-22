@@ -35,7 +35,7 @@ class SearchResults extends React.Component {
               status,
               labels,
               created,
-              created_by,
+              created_by = null,
               metadata = {}
             } = item;
 
@@ -156,7 +156,7 @@ class SearchResults extends React.Component {
                               marginLeft: "5px"
                             }}
                           >
-                            {created_by}
+                            {created_by.email}
                           </Label>
                         </React.Fragment>
                       )}

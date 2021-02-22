@@ -155,7 +155,7 @@ const PermissionTable = ({
                   <Box pad={{ horizontal: "small" }}>
                     <Tag
                       text={
-                        created_by && created_by === item
+                        created_by && created_by.email === item
                           ? "owner"
                           : access[item].type
                       }
@@ -185,7 +185,7 @@ const PermissionTable = ({
                       size="iconSmall"
                       criticalOutline
                       margin="0 0 0 5px"
-                      disabled={created_by && created_by === item}
+                      disabled={created_by && created_by.email === item}
                       onClick={() => setItemToDelete(item)}
                     />
                   )}

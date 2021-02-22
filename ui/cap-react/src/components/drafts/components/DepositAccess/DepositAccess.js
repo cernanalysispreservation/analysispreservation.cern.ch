@@ -38,12 +38,12 @@ class DepositAccess extends React.Component {
     let access = {};
     Object.keys(permissions).map(action => {
       permissions[action].users.map(user => {
-        if (!access[user])
-          access[user] = {
+        if (!access[user.email])
+          access[user.email] = {
             actions: [],
             type: "user"
           };
-        access[user].actions.push(action);
+        access[user.email].actions.push(action);
       });
 
       permissions[action].roles.map(role => {
@@ -185,14 +185,12 @@ DepositAccess.propTypes = {
   getUsers: PropTypes.func,
   permissions: PropTypes.object,
   handlePermissions: PropTypes.func,
-  created_by: PropTypes.string,
   canAdmin: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     draft_id: state.draftItem.get("id"),
-    created_by: state.draftItem.get("created_by"),
     draft: state.draftItem.get("data"),
     permissions: state.draftItem.get("access"),
     loading: state.draftItem.get("loading"),

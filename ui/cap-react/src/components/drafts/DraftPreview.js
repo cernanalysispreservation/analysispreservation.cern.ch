@@ -67,9 +67,9 @@ const DraftPreview = props => {
         allUsersEmails: []
       };
 
-    const adminUsers = access["deposit-admin"].users;
-    const readUsers = access["deposit-read"].users;
-    const updateUsers = access["deposit-update"].users;
+    const adminUsers = access["deposit-admin"].users.map(user => user.email);
+    const readUsers = access["deposit-read"].users.map(user => user.email);
+    const updateUsers = access["deposit-update"].users.map(user => user.email);
     const allRoles = [
       ...new Set(
         [...access["deposit-admin"].roles, ...access["deposit-read"].roles],

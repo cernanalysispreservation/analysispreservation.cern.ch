@@ -5,7 +5,7 @@
 # CERN Analysis Preservation is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-version: '2.3'
+version: "2.3"
 services:
   app:
     build:
@@ -85,7 +85,7 @@ services:
     environment:
       - "ELASTICSEARCH_URL=http://es:9200"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports: ['5601:5601']
+    ports: ["5601:5601"]
   flower:
     image: mher/flower
     command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
@@ -97,6 +97,6 @@ services:
     image: rediscommander/redis-commander:latest
     restart: always
     environment:
-    - REDIS_HOSTS=cache
+      - REDIS_HOSTS=cache
     ports:
-    - "8081:8081"
+      - "8081:8081"
