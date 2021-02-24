@@ -43,7 +43,7 @@ NEW_COLUMN_NAMES = {
     'Interpretation (will be ORed inside this category)': 'interpretation',
     'Final states (will be ORed inside this category)': 'final_states',
     'Further search categorisation (will be ORed inside this category)':
-        'further_search_categorization',
+        'further_search_categorisation',
     'Further categorisation Heavy Ion results '
     '(will be ORed inside this category)': 'further_categorisation_heavy_ion'
 }
