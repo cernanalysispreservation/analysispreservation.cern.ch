@@ -18,3 +18,9 @@ lhcb
 SchemaTreeItem
 ui
 cadi
+CERN
+CommonRecordSchema
+LDAP
+OIDC
+RemoteAccount
+serializer

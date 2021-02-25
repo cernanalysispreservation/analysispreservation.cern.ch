@@ -202,7 +202,7 @@ def test_create_deposit_set_fields_correctly(client, location, users,
         'labels': [],
         'experiment': 'CMS',
         'status': 'draft',
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
@@ -214,15 +214,15 @@ def test_create_deposit_set_fields_correctly(client, location, users,
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'is_owner': True,
@@ -333,7 +333,7 @@ def test_create_deposit_with_required_fields_success(
         'experiment': 'CMS',
         'status': 'draft',
         'is_owner': True,
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
@@ -342,15 +342,15 @@ def test_create_deposit_with_required_fields_success(
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'links': {

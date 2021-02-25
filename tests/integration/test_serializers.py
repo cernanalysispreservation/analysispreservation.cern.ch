@@ -74,7 +74,7 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         'experiment': 'CMS',
         'status': 'draft',
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
@@ -93,15 +93,15 @@ def test_get_deposit_with_default_serializer(client, users,
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': ['some-egroup@cern.ch'],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'is_owner': True,
@@ -160,21 +160,22 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
             'version': '1.0.0'
         },
         'labels': [],
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'access': {
             'record-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'record-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'record-read': {
                 'roles': [],
-                'users': [owner.email, users['cms_user2'].email]
+                'users': [{'email': owner.email, 'profile': {}},
+                          {'email': users['cms_user2'].email, 'profile': {}}]
             }
         },
         'metadata': {
