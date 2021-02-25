@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
@@ -6,9 +6,10 @@ import Heading from "grommet/components/Heading";
 import Paragraph from "grommet/components/Paragraph";
 import ReactTooltip from "react-tooltip";
 import CircleQuestion from "grommet/components/icons/base/CircleQuestion";
-import SwitchWidget from "../widgets/SwitchWidget";
+import { CheckBox } from "grommet";
 
 function AnalysisReuseMode(props) {
+  const [checked, setChecked] = useState(props.innerProps.formData === "true");
   return (
     <Box pad={{ horizontal: "small" }} colorIndex="light-2">
       <Box>
@@ -35,7 +36,20 @@ function AnalysisReuseMode(props) {
             </ReactTooltip>
           </Heading>
           <Box margin={{ left: "small" }}>
-            <SwitchWidget {...props.innerProps} id="analysis_reuse_mode" />
+            <CheckBox
+              disabled={props.innerProps.readonly}
+              key={props.innerProps.name}
+              toggle={true}
+              name={props.innerProps.name}
+              onChange={e => {
+                props.innerProps.onChange(
+                  e.target.checked ? "true" : undefined
+                );
+                setChecked(e.target.checked);
+              }}
+              checked={checked}
+              id={props.innerProps.name}
+            />
           </Box>
         </Box>
         <Box flex="shrink" />

@@ -820,6 +820,11 @@ const simple = {
                   type: "string"
                 }
               }
+            },
+            hidden: {
+              type: "boolean",
+              title: "Do you want this field to be hidden?",
+              description: "If yes, this field will not be visible in the form"
             }
           }
         }
