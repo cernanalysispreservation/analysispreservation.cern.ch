@@ -61,6 +61,9 @@ install_requires = [
     'python-gitlab>=1.0.2',
     'python-cern-sso-krb==1.3.3',
     'python-gssapi==0.6.4',
+    # FIX cryptography <=3.3.2 is needed for installation not to crash
+    # https://github.com/Azure/azure-cli/issues/16858
+    'cryptography<=3.3.2',
     'paramiko==2.7.1',
     'cachetools==3.1.0',
 
