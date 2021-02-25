@@ -506,6 +506,12 @@ const simple = {
                   type: "string"
                 }
               }
+            },
+            falseToUndefined: {
+              type: "boolean",
+              title: "Do you want to return undefined instead of false?",
+              description:
+                "In some cases the returned value is preferred to be undefined than false"
             }
           }
         }
@@ -541,6 +547,13 @@ const simple = {
           title: "Do you want this field to be read only?",
           enum: [true, false],
           enumNames: ["ReadOnly", "Editable"]
+        },
+        type: {
+          type: "string",
+          title: "The type of the returned value",
+          description: "Define the type of the returned value",
+          enum: ["boolean", "string", "number"],
+          enumNames: ["Boolean", "String", "Number"]
         }
       }
     },
@@ -551,7 +564,7 @@ const simple = {
     },
     default: {
       schema: {
-        type: "string"
+        type: "boolean"
       },
       uiSchema: {
         "ui:widget": "switch",

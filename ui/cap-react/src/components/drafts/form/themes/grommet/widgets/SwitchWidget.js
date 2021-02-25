@@ -9,7 +9,7 @@ const SwitchWidget = function(props) {
     let value = event.target.checked;
 
     // in case the type is string
-    if (props.schema.type === "string") value = String(event.target.value);
+    if (props.schema.type === "string") value = String(event.target.checked);
 
     // in case the type is number
     if (props.schema.type === "number") value = event.target.checked ? 1 : 0;
@@ -33,7 +33,9 @@ const SwitchWidget = function(props) {
       toggle={true}
       name={props.id}
       onChange={_onChange}
-      checked={props.value}
+      checked={
+        props.schema.type === "string" ? props.value === "true" : props.value
+      }
     />
   );
 };
