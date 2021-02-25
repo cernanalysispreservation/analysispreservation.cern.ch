@@ -116,8 +116,9 @@ def test_get_records_when_member_of_exp_can_see_all_experiments_records(
 def test_get_records_default_serializer(client, superuser,
                                         auth_headers_for_superuser, users,
                                         json_headers, create_deposit):
+    owner = users['cms_user2']
     deposit = create_deposit(
-        superuser,
+        owner,
         'cms-analysis',
         {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
@@ -147,25 +148,23 @@ def test_get_records_default_serializer(client, superuser,
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
-        'created_by': superuser.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'labels': [],
         'access': {
             'record-admin': {
                 'roles': [],
-                'users': [superuser.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'record-update': {
                 'roles': [],
-                'users': [superuser.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'record-read': {
                 'roles': [],
-                'users': [
-                    superuser.email, users['cms_user'].email,
-                    users['cms_user2'].email
-                ]
+                'users': [{'email': owner.email, 'profile': {}},
+                          {'email': users['cms_user2'].email, 'profile': {}}]
             }
         },
         'metadata': {
@@ -181,7 +180,7 @@ def test_get_records_default_serializer(client, superuser,
             'size': file.file.size,
             'version_id': str(file.version_id)
         }],
-       'is_owner': True,
+       'is_owner': False,
         'links': {
             'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
             format(record.files.bucket),
@@ -316,22 +315,23 @@ def test_get_record_when_superuser_returns_record(client, db, users,
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'labels': [],
         'access': {
             'record-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'record-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'record-read': {
                 'roles': [],
-                'users': [users['cms_user'].email, users['cms_user2'].email]
+                'users': [{'email': users['cms_user'].email, 'profile': {}},
+                          {'email': users['cms_user2'].email, 'profile': {}}]
             }
         },
         'metadata': {
@@ -413,15 +413,25 @@ def test_get_record_with_form_json_serializer(
     assert resp.status_code == 200
     assert resp.json == {
         'access': {
-            'record-admin': {'roles': [], 'users': [example_user.email]},
-            'record-read': {'roles': [], 'users': [example_user.email,
-                                                   'cms_user2@cern.ch']},
-            'record-update': {'roles': [], 'users': [example_user.email]}},
+            'record-admin': {
+                'roles': [],
+                'users': [{'email': example_user.email, 'profile': {}}]
+            },
+            'record-read': {
+                'roles': [],
+                'users': [{'email': example_user.email, 'profile': {}},
+                          {'email': 'cms_user2@cern.ch', 'profile': {}}]
+            },
+            'record-update': {
+                'roles': [],
+                'users': [{'email': example_user.email, 'profile': {}}]
+            }
+        },
         'can_update': True, 'is_owner': True,
         'can_review': False,
         'created': rec.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': rec.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-        'created_by': example_user.email,
+        'created_by': {'email': example_user.email, 'profile': {}},
         'experiment': rec['_experiment'],
         'draft_id': rec['_deposit']['id'],
         'id': pid,
@@ -488,7 +498,7 @@ def test_get_record_with_form_json_serializer_check_other_user_can_update(
     assert resp.status_code == 200
     assert resp.json['is_owner'] is False
     assert resp.json['can_update'] is True
-    assert 'cms_user2@cern.ch' in resp.json['access']['record-update']['users']
+    assert 'cms_user2@cern.ch' in [user['email'] for user in resp.json['access']['record-update']['users']]
 
 
 def test_get_record_with_form_json_serializer_check_other_user_can_admin(
@@ -516,7 +526,7 @@ def test_get_record_with_form_json_serializer_check_other_user_can_admin(
     assert resp.status_code == 200
     assert resp.json['is_owner'] is False
     assert resp.json['can_update'] is True
-    assert 'cms_user2@cern.ch' in resp.json['access']['record-admin']['users']
+    assert 'cms_user2@cern.ch' in [user['email'] for user in resp.json['access']['record-admin']['users']]
 
 
 def test_get_record_when_user_has_no_access_to_schema_can_still_see_record_that_got_access_to(

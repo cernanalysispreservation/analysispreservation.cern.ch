@@ -232,7 +232,7 @@ def test_update_deposit_cannot_update_underscore_prefixed_files(
         },
         'experiment': 'LHCb',
         'status': 'draft',
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'labels': [],
@@ -241,15 +241,15 @@ def test_update_deposit_cannot_update_underscore_prefixed_files(
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'is_owner': True,
@@ -361,7 +361,7 @@ def test_patch_deposit_cannot_update_underscore_prefixed_fields(
         'experiment': 'LHCb',
         'status': 'draft',
         'labels': [],
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {},
@@ -369,15 +369,15 @@ def test_patch_deposit_cannot_update_underscore_prefixed_fields(
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'is_owner': True,
@@ -484,7 +484,7 @@ def test_update_deposit_with_required_field_success(
         'experiment': 'CMS',
         'status': 'draft',
         'is_owner': True,
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
@@ -493,15 +493,15 @@ def test_update_deposit_with_required_field_success(
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'links': {

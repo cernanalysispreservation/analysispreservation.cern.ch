@@ -187,7 +187,7 @@ def test_create_record_success_with_role_and_user(
 
     assert resp.status_code == 200
     assert resp.json['access']['deposit-read']['roles'] == ['test@cern.ch']
-    assert resp.json['access']['deposit-read']['users'] == [user_mail]
+    assert resp.json['access']['deposit-read']['users'][0]['email'] == user_mail
 
 
 def test_create_record_success_with_role_and_owner(
@@ -210,7 +210,7 @@ def test_create_record_success_with_role_and_owner(
 
     assert resp.status_code == 200
     assert resp.json['access']['deposit-read']['roles'] == ['test@cern.ch']
-    assert resp.json['created_by'] == user_mail
+    assert resp.json['created_by']['email'] == user_mail
 
 
 def test_create_record_success_with_user_and_owner(
@@ -233,8 +233,11 @@ def test_create_record_success_with_user_and_owner(
         resp = client.get(f'/deposits/{depid}', headers=auth_headers_for_superuser)
 
     assert resp.status_code == 200
-    assert resp.json['access']['deposit-read']['users'] == [user_mail2, user_mail]
-    assert resp.json['created_by'] == user_mail2
+    assert resp.json['access']['deposit-read']['users'] == [
+        {'email': user_mail2, 'profile': {}},
+        {'email': user_mail, 'profile': {}}
+    ]
+    assert resp.json['created_by']['email'] == user_mail2
 
 
 def test_create_record_success_with_multiple_roles(
@@ -278,4 +281,7 @@ def test_create_record_success_with_multiple_users(
         resp = client.get(f'/deposits/{depid}', headers=auth_headers_for_superuser)
 
     assert resp.status_code == 200
-    assert resp.json['access']['deposit-read']['users'] == [user_mail, user_mail2]
+    assert resp.json['access']['deposit-read']['users'] == [
+        {'email': user_mail, 'profile': {}},
+        {'email': user_mail2, 'profile': {}}
+    ]

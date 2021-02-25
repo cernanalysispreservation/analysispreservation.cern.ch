@@ -15,3 +15,9 @@ formBuilder
 lhcb
 SchemaTreeItem
 ui
+CERN
+CommonRecordSchema
+LDAP
+OIDC
+RemoteAccount
+serializer
