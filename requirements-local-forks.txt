@@ -1,6 +1,7 @@
 -e git+git://github.com/annatrz/invenio-deposit.git#egg=invenio-deposit
 # -e git+git://github.com/reanahub/reana-client.git@master#egg=reana-client
 # -e git+git://github.com/reanahub/reana-commons.git@master#egg=reana-commons
+cryptography<=3.3.2
 reana-client==0.6.0
 reana-commons==0.6.0
 -e git+git://github.com/cernanalysispreservation/invenio-oauthclient.git@master#egg=invenio-oauthclient
