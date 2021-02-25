@@ -76,7 +76,12 @@ class SchemaTreeItem extends React.Component {
     return (
       <div
         style={{
-          borderBottom: "2px solid #64727d"
+          borderBottom: "2px solid #64727d",
+          opacity:
+            this.props.uiSchema &&
+            this.props.uiSchema["ui:options"] &&
+            this.props.uiSchema["ui:options"].hidden &&
+            0.5
         }}
       >
         <Box
