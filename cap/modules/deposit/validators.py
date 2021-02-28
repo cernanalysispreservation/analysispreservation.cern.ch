@@ -23,6 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Deposit validators."""
 
+import os
+
 from jsonschema import Draft4Validator
 from jsonschema.validators import extend
 
@@ -32,8 +34,9 @@ from cap.modules.experiments.validators import (validate_cadi_id,
 
 deposit_validators = dict(Draft4Validator.VALIDATORS)
 
-deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
-deposit_validators['x-validate-das-path'] = validate_das_path
+if not os.environ.get("CAP_CMS_VALIDATION_DISABLE"):
+    deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
+    deposit_validators['x-validate-das-path'] = validate_das_path
 # deposit_validators['x-validate-cadi-id'] = validate_cadi_id
 
 DepositValidator = extend(Draft4Validator, validators=deposit_validators)
