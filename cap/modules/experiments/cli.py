@@ -109,8 +109,15 @@ def keywords(file):
             not_found.append(cadi_id)
             click.secho(f"CADI ID {cadi_id} not found.", fg='red')
 
-        except DepositValidationError:
-            click.secho(f"Validation Error on: {item}", fg='red')
+        except DepositValidationError as e:
+            errors = [err.res for err in e.errors]
+            errors_str = ""
+            try:
+                errors_str = str(errors)
+            except Exception:
+                errors_str = "Can't tranform to string value"
+            click.secho(f"CADI ID {cadi_id} - Validation Error on:", fg='red')
+            click.secho(errors_str, fg='red')
 
     # write_path = os.path.join(os.getcwd(), 'not-found.txt')
     # with open(write_path, 'w') as out_file:

@@ -2,12 +2,14 @@ ALICE
 ATLAS
 CAP
 CMS
+CLI
 LHCb
 alice
 atlas
 auth
 cms
 config
+cli
 devops
 docker
 docs
