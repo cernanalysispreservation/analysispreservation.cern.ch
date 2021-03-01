@@ -77,7 +77,7 @@ function DashboardList(props) {
       >
         {list[activeList].list.length > 0 ? (
           <Box>
-            <List id="anchor-no-style">
+            <List id="anchor-no-style" data-cy={`${header}-list`}>
               {list[activeList].list.map((item, index) => (
                 <Anchor
                   style={{ width: "100%" }}

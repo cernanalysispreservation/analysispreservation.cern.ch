@@ -69,9 +69,10 @@ Cypress.Commands.add("logout", () => {
 
 // Create draft with a specific title
 
-Cypress.Commands.add("createDraft", (anatype, generalTitle) => {
-  cy.login("info@inveniosoftware.org", "infoinfo");
-  cy.wait(2000);
+Cypress.Commands.add("createDraft", (anatype, generalTitle, user = "info") => {
+  cy.login(`${user}@inveniosoftware.org`, `${user}${user}`);
+
+  cy.wait(1000);
 
   // open the Create modal
   cy.get("div")

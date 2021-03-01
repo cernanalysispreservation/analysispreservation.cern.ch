@@ -137,6 +137,7 @@ class PublishedPreview extends React.Component {
                 editAnchor={
                   this.props.canUpdate && (
                     <Button
+                      dataCy="edit-published"
                       text="Edit"
                       size="small"
                       margin="0 10px"

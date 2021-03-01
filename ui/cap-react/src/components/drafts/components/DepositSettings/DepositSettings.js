@@ -76,6 +76,7 @@ class DepositSettings extends React.Component {
                     ? null
                     : "your account has no permissions to publish"
                 }
+                data-cy="settings-publish-btn"
               >
                 <Button
                   text={isPublishedOnce ? "Publish New Version" : "Publish"}
