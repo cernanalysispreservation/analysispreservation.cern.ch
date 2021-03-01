@@ -55,6 +55,7 @@ class DraftDefaultHeader extends React.Component {
               emptyValue={"Untitled document"}
               onUpdate={val => this.props.updateGeneralTitle(val)}
               isEditable={this.props.canUpdate}
+              cyData="general-title-input"
             />
           </Box>
           <Box align="center" justify="center" pad={{ horizontal: "small" }}>

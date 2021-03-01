@@ -14,13 +14,13 @@ describe("Create Draft", () => {
       .click();
 
     // erase the previous title and insert the new one
-    cy.get("input.general-title-input")
+    cy.get("[data-cy=general-title-input]")
       .should("have.value", firstTitle)
       .clear()
       .type(updatedTitle);
 
     // approve the changes
-    cy.get("div.general-title-checkmark").click();
+    cy.get("[data-cy=checkmark]").click();
 
     cy.wait(2000);
 
@@ -48,13 +48,13 @@ describe("Create Draft", () => {
       .click();
 
     // erase the previous title and insert the new one
-    cy.get("input.general-title-input")
+    cy.get("[data-cy=general-title-input]")
       .should("have.value", firstTitle)
       .clear()
       .type(updatedTitle);
 
     // approve the changes
-    cy.get("div.general-title-closeicon").click();
+    cy.get("[data-cy=closeicon]").click();
 
     cy.wait(2000);
 

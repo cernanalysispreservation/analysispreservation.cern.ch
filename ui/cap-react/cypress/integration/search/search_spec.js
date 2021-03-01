@@ -1,5 +1,5 @@
 describe("Search Integration Suite", () => {
-  it("Navigate to search page, from dashboard", () => {
+  it("Navigate to search page for published results", () => {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     // find the search bar
@@ -19,7 +19,7 @@ describe("Search Integration Suite", () => {
     cy.get("input#search_facet_yours_checkbox").should("have.attr", "checked");
   });
 
-  it("Navigate to the drafts page", () => {
+  it("Navigate search page for drafts results", () => {
     // login first
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
