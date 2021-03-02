@@ -1,29 +1,29 @@
 describe("Published Tests", () => {
-  //   it("Publish a CMS Draft", () => {
-  //     const firstTitle = "My First CMS Analysis";
-  //     // create a new ALICE Analysis
-  //     // given a random tiltle
-  //     cy.createDraft("CMS Analysis", firstTitle, "cms");
+    it("Publish a CMS Draft", () => {
+      const firstTitle = "My First CMS Analysis";
+      // create a new ALICE Analysis
+      // given a random tiltle
+      cy.createDraft("CMS Analysis", firstTitle, "cms");
 
-  //     cy.visit("http://localhost:3000/");
+      cy.visit("http://localhost:3000/");
 
-  //     cy.get("[data-cy=drafts-list] a")
-  //       .first()
-  //       .click();
+      cy.get("[data-cy=drafts-list] a")
+        .first()
+        .click();
 
-  //     // navoigate to settings tab
-  //     cy.get("[data-cy=draft-settings]").click();
+      // navoigate to settings tab
+      cy.get("[data-cy=draft-settings]").click();
 
-  //     // click publish button
-  //     cy.get("[data-cy=settings-publish-btn]").click();
+      // click publish button
+      cy.get("[data-cy=settings-publish-btn]").click();
 
-  //     // confirm publish action
-  //     cy.get("[data-cy=layer-primary-action]").click();
+      // confirm publish action
+      cy.get("[data-cy=layer-primary-action]").click();
 
-  //     // check if it was moved to the publised
-  //     cy.wait(1000);
-  //     cy.url().should("include", "/published");
-  //   });
+      // check if it was moved to the publised
+      cy.wait(1000);
+      cy.url().should("include", "/published");
+    });
 
   it("Change a published into a Draft", () => {
     const firstTitle = "My First CMS Analysis";

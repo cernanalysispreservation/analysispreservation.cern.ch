@@ -28,7 +28,8 @@ const Menu = ({
   iconWrapperClassName = "",
   padding = "5px",
   minWidth = "120px",
-  shadow = false
+  shadow = false,
+  dataCy = ""
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dropDownMenu = useRef(null);
@@ -68,7 +69,7 @@ const Menu = ({
   );
 
   return (
-    <Box ref={dropDownMenu} className="menu">
+    <Box ref={dropDownMenu} className="menu" data-cy="header-menu">
       <Wrapper
         hover={hoverColor}
         expanded={expanded}
