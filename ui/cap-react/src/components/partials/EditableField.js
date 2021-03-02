@@ -106,7 +106,13 @@ const EditableField = ({
           {renderDisplay ? (
             renderDisplay(value)
           ) : (
-            <Label size={size} align="start" pad="none" margin="none">
+            <Label
+              size={size}
+              align="start"
+              pad="none"
+              margin="none"
+              data-cy="ediatble-value"
+            >
               {value || emptyValue}
             </Label>
           )}

@@ -150,6 +150,7 @@ class DepositSettings extends React.Component {
               )}
               <Box>
                 <Button
+                  dataCy="draft-delete-btn"
                   onClick={this._actionHandler("delete")}
                   icon={<AiOutlineDelete size={BUTTON_IMAGE_SIZE} />}
                   text="Delete"
