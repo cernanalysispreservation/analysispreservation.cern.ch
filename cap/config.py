@@ -595,6 +595,7 @@ CADI_GET_ALL_URL = 'https://icms.cern.ch/tools/restplus/relay/piggyback/' + \
     'cadi/history/capInfo'
 CADI_GET_RECORD_URL = 'https://icms.cern.ch/tools/restplus/relay/' + \
     'piggyback/cadi/history/capInfo/{id}'
+CADI_REGEX = "^[A-Z]{3}-[0-9]{2}-[0-9]{3}$"
 
 # ATLAS
 # ========

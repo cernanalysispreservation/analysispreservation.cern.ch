@@ -23,13 +23,12 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 import re
+
 from flask import current_app
 from flask_login import current_user
-
 from invenio_accounts.models import User
-from .tasks import create_and_send
 
-CADI_REGEX = "^[A-Z]{3}-[0-9]{2}-[0-9]{3}$"
+from cap.modules.mail.tasks import create_and_send
 
 
 def path_value_equals(element, JSON):
@@ -54,12 +53,13 @@ def get_review_recipients(deposit, config):
 
     recipients = list({owner_mail, reviewer_mail})
     cadi_id = deposit.get('analysis_context', {}).get('cadi_id')
+    cadi_regex = current_app.config.get('CADI_REGEX')
 
     if cadi_id:
         # mail for reviews - Hypernews
         # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed cadi id
         hypernews_mail = current_app.config.get('CMS_HYPERNEWS_EMAIL_FORMAT')
-        if re.match(CADI_REGEX, cadi_id) and hypernews_mail:
+        if re.match(cadi_regex, cadi_id) and hypernews_mail:
             recipients.append(hypernews_mail.format(cadi_id=cadi_id))
 
     message = f"Submitted by {owner_mail}, and reviewed by {reviewer_mail}."
@@ -100,13 +100,14 @@ def get_cms_stat_recipients(record, config):
         recipients.append(conveners_ml_mail)
 
     cadi_id = record.get('analysis_context', {}).get('cadi_id')
+    cadi_regex = current_app.config.get('CADI_REGEX')
 
     message = ""
     if cadi_id:
         # mail for ML surveys - Hypernews
         # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed cadi id
         hypernews_mail = current_app.config.get('CMS_HYPERNEWS_EMAIL_FORMAT')
-        if re.match(CADI_REGEX, cadi_id) and hypernews_mail:
+        if re.match(cadi_regex, cadi_id) and hypernews_mail:
             recipients.append(hypernews_mail.format(cadi_id=cadi_id))
 
         message += "A CMS Statistical Questionnaire has been published " + \

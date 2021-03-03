@@ -25,11 +25,11 @@
 import json
 import re
 import pandas as pd
+from flask import current_app
 
 from ..search.cms_triggers import CMS_TRIGGERS_ES_CONFIG
 from .common import recreate_es_index_from_source
 
-CADI_ID_PATTERN = re.compile('^[A-Z0-9]{3}-[0-9]{2}-[0-9]{3}$')
 
 NEW_COLUMN_NAMES = {
     'CADI line (e.g. HIG-12-028 for a paper, CMS-HIG-12-028 for a PAS). '
@@ -74,8 +74,10 @@ def extract_keywords_from_excel(file):
         for item in data
     ]
 
+    cadi_regex = current_app.config.get('CADI_REGEX')
+
     for item in data:
-        if not CADI_ID_PATTERN.match(item['cadi_id']):
+        if not re.match(cadi_regex, item['cadi_id']):
             item['cadi_id'] = item['cadi_id']\
                 .replace('CMS-', '', 1)\
                 .replace('PAS-', '', 1)\
