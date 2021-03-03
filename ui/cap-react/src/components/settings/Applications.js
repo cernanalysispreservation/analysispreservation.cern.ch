@@ -28,7 +28,6 @@ import { getUsersAPIKeys, createToken, revokeToken } from "../../actions/auth";
 import { applicationSchema, tokenSchema } from "./utils";
 
 import Modal from "../partials/Modal";
-import { DH_UNABLE_TO_CHECK_GENERATOR } from "constants";
 
 class SettingsIndex extends React.Component {
   constructor(props) {

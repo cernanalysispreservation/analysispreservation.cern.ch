@@ -264,6 +264,7 @@ const Button = ({
 };
 
 Button.propTypes = {
+  dataCy: PropTypes.string,
   text: PropTypes.string,
   primary: PropTypes.bool,
   primaryOutline: PropTypes.bool,

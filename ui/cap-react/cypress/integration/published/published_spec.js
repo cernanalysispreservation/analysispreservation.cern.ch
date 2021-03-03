@@ -24,9 +24,22 @@ describe("Published Tests", () => {
     cy.wait(1000);
     cy.url().should("include", "/published");
   });
-  it("Delete a Published report is not possible", () => {});
+  it("A published report would not be deleted", () => {
+    cy.loginUrl("cms@inveniosoftware.org", "cmscms");
+
+    cy.get("[data-cy=publishedincollaboration-list] a")
+      .first()
+      .click();
+
+    cy.get("[data-cy=edit-published]").click();
+
+    // navoigate to settings tab
+    cy.get("[data-cy=draft-settings]").click();
+
+    cy.get("[data-cy=draft-delete-btn]").should("have.attr", "disabled");
+  });
   it("Change a published into a Draft", () => {
-    cy.visit("http://localhost:3000/");
+    cy.loginUrl("cms@inveniosoftware.org", "cmscms");
 
     cy.get("[data-cy=drafts-list] a")
       .first()

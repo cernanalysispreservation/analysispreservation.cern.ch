@@ -13,7 +13,7 @@ const EditableField = ({
   renderDisplay = null,
   onUpdate = null,
   isEditable = true,
-  cyData = ""
+  dataCy = ""
 }) => {
   const [currentValue, setCurrentValue] = useState(value);
   const [hoverTitle, setHoverTitle] = useState(false);
@@ -53,7 +53,7 @@ const EditableField = ({
       <Label size={size} margin="none" direction="row">
         <input
           key="draft-input"
-          data-cy={cyData}
+          data-cy={dataCy}
           style={{ padding: 0, border: "1px solid #136994", borderRadius: 0 }}
           onChange={_onChange}
           value={currentValue}
@@ -86,6 +86,7 @@ const EditableField = ({
         wrap={false}
         onMouseEnter={() => setHoverTitle(true)}
         onMouseLeave={() => setHoverTitle(false)}
+        data-cy="editable-title-wrapper"
         onClick={
           isEditable
             ? () => {
@@ -106,13 +107,7 @@ const EditableField = ({
           {renderDisplay ? (
             renderDisplay(value)
           ) : (
-            <Label
-              size={size}
-              align="start"
-              pad="none"
-              margin="none"
-              data-cy="ediatble-value"
-            >
+            <Label size={size} align="start" pad="none" margin="none">
               {value || emptyValue}
             </Label>
           )}
@@ -130,7 +125,7 @@ EditableField.propTypes = {
   onUpdate: PropTypes.func,
   size: PropTypes.string,
   isEditable: PropTypes.bool,
-  cyData: PropTypes.string
+  dataCy: PropTypes.string
 };
 
 export default EditableField;
