@@ -148,10 +148,8 @@ class SearchPage extends React.Component {
       );
 
       results = this.props.loading ? (
-        <Box flex={false} justify="center" direction="row">
-          <Box justify="center" align="end">
-            <SearchResultsLoading />
-          </Box>
+        <Box flex={false} justify="center" align="center">
+          <SearchResultsLoading />
         </Box>
       ) : this.props.error ? (
         <Box flex={false} justify="center" align="center">
@@ -170,7 +168,7 @@ class SearchPage extends React.Component {
           </Label>
         </Box>
       ) : (
-        <Box align="end">
+        <Box flex={false} justify="center" align="center">
           <SearchResults results={_results.hits.hits || []} />
           {utils}
         </Box>
@@ -197,7 +195,7 @@ class SearchPage extends React.Component {
               />
             }
           />
-          <Box direction="row">
+          <Box direction="row" >
             <Box id="sidebar">
               <SearchFacets
                 removeType={this.props.match.params.anatype}

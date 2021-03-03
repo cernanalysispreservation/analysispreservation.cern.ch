@@ -7,8 +7,8 @@ import Truncate from "react-truncate";
 
 const SearchResultsLoading = () => {
   return (
-    <Box flex={true} colorIndex="light-2" className="search_result_box">
-      <List>
+    <Box colorIndex="light-2">
+      <List className="search_result_box">
         {[...Array(5)].map((item, index) => (
           <ListItem key={index} separator="none" pad="none">
             <Box

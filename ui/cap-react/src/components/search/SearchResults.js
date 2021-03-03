@@ -21,7 +21,7 @@ class SearchResults extends React.Component {
 
   render() {
     return this.props.results.length > 0 ? (
-      <Box size={{ width: { max: "xxlarge" } }} colorIndex="light-2">
+      <Box  colorIndex="light-2">
         <List className="search_result_box">
           {this.props.results.map((item, index) => {
             // let rights = "";

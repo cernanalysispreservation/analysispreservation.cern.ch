@@ -4,7 +4,7 @@ import Box from "grommet/components/Box";
 
 const SearchFacetLoading = () => {
   return (
-    <Box flex={true} justify="start">
+    <Box flex={false} primary={true} margin={{ vertical: "medium" }}>
       <Box flex={true} primary={true} margin={{ vertical: "medium" }}>
         {[...Array(4)].map((category, index) => {
           return (
