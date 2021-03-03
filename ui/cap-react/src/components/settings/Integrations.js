@@ -3,36 +3,48 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import Box from "grommet/components/Box";
-import List from "grommet/components/List";
-import ListItem from "grommet/components/ListItem";
-
-import Label from "grommet/components/Label";
 import Anchor from "../partials/Anchor";
-import ConnectIcon from "grommet/components/icons/base/Connect";
+import Button from "../partials/Button";
+import { Heading, Box, Label } from "grommet";
+
 import UnlinkIcon from "grommet/components/icons/base/Unlink";
+
+import { AiOutlineApi } from "react-icons/ai";
 
 import OauthPopup from "./components/OAuthPopup";
 import { updateIntegrations, removeIntegrations } from "../../actions/auth";
+import { GithubIcon } from "../drafts/form/themes/grommet/fields/components/GithubIcon";
+import { GitlabIcon } from "../drafts/form/themes/grommet/fields/components/GitlabIcon";
+import ZenodoIcon from "../drafts/form/themes/grommet/fields/ServiceIdGetter/components/Zenodo/ZenodoIcon";
+import ORCidIcon from "../drafts/form/themes/grommet/fields/ServiceIdGetter/components/ORCID/ORCidIcon";
+import IntegrationService from "./IntegrationService/IntegrationService";
 
-const INTEGRATIONS = {
-  github: {
+const INTEGRATIONS = [
+  {
     title: "Github",
-    description: ""
+    name: "github",
+    description: "",
+    icon: <GithubIcon size="large" />
   },
-  gitlab: {
+  {
     title: "Gitlab CERN",
-    description: ""
+    name: "gitlab",
+    description: "",
+    icon: <GitlabIcon size="large" />
   },
-  zenodo: {
+  {
     title: "Zenodo",
-    description: ""
+    name: "zenodo",
+    description: "",
+    icon: <ZenodoIcon size="large" />
   },
-  orcid: {
+  {
     title: "ORCiD",
-    description: ""
+    name: "orcid",
+    description: "",
+    icon: <ORCidIcon size="large" />
   }
-};
+];
 
 class Integrations extends React.Component {
   renderOAuthConnectPopup(service) {
@@ -43,16 +55,7 @@ class Integrations extends React.Component {
 
     return (
       <OauthPopup url={_url} loginCallBack={this.loginCallBack}>
-        <div>
-          <Anchor
-            icon={<ConnectIcon size="xsmall" />}
-            label={
-              <Label size="small" uppercase>
-                connect
-              </Label>
-            }
-          />
-        </div>
+        <Button text="Connect" icon={<AiOutlineApi />} primaryOutline />
       </OauthPopup>
     );
   }
@@ -83,30 +86,52 @@ class Integrations extends React.Component {
 
   render() {
     return (
-      <Box flex>
+      <Box flex colorIndex="light-1">
         <Box pad="none">
           <Box flex={true} direction="row" pad="small">
-            <Label uppercase align="start" justify="center" margin="none">
+            <Heading tag="h3" margin="none">
               Integrations with other services
-            </Label>
+            </Heading>
           </Box>
         </Box>
-        <Box colorIndex="light-1">
-          <Box>
-            <Box flex>
-              <List>
-                {Object.keys(INTEGRATIONS).map(service => (
-                  <ListItem key={service} justify="between">
-                    <Label size="small" uppercase>
-                      {INTEGRATIONS[service].title}
-                    </Label>
-                    {this.props.integrations && this.props.integrations[service]
-                      ? this.renderOAuthDisconnect(service)
-                      : this.renderOAuthConnectPopup(service)}
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+        <Box>
+          <Box
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr)",
+              gridGap: "10px 10px",
+              height: "auto"
+            }}
+            pad="small"
+          >
+            {INTEGRATIONS.map(service => (
+              <Box
+                flex
+                key={service.name}
+                colorIndex="light-1"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  minHeight: "205px",
+                  borderRadius: "3px",
+                  border: "1px solid #f5f5f5"
+                }}
+                justify="between"
+                pad="small"
+              >
+                <Box align="center">{service.icon}</Box>
+                {this.props.integrations &&
+                this.props.integrations[service.name] ? (
+                  <IntegrationService
+                    service={service.name}
+                    data={this.props.integrations[service.name]}
+                    onClick={() => this.logoutCallback(service.name)}
+                  />
+                ) : (
+                  this.renderOAuthConnectPopup(service.name)
+                )}
+              </Box>
+            ))}
           </Box>
         </Box>
       </Box>

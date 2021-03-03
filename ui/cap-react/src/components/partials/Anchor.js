@@ -18,7 +18,8 @@ const Anchors = ({
   download = null,
   style = null,
   children = null,
-  target = ""
+  target = "",
+  reverse=false
 }) => {
   return (
     <Box pad={pad} align={align} justify={justify} margin={margin}>
@@ -33,6 +34,7 @@ const Anchors = ({
         href={href}
         download={download}
         target={target}
+        reverse={reverse}
       >
         {children}
       </Anchor>

@@ -7,21 +7,19 @@ import Box from "grommet/components/Box";
 import Anchor from "../partials/Anchor";
 
 import Paragraph from "grommet/components/Paragraph";
+import Heading from "grommet/components/Heading";
 import Table from "grommet/components/Table";
 import TableHeader from "grommet/components/TableHeader";
 import TableRow from "grommet/components/TableRow";
 
 import cogoToast from "cogo-toast";
 import { Label } from "grommet";
+import NoData from "../../img/nodata.svg";
 
 import Button from "../partials/Button";
 
-import AddIcon from "grommet/components/icons/base/Add";
-import CloseIcon from "grommet/components/icons/base/Close";
-
-import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
-
 import Form from "../drafts/form/GrommetForm";
+import { AiOutlinePlus, AiOutlineClose } from "react-icons/ai";
 
 import { getUsersAPIKeys, createToken, revokeToken } from "../../actions/auth";
 
@@ -119,30 +117,40 @@ class SettingsIndex extends React.Component {
     this.props.revokeToken(token, key);
   }
 
+  getTokenSize = () => {
+    return this.props.tokens.filter(t => t !== undefined).size;
+  };
+
   render() {
     return (
       <Box flex>
         {this.state.layer.active ? this.getLayer() : null}
         <Box pad="none">
-          <Box flex={true} direction="row" pad="small" justify="between">
-            <Label uppercase align="start" justify="center" margin="none">
-              Your OAuth Tokens
-            </Label>
-            <Box align="center">
-              <Anchor
-                icon={<AddIcon size="xsmall" />}
-                label={
-                  <Label size="small" uppercase>
-                    Add token
-                  </Label>
-                }
-                onClick={this.activateLayer.bind(this, "token")}
-              />
+          <Box
+            flex={true}
+            colorIndex="light-1"
+            pad="small"
+            style={{ borderRadius: "3px" }}
+          >
+            <Box
+              direction="row"
+              justify="between"
+              align="center"
+              margin={{ bottom: "medium" }}
+            >
+              <Heading margin="none" tag="h3">
+                Your OAuth Tokens
+              </Heading>
+              {this.getTokenSize() > 0 && (
+                <Button
+                  text="Add Token"
+                  icon={<AiOutlinePlus />}
+                  onClick={this.activateLayer.bind(this, "token")}
+                />
+              )}
             </Box>
-          </Box>
-          <Box colorIndex="light-1">
             <Box>
-              {!this.props.tokens.isEmpty() ? (
+              {this.getTokenSize() > 0 ? (
                 <Box flex>
                   <Table>
                     <TableHeader
@@ -158,7 +166,7 @@ class SettingsIndex extends React.Component {
                             <td key="access_token">{token.access_token}</td>
                             <td key="action">
                               <Anchor
-                                icon={<CloseIcon size="xsmall" />}
+                                icon={<AiOutlineClose />}
                                 size="xsmall"
                                 onClick={this._revokeToken.bind(
                                   this,
@@ -174,13 +182,18 @@ class SettingsIndex extends React.Component {
                   </Table>
                 </Box>
               ) : (
-                <ListPlaceholder
-                  label="Add token"
-                  primary={true}
-                  a11yTitle="Add item"
-                  emptyMessage="You do not have any items at the moment."
-                  unfilteredTotal={0}
-                />
+                <Box align="center">
+                  <NoData />
+                  <Label style={{ color: "#666" }}>
+                    Add a new token to grant access to CAP client and API
+                  </Label>
+                  <Button
+                    text="Add Token"
+                    icon={<AiOutlinePlus />}
+                    onClick={this.activateLayer.bind(this, "token")}
+                    primaryOutline
+                  />
+                </Box>
               )}
             </Box>
           </Box>

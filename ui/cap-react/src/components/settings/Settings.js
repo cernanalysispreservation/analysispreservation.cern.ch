@@ -4,12 +4,16 @@ import Box from "grommet/components/Box";
 
 import Applications from "./Applications";
 import Integrations from "./Integrations";
+import Profile from "./Profile";
 
 class SettingsIndex extends React.Component {
   render() {
     return (
       <Box flex colorIndex="light-2">
-        <Box flex align="center" pad="medium">
+        <Box align="center" pad="medium">
+          <Box size="xlarge" margin={{ bottom: "medium" }}>
+            <Profile />
+          </Box>
           <Box size="xlarge" margin={{ bottom: "medium" }}>
             <Applications />
           </Box>
