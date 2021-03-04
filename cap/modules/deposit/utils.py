@@ -25,6 +25,8 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import current_app
+from celery import shared_task
 from invenio_access.models import Role
 from invenio_db import db
 
@@ -75,3 +77,21 @@ def fix_bucket_links(response):
             item['links'] = add_api_to_links(item.get('links'))
 
     return response
+
+
+@shared_task(ignore_result=True)
+def index_record(record_uuid):
+    """Index a single record."""
+    from cap.modules.deposit.search import CAPIndexer
+    CAPIndexer().index_by_id(record_uuid)
+
+
+def index_deposit_receiver(sender, action=None, pid=None, deposit=None,
+                           *args, **kwargs):
+    """
+    Index the record after publishing. To be used as a task after it is
+    triggered by the `post_action` signal.
+    """
+    if action == 'publish':
+        _, record = deposit.fetch_published()
+        index_record.delay(str(record.id))

@@ -74,8 +74,9 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           DepositAdminActionNeed, DepositReadActionNeed,
                           DepositUpdateActionNeed, ReviewDepositPermission,
                           UpdateDepositPermission)
-
 from .review import Reviewable
+from .search import CAPIndexer
+
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -126,6 +127,8 @@ class CAPDeposit(Deposit, Reviewable):
     deposit_minter = staticmethod(cap_deposit_minter)
 
     published_record_class = CAPRecord
+
+    indexer = CAPIndexer()
 
     @property
     def schema(self):

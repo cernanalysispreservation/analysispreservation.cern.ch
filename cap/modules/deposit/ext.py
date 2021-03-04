@@ -4,7 +4,10 @@ from __future__ import absolute_import, print_function
 import json
 
 from invenio_files_rest.views import blueprint as files_blueprint
-from cap.modules.deposit.utils import fix_bucket_links
+from invenio_deposit.signals import post_action
+
+from cap.modules.deposit.utils import fix_bucket_links, \
+    index_deposit_receiver
 
 
 class CAPDeposit(object):
@@ -28,4 +31,5 @@ class CAPDeposit(object):
             finally:
                 return response
 
+        post_action.connect(index_deposit_receiver, sender=app)
         app.extensions['cap_deposit'] = self

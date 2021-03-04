@@ -627,6 +627,9 @@ _PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
 
 DEPOSIT_UI_SEARCH_INDEX = '*'
 
+#: Disable signals, in order to use CAP's own indexer
+DEPOSIT_REGISTER_SIGNALS = False
+
 # DEPOSIT_PID_MINTER is used on publish method in deposit class
 DEPOSIT_REST_ENDPOINTS['depid'].update({
     'pid_type': 'depid',
