@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import ShowMore from "../ShowMore";
 import CheckBox from "grommet/components/CheckBox";
-import Anchor from "../../partials/Anchor";
+import Button from "../../partials/Button";
 import SubFacet from "./SubFacet/SubFacet";
 
 const FacetItem = ({
@@ -15,8 +15,8 @@ const FacetItem = ({
   category
 }) => {
   return (
-    <ShowMore limit={limit} items={items}>
-      {({ current, showMore, showLess, filter, expanded }) => (
+    <ShowMore limit={limit} items={items} category={category}>
+      {({ current, updateShowMore, filter, expanded, countMore }) => (
         <Box>
           {current.map(field => (
             <Box key={String(field.key)}>
@@ -72,10 +72,13 @@ const FacetItem = ({
           ))}
           <Box align="center">
             {filter ? (
-              <Anchor
-                label={expanded ? "less" : "more"}
+              <Button
+                size="small"
+                background="#e9e9e9"
+                margin="0 0 5px 0"
+                text={expanded ? "Show less" : `Show ${countMore} more`}
                 onClick={() => {
-                  expanded ? showLess() : showMore();
+                  updateShowMore(category);
                 }}
               />
             ) : null}

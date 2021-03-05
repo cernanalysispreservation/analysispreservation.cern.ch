@@ -22,7 +22,7 @@ const SearchFacet = ({
   collapsed,
   updateFacet
 }) => {
-  let expanded = !collapsed.toJS().includes(category);
+  let expanded = !collapsed.includes(category);
   let facet = facets[category];
 
   const getContentByMetaType = type => {
@@ -50,6 +50,7 @@ const SearchFacet = ({
         justify="between"
         responsive={false}
         margin={{ top: "medium", bottom: "small" }}
+        onClick={() => updateFacet(category)}
       >
         <Heading
           pad="small"
@@ -69,9 +70,7 @@ const SearchFacet = ({
             : category.replace("_", " ")}
         </Heading>
 
-        <Box onClick={() => updateFacet(category)}>
-          {expanded ? <AiOutlineUp /> : <AiOutlineDown />}
-        </Box>
+        <Box>{expanded ? <AiOutlineUp /> : <AiOutlineDown />}</Box>
       </Box>
 
       <Box size="medium" styles={{ maxHeight: "100px" }} direction="column">

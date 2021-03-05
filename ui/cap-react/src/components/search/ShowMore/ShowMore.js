@@ -4,36 +4,37 @@ import { connect } from "react-redux";
 
 import { updateExpandState } from "../../../actions/search";
 
-const ShowMore = ({ children, limit, items, expanded, updateExpandState }) => {
-  const [current, setCurrent] = useState([]);
+const ShowMore = ({
+  children,
+  limit,
+  items,
+  more,
+  updateExpandState,
+  category
+}) => {
+  const categoryIsIncluded = more.includes(category);
+  const [current, setCurrent] = useState(
+    categoryIsIncluded ? items : items.slice(0, limit)
+  );
   const [filter] = useState(items.length > limit);
 
-  const showMore = () => {
-    setCurrent(items);
-    updateExpandState(true);
+  const updateShowMore = category => {
+    updateExpandState(category);
   };
 
-  const showLess = () => {
-    setCurrent(items.slice(0, limit));
-    updateExpandState(false);
-  };
-
-  useEffect(() => {
-    if (expanded) {
-      setCurrent(items);
-      updateExpandState(true);
-    } else {
-      setCurrent(items.slice(0, limit));
-      updateExpandState(false);
-    }
-  }, []);
+  useEffect(
+    () => {
+      setCurrent(categoryIsIncluded ? items : items.slice(0, limit));
+    },
+    [more]
+  );
 
   return children({
     current,
-    showMore,
-    showLess,
+    updateShowMore,
     filter,
-    expanded
+    countMore: items.length - limit,
+    expanded: categoryIsIncluded
   });
 };
 
@@ -45,7 +46,7 @@ ShowMore.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    expanded: state.search.get("expanded")
+    more: state.search.get("showMore")
   };
 }
 

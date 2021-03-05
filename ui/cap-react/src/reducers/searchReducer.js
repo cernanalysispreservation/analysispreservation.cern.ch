@@ -23,7 +23,7 @@ const initialState = Map({
   }),
   error: false,
   loading: false,
-  expanded: false,
+  showMore: Set([]),
   collapsed: Set([])
 });
 
@@ -56,9 +56,9 @@ export default function searchReducer(state = initialState, action) {
     case SEARCH_ERROR:
       return state.set("error", true).set("loading", false);
     case UPDATE_EXPANDED_STATE:
-      return state.set("expanded", action.value);
+      return state.set("showMore", action.value);
     case UPDATE_COLLAPSED_FACETS:
-      return state.set("collapsed", fromJS(action.value));
+      return state.set("collapsed", action.value);
     default:
       return state;
   }

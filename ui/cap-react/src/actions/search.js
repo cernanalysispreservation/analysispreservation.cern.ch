@@ -29,7 +29,7 @@ export function searchSuccess(results) {
   };
 }
 
-export function updateExpandState(value) {
+export function setExpandState(value) {
   return {
     type: UPDATE_EXPANDED_STATE,
     value
@@ -57,18 +57,22 @@ const SEARCH_PATH_TO_INDEX = {
 
 const DEFAULT_INDEX = "records";
 
+export const updateExpandState = value => (dispatch, getState) => {
+  let state = getState();
+  let more = state.search.get("showMore");
+  let updatedMore = more.includes(value) ? more.delete(value) : more.add(value);
+
+  dispatch(setExpandState(updatedMore));
+};
+
 export const updateCollapsableFacetArray = value => (dispatch, getState) => {
   let state = getState();
-  let collapsed = state.search.get("collapsed").toJS();
-  let exists = collapsed.indexOf(value);
+  let collapsed = state.search.get("collapsed");
+  let updatedCollapsed = collapsed.includes(value)
+    ? collapsed.delete(value)
+    : collapsed.add(value);
 
-  if (exists === -1) {
-    collapsed.push(value);
-  } else {
-    collapsed.splice(exists, 1);
-  }
-
-  dispatch(updateCollapsedFacets(collapsed));
+  dispatch(updateCollapsedFacets(updatedCollapsed));
 };
 
 export function fetchSearch(match) {
