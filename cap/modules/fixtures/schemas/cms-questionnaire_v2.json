@@ -263,7 +263,8 @@
           "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-use-v0.0.1.json"
         },
         "type": "array",
-        "title": "3.a Use of ML Applications"
+        "title": "3.a Use of ML Applications",
+        "description": "Please add a 'new application' for each of your use cases (i.e. please add at least one application if you answered 'yes' to 3.3 or 3.4. For example, if you use a set of MVAs for signal discrimination and one for object identification, you should add two 'applications')"
       },
       "ml_survey": {
         "type": "object",
