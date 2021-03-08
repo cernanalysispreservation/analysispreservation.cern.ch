@@ -26,7 +26,10 @@ import re
 
 from flask import current_app
 from flask_login import current_user
+from flask_principal import RoleNeed
+
 from invenio_accounts.models import User
+from invenio_access.permissions import Permission
 
 from cap.modules.mail.tasks import create_and_send
 
@@ -45,22 +48,32 @@ def path_value_equals(element, JSON):
 
 def get_review_recipients(deposit, config):
     # mail of owner
-    owner = deposit['_deposit']['owners'][0]
+    owner = deposit["_deposit"]["owners"][0]
     owner_mail = User.query.filter_by(id=owner).one().email
 
     # mail of reviewer
     reviewer_mail = current_user.email
 
     recipients = list({owner_mail, reviewer_mail})
-    cadi_id = deposit.get('analysis_context', {}).get('cadi_id')
-    cadi_regex = current_app.config.get('CADI_REGEX')
+    cadi_id = deposit.get("analysis_context", {}).get("cadi_id")
+    cadi_regex = current_app.config.get("CADI_REGEX")
 
+    # if CADI ID mail Hypernews if review from admin reviewer (stat commitee)
     if cadi_id:
-        # mail for reviews - Hypernews
-        # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed cadi id
-        hypernews_mail = current_app.config.get('CMS_HYPERNEWS_EMAIL_FORMAT')
-        if re.match(cadi_regex, cadi_id) and hypernews_mail:
-            recipients.append(hypernews_mail.format(cadi_id=cadi_id))
+        cms_stats_commitee_email = current_app.config.get(
+            "CMS_STATS_QUESTIONNAIRE_ADMIN_ROLES"
+        )
+
+        # check that current user is a aon reviewer
+        if (cms_stats_commitee_email and
+                Permission(RoleNeed(cms_stats_commitee_email)).can()):
+            # mail for reviews - Hypernews
+            # should be sent to hn-cms-<cadi-id>@cern.ch if
+            #  well-formed cadi id
+            hypernews_mail = \
+                current_app.config.get("CMS_HYPERNEWS_EMAIL_FORMAT")
+            if re.match(cadi_regex, cadi_id) and hypernews_mail:
+                recipients.append(hypernews_mail.format(cadi_id))
 
     message = f"Submitted by {owner_mail}, and reviewed by {reviewer_mail}."
     return message, recipients
@@ -73,25 +86,26 @@ def get_cms_stat_recipients(record, config):
     params = data.get(key, {}).get("params", {})
 
     # mail for PDF forum
-    pdf_mail = current_app.config.get('PDF_FORUM_MAIL')
-    if pdf_mail and record.get('parton_distribution_functions', None):
+    pdf_mail = current_app.config.get("PDF_FORUM_MAIL")
+    if pdf_mail and record.get("parton_distribution_functions", None):
         recipients.append(pdf_mail)
 
     # mail for ML surveys - CMS conveners
-    conveners_ml_mail = current_app.config.get('CONVENERS_ML_MAIL')
+    conveners_ml_mail = current_app.config.get("CONVENERS_ML_MAIL")
 
     # Some extra info for the CMS conveners recipients:
     # 1. if uses centralized CMS ML applications (3.3) (not empty)
     # 2. if 3.4 = Yes (mva_use = Yes)
     # 3. if the user adds an app to 3.a (ml_app_use - not empty)
     # 4. or if the user answers to 3.b (ml_survey.options = Yes)
-    centralized_apps = record \
-        .get('multivariate_discriminants', {}) \
-        .get('use_of_centralized_cms_apps', {}) \
-        .get('options', [])
-    mva_use = record.get('multivariate_discriminants', {}).get('mva_use')
-    ml_app_use = record.get('ml_app_use', [])
-    ml_survey = record.get('ml_survey', {}).get('options')
+    centralized_apps = (
+        record.get("multivariate_discriminants", {})
+        .get("use_of_centralized_cms_apps", {})
+        .get("options", [])
+    )
+    mva_use = record.get("multivariate_discriminants", {}).get("mva_use")
+    ml_app_use = record.get("ml_app_use", [])
+    ml_survey = record.get("ml_survey", {}).get("options")
 
     if conveners_ml_mail and (
         (centralized_apps and 'No' not in centralized_apps) or mva_use == 'Yes' or  # noqa
@@ -99,16 +113,16 @@ def get_cms_stat_recipients(record, config):
     ):
         recipients.append(conveners_ml_mail)
 
-    cadi_id = record.get('analysis_context', {}).get('cadi_id')
-    cadi_regex = current_app.config.get('CADI_REGEX')
+    cadi_id = record.get("analysis_context", {}).get("cadi_id")
+    cadi_regex = current_app.config.get("CADI_REGEX")
 
     message = ""
     if cadi_id:
         # mail for ML surveys - Hypernews
         # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed cadi id
-        hypernews_mail = current_app.config.get('CMS_HYPERNEWS_EMAIL_FORMAT')
+        hypernews_mail = current_app.config.get("CMS_HYPERNEWS_EMAIL_FORMAT")
         if re.match(cadi_regex, cadi_id) and hypernews_mail:
-            recipients.append(hypernews_mail.format(cadi_id=cadi_id))
+            recipients.append(hypernews_mail.format(cadi_id))
 
         message += "A CMS Statistical Questionnaire has been published " + \
                    f"for analysis with CADI ID {cadi_id}. "
@@ -126,7 +140,7 @@ def get_cms_stat_recipients(record, config):
 GENERATE_RECIPIENT_METHODS = {
     "path_value_equals": path_value_equals,
     "get_cms_stat_recipients": get_cms_stat_recipients,
-    "get_review_recipients": get_review_recipients
+    "get_review_recipients": get_review_recipients,
 }
 
 NOTIFICATION_RECEPIENT = {
@@ -174,8 +188,7 @@ def generate_recipient_list(record, config):
 
 
 def post_action_notifications(action=None, deposit=None, host_url=None):
-    """Method to run after a deposit action .
-    """
+    """Method to run after a deposit action ."""
     schema = deposit.get("$schema")
     recipients_config = NOTIFICATION_RECEPIENT.get(schema, {}).get(action)
 
@@ -226,8 +239,12 @@ def send_mail_on_publish(recipients,
             "New Published Analysis | CERN Analysis Preservation"
         template = "mail/analysis_published_new.html"
 
-    create_and_send.delay(template, dict(recid=recid, url=url,
-                                         message=message), subject, recipients)
+    create_and_send.delay(
+        template,
+        dict(recid=recid, url=url, message=message),
+        subject,
+        recipients
+    )
 
 
 def send_mail_on_review(recipients,
@@ -239,5 +256,9 @@ def send_mail_on_review(recipients,
         "New Review on Analysis | CERN Analysis Preservation"
     template = "mail/analysis_review.html"
 
-    create_and_send.delay(template, dict(analysis_url=analysis_url, url=url,
-                                         message=message), subject, recipients)
+    create_and_send.delay(
+        template,
+        dict(analysis_url=analysis_url, url=url, message=message),
+        subject,
+        recipients
+    )
