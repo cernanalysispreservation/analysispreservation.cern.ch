@@ -1,7 +1,7 @@
 {% extends "mail/base.html" %}
 
 {% block paragraph %}
-    <h4>A document has been reviewed, with id <em>{{ recid }}</em>.</h4>
+    <h4>A document has been reviewed.</h4>
     <p>You can check it <a href="{{ url + analysis_url }}">here</a>.</p>
 
     {% if message %}
@@ -12,4 +12,4 @@
 
 {% block button_url %}{{ url + analysis_url }}{% endblock %}
 
-{% block button_text %}Check new version{% endblock %}
+{% block button_text %}Check review{% endblock %}
