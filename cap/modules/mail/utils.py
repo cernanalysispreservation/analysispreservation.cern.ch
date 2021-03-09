@@ -82,7 +82,7 @@ def get_review_recipients(deposit, config):
 def get_cms_stat_recipients(record, config):
     data = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
     key = path_value_equals(config.get("path", ""), record)
-    recipients = data.get(key, {}).get("contacts")
+    recipients = data.get(key, {}).get("contacts", [])
     params = data.get(key, {}).get("params", {})
 
     # mail for PDF forum
