@@ -129,7 +129,8 @@ def default_config():
                 MAIL_DEFAULT_SENDER="analysis-preservation-support@cern.ch",
                 CMS_STATS_COMMITEE_AND_PAGS={'key': {'contacts': []}},
                 PDF_FORUM_MAIL='pdf-forum-test@cern0.ch',
-                CONVENERS_ML_MAIL='ml-conveners-test@cern0.ch')
+                CONVENERS_ML_MAIL='ml-conveners-test@cern0.ch',
+                CMS_HYPERNEWS_EMAIL_FORMAT='hn-cms-{}@cern0.ch')
 
 
 @pytest.fixture(scope='session')

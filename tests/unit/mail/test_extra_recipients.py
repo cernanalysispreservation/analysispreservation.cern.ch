@@ -24,12 +24,12 @@
 """Tests for mail."""
 from mock import patch
 
-from cap.modules.mail.utils import get_cms_stat_recipients
+from cap.modules.mail.utils import get_cms_stat_recipients, get_review_recipients
 
 
 @patch('cap.modules.mail.utils.current_user')
 @patch('cap.modules.mail.utils.path_value_equals')
-def test_get_extra_recipients(mock_path_value, mock_user, app, default_config):
+def test_recipients_on_publish(mock_path_value, mock_user, app, default_config):
     mock_path_value.return_value = 'key'
     mock_user.email = 'test@cern.ch'
 
@@ -63,3 +63,61 @@ def test_get_extra_recipients(mock_path_value, mock_user, app, default_config):
     }
     _, recipients = get_cms_stat_recipients(record, {})
     assert default_config['CONVENERS_ML_MAIL'] in recipients
+
+    record = {
+        'ml_app_use': ['not empty']
+    }
+    _, recipients = get_cms_stat_recipients(record, {})
+    assert default_config['CONVENERS_ML_MAIL'] in recipients
+
+    record = {
+        'ml_survey': {
+            'options': 'Yes'
+        }
+    }
+    _, recipients = get_cms_stat_recipients(record, {})
+    assert default_config['CONVENERS_ML_MAIL'] in recipients
+
+    # test well-formed cadi id for recipients
+    record = {
+        'analysis_context': {
+            'cadi_id': 'ABC-11-111'
+        }
+    }
+    _, recipients = get_cms_stat_recipients(record, {})
+    assert default_config['CMS_HYPERNEWS_EMAIL_FORMAT'].format('ABC-11-111') in recipients
+
+    record = {
+        'analysis_context': {
+            'cadi_id': 'AB0-11-111'
+        }
+    }
+    _, recipients = get_cms_stat_recipients(record, {})
+    assert default_config['CMS_HYPERNEWS_EMAIL_FORMAT'].format('AB0-11-111') not in recipients
+
+    # current user mail should be in every time
+    assert 'test@cern.ch' in recipients
+
+
+@patch('cap.modules.mail.utils.current_user')
+def test_recipients_on_review(mock_user, app, default_config, users, create_deposit):
+    mock_user.email = 'test@cern.ch'
+    user = users['cms_user']
+    deposit = create_deposit(
+        user,
+        'cms-analysis',
+        {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+            'analysis_context': {
+                'cadi_id': 'ABC-11-111'
+            }
+        },
+        experiment='CMS',
+        publish=True
+    )
+
+    _, recipients = get_review_recipients(deposit, {})
+
+    # owner / reviewer
+    assert 'test@cern.ch' in recipients
+    assert 'cms_user@cern.ch' in recipients
