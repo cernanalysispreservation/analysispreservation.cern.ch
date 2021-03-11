@@ -31,12 +31,12 @@ from flask_security.utils import verify_password
 from flask_security.views import logout
 from werkzeug.local import LocalProxy
 
+from invenio_userprofiles.models import UserProfile
+
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-
 from cap.modules.schemas.utils import get_indexed_schemas_for_user
-
-from invenio_userprofiles.models import UserProfile
+from cap.modules.user.utils import get_remote_account_by_id
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -50,9 +50,12 @@ def get_user():
     deposit_groups = get_user_deposit_groups()
 
     profile = UserProfile.get_by_userid(current_user.id)
-    extra_data = {}
-    if profile:
-        extra_data = profile.extra_data
+    extra_data = profile.extra_data if profile else {}
+    cern_profile = get_remote_account_by_id(current_user.id)['profile']
+
+    if cern_profile:
+        extra_data['cern'] = cern_profile
+
     _user = {
         "id": current_user.id,
         "email": current_user.email,

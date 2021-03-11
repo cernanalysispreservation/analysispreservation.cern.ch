@@ -33,9 +33,12 @@ from cap.modules.deposit.permissions import (AdminDepositPermission,
 from cap.modules.oauthclient.contrib.cern import disconnect_handler
 from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
+from cap.modules.oauthclient.serializers import oauth_extra_data_serializer
 from cap.modules.records.permissions import ReadRecordPermission
 from cap.modules.search.facets import (nested_filter, prefix_filter,
                                        regex_filter)
+from cap.modules.user.serializers import (user_account_serializer,
+                                          user_account_list_serializer)
 
 
 def _(x):
@@ -496,6 +499,19 @@ ACCOUNTS_REST_UPDATE_USER_PROPERTIES_PERMISSION_FACTORY = deny_all
 ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 """Default list users permission factory: reject any request."""
 
+
+ACCOUNTS_REST_ACCOUNT_SERIALIZERS = {
+    'GET': {
+        'application/json': user_account_serializer
+    }
+}
+
+ACCOUNTS_REST_ACCOUNTS_LIST_SERIALIZERS = {
+    'GET': {
+        'application/json': user_account_list_serializer
+    }
+}
+
 # Search
 # ======
 #: Default API endpoint for search UI.
@@ -548,6 +564,8 @@ CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
 #: Defintion of OAuth client applications.
 OAUTHCLIENT_REMOTE_APPS = dict(cern=CERN_REMOTE_APP, )
+#: Serializer for extracting `extra_data` from invenio-oauthclient
+OAUTHCLIENT_CERN_EXTRA_DATA_SERIALIZER = oauth_extra_data_serializer
 
 #: Defintion of OAuth/Auth client template.
 AUTHENTICATION_POPUP_TEMPLATE = 'auth/authentication_popup.html'

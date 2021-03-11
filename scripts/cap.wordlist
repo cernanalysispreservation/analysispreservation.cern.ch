@@ -18,3 +18,7 @@ lhcb
 SchemaTreeItem
 ui
 cadi
+LDAP
+invenio
+oauthclient
+serializers

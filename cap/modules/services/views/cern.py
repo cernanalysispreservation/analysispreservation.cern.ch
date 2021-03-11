@@ -28,9 +28,12 @@
 import ldap
 from ldap import LDAPError
 from flask import jsonify, request
+from invenio_accounts.models import User
 
 from . import blueprint
 from cap.modules.access.utils import login_required
+from cap.modules.experiments.errors import ExternalAPIException
+from cap.modules.services.serializers.cern import LDAPUserSchema
 
 
 LDAP_SERVER_URL = 'ldap://xldap.cern.ch'
@@ -62,14 +65,13 @@ def _ldap(query, sf=None, by=None):
 
     # different arguments depending on the query type
     if by == 'mail':
-        ldap_fields = ['mail']  # LDAP_USER_RESP_FIELDS alternative
+        ldap_fields = LDAP_USER_RESP_FIELDS
         search_at = 'OU=Users,OU=Organic Units,DC=cern,DC=ch'
-        ldap_query = '(&(cernAccountType=Primary)(mail=*{}*))' \
-            .format(query)
+        ldap_query = f'(&(cernAccountType=Primary)(mail=*{query}*))'
     else:
         ldap_fields = LDAP_EGROUP_RESP_FIELDS
         search_at = 'OU=e-groups,OU=Workgroups,DC=cern,DC=ch'
-        ldap_query = '{}=*{}*'.format(sf, query)
+        ldap_query = f'{sf}=*{query}*'
 
     try:
         lc.search_ext(
@@ -97,8 +99,11 @@ def ldap_user_by_mail():
         return jsonify([])
 
     resp, status = _ldap(query, by='mail')
-    data = [x[1]['mail'][0] for x in resp]
-    return jsonify(data)
+    user_info = [
+        LDAPUserSchema().dump(item[1]).data
+        for item in resp
+    ]
+    return jsonify(user_info)
 
 
 @blueprint.route('/ldap/egroup/mail')

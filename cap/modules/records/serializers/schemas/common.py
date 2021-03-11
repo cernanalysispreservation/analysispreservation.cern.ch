@@ -27,8 +27,8 @@ from flask_login import current_user
 from marshmallow import Schema, ValidationError, fields, validates_schema
 
 from cap.modules.schemas.resolvers import resolve_schema_by_url
-from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
-from invenio_accounts.models import Role, User
+from cap.modules.user.utils import get_role_name_by_id, get_remote_account_by_id  # noqa
+
 
 LABELS = {
     'physics_objects': {
@@ -147,10 +147,9 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
 
     def get_created_by(self, obj):
         user_id = obj.get('metadata', {})['_deposit'].get('created_by')
-        if user_id:
-            user = User.query.filter_by(id=user_id).one()
-            return user.email
-        return None
+
+        return get_remote_account_by_id(user_id) \
+            if user_id else None
 
     def get_access(self, obj):
         """Return access object."""
@@ -159,7 +158,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         for permission in access.values():
             if permission['users']:
                 for index, user_id in enumerate(permission['users']):
-                    permission['users'][index] = get_user_email_by_id(user_id)
+                    permission['users'][index] = get_remote_account_by_id(user_id)  # noqa
             if permission['roles']:
                 for index, role_id in enumerate(permission['roles']):
                     permission['roles'][index] = get_role_name_by_id(role_id)

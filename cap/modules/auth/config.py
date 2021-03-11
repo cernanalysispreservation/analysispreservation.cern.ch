@@ -118,17 +118,20 @@ OAUTH_SERVICES = {
                  '/protocol/openid-connect/certs',
         client_kwargs={
             'scope': 'openid profile email cern-login-info offline_access',
-        }),
+        }
+    ),
     "ORCID":
-    dict(name='orcid',
-         access_token_url='https://orcid.org/oauth/token',
-         authorize_url='https://orcid.org/oauth/authorize',
-         api_base_url='https://pub.orcid.org/v2.0',
-         client_kwargs={
+    dict(
+        name='orcid',
+        access_token_url='https://orcid.org/oauth/token',
+        authorize_url='https://orcid.org/oauth/authorize',
+        api_base_url='https://pub.orcid.org/v2.0',
+        client_kwargs={
              'scope': '/authenticate',
              'token_endpoint_auth_method': 'client_secret_post'
-         },
-         extra_data_method=orcid_extra_data)
+        },
+        extra_data_method=orcid_extra_data
+    )
 }
 
 # return the user profile based on the service
