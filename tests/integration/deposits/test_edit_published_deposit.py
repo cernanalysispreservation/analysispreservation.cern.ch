@@ -62,10 +62,9 @@ def test_edit_record_when_other_user_403(client, users, auth_headers_for_user,
     assert resp.status_code == 403
 
 
-def test_edit_record(client, create_deposit, superuser,
-                     auth_headers_for_superuser):
-    deposit = create_deposit(superuser, 'test', experiment='CMS', 
-                             publish=True)
+def test_edit_record(client, create_deposit, users, auth_headers_for_superuser):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test', experiment='CMS', publish=True)
     metadata = deposit.get_record_metadata()
     depid = deposit['_deposit']['id']
 
@@ -85,7 +84,7 @@ def test_edit_record(client, create_deposit, superuser,
         },
         'experiment': 'CMS',
         'status': 'draft',
-        'created_by': superuser.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {},
@@ -94,18 +93,18 @@ def test_edit_record(client, create_deposit, superuser,
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [superuser.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [superuser.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [superuser.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
-        'is_owner': True,
+        'is_owner': False,
         'links': {
             'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
             format(deposit.files.bucket),

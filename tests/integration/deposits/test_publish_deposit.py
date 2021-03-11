@@ -143,7 +143,7 @@ def test_deposit_publish_changes_status_and_creates_record(
         },
         'experiment': 'CMS',
         'status': 'published',
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'labels': [],
@@ -152,15 +152,15 @@ def test_deposit_publish_changes_status_and_creates_record(
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'is_owner': True,
@@ -245,7 +245,7 @@ def test_deposit_publish_with_required_field_success(
         'experiment': 'CMS',
         'status': 'published',
         'is_owner': True,
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
@@ -256,15 +256,15 @@ def test_deposit_publish_with_required_field_success(
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}]
             }
         },
         'links': {

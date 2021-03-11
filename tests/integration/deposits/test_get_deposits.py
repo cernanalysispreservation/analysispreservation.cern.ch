@@ -261,7 +261,7 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         'experiment': 'CMS',
         'status': 'draft',
-        'created_by': owner.email,
+        'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
@@ -280,15 +280,15 @@ def test_get_deposit_with_default_serializer(client, users,
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}],
             },
             'deposit-update': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}],
             },
             'deposit-read': {
                 'roles': [],
-                'users': [owner.email]
+                'users': [{'email': owner.email, 'profile': {}}],
             }
         },
         'is_owner': True,
@@ -891,11 +891,20 @@ def test_get_deposit_with_form_json_serializer(
     assert resp.status_code == 200
     assert resp.json == {
         'access': {
-            'deposit-admin': {'roles': [], 'users': [example_user.email]},
-            'deposit-read': {'roles': [], 'users': [example_user.email]},
-            'deposit-update': {'roles': [], 'users': [example_user.email]}
+            'deposit-admin': {
+                'roles': [],
+                'users': [{'email': example_user.email, 'profile': {}}]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [{'email': example_user.email, 'profile': {}}]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [{'email': example_user.email, 'profile': {}}]
+            }
         },
-        'created_by': example_user.email,
+        'created_by': {'email': example_user.email, 'profile': {}},
         'is_owner': True,
         'can_admin': True,
         'can_update': True,
@@ -1004,8 +1013,11 @@ def test_get_deposit_with_form_json_serializer_check_other_user_can_update(
     assert resp.status_code == 200
     assert resp.json['can_admin'] is False
     assert resp.json['can_update'] is True
-    assert 'cms_user2@cern.ch' in resp.json['access']['deposit-read']['users']
-    assert 'cms_user2@cern.ch' in resp.json['access']['deposit-update']['users']
+
+    users = [user['email'] for user in
+             resp.json['access']['deposit-read']['users']]
+    assert 'cms_user2@cern.ch' in users
+    assert 'cms_user2@cern.ch' in users
 
 
 def test_get_deposit_with_form_json_serializer_check_other_user_can_admin(
@@ -1024,8 +1036,8 @@ def test_get_deposit_with_form_json_serializer_check_other_user_can_admin(
     resp = client.get(f'/deposits/{pid}', headers=headers)
 
     assert resp.status_code == 200
-    assert resp.json['can_admin'] is True
-    assert 'cms_user2@cern.ch' in resp.json['access']['deposit-admin']['users']
+    assert 'cms_user2@cern.ch' in [user['email'] for user in
+                                   resp.json['access']['deposit-admin']['users']]
 
 
 def test_get_deposit_when_user_has_no_access_to_schema_can_still_see_deposit_that_got_access_to(
