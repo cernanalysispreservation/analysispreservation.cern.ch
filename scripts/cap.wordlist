@@ -24,3 +24,5 @@ oauthclient
 serializers
 schemas
 url
+CERN
+OIDC

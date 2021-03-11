@@ -27,8 +27,11 @@
 
 from __future__ import absolute_import, print_function
 
+import requests
+from flask import current_app, abort
 from flask_login import current_user
 
+from .config import OIDC_API
 from .models import OAuth2Token
 
 
@@ -42,3 +45,24 @@ def _create_or_update_token(name, token):
     _token.expires_at = token.get('expires_at')
 
     return _token
+
+
+def get_oidc_token():
+    """Retrieve the token in order to use the CAP OIDC client to get info."""
+    resp = requests.post(
+        url=OIDC_API['TOKEN'],
+        headers={
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data={
+            'client_id': current_app.config.get('CERN_CLIENT_ID'),
+            'client_secret': current_app.config.get('CERN_CLIENT_SECRET'),
+            'grant_type': 'client_credentials',
+            'audience': 'authorization-service-api'
+        }
+    )
+
+    if not resp.ok:
+        abort(resp.status_code, 'Error on retrieving the app token.')
+
+    return resp.json()['access_token']

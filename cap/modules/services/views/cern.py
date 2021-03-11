@@ -25,15 +25,18 @@
 
 """CAP CERN service views."""
 
+import requests
 import ldap
 from ldap import LDAPError
-from flask import jsonify, request
-from invenio_accounts.models import User
+from flask import jsonify, request, abort
 
 from . import blueprint
 from cap.modules.access.utils import login_required
+from cap.modules.auth.utils import get_oidc_token
+from cap.modules.auth.config import OIDC_API
 from cap.modules.experiments.errors import ExternalAPIException
-from cap.modules.services.serializers.cern import LDAPUserSchema
+from cap.modules.services.serializers.cern import LDAPUserSchema,\
+    OIDCUserSchema
 
 
 LDAP_SERVER_URL = 'ldap://xldap.cern.ch'
@@ -119,3 +122,54 @@ def ldap_egroup_mail():
     resp, status = _ldap(query, sf, by='egroup')
     data = [x[1]['mail'][0] for x in resp]
     return jsonify(data)
+
+
+def _oidc(endpoint, query):
+    token = get_oidc_token()
+    try:
+        resp = requests.get(
+            url=f'{endpoint}?filter=displayName:contains:{query}',
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Accept": "*/*"
+            }
+        )
+
+        if not resp.ok:
+            abort(resp.status_code, 'Error while making the request.')
+
+        data = resp.json()['data']
+        return data, resp.status_code
+    except ExternalAPIException:
+        raise
+
+
+@blueprint.route('/oidc/user')
+@login_required
+def oidc_search_user():
+    """OIDC user by username query."""
+    endpoint = OIDC_API['ACCOUNT']
+    query = request.args.get('query', None)
+    if not query:
+        return jsonify([])
+
+    resp, status = _oidc(endpoint, query)
+    users = [
+        OIDCUserSchema().dump(user).data
+        for user in resp if user['type'] == 'Person'
+    ]
+    return jsonify(users)
+
+
+@blueprint.route('/oidc/group')
+@login_required
+def oidc_search_group():
+    """OIDC user by username query."""
+    endpoint = OIDC_API['GROUP']
+    query = request.args.get('query', None)
+    if not query:
+        return jsonify([])
+
+    resp, status = _oidc(endpoint, query)
+    group_mails = [f'{item["groupIdentifier"]}@cern.ch' for item in resp]
+    return jsonify(group_mails)

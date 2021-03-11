@@ -25,14 +25,15 @@
 """Authentication views for CAP."""
 
 from functools import wraps
+from authlib.integrations.base_client.errors import OAuthError
 from flask import Blueprint, url_for, current_app, jsonify, \
                   request, session, abort, render_template
 from flask_login import current_user
+from sqlalchemy.orm.attributes import flag_modified
+from werkzeug.exceptions import HTTPException
 
 from invenio_db import db
 from invenio_userprofiles.models import UserProfile
-from sqlalchemy.orm.attributes import flag_modified
-from werkzeug.exceptions import HTTPException
 
 from .config import OAUTH_SERVICES, USER_PROFILE
 from .models import OAuth2Token
@@ -40,8 +41,6 @@ from .proxies import current_auth
 from .utils import _create_or_update_token
 
 from cap.modules.access.utils import login_required
-
-from authlib.integrations.base_client.errors import OAuthError
 
 blueprint = Blueprint(
     'cap_auth',
@@ -190,9 +189,20 @@ def get_oauth_profile(name, token=None, client=None):
     extra_data = _token.extra_data
     _client = client if client else current_auth.create_client(name)
 
-    # Check if OIDC and can get useerInfo
+    # Check if OIDC and can get userInfo
     if _client.load_server_metadata().get('userinfo_endpoint'):
-        resp = _client.userinfo()
+        if name == 'cern':
+            if 'id_token' in _client.token:
+                cern_token = _client.token
+            else:
+                cern_token = _client.fetch_access_token(
+                    refresh_token=_token.refresh_token,
+                    grant_type='refresh_token'
+                )
+                current_auth.update_token('cern', cern_token)
+            resp = _client.parse_id_token(cern_token)
+        else:
+            resp = _client.userinfo()
     elif name == 'orcid':
         orcid = extra_data.get('orcid_id')
         resp = None

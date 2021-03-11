@@ -134,6 +134,15 @@ OAUTH_SERVICES = {
     )
 }
 
+OIDC_API = {
+    'ACCOUNT':
+        'https://authorization-service-api.web.cern.ch/api/v1.0/ExtendedAccount',  # noqa
+    'GROUP':
+        'https://authorization-service-api.web.cern.ch/api/v1.0/Group',
+    'TOKEN':
+        'https://auth.cern.ch/auth/realms/cern/api-access/token'
+}
+
 # return the user profile based on the service
 USER_PROFILE = {
     'github': {
