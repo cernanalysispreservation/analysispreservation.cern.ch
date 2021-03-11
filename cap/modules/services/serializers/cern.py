@@ -43,3 +43,16 @@ class LDAPUserSchema(Schema):
             'common_name': obj['cn'][0].decode('utf-8'),
             'department': obj['department'][0].decode('utf-8')
         }
+
+
+class OIDCUserSchema(Schema):
+    """Schema for CERN OIDC Users."""
+    email = fields.Str(attribute='emailAddress', dump_only=True)
+    profile = fields.Method('get_profile', dump_only=True)
+
+    def get_profile(self, obj):
+        return {
+            'display_name': obj['displayName'],
+            'common_name': obj['uniqueIdentifier'],
+            'department': obj['cernDepartment']
+        }

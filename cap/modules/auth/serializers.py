@@ -30,11 +30,25 @@ from marshmallow import Schema, fields
 
 
 class CERNProfileSchema(Schema):
-    """An 'identity' class that returns the exact dictionary given."""
+    """Schema for CERN profile info."""
 
-    def dump(self, obj):
-        self.data = obj
-        return self
+    name = fields.Str(dump_only=True)
+    family_name = fields.Str(dump_only=True)
+    given_name = fields.Str(dump_only=True)
+    home_institute = fields.Str(dump_only=True)
+    preferred_username = fields.Str(dump_only=True)
+    sub = fields.Str(dump_only=True)
+    email = fields.Str(dump_only=True)
+
+    cern_mail_upn = fields.Str(dump_only=True)
+    cern_upn = fields.Str(dump_only=True)
+    cern_preferred_language = fields.Str(dump_only=True)
+
+    cern_gid = fields.Int(dump_only=True)
+    cern_person_id = fields.Int(dump_only=True)
+    cern_uid = fields.Int(dump_only=True)
+
+    groups = fields.List(fields.Str(), dump_only=True)
 
 
 class GitHubLoginSchema(Schema):
