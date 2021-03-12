@@ -22,8 +22,11 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Tests for mail."""
-from pytest import mark, raises
-from cap.modules.mail.utils import send_mail_on_publish, create_and_send
+
+from pytest import raises
+from mock import patch
+
+from cap.modules.mail.utils import create_and_send
 
 
 def test_create_and_send_no_recipients_fails(app):
@@ -31,36 +34,60 @@ def test_create_and_send_no_recipients_fails(app):
         create_and_send(None, None, 'Test subject', [])
 
 
-@mark.skip
-def test_send_mail_published(app, users, create_deposit):
-    user = users['alice_user']
-    published = create_deposit(user, 'alice-analysis-v0.0.1', publish=True)
-    depid = published['_deposit']['id'],
-    recid = published['_deposit']['pid']['value']
+@patch('cap.modules.mail.utils.current_user')
+def test_send_mail_published(mock_user, app, users, create_deposit, create_schema):
+    mock_user.email = 'test@cern.ch'
+    user = users['cms_user']
+
+    create_schema('cms-stats-questionnaire', experiment='CMS', version="0.0.1")
 
     with app.app_context():
         with app.extensions['mail'].record_messages() as outbox:
-
-            send_mail_on_publish(
-                depid=depid,
-                recid=recid,
-                url='test-url'
+            deposit = create_deposit(
+                user,
+                'cms-analysis',
+                {
+                    '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                               'deposits/records/cms-stats-questionnaire-v0.0.1.json',
+                    'general_title': 'test analysis',
+                    'analysis_context': {
+                        'cadi_id': 'ABC-11-111'
+                    },
+                    'ml_app_use': ['not empty']
+                },
+                experiment='CMS',
+                publish=True
             )
 
-            assert len(outbox) == 1
-            assert outbox[0].sender == app.config['MAIL_DEFAULT_SENDER']
-            assert outbox[0].html == f"""<html lang="en">
-                <head>
-                    <title>CAP Mail Template</title>
-                </head>
-                <body>
-                    <img src="https://i.imgur.com/ZPr3zRp.png" width="200"/>
-                    <div class="container">
-    
-              <h4> An analysis has been published, with id <em>{recid}</em>.</h4>
-              <p>You can check the analysis <a href="test-url/published/{recid}">here</a>.</p>
-    
-                    </div>
-                </body>
-            </html>
-            """
+            # hypernews mail needs to be sent as plain text
+            hypernews_mail = outbox[0]
+            standard_mail = outbox[1]
+
+            # subject is the same in both
+            assert hypernews_mail.subject == \
+                   standard_mail.subject == \
+                   'Questionnaire for ABC-11-111 - New Published Analysis | CERN Analysis Preservation'
+
+            # hypernews
+            # message
+            assert 'Title: test analysis' in hypernews_mail.html
+            assert 'Submitted by test@cern.ch' in hypernews_mail.html
+            assert f'Questionnaire URL : http://analysispreservation.cern.ch/published/{deposit["control_number"]}' \
+                   in hypernews_mail.html
+            assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in hypernews_mail.html
+            # recipients
+            assert 'ml-conveners-test@cern0.ch' not in hypernews_mail.bcc
+            assert 'hn-cms-ABC-11-111@cern0.ch' in hypernews_mail.bcc
+
+            # standard
+            # message
+            assert 'Title: test analysis' in standard_mail.html
+            assert 'Submitted by test@cern.ch' in standard_mail.html
+            assert f'Questionnaire URL : http://analysispreservation.cern.ch/published/{deposit["control_number"]}' \
+                   in standard_mail.html
+            assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in standard_mail.html
+            # recipients
+            assert 'test@cern.ch' in standard_mail.bcc
+            assert 'ml-conveners-test@cern0.ch' in standard_mail.bcc
+            assert 'ml-conveners-jira-test@cern0.ch' in standard_mail.bcc
+            assert 'hn-cms-ABC-11-111@cern0.ch' not in standard_mail.bcc

@@ -46,20 +46,56 @@ def path_value_equals(element, JSON):
     return data
 
 
-def get_review_recipients(deposit, config):
+def create_analysis_url(deposit):
+    status = deposit['_deposit']['status']
+    return f'drafts/{deposit["_deposit"]["id"]}' if status == 'draft'\
+        else f'published/{deposit["control_number"]}'
+
+
+def create_base_message(deposit, host_url, params=None):
+    cadi = f"CADI URL: https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=" \
+           f"{deposit.get('analysis_context', {}).get('cadi_id')}\n"
+    title = f"Title: {deposit.get('general_title')}\n"
+    quest = f"Questionnaire URL : {host_url}{create_analysis_url(deposit)}\n"
+
+    msg = f"{title}{cadi}{quest}"
+
+    if params:
+        stats_assignee = f"Statistics Committee assignee: " \
+                         f"{params.get('primary', '-')} (primary), " \
+                         f"{params.get('secondary', '-')} (secondary)\n"
+        msg += stats_assignee
+
+    return msg
+
+
+def create_base_subject(config, cadi_id):
+    return f"Questionnaire for {cadi_id} - " \
+        if cadi_id else config.get("email_subject")
+
+
+def add_hypernews_mail_to_recipients(recipients, cadi_id):
+    # mail for reviews - Hypernews
+    # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed
+    cadi_regex = current_app.config.get("CADI_REGEX")
+    hypernews_mail = current_app.config.get("CMS_HYPERNEWS_EMAIL_FORMAT")
+
+    if re.match(cadi_regex, cadi_id) and hypernews_mail:
+        recipients.append(hypernews_mail.format(cadi_id))
+
+
+def get_review_recipients(deposit, host_url, config):
     # mail of owner
     owner = deposit["_deposit"]["owners"][0]
     owner_mail = User.query.filter_by(id=owner).one().email
 
     # mail of reviewer
     reviewer_mail = current_user.email
+    recipients = [owner_mail, reviewer_mail]
 
-    recipients = list({owner_mail, reviewer_mail})
     cadi_id = deposit.get("analysis_context", {}).get("cadi_id")
-    cadi_regex = current_app.config.get("CADI_REGEX")
-
-    # if CADI ID mail Hypernews if review from admin reviewer (stat commitee)
     if cadi_id:
+        # if cadi mail Hypernews if review from admin reviewer (stat committee)
         cms_stats_commitee_email = current_app.config.get(
             "CMS_STATS_QUESTIONNAIRE_ADMIN_ROLES"
         )
@@ -67,23 +103,23 @@ def get_review_recipients(deposit, config):
         # check that current user is a aon reviewer
         if (cms_stats_commitee_email and
                 Permission(RoleNeed(cms_stats_commitee_email)).can()):
-            # mail for reviews - Hypernews
-            # should be sent to hn-cms-<cadi-id>@cern.ch if
-            #  well-formed cadi id
-            hypernews_mail = \
-                current_app.config.get("CMS_HYPERNEWS_EMAIL_FORMAT")
-            if re.match(cadi_regex, cadi_id) and hypernews_mail:
-                recipients.append(hypernews_mail.format(cadi_id))
+            add_hypernews_mail_to_recipients(recipients, cadi_id)
 
-    message = f"Submitted by {owner_mail}, and reviewed by {reviewer_mail}."
-    return message, recipients
+    subject = create_base_subject(config, cadi_id)
+    message = create_base_message(deposit, host_url)
+    message += f"Submitted by {owner_mail}, and reviewed by {reviewer_mail}."
+
+    return subject, message, recipients
 
 
-def get_cms_stat_recipients(record, config):
+def get_cms_stat_recipients(record, host_url, config):
     data = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
     key = path_value_equals(config.get("path", ""), record)
     recipients = data.get(key, {}).get("contacts", [])
     params = data.get(key, {}).get("params", {})
+
+    # submitter email
+    recipients.append(current_user.email)
 
     # mail for PDF forum
     pdf_mail = current_app.config.get("PDF_FORUM_MAIL")
@@ -92,6 +128,7 @@ def get_cms_stat_recipients(record, config):
 
     # mail for ML surveys - CMS conveners
     conveners_ml_mail = current_app.config.get("CONVENERS_ML_MAIL")
+    conveners_ml_jira_mail = current_app.config.get("CONVENERS_ML_JIRA_MAIL")
 
     # Some extra info for the CMS conveners recipients:
     # 1. if uses centralized CMS ML applications (3.3) (not empty)
@@ -111,30 +148,17 @@ def get_cms_stat_recipients(record, config):
         (centralized_apps and 'No' not in centralized_apps) or mva_use == 'Yes' or  # noqa
         ml_app_use or ml_survey == 'Yes'  # noqa
     ):
-        recipients.append(conveners_ml_mail)
+        recipients += [conveners_ml_mail, conveners_ml_jira_mail]
 
     cadi_id = record.get("analysis_context", {}).get("cadi_id")
-    cadi_regex = current_app.config.get("CADI_REGEX")
-
-    message = ""
     if cadi_id:
-        # mail for ML surveys - Hypernews
-        # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed cadi id
-        hypernews_mail = current_app.config.get("CMS_HYPERNEWS_EMAIL_FORMAT")
-        if re.match(cadi_regex, cadi_id) and hypernews_mail:
-            recipients.append(hypernews_mail.format(cadi_id))
+        add_hypernews_mail_to_recipients(recipients, cadi_id)
 
-        message += "A CMS Statistical Questionnaire has been published " + \
-                   f"for analysis with CADI ID {cadi_id}. "
-    message += \
-        "The primary (secondary) contact for reviewing your questionnaire" + \
-        f" is {params.get('primary', '-')} ({params.get('secondary', '-')}). "
+    subject = create_base_subject(config, cadi_id)
+    message = create_base_message(record, host_url, params)
+    message += f"Submitted by {current_user.email}."
 
-    submitter_email = current_user.email
-    recipients.append(submitter_email)
-    message += f"Submitted by {submitter_email}"
-
-    return message, recipients
+    return subject, message, recipients
 
 
 GENERATE_RECIPIENT_METHODS = {
@@ -175,16 +199,16 @@ NOTIFICATION_RECEPIENT = {
 }
 
 
-def generate_recipient_list(record, config):
+def generate_notification_attrs(record, host_url, config):
     _type = config.get("type")
     if _type == "method":
         func = GENERATE_RECIPIENT_METHODS.get(config.get("method"))
         if func:
-            return func(record, config)
+            return func(record, host_url, config)
     elif _type == "list":
         return config.get("message", ""), config.get("data")
     else:
-        return "", None
+        return "", "", None
 
 
 def post_action_notifications(action=None, deposit=None, host_url=None):
@@ -193,42 +217,36 @@ def post_action_notifications(action=None, deposit=None, host_url=None):
     recipients_config = NOTIFICATION_RECEPIENT.get(schema, {}).get(action)
 
     if recipients_config:
-        message, recipients = generate_recipient_list(
-            deposit, recipients_config)
+        subject, message, recipients = generate_notification_attrs(
+            deposit, host_url, recipients_config)
 
         if recipients:
-            subject = recipients_config.get("email_subject")
-
             if action == "publish":
                 recid, record = deposit.fetch_published()
-                record_pid = recid.pid_value
 
                 send_mail_on_publish(
-                    recipients,
-                    record_pid,
-                    host_url,
+                    recid.pid_value,
                     record.revision_id,
+                    host_url,
+                    recipients,
                     message,
                     subject_prefix=subject)
 
             if action == "review":
-                analysis_url = f'drafts/{deposit["_deposit"]["id"]}' \
-                    if deposit['_deposit']['status'] == 'draft' \
-                    else f'published/{deposit["control_number"]}'
+                analysis_url = create_analysis_url(deposit)
 
                 send_mail_on_review(
-                    recipients,
                     analysis_url,
                     host_url,
+                    recipients,
                     message,
                     subject_prefix=subject)
 
 
-def send_mail_on_publish(recipients,
-                         recid,
-                         url,
-                         revision,
-                         message,
+def send_mail_on_publish(recid, revision,
+                         host_url='https://analysispreservation.cern.ch/',
+                         recipients=None,
+                         message='',
                          subject_prefix=''):
     if revision > 0:
         subject = subject_prefix + \
@@ -239,26 +257,47 @@ def send_mail_on_publish(recipients,
             "New Published Analysis | CERN Analysis Preservation"
         template = "mail/analysis_published_new.html"
 
+    send_mail_on_hypernews(recipients, subject, message)
+
     create_and_send.delay(
         template,
-        dict(recid=recid, url=url, message=message),
+        dict(recid=recid, url=host_url, message=message),
         subject,
         recipients
     )
 
 
-def send_mail_on_review(recipients,
-                        analysis_url,
-                        url,
-                        message,
+def send_mail_on_review(analysis_url,
+                        host_url='https://analysispreservation.cern.ch/',
+                        recipients=None,
+                        message='',
                         subject_prefix=''):
     subject = subject_prefix + \
         "New Review on Analysis | CERN Analysis Preservation"
     template = "mail/analysis_review.html"
 
+    send_mail_on_hypernews(recipients, subject, message)
+
     create_and_send.delay(
         template,
-        dict(analysis_url=analysis_url, url=url, message=message),
+        dict(analysis_url=analysis_url, url=host_url, message=message),
         subject,
         recipients
     )
+
+
+def send_mail_on_hypernews(recipients, subject, message):
+    # differentiate between hypernews mail and the others
+    r = re.compile('hn-cms-.+')
+    hypernews_list = [rec for rec in recipients if r.match(rec)]
+
+    if hypernews_list:
+        template = "mail/analysis_plain_text.html"
+        recipients.remove(hypernews_list[0])
+
+        create_and_send.delay(
+            template,
+            dict(message=message),
+            subject,
+            hypernews_list
+        )
