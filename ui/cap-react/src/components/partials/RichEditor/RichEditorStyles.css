@@ -1,0 +1,53 @@
+.editor {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  cursor: text;
+  padding: 16px;
+  border-radius: 2px;
+  margin-bottom: 2em;
+  box-shadow: inset 0px 1px 8px -3px #ababab;
+  background: #fefefe;
+  height: 500px;
+  width: 500px;
+}
+
+.editor :global(.public-DraftEditor-content) {
+  min-height: 140px;
+}
+
+.headlineButton {
+  background: #fbfbfb;
+  color: #888;
+  font-size: 18px;
+  border: 0;
+  padding-top: 5px;
+  vertical-align: bottom;
+  height: 34px;
+  width: 36px;
+}
+
+.headlineButton:hover,
+.headlineButton:focus {
+  background: #f3f3f3;
+}
+
+.rich-editor-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.rich-editor-toolbar button {
+  height: 34px;
+  width: 36px;
+  min-width: 0px !important;
+  background: #fbfbfb;
+  color: #888;
+  font-size: 18px;
+  /* border: 1px solid black !important; */
+  border-radius: 0 !important;
+  margin: 0 5px;
+  border: 0 !important;
+  padding-top: 5px;
+  vertical-align: bottom;
+}

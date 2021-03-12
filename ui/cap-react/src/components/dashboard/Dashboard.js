@@ -14,6 +14,8 @@ import DashboardWorkflowListItem from "./DashboardWorkflowListItem";
 import DashboardMeter from "./components/DashboardMeter";
 import DashboardQuickSearch from "./DashboardQuickSearch";
 
+import RichEditor from "../partials/RichEditor";
+
 class Dashboard extends React.Component {
   componentDidMount() {
     this.props.fetchDashboard();
@@ -69,13 +71,14 @@ class Dashboard extends React.Component {
               align="center"
               justify="center"
             >
-              <DashboardList
+              <RichEditor />
+              {/* <DashboardList
                 listType="draft"
                 list={lists["drafts"]}
                 header="drafts"
                 ListItem={DashboardListItem}
                 emptyMessage="Draft analyses that your collaborators have given you read/write access to."
-              />
+              /> */}
             </Box>
             <Box
               flex
