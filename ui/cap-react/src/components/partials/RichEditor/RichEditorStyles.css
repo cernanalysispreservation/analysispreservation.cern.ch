@@ -8,7 +8,7 @@
   box-shadow: inset 0px 1px 8px -3px #ababab;
   background: #fefefe;
   height: 500px;
-  width: 500px;
+  width: 800px;
 }
 
 .editor :global(.public-DraftEditor-content) {
@@ -37,9 +37,18 @@
   align-items: center;
   justify-content: center;
 }
+.rich-editor-toolbar > div {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.rich-editor-toolbar div:nth-child(-n + 3) button {
+  height: 14px;
+}
+
 .rich-editor-toolbar button {
   height: 34px;
-  width: 36px;
+  width: 30px;
   min-width: 0px !important;
   background: #fbfbfb;
   color: #888;
@@ -50,4 +59,10 @@
   border: 0 !important;
   padding-top: 5px;
   vertical-align: bottom;
+}
+
+.rich-editor-toolbar .grommet input[type="button"]:not(.grommetux-button--box),
+.grommet input[type="submit"]:not(.grommetux-button--box),
+.grommet button:not(.grommetux-button):not(.grommetux-button--box) {
+  padding: 0 !important;
 }

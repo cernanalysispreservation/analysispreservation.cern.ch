@@ -14,64 +14,99 @@ import {
   HeadlineTwoButton,
   HeadlineThreeButton
 } from "@draft-js-plugins/buttons";
-import draftToMarkdown from "draftjs-to-markdown";
 
-import createToolbarPlugin, {
-  Separator
-} from "@draft-js-plugins/static-toolbar";
-import { convertToRaw } from "draft-js";
+import createToolbarPlugin from "@draft-js-plugins/static-toolbar";
+import { convertToRaw, convertFromRaw, EditorState } from "draft-js";
+import { draftToMarkdown, markdownToDraft } from "markdown-draft-js";
+
 import { Box } from "grommet";
 import "./RichEditorStyles.css";
+import Button from "../Button";
 
 const toolbarPlugin = createToolbarPlugin();
 const { Toolbar } = toolbarPlugin;
 const plugins = [toolbarPlugin];
-const text =
-  "In this editor a toolbar shows up once you select part of the text …";
 
-const RichEditor = props => {
+const RichEditor = () => {
   const [editorState, setEditorState] = useState(() =>
-    createEditorStateWithText(text)
+    createEditorStateWithText("")
   );
+  const [preview, setPreview] = useState(false);
 
   const editor = useRef(null);
   const focusEditor = () => {
     editor.current.focus();
   };
 
-  const rawContentState = convertToRaw(editorState.getCurrentContent());
-  const markup = draftToMarkdown(rawContentState, null, null, {
-    blockTypesMapping: {
-      /* mappings */
-      emptyLineBeforeBlock: false
-    }
-  });
+  const convertToPreview = () => {
+    let con = editorState.getCurrentContent();
+    let raw = convertToRaw(con);
+    let markup = draftToMarkdown(raw);
+    let draft = markdownToDraft(markup);
+    let content = convertFromRaw(draft);
+    let state = EditorState.createWithContent(content);
 
-  console.log("====================================");
-  console.log(markup);
-  console.log("====================================");
+    setPreview(true);
+    setEditorState(state);
+  };
+
+  const convertToWrite = () => {
+    let con = editorState.getCurrentContent();
+    let raw = convertToRaw(con);
+    let markup = draftToMarkdown(raw);
+    let state = createEditorStateWithText(markup);
+
+    setPreview(false);
+    setEditorState(state);
+  };
 
   return (
     <Box>
       <Toolbar>
-        {// may be use React.Fragment instead of div to improve perfomance after React 16
-        externalProps => (
-          <div className="rich-editor-toolbar">
-            <BoldButton {...externalProps} />
-            <ItalicButton {...externalProps} />
-            <UnderlineButton {...externalProps} />
-            <CodeButton {...externalProps} />
-            <Separator {...externalProps} />
-            <HeadlineOneButton {...externalProps} />
-            <HeadlineTwoButton {...externalProps} />
-            <HeadlineThreeButton {...externalProps} />
-            <UnorderedListButton {...externalProps} />
-            <OrderedListButton {...externalProps} />
-            <BlockquoteButton {...externalProps} />
-            <CodeBlockButton {...externalProps} />
-          </div>
+        {externalProps => (
+          <Box
+            direction="row"
+            responsive={false}
+            colorIndex="light-1"
+            justify="between"
+            pad={{ horizontal: "small" }}
+            margin={{ bottom: "small" }}
+          >
+            <Box
+              direction="row"
+              responsive={false}
+              margin={{ vertical: "small" }}
+            >
+              <Button
+                text="Write"
+                margin="0 5px 0 0 "
+                onClick={() => convertToWrite()}
+                primary={!preview}
+              />
+              <Button
+                text="Preview"
+                primary={preview}
+                onClick={() => convertToPreview()}
+              />
+            </Box>
+
+            <div className="rich-editor-toolbar">
+              <HeadlineOneButton {...externalProps} />
+              <HeadlineTwoButton {...externalProps} />
+              <HeadlineThreeButton {...externalProps} />
+              <BoldButton {...externalProps} />
+              <ItalicButton {...externalProps} />
+              <UnderlineButton {...externalProps} />
+              <CodeButton {...externalProps} />
+              <UnorderedListButton {...externalProps} />
+              <OrderedListButton {...externalProps} />
+              <BlockquoteButton {...externalProps} />
+              <CodeBlockButton {...externalProps} />
+            </div>
+          </Box>
         )}
       </Toolbar>
+
       <Box onClick={focusEditor} className="editor">
         <Editor
           ref={editor}
