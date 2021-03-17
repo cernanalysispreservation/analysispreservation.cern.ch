@@ -4,7 +4,6 @@ import Editor, { createEditorStateWithText } from "@draft-js-plugins/editor";
 import {
   ItalicButton,
   BoldButton,
-  UnderlineButton,
   CodeButton,
   UnorderedListButton,
   OrderedListButton,
@@ -16,8 +15,15 @@ import {
 } from "@draft-js-plugins/buttons";
 
 import createToolbarPlugin from "@draft-js-plugins/static-toolbar";
-import { convertToRaw, convertFromRaw, EditorState } from "draft-js";
+import {
+  convertToRaw,
+  convertFromRaw,
+  EditorState,
+  SelectionState
+} from "draft-js";
 import { draftToMarkdown, markdownToDraft } from "markdown-draft-js";
+
+import moveSelectionToEnd from "./moveSelectioToEnd";
 
 import { Box } from "grommet";
 import "./RichEditorStyles.css";
@@ -96,7 +102,6 @@ const RichEditor = () => {
               <HeadlineThreeButton {...externalProps} />
               <BoldButton {...externalProps} />
               <ItalicButton {...externalProps} />
-              <UnderlineButton {...externalProps} />
               <CodeButton {...externalProps} />
               <UnorderedListButton {...externalProps} />
               <OrderedListButton {...externalProps} />
@@ -110,10 +115,22 @@ const RichEditor = () => {
       <Box onClick={focusEditor} className="editor">
         <Editor
           ref={editor}
-          editorState={editorState}
-          onChange={setEditorState}
+          editorState={EditorState.acceptSelection(
+            editorState,
+            editorState.getSelection()
+          )}
+          onChange={state => {
+            if (state.getCurrentContent() !== editorState.getCurrentContent()) {
+              let con = state.getCurrentContent();
+              let raw = convertToRaw(con);
+              let markup = draftToMarkdown(raw);
+              let ate = createEditorStateWithText(markup);
+              setEditorState(moveSelectionToEnd(ate));
+            }
+          }}
           placeholder="Your text goes here..."
           plugins={plugins}
+          readOnly={preview}
           spellCheck
         />
       </Box>
