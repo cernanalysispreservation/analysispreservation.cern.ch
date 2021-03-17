@@ -6,6 +6,7 @@ import CheckboxWidget from "./CheckboxWidget";
 import TextAreaWidget from "./TextAreaWidget";
 import SwitchWidget from "./SwitchWidget";
 import TagsWidget from "./TagsWidget";
+import RichEditorSelector from "./RichEditor/RichEditorSelector";
 
 const widgets = {
   text: TextWidget,
@@ -14,6 +15,7 @@ const widgets = {
   radio: RadioWidget,
   checkboxes: CheckboxWidget,
   textarea: TextAreaWidget,
+  richeditor: RichEditorSelector,
   switch: SwitchWidget,
   checkbox: SwitchWidget,
   tags: TagsWidget

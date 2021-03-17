@@ -7,6 +7,7 @@ import TextAreaWidget from "./TextAreaWidget";
 import SwitchWidget from "./SwitchWidget";
 import EmailWidget from "./EmailWidget";
 import URLWidget from "./URLWidget";
+import RichEditorSelect from "./RichEditor/RichEditorSelector";
 
 const widgets = {
   text: TextWidget,
@@ -15,6 +16,7 @@ const widgets = {
   radio: RadioWidget,
   checkboxes: CheckboxWidget,
   textarea: TextAreaWidget,
+  richeditor: RichEditorSelect,
   switch: SwitchWidget,
   email: EmailWidget,
   uri: URLWidget

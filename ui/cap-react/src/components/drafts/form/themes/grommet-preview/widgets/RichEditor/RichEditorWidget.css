@@ -1,0 +1,11 @@
+.rc-md-editor .section:not(.grommetux-section) {
+  padding: 0 !important;
+}
+
+.rc-md-editor .editor-container > .section > .section-container {
+  padding: 5px;
+}
+
+.rc-md-editor {
+  border: 0;
+}
