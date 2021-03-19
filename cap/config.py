@@ -566,6 +566,7 @@ CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 OAUTHCLIENT_REMOTE_APPS = dict(cern=CERN_REMOTE_APP, )
 #: Serializer for extracting `extra_data` from invenio-oauthclient
 OAUTHCLIENT_CERN_EXTRA_DATA_SERIALIZER = oauth_extra_data_serializer
+OAUTHCLIENT_CERN_REFRESH_TIMEDELTA = timedelta(minutes=-10)
 
 #: Defintion of OAuth/Auth client template.
 AUTHENTICATION_POPUP_TEMPLATE = 'auth/authentication_popup.html'

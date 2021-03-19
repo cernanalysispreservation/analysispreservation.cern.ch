@@ -29,14 +29,9 @@ def oauth_extra_data_serializer(resource):
     """Serializer for Oauthclient extra_data resources."""
     data = {
         'common_name': resource.get('CommonName', [None])[0],
-        'first_name': resource.get('Firstname', [None])[0],
-        'last_name': resource.get('Lastname', [None])[0],
         'display_name': resource.get('DisplayName', [None])[0],
-
         'building': resource.get('Building', [None])[0],
         'department': resource.get('Department', [None])[0],
-        'person_id': resource.get('PersonID', [None])[0],
-        'identity_class': resource.get('IdentityClass', [None])[0],
     }
 
     return {
