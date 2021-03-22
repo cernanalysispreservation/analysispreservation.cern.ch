@@ -5,7 +5,7 @@ describe("Published Tests", () => {
     // given a random tiltle
     cy.createDraft("CMS Analysis", firstTitle, "cms");
 
-    cy.visit("http://localhost:3000/");
+    cy.visit("/");
 
     cy.get("[data-cy=drafts-list] a")
       .first()

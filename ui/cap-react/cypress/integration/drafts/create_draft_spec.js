@@ -68,7 +68,7 @@ describe("Create Draft", () => {
     cy.get("[data-cy=draft-delete-btn]").click();
 
     cy.get("[data-cy=layer-primary-action]").click();
-
+    cy.wait(1000);
     cy.url().should("eq", "http://localhost:3000/");
   });
 

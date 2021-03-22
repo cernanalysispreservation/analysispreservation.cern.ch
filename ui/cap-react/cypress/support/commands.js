@@ -26,7 +26,7 @@
 
 // Login mechanism with the UI
 Cypress.Commands.add("login", (email, password) => {
-  cy.visit("http://localhost:3000/");
+  cy.visit("/");
   cy.get("div.localLogin").click();
   cy.get("input[type='email']").clear();
   cy.get("input[type='email']").type(email);
@@ -40,7 +40,7 @@ Cypress.Commands.add("login", (email, password) => {
 Cypress.Commands.add("loginUrl", (email, password) => {
   cy.request({
     method: "POST",
-    url: "http://localhost:3000/api/login/local?next=/",
+    url: "/api/login/local?next=/",
     body: { username: email, password: password }
   })
     .then(resp => {
@@ -49,9 +49,9 @@ Cypress.Commands.add("loginUrl", (email, password) => {
     .then(resp => {
       cy.request({
         method: "GET",
-        url: "http://localhost:3000/api/me"
+        url: "/api/me"
       }).then(res => {
-        cy.visit("http://localhost:3000/");
+        cy.visit("/");
       });
     });
 });
@@ -102,7 +102,7 @@ Cypress.Commands.add("goToFormBuilder", () => {
   cy.loginUrl("info@inveniosoftware.org", "infoinfo");
   cy.wait(2000);
 
-  cy.visit("http://localhost:3000/cms");
+  cy.visit("/cms");
 
   cy.wait(2000);
 });
