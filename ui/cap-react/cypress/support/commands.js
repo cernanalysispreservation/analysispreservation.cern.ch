@@ -70,7 +70,7 @@ Cypress.Commands.add("logout", () => {
 // Create draft with a specific title
 
 Cypress.Commands.add("createDraft", (anatype, generalTitle, user = "info") => {
-  cy.login(`${user}@inveniosoftware.org`, `${user}${user}`);
+  cy.loginUrl(`${user}@inveniosoftware.org`, `${user}${user}`);
 
   cy.wait(1000);
 

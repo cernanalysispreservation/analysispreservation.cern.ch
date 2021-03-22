@@ -37,6 +37,7 @@ from cap.config import DEBUG
 from cap.modules.access.utils import login_required
 from cap.modules.schemas.utils import get_indexed_schemas_for_user
 from cap.modules.user.utils import get_remote_account_by_id
+import os
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -112,7 +113,7 @@ def login():
         }), 403
 
 
-if DEBUG:
+if DEBUG or os.environ.get("ENABLE_E2E"):
     user_blueprint.add_url_rule('/login/local',
                                 'local_login',
                                 login,

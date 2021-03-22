@@ -72,7 +72,7 @@ const EditableField = ({
           <AiOutlineCheck />
         </Box>
         <Box margin="none" onClick={() => _unedit()} data-cy="closeicon">
-          <AiOutlineClose colorIndex="neutral-1" size="xsmall" />
+          <AiOutlineClose />
         </Box>
       </Box>
     </Box>

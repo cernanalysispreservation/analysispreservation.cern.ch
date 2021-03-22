@@ -216,7 +216,7 @@ PermissionTable.propTypes = {
   addPermissionsModal: PropTypes.bool,
   handlePermissions: PropTypes.func,
   draft_id: PropTypes.string,
-  created_by: PropTypes.string,
+  created_by: PropTypes.object,
   permissionsObj: PropTypes.object,
   target: PropTypes.string,
   access: PropTypes.object,

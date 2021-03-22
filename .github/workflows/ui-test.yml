@@ -2,14 +2,14 @@ name: UI test
 on:
   push:
     branches: [master]
-    paths: 
-      - 'ui/**'
-      - '.github/workflows/ui-test.yml'
+    paths:
+      - "ui/**"
+      - ".github/workflows/ui-test.yml"
   pull_request:
     branches: [master]
     paths:
-      - 'ui/**'
-      - '.github/workflows/ui-test.yml'
+      - "ui/**"
+      - ".github/workflows/ui-test.yml"
 jobs:
   UITest:
     name: UI Tests
@@ -37,7 +37,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2-beta
         with:
-          node-version: '10'
+          node-version: "10"
 
       - name: Build
         working-directory: ./ui

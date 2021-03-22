@@ -1,4 +1,4 @@
-describe("Create Draft", () => {
+describe("Create Draft", function() {
   let firstTitle = "Random Title";
   let updatedTitle = "This is my new title";
   it("Create a new Draft", () => {
@@ -69,7 +69,8 @@ describe("Create Draft", () => {
 
     cy.get("[data-cy=layer-primary-action]").click();
     cy.wait(1000);
-    cy.url().should("eq", "http://localhost:3000/");
+
+    cy.url().should("not.include", "/drafts");
   });
 
   it("Does not allow to continue when anatype is not selected", () => {
@@ -91,6 +92,6 @@ describe("Create Draft", () => {
 
     cy.wait(1000);
 
-    cy.url().should("eq", "http://localhost:3000/");
+    cy.url().should("not.include", "/drafts");
   });
 });

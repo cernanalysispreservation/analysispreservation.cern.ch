@@ -1,14 +1,6 @@
 describe("Login Process", () => {
-  it("Login as Atlas member", () => {
-    // login
-    cy.login("atlas@inveniosoftware.org", "atlasatlas");
-
-    //assert the login
-    cy.url().should("eq", "http://localhost:3000/");
-    cy.logout();
-  });
-
-  it("Password is required", () => {
+  it("Password is required", function() {
+    cy.visit("/");
     // open the login form
     cy.get("div.localLogin").click();
 
@@ -17,7 +9,7 @@ describe("Login Process", () => {
     cy.get("div.grommetux-background-color-index-critical");
   });
 
-  it("Email is required", () => {
+  it("Email is required", function() {
     cy.visit("/");
     // open the login form
     cy.get("div.localLogin").click();
@@ -27,7 +19,7 @@ describe("Login Process", () => {
 
     cy.get("div.grommetux-background-color-index-critical");
   });
-  it("Password is required", () => {
+  it("Password is required", function() {
     cy.visit("/");
     // open the login form
     cy.get("div.localLogin").click();
@@ -37,7 +29,7 @@ describe("Login Process", () => {
     cy.get("div.grommetux-background-color-index-critical");
   });
 
-  it("Valid email is required", () => {
+  it("Valid email is required", function() {
     cy.visit("/");
     // open the login form
     cy.get("div.localLogin").click();
@@ -48,7 +40,7 @@ describe("Login Process", () => {
     cy.get("div.grommetux-background-color-index-critical");
   });
 
-  it("Password and email are required", () => {
+  it("Password and email are required", function() {
     cy.visit("/");
     // open the login form
     cy.get("div.localLogin").click();

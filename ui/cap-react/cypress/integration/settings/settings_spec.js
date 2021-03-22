@@ -1,8 +1,8 @@
-describe("Settings Page", () => {
+describe("Settings Page", function() {
   const newIdTitle =
     "this is my new title" +
     new Date().toLocaleString("en-GB", { timeZone: "UTC" });
-  it("add new token", () => {
+  it("add new token", function() {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     cy.wait(1000);
@@ -24,7 +24,7 @@ describe("Settings Page", () => {
     cy.get("[data-cy=settings-table-token-id]").contains(newIdTitle);
   });
 
-  it("Delete the Token from the list", () => {
+  it("Delete the Token from the list", function() {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     cy.wait(1000);
