@@ -21,15 +21,32 @@ services:
       service: frontend
     volumes:
       - ./ui/cap-react/dist:/usr/share/nginx/html
+    environment:
+      - "ENABLE_E2E=true"
     links:
       - web-api
   # API Rest Application
+  cypress:
+    image: "cypress/included:6.3.0"
+    # entrypoint: cypress run --headless --browser chrome
+    environment:
+      - CYPRESS_BASE_URL=https://frontend
+      - CYPRESS_baseUrl=https://frontend
+    working_dir: /ui/cap-react
+    volumes:
+      - ./ui/cap-react:/ui/cap-react
+    depends_on:
+      - frontend
+      - web-api
   web-api:
     extends:
       file: docker-services.yml
       service: app
     command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
     image: cap-web-api
+    environment:
+      - "ENABLE_E2E=TRUE"
+      - "DEV_HOST=frontend"
     ports:
       - "5000"
     volumes:
@@ -50,6 +67,9 @@ services:
       service: app
     command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
     image: cap-files-api
+    environment:
+      - "ENABLE_E2E=TRUE"
+      - "DEV_HOST=frontend"
     ports:
       - "5000"
     volumes:
@@ -69,6 +89,9 @@ services:
       file: docker-services.yml
       service: app
     restart: "always"
+    environment:
+      - "ENABLE_E2E=TRUE"
+      - "DEV_HOST=frontend"
     command: "celery worker -A cap.celery --loglevel=INFO"
     image: cap-worker
     links:
@@ -76,13 +99,6 @@ services:
       - es
       - mq
       - db
-  # Monitoring
-  flower:
-    extends:
-      file: docker-services.yml
-      service: flower
-    links:
-      - mq
   # Base services
   cache:
     extends:

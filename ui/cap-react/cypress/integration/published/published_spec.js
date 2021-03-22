@@ -1,9 +1,9 @@
-describe("Published Tests", () => {
+describe("Published Tests", function() {
   const firstTitle = "My First CMS Analysis";
   it("Publish a CMS Draft", () => {
     // create a new ALICE Analysis
     // given a random tiltle
-    cy.createDraft("CMS Analysis", firstTitle, "cms");
+    cy.createDraft("CMS Analysis", firstTitle, "info");
 
     cy.visit("/");
 
@@ -25,7 +25,7 @@ describe("Published Tests", () => {
     cy.url().should("include", "/published");
   });
   it("A published report would not be deleted", () => {
-    cy.loginUrl("cms@inveniosoftware.org", "cmscms");
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     cy.get("[data-cy=publishedincollaboration-list] a")
       .first()
@@ -39,7 +39,9 @@ describe("Published Tests", () => {
     cy.get("[data-cy=draft-delete-btn]").should("have.attr", "disabled");
   });
   it("Change a published into a Draft", () => {
-    cy.loginUrl("cms@inveniosoftware.org", "cmscms");
+    cy.createDraft("CMS Analysis", firstTitle, "info");
+
+    cy.visit("/");
 
     cy.get("[data-cy=drafts-list] a")
       .first()

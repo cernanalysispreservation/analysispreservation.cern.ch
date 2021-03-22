@@ -1,10 +1,7 @@
-const path = require("path");
-
-describe("Form Builder", () => {
+describe("Form Builder", function() {
   // with respect to the current working folder
-  const downloadsFolder = Cypress.config("downloadsFolder");
 
-  it("Select the CMS Analysis from the predefined schems", () => {
+  it("Select the CMS Analysis from the predefined schems", function() {
     cy.goToFormBuilder();
 
     // select the div contains the CMS Analysis text
@@ -17,7 +14,7 @@ describe("Form Builder", () => {
     cy.get("header span").contains("CMS Analysis");
   });
 
-  it("Select the CMS Statistics Questionnaire from the predefined schems", () => {
+  it("Select the CMS Statistics Questionnaire from the predefined schems", function() {
     cy.goToFormBuilder();
 
     // select the div contains the CMS Analysis text
@@ -30,7 +27,7 @@ describe("Form Builder", () => {
     cy.get("header span").contains("CMS Statistics Questionnaire");
   });
 
-  it("Start a new schema on your own", () => {
+  it("Start a new schema on your own", function() {
     cy.goToFormBuilder();
 
     const name = "Name of the form";

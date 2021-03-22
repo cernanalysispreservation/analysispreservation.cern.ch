@@ -37,7 +37,7 @@ class WelcomePage extends React.Component {
     };
   }
 
-  loginCallBack = (next) => {
+  loginCallBack = next => {
     this.props.initCurrentUser(next);
   };
 
@@ -123,7 +123,8 @@ class WelcomePage extends React.Component {
                 ))}
               </Menu>
             </MediaQuery>
-            {process.env.NODE_ENV === "development" ? (
+            {process.env.NODE_ENV === "development" ||
+            process.env.ENABLE_E2E ? (
               <Box margin={{ left: "small" }}>
                 <Menu
                   background="#f5f5f5"

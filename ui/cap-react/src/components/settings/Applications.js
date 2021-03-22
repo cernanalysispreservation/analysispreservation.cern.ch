@@ -148,6 +148,7 @@ class SettingsIndex extends React.Component {
               </Heading>
               {this.getTokenSize() > 0 && (
                 <Button
+                  dataCy="settings-add-token"
                   text="Add Token"
                   icon={<AiOutlinePlus />}
                   onClick={this.activateLayer.bind(this, "token")}
@@ -198,6 +199,7 @@ class SettingsIndex extends React.Component {
                   </Label>
                   <Button
                     text="Add Token"
+                    dataCy="settings-add-token"
                     icon={<AiOutlinePlus />}
                     onClick={this.activateLayer.bind(this, "token")}
                     primaryOutline

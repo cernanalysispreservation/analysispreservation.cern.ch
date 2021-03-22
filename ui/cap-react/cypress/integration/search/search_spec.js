@@ -1,5 +1,5 @@
-describe("Search Integration Suite", () => {
-  it("Navigate to search page for published results", () => {
+describe("Search Integration Suite", function() {
+  it("Navigate to search page for published results", function() {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     // find the search bar
@@ -9,7 +9,7 @@ describe("Search Integration Suite", () => {
 
     cy.wait(1000);
 
-    cy.url().should("eq", "http://localhost:3000/search?q=cern");
+    cy.url().should("include", "search?q=cern");
 
     cy.wait(1000);
     cy.get("input#search_facet_published_checkbox").should(
@@ -19,7 +19,7 @@ describe("Search Integration Suite", () => {
     cy.get("input#search_facet_yours_checkbox").should("have.attr", "checked");
   });
 
-  it("Navigate search page for drafts results", () => {
+  it("Navigate search page for drafts results", function() {
     // login first
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
@@ -38,6 +38,6 @@ describe("Search Integration Suite", () => {
     );
 
     // validate the url
-    cy.url().should("eq", "http://localhost:3000/drafts?q=cern");
+    cy.url().should("include", "/drafts?q=cern");
   });
 });
