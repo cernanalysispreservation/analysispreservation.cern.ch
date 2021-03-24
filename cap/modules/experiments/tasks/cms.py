@@ -30,9 +30,9 @@ import paramiko
 from celery import shared_task
 from flask import current_app
 
-from cap.modules.experiments.utils.cadi import synchronize_cadi_entries
-
 from ..errors import DASHarvesterException
+from ..utils.cadi import synchronize_cadi_entries
+from ..utils.cms import cms_keywords_from_spreadsheet
 from ..utils.common import kinit
 from ..utils.das import cache_das_datasets_in_es_from_file
 
@@ -112,3 +112,13 @@ def reindex_das_entries():
         cache_das_datasets_in_es_from_file(source)
 
     current_app.logger.info('DAS entries indexed succesfully.')
+
+
+@shared_task(autoretry_for=(Exception, ),
+             retry_kwargs={
+                 'max_retries': 15,
+                 'countdown': 10
+             })
+def retrieve_cms_keywords_from_spreadsheet():
+    """Task for adding keywords to CMS analysis."""
+    cms_keywords_from_spreadsheet()

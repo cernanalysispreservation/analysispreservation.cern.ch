@@ -150,6 +150,11 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'cap.modules.experiments.tasks.cms.harvest_das',
         'schedule': timedelta(days=1),
     },
+    'cms_keywords': {
+        'task': 'cap.modules.experiments.tasks.cms.'
+                'retrieve_cms_keywords_from_spreadsheet',
+        'schedule': timedelta(minutes=60),
+    },
 }
 #: Accepted content types, used for serializing objects
 #: when sending tasks to Celery (json default in 4.0)
@@ -814,6 +819,8 @@ CONVENERS_ML_MAIL = os.environ.get("CAP_CONVENERS_ML_MAIL")
 CONVENERS_ML_JIRA_MAIL = os.environ.get("CAP_CONVENERS_ML_JIRA_MAIL")
 CMS_HYPERNEWS_EMAIL_FORMAT = os.environ.get("CAP_CMS_HYPERNEWS_EMAIL_FORMAT")
 CMS_STATS_COMMITEE_AND_PAGS = get_cms_stats_questionnaire_contacts()
+
+CMS_KEYWORDS_SPREADSHEET = os.environ.get("CAP_CMS_KEYWORDS_SPREADSHEET")
 
 APP_DEFAULT_SECURE_HEADERS = {
     'content_security_policy': {

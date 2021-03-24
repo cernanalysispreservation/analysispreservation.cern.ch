@@ -229,7 +229,7 @@ def get_deposit_by_cadi_id(cadi_id):
 
     :rtype `cap.modules.deposits.api:CAPDeposit`
     """
-    rs = RecordsSearch(index='deposits-records')
+    rs = RecordsSearch(index='deposits-cms-analysis')
 
     res = rs.query(Q('match', basic_info__cadi_id=cadi_id)) \
         .execute().hits.hits

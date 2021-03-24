@@ -22,7 +22,6 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Cli."""
-import os
 import json
 
 import click
@@ -32,18 +31,18 @@ from jsonschema.exceptions import ValidationError
 from invenio_db import db
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.errors import DepositDoesNotExist, \
-    DepositValidationError
-from cap.modules.experiments.utils.cadi import synchronize_cadi_entries, \
-    get_deposit_by_cadi_id
+from cap.modules.deposit.errors import DepositValidationError
+
+from cap.modules.experiments.utils.cadi import synchronize_cadi_entries
 from cap.modules.experiments.utils.questionnaire import \
     extract_questionnaires_from_excel, remove_none_keys
 from cap.modules.experiments.utils.cms import \
-    cache_cms_triggers_in_es_from_file, extract_keywords_from_excel
+    cache_cms_triggers_in_es_from_file, \
+    cms_keywords_from_spreadsheet
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file
-from cap.modules.fixtures.cli import fixtures
 
+from cap.modules.fixtures.cli import fixtures
 from cap.modules.user.utils import get_existing_or_register_role
 
 
@@ -83,49 +82,6 @@ def index_triggers(file):
         cache_cms_triggers_in_es_from_file(source)
 
     click.secho("Triggers indexed in Elasticsearch.", fg='green')
-
-
-@cms.command('keywords')
-@click.option('--file', '-f', required=True, type=click.Path(exists=True))
-@with_appcontext
-def keywords(file):
-    """Load CADI keywords and print not found IDs in a file."""
-    data = extract_keywords_from_excel(file)
-    not_found = []
-
-    for item in data:
-        cadi_id = item['cadi_id']
-        del item['cadi_id']
-
-        try:
-            deposit = get_deposit_by_cadi_id(cadi_id)
-            deposit['basic_info']['analysis_keywords'] = item
-
-            deposit.commit()
-            db.session.commit()
-            click.secho(f"CADI ID {cadi_id} was successful.", fg='green')
-
-        except DepositDoesNotExist:
-            not_found.append(cadi_id)
-            click.secho(f"CADI ID {cadi_id} not found.", fg='red')
-
-        except DepositValidationError as e:
-            errors = [err.res for err in e.errors]
-            errors_str = ""
-            try:
-                errors_str = str(errors)
-            except Exception:
-                errors_str = "Can't tranform to string value"
-            click.secho(f"CADI ID {cadi_id} - Validation Error on:", fg='red')
-            click.secho(errors_str, fg='red')
-
-    # write_path = os.path.join(os.getcwd(), 'not-found.txt')
-    # with open(write_path, 'w') as out_file:
-    #     out_file.writelines(
-    #         f'{cadi_id}\n' for cadi_id in not_found
-    #     )
-
-    click.secho("Keywords extracted and saved.", fg='green')
 
 
 def _questionnaire_data(data, title=None):
@@ -213,3 +169,10 @@ def questionnaires(file):
                 pass
 
         db.session.commit()
+
+
+@cms.command('keywords')
+@with_appcontext
+def keywords():
+    """Add keywords in CMS Analysis, taken from Google Sheets."""
+    cms_keywords_from_spreadsheet()
