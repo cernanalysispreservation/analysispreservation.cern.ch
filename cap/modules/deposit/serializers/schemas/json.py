@@ -24,9 +24,10 @@
 """CAP Basic Schemas."""
 
 import copy
-
 from marshmallow import fields, post_dump
+from invenio_jsonschemas import current_jsonschemas
 
+from cap.modules.deposit.review import ReviewSchema
 from cap.modules.deposit.permissions import (
     AdminDepositPermission,
     ReviewDepositPermission,
@@ -34,14 +35,14 @@ from cap.modules.deposit.permissions import (
 )
 from cap.modules.records.serializers.schemas import common
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
-# from cap.modules.workflows.serializers import ReanaWorkflowSchema
-from invenio_jsonschemas import current_jsonschemas
+from cap.modules.user.utils import (
+    get_role_name_by_id,
+    get_remote_account_by_id
+)
 
-from cap.modules.deposit.review import ReviewSchema
 
-
-class DepositSchema(common.CommonRecordSchema):
-    """Schema for deposit v1 in JSON."""
+class DepositSearchSchema(common.CommonRecordSchema):
+    """Schema for deposit v1 in JSON, used in search."""
     type = fields.Str(default='deposit')
 
     recid = fields.Str(attribute='metadata._deposit.pid.value',
@@ -49,6 +50,25 @@ class DepositSchema(common.CommonRecordSchema):
 
     cloned_from = fields.Dict(attribute='metadata._deposit.cloned_from.value',
                               dump_only=True)
+
+
+class DepositSchema(DepositSearchSchema):
+    """Schema for deposit v1 in JSON. Used in deposits, includes `access`."""
+    access = fields.Method('get_access', dump_only=True)
+
+    def get_access(self, obj):
+        """Return access object."""
+        access = obj.get('metadata', {})['_access']
+
+        for permission in access.values():
+            if permission['users']:
+                for index, user_id in enumerate(permission['users']):
+                    permission['users'][index] = get_remote_account_by_id(user_id)  # noqa
+            if permission['roles']:
+                for index, role_id in enumerate(permission['roles']):
+                    permission['roles'][index] = get_role_name_by_id(role_id)
+
+        return access
 
 
 class DepositFormSchema(DepositSchema):

@@ -24,23 +24,21 @@
 """CAP Basic Schemas."""
 
 from __future__ import absolute_import, print_function
-
 import copy
 
 from marshmallow import Schema, fields
+from invenio_jsonschemas import current_jsonschemas
+from invenio_pidstore.resolver import Resolver
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.records.permissions import UpdateRecordPermission
 from cap.modules.deposit.permissions import ReviewDepositPermission
 
+from cap.modules.records.serializers.schemas import common
 from cap.modules.records.utils import clean_api_url_for
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
-from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
-from invenio_jsonschemas import current_jsonschemas
-
-from . import common
-
-from invenio_pidstore.resolver import Resolver
+from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id, \
+    get_remote_account_by_id
 
 
 class RecordSchema(common.CommonRecordSchema):
@@ -48,6 +46,22 @@ class RecordSchema(common.CommonRecordSchema):
     type = fields.Str(default='record')
 
     draft_id = fields.String(attribute='metadata._deposit.id', dump_only=True)
+
+    access = fields.Method('get_access', dump_only=True)
+
+    def get_access(self, obj):
+        """Return access object."""
+        access = obj.get('metadata', {})['_access']
+
+        for permission in access.values():
+            if permission['users']:
+                for index, user_id in enumerate(permission['users']):
+                    permission['users'][index] = get_remote_account_by_id(user_id)  # noqa
+            if permission['roles']:
+                for index, role_id in enumerate(permission['roles']):
+                    permission['roles'][index] = get_role_name_by_id(role_id)
+
+        return access
 
 
 class RecordFormSchema(RecordSchema):

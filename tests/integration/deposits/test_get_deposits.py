@@ -277,20 +277,6 @@ def test_get_deposit_with_default_serializer(client, users,
             'size': file.file.size,
             'version_id': str(file.version_id)
         }],
-        'access': {
-            'deposit-admin': {
-                'roles': [],
-                'users': [{'email': owner.email, 'profile': {}}],
-            },
-            'deposit-update': {
-                'roles': [],
-                'users': [{'email': owner.email, 'profile': {}}],
-            },
-            'deposit-read': {
-                'roles': [],
-                'users': [{'email': owner.email, 'profile': {}}],
-            }
-        },
         'is_owner': True,
         'links': {
             'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.

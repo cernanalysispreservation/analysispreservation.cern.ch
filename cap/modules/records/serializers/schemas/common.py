@@ -99,8 +99,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     links = fields.Raw(dump_only=True)
     files = fields.Method('get_files', dump_only=True)
 
-    access = fields.Method('get_access', dump_only=True)
-
     created = fields.Str(dump_only=True)
     updated = fields.Str(dump_only=True)
 
@@ -150,20 +148,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
 
         return get_remote_account_by_id(user_id) \
             if user_id else None
-
-    def get_access(self, obj):
-        """Return access object."""
-        access = obj.get('metadata', {})['_access']
-
-        for permission in access.values():
-            if permission['users']:
-                for index, user_id in enumerate(permission['users']):
-                    permission['users'][index] = get_remote_account_by_id(user_id)  # noqa
-            if permission['roles']:
-                for index, role_id in enumerate(permission['roles']):
-                    permission['roles'][index] = get_role_name_by_id(role_id)
-
-        return access
 
     def get_labels(self, obj):
         """Get labels."""

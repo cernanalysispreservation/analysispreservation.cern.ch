@@ -22,5 +22,6 @@ LDAP
 invenio
 oauthclient
 serializers
+serializer
 schemas
 url
