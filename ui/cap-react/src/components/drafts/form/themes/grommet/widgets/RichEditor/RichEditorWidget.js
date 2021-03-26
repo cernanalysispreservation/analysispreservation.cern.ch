@@ -23,7 +23,7 @@ const RichEditorWidget = props => {
   return (
     <Box
       className="richeditor-theme-grommet"
-      pad={{ horizontal: "small" }}
+      pad={{ horizontal: "medium" }}
       flex={true}
     >
       <MdEditor
