@@ -750,10 +750,7 @@ CERN_CERTS_PEM = os.environ.get('APP_CERN_CERTS_PEM')
 
 # Zenodo
 # ======
-ZENODO_SERVER_URL = os.environ.get('APP_ZENODO_SERVER_URL',
-                                   'https://zenodo.org/api')
-
-ZENODO_ACCESS_TOKEN = os.environ.get('APP_ZENODO_ACCESS_TOKEN', 'CHANGE_ME')
+ZENODO_SERVER_URL = os.environ.get('APP_ZENODO_SERVER_URL', 'https://zenodo.org/api')  # noqa
 
 # Endpoints
 # =========

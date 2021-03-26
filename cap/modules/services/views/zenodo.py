@@ -27,9 +27,11 @@
 
 import requests
 from flask import current_app, jsonify
-from invenio_files_rest.models import FileInstance, ObjectVersion
+from invenio_pidstore.resolver import Resolver
 
 from . import blueprint
+from cap.modules.access.utils import login_required
+from cap.modules.deposit.api import CAPDeposit
 
 
 def _get_zenodo_record(zenodo_id):
@@ -50,27 +52,16 @@ def get_zenodo_record(zenodo_id):
     return jsonify(resp), status
 
 
-@blueprint.route('/zenodo/<bucket_id>/<filename>')
-def upload_to_zenodo(bucket_id, filename):
-    """Upload code to zenodo."""
-    zenodo_server_url = current_app.config.get('ZENODO_SERVER_URL')
-    params = {"access_token": current_app.config.get(
-        'ZENODO_ACCESS_TOKEN')}
-    filename = filename + '.tar.gz'
+@blueprint.route('/zenodo/tasks/<depid>')
+@login_required
+def get_zenodo_tasks(depid):
+    """Get record from zenodo (route)."""
+    resolver = Resolver(pid_type='depid',
+                        object_type='rec',
+                        getter=lambda x: x)
 
-    r = requests.post(zenodo_server_url,
-                      params=params, json={},
-                      )
+    _, uuid = resolver.resolve(depid)
+    record = CAPDeposit.get_record(uuid)
+    tasks = record.get('_zenodo', {}).get('tasks', [])
 
-    file_obj = ObjectVersion.get(bucket_id, filename)
-    file = FileInstance.get(file_obj.file_id)
-
-    bucket_url = r.json()['links']['bucket']
-    with open(file.uri, 'rb') as fp:
-        response = requests.put(
-            bucket_url + '/{}'.format(filename),
-            data=fp,
-            params=params,
-        )
-
-    return jsonify({"status": response.status_code})
+    return jsonify(tasks), 200

@@ -25,10 +25,15 @@
 
 from __future__ import absolute_import, print_function
 
+import requests
+from flask import current_app
 from invenio_access.models import Role
 from invenio_db import db
 
+from cap.modules.deposit.errors import AuthorizationError, \
+    DataValidationError, FileUploadError
 from cap.modules.records.utils import url_to_api_url
+from cap.modules.services.serializers.zenodo import ZenodoDepositSchema
 
 
 def clean_empty_values(data):
@@ -75,3 +80,46 @@ def fix_bucket_links(response):
             item['links'] = add_api_to_links(item.get('links'))
 
     return response
+
+
+def get_zenodo_deposit_from_record(record, pid):
+    """Get the related Zenodo information from a record."""
+    try:
+        index = [idx for idx, deposit in enumerate(record['_zenodo'])
+                 if deposit['id'] == pid][0]
+
+        # set an empty dict as tasks if there is none
+        record['_zenodo'][index].setdefault('tasks', {})
+        return record['_zenodo'][index]
+    except IndexError:
+        raise FileUploadError(
+            'The Zenodo pid you provided is not associated with this record.')
+
+
+def create_zenodo_deposit(token, data=None):
+    """Create a Zenodo deposit using the logged in user's credentials."""
+    zenodo_url = current_app.config.get("ZENODO_SERVER_URL")
+    zenodo_data = {'metadata': data} if data else {}
+
+    deposit = requests.post(
+        url=f'{zenodo_url}/deposit/depositions',
+        params=dict(access_token=token),
+        json=zenodo_data,
+        headers={'Content-Type': 'application/json'}
+    )
+
+    if not deposit.ok:
+        if deposit.status_code == 401:
+            raise AuthorizationError(
+                'Authorization to Zenodo failed. Please reconnect.')
+        if deposit.status_code == 400:
+            data = deposit.json()
+            if data.get('message') == 'Validation error.':
+                raise DataValidationError(
+                    'Validation error on creating the Zenodo deposit.',
+                    errors=data.get('errors'))
+        raise FileUploadError(
+            'Something went wrong, Zenodo deposit not created.')
+
+    data = ZenodoDepositSchema().dump(deposit.json()).data
+    return data

@@ -49,6 +49,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
+from cap.modules.auth.ext import _fetch_token
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
@@ -60,6 +61,7 @@ from cap.modules.repos.factory import create_git_api
 from cap.modules.repos.tasks import download_repo, download_repo_file
 from cap.modules.repos.utils import (create_webhook, disconnect_subscriber,
                                      parse_git_url)
+from cap.modules.services.serializers.zenodo import ZenodoUploadSchema
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
                                            schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
@@ -67,7 +69,7 @@ from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
 from .errors import (DepositValidationError, UpdateDepositPermissionsError,
-                     ReviewError)
+                     ReviewError, InputValidationError)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
@@ -76,6 +78,8 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           UpdateDepositPermission)
 
 from .review import Reviewable
+from .tasks import create_zenodo_upload_tasks
+from .utils import create_zenodo_deposit
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -254,55 +258,90 @@ class CAPDeposit(Deposit, Reviewable):
         with UpdateDepositPermission(self).require(403):
             if request:
                 _, rec = request.view_args.get('pid_value').data
-                record_uuid = str(rec.id)
+                recid = str(rec.id)
                 data = request.get_json()
-                webhook = data.get('webhook', False)
-                event_type = data.get('event_type', 'release')
+                target = data.get('target')
 
-                try:
-                    url = data['url']
-                except KeyError:
-                    raise FileUploadError('Missing url parameter.')
+                if target == 'zenodo':
+                    # check for token
+                    token = _fetch_token('zenodo')
+                    if not token:
+                        raise FileUploadError(
+                            'Please connect your Zenodo account '
+                            'before creating a deposit.')
 
-                try:
-                    host, owner, repo, branch, filepath = parse_git_url(url)
-                    api = create_git_api(host, owner, repo, branch,
-                                         current_user.id)
+                    files = data.get('files', [])
+                    zenodo_data = data.get('zenodo_data')
+                    input = dict(files=files, data=zenodo_data) \
+                        if zenodo_data else dict(files=files)
 
-                    if filepath:
-                        if webhook:
-                            raise FileUploadError(
-                                'You cannot create a webhook on a file')
+                    if files:
+                        _, errors = ZenodoUploadSchema(recid=recid).load(input)
+                        if errors:
+                            raise InputValidationError(
+                                'Validation error in Zenodo input data.',
+                                errors=errors)
 
-                        download_repo_file(
-                            record_uuid,
-                            f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
-                            *api.get_file_download(filepath),
-                            api.auth_headers,
-                        )
-                    elif webhook:
-                        if event_type == 'release':
-                            if branch:
-                                raise FileUploadError(
-                                    'You cannot create a release webhook'
-                                    ' for a specific branch or sha.')
+                        deposit = create_zenodo_deposit(token, zenodo_data)
+                        self.setdefault('_zenodo', []).append(deposit)
+                        self.commit()
 
-                        if event_type == 'push' and \
-                                api.branch is None and api.sha:
-                            raise FileUploadError(
-                                'You cannot create a push webhook'
-                                ' for a specific sha.')
-
-                        create_webhook(record_uuid, api, event_type)
+                        # upload files to zenodo deposit
+                        create_zenodo_upload_tasks(files, recid, token,
+                                                   deposit['id'],
+                                                   deposit['links']['bucket'])
                     else:
-                        download_repo.delay(
-                            record_uuid,
-                            f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
-                            api.get_repo_download(),
-                            api.auth_headers)
+                        raise FileUploadError(
+                            'You cannot create an empty Zenodo deposit. '
+                            'Please add some files.')
+                else:
+                    webhook = data.get('webhook', False)
+                    event_type = data.get('event_type', 'release')
 
-                except GitError as e:
-                    raise FileUploadError(str(e))
+                    try:
+                        url = data['url']
+                    except KeyError:
+                        raise FileUploadError('Missing url parameter.')
+
+                    try:
+                        host, owner, repo, branch, filepath = parse_git_url(url)  # noqa
+                        api = create_git_api(host, owner, repo, branch,
+                                             current_user.id)
+
+                        if filepath:
+                            if webhook:
+                                raise FileUploadError(
+                                    'You cannot create a webhook on a file')
+
+                            download_repo_file(
+                                recid,
+                                f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
+                                *api.get_file_download(filepath),
+                                api.auth_headers,
+                            )
+                        elif webhook:
+                            if event_type == 'release':
+                                if branch:
+                                    raise FileUploadError(
+                                        'You cannot create a release webhook'
+                                        ' for a specific branch or sha.')
+
+                            if event_type == 'push' and \
+                                    api.branch is None and api.sha:
+                                raise FileUploadError(
+                                    'You cannot create a push webhook'
+                                    ' for a specific sha.')
+
+                            create_webhook(recid, api, event_type)
+                        else:
+                            download_repo.delay(
+                                recid,
+                                f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
+                                api.get_repo_download(),
+                                api.auth_headers)
+
+                    except GitError as e:
+                        raise FileUploadError(str(e))
 
             return self
 

@@ -87,6 +87,18 @@ class FileUploadError(RESTException):
         self.description = description or self.description
 
 
+class AuthorizationError(RESTException):
+    """Exception during authorization."""
+
+    code = 401
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super(AuthorizationError, self).__init__(**kwargs)
+
+        self.description = description or self.description
+
+
 class DisconnectWebhookError(RESTException):
     """Exception during disconnecting webhook for analysis."""
 
@@ -124,3 +136,33 @@ class ReviewValidationError(RESTValidationError):
 
         self.description = description or self.description
         self.errors = [FieldError(e[0], e[1]) for e in errors.items()]
+
+
+class InputValidationError(RESTValidationError):
+    """Review validation error exception."""
+
+    code = 400
+
+    description = "Validation error. Try again with valid data"
+
+    def __init__(self, description, errors=None, **kwargs):
+        """Initialize exception."""
+        super(InputValidationError, self).__init__(**kwargs)
+
+        self.description = description or self.description
+        self.errors = [FieldError(e[0], e[1]) for e in errors.items()]
+
+
+class DataValidationError(RESTValidationError):
+    """Review validation error exception."""
+
+    code = 400
+
+    description = "Validation error. Try again with valid data"
+
+    def __init__(self, description, errors=None, **kwargs):
+        """Initialize exception."""
+        super(DataValidationError, self).__init__(**kwargs)
+
+        self.description = description or self.description
+        self.errors = [FieldError(e['field'], e['message']) for e in errors]
