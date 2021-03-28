@@ -41,6 +41,24 @@ def test_add_fixtures_with_dir(app, db, es, cli_runner):
     assert 'alice-analysis has been added.' in res.output
 
 
+def test_add_fixtures_with_dir_and_smaller_version_error(app, db, es, cli_runner):
+    res = cli_runner('fixtures schemas --dir cap/modules/fixtures/schemas')
+
+    assert res.exit_code == 0
+    assert 'cms-analysis has been added.' in res.output
+    assert 'alice-analysis has been added.' in res.output
+    assert 'A later version (0.0.2) of cms-stats-questionnaire is already' in res.output
+
+
+def test_add_fixtures_with_dir_and_smaller_version_error_force(app, db, es, cli_runner):
+    res = cli_runner('fixtures schemas --dir cap/modules/fixtures/schemas -fv')
+
+    assert res.exit_code == 0
+    assert 'cms-analysis has been added.' in res.output
+    assert 'alice-analysis has been added.' in res.output
+    assert 'A later version (0.0.2) of cms-stats-questionnaire is already' not in res.output
+
+
 def test_add_fixtures_with_empty_dir(app, db, es, cli_runner):
     res = cli_runner('fixtures schemas --dir tests/integration/cli')
 
@@ -76,6 +94,67 @@ def test_add_schemas_with_url(app, db, es, cli_runner):
     assert res.exit_code == 0
     assert 'my-schema has been added.' in res.output
 
+
+@responses.activate
+def test_add_schemas_with_url_and_smaller_version_error_force(app, db, es, cli_runner):
+    responses.add(
+        responses.GET,
+        'http://schemas.org/my-schema-v2.json',
+        json={
+            'version': '0.0.2',
+            'name': 'my-schema',
+            'use_deposit_as_record': True,
+            'deposit_schema': {
+                'properties': {
+                    '_buckets': {},
+                    '_deposit': {},
+                    '_files': {},
+                    '_experiment': {},
+                    '_fetched_from': {},
+                    '_user_edited': {},
+                    '_access': {}
+                }
+            }
+        },
+        status=200,
+    )
+    res = cli_runner('fixtures schemas --url http://schemas.org/my-schema-v2.json')
+
+    assert res.exit_code == 0
+    assert 'my-schema has been added.' in res.output
+
+    # Add schema with lower version than latest
+    responses.add(
+        responses.GET,
+        'http://schemas.org/my-schema-v1.json',
+        json={
+            'version': '0.0.1',
+            'name': 'my-schema',
+            'use_deposit_as_record': True,
+            'deposit_schema': {
+                'properties': {
+                    '_buckets': {},
+                    '_deposit': {},
+                    '_files': {},
+                    '_experiment': {},
+                    '_fetched_from': {},
+                    '_user_edited': {},
+                    '_access': {}
+                }
+            }
+        },
+        status=200,
+    )
+    res = cli_runner('fixtures schemas --url http://schemas.org/my-schema-v1.json')
+
+    assert res.exit_code == 0
+    assert 'A later version (0.0.2) of my-schema is already' in res.output
+    assert 'my-schema has been added.' not in res.output
+
+    res = cli_runner('fixtures schemas --url http://schemas.org/my-schema-v1.json -fv')
+
+    assert res.exit_code == 0
+    assert 'A later version (0.0.2) of my-schema is already' not in res.output
 
 @responses.activate
 def test_add_schemas_with_url_missing_required(app, db, es, cli_runner):

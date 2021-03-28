@@ -182,11 +182,14 @@ def validate(schema_url, ana_type, ana_version, compare_with,
 @click.option('--force', '-f',
               is_flag=True,
               help='Force add the schema without validation.')
+@click.option('--force-version', '-fv',
+              is_flag=True,
+              help='Force disable version checking.')
 @click.option('--replace', '-r',
               is_flag=True,
               help='It this schema/version exists, update it.')
 @with_appcontext
-def schemas(dir, url, force, replace):
+def schemas(dir, url, force, force_version, replace):
     """
     Add schemas to CAP, either by downloading them from a url, or by adding
     them from a path. if no args are provided, then the schemas from the
@@ -198,7 +201,7 @@ def schemas(dir, url, force, replace):
         cap fixtures schemas --url https://schemas.org/my-schema.json
     """
     if dir:
-        add_fixtures_from_path(dir)
+        add_fixtures_from_path(dir, force_version=force_version)
     if url:
         resp = requests.get(url)
         if not resp.ok:
@@ -212,7 +215,9 @@ def schemas(dir, url, force, replace):
                 click.secho(f'Missing required fields. Make sure that all of: '
                             f'{DEPOSIT_REQUIRED_FIELDS} are in the json.', fg='red')  # noqa
                 return
-            add_schema_from_json(data, replace=replace)
+            add_schema_from_json(data,
+                                 replace=replace,
+                                 force_version=force_version)
         except (json.JSONDecodeError, ValueError):
             click.secho('Error in decoding the returned json.', fg='red')
 
@@ -220,10 +225,11 @@ def schemas(dir, url, force, replace):
     if not dir and not url:
         add_fixtures_from_path(
             current_app.config.get('SCHEMAS_DEFAULT_PATH'),
-            replace=replace)
+            replace=replace,
+            force_version=True)
 
 
-def add_fixtures_from_path(dir, replace=None):
+def add_fixtures_from_path(dir, replace=None, force_version=None):
     """Add fixtures from a specified path to CAP."""
     for root, dirs, files in os.walk(dir):
         json_filepaths = [
@@ -235,12 +241,14 @@ def add_fixtures_from_path(dir, replace=None):
             with open(filepath, 'r') as f:
                 try:
                     json_content = json.load(f)
-                    add_schema_from_json(json_content, replace=replace)
+                    add_schema_from_json(json_content,
+                                         replace=replace,
+                                         force_version=force_version)
                 except ValueError:
                     click.secho(f'Not valid json in {filepath} file', fg='red')
 
 
-def add_schema_from_json(data, replace=None):
+def add_schema_from_json(data, replace=None, force_version=None):
     """Add or update schema, using a json file."""
     allow_all = data.pop("allow_all", False)
     version = data['version']
@@ -259,10 +267,12 @@ def add_schema_from_json(data, replace=None):
             except JSONSchemaNotFound:
                 try:
                     _schema = Schema.get_latest(name=name)
-                    if is_later_version(_schema.version, version):
+                    if is_later_version(_schema.version,
+                                        version) and not force_version:
                         click.secho(
                             f'A later version ({_schema.version}) of '
-                            f'{name} is already in the db.', fg='red')
+                            f'{name} is already in the db. Error while '
+                            f'adding {name}-{version}', fg='red')
                         return
                     else:
                         _schema = Schema(**data)
