@@ -100,7 +100,7 @@ def get_review_recipients(deposit, host_url, config):
             "CMS_STATS_QUESTIONNAIRE_ADMIN_ROLES"
         )
 
-        # check that current user is a aon reviewer
+        # check that current user is an admin reviewer
         if (cms_stats_commitee_email and
                 Permission(RoleNeed(cms_stats_commitee_email)).can()):
             add_hypernews_mail_to_recipients(recipients, cadi_id)
@@ -299,5 +299,6 @@ def send_mail_on_hypernews(recipients, subject, message):
             template,
             dict(message=message),
             subject,
-            hypernews_list
+            hypernews_list,
+            type="plain"
         )

@@ -32,7 +32,8 @@ from invenio_mail.api import TemplatedMessage
                  'max_retries': 3,
                  'countdown': 10
              })
-def create_and_send(template, ctx, subject, recipients, sender=None):
+def create_and_send(template, ctx, subject, recipients,
+                    sender=None, type=None):
     if not current_app.config['CAP_SEND_MAIL']:
         return
 
@@ -40,11 +41,18 @@ def create_and_send(template, ctx, subject, recipients, sender=None):
     try:
         assert recipients
 
-        msg = TemplatedMessage(template_html=template,
-                               ctx=ctx,
-                               **dict(sender=sender,
-                                      bcc=recipients,
-                                      subject=subject))
+        if type == "plain":
+            msg = TemplatedMessage(template_body=template,
+                                   ctx=ctx,
+                                   **dict(sender=sender,
+                                          bcc=recipients,
+                                          subject=subject))
+        else:
+            msg = TemplatedMessage(template_html=template,
+                                   ctx=ctx,
+                                   **dict(sender=sender,
+                                          bcc=recipients,
+                                          subject=subject))
         current_app.extensions['mail'].send(msg)
 
     except AssertionError:

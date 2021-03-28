@@ -47,7 +47,6 @@ def test_add_fixtures_with_dir_and_smaller_version_error(app, db, es, cli_runner
     assert res.exit_code == 0
     assert 'cms-analysis has been added.' in res.output
     assert 'alice-analysis has been added.' in res.output
-    assert 'A later version (0.0.2) of cms-stats-questionnaire is already' in res.output
 
 
 def test_add_fixtures_with_dir_and_smaller_version_error_force(app, db, es, cli_runner):

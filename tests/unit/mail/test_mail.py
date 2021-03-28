@@ -70,11 +70,11 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
 
             # hypernews
             # message
-            assert 'Title: test analysis' in hypernews_mail.html
-            assert 'Submitted by test@cern.ch' in hypernews_mail.html
+            assert 'Title: test analysis' in hypernews_mail.body
+            assert 'Submitted by test@cern.ch' in hypernews_mail.body
             assert f'Questionnaire URL : http://analysispreservation.cern.ch/published/{deposit["control_number"]}' \
-                   in hypernews_mail.html
-            assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in hypernews_mail.html
+                   in hypernews_mail.body
+            assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in hypernews_mail.body
             # recipients
             assert 'ml-conveners-test@cern0.ch' not in hypernews_mail.bcc
             assert 'hn-cms-ABC-11-111@cern0.ch' in hypernews_mail.bcc
