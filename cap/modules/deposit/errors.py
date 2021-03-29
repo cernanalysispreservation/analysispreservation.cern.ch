@@ -124,3 +124,15 @@ class ReviewValidationError(RESTValidationError):
 
         self.description = description or self.description
         self.errors = [FieldError(e[0], e[1]) for e in errors.items()]
+
+
+class CERNBoxError(RESTException):
+    """Exception during review for analysis."""
+
+    code = 400
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super().__init__(**kwargs)
+
+        self.description = description or 'A CERNBox error occurred.'

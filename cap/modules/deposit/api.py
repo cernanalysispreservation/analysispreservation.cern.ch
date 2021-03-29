@@ -76,6 +76,7 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           UpdateDepositPermission)
 
 from .review import Reviewable
+from .notebook import CERNBoxProvider
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -118,7 +119,7 @@ EMPTY_ACCESS_OBJECT = {
 }
 
 
-class CAPDeposit(Deposit, Reviewable):
+class CAPDeposit(Deposit, Reviewable, CERNBoxProvider):
     """Define API for changing deposit state."""
 
     deposit_fetcher = staticmethod(cap_deposit_fetcher)
@@ -698,6 +699,10 @@ class CAPDeposit(Deposit, Reviewable):
             # create files bucket
             bucket = Bucket.create()
             RecordsBuckets.create(record=deposit.model, bucket=bucket)
+
+            # add notebook/cernbox related stuff
+            deposit.init_cernbox_storage()
+
             # give owner permissions to the deposit
             if owner:
                 for permission in DEPOSIT_ACTIONS:
@@ -708,6 +713,7 @@ class CAPDeposit(Deposit, Reviewable):
 
                     db.session.flush()
 
+            deposit.commit()
             return deposit
 
     @classmethod
