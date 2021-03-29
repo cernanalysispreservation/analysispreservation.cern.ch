@@ -844,3 +844,9 @@ APP_DEFAULT_SECURE_HEADERS = {
     'strict_transport_security_max_age': 31556926,  # One year in seconds
     'strict_transport_security_preload': False,
 }
+
+# CERNBox Credentials for CERNBox/SWAN Integration
+# ================================================
+CERNBOX_HOST = 'https://cernbox.cern.ch'
+CERNBOX_USER = os.environ.get("CAP_CERNBOX_USER")
+CERNBOX_PASS = os.environ.get("CAP_CERNBOX_PASS")

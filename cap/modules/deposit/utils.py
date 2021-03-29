@@ -24,11 +24,14 @@
 """CAP Deposit utils."""
 
 from __future__ import absolute_import, print_function
+from flask import current_app
+from requests.auth import HTTPBasicAuth
 
 from invenio_access.models import Role
 from invenio_db import db
 
 from cap.modules.records.utils import url_to_api_url
+from cap.modules.user.utils import get_remote_account_by_id
 
 
 def clean_empty_values(data):
@@ -75,3 +78,21 @@ def fix_bucket_links(response):
             item['links'] = add_api_to_links(item.get('links'))
 
     return response
+
+
+def get_cernbox_creds():
+    """Credentials for CERNBox."""
+    host = current_app.config.get('CERNBOX_HOST')
+    user = current_app.config.get('CERNBOX_USER')
+    password = current_app.config.get('CERNBOX_PASS')
+    auth = HTTPBasicAuth(user, password)
+
+    return host, user, password, auth
+
+
+def get_cern_common_name(user):
+    """Get a user's common_name from CERN data."""
+    user_profile = get_remote_account_by_id(user.id)['profile']
+    username = user_profile.get('common_name')
+    # TODO: add LDAP search (maybe)
+    return username
