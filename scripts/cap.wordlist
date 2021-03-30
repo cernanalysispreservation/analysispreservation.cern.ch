@@ -12,6 +12,7 @@ cli
 CMS
 cms
 config
+configs
 devops
 docker
 docs
@@ -34,3 +35,4 @@ serializer
 serializers
 ui
 url
+utils
