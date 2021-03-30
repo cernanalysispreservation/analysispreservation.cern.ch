@@ -793,7 +793,7 @@ def test_post_when_validation_errors_returns_400_2(
 
     assert resp.status_code == 400
 
-    assert resp.json['message'] ==  'ERROR: Invalid \'config\' object.'
+    assert resp.json['message'] ==  'Schema configuration validation error'
 
 def test_post_when_validation_errors_returns_400_3(
         client, db, users, auth_headers_for_user, json_headers):
@@ -822,7 +822,7 @@ def test_post_when_validation_errors_returns_400_3(
 
     assert resp.status_code == 400
 
-    assert resp.json['message'] ==  'ERROR: Invalid \'config\' object.'
+    assert resp.json['message'] ==  'Schema configuration validation error'
     assert len(resp.json['errors']) == 8
     assert {'field': ['repositories', 'baaam'], 'message': "'' is not of type 'object'"} in resp.json['errors']
 
@@ -1022,7 +1022,7 @@ def test_post_with_invalid_config_validation_gitlab(client, db, users, auth_head
     )
 
     assert resp.status_code == 400
-    assert resp.json['message'] == 'ERROR: Invalid \'config\' object.'
+    assert resp.json['message'] == 'Schema configuration validation error'
 
 
 #####################################
@@ -1230,9 +1230,98 @@ def test_put_when_not_an_schema_owner_returns_403(
     assert resp.status_code == 403
 
 
-#####################################
-# api/jsonschemas/{id}/{version}  [DELETE]
-#####################################
+def test_put_schema_with_valid_config(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        deposit_schema={'title': 'deposit_schema'},
+        config={'reviewable': True},
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=json.dumps(schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+
+
+def test_put_schema_with_invalid_config(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        deposit_schema={'title': 'deposit_schema'},
+        config={
+            'reviewable': 123,
+            'notifications': { 'wrong_key': {}},
+            'wrong_property': { 'title': "test"}
+        },  # INVALID, SHOULD FAIL
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=json.dumps(schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    errors = resp.json['errors']
+    assert len(errors) == 3
+    errors = sorted(errors, key=lambda x: x['field'])
+    assert errors[0]['field'] == []
+    assert errors[1]['field'] == ['notifications']
+    assert errors[2] == {
+        'field': ['reviewable'],
+        'message': "123 is not of type 'boolean'"
+    }
+
+
+
+def test_put_schema_with_invalid_notificaiton_config(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        deposit_schema={'title': 'deposit_schema'},
+        config={
+            'reviewable': 123,
+            'notifications': {
+                'actions': {
+                    'publish': {},
+                    'publishhh': {}
+                }
+            },
+        },  # INVALID, SHOULD FAIL
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=json.dumps(schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    errors = resp.json['errors']
+    assert len(errors) == 3
+    assert errors[0]['field'] == ['notifications', 'actions', ]
+    assert errors[1]['field'] == ['notifications', 'actions', 'publish']
+    assert errors[2] == {
+        'field': ['reviewable'],
+        'message': "123 is not of type 'boolean'"
+    }
+
+# #####################################
+# # api/jsonschemas/{id}/{version}  [DELETE]
+# #####################################
 
 
 def test_delete_schema_when_user_not_logged_in_returns_401(

@@ -1,0 +1,16 @@
+{% extends "mail/body/analysis_published.html" %}
+{% block content %}
+{{super()}}
+<hr/>
+<p>
+{% if cadi_id %}
+CADI URL: https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode={{ cadi_id }}<br>
+{% endif %}
+Title: {{ title }}<br>
+Questionnaire URL: {{ published_url }}<br>
+{% if cms_stats_committee_by_pag %}
+Statistics Committee assignee: {{ cms_stats_committee_by_pag.get('primary', '-') }} (primary), {{ cms_stats_committee_by_pag.get('secondary', '-') }} (secondary).<br>
+{% endif %}
+
+Submitted by {{ submitter_email }}.</p>
+{% endblock %}

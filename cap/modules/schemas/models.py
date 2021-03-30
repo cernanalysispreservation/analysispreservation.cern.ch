@@ -42,10 +42,10 @@ from sqlalchemy.orm import validates
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.utils import import_string
 
-from cap.modules.deposit.errors import WrongJSONSchemaError
 from cap.modules.records.errors import get_error_path
 from cap.types import json_type
 
+from .helpers import ValidationError
 from .jsonschemas import SCHEMA_CONFIG_JSONSCHEMA_V1
 from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import (
@@ -209,11 +209,15 @@ class Schema(db.Model):
 
             for error in validator.iter_errors(value):
                 errors.append(
-                    FieldError(get_error_path(error), str(error.message))
+                    FieldError(
+                        get_error_path(error), str(error.message)
+                    ).to_dict()
                 )
+
             if errors:
-                raise WrongJSONSchemaError(
-                    "ERROR: Invalid 'config' object.", errors=errors
+                raise ValidationError(
+                    errors=errors,
+                    description="Schema configuration validation error",
                 )
         return value
 

@@ -40,12 +40,13 @@ from sqlalchemy.exc import IntegrityError
 from cap.modules.access.permissions import admin_permission_factory
 from cap.modules.access.utils import login_required
 
+from .helpers import ValidationError
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
 from .serializers import (
     create_config_payload,
     link_serializer,
-    update_schema_serializer,
+    update_payload_schema_serializer,
 )
 from .utils import (
     check_allowed_patch_operation,
@@ -140,6 +141,11 @@ class SchemaAPI(MethodView):
 
         except IntegrityError:
             raise abort(400, 'Error occured during saving schema in the db.')
+        except ValidationError as err:
+            return (
+                jsonify({"message": err.description, "errors": err.errors}),
+                400,
+            )
 
         return jsonify(schema.config_serialize())
 
@@ -153,15 +159,23 @@ class SchemaAPI(MethodView):
 
         with AdminSchemaPermission(schema).require(403):
             data = request.get_json()
-            serialized_data, errors = update_schema_serializer.load(
+
+            # self._validate_config(data)
+            serialized_data, errors = update_payload_schema_serializer.load(
                 data, partial=True
             )
 
             if errors:
                 raise abort(400, errors)
 
-            schema.update(**serialized_data)
-            db.session.commit()
+            try:
+                schema.update(**serialized_data)
+                db.session.commit()
+            except ValidationError as err:
+                return (
+                    jsonify({"message": err.description, "errors": err.errors}),
+                    400,
+                )
 
             return jsonify(schema.config_serialize())
 
@@ -222,7 +236,7 @@ class SchemaAPI(MethodView):
                     400,
                 )
 
-            serialized_data, errors = update_schema_serializer.load(
+            serialized_data, errors = update_payload_schema_serializer.load(
                 patched_schema, partial=True
             )
             if errors:
@@ -249,8 +263,21 @@ class SchemaAPI(MethodView):
                     ),
                     500,
                 )
+            except ValidationError as err:
+                return (
+                    jsonify({"message": err.description, "errors": err.errors}),
+                    400,
+                )
 
             return jsonify(schema.config_serialize())
+
+    # TODO check if config validates with the model decorator
+    # def _validate_config(self, data):
+    #     config = data.get('config')
+    #     if config:
+    #         errors = validate_schema_config(config)
+    #         if errors:
+    #             raise abort(400, errors)
 
 
 schema_view_func = SchemaAPI.as_view('schemas')

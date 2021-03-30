@@ -1,0 +1,13 @@
+{% block content %}
+
+    {% if cadi_id %}
+    CADI URL: https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode={{ cadi_id }}
+    {% endif %}
+    Title: {{ title }}
+    Questionnaire URL: {{ published_url }}
+    {% if cms_stats_committee_by_pag %}
+    Statistics Committee assignee: {{ cms_stats_committee_by_pag.get('primary', '-') }} (primary), {{ cms_stats_committee_by_pag.get('secondary', '-') }} (secondary).
+    {% endif %}
+
+    Submitted by {{ submitter_email }}.
+{% endblock %}

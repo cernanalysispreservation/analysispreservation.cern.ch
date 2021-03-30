@@ -106,6 +106,8 @@ SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
 CAP_SEND_MAIL = True
 MAIL_DEFAULT_SENDER = SUPPORT_EMAIL
 
+CAP_MAIL_HOST_URL = "https://analysispreservation.cern.ch"
+CAP_MAIL_HOST_API_URL = "https://analysispreservation.cern.ch/api"
 
 # For Flask-mail variables, the defaults are used, found here:
 # https://pythonhosted.org/Flask-Mail/#configuring-flask-mail

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2021 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -21,285 +21,244 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 import re
 
-from flask import current_app
-from flask_login import current_user
-from flask_principal import RoleNeed
+from flask import current_app, request
+from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2.exceptions import TemplateNotFound, TemplateSyntaxError
+from werkzeug.exceptions import BadRequest
 
-from invenio_accounts.models import User
-from invenio_access.permissions import Permission
+from . import custom as custom_methods
 
-from cap.modules.mail.tasks import create_and_send
+# Creating new environment and new loader for the Jinja templates, to avoid
+# injection with Flask context passed in render_template
+_template_loader = PackageLoader("cap.modules.mail", "templates")
+_mail_jinja_env = Environment(
+    loader=_template_loader, autoescape=select_autoescape()
+)
+
+EMAIL_REGEX = re.compile(r"(?!.*\.\.)(^[^.][^@\s]+@[^@\s]+\.[^@\s.]+$)")
+
+CONFIG_DEFAULTS = {
+    "review": {
+        "subject": "New review on document | CERN Analysis Preservation",
+        "body": {
+            "plain": ("mail/body/analysis_review.html", None),
+            "html": ("mail/body/analysis_review.html", None),
+        },
+    },
+    "publish": {
+        "subject": "New published document | CERN Analysis Preservation",
+        "body": {
+            "plain": ("mail/body/analysis_published_plain.html", None),
+            "html": ("mail/body/analysis_published.html", None),
+        },
+    },
+}
 
 
-def path_value_equals(element, JSON):
-    paths = element.split(".")
-    data = JSON
+class UnsuccessfulMail(Exception):
+    """Error during sending email."""
+
+    def __init__(self, **kwargs):
+        """Initialize exception."""
+        super(UnsuccessfulMail, self).__init__()
+        self.rec_uuid = kwargs.get("rec_uuid", "")
+        self.msg = kwargs.get("msg", "")
+        self.params = kwargs.get("params", {})
+
+
+def get_config_default(action, type, plain=False):
+    """Get defaults for different actions/mail info."""
+    return CONFIG_DEFAULTS.get(action, {}).get(type)
+
+
+def path_value_equals(path, record):
+    """Given a string path, retrieve the JSON item."""
+    # TODO: better handle data iterations
+    paths = path.split(".")
+    data = record.dumps()
     try:
         for i in range(0, len(paths)):
             data = data[paths[i]]
-    except KeyError:
+        return data
+    # TODO: better error handling
+    except:  # noqa
         return None
 
-    return data
 
+def populate_template_from_ctx(
+    record, config, module=None, type=None, default_ctx={}
+):
+    """
+    Render a template according to the context provided in the schema.
 
-def create_analysis_url(deposit):
-    status = deposit['_deposit']['status']
-    return f'drafts/{deposit["_deposit"]["id"]}' if status == 'draft'\
-        else f'published/{deposit["control_number"]}'
+    Args:
+        record: The analysis record that has the necessary fields.
+        config: The analysis config, provided in the `schema`.
+        action: THe action that triggered the notification (e.g. `publish`).
+        module: The file that will hold the custom created functions.
+        type: The specific attribute that triggers this template, e.g.
+              subject, message, etc
 
+    Returns: The rendered string, using the required context values.
+    """
+    config_ctx = config.get("ctx", [])
+    template = config.get("template")
+    template_file = config.get("template_file")
+    action = default_ctx.get("action", "")
 
-def create_base_message(deposit, host_url, params=None):
-    cadi = f"CADI URL: https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=" \
-           f"{deposit.get('analysis_context', {}).get('cadi_id')}\n"
-    title = f"Title: {deposit.get('general_title')}\n"
-    quest = f"Questionnaire URL : {host_url}{create_analysis_url(deposit)}\n"
-
-    msg = f"{title}{cadi}{quest}"
-
-    if params:
-        stats_assignee = f"Statistics Committee assignee: " \
-                         f"{params.get('primary', '-')} (primary), " \
-                         f"{params.get('secondary', '-')} (secondary)\n"
-        msg += stats_assignee
-
-    return msg
-
-
-def create_base_subject(config, cadi_id, recid=None):
-    if not recid:
-        return f"Questionnaire for {cadi_id} - " \
-            if cadi_id else config.get("email_subject")
+    render = render_template
+    if template:
+        render = render_template_string
+        template_to_render = template
+    elif template_file:
+        template_to_render = template_file
     else:
-        return f"Questionnaire for {cadi_id} {recid} - " \
-            if cadi_id else f"Questionnaire for {recid} - "
+        if type == "body":
+            mime_type = "plain" if config.get("plain") else "html"
+            template_to_render = (
+                CONFIG_DEFAULTS.get(action, {}).get(type, {}).get(mime_type)
+            )
+        else:
+            template_to_render = CONFIG_DEFAULTS.get(action, {}).get(type, {})
 
+    if not template_to_render:
+        # if there is no `template_to_render` then abort
+        # TODO: except if it is for recepients continue with next
+        msg = (
+            "Not template passed and no default templates found. "
+            "Notification procedure aborted."
+        )
+        current_app.logger.error(msg)
+        raise UnsuccessfulMail(
+            rec_uuid=record.id, msg=msg, params={"config": config}
+        )
 
-def add_hypernews_mail_to_recipients(recipients, cadi_id):
-    # mail for reviews - Hypernews
-    # should be sent to hn-cms-<cadi-id>@cern.ch if well-formed
-    cadi_regex = current_app.config.get("CADI_REGEX")
-    hypernews_mail = current_app.config.get("CMS_HYPERNEWS_EMAIL_FORMAT")
+    ctx = {**default_ctx}
+    gen_ctx = generate_ctx(config_ctx, record=record, default_ctx=default_ctx)
+    ctx = {**ctx, **gen_ctx}
 
-    if re.match(cadi_regex, cadi_id) and hypernews_mail:
-        recipients.append(hypernews_mail.format(cadi_id))
-
-
-def get_review_recipients(deposit, host_url, config):
-    # mail of reviewer
-    reviewer_mail = current_user.email
-    recipients = [reviewer_mail, ]
-
-    # mail of owner
-    # owners = deposit.get("_deposit", {}).get("owners")
-    owner_mail = "-"
     try:
-        owner = deposit["_deposit"]["owners"][0]
-        owner_mail = User.query.filter_by(id=owner).one().email
-        recipients.append(owner_mail)
-    except IndexError:
-        pass
-
-    cadi_id = deposit.get("analysis_context", {}).get("cadi_id")
-    if cadi_id:
-        # if cadi mail Hypernews if review from admin reviewer (stat committee)
-        cms_stats_commitee_email = current_app.config.get(
-            "CMS_STATS_QUESTIONNAIRE_ADMIN_ROLES"
+        return render(template_to_render, **ctx)
+    except TemplateNotFound as ex:
+        msg = f"Template {ex.name} not found. Notification procedure aborted."
+        raise UnsuccessfulMail(
+            rec_uuid=record.id, msg=msg, params={"config": config}
+        )
+    except TemplateSyntaxError as ex:
+        msg = f"Template error: {ex.message}. Notification procedure aborted."
+        raise UnsuccessfulMail(
+            rec_uuid=record.id, msg=msg, params={"config": config}
+        )
+    except TypeError:
+        msg = "Context for template is empty. Notification procedure aborted."
+        raise UnsuccessfulMail(
+            rec_uuid=record.id, msg=msg, params={"config": config}
         )
 
-        # check that current user is an admin reviewer
-        if (cms_stats_commitee_email and
-                Permission(RoleNeed(cms_stats_commitee_email)).can()):
-            add_hypernews_mail_to_recipients(recipients, cadi_id)
 
-    subject = create_base_subject(config, cadi_id)
-    message = create_base_message(deposit, host_url)
-    message += f"Submitted by {owner_mail}, and reviewed by {reviewer_mail}."
-
-    return subject, message, recipients
-
-
-def get_cms_stat_recipients(record, host_url, config):
-    data = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
-    key = path_value_equals(config.get("path", ""), record)
-    key = key if key else "other"
-    recipients = data.get(key, {}).get("contacts", [])
-    params = data.get(key, {}).get("params", {})
-
-    # submitter email
-    recipients.append(current_user.email)
-
-    # mail for PDF forum
-    pdf_mail = current_app.config.get("PDF_FORUM_MAIL")
-    if pdf_mail and record.get("parton_distribution_functions", None):
-        recipients.append(pdf_mail)
-
-    # mail for ML surveys - CMS conveners
-    conveners_ml_mail = current_app.config.get("CONVENERS_ML_MAIL")
-    conveners_ml_jira_mail = current_app.config.get("CONVENERS_ML_JIRA_MAIL")
-
-    # Some extra info for the CMS conveners recipients:
-    # 1. if uses centralized CMS ML applications (3.3) (not empty)
-    # 2. if 3.4 = Yes (mva_use = Yes)
-    # 3. if the user adds an app to 3.a (ml_app_use - not empty)
-    # 4. or if the user answers to 3.b (ml_survey.options = Yes)
-    centralized_apps = (
-        record.get("multivariate_discriminants", {})
-        .get("use_of_centralized_cms_apps", {})
-        .get("options", [])
-    )
-    mva_use = record.get("multivariate_discriminants", {}).get("mva_use")
-    ml_app_use = record.get("ml_app_use", [])
-    ml_survey = record.get("ml_survey", {}).get("options")
-
-    if conveners_ml_mail and (
-        (centralized_apps and 'No' not in centralized_apps) or mva_use == 'Yes' or  # noqa
-        ml_app_use or ml_survey == 'Yes'  # noqa
-    ):
-        recipients += [conveners_ml_mail, conveners_ml_jira_mail]
-
-    cadi_id = record.get("analysis_context", {}).get("cadi_id")
-    if cadi_id:
-        add_hypernews_mail_to_recipients(recipients, cadi_id)
-
-    recid = record['_deposit']['pid']['value']
-
-    subject = create_base_subject(config, cadi_id, recid)
-    message = create_base_message(record, host_url, params)
-    message += f"Submitted by {current_user.email}."
-
-    return subject, message, recipients
+def generate_ctx(config_ctx, record=None, default_ctx={}):
+    ctx = {**default_ctx}
+    for attrs in config_ctx:
+        if attrs.get("path"):
+            name = attrs["name"]
+            val = path_value_equals(attrs["path"], record)
+            ctx.update({name: val})
+        elif attrs.get("method"):
+            try:
+                name = attrs["method"]
+                custom_func = getattr(custom_methods, name)
+                val = custom_func(record, default_ctx=default_ctx)
+                ctx.update({name: val})
+            except AttributeError:
+                continue
+    return ctx
 
 
-GENERATE_RECIPIENT_METHODS = {
-    "path_value_equals": path_value_equals,
-    "get_cms_stat_recipients": get_cms_stat_recipients,
-    "get_review_recipients": get_review_recipients,
-}
+def update_mail_list(record, config, mails, default_ctx={}):
+    """
+    Adds mails (default or formatted) in tha mails collection.
 
-NOTIFICATION_RECEPIENT = {
-    "https://analysispreservation.cern.ch/schemas/deposits/"
-    "records/cms-stats-questionnaire-v0.0.1.json": {
-        "publish": {
-            "type": "method",
-            "method": "get_cms_stat_recipients",
-            "path": "analysis_context.wg",
-            "email_subject": "CMS Statistics Committee - "
-        },
-        "review": {
-            "type": "method",
-            "method": "get_review_recipients",
-            "email_subject": "CMS Statistics Questionnaire - "
-        }
-    },
-    "https://analysispreservation.cern.ch/schemas/deposits/"
-    "records/cms-stats-questionnaire-v0.0.2.json": {
-        "publish": {
-            "type": "method",
-            "method": "get_cms_stat_recipients",
-            "path": "analysis_context.wg",
-            "email_subject": "CMS Statistics Committee - "
-        },
-        "review": {
-            "type": "method",
-            "method": "get_review_recipients",
-            "email_subject": "CMS Statistics Questionnaire - "
-        }
+    An example of the expected config is this:
+    "mails": {
+        "default": [default1, default2],
+        "formatted": [{
+          "template": "template-mail-with-{{ var }}",
+          "ctx": [{"name": "var", "path": "fields.field1"}]
+        }]
     }
-}
+    """
+    try:
+        mails_list = config.get("default", [])
+        formatted_list = config.get("formatted", [])
+    except AttributeError:
+        current_app.logger.error(
+            "Mail configuration is not a dict with 'default', 'formatted' keys"
+        )
+        return
+
+    if mails_list:
+        mails += mails_list
+    if formatted_list:
+        for formatted in formatted_list:
+            try:
+                _formatted_email = populate_template_from_ctx(
+                    record, formatted, type="recipient", default_ctx=default_ctx
+                )
+                mails += [_formatted_email]
+            except UnsuccessfulMail:
+                continue
 
 
-def generate_notification_attrs(record, host_url, config):
-    _type = config.get("type")
-    if _type == "method":
-        func = GENERATE_RECIPIENT_METHODS.get(config.get("method"))
-        if func:
-            return func(record, host_url, config)
-    elif _type == "list":
-        return config.get("message", ""), config.get("data")
-    else:
-        return "", "", None
+def is_review_request():
+    """
+    On a review action, make sure that it is an actual review.
+
+    On a review action, make sure that it is an actual review and not one
+    of the accompanying actions (delete review, resolve review.
+    """
+    # TODO: check how to better handle, maybe send different messages
+    not_permitted = ["resolve", "delete"]
+
+    try:
+        req = request.get_json()
+        if isinstance(req, dict) and req.get("action") in not_permitted:
+            return False
+    except BadRequest:
+        return False
+
+    return True
 
 
-def send_mail_on_publish(recid, revision,
-                         host_url='https://analysispreservation.cern.ch/',
-                         recipients=None,
-                         message='',
-                         subject_prefix=''):
-    if revision > 0:
-        subject = subject_prefix + \
-            "New Version of Published Analysis | CERN Analysis Preservation"
-        template = "mail/analysis_published_revision.html"
-    else:
-        subject = subject_prefix + \
-            "New Published Analysis | CERN Analysis Preservation"
-        template = "mail/analysis_published_new.html"
+def _render(template, context):
+    """Renders the template and fires the signal."""
+    rv = template.render(context)
+    return rv
 
-    send_mail_on_hypernews(recipients, subject, message)
-    send_mail_on_jira(recid, host_url, recipients, message, subject)
 
-    current_app.logger.info(
-        f'Publish mail: {recid} - {", ".join(recipients)}.')
-    create_and_send.delay(
-        template,
-        dict(recid=recid, url=host_url, message=message),
-        subject,
-        recipients
+def render_template(template_name_or_list, **context):
+    """Renders a template from the template folder with context.
+
+    :param template_name_or_list: the name of the template to be
+                                  rendered, or an iterable with template names
+                                  the first one existing will be rendered
+    :param context: the variables that should be available in the
+                    context of the template.
+    """
+    return _render(
+        _mail_jinja_env.get_or_select_template(template_name_or_list), context
     )
 
 
-def send_mail_on_review(analysis_url,
-                        host_url='https://analysispreservation.cern.ch/',
-                        recipients=None,
-                        message='',
-                        subject_prefix=''):
-    subject = subject_prefix + \
-        "New Review on Analysis | CERN Analysis Preservation"
-    template = "mail/analysis_review.html"
+def render_template_string(source, **context):
+    """Renders a template from the template string with context.
 
-    send_mail_on_hypernews(recipients, subject, message)
+    Template variables will be autoescaped.
 
-    create_and_send.delay(
-        template,
-        dict(analysis_url=analysis_url, url=host_url, message=message),
-        subject,
-        recipients
-    )
-
-
-def send_mail_on_hypernews(recipients, subject, message):
-    # differentiate between hypernews mail and the others
-    r = re.compile('hn-cms-.+')
-    hypernews_list = [rec for rec in recipients if r.match(rec)]
-
-    if hypernews_list:
-        template = "mail/analysis_plain_text.html"
-        recipients.remove(hypernews_list[0])
-
-        create_and_send.delay(
-            template,
-            dict(message=message),
-            subject,
-            hypernews_list,
-            type="plain"
-        )
-
-
-def send_mail_on_jira(recid, host_url, recipients, message, subject):
-    # only JIRA ML mail
-    conveners_ml_jira_mail = current_app.config.get("CONVENERS_ML_JIRA_MAIL")
-
-    if conveners_ml_jira_mail in recipients:
-        template = "mail/analysis_plain_text.html"
-        recipients.remove(conveners_ml_jira_mail)
-
-        create_and_send.delay(
-            template,
-            dict(recid=recid, url=host_url, message=message),
-            subject,
-            [conveners_ml_jira_mail],
-            type="plain"
-        )
+    :param source: the source code of the template to be
+                   rendered
+    :param context: the variables that should be available in the
+                    context of the template.
+    """
+    return _render(_mail_jinja_env.from_string(source), context)

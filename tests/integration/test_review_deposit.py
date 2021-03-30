@@ -24,7 +24,10 @@
 # or submit itself to any jurisdiction.
 """Integration tests for deposit review."""
 
+import pytest
+
 import json
+from cap.modules.deposit.api import CAPDeposit
 
 default_headers = [('Content-Type', 'application/json'),
                    ('Accept', 'application/form+json')]
@@ -234,3 +237,82 @@ def test_deposit_review_create_reviewable(
                       headers=[('Accept', 'application/form+json')] +
                       auth_headers_for_user(other_user))
     assert resp.status_code == 403
+
+
+def test_review_and_published_revision_ids(
+        app, users, create_deposit, create_schema, client, auth_headers_for_user):
+    user = users['cms_user']
+    create_schema('cms-stats-questionnaire', experiment='CMS',
+                  version="0.0.1", config={"reviewable": True})
+
+    with app.app_context():
+        deposit = create_deposit(
+            user,
+            'cms-analysis',
+            {
+                '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                           'deposits/records/cms-stats-questionnaire-v0.0.1.json',
+                'general_title': 'test analysis',
+                'analysis_context': {
+                    'cadi_id': 'ABC-11-111'
+                }
+            },
+            experiment='CMS'
+        )
+        depid = deposit["_deposit"]["id"]
+
+        # 1. review, revision should throw error (not published yet)
+        client.post(
+            f'/deposits/{depid}/actions/review',
+            data=json.dumps({"type": "request_changes", "body": "test"}),
+            headers=auth_headers_for_user(user) + default_headers
+        )
+
+        with pytest.raises(KeyError):
+            rec = CAPDeposit.get_record(deposit.id)
+            rec.fetch_published()
+
+        # 2. publish, revision should be 0
+        client.post(
+            f"/deposits/{depid}/actions/publish",
+            headers=auth_headers_for_user(user)
+        )
+
+        rec = CAPDeposit.get_record(deposit.id)
+        _, record = rec.fetch_published()
+        assert record.revision_id == 0
+
+        # 3. review after publish, revision should be 0
+        client.post(
+            f'/deposits/{depid}/actions/review',
+            data=json.dumps({"type": "request_changes", "body": "test"}),
+            headers=auth_headers_for_user(user) + default_headers
+        )
+
+        _, record = rec.fetch_published()
+        assert record.revision_id == 0
+
+        # 4. edit, in order to publish again, on re-publish revision should be 1
+        client.post(
+            f"/deposits/{depid}/actions/edit",
+            headers=auth_headers_for_user(user)
+        )
+
+        client.post(
+            f"/deposits/{depid}/actions/publish",
+            headers=auth_headers_for_user(user)
+        )
+
+        rec = CAPDeposit.get_record(deposit.id)
+        _, record = rec.fetch_published()
+        assert record.revision_id == 1
+
+        # 5. review after re-publish, revision should be 1
+        client.post(
+            f'/deposits/{depid}/actions/review',
+            data=json.dumps({"type": "request_changes", "body": "test"}),
+            headers=auth_headers_for_user(user) + default_headers
+        )
+
+        _, record = rec.fetch_published()
+        assert record.revision_id == 1

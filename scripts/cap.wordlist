@@ -12,9 +12,11 @@ cli
 CMS
 cms
 config
+configs
 devops
 docker
 docs
+docstrings
 formBuilder
 GNU
 GPL
@@ -31,6 +33,7 @@ oauthclient
 OIDC
 orcid
 prescale
+py
 readme
 reana
 recid
