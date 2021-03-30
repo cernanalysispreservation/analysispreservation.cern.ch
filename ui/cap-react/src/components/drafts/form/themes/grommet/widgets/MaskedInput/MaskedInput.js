@@ -370,13 +370,14 @@ const MaskedInput = forwardRef(
                   if (onFocus) onFocus(event);
                 }}
                 onBlur={event => {
+                  if (!onBlur) return;
                   setFocus(false);
                   // This will be called when the user clicks on a suggestion,
                   // check for that and don't remove the drop in that case.
                   // Drop will already have removed itself if the user has focused
                   // outside of the Drop.
                   if (!dropRef.current) setShowDrop(false);
-                  if (onBlur) onBlur(event);
+                  onBlur(event);
                 }}
                 onChange={onChangeInput}
               />

@@ -65,7 +65,11 @@ class TextWidget extends Component {
   _onChange = _ref => {
     let value = _ref.target.value;
 
-    this.setState({ autofillSuccess: false, error: false });
+    this.setState({
+      autofillSuccess: false,
+      error: false,
+      apiCalledWithCurrentState: false
+    });
 
     this.props.onChange(value !== "" ? value : undefined);
   };
@@ -136,7 +140,12 @@ class TextWidget extends Component {
       fieldsMap = this.props.options.autofill_fields,
       formData = fromJS(this.props.formData);
 
-    if (!event.target.value) return;
+    if (
+      !event.target.value ||
+      (this.props.value === event.target.value &&
+        this.state.apiCalledWithCurrentState)
+    )
+      return;
 
     fieldsMap.map(el => {
       let destination = el[1];
@@ -147,7 +156,12 @@ class TextWidget extends Component {
     });
     this.props.formDataChange(formData.toJS());
 
-    this.setState({ showSpinner: true, error: null });
+    this.setState({
+      showSpinner: true,
+      error: null,
+      apiCalledWithCurrentState: true
+    });
+
     //TOFIX
     // the response from the serer when the id is not found is an empty
     // object with statsus code 200, probably should be an error
@@ -166,9 +180,15 @@ class TextWidget extends Component {
           });
 
           this.props.formDataChange(formData.toJS());
-          this.setState({ autofillSuccess: true, showSpinner: false });
+          this.setState({
+            autofillSuccess: true,
+            showSpinner: false
+          });
         } else {
-          this.setState({ showSpinner: false, error: "result not found" });
+          this.setState({
+            showSpinner: false,
+            error: "result not found"
+          });
         }
       })
       .catch(err => {
@@ -306,7 +326,8 @@ class TextWidget extends Component {
             this.props.options &&
             this.props.options.autofill_from &&
             (!this.props.options.autofill_on ||
-              this.props.options.autofill_on.indexOf("onBlur") > -1)
+              (this.props.options.autofill_on.indexOf("onBlur") > -1 &&
+                !this.props.options.autofill_on.includes("onClick")))
               ? this.autoFillOtherFields
               : null
           }
