@@ -1088,6 +1088,7 @@
               "placeholder": "XXX"
             }
           ],
+          "autofill_on": ["onClick", "onEnter"],
           "autofill_from": "/api/cms/cadi/",
           "autofill_fields": [
             [["paper"], ["cadi_info", "paper"]],
