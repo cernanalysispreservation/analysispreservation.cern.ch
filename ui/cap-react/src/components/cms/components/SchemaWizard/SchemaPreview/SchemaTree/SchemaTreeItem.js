@@ -11,7 +11,8 @@ import {
   AiOutlineCloudDownload,
   AiOutlineBorderTop,
   AiOutlineContainer,
-  AiOutlineFile
+  AiOutlineFile,
+  AiOutlineBook
 } from "react-icons/ai";
 
 import {
@@ -198,5 +199,6 @@ let mapType2Icon = {
   ror: <AiOutlineCloudDownload size={20} />,
   zenodo: <AiOutlineCloudDownload size={20} />,
   orcid: <AiOutlineCloudDownload size={20} />,
-  accordionObjectField: <AiOutlineBorderTop size={20} />
+  accordionObjectField: <AiOutlineBorderTop size={20} />,
+  richeditor: <AiOutlineBook size={20} />
 };

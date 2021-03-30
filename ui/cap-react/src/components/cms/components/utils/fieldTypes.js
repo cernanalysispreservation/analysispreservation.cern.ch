@@ -17,7 +17,8 @@ import {
   AiOutlineCloudDownload,
   AiOutlineBorderTop,
   AiOutlineFile,
-  AiOutlineContainer
+  AiOutlineContainer,
+  AiOutlineBook
 } from "react-icons/ai";
 
 const simple = {
@@ -793,6 +794,81 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "checkboxes",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
+      }
+    }
+  },
+  richeditor: {
+    title: "Rich Editor",
+    icon: <AiOutlineBook size={16} />,
+    description: "Rich Editor Field",
+    child: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
+    optionsSchema: {
+      type: "object",
+      title: "Rich Editor Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "Provide the title you want to be displayed to your rich editor field"
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "Provide the description you want to be displayed to your rich editor field"
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
+        }
+      }
+    },
+    optionsSchemaUiSchema: {},
+    default: {
+      schema: {
+        type: "string"
+      },
+      uiSchema: {
+        "ui:widget": "richeditor",
         "ui:options": {
           grid: {
             gridColumns: "1/5"
