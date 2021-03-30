@@ -169,8 +169,7 @@ const simple = {
         "ui:options": {
           grid: {
             gridColumns: "1/5"
-          },
-          masked_array: []
+          }
         }
       }
     }
