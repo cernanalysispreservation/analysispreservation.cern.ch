@@ -12,6 +12,7 @@ cli
 CMS
 cms
 config
+configs
 devops
 docker
 docs
@@ -42,3 +43,4 @@ ui
 url
 wordlist
 zenodo
+utils
