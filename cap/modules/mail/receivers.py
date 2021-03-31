@@ -21,40 +21,65 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-from flask import request
+from flask import current_app
 
-from .utils import NOTIFICATION_RECEPIENT, generate_notification_attrs, \
-    send_mail_on_review, send_mail_on_publish, create_analysis_url
+from .attributes import generate_recipients, generate_subject, generate_body
+from .custom.body import working_url
+from .custom.subject import draft_id, published_id, revision
+from .tasks import create_and_send
+from .utils import is_review_request
 
 
 def post_action_notifications(sender, action=None, pid=None, deposit=None):
-    """Method to run after a deposit action ."""
-    schema = deposit.get("$schema")
-    recipients_config = NOTIFICATION_RECEPIENT.get(schema, {}).get(action)
-    host_url = request.host_url
+    """
+    Notification through mail, after specified deposit actions.
+    The procedure followed to get the mail attrs will be described here:
 
-    if recipients_config:
-        subject, message, recipients = generate_notification_attrs(
-            deposit, host_url, recipients_config)
+    - Get the config for the action that triggered the receiver.
+    - Through the configuration, retrieve the recipients, subject, body, and
+      base template, and render them when needed.
+    - Create the message and mail contexts (attributes), and pass them to
+      the `create_and_send` task.
+    """
+    mail_sender = current_app.config.get('MAIL_DEFAULT_SENDER')
+    if not mail_sender:
+        current_app.logger.info('Mail Error: Sender not found.')
+        return
 
-        if recipients:
-            if action == "publish":
-                recid, record = deposit.fetch_published()
+    # in case of review, don't send mail on other related actions
+    if not is_review_request():
+        return
 
-                send_mail_on_publish(
-                    recid.pid_value,
-                    record.revision_id,
-                    host_url,
-                    recipients,
-                    message,
-                    subject_prefix=subject)
+    action_configs = deposit.schema.config.get('notifications', {}) \
+        .get('actions', {}) \
+        .get(action, [])
 
-            if action == "review":
-                analysis_url = create_analysis_url(deposit)
+    for config in action_configs:
+        recipients, cc, bcc = generate_recipients(deposit, config, action)
+        if not any([recipients, cc, bcc]):
+            continue
 
-                send_mail_on_review(
-                    analysis_url,
-                    host_url,
-                    recipients,
-                    message,
-                    subject_prefix=subject)
+        subject = generate_subject(deposit, config, action)
+        body, base, plain = generate_body(deposit, config, action)
+
+        mail_ctx = {
+            'sender': mail_sender,
+            'subject': subject,
+            'recipients': recipients,
+            'cc': cc,
+            'bcc': bcc
+        }
+
+        # retrieve the most common Deposit/Record attributes, used in messages
+        msg_ctx = {
+            'published_id': published_id(deposit),
+            'draft_id': draft_id(deposit),
+            'revision': revision(deposit),
+            'working_url': working_url(deposit),
+            'message': body
+        }
+
+        create_and_send.delay(
+            base, msg_ctx, mail_ctx,
+            plain=plain
+        )
