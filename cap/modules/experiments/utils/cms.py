@@ -24,8 +24,12 @@
 """Cern Analysis Preservation CMS utils."""
 import re
 import gspread
+import json
+
 from gspread.exceptions import NoValidUrlKeyFound, SpreadsheetNotFound, \
     WorksheetNotFound, APIError
+from google.auth.exceptions import RefreshError
+
 from flask import current_app
 from invenio_db import db
 
@@ -71,15 +75,51 @@ def cache_cms_triggers_in_es_from_file(source):
                                   source=source)
 
 
+def get_gspread_downloader():
+    # Get Google creds to use
+    google_creds_json = current_app.config.get(
+        'GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_JSON')
+    google_creds_file = current_app.config.get(
+        'GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_FILE')
+
+    if not google_creds_json and not google_creds_file:
+        current_app.logger.error(
+            "Google service account credentials or cred file are not set")
+        return
+
+    try:
+        if google_creds_json:
+            if not isinstance(google_creds_json, dict):
+                google_creds_json = json.loads(google_creds_json)
+
+            downloader = gspread.service_account_from_dict(google_creds_json)
+        elif google_creds_file:
+            downloader = gspread.service_account(filename=google_creds_file)
+        return downloader
+    except ValueError as e:
+        current_app.logger.error(e)
+        return
+    except TypeError:
+        current_app.logger.error(
+            "An error occured when trying to parse credentials")
+        return
+    except FileNotFoundError as e:
+        current_app.logger.error(f"{e}")
+        return
+
+
 def get_cms_spreadsheet():
     cadi_regex = current_app.config.get('CADI_REGEX')
     url = current_app.config.get('CMS_KEYWORDS_SPREADSHEET')
     if not url:
         return
 
+    downloader = get_gspread_downloader()
+    if not downloader:
+        return
+
     # google sheets API to get the spreadsheet
     try:
-        downloader = gspread.service_account()
         workbook = downloader.open_by_url(url)
         data = workbook.sheet1.get_all_records()
 
@@ -91,7 +131,7 @@ def get_cms_spreadsheet():
             f"Something went wrong while accessing the workbook. "
             f"Workbook/spreadsheet error.")
         return
-    except APIError:
+    except (APIError, RefreshError):
         current_app.logger.error(
             f"Accessing the Google Sheets API failed. "
             f"Make sure you have the correct credentials, and try again.")
