@@ -22,27 +22,24 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-from .utils import create_base_subject
+
+def published_id(record, config=None):
+    try:
+        return record['_deposit']['pid']['value']
+    except KeyError:
+        return None
 
 
-def get_cms_stat_subject(record, config=None):
-    recid, record = record.fetch_published()
-    revision = record.revision_id
-
-    cadi_id = record.get("analysis_context", {}).get("cadi_id")
-    subject = create_base_subject(config, cadi_id)
-
-    if revision > 0:
-        subject += "New Version of Published Analysis | CERN Analysis Preservation"  # noqa
-    else:
-        subject += "New Published Analysis | CERN Analysis Preservation"
-
-    return subject
+def draft_id(record, config=None):
+    try:
+        return record['_deposit']['id']
+    except KeyError:
+        return None
 
 
-def get_review_subject(record, config=None):
-    cadi_id = record.get("analysis_context", {}).get("cadi_id")
-    subject = create_base_subject(config, cadi_id)
-    subject += 'New Review on Analysis | CERN Analysis Preservation'
-
-    return subject
+def revision(deposit, config=None):
+    try:
+        _, record = deposit.fetch_published()
+        return record.revision_id
+    except KeyError:
+        return None

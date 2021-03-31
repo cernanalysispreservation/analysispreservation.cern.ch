@@ -36,3 +36,5 @@ serializers
 ui
 url
 utils
+bcc
+docstrings
