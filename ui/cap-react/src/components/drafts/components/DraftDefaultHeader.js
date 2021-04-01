@@ -53,7 +53,10 @@ class DraftDefaultHeader extends React.Component {
             <EditableField
               value={this.props.metadata.general_title}
               emptyValue={"Untitled document"}
-              onUpdate={val => this.props.updateGeneralTitle(val)}
+              onUpdate={val => {
+                if (val.trim() === "") return;
+                this.props.updateGeneralTitle(val);
+              }}
               isEditable={this.props.canUpdate}
               dataCy="general-title-input"
             />

@@ -21,7 +21,7 @@ class SearchResults extends React.Component {
 
   render() {
     return this.props.results.length > 0 ? (
-      <Box  colorIndex="light-2">
+      <Box colorIndex="light-2">
         <List className="search_result_box">
           {this.props.results.map((item, index) => {
             // let rights = "";
@@ -48,6 +48,14 @@ class SearchResults extends React.Component {
               day: "numeric",
               month: "long",
               year: "numeric"
+            };
+
+            const getTitle = () => {
+              let title =
+                !general_title || general_title.trim() === ""
+                  ? "Untitled Document"
+                  : general_title;
+              return title;
             };
 
             // if (!is_owner && (can_update || can_admin)) rights = "contributor";
@@ -83,7 +91,7 @@ class SearchResults extends React.Component {
                           size="medium"
                           style={{ color: "rgb(0,0,0)" }}
                         >
-                          {general_title || "No title provided"}
+                          {getTitle()}
                         </Label>
                         <AiOutlineLink
                           size="18px"

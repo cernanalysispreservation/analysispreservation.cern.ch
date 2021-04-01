@@ -19,9 +19,18 @@ function DashboardListItem(props) {
   let { id, metadata = {}, updated } = props.item;
 
   let {
-    general_title = "Untitled",
+    general_title = "Untitled Document",
     basic_info: { abstract = "" } = {}
   } = metadata;
+
+  const getTitle = () => {
+    let title =
+      !general_title || general_title.trim() === ""
+        ? "Untitled Document"
+        : general_title;
+
+    return title;
+  };
 
   return (
     <ListItem key={`${id}`} className="listItem">
@@ -37,7 +46,7 @@ function DashboardListItem(props) {
         <Box margin={{ right: "medium" }} style={{ overflow: "visible" }} flex>
           <Box direction="row">
             <Heading tag="h6" margin="none" truncate>
-              {general_title}
+              {getTitle()}
             </Heading>
             <ReactTooltip />
           </Box>
