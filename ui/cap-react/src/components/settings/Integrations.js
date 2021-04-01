@@ -111,7 +111,6 @@ class Integrations extends React.Component {
                 colorIndex="light-1"
                 style={{
                   width: "100%",
-                  height: "100%",
                   minHeight: "205px",
                   borderRadius: "3px",
                   border: "1px solid #f5f5f5"

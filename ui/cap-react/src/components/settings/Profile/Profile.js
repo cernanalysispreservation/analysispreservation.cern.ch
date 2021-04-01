@@ -8,10 +8,8 @@ import { AiOutlineMail } from "react-icons/ai";
 import { connect } from "react-redux";
 
 const Profile = props => {
-  const { user } = props;
+  const { user, cernProfile } = props;
 
-  const profileData = user.get("profile").size > 0;
-  const data = profileData && user.get("profile").get("cern");
   return (
     <Box
       colorIndex="light-1"
@@ -41,20 +39,20 @@ const Profile = props => {
           .charAt(0)
           .toUpperCase()}`}
       </Box>
-      {profileData && (
+      {cernProfile && (
         <React.Fragment>
           <Box margin={{ vertical: "small" }} align="center">
             <Label margin="none" size="large">
-              {data.get("display_name").split(" ")[0]}
+              {cernProfile.get("display_name").split(" ")[0]}
             </Label>
             <Label margin="none" size="large">
-              {data.get("display_name").split(" ")[1]}
+              {cernProfile.get("display_name").split(" ")[1]}
             </Label>
           </Box>
           <Box direction="row" responsive={false}>
             <Box margin={{ right: "small" }}>
               <Tag
-                text={data.get("department")}
+                text={cernProfile.get("department")}
                 color={{
                   bgcolor: "rgba(0, 114, 152, 0.15)",
                   border: "rgba(0, 114, 152, 0.45)",
@@ -62,7 +60,7 @@ const Profile = props => {
                 }}
               />
             </Box>
-            <Tag text={data.get("common_name")} />
+            <Tag text={cernProfile.get("common_name")} />
           </Box>
         </React.Fragment>
       )}
@@ -89,7 +87,8 @@ Profile.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.auth.getIn(["currentUser", "profile"])
+  user: state.auth.getIn(["currentUser", "profile"]),
+  cernProfile: state.auth.getIn(["currentUser", "profile", "cern"])
 });
 
 const mapDispatchToProps = {};
