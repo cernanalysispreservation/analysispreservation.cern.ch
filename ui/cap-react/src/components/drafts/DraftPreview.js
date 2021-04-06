@@ -137,7 +137,7 @@ const DraftPreview = props => {
       type: "file",
       content: (
         <Box direction="row" align="center" justify="center">
-          <b>{props.files && Object.entries(props.files.toJS()).length}</b>
+          <b>{props.files && props.files.size}</b>
           <Box style={{ color: "rgba(0,0,0,1)", marginLeft: "5px" }}>files</Box>
         </Box>
       )
@@ -154,6 +154,7 @@ const DraftPreview = props => {
       )
     }
   ];
+
   let _schema =
     props.schemas && props.schemas.schema
       ? transformSchema(props.schemas.schema)
@@ -313,9 +314,9 @@ const DraftPreview = props => {
             headerActions={null}
             body={
               props.files &&
-              Object.keys(props.files.toJS()).filter(item =>
-                item.startsWith("repositories")
-              ).length > 0 ? (
+              props.files.size > 0 &&
+              props.files.filter(item => item["key"].startsWith("repositories"))
+                .size > 0 ? (
                 <Box flex={true} pad="small">
                   <DepositFilesList
                     files={props.files}
@@ -337,15 +338,17 @@ const DraftPreview = props => {
             }
           />
         </Box>
+
         <Box pad={{ horizontal: "medium" }}>
           <SectionBox
             header="Uploaded Files"
             headerActions={null}
             body={
               props.files &&
-              Object.keys(props.files.toJS()).filter(
-                item => !item.startsWith("repositories")
-              ).length > 0 ? (
+              props.files.size > 0 &&
+              props.files.filter(
+                item => !item["key"].startsWith("repositories")
+              ).size > 0 ? (
                 <Box flex={true} pad="small">
                   <DepositFilesList
                     files={props.files}

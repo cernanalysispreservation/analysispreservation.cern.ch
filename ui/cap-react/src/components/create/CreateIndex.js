@@ -28,8 +28,8 @@ const CreateIndex = props => {
         </Box>
       ),
       false: (
-        <Box flex align="center" justify="center">
-          <Box colorIndex="light-2" align="center" pad="small">
+        <Box flex align="center" justify="center" colorIndex="light-2">
+          <Box align="center" pad="small">
             <Box>
               <Lock />
             </Box>

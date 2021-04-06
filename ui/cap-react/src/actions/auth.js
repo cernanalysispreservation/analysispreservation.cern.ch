@@ -119,7 +119,7 @@ export function initCurrentUser(next = undefined) {
     axios
       .get("/api/me")
       .then(function(response) {
-        let { id, deposit_groups } = response.data;
+        let { id, deposit_groups = [] } = response.data;
         localStorage.setItem("token", id);
 
         if (piwik) piwik.setUserId(response.data.email);
