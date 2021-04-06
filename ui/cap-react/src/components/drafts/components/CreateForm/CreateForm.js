@@ -28,7 +28,7 @@ const CreateForm = props => {
     props.anatype
       ? props.anatype
       : props.contentTypes && props.contentTypes.size === 1
-        ? props.contentTypes.toJS()[0]["deposit_group"]
+        ? props.contentTypes.first().get("deposit_group")
         : null
   );
 

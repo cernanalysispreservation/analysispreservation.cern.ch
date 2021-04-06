@@ -13,15 +13,16 @@ const CreateIndex = props => {
   const { anatype } = props.match.params;
 
   if (anatype && props.contentTypes) {
-    let types = props.contentTypes.toJS().map(item => item.deposit_group);
-    allow = types.includes(anatype);
+    allow = props.contentTypes
+      .map(item => item.get("deposit_group"))
+      .includes(anatype);
   }
 
   const _getContent = allowed => {
     const choices = {
       true: (
         <Box flex align="center" colorIndex="light-2" justify="center">
-          <Box colorIndex="light-2" separator="all">
+          <Box colorIndex="light-1" separator="all">
             <CreateForm anatype={anatype} />
           </Box>
         </Box>
