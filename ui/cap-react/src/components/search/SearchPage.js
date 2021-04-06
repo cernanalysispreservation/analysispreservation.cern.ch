@@ -24,6 +24,7 @@ import SearchFilterLayer from "./SearchFilterLayer";
 import DocumentTitle from "../partials/Title";
 import SortSelect from "./SortSelect";
 import Button from "../partials/Button";
+import { List } from "immutable";
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -118,12 +119,10 @@ class SearchPage extends React.Component {
     let results = null;
     let queryParams = 0;
 
-    let _results = {};
     let _aggs;
 
     if (this.props.results) {
-      _results = this.props.results.toJS();
-      _aggs = _results.aggregations;
+      _aggs = this.props.results.toJS().aggregations;
     }
 
     // count the number of filters in order to update the button text
@@ -138,8 +137,8 @@ class SearchPage extends React.Component {
       });
     }
 
-    if (_results && _results.hits) {
-      total = _results.hits.total;
+    if (this.props.results && this.props.results.has("hits")) {
+      total = this.props.results.getIn(["hits", "total"]);
       results = this.props.loading ? (
         <Box flex={false} justify="center" align="center">
           <SearchResultsLoading />
@@ -162,7 +161,9 @@ class SearchPage extends React.Component {
         </Box>
       ) : (
         <Box flex={false} justify="center" align="center">
-          <SearchResults results={_results.hits.hits || []} />
+          <SearchResults
+            results={this.props.results.getIn(["hits", "hits"]) || List([])}
+          />
           <Box>
             {total > 10 && (
               <Pagination
@@ -225,7 +226,13 @@ class SearchPage extends React.Component {
                 responsive={false}
                 margin={{ bottom: "small" }}
               >
-                <SearchResultHeading results={_results.hits.total} />
+                <SearchResultHeading
+                  results={
+                    this.props.results &&
+                    this.props.results.has("hits") &&
+                    this.props.results.getIn(["hits", "total"])
+                  }
+                />
                 <Button
                   id="sidebar_button"
                   primary

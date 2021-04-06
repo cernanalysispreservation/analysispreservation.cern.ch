@@ -18,51 +18,29 @@ class SearchResults extends React.Component {
   constructor(props) {
     super(props);
   }
+  getTitle(item) {
+    return item.hasIn(["metadata", "general_title"]) &&
+      item.getIn(["metadata", "general_title"]).trim() !== ""
+      ? item.getIn(["metadata", "general_title"])
+      : "No title provided";
+  }
 
   render() {
-    return this.props.results.length > 0 ? (
+    const timeOptions = {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    };
+    return this.props.results.size > 0 ? (
       <Box colorIndex="light-2">
         <List className="search_result_box">
           {this.props.results.map((item, index) => {
-            // let rights = "";
-
-            let {
-              id,
-              // is_owner,
-              // can_admin,
-              // can_update,
-              updated,
-              status,
-              labels,
-              created,
-              created_by = null,
-              metadata = {}
-            } = item;
-
-            let {
-              general_title: general_title,
-              basic_info: { abstract: abstract } = {}
-            } = metadata;
-
-            const timeOptions = {
-              day: "numeric",
-              month: "long",
-              year: "numeric"
-            };
-
-            const getTitle = () => {
-              let title =
-                !general_title || general_title.trim() === ""
-                  ? "Untitled Document"
-                  : general_title;
-              return title;
-            };
-
-            // if (!is_owner && (can_update || can_admin)) rights = "contributor";
-            // else if (is_owner) rights = "owner";
-
             return (
-              <ListItem key={`${id}-${index}`} separator="none" pad="none">
+              <ListItem
+                key={`${item.get("id")}-${index}`}
+                separator="none"
+                pad="none"
+              >
                 <Box
                   colorIndex="light-1"
                   margin={{ vertical: "small" }}
@@ -78,21 +56,21 @@ class SearchResults extends React.Component {
                     <Box direction="row" flex responsive={false}>
                       <Anchor
                         path={
-                          status === "published"
-                            ? `/published/${id}`
-                            : `/drafts/${id}`
+                          item.get("status") === "published"
+                            ? `/published/${item.get("id")}`
+                            : `/drafts/${item.get("id")}`
                         }
                         style={{ textDecoration: "none", color: "#666" }}
                         reverse
                         pad="none"
-                        dataCy={getTitle()}
+                        dataCy={this.getTitle(item)}
                       >
                         <Label
                           margin="none"
                           size="medium"
                           style={{ color: "rgb(0,0,0)" }}
                         >
-                          {getTitle()}
+                          {this.getTitle(item)}
                         </Label>
                         <AiOutlineLink
                           size="18px"
@@ -116,7 +94,10 @@ class SearchResults extends React.Component {
                   </Box>
                   <Box>
                     <Label margin="none" size="small">
-                      {new Date(created).toLocaleString("en-GB", timeOptions)}
+                      {new Date(item.get("created")).toLocaleString(
+                        "en-GB",
+                        timeOptions
+                      )}
                     </Label>
                     <Box
                       flex={false}
@@ -125,20 +106,24 @@ class SearchResults extends React.Component {
                       margin={{ top: "small" }}
                       responsive={false}
                     >
-                      {labels.map((item, index) => {
-                        return (
-                          <Box key={index} style={{ margin: "2px 4px 2px 0" }}>
-                            <Tag text={item} />
-                          </Box>
-                        );
-                      })}
+                      {item.has("labels") &&
+                        item.get("labels").map((item, index) => {
+                          return (
+                            <Box
+                              key={index}
+                              style={{ margin: "2px 4px 2px 0" }}
+                            >
+                              <Tag text={item} />
+                            </Box>
+                          );
+                        })}
                     </Box>
                   </Box>
 
-                  {abstract && (
+                  {item.hasIn(["metadata", "basic_info", "abstract"]) && (
                     <Box margin={{ top: "small" }}>
                       <Truncate lines={2} ellipsis={<span>...</span>}>
-                        {abstract}
+                        {item.getIn(["metadata", "basic_info", "abstract"])}
                       </Truncate>
                     </Box>
                   )}
@@ -148,36 +133,36 @@ class SearchResults extends React.Component {
                     justify="between"
                     responsive={false}
                   >
-                    <Box>
-                      {created_by && (
-                        <Anchor
-                          label={
-                            <Box
-                              direction="row"
-                              align="center"
-                              responsive={false}
-                            >
-                              <AiOutlineUser
-                                size={14}
-                                color="rgba(0,0,0,0.5)"
-                              />
-                              <Label
-                                margin="none"
-                                size="small"
-                                style={{
-                                  color: "rgba(0,0,0,0.9)",
-                                  marginLeft: "5px"
-                                }}
-                              >
-                                {created_by.profile &&
-                                created_by.profile.display_name
-                                  ? created_by.profile.display_name
-                                  : created_by.email}
-                              </Label>
-                            </Box>
-                          }
-                          href={`mailto:${created_by.email}`}
-                        />
+                    <Box
+                      direction="row"
+                      align="center"
+                      justify="center"
+                      responsive={false}
+                    >
+                      {item.hasIn(["created_by", "email"]) && (
+                        <React.Fragment>
+                          <AiOutlineUser size="14px" />
+                          <Label
+                            margin="none"
+                            size="small"
+                            style={{
+                              color: "rgba(0,0,0,0.5)",
+                              marginLeft: "5px"
+                            }}
+                          >
+                            {item.hasIn([
+                              "created_by",
+                              "profile",
+                              "display_name"
+                            ])
+                              ? item.getIn([
+                                  "created_by",
+                                  "profile",
+                                  "display_name"
+                                ])
+                              : item.getIn(["created_by", "email"])}
+                          </Label>
+                        </React.Fragment>
                       )}
                     </Box>
                     <Box>
@@ -186,9 +171,13 @@ class SearchResults extends React.Component {
                         size="small"
                         style={{ color: "rgba(0,0,0,0.5)" }}
                       >
-                        {updated && (
+                        {item.has("updated") && (
                           <React.Fragment>
-                            Updated <TimeAgo date={updated} minPeriod="60" />
+                            Updated{" "}
+                            <TimeAgo
+                              date={item.get("updated")}
+                              minPeriod="60"
+                            />
                           </React.Fragment>
                         )}
                       </Label>
@@ -205,7 +194,7 @@ class SearchResults extends React.Component {
 }
 
 SearchResults.propTypes = {
-  results: PropTypes.array.isRequired,
+  results: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   userId: PropTypes.string,
   size: PropTypes.string,
