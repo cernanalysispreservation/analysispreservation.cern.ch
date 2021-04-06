@@ -27,12 +27,13 @@ import hashlib
 import hmac
 
 from flask import request
-from github import Github, GithubException, UnknownObjectException
+from github import Github, GithubException, UnknownObjectException, \
+    BadCredentialsException
 
 from cap.modules.auth.ext import _fetch_token
 
 from .errors import (GitError, GitIntegrationError, GitObjectNotFound,
-                     GitRequestWithInvalidSignature)
+                     GitRequestWithInvalidSignature, GitUnauthorizedRequest)
 from .interface import GitAPI
 from .utils import generate_secret, get_webhook_url
 
@@ -136,13 +137,6 @@ class GithubAPI(GitAPI):
             raise GitObjectNotFound(
                 'Webhook not found or you don\'t have access.')
 
-    def _get_token(self, user_id):
-        token_obj = _fetch_token('github', user_id) if user_id else None
-        if token_obj:
-            return token_obj.get('access_token')
-        else:
-            return None
-
     def _get_branch_and_sha(self, branch_or_sha):
         if not branch_or_sha:
             # try default branch
@@ -167,3 +161,36 @@ class GithubAPI(GitAPI):
                         f'{branch_or_sha} does not match any branch or sha.')
 
         return branch, sha
+
+    @classmethod
+    def create_repo(cls, user_id, repo_name, description='',
+                    private=False, readme=False, license=None,
+                    org_name=None):
+        """
+        Create a github repo as user/organization.
+        The available licenses can be found here:
+        https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository  # noqa
+        """
+        token = cls._get_token(user_id)
+        if not token:
+            raise GitUnauthorizedRequest(
+                'Github requires authorization - '
+                'connect your CERN account: Settings -> Integrations.')
+        try:
+            gh = Github(token)
+            api = gh.get_organization(org_name) if org_name else gh.get_user()
+            api.create_repo(
+                repo_name, description=description,
+                private=private, auto_init=readme,
+                license_template=license)
+        except BadCredentialsException:
+            raise
+        except UnknownObjectException:
+            raise
+        except GithubException:
+            raise
+
+    @classmethod
+    def _get_token(cls, user_id):
+        token_obj = _fetch_token('github', user_id) if user_id else None
+        return token_obj.get('access_token') if token_obj else None

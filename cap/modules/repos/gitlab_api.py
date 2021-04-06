@@ -26,7 +26,7 @@
 import requests
 from flask import request
 from gitlab import Gitlab
-from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError
+from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError, GitlabCreateError
 
 from cap.modules.auth.ext import _fetch_token
 
@@ -127,13 +127,6 @@ class GitlabAPI(GitAPI):
         except GitlabAuthenticationError:
             raise GitObjectNotFound('No permission to delete this webhook')
 
-    def _get_token(self, user_id):
-        token_obj = _fetch_token('gitlab', user_id) if user_id else None
-        if not token_obj:
-            return None
-
-        return token_obj.get('access_token')
-
     def _get_branch_and_sha(self, branch_or_sha):
         if not branch_or_sha:
             # try default branch
@@ -159,3 +152,38 @@ class GitlabAPI(GitAPI):
                         f'{branch_or_sha} does not match any branch or sha.')
 
         return branch, sha
+
+    @classmethod
+    def create_repo(cls, user_id, repo_name, host, description='',
+                    private=False, readme=False, org_name=None):
+        """
+        Create a gitlab repo as user/organization.
+        """
+        token = cls._get_token(user_id)
+        if not token:
+            raise GitUnauthorizedRequest(
+                'Gitlab requires authorization - '
+                'connect your CERN account: Settings -> Integrations.')
+
+        try:
+            gitlab = Gitlab(f'https://{host}', oauth_token=token)
+            gitlab.projects.create({
+                'name': repo_name,
+                'description': description,
+                'namespace_id': org_name,
+                'visibility': 'private' if private else 'public',
+                'initialize_with_readme': readme
+            })
+        except GitlabCreateError:
+            raise
+        except GitlabAuthenticationError:
+            raise
+        except GitlabGetError:
+            raise
+
+    @classmethod
+    def _get_token(cls, user_id):
+        token_obj = _fetch_token('gitlab', user_id) if user_id else None
+        if not token_obj:
+            return None
+        return token_obj.get('access_token')
