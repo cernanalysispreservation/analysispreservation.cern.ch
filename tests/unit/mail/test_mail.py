@@ -23,9 +23,11 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Tests for mail."""
 
+import json
 from pytest import raises
 from mock import patch
 
+from invenio_deposit.signals import post_action
 from cap.modules.mail.utils import create_and_send
 
 
@@ -35,7 +37,7 @@ def test_create_and_send_no_recipients_fails(app):
 
 
 @patch('cap.modules.mail.utils.current_user')
-def test_send_mail_published(mock_user, app, users, create_deposit, create_schema):
+def test_send_mail_published(mock_user, app, users, create_deposit, create_schema, client, auth_headers_for_user):
     mock_user.email = 'test@cern.ch'
     user = users['cms_user']
 
@@ -55,9 +57,14 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
                     },
                     'ml_app_use': ['not empty']
                 },
-                experiment='CMS',
-                publish=True
+                experiment='CMS'
             )
+
+            resp = client.post(
+                f"/deposits/{deposit['_deposit']['id']}/actions/publish",
+                headers=auth_headers_for_user(user)
+            )
+            assert resp.status_code == 202
 
             # hypernews mail needs to be sent as plain text
             hypernews_mail = outbox[0]
@@ -72,7 +79,7 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
             # message
             assert 'Title: test analysis' in hypernews_mail.body
             assert 'Submitted by test@cern.ch' in hypernews_mail.body
-            assert f'Questionnaire URL : http://analysispreservation.cern.ch/published/{deposit["control_number"]}' \
+            assert f'Questionnaire URL : http://analysispreservation.cern.ch/published/{resp.json["recid"]}' \
                    in hypernews_mail.body
             assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in hypernews_mail.body
             # recipients
@@ -83,7 +90,7 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
             # message
             assert 'Title: test analysis' in standard_mail.html
             assert 'Submitted by test@cern.ch' in standard_mail.html
-            assert f'Questionnaire URL : http://analysispreservation.cern.ch/published/{deposit["control_number"]}' \
+            assert f'Questionnaire URL : http://analysispreservation.cern.ch/published/{resp.json["recid"]}' \
                    in standard_mail.html
             assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in standard_mail.html
             # recipients
@@ -91,3 +98,85 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
             assert 'ml-conveners-test@cern0.ch' in standard_mail.bcc
             assert 'ml-conveners-jira-test@cern0.ch' in standard_mail.bcc
             assert 'hn-cms-ABC-11-111@cern0.ch' not in standard_mail.bcc
+
+
+@patch('cap.modules.mail.utils.current_user')
+def test_send_mail_published_with_signal_failure(
+        mock_user, app, users, create_deposit, create_schema, client, auth_headers_for_user, json_headers):
+    mock_user.email = 'test@cern.ch'
+    user = users['cms_user']
+
+    def fake_receiver(sender, action=None, pid=None, deposit=None):
+        raise Exception
+
+    create_schema('cms-stats-questionnaire', experiment='CMS', version="0.0.1")
+
+    with app.app_context():
+        with post_action.connected_to(fake_receiver):
+            deposit = create_deposit(
+                user,
+                'cms-analysis',
+                {
+                    '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                               'deposits/records/cms-stats-questionnaire-v0.0.1.json',
+                    'general_title': 'test analysis',
+                    'analysis_context': {
+                        'cadi_id': 'ABC-11-111'
+                    },
+                    'ml_app_use': ['not empty']
+                },
+                experiment='CMS',
+            )
+            depid = deposit['_deposit']['id']
+
+            with raises(Exception):
+                resp = client.post(
+                    f"/deposits/{depid}/actions/publish",
+                    headers=auth_headers_for_user(user)
+                )
+
+                assert resp.status_code == 202
+                assert resp.json['general_title'] == 'test analysis'
+                recid = resp.json['recid']
+
+                # assert that the record exists
+                resp = client.get(
+                    f'/records/{recid}',
+                    headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user)
+                )
+                assert resp.status_code == 200
+                assert resp.json['general_title'] == 'test analysis'
+
+                # make editable
+                resp = client.post(
+                    f"/deposits/{depid}/actions/edit",
+                    headers=auth_headers_for_user(user)
+                )
+                assert resp.status_code == 201
+
+                # update the record
+                resp = client.put(
+                    f"/deposits/{depid}",
+                    headers=auth_headers_for_user(user) + json_headers,
+                    data=json.dumps({
+                        '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                                   'deposits/records/cms-stats-questionnaire-v0.0.1.json',
+                        'general_title': 'NEW TITLE',
+                        'analysis_context': {
+                            'cadi_id': 'ABC-11-111'
+                        },
+                        'ml_app_use': ['not empty']
+                    })
+                )
+
+                assert resp.status_code == 200
+                assert resp.json['general_title'] == 'NEW TITLE'
+
+                # publish again
+                resp = client.post(
+                    f"/deposits/{depid}/actions/publish",
+                    headers=auth_headers_for_user(user)
+                )
+
+                assert resp.status_code == 202
+                assert resp.json['general_title'] == 'NEW TITLE'

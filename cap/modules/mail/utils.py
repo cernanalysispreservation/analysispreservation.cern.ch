@@ -211,38 +211,6 @@ def generate_notification_attrs(record, host_url, config):
         return "", "", None
 
 
-def post_action_notifications(action=None, deposit=None, host_url=None):
-    """Method to run after a deposit action ."""
-    schema = deposit.get("$schema")
-    recipients_config = NOTIFICATION_RECEPIENT.get(schema, {}).get(action)
-
-    if recipients_config:
-        subject, message, recipients = generate_notification_attrs(
-            deposit, host_url, recipients_config)
-
-        if recipients:
-            if action == "publish":
-                recid, record = deposit.fetch_published()
-
-                send_mail_on_publish(
-                    recid.pid_value,
-                    record.revision_id,
-                    host_url,
-                    recipients,
-                    message,
-                    subject_prefix=subject)
-
-            if action == "review":
-                analysis_url = create_analysis_url(deposit)
-
-                send_mail_on_review(
-                    analysis_url,
-                    host_url,
-                    recipients,
-                    message,
-                    subject_prefix=subject)
-
-
 def send_mail_on_publish(recid, revision,
                          host_url='https://analysispreservation.cern.ch/',
                          recipients=None,

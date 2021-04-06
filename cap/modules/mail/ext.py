@@ -25,7 +25,9 @@
 """CAP Mail."""
 
 from __future__ import absolute_import, print_function
+from invenio_deposit.signals import post_action
 
+from .receivers import post_action_notifications
 from .cli import mail
 
 
@@ -36,6 +38,9 @@ class CAPMail(object):
         """Extension initialization."""
         if app:
             self.init_app(app)
+            post_action.connect(
+                post_action_notifications, sender=app, weak=False
+            )
 
     def init_app(self, app):
         """Flask application initialization."""

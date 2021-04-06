@@ -32,6 +32,7 @@ from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_db import db
 from invenio_deposit.api import Deposit, has_status, index, preserve
+from invenio_deposit.signals import post_action
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import (Bucket, FileInstance, ObjectVersion,
@@ -52,7 +53,6 @@ from werkzeug.local import LocalProxy
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
-from cap.modules.mail.utils import post_action_notifications
 from cap.modules.records.api import CAPRecord
 from cap.modules.records.errors import get_error_path
 from cap.modules.repos.errors import GitError
@@ -231,12 +231,7 @@ class CAPDeposit(Deposit, Reviewable):
                     raise MultipartMissingParts()
 
             try:
-                deposit = super(CAPDeposit, self).publish(*args, **kwargs)
-                post_action_notifications("publish",
-                                          deposit,
-                                          host_url=request.host_url)
-
-                return deposit
+                return super(CAPDeposit, self).publish(*args, **kwargs)
             except ValidationError as e:
                 raise DepositValidationError(e.message)
 
@@ -367,9 +362,6 @@ class CAPDeposit(Deposit, Reviewable):
                     self.update_review(data)
                 else:
                     self.create_review(data)
-
-                post_action_notifications(
-                    "review", self, host_url=request.host_url)
             else:
                 raise ReviewError(None)
 
