@@ -555,3 +555,19 @@ def test_gitlab_api_repo_id(m_get_branch_and_sha, m_gitlab):
     api = GitlabAPI('gitlab.com', 'owner', 'repository', 'my-branch')
 
     assert api.repo_id == 123
+
+
+@patch('cap.modules.repos.gitlab_api.Gitlab')
+def test_gitlab_api_create_repo(m_gitlab, gitlab_token, example_user):
+    class MockRepo:
+        def get_id(self):
+            return 12345
+
+    class MockProjectManager:
+        def create(self, attrs):
+            return MockRepo()
+
+    m_gitlab.return_value = Mock(projects=MockProjectManager())
+
+    new_repo = GitlabAPI.create_repo(example_user.id, 'new_project', 'gitlab.com')
+    assert new_repo == 12345
