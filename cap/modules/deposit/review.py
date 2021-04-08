@@ -68,7 +68,10 @@ class ReviewUpdatePayload(Schema):
 class Reviewable(object):
     def schema_is_reviewable(self):
         config = self.schema.config
-        return config.get('reviewable', False)
+
+        if config:
+            return config.get('reviewable', False)
+        return False
 
     def create_review(self, data):
         new_review, errors = ReviewCreatePayload().load(data=data)
