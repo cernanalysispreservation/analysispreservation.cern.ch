@@ -13,9 +13,28 @@ import DashboardWorkflowListItem from "./DashboardWorkflowListItem";
 import DashboardMeter from "./components/DashboardMeter";
 import DashboardQuickSearch from "./DashboardQuickSearch";
 
+import cogoToast from "cogo-toast";
+
 class Dashboard extends React.Component {
   componentDidMount() {
     this.props.fetchDashboard();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.errors !== this.props.errors) {
+      cogoToast.error(
+        "Currently our service can not provide any information. Please try again later",
+        {
+          position: "top-center",
+          heading:
+            this.props.errors.status === 500
+              ? "Newtork Error"
+              : this.props.errors.data,
+          bar: { size: "0" },
+          hideAfter: 3
+        }
+      );
+    }
   }
 
   _getList = () => {
@@ -138,7 +157,8 @@ Dashboard.propTypes = {
 function mapStateToProps(state) {
   return {
     loading: state.dashboard.get("loading"),
-    results: state.dashboard.getIn(["results"])
+    results: state.dashboard.getIn(["results"]),
+    errors: state.dashboard.get("error")
   };
 }
 
