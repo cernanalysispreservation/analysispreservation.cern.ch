@@ -28,7 +28,7 @@ export default function dashboardReducer(state = initialState, action) {
     case DASHBOARD_QUERY:
       return state.set("loading", false).set("results", action.results);
     case DASHBOARD_QUERY_ERROR:
-      return state.set("loading", false).set("error", action.error);
+      return state.set("loading", false);
     default:
       return state;
   }

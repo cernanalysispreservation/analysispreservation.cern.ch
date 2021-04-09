@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import { Switch, Route } from "react-router-dom";
 
 import SettingsIndex from "./Settings";
-import NotFoundPage from "../errors/404";
+import ErrorPage from "../partials/ErrorPage";
 import OAuthConnect from "./components/OAuthConnect";
 
 import DocumentTitle from "../partials/Title";
@@ -21,7 +21,7 @@ class IndexPage extends React.Component {
         <Switch>
           <Route exact path={SETTINGS} component={SettingsIndex} />
           <Route exact path={SETTINGS_AUTH_CONNECT} component={OAuthConnect} />
-          <Route component={NotFoundPage} />
+          <Route component={ErrorPage} />
         </Switch>
       </DocumentTitle>
     );

@@ -19,8 +19,6 @@ import Loading from "../../partials/LoadingSkeleton";
 
 class DraftDefaultHeader extends React.Component {
   render() {
-    if (this.props.error && this.props.error.status == 403) return null;
-
     return (
       <Box flex={true} direction="row">
         <Box direction="row" flex={true} wrap={false} responsive={false}>
@@ -108,7 +106,6 @@ class DraftDefaultHeader extends React.Component {
 DraftDefaultHeader.propTypes = {
   draft: PropTypes.object,
   id: PropTypes.string,
-  error: PropTypes.object,
   draft_id: PropTypes.string,
   canUpdate: PropTypes.bool,
   expanded: PropTypes.bool,
@@ -125,7 +122,6 @@ function mapStateToProps(state) {
     status: state.draftItem.get("status"),
     canUpdate: state.draftItem.get("can_update"),
     draft: state.draftItem.get("metadata"),
-    errors: state.draftItem.get("errors"),
     schema: state.draftItem.get("schema"),
     formData: state.draftItem.get("formData"),
     metadata: state.draftItem.get("metadata"),

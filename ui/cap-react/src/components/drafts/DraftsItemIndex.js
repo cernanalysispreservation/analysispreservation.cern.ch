@@ -18,7 +18,7 @@ import DraftEditor from "./DraftEditor";
 import Sidebar from "./components/DepositSidebar";
 import DraftsRouteGuard from "./DraftsRouteGuard";
 
-import PermissionDenied from "../errors/403";
+import ErrorPage from "../partials/ErrorPage";
 import MediaQuery from "react-responsive";
 
 // Actions
@@ -56,9 +56,12 @@ class DraftsItemIndex extends React.Component {
   }
 
   render() {
-    if (this.props.errors && [403, 404, 500].indexOf(this.props.errors.status) > -1)
+    if (
+      this.props.errors &&
+      [403, 404, 500, 410].indexOf(this.props.errors.status) > -1
+    )
       return (
-        <PermissionDenied
+        <ErrorPage
           status={this.props.errors.status}
           message={this.props.errors.message}
         />

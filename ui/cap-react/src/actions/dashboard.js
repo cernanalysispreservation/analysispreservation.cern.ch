@@ -4,6 +4,8 @@ export const DASHBOARD_QUERY_REQUEST = "DASHBOARD_QUERY_REQUEST";
 export const DASHBOARD_QUERY = "DASHBOARD_QUERY";
 export const DASHBOARD_QUERY_ERROR = "DASHBOARD_QUERY_ERROR";
 
+import cogoToast from "cogo-toast";
+
 export function dashboardQueryRequest() {
   return {
     type: DASHBOARD_QUERY_REQUEST
@@ -15,10 +17,9 @@ export function dashboardQuerySuccess(results) {
     results
   };
 }
-export function dashboardQueryError(error) {
+export function dashboardQueryError() {
   return {
-    type: DASHBOARD_QUERY_ERROR,
-    error
+    type: DASHBOARD_QUERY_ERROR
   };
 }
 export function fetchDashboard() {
@@ -32,8 +33,14 @@ export function fetchDashboard() {
         let results = response.data;
         dispatch(dashboardQuerySuccess(results));
       })
-      .catch(error => {
-        dispatch(dashboardQueryError({...error.response}));
+      .catch(() => {
+        dispatch(dashboardQueryError());
+        cogoToast.error("fetching dashboard data was not possible", {
+          position: "top-center",
+          heading: "Something went wrong",
+          bar: { size: "0" },
+          hideAfter: 5
+        });
       });
   };
 }

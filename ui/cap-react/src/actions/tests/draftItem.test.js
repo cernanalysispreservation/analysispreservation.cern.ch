@@ -191,14 +191,10 @@ describe("Action Creators => draftItem", () => {
   });
 
   it("Async Create Draft Error", async () => {
-    const error = {
-      data: { message: "This is an error message for the create process" }
-    };
     const expectedActions = [
       { type: actions.CREATE_DRAFT_REQUEST },
       {
-        type: actions.CREATE_DRAFT_ERROR,
-        error
+        type: actions.CREATE_DRAFT_ERROR
       }
     ];
 

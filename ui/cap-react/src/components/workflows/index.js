@@ -14,7 +14,7 @@ import DraftWorkflowsIndex from "./containers/DraftWorkflowsIndex";
 import DraftWorkflowsItem from "./containers/DraftWorkflowsItem";
 import DraftWorkflowsCreate from "./containers/DraftWorkflowsCreate";
 
-import NotFoundPage from "../errors/404";
+import ErrorPage from "../partials/ErrorPage";
 
 class WorkflowsPage extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class WorkflowsPage extends React.Component {
             <Route exact path={`${path}`} component={_WorkflowsIndex} />
             <Route path={`${path}/create`} component={_WorkflowsCreate} />
             <Route path={`${path}/:workflow_id`} component={_WorkflowsItem} />
-            <Route component={NotFoundPage} />
+            <Route component={ErrorPage} />
           </Switch>
         </Box>
       </Box>

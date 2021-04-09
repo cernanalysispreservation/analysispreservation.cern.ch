@@ -29,6 +29,8 @@ import { DRAFT_ITEM } from "../../routes";
 import DepositSidebarLoading from "./DepositSidebarLoading";
 import Anchor from "../../partials/Anchor";
 
+import Notification from "../../partials/Notification";
+
 class DepositSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -235,25 +237,35 @@ class DepositSidebar extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box flex={true} pad="none" colorIndex="light-2">
-          <SectionHeader
-            label="Files | Data | Repos"
-            uppercase={true}
-            icon={
-              <Box
-                direction="row"
-                responsive={false}
-                wrap={false}
-                pad={{ between: "small" }}
-                margin={{ right: "small" }}
-              >
-                {this._renderRefreshFilesButton()}
-                {this._renderAddFileIcon()}
-              </Box>
-            }
-          />
-          <DepositFilesList files={this.props.files} />
-        </Box>
+        {this.props.bucketError ? (
+          <Box size={{ width: { max: "medium" } }} pad="small" align="center">
+            <Notification
+              action={this._renderRefreshFilesButton()}
+              type={this.props.bucketError.status === 500 ? "error" : "warning"}
+              text="There is an error while loading files, please try again by clicking the refresh button"
+            />
+          </Box>
+        ) : (
+          <Box flex={true} pad="none" colorIndex="light-2">
+            <SectionHeader
+              label="Files | Data | Repos"
+              uppercase={true}
+              icon={
+                <Box
+                  direction="row"
+                  responsive={false}
+                  wrap={false}
+                  pad={{ between: "small" }}
+                  margin={{ right: "small" }}
+                >
+                  {this._renderRefreshFilesButton()}
+                  {this._renderAddFileIcon()}
+                </Box>
+              }
+            />
+            <DepositFilesList files={this.props.files} />
+          </Box>
+        )}
       </Sidebar>
     );
   }
@@ -273,7 +285,8 @@ DepositSidebar.propTypes = {
   getBucketById: PropTypes.func,
   schema: PropTypes.object,
   loading: PropTypes.bool,
-  recid: PropTypes.string
+  recid: PropTypes.string,
+  bucketError: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -290,7 +303,8 @@ function mapStateToProps(state) {
     updated: state.draftItem.get("updated"),
     canUpdate: state.draftItem.get("can_update"),
     links: state.draftItem.get("links"),
-    loading: state.draftItem.get("loading")
+    loading: state.draftItem.get("loading"),
+    bucketError: state.draftItem.get("bucketError")
   };
 }
 

@@ -19,7 +19,7 @@ import CreateIndex from "../create";
 
 import PublishedIndex from "../published/PublishedIndex";
 import GrommetFooter from "../footer/Footer";
-import NotFoundPage from "../errors/404";
+import ErrorPage from "../partials/ErrorPage";
 
 import {
   HOME,
@@ -51,7 +51,7 @@ class IndexPage extends React.Component {
             <Route path={SETTINGS} component={SettingsIndex} />
             <Route path={WORKFLOWS} component={WorkflowsIndex} />
             <Route path={CREATE_INDEX} component={CreateIndex} />
-            <Route component={NotFoundPage} />
+            <Route component={ErrorPage} />
           </Switch>
         </Box>
         <GrommetFooter />

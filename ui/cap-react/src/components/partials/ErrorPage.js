@@ -6,12 +6,13 @@ import { withRouter } from "react-router";
 import Button from "../partials/Button";
 import PropTypes from "prop-types";
 
-const PermissionDenied = ({ history, status = 404, message }) => {
+const ErrorPage = ({ history, status = 404, message }) => {
   const getTitle = () => {
     const choices = {
       403: "Permission Required",
       404: "Page was not Found",
-      500: "Network Error"
+      500: "Network Error",
+      410: "PID has been deleted."
     };
 
     return choices[status];
@@ -33,7 +34,8 @@ const PermissionDenied = ({ history, status = 404, message }) => {
       ),
       500: (
         <span>
-          Currently our service can not provide any information due to a problem. Please try again later
+          Currently our service can not provide any information due to a
+          problem. Please try again later
         </span>
       )
     };
@@ -81,11 +83,11 @@ const PermissionDenied = ({ history, status = 404, message }) => {
   );
 };
 
-PermissionDenied.propTypes = {
+ErrorPage.propTypes = {
   status: PropTypes.number,
   message: PropTypes.string,
   statusText: PropTypes.string,
   history: PropTypes.object
 };
 
-export default withRouter(PermissionDenied);
+export default withRouter(ErrorPage);

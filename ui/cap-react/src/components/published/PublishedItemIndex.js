@@ -16,7 +16,8 @@ import { withRouter } from "react-router";
 import PublishedSidebar from "./components/PublishedSidebar";
 
 import DocumentTitle from "../partials/Title";
-import PermissionDenied from "../errors/403";
+import ErrorPage from "../partials/ErrorPage";
+
 import {
   PUBLISHED_ITEM,
   PUBLISHED_ITEM_RUNS,
@@ -34,9 +35,12 @@ class PublishedItemIndex extends React.Component {
   }
 
   render() {
-    if (this.props.error && [403, 404].indexOf(this.props.error.status) > -1)
+    if (
+      this.props.error &&
+      [403, 404, 500].indexOf(this.props.error.status) > -1
+    )
       return (
-        <PermissionDenied
+        <ErrorPage
           status={this.props.error.status}
           message={this.props.error.message}
         />

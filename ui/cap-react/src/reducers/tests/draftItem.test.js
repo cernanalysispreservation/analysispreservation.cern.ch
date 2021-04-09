@@ -68,7 +68,7 @@ const initialState = Map({
   fileVersions: fromJS([])
 });
 const createDraftError = Map({
-  errors: ["this is an error message for create draft error"],
+  errors: [],
   schemaErrors: [],
   extraErrors: {},
   actionsLayer: false,

@@ -172,7 +172,6 @@ class DepositSettings extends React.Component {
 DepositSettings.propTypes = {
   match: PropTypes.object,
   error: PropTypes.object,
-  getDraftById: PropTypes.func,
   loading: PropTypes.bool,
   draft_id: PropTypes.string,
   draft: PropTypes.object,
