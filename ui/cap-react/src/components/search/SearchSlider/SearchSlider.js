@@ -1,18 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Slider from "../../partials/RangeSlider/Slider";
-import Box from "grommet/components/Box";
 
-const SearchSlider = ({ items, category }) => {
-  return (
-    <Box>
-      <Slider items={items} category={category} />
-    </Box>
-  );
+const SearchSlider = ({ item, category }) => {
+  return <Slider item={item} category={category} />;
 };
 
 SearchSlider.propTypes = {
-  items: PropTypes.object,
+  item: PropTypes.object,
   category: PropTypes.strings
 };
 

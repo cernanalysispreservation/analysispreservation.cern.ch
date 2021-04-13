@@ -119,11 +119,9 @@ class SearchPage extends React.Component {
     let queryParams = 0;
 
     let _results = {};
-    let _aggs;
 
     if (this.props.results) {
       _results = this.props.results.toJS();
-      _aggs = _results.aggregations;
     }
 
     // count the number of filters in order to update the button text
@@ -202,7 +200,7 @@ class SearchPage extends React.Component {
             properties={
               <SearchFacets
                 removeType={this.props.match.params.anatype}
-                aggs={_aggs}
+                aggs={this.props.results.get("aggregations")}
                 selectedAggs={this.props.selectedAggs}
                 onChange={this._toggleAggs}
               />
@@ -212,7 +210,7 @@ class SearchPage extends React.Component {
             <Box id="sidebar">
               <SearchFacets
                 removeType={this.props.match.params.anatype}
-                aggs={_aggs}
+                aggs={this.props.results.get("aggregations")}
                 selectedAggs={this.props.selectedAggs}
                 onChange={this._toggleAggs}
               />

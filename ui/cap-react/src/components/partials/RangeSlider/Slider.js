@@ -35,17 +35,18 @@ const RangeSlider = props => {
       let total = 0;
       let barChartData = {};
       let range = [];
-      props.items.buckets.map(item => {
-        barChartData[item.key_as_string] = item.doc_count;
-        total += item.doc_count;
-        range.push(new Date(item.key).getFullYear());
+
+      props.item.get("buckets").map(item => {
+        barChartData[item.get("key_as_string")] = item.get("doc_count");
+        total += item.get("doc_count");
+        range.push(new Date(item.get("key")).getFullYear());
       });
 
       let displaySlider = range.length > 1;
 
       return { total, barChartData, range, displaySlider };
     },
-    [props.items]
+    [props.item]
   );
 
   // calculate the default init values every time that the page is visited
@@ -186,7 +187,9 @@ const RangeSlider = props => {
         queryString.parse(props.location.search)[props.category] &&
         !displaySlider
       ) {
-        let params = queryString.parse(props.location.search)[props.category].split("--");
+        let params = queryString
+          .parse(props.location.search)
+          [props.category].split("--");
 
         // make sure that the selected dates are the ones that are in range
         return Number(params[0]) === range[0] && Number(params[1]) === range[0];
@@ -292,7 +295,7 @@ const RangeSlider = props => {
 };
 
 RangeSlider.propTypes = {
-  items: PropTypes.object,
+  item: PropTypes.object,
   location: PropTypes.object,
   history: PropTypes.object,
   category: PropTypes.string

@@ -2,12 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import CheckBox from "grommet/components/CheckBox";
+import { Map } from "immutable";
 
 const SubFacet = ({ type, field, isAggSelected, selectedAggs, onChange }) => {
-  return field[type].buckets.map(nested_field => (
+  return field.getIn([type, "buckets"]).map(nested_field => (
     <Box
       size="medium"
-      key={String(nested_field.key)}
+      key={String(nested_field.get("key"))}
       direction="row"
       align="start"
       margin={{ left: "medium" }}
@@ -16,17 +17,17 @@ const SubFacet = ({ type, field, isAggSelected, selectedAggs, onChange }) => {
       }}
     >
       <CheckBox
-        label={`${nested_field.key} ${
-          typeof nested_field.doc_count === "object"
-            ? `(${nested_field.doc_count.doc_count})`
-            : `(${nested_field.doc_count})`
+        label={`${nested_field.get("key")} ${
+          Map.isMap(nested_field.get("doc_count"))
+            ? `(${nested_field.getIn(["doc_count", "doc_count"])})`
+            : `(${nested_field.get("doc_count")})`
         }`}
-        key={nested_field.key}
-        name={String(nested_field.key)}
+        key={nested_field.get("key")}
+        name={String(nested_field.get("key"))}
         checked={
           isAggSelected(
             selectedAggs[type.replace("facet_", "")],
-            nested_field.key
+            nested_field.get("key")
           )
             ? true
             : false
