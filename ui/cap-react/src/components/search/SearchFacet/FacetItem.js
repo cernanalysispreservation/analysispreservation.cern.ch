@@ -4,25 +4,23 @@ import Box from "grommet/components/Box";
 import ShowMore from "../ShowMore";
 import CheckBox from "grommet/components/CheckBox";
 import Button from "../../partials/Button";
-import SubFacet from "./SubFacet/SubFacet";
+import SubFacet from "./SubFacet";
+import { Map } from "immutable";
 
-const getDisplayName = (field) => {
-  return field["__display_name__"];
-}
 const FacetItem = ({
   limit,
-  items,
   isAggSelected,
   selectedAggs,
   onChange,
-  category
+  category,
+  item
 }) => {
   return (
-    <ShowMore limit={limit} items={items} category={category}>
+    <ShowMore limit={limit} item={item} category={category}>
       {({ current, updateShowMore, filter, expanded, countMore }) => (
         <Box>
           {current.map(field => (
-            <Box key={String(field.key)}>
+            <Box key={String(field.get("key"))}>
               <Box
                 size="medium"
                 direction="row"
@@ -32,15 +30,19 @@ const FacetItem = ({
                 }}
               >
                 <CheckBox
-                  label={`${"__display_name__" in field ? getDisplayName(field) : field.key } ${
-                    typeof field.doc_count === "object"
-                      ? `(${field.doc_count.doc_count})`
-                      : `(${field.doc_count})`
+                  label={`${
+                    field.has("__display_name__")
+                      ? field.get("__display_name__")
+                      : field.get("key")
+                  } ${
+                    Map.isMap(field.get("doc_count"))
+                      ? `(${field.get("doc_count").get("doc_count")})`
+                      : `(${field.get("doc_count")})`
                   }`}
-                  key={field.key}
-                  name={String(field.key)}
+                  key={field.get("key")}
+                  name={String(field.get("key"))}
                   checked={
-                    isAggSelected(selectedAggs[category], field.key)
+                    isAggSelected(selectedAggs[category], field.get("key"))
                       ? true
                       : false
                   }
@@ -55,10 +57,9 @@ const FacetItem = ({
                   left: "small"
                 }}
               >
-                {isAggSelected(selectedAggs[category], field.key) &&
-                  Object.keys(field)
-                    .filter(key => key.startsWith("facet_"))
-                    .map((key, index) => {
+                {isAggSelected(selectedAggs[category], field.get("key")) &&
+                  field.keySeq().map((key, index) => {
+                    if (key.startsWith("facet_")) {
                       return (
                         <SubFacet
                           key={key + index}
@@ -69,7 +70,8 @@ const FacetItem = ({
                           onChange={onChange}
                         />
                       );
-                    })}
+                    }
+                  })}
               </Box>
             </Box>
           ))}
@@ -97,7 +99,7 @@ FacetItem.propTypes = {
   isAggSelected: PropTypes.func,
   onChange: PropTypes.func,
   selectedAggs: PropTypes.object,
-  items: PropTypes.object,
+  item: PropTypes.object,
   limit: PropTypes.number
 };
 

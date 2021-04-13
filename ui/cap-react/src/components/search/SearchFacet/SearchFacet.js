@@ -15,23 +15,22 @@ import FacetItem from "./FacetItem";
 
 const SearchFacet = ({
   category,
-  facets,
   isAggSelected,
   selectedAggs,
   onChange,
   collapsed,
-  updateFacet
+  updateFacet,
+  facet
 }) => {
   let expanded = !collapsed.includes(category);
-  let facet = facets[category];
 
   const getContentByMetaType = type => {
     const choices = {
-      true: <SearchSlider items={facets[category]} category={category} />,
+      true: <SearchSlider item={facet.get(category)} category={category} />,
       false: (
         <FacetItem
           limit={11}
-          items={facets[category].buckets}
+          item={facet.getIn([category, "buckets"])}
           isAggSelected={isAggSelected}
           selectedAggs={selectedAggs}
           onChange={onChange}
@@ -42,6 +41,7 @@ const SearchFacet = ({
 
     return choices[type === "range"];
   };
+
   return (
     <Box>
       <Box
@@ -65,8 +65,8 @@ const SearchFacet = ({
           id={category}
           value={category}
         >
-          {facet.meta && facet.meta.title
-            ? facet.meta.title
+          {facet.hasIn([category, "meta", "title"])
+            ? facet.getIn([category, "meta", "title"])
             : category.replace("_", " ")}
         </Heading>
 
@@ -74,7 +74,11 @@ const SearchFacet = ({
       </Box>
 
       <Box size="medium" styles={{ maxHeight: "100px" }} direction="column">
-        {expanded && getContentByMetaType(facet.meta && facet.meta.type)}
+        {expanded &&
+          getContentByMetaType(
+            facet.hasIn([category, "meta", "type"]) &&
+              facet.getIn([category, "meta", "type"])
+          )}
       </Box>
     </Box>
   );
@@ -82,7 +86,7 @@ const SearchFacet = ({
 
 SearchFacet.propTypes = {
   category: PropTypes.string,
-  facets: PropTypes.object,
+  facet: PropTypes.object,
   isAggSelected: PropTypes.func,
   onChange: PropTypes.func,
   collapsed: PropTypes.array,
