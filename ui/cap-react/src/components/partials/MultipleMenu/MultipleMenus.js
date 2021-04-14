@@ -22,7 +22,10 @@ const MultipleMenus = ({ children, displayMenu, menus, onClick }) => {
                 padding: "7px"
               }}
             >
-              <AiOutlineArrowLeft color="#000" size={20} />
+              <AiOutlineArrowLeft
+                className="multipleMenuItemArrowBack"
+                size={16}
+              />
             </Box>
           }
         />

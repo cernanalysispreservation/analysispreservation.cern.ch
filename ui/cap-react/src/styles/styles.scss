@@ -107,6 +107,63 @@ label {
   margin-top: auto;
 }
 
+.animatedMenu{
+  animation-name: menu;
+  animation-fill-mode: forwards;
+  animation-duration: 0.2s;
+}
+
+@keyframes menu{
+  0%{
+    height:0;
+    opacity:0
+  }
+  100%{
+    height:100%;
+    opacity:1
+  }
+}
+
+
+.menuItemDividerTop{
+  border-top: 1px solid #c1c1c1;
+  padding:5px 0;
+  margin-top:2px
+}
+.menuItemDividerBottom{
+  border-bottom: 1px solid #c1c1c1;
+  padding:5px 0;
+  margin-bottom:2px
+}
+
+.not-underline:hover  span , .not-underline:hover .multipleMenuItemArrowBack {
+  color:#007298 !important;
+}
+
+.not-underline .multipleMenuItemArrowBack{
+color: #666
+}
+
+.menuWrapper:hover div div.show  .not-underline:hover{
+  border-radius: 0;
+}
+
+// menu
+
+.menuWrapper:hover  div div.show > div:first-child .not-underline:hover,
+.menuWrapper > div  div:first-child .not-underline
+{
+  border-top-right-radius: 5px ;
+  border-top-left-radius: 5px ;
+}
+.menuWrapper:hover div div.show > div:last-child .not-underline:hover,
+.menuWrapper > div div:last-child .not-underline{
+  border-bottom-right-radius: 5px ;
+  border-bottom-left-radius: 5px;
+}
+
+
+
 // make the form's width take almost the whole width of the parent
 // but only for the instance of draft preview page
 #deposit-page .rjsf > .align-form-center > div {

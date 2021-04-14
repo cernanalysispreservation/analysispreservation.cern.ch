@@ -112,7 +112,6 @@ class WelcomePage extends React.Component {
                       title={this.props.nav[key].title}
                       className="menuItem"
                       href="#"
-                      hovered
                       separator
                       icon={this.props.nav[key].icon}
                       onClick={() =>

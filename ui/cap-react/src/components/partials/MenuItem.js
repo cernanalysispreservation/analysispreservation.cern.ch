@@ -14,19 +14,20 @@ const Wrapper = styled(Anchor)`
   padding: 0 10px;
 
   &:hover {
-    background: ${props => props.hovered && "rgba(235, 235, 235, 1)"};
-    cursor: pointer;
+    background: rgba(0, 114, 152, 0.1);
+    cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
     text-decoration: none;
   }
 `;
 
 const Item = styled.span`
-  padding: 12px 24px;
+  padding: 5px;
   white-space: nowrap;
+  line-height: 1.5;
   color: ${props =>
     props.headerTitle ? "#000 !important" : "#666 !important"};
   letter-spacing: 0.7px;
-  font-size: ${props => (props.headerTitle ? "22px" : "16px")};
+  font-size: ${props => (props.headerTitle ? "20px" : "14px")};
   font-weight: ${props => (props.headerTitle ? 500 : 400)};
 
   &:hover {
@@ -42,12 +43,12 @@ const MenuItem = ({
   href = "#",
   className = "",
   separator = false,
-  hovered = false,
   background = "rgb(255, 255, 255)",
   dataCy = "",
   multipleMenu = null,
   headerTitle = false,
-  target = ""
+  target = "",
+  disabled = false
 }) => {
   return (
     <div className={className}>
@@ -55,14 +56,14 @@ const MenuItem = ({
         data-cy={dataCy}
         onClick={onClick}
         href={onClick ? null : href}
-        path={path}
+        path={!disabled && path}
         target={target}
         responsive={false}
-        hovered={hovered}
+        disabled={disabled}
         className="not-underline"
         background={background}
         style={{
-          paddingLeft: "10px",
+          padding: "2px 10px",
           borderBottom: separator ? "0.1px solid rgba(0, 0, 0, 0.1)" : ""
         }}
       >
@@ -74,8 +75,12 @@ const MenuItem = ({
           align="center"
           responsive={false}
         >
-          <Item headerTitle={headerTitle}>{title}</Item>
-          {multipleMenu && <AiOutlineRight size={20} color="#666" />}
+          <Item headerTitle={headerTitle} disabled={disabled}>
+            {title}
+          </Item>
+          {multipleMenu && (
+            <AiOutlineRight className="multipleMenuItemArrowBack" size={16} />
+          )}
         </Box>
       </Wrapper>
     </div>
@@ -90,12 +95,12 @@ MenuItem.propTypes = {
   onClick: PropTypes.func,
   className: PropTypes.string,
   separator: PropTypes.bool,
-  hovered: PropTypes.bool,
   background: PropTypes.string,
   dataCy: PropTypes.string,
   multipleMenu: PropTypes.bool,
   headerTitle: PropTypes.bool,
-  target: PropTypes.string
+  target: PropTypes.string,
+  disabled: PropTypes.bool
 };
 
 export default MenuItem;

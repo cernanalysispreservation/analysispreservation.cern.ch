@@ -4,7 +4,7 @@ import { Box } from "grommet";
 import Menu from "../partials/Menu";
 import MenuItem from "../partials/MenuItem";
 
-import { AiOutlineDown } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 
 const SORT_OPTIONS = [
   { value: "mostrecent", label: "Most Recent" },
@@ -25,24 +25,22 @@ const SortSelect = ({ locationSort, onChange, dataCy = "" }) => {
     <Box style={{ position: "relative" }}>
       <Menu
         top={35}
-        left={1}
-        right={null}
+        right={1}
         dataCy={dataCy}
         shadow
         icon={<AiOutlineDown />}
         buttonProps={{
           text: getValueFromLocation(locationSort),
           icon: <AiOutlineDown />,
+          iconOpen: <AiOutlineUp />,
           reverse: true
         }}
       >
         {SORT_OPTIONS.map(item => (
           <MenuItem
             dataCy={`${dataCy}-${item.value}`}
-            hovered
             key={item.value}
             title={item.label}
-            separator
             onClick={() => onChange(item.value)}
           />
         ))}
