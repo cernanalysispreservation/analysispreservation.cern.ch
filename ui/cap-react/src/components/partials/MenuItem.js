@@ -50,8 +50,9 @@ const MenuItem = ({
   target = ""
 }) => {
   return (
-    <div className={className} data-cy={dataCy}>
+    <div className={className}>
       <Wrapper
+        data-cy={dataCy}
         onClick={onClick}
         href={onClick ? null : href}
         path={path}

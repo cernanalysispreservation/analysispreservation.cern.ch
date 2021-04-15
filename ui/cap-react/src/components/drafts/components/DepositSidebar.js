@@ -151,13 +151,13 @@ class DepositSidebar extends React.Component {
               margin={{ bottom: "small" }}
               responsive={false}
               align="center"
-              data-cy="deposit-status-tag"
             >
               <span>Status</span>
               <Tag
                 text={this.props.status}
                 color={this._getColorByStatus(this.props.status)}
                 size="small"
+                dataCy="deposit-status-tag"
               />
             </Box>
             <Box

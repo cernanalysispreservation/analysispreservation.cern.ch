@@ -30,7 +30,8 @@ const Menu = ({
   padding = "5px",
   minWidth = "120px",
   shadow = false,
-  buttonProps = null
+  buttonProps = null,
+  dataCy = ""
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dropDownMenu = useRef(null);
@@ -70,7 +71,7 @@ const Menu = ({
   );
 
   return (
-    <Box ref={dropDownMenu} className="menu" data-cy="header-menu">
+    <Box ref={dropDownMenu} className="menu" data-cy={dataCy}>
       {buttonProps ? (
         <Button
           primary
@@ -120,7 +121,8 @@ Menu.propTypes = {
   minWidth: PropTypes.string,
   shadow: PropTypes.bool,
   iconWrapperClassName: PropTypes.string,
-  buttonProps: PropTypes.object
+  buttonProps: PropTypes.object,
+  dataCy: PropTypes.string
 };
 
 export default Menu;

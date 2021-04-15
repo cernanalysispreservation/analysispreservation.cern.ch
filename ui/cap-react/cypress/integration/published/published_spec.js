@@ -56,12 +56,14 @@ describe("Published Tests", function() {
     cy.get("[data-cy=layer-primary-action]").click();
     cy.get("[data-cy=edit-published]").click();
 
+    cy.wait(1000);
     // check the status to be published
     cy.get("[data-cy=deposit-status-tag]").contains("published");
 
     // find the button to change the status to draft
     cy.get("[data-cy=change-to-draft]").click();
 
+    cy.wait(1000);
     // check the status to be published
     cy.get("[data-cy=deposit-status-tag]").contains("draft");
   });

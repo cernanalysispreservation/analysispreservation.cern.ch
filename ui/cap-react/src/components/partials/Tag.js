@@ -23,7 +23,8 @@ const Tag = ({
     color: "rgba(0,0,0,0.65)"
   },
   margin = "",
-  maxWidth = "300px"
+  maxWidth = "300px",
+  dataCy = ""
 }) => {
   const getPaddingBySize = size => {
     const choices = {
@@ -42,6 +43,7 @@ const Tag = ({
       padding={getPaddingBySize(size)}
       margin={margin}
       maxWidth={maxWidth}
+      data-cy={dataCy}
     >
       {text}
     </StyledTag>
@@ -57,7 +59,8 @@ Tag.propTypes = {
   text: PropTypes.string,
   size: PropTypes.string,
   margin: PropTypes.string,
-  maxWidth: PropTypes.string
+  maxWidth: PropTypes.string,
+  dataCy: PropTypes.string
 };
 
 export default Tag;

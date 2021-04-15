@@ -9,7 +9,7 @@ describe("Settings Page", function() {
     cy.get("[data-cy=header-menu]").click();
 
     // select settings
-    cy.get("[data-cy=settings-menuitem]").click();
+    cy.get("[data-cy=settings-menuitem]").click({ force: true });
 
     // open the modal
     cy.get("[data-cy=settings-add-token]").click();
@@ -29,7 +29,7 @@ describe("Settings Page", function() {
     cy.get("[data-cy=header-menu]").click();
 
     // select settings
-    cy.get("[data-cy=settings-menuitem]").click();
+    cy.get("[data-cy=settings-menuitem]").click({ force: true });
 
     cy.contains(newIdTitle)
       .parent("tr")

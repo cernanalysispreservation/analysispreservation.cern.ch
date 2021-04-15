@@ -28,8 +28,8 @@ const MultipleMenu = ({ logout, permissions, openModal }) => {
       right={15}
       hoverColor="rgba(67,135,170,1)"
       iconWrapperClassName="headerMenuAppp"
-      dataCy="header-menu"
       minWidth="300px"
+      dataCy="header-menu"
     >
       <MultipleMenus
         onClick={() => setDisplayMenu(undefined)}
