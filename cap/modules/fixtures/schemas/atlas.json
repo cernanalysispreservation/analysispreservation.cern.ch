@@ -5,6 +5,42 @@
   "experiment": "ATLAS",
   "is_indexed": true,
   "use_deposit_as_record": true,
+    "config": {
+      "repositories": {
+        "github": {
+          "admin": "ATLAS_ADMIN_GITHUB",
+          "org_name": "CAPTestOrg",
+          "repo_name": {
+            "template": "repos/name/atlas.html",
+            "context": {},
+            "default": "atlas-repo-test"
+          },
+          "private": false,
+          "license": null,
+          "description": {
+            "template": "repos/description/atlas.html",
+            "context": {},
+            "default": "Repository for ATLAS analysis."
+          }
+        },
+        "gitlab": {
+          "admin": "ATLAS_ADMIN_GITLAB",
+          "org_name": "CAPTest",
+          "repo_name": {
+            "template": "repos/name/atlas.html",
+            "context": {},
+            "default": "atlas-repo-test"
+          },
+          "private": false,
+          "license": null,
+          "description": {
+            "template": "repos/description/atlas.html",
+            "context": {},
+            "default": "Repository for ATLAS analysis."
+          }
+        }
+      }
+    },
   "deposit_schema": {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "ATLAS Analysis",

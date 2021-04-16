@@ -560,8 +560,9 @@ def test_gitlab_api_repo_id(m_get_branch_and_sha, m_gitlab):
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_create_repo(m_gitlab, gitlab_token, example_user):
     class MockRepo:
-        def get_id(self):
-            return 12345
+        attributes = {
+            'web_url': 'test-url'
+        }
 
     class MockProjectManager:
         def create(self, attrs):
@@ -570,4 +571,4 @@ def test_gitlab_api_create_repo(m_gitlab, gitlab_token, example_user):
     m_gitlab.return_value = Mock(projects=MockProjectManager())
 
     new_repo = GitlabAPI.create_repo(example_user.id, 'new_project', 'gitlab.com')
-    assert new_repo == 12345
+    assert new_repo == 'test-url'

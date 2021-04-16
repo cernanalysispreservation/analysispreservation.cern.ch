@@ -886,3 +886,7 @@ APP_DEFAULT_SECURE_HEADERS = {
 #: Path of the file that will contain the generated tokens.
 #: The path comes from the shared volume between web-api and cap-client.
 TESTS_E2E_TOKEN_FILE = '/test_data/test_tokens'
+# GitHub/GitLab API credentials
+# =============================
+ATLAS_ADMIN_GITHUB = os.environ.get("CAP_ATLAS_ADMIN_GITHUB")
+ATLAS_ADMIN_GITLAB = os.environ.get("CAP_ATLAS_ADMIN_GITHUB")
