@@ -46,7 +46,7 @@ def parse_git_url(url):
     git_regex = re.compile(
         '''
         (?:https|http)://
-        (?P<host>(?:github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch))
+        (?P<host>(?:github\.com|gitlab\.cern\.ch|gitlab\.com))
         [:|\/]
         (?P<owner>[\w-]+)\/
         (?P<repo>[\w\.-]+)
@@ -88,7 +88,7 @@ def ensure_content_length(resp):
     return resp
 
 
-def create_webhook(record_id, api, type_='release'):
+def create_webhook(record_id, api, type_=None):
     """
     Create webhook.
 
@@ -99,33 +99,39 @@ def create_webhook(record_id, api, type_='release'):
     with db.session.begin_nested():
         # release event cannot be on branch
         branch = None if type_ == 'release' else api.branch
+        repo = GitRepository.create_or_get(
+            api.repo_id, api.host, api.owner, api.repo)
 
-        repo = GitRepository.create_or_get(api.repo_id, api.host, api.owner,
-                                           api.repo)
         try:
-            webhook = GitWebhook.query.filter_by(event_type=type_,
-                                                 repo_id=repo.id,
-                                                 branch=branch).one()
+            webhook = GitWebhook.query.filter_by(
+                event_type=type_, repo_id=repo.id, branch=branch).one()
+
         except NoResultFound:
-            hook_id, hook_secret = api.create_webhook(type_)
-            webhook = GitWebhook(event_type=type_,
-                                 repo_id=repo.id,
-                                 branch=branch,
-                                 external_id=hook_id,
-                                 secret=hook_secret)
+            if type_:
+                hook_id, hook_secret = api.create_webhook(type_)
+                webhook = GitWebhook(
+                    event_type=type_, repo_id=repo.id, branch=branch,
+                    external_id=hook_id, secret=hook_secret)
+            else:
+                webhook = GitWebhook(repo_id=repo.id, branch=branch)
+
             db.session.add(webhook)
 
         try:
             GitWebhookSubscriber.query.filter_by(
                 record_id=record_id,
                 user_id=current_user.id,
-                webhook_id=webhook.id,
+                webhook_id=webhook.id
             ).one()
-            raise GitIntegrationError(
-                f'Analysis already connected with {type_} webhook.')
+
+            if type_:
+                raise GitIntegrationError(
+                    f'Analysis already connected with {type_} webhook.')
+
         except NoResultFound:
-            subscriber = GitWebhookSubscriber(record_id=record_id,
-                                              user_id=current_user.id)
+            subscriber = GitWebhookSubscriber(
+                record_id=record_id,
+                user_id=current_user.id)
             webhook.subscribers.append(subscriber)
 
     db.session.commit()

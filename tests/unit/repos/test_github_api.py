@@ -496,10 +496,12 @@ def test_github_api_ping_webhook_when_hook_doesnt_exist_raises_GitObjectNotFound
 @patch('cap.modules.repos.github_api.Github')
 def test_github_api_create_repo(m_github, github_token, example_user):
     class MockRepo:
-        id = 12345
+        html_url = 'test'
 
     class MockUser:
-        def create_repo(self, repo_name):
+        def create_repo(self, repo_name, description='',
+                        private=False, license_template=None,
+                        org_name=None, auto_init=True):
             return MockRepo()
 
     class MockProject:
@@ -509,4 +511,4 @@ def test_github_api_create_repo(m_github, github_token, example_user):
     m_github.return_value = MockProject()
 
     new_repo = GithubAPI.create_repo(example_user.id, 'new_project')
-    assert new_repo == 12345
+    assert new_repo == 'test'

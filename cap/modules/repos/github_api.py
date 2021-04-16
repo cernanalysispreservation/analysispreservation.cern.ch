@@ -27,10 +27,12 @@ import hashlib
 import hmac
 
 from flask import request
-from github import Github, GithubException, UnknownObjectException, \
-    BadCredentialsException
+from flask_login import current_user
+from github import Github, GithubException, GithubObject,\
+    UnknownObjectException, BadCredentialsException
 
 from cap.modules.auth.ext import _fetch_token
+from cap.modules.deposit.errors import FileUploadError
 
 from .errors import (GitError, GitIntegrationError, GitObjectNotFound,
                      GitRequestWithInvalidSignature, GitUnauthorizedRequest)
@@ -163,32 +165,64 @@ class GithubAPI(GitAPI):
         return branch, sha
 
     @classmethod
-    def create_repo(cls, user_id, repo_name, description='',
-                    private=False, readme=False, license=None,
-                    org_name=None):
+    def create_repo(cls, token, repo_name, description,
+                    private, license, org_name):
         """
         Create a github repo as user/organization.
         The available licenses can be found here:
         https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository  # noqa
         """
+        gh = Github(token)
+        api = gh.get_organization(org_name) if org_name else gh.get_user()
+        license = license if license else GithubObject.NotSet
+
+        try:
+            return api.create_repo(
+                repo_name, description=description,
+                private=private, auto_init=True,
+                license_template=license)
+
+        except (BadCredentialsException,
+                UnknownObjectException,
+                GithubException) as ex:
+            raise FileUploadError(description=ex.data.get('message'))
+
+    @classmethod
+    def create_repo_as_user(cls, user_id, repo_name, description='',
+                            private=False, license=None, org_name=None,
+                            host=None):
+        """Create repo a user, using the current user's token."""
         token = cls._get_token(user_id)
         if not token:
             raise GitUnauthorizedRequest(
                 'Github requires authorization - '
                 'connect your CERN account: Settings -> Integrations.')
+
+        repo = cls.create_repo(
+            token, repo_name, description,
+            private, license, org_name)
+        return repo
+
+    @classmethod
+    def create_repo_as_collaborator(cls, create_token, org_name, repo_name,
+                                    description='', private=False,
+                                    license=None, host=None):
+        """
+        Create repo through an organization admin,
+        adding the current user as a member/collaborator.
+        """
+        repo = cls.create_repo(
+            create_token, repo_name, description,
+            private, license, org_name)
+
         try:
-            gh = Github(token)
-            api = gh.get_organization(org_name) if org_name else gh.get_user()
-            api.create_repo(
-                repo_name, description=description,
-                private=private, auto_init=readme,
-                license_template=license)
-        except BadCredentialsException:
-            raise
-        except UnknownObjectException:
-            raise
-        except GithubException:
-            raise
+            collab_token = cls._get_token(current_user.id)
+            collaborator = Github(collab_token).get_user().login
+            invitation = repo.add_to_collaborators(collaborator)
+
+            return repo, invitation
+        except UnknownObjectException as ex:
+            raise FileUploadError(description=ex.data.get('message'))
 
     @classmethod
     def _get_token(cls, user_id):
