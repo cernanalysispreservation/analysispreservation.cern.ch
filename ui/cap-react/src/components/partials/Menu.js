@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import ReactDOM from "react-dom";
+import Button from "./Button";
 
 import { AiOutlineUser } from "react-icons/ai";
 import styled from "styled-components";
@@ -28,7 +29,8 @@ const Menu = ({
   iconWrapperClassName = "",
   padding = "5px",
   minWidth = "120px",
-  shadow = false
+  shadow = false,
+  buttonProps = null
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dropDownMenu = useRef(null);
@@ -69,15 +71,23 @@ const Menu = ({
 
   return (
     <Box ref={dropDownMenu} className="menu" data-cy="header-menu">
-      <Wrapper
-        hover={hoverColor}
-        expanded={expanded}
-        padding={padding}
-        onClick={() => setExpanded(!expanded)}
-        className={iconWrapperClassName}
-      >
-        {icon}
-      </Wrapper>
+      {buttonProps ? (
+        <Button
+          primary
+          {...buttonProps}
+          onClick={() => setExpanded(!expanded)}
+        />
+      ) : (
+        <Wrapper
+          hover={hoverColor}
+          expanded={expanded}
+          padding={padding}
+          onClick={() => setExpanded(!expanded)}
+          className={iconWrapperClassName}
+        >
+          {icon}
+        </Wrapper>
+      )}
       <Box
         style={{
           position: "absolute",
@@ -109,7 +119,8 @@ Menu.propTypes = {
   padding: PropTypes.string,
   minWidth: PropTypes.string,
   shadow: PropTypes.bool,
-  iconWrapperClassName: PropTypes.string
+  iconWrapperClassName: PropTypes.string,
+  buttonProps: PropTypes.object
 };
 
 export default Menu;
