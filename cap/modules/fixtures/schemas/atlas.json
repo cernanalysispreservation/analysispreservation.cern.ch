@@ -12,15 +12,23 @@
           "org_name": "CAPTestOrg",
           "repo_name": {
             "template": "repos/name/atlas.html",
-            "context": {},
-            "default": "atlas-repo-test"
+            "ctx": {
+              "glance_id": {
+                "type": "path",
+                "path": "basic_info.glance_id"
+              }
+            }
           },
           "private": false,
           "license": null,
           "description": {
             "template": "repos/description/atlas.html",
-            "context": {},
-            "default": "Repository for ATLAS analysis."
+            "ctx": {
+              "glance_id": {
+                "type": "path",
+                "path": "basic_info.glance_id"
+              }
+            }
           }
         },
         "gitlab": {
@@ -28,15 +36,23 @@
           "org_name": "CAPTest",
           "repo_name": {
             "template": "repos/name/atlas.html",
-            "context": {},
-            "default": "atlas-repo-test"
+            "ctx": {
+              "glance_id": {
+                "type": "path",
+                "path": "basic_info.glance_id"
+              }
+            }
           },
           "private": false,
           "license": null,
           "description": {
             "template": "repos/description/atlas.html",
-            "context": {},
-            "default": "Repository for ATLAS analysis."
+            "ctx": {
+              "glance_id": {
+                "type": "path",
+                "path": "basic_info.glance_id"
+              }
+            }
           }
         }
       }
