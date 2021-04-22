@@ -345,6 +345,10 @@ def test_upload_when_repo_file(m_gitlab, client, deposit,
 @patch('cap.modules.deposit.api.create_git_api')
 def test_create_repo_and_attach(
         m_create_api, m_api, client, deposit, auth_headers_for_example_user, json_headers, git_repo_tar):
+    class MockRepo(object):
+        attributes = {
+            'web_url': 'https://gitlab.cern.ch/owner/repository/'
+        }
 
     class MockAPI(object):
         branch = None
@@ -357,9 +361,9 @@ def test_create_repo_and_attach(
             return 'id', 'secret'
 
     class MockProject(object):
-        def create_repo(cls, user_id, repo_name, description='',
-                        private=False, license=None, org_name=None):
-            return 'http://github.com/owner/repository'
+        def create_repo_as_user(cls, user_id, repo_name, description='',
+                                private=False, license=None, org_name=None, host=None):
+            return MockRepo()
 
     m_api.return_value = MockProject()
     m_create_api.return_value = MockAPI()
