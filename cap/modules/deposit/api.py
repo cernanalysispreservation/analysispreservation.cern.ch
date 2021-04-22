@@ -59,7 +59,7 @@ from cap.modules.repos.errors import GitError
 from cap.modules.repos.factory import create_git_api, host_to_git_api
 from cap.modules.repos.tasks import download_repo, download_repo_file
 from cap.modules.repos.utils import (create_webhook, disconnect_subscriber,
-                                     parse_git_url)
+                                     parse_git_url, populate_template_from_ctx)
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
                                            schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
@@ -269,7 +269,6 @@ class CAPDeposit(Deposit, Reviewable):
 
     def create_repo_as_collaborator_and_attach(self, record_uuid, data):
         config = self.schema.config.get('repositories', {})
-
         if not config:
             raise FileUploadError(
                 'No config found. Cannot create a repo for this analysis.')
@@ -282,9 +281,8 @@ class CAPDeposit(Deposit, Reviewable):
         if not token:
             raise FileUploadError(f'Admin API key for {host} is not provided.')
 
-        # TODO: use templates here, for now use the defaults
-        name = repos.get('repo_name', {}).get('default')
-        desc = repos.get('description', {}).get('default')
+        name = populate_template_from_ctx(self, repos.get('repo_name'))
+        desc = populate_template_from_ctx(self, repos.get('description'))
         organization = repos.get('org_name')
 
         api = host_to_git_api(host)
