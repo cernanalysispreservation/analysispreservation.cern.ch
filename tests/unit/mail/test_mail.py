@@ -65,6 +65,7 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
                 headers=auth_headers_for_user(user)
             )
             assert resp.status_code == 202
+            pid = resp.json['recid']
 
             # hypernews mail needs to be sent as plain text
             hypernews_mail = outbox[0]
@@ -73,7 +74,7 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
             # subject is the same in both
             assert hypernews_mail.subject == \
                    standard_mail.subject == \
-                   'Questionnaire for ABC-11-111 - New Published Analysis | CERN Analysis Preservation'
+                   f'Questionnaire for ABC-11-111 {pid} - New Published Analysis | CERN Analysis Preservation'
 
             # hypernews
             # message

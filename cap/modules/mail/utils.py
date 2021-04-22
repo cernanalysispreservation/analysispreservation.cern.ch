@@ -69,9 +69,13 @@ def create_base_message(deposit, host_url, params=None):
     return msg
 
 
-def create_base_subject(config, cadi_id):
-    return f"Questionnaire for {cadi_id} - " \
-        if cadi_id else config.get("email_subject")
+def create_base_subject(config, cadi_id, recid=None):
+    if not recid:
+        return f"Questionnaire for {cadi_id} - " \
+            if cadi_id else config.get("email_subject")
+    else:
+        return f"Questionnaire for {cadi_id} {recid} - " \
+            if cadi_id else f"Questionnaire for {recid} - "
 
 
 def add_hypernews_mail_to_recipients(recipients, cadi_id):
@@ -154,7 +158,9 @@ def get_cms_stat_recipients(record, host_url, config):
     if cadi_id:
         add_hypernews_mail_to_recipients(recipients, cadi_id)
 
-    subject = create_base_subject(config, cadi_id)
+    recid = record['_deposit']['pid']['value']
+
+    subject = create_base_subject(config, cadi_id, recid)
     message = create_base_message(record, host_url, params)
     message += f"Submitted by {current_user.email}."
 

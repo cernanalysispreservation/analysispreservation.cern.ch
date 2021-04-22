@@ -54,9 +54,10 @@ def test_subject_and_message_on_publish(mock_path_value, mock_user, app, default
         experiment='CMS',
         publish=True
     )
+    pid = record['_deposit']['pid']['value']
     subject, message, _ = get_cms_stat_recipients(record, host_url, config)
 
-    assert subject == "Questionnaire for ABC-11-111 - "
+    assert subject == f"Questionnaire for ABC-11-111 {pid} - "
     assert 'Title: test analysis' in message
     assert 'CADI URL: https://cms.cern.ch/' \
            'iCMS/analysisadmin/cadi?ancode=ABC-11-111' in message
@@ -73,9 +74,10 @@ def test_subject_and_message_on_publish(mock_path_value, mock_user, app, default
         experiment='CMS',
         publish=True
     )
+    pid = record['_deposit']['pid']['value']
     subject, message, _ = get_cms_stat_recipients(record, host_url, config)
 
-    assert subject == 'CMS Statistics Committee - '
+    assert subject == f'Questionnaire for {pid} - '
     assert 'CADI URL: https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=None' in message
 
 
