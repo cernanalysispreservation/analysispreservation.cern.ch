@@ -216,6 +216,9 @@ label {
 
 // xsmall
 @media only screen and (min-width: 320px) {
+  .small-center-medium-between {
+    justify-content: center;
+  }
   // grommet padding changes when smaller screens
   // make sure to keep it consistent
   .grommetux-form-field__contents > div.grommetux-box--pad-horizontal-medium {
@@ -420,6 +423,9 @@ label {
 
 // medium
 @media only screen and (min-width: 720px) {
+  .small-center-medium-between {
+    justify-content: space-between;
+  }
   #published-preview-page .rjsf > #fieldTemplate:not(.align-form-center),
   #published-preview-page
     .rjsf

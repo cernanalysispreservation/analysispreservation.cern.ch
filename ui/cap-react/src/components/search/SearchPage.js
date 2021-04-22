@@ -10,7 +10,7 @@ import { FiSliders } from "react-icons/fi";
 import Empty from "../../img/empty_search.svg";
 
 import SearchFacets from "./SearchFacets";
-import SearchUtils from "./SearchUtils";
+import Pagination from "../partials/Pagination";
 import SearchResults from "./SearchResults";
 import SearchTag from "./SearchTag";
 
@@ -22,6 +22,7 @@ import SearchResultsLoading from "./SearchResultsLoading";
 import SearchFilterLayer from "./SearchFilterLayer";
 
 import DocumentTitle from "../partials/Title";
+import SortSelect from "./SortSelect";
 import Button from "../partials/Button";
 
 class SearchPage extends React.Component {
@@ -44,6 +45,7 @@ class SearchPage extends React.Component {
 
   _changePageSize(size) {
     let currentParams = queryString.parse(this.props.location.search);
+
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, { size: size })
@@ -72,6 +74,17 @@ class SearchPage extends React.Component {
     this.props.history.push(location);
   };
 
+  _updateSortOption = sort => {
+    let currentParams = queryString.parse(this.props.location.search);
+
+    const location = {
+      search: `${queryString.stringify(
+        Object.assign(currentParams, { sort: sort })
+      )}`
+    };
+    this.props.history.push(location);
+  };
+
   _updateSearchQuery = (param, item) => {
     let currentParams = queryString.parse(this.props.location.search);
     if (param === "query") {
@@ -89,19 +102,18 @@ class SearchPage extends React.Component {
     this.props.history.push(location);
   };
 
-  _changePage(page) {
+  _changePage(page, size) {
     let currentParams = queryString.parse(this.props.location.search);
 
     const location = {
       search: `${queryString.stringify(
-        Object.assign(currentParams, { page: page })
+        Object.assign(currentParams, { page: page, size: size })
       )}`
     };
     this.props.history.push(location);
   }
 
   render() {
-    let utils;
     let total = null;
     let results = null;
     let queryParams = 0;
@@ -128,25 +140,6 @@ class SearchPage extends React.Component {
 
     if (_results && _results.hits) {
       total = _results.hits.total;
-      utils = (
-        <SearchUtils
-          loading={this.props.loading}
-          currentPage={
-            this.props.selectedAggs.page
-              ? parseInt(this.props.selectedAggs.page)
-              : 1
-          }
-          size={
-            this.props.selectedAggs.size
-              ? parseInt(this.props.selectedAggs.size)
-              : 10
-          }
-          total={total || 0}
-          onPageChange={this._changePage.bind(this)}
-          onPageSizeChange={this._changePageSize.bind(this)}
-        />
-      );
-
       results = this.props.loading ? (
         <Box flex={false} justify="center" align="center">
           <SearchResultsLoading />
@@ -170,7 +163,27 @@ class SearchPage extends React.Component {
       ) : (
         <Box flex={false} justify="center" align="center">
           <SearchResults results={_results.hits.hits || []} />
-          {utils}
+          <Box>
+            {total > 10 && (
+              <Pagination
+                className="search-pagination-bottom"
+                total_results={total || 0}
+                size={
+                  this.props.selectedAggs.size
+                    ? Number(this.props.selectedAggs.size)
+                    : 10
+                }
+                current_page={
+                  this.props.selectedAggs.page
+                    ? Number(this.props.selectedAggs.page)
+                    : 1
+                }
+                onPageChange={this._changePage.bind(this)}
+                onPageSizeChange={this._changePageSize.bind(this)}
+                showSizeChanger
+              />
+            )}
+          </Box>
         </Box>
       );
     }
@@ -242,6 +255,43 @@ class SearchPage extends React.Component {
                 onClick={this._updateParams}
                 removeQuery={this._updateSearchQuery}
               />
+              <Box
+                className="small-center-medium-between"
+                align="center"
+                direction="row"
+              >
+                <Box align="center">
+                  <SortSelect
+                    onChange={val => this._updateSortOption(val)}
+                    locationSort={
+                      queryString.parse(this.props.location.search).sort
+                    }
+                  />
+                </Box>
+
+                <Box>
+                  {total > 10 && (
+                    <Pagination
+                      className="search-pagination-top"
+                      total_results={total || 0}
+                      size={
+                        this.props.selectedAggs.size
+                          ? Number(this.props.selectedAggs.size)
+                          : 10
+                      }
+                      current_page={
+                        this.props.selectedAggs.page
+                          ? Number(this.props.selectedAggs.page)
+                          : 1
+                      }
+                      onPageChange={this._changePage.bind(this)}
+                      onPageSizeChange={this._changePageSize.bind(this)}
+                      showSizeChanger={false}
+                      showPrevNextJumpers={false}
+                    />
+                  )}
+                </Box>
+              </Box>
               {results}
             </Box>
           </Box>
