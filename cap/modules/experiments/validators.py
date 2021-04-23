@@ -57,5 +57,5 @@ def validate_das_path(validator, value, instance, schema):
 
 def validate_cadi_id(validator, value, instance, schema):
     from .utils.cadi import get_from_cadi_by_id
-    if not get_from_cadi_by_id(instance):
+    if not get_from_cadi_by_id(instance, from_validator=True):
         yield ValidationError("{} not found in CADI.".format(instance))

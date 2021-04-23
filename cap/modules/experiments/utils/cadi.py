@@ -28,7 +28,7 @@ from itertools import islice
 
 import requests
 from elasticsearch_dsl import Q
-from flask import current_app
+from flask import current_app, abort
 from invenio_db import db
 from invenio_search import RecordsSearch
 
@@ -174,7 +174,7 @@ def _get_admin_egroups(wg):
     return roles
 
 
-def get_from_cadi_by_id(cadi_id):
+def get_from_cadi_by_id(cadi_id, from_validator=False):
     """Retrieve entry with given id from CADI database.
 
     :params str cadi_id: CADI identifier
@@ -185,9 +185,14 @@ def get_from_cadi_by_id(cadi_id):
         id=cadi_id.upper())
 
     cookie = get_sso_cookie_for_cadi()
-    response = requests.get(url, cookies=cookie)
+    response = requests.get(url, cookies=cookie, verify=False)
 
     if not response.ok:
+        if from_validator:
+            return False
+        if response.status_code == 404:
+            abort(400, 'No CADI entry found')
+
         raise ExternalAPIException(response)
 
     entry = response.json()
@@ -206,7 +211,7 @@ def get_all_from_cadi():
     url = current_app.config.get('CADI_GET_ALL_URL')
 
     cookie = get_sso_cookie_for_cadi()
-    response = requests.get(url=url, cookies=cookie)
+    response = requests.get(url=url, cookies=cookie, verify=False)
 
     if not response.ok:
         raise ExternalAPIException(response)

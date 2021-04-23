@@ -616,12 +616,13 @@ CMS_COORDINATORS_EGROUP = 'cms-physics-coordinator@cern.ch'
 CMS_CONVENERS_EGROUP = 'cms-phys-conveners-{wg}@cern.ch'
 
 #: CADI database
-CADI_AUTH_URL = 'https://icms.cern.ch/tools/api/cadiLine/BPH-13-009'
-CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools/api/updatedCadiLines/'
-CADI_GET_ALL_URL = 'https://icms.cern.ch/tools/restplus/relay/piggyback/' + \
-    'cadi/history/capInfo'
-CADI_GET_RECORD_URL = 'https://icms.cern.ch/tools/restplus/relay/' + \
-    'piggyback/cadi/history/capInfo/{id}'
+CADI_AUTH_URL = 'https://icms.cern.ch/tools-api/restplus/' + \
+                'relay/piggyback/cadi/history/capInfo/BPH-13-009'
+CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools-api/api/updatedCadiLines/'
+CADI_GET_ALL_URL = 'https://icms.cern.ch/tools-api/restplus/' + \
+                   'relay/piggyback/cadi/history/capInfo'
+CADI_GET_RECORD_URL = 'https://icms.cern.ch/tools-api/restplus' + \
+                      '/relay/piggyback/cadi/history/capInfo/{id}'
 CADI_REGEX = "^[A-Z]{3}-[0-9]{2}-[0-9]{3}$"
 
 # ATLAS

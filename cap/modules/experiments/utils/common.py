@@ -28,7 +28,8 @@ from itertools import count, groupby
 from os.path import join
 from subprocess import CalledProcessError, check_output
 
-import cern_sso
+import cern_sso as cern_sso_old
+import cap.modules.experiments.utils.cern_sso as cern_sso_current
 from cachetools.func import ttl_cache
 from elasticsearch import helpers
 from flask import current_app
@@ -73,6 +74,26 @@ def kinit(principal, keytab):
 
 
 @ttl_cache(ttl=86000)  # cookie expires after 24 hours
+def generate_krb_cookie_cern_sso_old(principal, kt, url):
+    """Generate a HTTP cookie with given kerberos credentials.
+
+    :param str principal: Kerberos principal, e.g. user@CERN.CH
+    :param str kt: Keytab filename e.g user.keytab
+    :param str url: URL
+
+    :returns: Generated HTTP Cookie
+    :rtype `requests.cookies.RequestsCookieJar`
+    """
+    @kinit(principal, kt)
+    def generate(url):
+        cookie = cern_sso_old.krb_sign_on(url)
+
+        return cookie
+
+    return generate(url)
+
+
+@ttl_cache(ttl=86000)  # cookie expires after 24 hours
 def generate_krb_cookie(principal, kt, url):
     """Generate a HTTP cookie with given kerberos credentials.
 
@@ -85,7 +106,8 @@ def generate_krb_cookie(principal, kt, url):
     """
     @kinit(principal, kt)
     def generate(url):
-        cookie = cern_sso.krb_sign_on(url)
+        cookie = cern_sso_current.save_sso_cookie(url, False, "auth.cern.ch")
+
         return cookie
 
     return generate(url)

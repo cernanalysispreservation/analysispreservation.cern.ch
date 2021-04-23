@@ -81,7 +81,7 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
     output = get_from_cadi_by_id(cadi_id)
 
     # check that requst to glance is called with correct url and cookie
-    url = 'https://icms.cern.ch/tools/restplus/relay/' + \
+    url = 'https://icms.cern.ch/tools-api/restplus/relay/' + \
           'piggyback/cadi/history/capInfo/{id}'.format(id=cadi_id)
     assert responses.calls[0].request.url == url
     assert responses.calls[0].request._cookies == cookie
@@ -155,7 +155,7 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
     output = list(get_all_from_cadi())
 
     # check that request to glance is called with correct url and cookie
-    url = 'https://icms.cern.ch/tools/restplus/relay/piggyback/' + \
+    url = 'https://icms.cern.ch/tools-api/restplus/relay/piggyback/' + \
           'cadi/history/capInfo'
     assert responses.calls[0].request.url == url
     assert responses.calls[0].request._cookies == cookie
