@@ -82,7 +82,7 @@ const SelectWidget = function(props) {
 
   let _optionSelected = option => {
     if (props.value || props.value === false || props.value === 0) {
-      if (type === "boolean" || (type === "string" && props.value.indexOf)) {
+      if (type === "boolean" || type === "number" || (type === "string" && props.value.indexOf)) {
         return props.value === option;
       }
       if (type === "array") {
