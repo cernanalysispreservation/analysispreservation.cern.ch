@@ -421,7 +421,7 @@
                           },
                           "title": "Triggers",
                           "type": "array",
-                          "description": "Add selection triggers here",
+                          "description": "Add selection of triggers from list matched with selected path and year",
                           "id": "triggers"
                         }
                       }
@@ -446,6 +446,31 @@
             "type": "array",
             "description": "Please list all Monte Carlo Signal datasets",
             "id": "mc_sig_datasets"
+          },
+          "custom_datasets": {
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "title": "Dataset Type",
+                  "type": "string",
+                  "enum": [
+                    "Primary dataset",
+                    "MC signal datasets",
+                    "MC background datasets"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "title": "Path"
+                }
+              },
+              "required": ["path"]
+            },
+            "title": "Custom Datasets",
+            "type": "array",
+            "description": "Please list all custom datasets that couldn't be found from the DAS search",
+            "id": "custom_datasets"
           }
         },
         "title": "Input Data",
@@ -778,6 +803,16 @@
               "json_files": {
                 "type": "text",
                 "analyzer": "lowercase_whitespace_analyzer"
+              },
+              "custom_datasets": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "text",
+                    "copy_to": "dataset",
+                    "analyzer": "lowercase_whitespace_analyzer"
+                  }
+                }
               }
             }
           },
@@ -1175,6 +1210,7 @@
         "primary_datasets",
         "mc_sig_datasets",
         "mc_bg_datasets",
+        "custom_datasets",
         "json_files",
         "*"
       ],
@@ -1215,6 +1251,22 @@
                 }
               }
             }
+          }
+        }
+      },
+      "custom_datasets": {
+        "ui:options": {
+          "latex": "path",
+          "import": {
+            "to": "path",
+            "description": "Paste your list here. Insert one dataset path per line",
+            "placeholder": "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
+          }
+        },
+        "items": {
+          "ui:order": ["type", "path", "*"],
+          "ui:options": {
+            "stringify": ["path"]
           }
         }
       }
