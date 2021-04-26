@@ -826,6 +826,49 @@ def test_put_when_not_an_schema_owner_returns_403(
     assert resp.status_code == 403
 
 
+def test_put_schema_with_valid_config(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['cms_user']
+    schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        deposit_schema={'title': 'deposit_schema'},
+        config={'reviewable': True},
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=json.dumps(schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+
+
+def test_put_schema_with_invalid_config(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['cms_user']
+    schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        deposit_schema={'title': 'deposit_schema'},
+        config={'reviewable': 123},  # INVALID, SHOULD FAIL
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=json.dumps(schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == [{
+        'field': ['reviewable'],
+        'message': "123 is not of type 'boolean'"
+    }]
+
 #####################################
 # api/jsonschemas/{id}/{version}  [DELETE]
 #####################################

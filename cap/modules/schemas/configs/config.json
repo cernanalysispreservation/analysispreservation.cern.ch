@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "title": "General Configuration",
+  "additionalProperties":false,
+  "properties": {
+    "notifications": {
+      "$ref": "/cap/modules/schemas/configs/configs/notifications.json"
+    },
+    "reviewable": {
+      "$ref": "/cap/modules/schemas/configs/reviewable.json"
+    },
+    "repositories": {
+      "$ref": "/cap/modules/schemas/configs/repositories.json"
+    }
+  }
+}

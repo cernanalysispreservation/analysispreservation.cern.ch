@@ -1,0 +1,182 @@
+{
+  "type": "object",
+  "title": "Repositories",
+  "properties": {
+    "github": {
+      "type": "object",
+      "title": "Github configuration",
+      "properties": {
+        "admin": {
+          "type": "string",
+          "title": "Admin key of the experiment"
+        },
+        "org_name": {
+          "type": "string",
+          "title": "Organization Name"
+        },
+        "private": {
+          "type": "boolean",
+          "private": "Private Repo"
+        },
+        "license": {
+          "type": "string",
+          "title": "License"
+        },
+        "repo_name": {
+          "type": "object",
+          "title": "Repository Name",
+          "properties": {
+            "template": {
+              "type": "string",
+              "title": "Repo name template path"
+            },
+            "ctx": {
+              "type": "array",
+              "title": "Repo name context options",
+              "uniqueItems": true,
+              "items": {
+                "type":"object",
+                "title": "Context Option",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["path", "method"]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method that retrieves the value"
+                  },
+                  "path": {
+                    "type": "string",
+                    "title": "The path that retrieves the value"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": {
+          "type": "object",
+          "title": "Repository Description",
+          "properties": {
+            "template": {
+              "type": "string",
+              "title": "Repo description template path"
+            },
+            "ctx": {
+              "type": "array",
+              "title": "Repo description context options",
+              "uniqueItems": true,
+              "items": {
+                "type":"object",
+                "title": "Context Option",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["path", "method"]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method that retrieves the value"
+                  },
+                  "path": {
+                    "type": "string",
+                    "title": "The path that retrieves the value"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "gitlab": {
+      "type": "object",
+      "title": "Gitlab configuration",
+      "properties": {
+        "admin": {
+          "type": "string",
+          "title": "Admin key of the experiment"
+        },
+        "org_name": {
+          "type": "string",
+          "title": "Organization Name"
+        },
+        "private": {
+          "type": "boolean",
+          "private": "Private Repo"
+        },
+        "license": {
+          "type": "string",
+          "title": "License"
+        },
+        "repo_name": {
+          "type": "object",
+          "title": "Repository Name",
+          "properties": {
+            "template": {
+              "type": "string",
+              "title": "Repo name template path"
+            },
+            "ctx": {
+              "type": "array",
+              "title": "Repo name context options",
+              "uniqueItems": true,
+              "items": {
+                "type":"object",
+                "title": "Context Option",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["path", "method"]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method that retrieves the value"
+                  },
+                  "path": {
+                    "type": "string",
+                    "title": "The path that retrieves the value"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": {
+          "type": "object",
+          "title": "Repository Description",
+          "properties": {
+            "template": {
+              "type": "string",
+              "title": "Repo description template path"
+            },
+            "ctx": {
+              "type": "array",
+              "title": "Repo description context options",
+              "uniqueItems": true,
+              "items": {
+                "type":"object",
+                "title": "Context Option",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["path", "method"]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method that retrieves the value"
+                  },
+                  "path": {
+                    "type": "string",
+                    "title": "The path that retrieves the value"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

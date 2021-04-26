@@ -36,7 +36,8 @@ from cap.modules.access.utils import login_required
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
 from .serializers import schema_serializer, update_schema_serializer
-from .utils import get_indexed_schemas_for_user, get_schemas_for_user
+from .utils import get_indexed_schemas_for_user, get_schemas_for_user, \
+    validate_schema_config
 
 blueprint = Blueprint(
     'cap_schemas',
@@ -83,6 +84,7 @@ class SchemaAPI(MethodView):
         """Create new schema."""
         data = request.get_json()
 
+        self._validate_config(data)
         serialized_data, errors = schema_serializer.load(data)
 
         if errors:
@@ -110,6 +112,8 @@ class SchemaAPI(MethodView):
 
         with AdminSchemaPermission(schema).require(403):
             data = request.get_json()
+
+            self._validate_config(data)
             serialized_data, errors = update_schema_serializer.load(
                 data, partial=True)
 
@@ -133,6 +137,13 @@ class SchemaAPI(MethodView):
             db.session.commit()
 
             return 'Schema deleted.', 204
+
+    def _validate_config(self, data):
+        config = data.get('config')
+        if config:
+            errors = validate_schema_config(config)
+            if errors:
+                raise abort(400, errors)
 
 
 schema_view_func = SchemaAPI.as_view('schemas')

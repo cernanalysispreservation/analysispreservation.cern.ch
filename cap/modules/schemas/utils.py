@@ -23,8 +23,16 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Utils for Schemas module."""
 
+import os
+import json
 import re
+import pathlib
 from itertools import groupby
+
+from jsonschema import Draft4Validator, RefResolver
+from invenio_rest.errors import FieldError
+
+from cap.modules.records.errors import get_error_path
 
 from .models import Schema
 from .permissions import ReadSchemaPermission
@@ -104,3 +112,33 @@ def is_later_version(version1, version2):
                 return False
             elif patch1 == patch2:
                 return False
+
+
+def validate_schema_config(config_data):
+    cwd = pathlib.Path(__file__).parent.absolute()
+    with open(cwd.joinpath('configs/config.json')) as json_:
+        schema = json.load(json_)
+
+    schema_store = {}
+    schema_search_path = 'cap/modules/schemas/configs'
+    fnames = os.listdir(schema_search_path)
+
+    for fname in fnames:
+        fpath = os.path.join(schema_search_path, fname)
+        if fpath.endswith(".json") and not fpath.endswith("config.json"):
+            with open(fpath, "r") as schema_fd:
+                _schema = json.load(schema_fd)
+                schema_store[f'file:///{fpath}'] = _schema
+
+    resolver = RefResolver(
+        "file:///cap/modules/schemas/configs/config.json",
+        schema, schema_store
+    )
+    validator = Draft4Validator(schema, resolver=resolver)
+
+    errors = [
+        FieldError(get_error_path(error), str(error.message)).res
+        for error in validator.iter_errors(config_data)
+    ]
+
+    return errors
