@@ -45,13 +45,13 @@ def create_and_send(template, ctx, subject, recipients,
             msg = TemplatedMessage(template_body=template,
                                    ctx=ctx,
                                    **dict(sender=sender,
-                                          bcc=recipients,
+                                          recipients=recipients,
                                           subject=subject))
         else:
             msg = TemplatedMessage(template_html=template,
                                    ctx=ctx,
                                    **dict(sender=sender,
-                                          bcc=recipients,
+                                          recipients=recipients,
                                           subject=subject))
         current_app.extensions['mail'].send(msg)
 
