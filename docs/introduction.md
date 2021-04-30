@@ -24,7 +24,7 @@ Find our contact information [here](./support.md).
   - [Though CAP client](./tutorials.md#cap-client)
   - [Through REANA](./tutorials.md#reusable-analyses-reana)
 - [What is a JSON Schema?](./schema.md)
-- [Authorisation and Access](./access/.md)
+- [Authorisation and Access](./access.md)
 
 ##### How To Guides
 
