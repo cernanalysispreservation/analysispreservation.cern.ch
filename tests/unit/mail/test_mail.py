@@ -85,8 +85,8 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
                    in hypernews_mail.body
             assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in hypernews_mail.body
             # recipients
-            assert 'ml-conveners-test@cern0.ch' not in hypernews_mail.bcc
-            assert 'hn-cms-ABC-11-111@cern0.ch' in hypernews_mail.bcc
+            assert 'ml-conveners-test@cern0.ch' not in hypernews_mail.recipients
+            assert 'hn-cms-ABC-11-111@cern0.ch' in hypernews_mail.recipients
 
             # standard
             # message
@@ -96,10 +96,10 @@ def test_send_mail_published(mock_user, app, users, create_deposit, create_schem
                    in standard_mail.html
             assert 'https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in standard_mail.html
             # recipients
-            assert 'test@cern.ch' in standard_mail.bcc
-            assert 'ml-conveners-test@cern0.ch' in standard_mail.bcc
-            assert 'ml-conveners-jira-test@cern0.ch' not in standard_mail.bcc
-            assert 'hn-cms-ABC-11-111@cern0.ch' not in standard_mail.bcc
+            assert 'test@cern.ch' in standard_mail.recipients
+            assert 'ml-conveners-test@cern0.ch' in standard_mail.recipients
+            assert 'ml-conveners-jira-test@cern0.ch' not in standard_mail.recipients
+            assert 'hn-cms-ABC-11-111@cern0.ch' not in standard_mail.recipients
 
 
 @patch('cap.modules.mail.utils.current_user')
