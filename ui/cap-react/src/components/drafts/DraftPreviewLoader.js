@@ -41,7 +41,7 @@ const DraftPreviewLoader = () => {
           <Box
             className="section_box_large"
             separator="all"
-            style={{ borderRadius: "3px" }}
+            style={{ borderRadius: "3px", overflow: "hidden" }}
             pad="large"
             margin={{ vertical: "small" }}
           >
@@ -70,7 +70,7 @@ const DraftPreviewLoader = () => {
           <Box
             className="section_box_small"
             separator="all"
-            style={{ borderRadius: "3px" }}
+            style={{ borderRadius: "3px", overflow: "hidden" }}
             pad={{ horizontal: "large", vertical: "medium" }}
           >
             <Box pad={{ horizontal: "small" }}>
@@ -85,7 +85,7 @@ const DraftPreviewLoader = () => {
           <Box
             className="section_box_small"
             separator="all"
-            style={{ borderRadius: "3px" }}
+            style={{ borderRadius: "3px", overflow: "hidden" }}
             pad={{ horizontal: "large", vertical: "medium" }}
           >
             <Box pad={{ horizontal: "small" }}>
@@ -100,7 +100,7 @@ const DraftPreviewLoader = () => {
           <Box
             className="section_box_small"
             separator="all"
-            style={{ borderRadius: "3px" }}
+            style={{ borderRadius: "3px", overflow: "hidden" }}
             pad={{ horizontal: "large", vertical: "medium" }}
           >
             <Box pad={{ horizontal: "small" }}>

@@ -50,6 +50,9 @@ class DraftDefaultHeader extends React.Component {
             className="align-center-md"
             pad={{ horizontal: "small" }}
           >
+          {
+            this.props.loading ?
+            <Box className="section_header loader_box" /> :
             <EditableField
               value={this.props.metadata.general_title}
               emptyValue={"Untitled document"}
@@ -60,6 +63,7 @@ class DraftDefaultHeader extends React.Component {
               isEditable={this.props.canUpdate}
               dataCy="general-title-input"
             />
+          }
           </Box>
           <Box align="center" justify="center" pad={{ horizontal: "small" }}>
             {this.props.expanded ? (
@@ -110,7 +114,8 @@ DraftDefaultHeader.propTypes = {
   onClick: PropTypes.func,
   location: PropTypes.object,
   metadata: PropTypes.object,
-  updateGeneralTitle: PropTypes.func
+  updateGeneralTitle: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -122,7 +127,8 @@ function mapStateToProps(state) {
     errors: state.draftItem.get("errors"),
     schema: state.draftItem.get("schema"),
     formData: state.draftItem.get("formData"),
-    metadata: state.draftItem.get("metadata")
+    metadata: state.draftItem.get("metadata"),
+    loading: state.draftItem.get("loading")
   };
 }
 function mapDispatchToProps(dispatch) {
