@@ -118,7 +118,10 @@ class DepositSettings extends React.Component {
         >
           <DepositAccess />
         </Box>
-        <Box margin={{ bottom: "small" }}>
+        <Box
+          margin={{ bottom: "small" }}
+          style={{ maxWidth: "920px", width: "100%" }}
+        >
           <DepositReviews />
         </Box>
         {this.props.canAdmin && (
