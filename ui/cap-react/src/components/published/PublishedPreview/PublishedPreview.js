@@ -128,10 +128,24 @@ class PublishedPreview extends React.Component {
                 tags={this.getTagsList()}
                 reviewAnchor={
                   this.props.canReview && (
-                    <Review
-                      isReviewingPublished
-                      buttonProps={{ size: "small" }}
-                    />
+                    <Box direction="row" wrap={false}>
+                      <Button
+                        text="Check Reviews"
+                        size="small"
+                        margin="0 10px"
+                        onClick={() =>
+                          this.props.history.push({
+                            pathname: `/drafts/${this.props.draft_id}/settings`,
+                            from: this.props.location.pathname,
+                            pageFrom: "Published Preview"
+                          })
+                        }
+                      />
+                      <Review
+                        isReviewingPublished
+                        buttonProps={{ size: "small" }}
+                      />
+                    </Box>
                   )
                 }
                 editAnchor={
