@@ -23,7 +23,7 @@ Find our contact information [here](./support.md).
   - [Through the REST API](./tutorials.md#api-reference.md)
   - [Though CAP client](./tutorials.md#cap-client)
 - [What is a JSON Schema?](./schema.md)
-- [Authorisation and Access](./access/.md)
+- [Authorisation and Access](./access.md)
 
 ##### How To Guides
 
