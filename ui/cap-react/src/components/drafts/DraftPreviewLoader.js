@@ -6,18 +6,13 @@ import Loading from "../partials/LoadingSkeleton";
 const DraftPreviewLoader = () => {
   return (
     <Box
-      flex={true}
-      direction="row"
-      wrap={true}
-      align="start"
-      justify="center"
-      colorIndex="light-1"
+      flex={false}
+      alignSelf="center"
+      pad="small"
+      className="draft-boxes-width"
+      margin={{ vertical: "small", bottom: "large" }}
     >
-      <Box
-        flex={true}
-        direction="column"
-        style={{ width: "100%", maxWidth: "960px" }}
-      >
+      <Box flex={true} direction="column">
         <Box pad={{ horizontal: "medium" }}>
           <Box
             direction="row"

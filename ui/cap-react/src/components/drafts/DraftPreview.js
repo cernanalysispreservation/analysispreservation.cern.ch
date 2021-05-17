@@ -167,13 +167,11 @@ const DraftPreview = props => {
 
   return (
     <Box
-      id="deposit-page"
-      flex={true}
-      direction="row"
-      wrap={true}
-      align="start"
-      justify="center"
-      colorIndex="light-1"
+      flex={false}
+      alignSelf="center"
+      pad="small"
+      className="draft-boxes-width"
+      margin={{ vertical: "small", bottom: "large" }}
     >
       {props.error ? showToaster(props.error.message) : null}
 
@@ -181,9 +179,9 @@ const DraftPreview = props => {
         flex={true}
         pad={{ between: "medium" }}
         direction="column"
-        style={{ width: "100%", maxWidth: "960px" }}
+        id="deposit-page"
       >
-        <Box pad={{ horizontal: "medium" }}>
+        <Box>
           <Box
             direction="row"
             responsive={false}
@@ -199,7 +197,7 @@ const DraftPreview = props => {
           </Box>
         </Box>
         {props.status === "published" && (
-          <Box pad={{ horizontal: "medium" }}>
+          <Box>
             <Notification
               text="This is a published version. If you want to upload files and repos or update form metadata and the title you have to change to Draft mode"
               type="warning"
@@ -216,7 +214,7 @@ const DraftPreview = props => {
         )}
         {props.schemaType &&
           props.schemaType.name == "cms-stats-questionnaire" && (
-            <Box pad={{ horizontal: "medium" }}>
+            <Box>
               <Notification
                 text={
                   <span>
@@ -230,7 +228,7 @@ const DraftPreview = props => {
               />
             </Box>
           )}
-        <Box pad={{ horizontal: "medium" }}>
+        <Box>
           <SectionBox
             header="Metadata"
             className="box-large-height"
@@ -276,7 +274,7 @@ const DraftPreview = props => {
         </Box>
 
         {props.canReview && (
-          <Box pad={{ horizontal: "medium" }}>
+          <Box>
             <SectionBox
               header="Reviews"
               headerActions={<ReviewModal />}
@@ -288,7 +286,7 @@ const DraftPreview = props => {
             />
           </Box>
         )}
-        <Box pad={{ horizontal: "medium" }}>
+        <Box>
           <SectionBox
             header="Connected Repositories"
             headerActions={null}
@@ -313,7 +311,7 @@ const DraftPreview = props => {
           />
         </Box>
 
-        <Box pad={{ horizontal: "medium" }}>
+        <Box>
           <SectionBox
             header="Uploaded Repositories"
             headerActions={null}
@@ -344,7 +342,7 @@ const DraftPreview = props => {
           />
         </Box>
 
-        <Box pad={{ horizontal: "medium" }}>
+        <Box>
           <SectionBox
             header="Uploaded Files"
             headerActions={null}

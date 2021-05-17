@@ -39,7 +39,8 @@ class DepositSettings extends React.Component {
         flex={false}
         alignSelf="center"
         pad="small"
-        className="deposit-settings"
+        className="draft-boxes-width"
+        margin={{ vertical: "small", bottom: "large" }}
       >
         <Box margin={{ vertical: "small" }}>
           <Heading tag="h3">Publish your analysis</Heading>
@@ -112,16 +113,10 @@ class DepositSettings extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box
-          margin={{ bottom: "small" }}
-          style={{ maxWidth: "920px", width: "100%" }}
-        >
+        <Box margin={{ bottom: "small" }}>
           <DepositAccess />
         </Box>
-        <Box
-          margin={{ bottom: "small" }}
-          style={{ maxWidth: "920px", width: "100%" }}
-        >
+        <Box margin={{ bottom: "small" }}>
           <DepositReviews />
         </Box>
         {this.props.canAdmin && (

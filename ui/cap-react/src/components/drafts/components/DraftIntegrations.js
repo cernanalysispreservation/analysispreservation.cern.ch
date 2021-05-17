@@ -48,10 +48,10 @@ class DraftIntegrations extends React.Component {
     return (
       <Box
         flex={false}
-        size={{ width: "xxlarge" }}
         alignSelf="center"
         pad="small"
         margin={{ vertical: "small", bottom: "large" }}
+        className="draft-boxes-width"
       >
         <Box
           flex={false}

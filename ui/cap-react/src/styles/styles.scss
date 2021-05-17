@@ -225,6 +225,11 @@ label {
     padding: 0 24px;
   }
 
+  .draft-boxes-width {
+    width: 95% !important;
+    max-width: 992px !important;
+  }
+
   //TODO: Update for better handling with grid
   .box-large-height {
     max-width: 100%;
