@@ -17,7 +17,7 @@ const ReviewList = ({
   shouldDisplayButtonsWhenFromPublished
 }) => {
   return (
-    <Box pad="small" colorIndex="light-2" margin={{ top: "small" }}>
+    <Box pad="small" colorIndex="light-1">
       <Box pad={{ between: "small" }}>
         {review && review.length > 0 ? (
           review.map((review, index) => (
@@ -37,14 +37,14 @@ const ReviewList = ({
         ) : (
           <Box align="center">
             <Box
-              colorIndex="light-1"
+              colorIndex="light-2"
               style={{
-                padding: "10px",
                 borderRadius: "50%"
               }}
+              pad="small"
               margin={{ bottom: "small" }}
             >
-              <AiOutlineInbox size={18} />
+              <AiOutlineInbox size={25} />
             </Box>
             <Box align="center">No reviews submitted yet</Box>
           </Box>

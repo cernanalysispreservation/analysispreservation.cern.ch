@@ -88,86 +88,82 @@ class DepositAccess extends React.Component {
 
     return (
       <Box className="deposit-access">
-        <Box margin={{ bottom: "medium" }}>
-          <Heading tag="h3">Access & Permissions</Heading>
-          <Box
-            pad="small"
-            style={{
-              border: "1px solid #e6e6e6",
-              borderRadius: "3px",
-              padding: "10px"
-            }}
-          >
-            <Box pad={{ between: "small" }}>
-              <Box direction="row" justify="center">
-                <Box
-                  flex
-                  direction="row"
-                  align="center"
-                  justify="between"
-                  responsive={false}
-                >
-                  <TextInput
-                    placeHolder="Filter list by name or group"
-                    value={this.state.inputValue}
-                    onDOMChange={e =>
-                      this.setState({ inputValue: e.target.value })
-                    }
-                  />
-                  {this.props.canAdmin && (
-                    <Button
-                      size="small"
-                      text="Add"
-                      primary
-                      icon={<AiOutlinePlus color="#fff" />}
-                      onClick={() => this.setState({ showModal: true })}
-                    />
-                  )}
-                </Box>
-              </Box>
-              <Box pad="small" align="start" margin={{ top: "small" }}>
-                <Box direction="row" responsive={false}>
-                  <Button
-                    text={`All (${all_roles_length})`}
-                    background={
-                      this.state.filterResultsBy === "all" ? "#e1e1e1" : "#fff"
-                    }
-                    onClick={() => this.setState({ filterResultsBy: "all" })}
-                    size="small"
-                  />
-                  <Button
-                    text={`Users (${users_only.length})`}
-                    margin="0 5px"
-                    size="small"
-                    background={
-                      this.state.filterResultsBy === "user" ? "#e1e1e1" : "#fff"
-                    }
-                    onClick={() => this.setState({ filterResultsBy: "user" })}
-                  />
-                  <Button
-                    text={`E-Groups (${egroups_only.length})`}
-                    background={
-                      this.state.filterResultsBy === "egroup"
-                        ? "#e1e1e1"
-                        : "#fff"
-                    }
-                    size="small"
-                    onClick={() => this.setState({ filterResultsBy: "egroup" })}
-                  />
-                </Box>
-              </Box>
-              <Box className="deposit-acccess-table">
-                <DepositAccessPagination
-                  users_roles={users_roles}
-                  access={access}
+        <Heading tag="h3">Access & Permissions</Heading>
+        <Box
+          pad="small"
+          style={{
+            border: "1px solid #e6e6e6",
+            borderRadius: "3px",
+            padding: "10px"
+          }}
+        >
+          <Box pad={{ between: "small" }}>
+            <Box direction="row" justify="center">
+              <Box
+                flex
+                direction="row"
+                align="center"
+                justify="between"
+                responsive={false}
+              >
+                <TextInput
+                  placeHolder="Filter list by name or group"
+                  value={this.state.inputValue}
+                  onDOMChange={e =>
+                    this.setState({ inputValue: e.target.value })
+                  }
                 />
-                <AccessModal
-                  open={this.state.showModal}
-                  onClose={() => this.setState({ showModal: false })}
-                  permissions={permissions}
-                  access={access}
+                {this.props.canAdmin && (
+                  <Button
+                    size="small"
+                    text="Add"
+                    primary
+                    icon={<AiOutlinePlus color="#fff" />}
+                    onClick={() => this.setState({ showModal: true })}
+                  />
+                )}
+              </Box>
+            </Box>
+            <Box pad="small" align="start" margin={{ top: "small" }}>
+              <Box direction="row" responsive={false}>
+                <Button
+                  text={`All (${all_roles_length})`}
+                  background={
+                    this.state.filterResultsBy === "all" ? "#e1e1e1" : "#fff"
+                  }
+                  onClick={() => this.setState({ filterResultsBy: "all" })}
+                  size="small"
+                />
+                <Button
+                  text={`Users (${users_only.length})`}
+                  margin="0 5px"
+                  size="small"
+                  background={
+                    this.state.filterResultsBy === "user" ? "#e1e1e1" : "#fff"
+                  }
+                  onClick={() => this.setState({ filterResultsBy: "user" })}
+                />
+                <Button
+                  text={`E-Groups (${egroups_only.length})`}
+                  background={
+                    this.state.filterResultsBy === "egroup" ? "#e1e1e1" : "#fff"
+                  }
+                  size="small"
+                  onClick={() => this.setState({ filterResultsBy: "egroup" })}
                 />
               </Box>
+            </Box>
+            <Box className="deposit-acccess-table">
+              <DepositAccessPagination
+                users_roles={users_roles}
+                access={access}
+              />
+              <AccessModal
+                open={this.state.showModal}
+                onClose={() => this.setState({ showModal: false })}
+                permissions={permissions}
+                access={access}
+              />
             </Box>
           </Box>
         </Box>

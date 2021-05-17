@@ -48,16 +48,16 @@ class DraftIntegrations extends React.Component {
     return (
       <Box
         flex={false}
-        size={{ width: "xxlarge" }}
         alignSelf="center"
-        pad="small"
+        pad="medium"
         margin={{ vertical: "small", bottom: "large" }}
+        size={{ width: "xxlarge" }}
       >
         <Box
           flex={false}
           direction="row"
           wrap={false}
-          margin={{ vertical: "small", bottom: "large" }}
+          margin={{ bottom: "medium" }}
         >
           <Box flex={true}>
             <Heading tag="h3">Repositories</Heading>

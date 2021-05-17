@@ -21,7 +21,7 @@ function SectionBox(props) {
   return (
     <Box
       flex={false}
-      margin={{ bottom: "small" }}
+      margin={{ bottom: "medium" }}
       colorIndex="light-1"
       style={{ borderRadius: "3px" }}
     >

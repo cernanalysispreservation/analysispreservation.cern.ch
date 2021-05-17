@@ -23,6 +23,7 @@ import { publishedToDraftStatus } from "../../actions/draftItem";
 import ReviewModal from "../partials/Review/ReviewModal";
 import ReviewList from "../partials/Review/ReviewList";
 import DraftPreviewLoader from "./DraftPreviewLoader";
+import DraftPreviewLoaderBox from "./DraftPreviewLoaderBox";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -167,214 +168,194 @@ const DraftPreview = props => {
 
   return (
     <Box
-      id="deposit-page"
-      flex={true}
-      direction="row"
-      wrap={true}
-      align="start"
-      justify="center"
-      colorIndex="light-1"
+      flex={false}
+      alignSelf="center"
+      pad="medium"
+      margin={{ vertical: "small", bottom: "large" }}
+      size={{ width: "xxlarge" }}
     >
       {props.error ? showToaster(props.error.message) : null}
 
-      <Box
-        flex={true}
-        pad={{ between: "medium" }}
-        direction="column"
-        style={{ width: "100%", maxWidth: "960px" }}
-      >
-        <Box pad={{ horizontal: "medium" }}>
-          <Box
-            direction="row"
-            responsive={false}
-            justify="between"
-            colorIndex="light-2"
-            pad={{ horizontal: "medium" }}
-            margin={{ vertical: "small" }}
-            style={{ borderRadius: "3px" }}
-          >
-            {infoData.map((item, index) => (
-              <InfoHeaderBox key={index} {...item} />
-            ))}
-          </Box>
+      <Box pad={{ between: "medium" }} direction="column" id="deposit-page">
+        <Box
+          direction="row"
+          responsive={false}
+          justify="between"
+          colorIndex="light-2"
+          pad={{ horizontal: "small" }}
+          style={{ borderRadius: "3px" }}
+        >
+          {infoData.map((item, index) => (
+            <InfoHeaderBox key={index} {...item} />
+          ))}
         </Box>
+
         {props.status === "published" && (
-          <Box pad={{ horizontal: "medium" }}>
-            <Notification
-              text="This is a published version. If you want to upload files and repos or update form metadata and the title you have to change to Draft mode"
-              type="warning"
-              action={
-                <Button
-                  dataCy="change-to-draft"
-                  text="Change to Draft"
-                  size="small"
-                  onClick={() => props.edit(props.draft_id)}
-                />
-              }
-            />
-          </Box>
+          <Notification
+            text="This is a published version. If you want to upload files and repos or update form metadata and the title you have to change to Draft mode"
+            type="warning"
+            action={
+              <Button
+                dataCy="change-to-draft"
+                text="Change to Draft"
+                size="small"
+                onClick={() => props.edit(props.draft_id)}
+              />
+            }
+          />
         )}
         {props.schemaType &&
           props.schemaType.name == "cms-stats-questionnaire" && (
-            <Box pad={{ horizontal: "medium" }}>
-              <Notification
-                text={
-                  <span>
-                    <strong>ATTENTION: </strong>For your{" "}
-                    {(props.schemaType && props.schemaType.fullname) ||
-                      "document"}{" "}
-                    to be <strong>reviewed</strong> you need to click on{" "}
-                    <strong>"Publish"</strong> (in the settings tab) first
-                  </span>
-                }
-              />
-            </Box>
-          )}
-        <Box pad={{ horizontal: "medium" }}>
-          <SectionBox
-            header="Metadata"
-            className="box-large-height"
-            headerActions={
-              <Box direction="row" align="center" responsive={false}>
-                {props.canUpdate && (
-                  <Button
-                    text="Edit"
-                    icon={<AiOutlineTag />}
-                    onClick={() => {
-                      props.history.push(`/drafts/${props.draft_id}/edit`);
-                    }}
-                  />
-                )}
-                <Button
-                  text="Show More"
-                  margin="0 0 0 5px"
-                  onClick={() => {
-                    props.history.push({
-                      pathname: `/drafts/${props.draft_id}/edit`,
-                      state: { mode: "preview" }
-                    });
-                  }}
-                />
-              </Box>
-            }
-            body={
-              props.schemas && props.schemas.schema ? (
-                <Box flex={true} style={{ padding: "0 0 12px 0" }}>
-                  <JSONSchemaPreviewer
-                    formData={props.metadata}
-                    schema={_schema}
-                    schemaType={props.schemaType}
-                    uiSchema={props.schemas.uiSchema || {}}
-                    onChange={() => {}}
-                  >
-                    <span />
-                  </JSONSchemaPreviewer>
-                </Box>
-              ) : null
-            }
-          />
-        </Box>
-
-        {props.canReview && (
-          <Box pad={{ horizontal: "medium" }}>
-            <SectionBox
-              header="Reviews"
-              headerActions={<ReviewModal />}
-              body={
-                <Box pad="small">
-                  <ReviewList />
-                </Box>
+            <Notification
+              text={
+                <span>
+                  <strong>ATTENTION: </strong>For your{" "}
+                  {(props.schemaType && props.schemaType.fullname) ||
+                    "document"}{" "}
+                  to be <strong>reviewed</strong> you need to click on{" "}
+                  <strong>"Publish"</strong> (in the settings tab) first
+                </span>
               }
             />
-          </Box>
+          )}
+
+        <SectionBox
+          header="Metadata"
+          className="box-large-height"
+          headerActions={
+            <Box direction="row" align="center" responsive={false}>
+              {props.canUpdate && (
+                <Button
+                  text="Edit"
+                  icon={<AiOutlineTag />}
+                  onClick={() => {
+                    props.history.push(`/drafts/${props.draft_id}/edit`);
+                  }}
+                />
+              )}
+              <Button
+                text="Show More"
+                margin="0 0 0 5px"
+                onClick={() => {
+                  props.history.push({
+                    pathname: `/drafts/${props.draft_id}/edit`,
+                    state: { mode: "preview" }
+                  });
+                }}
+              />
+            </Box>
+          }
+          body={
+            props.schemas && props.schemas.schema ? (
+              <Box flex={true} style={{ padding: "0 0 12px 0" }}>
+                <JSONSchemaPreviewer
+                  formData={props.metadata}
+                  schema={_schema}
+                  schemaType={props.schemaType}
+                  uiSchema={props.schemas.uiSchema || {}}
+                  onChange={() => {}}
+                >
+                  <span />
+                </JSONSchemaPreviewer>
+              </Box>
+            ) : null
+          }
+        />
+
+        {props.canReview && (
+          <SectionBox
+            className="box-xlarge-height"
+            header="Reviews"
+            headerActions={<ReviewModal />}
+            body={
+              props.reviewLoading ? (
+                <DraftPreviewLoaderBox />
+              ) : (
+                <Box flex pad="small">
+                  <ReviewList />
+                </Box>
+              )
+            }
+          />
         )}
-        <Box pad={{ horizontal: "medium" }}>
-          <SectionBox
-            header="Connected Repositories"
-            headerActions={null}
-            body={
-              props.webhooks && props.webhooks.length > 0 ? (
-                <Box flex={true} pad="small">
-                  <InfoArrayBox items={props.webhooks} type="repositories" />
-                </Box>
-              ) : (
-                <Box align="center">
-                  <Box
-                    colorIndex="light-2"
-                    style={{ borderRadius: "50%" }}
-                    pad="small"
-                  >
-                    <BsCodeSlash size={25} />
-                  </Box>
-                  <Box pad="small">No connected repositories yet</Box>
-                </Box>
-              )
-            }
-          />
-        </Box>
 
-        <Box pad={{ horizontal: "medium" }}>
-          <SectionBox
-            header="Uploaded Repositories"
-            headerActions={null}
-            body={
-              props.files &&
-              props.files.size > 0 &&
-              props.files.filter(item => item["key"].startsWith("repositories"))
-                .size > 0 ? (
-                <Box flex={true} pad="small">
-                  <DepositFilesList
-                    files={props.files}
-                    renderList={["repositories"]}
-                  />
+        <SectionBox
+          header="Connected Repositories"
+          headerActions={null}
+          body={
+            props.webhooks && props.webhooks.length > 0 ? (
+              <Box flex={true} pad="small">
+                <InfoArrayBox items={props.webhooks} type="repositories" />
+              </Box>
+            ) : (
+              <Box align="center">
+                <Box
+                  colorIndex="light-2"
+                  style={{ borderRadius: "50%" }}
+                  pad="small"
+                >
+                  <BsCodeSlash size={25} />
                 </Box>
-              ) : (
-                <Box align="center" pad="small">
-                  <Box
-                    colorIndex="light-2"
-                    style={{ borderRadius: "50%" }}
-                    pad="small"
-                  >
-                    <AiOutlineInbox size={25} />
-                  </Box>
-                  <Box pad="small">No uploaded repositories yet</Box>
-                </Box>
-              )
-            }
-          />
-        </Box>
+                <Box pad="small">No connected repositories yet</Box>
+              </Box>
+            )
+          }
+        />
 
-        <Box pad={{ horizontal: "medium" }}>
-          <SectionBox
-            header="Uploaded Files"
-            headerActions={null}
-            body={
-              props.files &&
-              props.files.size > 0 &&
-              props.files.filter(
-                item => !item["key"].startsWith("repositories")
-              ).size > 0 ? (
-                <Box flex={true} pad="small">
-                  <DepositFilesList
-                    files={props.files}
-                    renderList={["files"]}
-                  />
+        <SectionBox
+          header="Uploaded Repositories"
+          headerActions={null}
+          body={
+            props.files &&
+            props.files.size > 0 &&
+            props.files.filter(item => item["key"].startsWith("repositories"))
+              .size > 0 ? (
+              <Box flex={true} pad="small">
+                <DepositFilesList
+                  files={props.files}
+                  renderList={["repositories"]}
+                />
+              </Box>
+            ) : (
+              <Box align="center" pad="small">
+                <Box
+                  colorIndex="light-2"
+                  style={{ borderRadius: "50%" }}
+                  pad="small"
+                >
+                  <AiOutlineInbox size={25} />
                 </Box>
-              ) : (
-                <Box align="center" pad="small">
-                  <Box
-                    colorIndex="light-2"
-                    style={{ borderRadius: "50%" }}
-                    pad="small"
-                  >
-                    <AiOutlineInbox size={25} />
-                  </Box>
-                  <Box pad="small">No uploaded files yet</Box>
+                <Box pad="small">No uploaded repositories yet</Box>
+              </Box>
+            )
+          }
+        />
+
+        <SectionBox
+          header="Uploaded Files"
+          headerActions={null}
+          body={
+            props.files &&
+            props.files.size > 0 &&
+            props.files.filter(item => !item["key"].startsWith("repositories"))
+              .size > 0 ? (
+              <Box flex={true} pad="small">
+                <DepositFilesList files={props.files} renderList={["files"]} />
+              </Box>
+            ) : (
+              <Box align="center" pad="small">
+                <Box
+                  colorIndex="light-2"
+                  style={{ borderRadius: "50%" }}
+                  pad="small"
+                >
+                  <AiOutlineInbox size={25} />
                 </Box>
-              )
-            }
-          />
-        </Box>
+                <Box pad="small">No uploaded files yet</Box>
+              </Box>
+            )
+          }
+        />
       </Box>
     </Box>
   );
@@ -422,7 +403,8 @@ function mapStateToProps(state) {
     webhooks: state.draftItem.get("webhooks"),
     files: state.draftItem.get("bucket"),
     revision: state.draftItem.get("revision"),
-    loading: state.draftItem.get("loading")
+    loading: state.draftItem.get("loading"),
+    reviewLoading: state.draftItem.get("reviewLoading")
   };
 }
 

@@ -17,15 +17,29 @@ class DepositReviews extends React.Component {
     if (!this.props.review) return null;
 
     return (
-      <Box margin={{ bottom: "medium" }}>
-        {
-          !this.props.isReviewingPublished ?
-          <Box direction="row" wrap={false} justify="between" responsive={false}>
+      <Box>
+        {!this.props.isReviewingPublished ? (
+          <Box
+            direction="row"
+            wrap={false}
+            justify="between"
+            responsive={false}
+          >
             <Heading tag="h3">Reviews</Heading>
             {this.props.canReview && <ReviewModal />}
-          </Box> : null
-        }
-        <ReviewList isReviewingPublished={this.props.isReviewingPublished} />
+          </Box>
+        ) : null}
+        <Box
+          style={{
+            border: "1px solid #e6e6e6",
+            borderRadius: "3px"
+          }}
+          pad="small"
+          className="box-xlarge-height"
+          flex
+        >
+          <ReviewList isReviewingPublished={this.props.isReviewingPublished} />
+        </Box>
       </Box>
     );
   }
@@ -43,7 +57,9 @@ function mapStateToProps(state, props) {
     review: props.isReviewingPublished
       ? state.published.get("review")
       : state.draftItem.get("review"),
-    canReview: props.isReviewingPublished ? null : state.draftItem.get("can_review")
+    canReview: props.isReviewingPublished
+      ? null
+      : state.draftItem.get("can_review")
   };
 }
 

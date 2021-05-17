@@ -38,10 +38,11 @@ class DepositSettings extends React.Component {
       <Box
         flex={false}
         alignSelf="center"
-        pad="small"
-        className="deposit-settings"
+        pad="medium"
+        size={{ width: "xxlarge" }}
+        margin={{ vertical: "small", bottom: "xlarge" }}
       >
-        <Box margin={{ vertical: "small" }}>
+        <Box margin={{ bottom: "medium" }}>
           <Heading tag="h3">Publish your analysis</Heading>
           <Box
             className="deposit-settings-row-to-column"
@@ -112,16 +113,10 @@ class DepositSettings extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box
-          margin={{ bottom: "small" }}
-          style={{ maxWidth: "920px", width: "100%" }}
-        >
+        <Box margin={{ bottom: "medium" }}>
           <DepositAccess />
         </Box>
-        <Box
-          margin={{ bottom: "small" }}
-          style={{ maxWidth: "920px", width: "100%" }}
-        >
+        <Box margin={{ bottom: "medium" }}>
           <DepositReviews />
         </Box>
         {this.props.canAdmin && (
@@ -138,6 +133,7 @@ class DepositSettings extends React.Component {
               justify="between"
               flex
               responsive={false}
+              margin={{ bottom: "small" }}
             >
               {isDraft && !isPublishedOnce ? (
                 <Paragraph margin="none">
