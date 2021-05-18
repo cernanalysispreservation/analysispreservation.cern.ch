@@ -14,9 +14,10 @@ export function reviewPublishedRequest() {
     type: REVIEW_PUBISHED_REQUEST
   };
 }
-export function reviewPublishedSuccess() {
+export function reviewPublishedSuccess(data) {
   return {
-    type: REVIEW_PUBISHED_SUCCESS
+    type: REVIEW_PUBISHED_SUCCESS,
+    payload: data
   };
 }
 export function reviewPublishedError(error) {
@@ -67,7 +68,7 @@ export function getPublishedItem(id) {
   };
 }
 
-export function reviewPublished(review) {
+export function reviewPublished(review, message = "submitted") {
   return (dispatch, getState) => {
     let state = getState();
     let uri = state.published.getIn(["links", "review"]);
@@ -80,13 +81,13 @@ export function reviewPublished(review) {
           Accept: "application/form+json"
         }
       })
-      .then(() => {
-        cogoToast.success("Your review has been submitted", {
+      .then(response => {
+        cogoToast.success(`Your review has been ${message}`, {
           position: "top-center",
           bar: { size: "0" },
           hideAfter: 3
         });
-        return dispatch(reviewPublishedSuccess());
+        return dispatch(reviewPublishedSuccess(response.data));
       })
       .catch(error => {
         return dispatch(reviewPublishedError(error.response.data));

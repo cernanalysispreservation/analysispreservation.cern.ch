@@ -22,6 +22,7 @@ import FormHeader from "../../partials/FormHeader";
 import Button from "../../partials/Button";
 import Review from "../../partials/Review/ReviewModal";
 import MediaQuery from "react-responsive";
+import ModalReviews from "./ModalReviews";
 
 import "./PublishedPreview.css";
 
@@ -62,7 +63,8 @@ class PublishedPreview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showFiles: window.innerWidth > 1409
+      showFiles: window.innerWidth > 1409,
+      showReviews: false
     };
   }
 
@@ -106,7 +108,7 @@ class PublishedPreview extends React.Component {
   };
 
   render() {
-    let { schema, uiSchema } = this.props.schemas
+    let { schema, uiSchema, config_reviewable } = this.props.schemas
       ? this.props.schemas.toJS()
       : {};
     if (!(schema && uiSchema)) return null;
@@ -120,6 +122,11 @@ class PublishedPreview extends React.Component {
         style={{ position: "relative" }}
         id="published-preview-page"
       >
+        <ModalReviews
+          isReviewingPublished
+          show={this.state.showReviews}
+          onClose={() => this.setState({ showReviews: false })}
+        />
         <Box direction="row" flex={true}>
           {this.props.schemas ? (
             <Box flex={true}>
@@ -127,26 +134,22 @@ class PublishedPreview extends React.Component {
                 title={this.props.metadata.toJS().general_title}
                 tags={this.getTagsList()}
                 reviewAnchor={
-                  this.props.canReview && (
-                    <Box direction="row" wrap={false}>
+                  <Box direction="row" wrap={false}>
+                    {config_reviewable && (
                       <Button
-                        text="Check Reviews"
+                        text="Show Reviews"
                         size="small"
                         margin="0 10px"
-                        onClick={() =>
-                          this.props.history.push({
-                            pathname: `/drafts/${this.props.draft_id}/settings`,
-                            from: this.props.location.pathname,
-                            pageFrom: "Published Preview"
-                          })
-                        }
+                        onClick={() => this.setState({ showReviews: true })}
                       />
+                    )}
+                    {this.props.canReview && (
                       <Review
                         isReviewingPublished
                         buttonProps={{ size: "small" }}
                       />
-                    </Box>
-                  )
+                    )}
+                  </Box>
                 }
                 editAnchor={
                   this.props.canUpdate && (
