@@ -22,7 +22,7 @@ class DepositReviews extends React.Component {
           <Heading tag="h3">Reviews</Heading>
           {this.props.canReview && <ReviewModal />}
         </Box>
-        <ReviewList />
+        <ReviewList isReviewingPublished={this.props.isReviewingPublished} />
       </Box>
     );
   }
@@ -31,12 +31,15 @@ class DepositReviews extends React.Component {
 DepositReviews.propTypes = {
   canReview: PropTypes.bool,
   review: PropTypes.object,
-  hideTitle: PropTypes.bool
+  hideTitle: PropTypes.bool,
+  isReviewingPublished: PropTypes.bool
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    review: state.draftItem.get("review"),
+    review: props.isReviewingPublished
+      ? state.published.get("review")
+      : state.draftItem.get("review"),
     canReview: state.draftItem.get("can_review")
   };
 }

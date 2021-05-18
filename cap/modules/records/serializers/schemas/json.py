@@ -33,6 +33,7 @@ from invenio_pidstore.resolver import Resolver
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.records.permissions import UpdateRecordPermission
 from cap.modules.deposit.permissions import ReviewDepositPermission
+from cap.modules.deposit.review import ReviewSchema
 
 from cap.modules.records.serializers.schemas import common
 from cap.modules.records.utils import clean_api_url_for
@@ -71,6 +72,7 @@ class RecordFormSchema(RecordSchema):
     can_update = fields.Method('can_user_update', dump_only=True)
     can_review = fields.Method('can_user_review', dump_only=True)
     links = fields.Method('get_links_with_review', dump_only=True)
+    review = fields.Method('get_review', dump_only=True)
 
     def get_record_schemas(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
@@ -80,7 +82,23 @@ class RecordFormSchema(RecordSchema):
                                                 resolved=True)
         uiSchema = deposit.schema.record_options
 
-        return dict(schema=copy.deepcopy(schema), uiSchema=uiSchema)
+        config_reviewable = deposit.schema_is_reviewable()
+
+        return dict(schema=copy.deepcopy(schema), uiSchema=uiSchema,config_reviewable=config_reviewable)
+    def get_review(self, obj):
+        depid = obj.get("metadata", {}).get("_deposit", {}).get("id")
+        resolver = Resolver(pid_type='depid',
+                            object_type='rec',
+                            getter=lambda x: x)
+
+        _, rec_uuid = resolver.resolve(depid)
+        deposit = CAPDeposit.get_record(rec_uuid)
+
+        if deposit.schema_is_reviewable():
+            _reviews = deposit.get('_review', [])
+            return ReviewSchema(many=True).dump(_reviews).data
+        else:
+            return None
 
     def can_user_update(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)

@@ -126,7 +126,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   reviewDraft: (draft_id, review, message) =>
     dispatch(reviewDraft(draft_id, review, message)),
-  reviewPublished: review => dispatch(reviewPublished(review))
+  reviewPublished: review => dispatch(reviewPublished(review, "submitted"))
 });
 
 export default connect(

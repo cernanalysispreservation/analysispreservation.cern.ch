@@ -7,7 +7,15 @@ import ShowMoreText from "../../ShowMoreText";
 import Heading from "grommet/components/Heading";
 import { AiOutlineCheck, AiOutlineDelete } from "react-icons/ai";
 
-const ReviewListItem = ({ review, reviewDraft, draft_id, loading }) => {
+const ReviewListItem = ({
+  review,
+  reviewDraft,
+  reviewPublished,
+  isReviewingPublished,
+  draft_id,
+  loading,
+  shouldDisplayButtonsWhenFromPublished = true
+}) => {
   const renderReviewTypeHeading = type => {
     const _types = {
       approved: "Approved",
@@ -68,49 +76,66 @@ const ReviewListItem = ({ review, reviewDraft, draft_id, loading }) => {
             </Box>
           </Box>
         </Box>
-        {!review.resolved && (
-          <Box
-            direction="row"
-            justify="between"
-            margin={{ top: "small" }}
-            responsive={false}
-          >
-            <Button
-              key="Delete"
-              text="Delete"
-              loading={loading}
-              secondary
-              icon={<AiOutlineDelete size={15} />}
-              onClick={() =>
-                reviewDraft(
-                  draft_id,
-                  {
-                    id: review.id,
-                    action: "delete"
-                  },
-                  "deleted"
-                )
-              }
-            />
-            <Button
-              key="Resolve"
-              text="Resolve"
-              secondary
-              loading={loading}
-              icon={<AiOutlineCheck size={15} />}
-              onClick={() =>
-                reviewDraft(
-                  draft_id,
-                  {
-                    action: "resolve",
-                    id: review.id
-                  },
-                  "resolved"
-                )
-              }
-            />
-          </Box>
-        )}
+        {!review.resolved &&
+          shouldDisplayButtonsWhenFromPublished && (
+            <Box
+              direction="row"
+              justify="between"
+              margin={{ top: "small" }}
+              responsive={false}
+            >
+              <Button
+                key="Delete"
+                text="Delete"
+                loading={loading}
+                secondary
+                icon={<AiOutlineDelete size={15} />}
+                onClick={() =>
+                  isReviewingPublished
+                    ? reviewPublished(
+                        {
+                          id: review.id,
+                          action: "delete"
+                        },
+                        "deleted"
+                      )
+                    : reviewDraft(
+                        draft_id,
+                        {
+                          id: review.id,
+                          action: "delete"
+                        },
+                        "deleted"
+                      )
+                }
+              />
+              <Button
+                key="Resolve"
+                text="Resolve"
+                secondary
+                loading={loading}
+                icon={<AiOutlineCheck size={15} />}
+                onClick={() =>
+                  isReviewingPublished
+                    ? reviewPublished(
+                        {
+                          action: "resolve",
+                          id: review.id
+                        },
+                        "resolved"
+                      )
+                    : reviewDraft(
+                        draft_id,
+                        {
+                          action: "resolve",
+                          id: review.id
+                        },
+                        "resolved"
+                      )
+                }
+              />
+            </Box>
+          )}
         <Box
           flex={true}
           style={{
@@ -128,7 +153,9 @@ ReviewListItem.propTypes = {
   review: PropTypes.object,
   draft_id: PropTypes.string,
   loading: PropTypes.bool,
-  reviewDraft: PropTypes.func
+  reviewDraft: PropTypes.func,
+  reviewPublished: PropTypes.func,
+  shouldDisplayButtonsWhenFromPublished: PropTypes.bool
 };
 
 export default ReviewListItem;
