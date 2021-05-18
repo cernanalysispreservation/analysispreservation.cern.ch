@@ -40,6 +40,7 @@ const transformSchema = schema => {
     "control_number",
     "_review"
   ];
+  schema = schema.toJS();
 
   schema.properties = _omit(schema.properties, schemaFieldsToRemove);
   schema = {
@@ -68,50 +69,32 @@ const DraftPreview = props => {
         allUsersEmails: []
       };
 
-    let admin = access
+    let adminUsers = access
       .getIn(["deposit-admin", "users"])
       .map(user => user.get("email"));
-    let read = access
+    let readUsers = access
       .getIn(["deposit-read", "users"])
       .map(user => user.get("email"));
-    let update = access
+    let updateUsers = access
       .getIn(["deposit-update", "users"])
       .map(user => user.get("email"));
 
-    let all = admin
-      .concat(read)
-      .concat(update)
+    let allEmails = adminUsers
+      .concat(readUsers)
+      .concat(updateUsers)
       .toSet();
 
     let adminRoles = access.getIn(["deposit-admin", "roles"]);
     let readRoles = access.getIn(["deposit-read", "roles"]);
     let updateRoles = access.getIn(["deposit-update", "roles"]);
-    let allRols = adminRoles
+    let allRoles = adminRoles
       .concat(readRoles)
       .concat(updateRoles)
       .toSet();
 
-    access = access.toJS();
-    console.log("====================================");
-    console.log(access);
-    console.log("====================================");
-    const adminUsers = access["deposit-admin"].users.map(user => user.email);
-    const readUsers = access["deposit-read"].users.map(user => user.email);
-    const updateUsers = access["deposit-update"].users.map(user => user.email);
-    const allRoles = [
-      ...new Set(
-        [...access["deposit-admin"].roles, ...access["deposit-read"].roles],
-        ...access["deposit-update"].roles
-      )
-    ];
-
-    const allEmails = [
-      ...new Set([...adminUsers, ...readUsers, ...updateUsers])
-    ];
-
     return {
-      users: all.size,
-      roles: allRols.size,
+      users: allEmails.size,
+      roles: allRoles.size,
       adminUsers,
       readUsers,
       updateUsers,
@@ -154,7 +137,7 @@ const DraftPreview = props => {
       type: "code",
       content: (
         <Box direction="row" align="center" justify="center">
-          <b>{props.webhooks && props.webhooks.length}</b>
+          <b>{props.webhooks && props.webhooks.size}</b>
           <Box style={{ color: "rgba(0,0,0,1)", marginLeft: "5px" }}>
             repositories
           </Box>
@@ -174,7 +157,7 @@ const DraftPreview = props => {
       type: "info",
       content: (
         <Box direction="row" align="center" justify="center">
-          <b>{props.schema ? props.schema.version : "-"}</b>
+          <b>{props.schema ? props.schema.get("version") : "-"}</b>
           <Box style={{ color: "rgba(0,0,0,1)", marginLeft: "5px" }}>
             schema revision
           </Box>
@@ -184,13 +167,18 @@ const DraftPreview = props => {
   ];
 
   let _schema =
-    props.schemas && props.schemas.schema
-      ? transformSchema(props.schemas.schema)
+    props.schemas && props.schemas.has("schema")
+      ? transformSchema(props.schemas.get("schema"))
       : null;
 
   if (props.loading) {
     return <DraftPreviewLoader />;
   }
+
+  console.log("====================================");
+  console.log(props);
+  console.log(_schema);
+  console.log("====================================");
 
   return (
     <Box
@@ -242,7 +230,7 @@ const DraftPreview = props => {
           </Box>
         )}
         {props.schemaType &&
-          props.schemaType.name == "cms-stats-questionnaire" && (
+          props.schemaType.get("name") == "cms-stats-questionnaire" && (
             <Box pad={{ horizontal: "medium" }}>
               <Notification
                 text={
@@ -285,13 +273,13 @@ const DraftPreview = props => {
               </Box>
             }
             body={
-              props.schemas && props.schemas.schema ? (
+              props.schemas && props.schemas.has("schema") ? (
                 <Box flex={true} style={{ padding: "0 0 12px 0" }}>
                   <JSONSchemaPreviewer
-                    formData={props.metadata}
+                    formData={props.metadata.toJS()}
                     schema={_schema}
-                    schemaType={props.schemaType}
-                    uiSchema={props.schemas.uiSchema || {}}
+                    schemaType={props.schemaType.toJS()}
+                    uiSchema={props.schemas.get("uiSchema").toJS() || {}}
                     onChange={() => {}}
                   >
                     <span />
@@ -320,7 +308,7 @@ const DraftPreview = props => {
             header="Connected Repositories"
             headerActions={null}
             body={
-              props.webhooks && props.webhooks.length > 0 ? (
+              props.webhooks && props.webhooks.size > 0 ? (
                 <Box flex={true} pad="small">
                   <InfoArrayBox items={props.webhooks} type="repositories" />
                 </Box>
