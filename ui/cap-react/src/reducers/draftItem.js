@@ -98,7 +98,7 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("formData", action.draft.metadata)
         .set("loading", false)
-        .merge(Map(action.draft));
+        .merge(action.draft);
     case draftItemActions.DRAFTS_ITEM_ERROR:
       return state.set("errors", action.error).set("loading", false);
     case draftItemActions.CREATE_DRAFT_REQUEST:
@@ -107,7 +107,7 @@ export default function draftsReducer(state = initialState, action) {
       return initialState
         .set("loading", false)
         .set("formData", action.draft.metadata)
-        .merge(Map(action.draft));
+        .merge(action.draft);
     case draftItemActions.CREATE_DRAFT_ERROR:
       return state
         .set("loading", false)
@@ -130,7 +130,7 @@ export default function draftsReducer(state = initialState, action) {
           status: "ok",
           msg: "All changes saved"
         })
-        .merge(Map(action.draft));
+        .merge(action.draft);
     case draftItemActions.UPDATE_DRAFT_ERROR:
       return state.set("extraErrors", action.error).set("loading", false);
     case draftItemActions.DELETE_DRAFT_REQUEST:
@@ -148,7 +148,7 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("loading", false)
         .set("formData", action.draft.metadata)
-        .merge(Map(action.draft));
+        .merge(action.draft);
     case draftItemActions.REVIEW_DRAFT_SUCCESS:
       return state.set("review", action.draft.review).set("loading", false);
     case draftItemActions.REVIEW_DRAFT_ERROR:
@@ -162,7 +162,7 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("loading", false)
         .set("formData", action.draft.metadata)
-        .merge(Map({ ...action.draft }));
+        .merge(action.draft);
 
     // case draftItemActions.EDIT_PUBLISHED_ERROR:
     // 	return state
@@ -178,14 +178,14 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("loading", false)
         .set("formData", action.draft.metadata)
-        .merge(Map(action.draft));
+        .merge(action.draft);
     case draftItemActions.PUBLISH_DRAFT_ERROR:
       return state.set("extraErrors", action.errors).set("loading", false);
 
     case draftItemActions.GENERAL_TITLE_REQUEST:
       return state.set("generalTitleLoading", true);
     case draftItemActions.GENERAL_TITLE_SUCCESS:
-      return state.merge(Map(action.draft)).set("generalTitleLoading", false);
+      return state.merge(action.draft).set("generalTitleLoading", false);
     case draftItemActions.GENERAL_TITLE_ERROR:
       return state.set("generalTitleLoading", false);
 

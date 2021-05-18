@@ -68,6 +68,33 @@ const DraftPreview = props => {
         allUsersEmails: []
       };
 
+    let admin = access
+      .getIn(["deposit-admin", "users"])
+      .map(user => user.get("email"));
+    let read = access
+      .getIn(["deposit-read", "users"])
+      .map(user => user.get("email"));
+    let update = access
+      .getIn(["deposit-update", "users"])
+      .map(user => user.get("email"));
+
+    let all = admin
+      .concat(read)
+      .concat(update)
+      .toSet();
+
+    let adminRoles = access.getIn(["deposit-admin", "roles"]);
+    let readRoles = access.getIn(["deposit-read", "roles"]);
+    let updateRoles = access.getIn(["deposit-update", "roles"]);
+    let allRols = adminRoles
+      .concat(readRoles)
+      .concat(updateRoles)
+      .toSet();
+
+    access = access.toJS();
+    console.log("====================================");
+    console.log(access);
+    console.log("====================================");
     const adminUsers = access["deposit-admin"].users.map(user => user.email);
     const readUsers = access["deposit-read"].users.map(user => user.email);
     const updateUsers = access["deposit-update"].users.map(user => user.email);
@@ -83,8 +110,8 @@ const DraftPreview = props => {
     ];
 
     return {
-      users: allEmails.length,
-      roles: allRoles.length,
+      users: all.size,
+      roles: allRols.size,
       adminUsers,
       readUsers,
       updateUsers,
