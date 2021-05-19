@@ -84,7 +84,9 @@ class RecordFormSchema(RecordSchema):
 
         config_reviewable = deposit.schema_is_reviewable()
 
-        return dict(schema=copy.deepcopy(schema), uiSchema=uiSchema,config_reviewable=config_reviewable)
+        return dict(schema=copy.deepcopy(schema), uiSchema=uiSchema,
+                    config_reviewable=config_reviewable)
+
     def get_review(self, obj):
         depid = obj.get("metadata", {}).get("_deposit", {}).get("id")
         resolver = Resolver(pid_type='depid',
