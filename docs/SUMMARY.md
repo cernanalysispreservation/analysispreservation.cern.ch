@@ -39,6 +39,7 @@
 ---
 
 - [FAQ](./faq.md)
+- [Glossary](./GLOSSARY.md)
 - [Related Projects](./related-projects.md)
 
 ---

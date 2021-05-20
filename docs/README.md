@@ -6,7 +6,23 @@ To build this documentation with Gitbook you have to follow a few simple steps.
 
 First, install the necessary requirements:
 
-    npm install gitbook-cli -g
+    npm install @gitbook-ng/gitbook
+
+> WARNING!!! The previously used `gitbook-cli` package (`gitbookIO/gitbook-cli`) was 
+> deprecated and is not maintained anymore by the developers
+> 
+> ## Migrate from legacy gitbook-cli
+>
+> First you need uninstall `gitbook-cli` (optionally, recommend to save your disk space):
+>
+> ```bash
+> npm uninstall gitbook-cli -g
+> rm -fr ~/.gitbook   # Remove legacy gitbook global installation
+> ```
+>
+> Then run: `npm install @gitbook-ng/gitbook`
+>
+
 
 Second, clone the repository (or your own fork) if you have not done so already:
 
