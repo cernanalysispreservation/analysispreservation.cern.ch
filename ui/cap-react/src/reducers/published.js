@@ -41,7 +41,7 @@ export default function publishedReducer(state = initialState, action) {
     case PUBLISHED_ITEM_SUCCESS:
       return state
         .set("loading", false)
-        .merge(action.published)
+        .merge(Map({ ...action.published }))
         .set(
           "files",
           action.published.files.length > 0
@@ -53,9 +53,7 @@ export default function publishedReducer(state = initialState, action) {
     case REVIEW_PUBISHED_REQUEST:
       return state.set("loading", true);
     case REVIEW_PUBISHED_SUCCESS:
-      return state
-        .set("loading", false)
-        .set("review", fromJS(action.payload.review));
+      return state.set("loading", false).set("review", action.payload.review);
     case REVIEW_PUBISHED_ERROR:
       return state.set("loading", false).set("reviewError", action.error);
     default:

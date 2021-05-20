@@ -71,7 +71,7 @@ export function getPublishedItem(id) {
 export function reviewPublished(review, message = "submitted") {
   return (dispatch, getState) => {
     let state = getState();
-    let uri = state.published.getIn(["links", "review"]);
+    let uri = state.published.get("links").review;
     dispatch(reviewPublishedRequest());
 
     return axios

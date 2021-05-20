@@ -16,7 +16,6 @@ const ReviewList = ({
   isReviewingPublished,
   shouldDisplayButtonsWhenFromPublished
 }) => {
-  if (isReviewingPublished) review = review.toJS();
   return (
     <Box pad="small" colorIndex="light-2" margin={{ top: "small" }}>
       <Box pad={{ between: "small" }}>

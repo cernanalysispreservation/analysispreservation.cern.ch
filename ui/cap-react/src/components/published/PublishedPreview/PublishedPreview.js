@@ -98,9 +98,9 @@ class PublishedPreview extends React.Component {
         {this.props.schemaType && (
           <Tag
             size="small"
-            text={`${this.props.schemaType.get(
-              "fullname"
-            )} v${this.props.schemaType.get("version")}`}
+            text={`${this.props.schemaType.fullname} v${
+              this.props.schemaType.version
+            }`}
           />
         )}
       </Box>
@@ -109,7 +109,7 @@ class PublishedPreview extends React.Component {
 
   render() {
     let { schema, uiSchema, config_reviewable } = this.props.schemas
-      ? this.props.schemas.toJS()
+      ? this.props.schemas
       : {};
     if (!(schema && uiSchema)) return null;
 
@@ -131,7 +131,7 @@ class PublishedPreview extends React.Component {
           {this.props.schemas ? (
             <Box flex={true}>
               <FormHeader
-                title={this.props.metadata.toJS().general_title}
+                title={this.props.metadata.general_title}
                 tags={this.getTagsList()}
                 reviewAnchor={
                   <Box direction="row" wrap={false}>
@@ -198,9 +198,9 @@ class PublishedPreview extends React.Component {
               >
                 <Box flex={true}>
                   <JSONSchemaPreviewer
-                    formData={this.props.metadata.toJS()}
+                    formData={this.props.metadata}
                     schema={_schema}
-                    schemaType={this.props.schemaType.toJS()}
+                    schemaType={this.props.schemaType}
                     uiSchema={uiSchema}
                     onChange={() => {}}
                     isPublished
