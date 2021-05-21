@@ -89,13 +89,19 @@ def add_hypernews_mail_to_recipients(recipients, cadi_id):
 
 
 def get_review_recipients(deposit, host_url, config):
-    # mail of owner
-    owner = deposit["_deposit"]["owners"][0]
-    owner_mail = User.query.filter_by(id=owner).one().email
-
     # mail of reviewer
     reviewer_mail = current_user.email
-    recipients = [owner_mail, reviewer_mail]
+    recipients = [reviewer_mail, ]
+
+    # mail of owner
+    # owners = deposit.get("_deposit", {}).get("owners")
+    owner_mail = "-"
+    try:
+        owner = deposit["_deposit"]["owners"][0]
+        owner_mail = User.query.filter_by(id=owner).one().email
+        recipients.append(owner_mail)
+    except IndexError:
+        pass
 
     cadi_id = deposit.get("analysis_context", {}).get("cadi_id")
     if cadi_id:
@@ -234,6 +240,8 @@ def send_mail_on_publish(recid, revision,
     send_mail_on_hypernews(recipients, subject, message)
     send_mail_on_jira(recid, host_url, recipients, message, subject, template)
 
+    current_app.logger.info(
+        f'Publish mail: {recid} - {", ".join(recipients)}.')
     create_and_send.delay(
         template,
         dict(recid=recid, url=host_url, message=message),
