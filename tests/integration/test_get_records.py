@@ -464,8 +464,7 @@ def test_get_record_with_form_json_serializer(
                 'title': 'record-ui-test-schema',
             },
             'config_reviewable': False
-        },
-        'review': None,
+        }
     }
 
 

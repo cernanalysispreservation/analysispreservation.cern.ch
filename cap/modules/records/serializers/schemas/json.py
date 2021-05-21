@@ -26,7 +26,7 @@
 from __future__ import absolute_import, print_function
 import copy
 
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_dump
 from invenio_jsonschemas import current_jsonschemas
 from invenio_pidstore.resolver import Resolver
 
@@ -67,6 +67,16 @@ class RecordSchema(common.CommonRecordSchema):
 
 class RecordFormSchema(RecordSchema):
     """Schema for records v1 in JSON."""
+
+    @post_dump
+    def remove_skip_values(self, data):
+        keys = ["can_review", "review"]
+
+        for key in keys:
+            if data.get(key, '') is None:
+                del data[key]
+
+        return data
 
     schemas = fields.Method('get_record_schemas', dump_only=True)
     can_update = fields.Method('can_user_update', dump_only=True)

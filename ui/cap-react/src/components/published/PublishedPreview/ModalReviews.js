@@ -7,7 +7,7 @@ import { Box } from "grommet";
 const ModalReviews = ({ show, onClose, isReviewingPublished = false }) => {
   return (
     show && (
-      <Modal separator onClose={onClose}>
+      <Modal title="Reviews" separator onClose={onClose}>
         <Box size="xlarge">
           <DepositReviews isReviewingPublished={isReviewingPublished} />
         </Box>
