@@ -25,7 +25,7 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, current_app, jsonify, request
+from flask import Blueprint, current_app, jsonify, request, g
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
 from flask_security.views import logout
@@ -118,3 +118,22 @@ if DEBUG or os.environ.get("ENABLE_E2E"):
                                 'local_login',
                                 login,
                                 methods=['POST'])
+
+
+@login_required
+def get_identity():
+    """Return identity of logged in user."""
+    data = [
+        {"method": d.method, "value": d.value}
+        for d in g.identity.provides
+    ]
+    response = jsonify(data)
+    response.status_code = 200
+    return response
+
+
+if os.environ.get("CAP_IDENTITY_VIEW_ENABLE"):
+    user_blueprint.add_url_rule('/identity',
+                                'identity',
+                                get_identity,
+                                methods=['GET'])
