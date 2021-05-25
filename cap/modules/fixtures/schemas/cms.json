@@ -261,8 +261,7 @@
                     "Detector performance",
                     "ttbar+(anything but Higgs)",
                     "HH",
-                    "ttbar+Higgs boson",
-                    "Option 33"
+                    "ttbar+Higgs boson"
                   ]
                 },
                 "description": "(will be ORed inside this category)",
