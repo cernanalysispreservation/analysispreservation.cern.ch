@@ -1,0 +1,16 @@
+{
+  "name": "cap-general-docs",
+  "version": "0.2.0",
+  "description": "CERN Analysis Preservation docs",
+  "engines": {
+    "npm": ">=3"
+  },
+  "scripts": {
+    "serve": "gitbook serve",
+    "build": "gitbook build",
+    "install": "gitbook install"
+  },
+  "dependencies": {
+    "@gitbook-ng/gitbook": "*"
+  }
+}

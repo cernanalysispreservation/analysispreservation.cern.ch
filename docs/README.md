@@ -2,15 +2,27 @@
 
 To build this documentation with Gitbook you have to follow a few simple steps.
 
+## Run with docker
+
+Prerequisite:
+
+- docker
+
+How to run:
+
+- Navigate to the `/docs` directory
+- Run `docker-compose up` to command line
+- Open the browser to `localhost:4000`
+
 ## Setup the Environment
 
 First, install the necessary requirements:
 
     npm install @gitbook-ng/gitbook
 
-> WARNING!!! The previously used `gitbook-cli` package (`gitbookIO/gitbook-cli`) was 
+> WARNING!!! The previously used `gitbook-cli` package (`gitbookIO/gitbook-cli`) was
 > deprecated and is not maintained anymore by the developers
-> 
+>
 > ## Migrate from legacy gitbook-cli
 >
 > First you need uninstall `gitbook-cli` (optionally, recommend to save your disk space):
@@ -21,8 +33,6 @@ First, install the necessary requirements:
 > ```
 >
 > Then run: `npm install @gitbook-ng/gitbook`
->
-
 
 Second, clone the repository (or your own fork) if you have not done so already:
 
