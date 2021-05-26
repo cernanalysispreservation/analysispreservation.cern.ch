@@ -1,0 +1,12 @@
+version: "2.3"
+services:
+  docs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./:/opt/docs
+      - /opt/docs/node_modules
+    command: npm run serve

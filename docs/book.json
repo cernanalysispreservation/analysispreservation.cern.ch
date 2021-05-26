@@ -6,10 +6,13 @@
   },
   "plugins": [
     "back-to-top-button",
-    "github", "github-buttons", "toggle-chapters",
+    "github",
+    "github-buttons",
+    "toggle-chapters",
     "anchorjs",
     "github",
-    "-fontsettings", "-sharing",
+    "-fontsettings",
+    "-sharing",
     "folding-menu",
     "codeblock-filename",
     "theme-cap@git+https://github.com/cernanalysispreservation/gitbook-plugin-theme-cap.git",
@@ -51,13 +54,15 @@
       "url": "https://github.com/cernanalysispreservation/analysispreservation.cern.ch"
     },
     "github-buttons": {
-      "buttons": [{
-        "user": "cernanalysispreservation",
-        "repo": "analysispreservation.cern.ch",
-        "type": "star",
-        "size": "small",
-        "count": true
-      }]
+      "buttons": [
+        {
+          "user": "cernanalysispreservation",
+          "repo": "analysispreservation.cern.ch",
+          "type": "star",
+          "size": "small",
+          "count": true
+        }
+      ]
     },
     "theme-api": {
       "languages": [
