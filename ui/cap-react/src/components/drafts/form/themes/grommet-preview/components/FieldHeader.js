@@ -2,21 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Label";
 
 let FieldHeader = function(props) {
   return props.title ? (
     <Box flex={true} style={{ overflow: "hidden" }}>
-      <Label
+      <span
         size="small"
-        // uppercase={true}
         style={{
           fontWeight: props.bold ? 600 : 300,
-          fontStyle: props.italic ? "italic" : "normal"
+          fontStyle: props.italic ? "italic" : "normal",
+          fontSize: "0.875rem",
+          lineHeight: 1.71429,
+          color: "#666"
         }}
-      >
-        {props.title}
-      </Label>
+        dangerouslySetInnerHTML={{ __html: props.title }}
+      />
     </Box>
   ) : null;
 };
