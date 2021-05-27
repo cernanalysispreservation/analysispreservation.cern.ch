@@ -29,6 +29,7 @@ const ReviewOptions = props => {
       colorIndex="light-1"
       onClick={() => props.updateReviewType(item.type)}
       flex
+      data-cy={`review-type-${item.type}`}
       key={item.type}
       wrap={false}
       style={{

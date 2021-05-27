@@ -137,6 +137,7 @@ class PublishedPreview extends React.Component {
                   config_reviewable && (
                     <Box direction="row" wrap={false}>
                       <Button
+                        dataCy="show-reviews"
                         text="Show Reviews"
                         size="small"
                         margin="0 10px"

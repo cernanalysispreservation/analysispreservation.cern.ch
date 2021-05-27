@@ -36,6 +36,7 @@ const ReviewModal = props => {
               </Box>
               <Box colorIndex="light-2">
                 <textarea
+                  data-cy="add-review-comment"
                   placeholder="Leave a comment"
                   onChange={e => setReviewBody(e.target.value)}
                   rows="5"
@@ -58,6 +59,7 @@ const ReviewModal = props => {
               >
                 <Button text="Cancel" onClick={props.onClose} secondary />
                 <Button
+                  dataCy="add-review"
                   text="Add review"
                   disabled={reviewType === null || reviewBody === null}
                   primary

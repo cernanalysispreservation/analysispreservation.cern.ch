@@ -10,6 +10,7 @@ const Review = props => {
   return (
     <div>
       <Button
+        dataCy="show-review-modal"
         text="Add Review"
         icon={<AiOutlinePlus size={15} />}
         onClick={() => setShowModal(true)}
