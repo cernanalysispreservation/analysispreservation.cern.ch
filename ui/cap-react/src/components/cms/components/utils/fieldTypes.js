@@ -429,8 +429,12 @@ const simple = {
         type: {
           title: "Type",
           type: "string",
-          enum: ["string", "array"],
-          enumNames: ["Select one value", "Select multiple values"]
+          enum: ["string", "number", "array"],
+          enumNames: [
+            "Select one value (text)",
+            "Select one value (number)",
+            "Select multiple values"
+          ]
         },
         readOnly: {
           type: "boolean",
@@ -454,6 +458,22 @@ const simple = {
                   items: {
                     title: "Option",
                     type: "string"
+                  }
+                }
+              }
+            },
+            {
+              properties: {
+                type: {
+                  enum: ["number"]
+                },
+                enum: {
+                  title: "Define your options",
+                  type: "array",
+                  description: "The options for the widget",
+                  items: {
+                    title: "Option",
+                    type: "number"
                   }
                 }
               }
