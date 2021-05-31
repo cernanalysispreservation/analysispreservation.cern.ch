@@ -24,53 +24,31 @@ class AboutPage extends React.Component {
             <Box margin={{ vertical: "medium" }}>
               <Heading tag="h2">What is it?</Heading>
               <Paragraph style={{ lineHeight: "180%" }}>
-                CERN Analysis Preservation (CAP) is a service for physicists to
-                preserve and document the various materials produced in the
-                process of their analyses, e.g. datasets, code, documentation,
+                CERN Analysis Preservation (CAP) is an open source preservation
+                service developed by the Scientific Information Service at CERN
+                for physicists to preserve and document the various materials
+                produced in the analysis process, e.g. datasets, code, documentation,
                 so that they are reusable and understandable in the future. By
                 using this tool, researchers ensure these outputs are preserved
-                and also findable and accessible by their (internal)
-                collaborators.
+                and also findable and accessible by their (internal) collaborators.
               </Paragraph>
               <Paragraph style={{ lineHeight: "180%" }}>
                 To make the tool as easy to use as possible, an API and a
                 dedicated client are available, as well as integrations with
-                existing databases and platforms used by the collaborations.
-                This shall help reducing the burden on the HEP researchers and
-                to avoid duplication of information. The researchers remain in
-                full control of their datasets while being able to preserve and
-                share their data and materials easily with their colleagues.
+                long-established collaboration databases and platforms. This reduces
+                the burden on the users and minimises duplication of information.
+                The researchers remain in full control of their information, while
+                being able to preserve and share their data and materials easily
+                with their colleagues and reviewers.
               </Paragraph>
               <Paragraph style={{ lineHeight: "180%" }}>
-                CAP is now in Beta phase. We welcome everyone to test and use
-                the system. For more details about how to use CAP, the
-                documentation for the service can be found at{" "}
-                <a href="https://cernanalysispreservation.readthedocs.io/en/latest/">
-                  cernanalysispreservation.readthedocs.io/en/latest/
-                </a>{" "}
-                and the documentation for the CAP client at{" "}
-                <a href="https://cap-client-test.readthedocs.io/en/latest">
-                  cap-client-test.readthedocs.io/en/latest
+                Please refer to our full documentation for more details on how to
+                use CAP, use cases, frequently asked questions and more at{" "}
+                <a href="https://analysispreservation.cern.ch/docs/general/">
+                  analysispreservation.cern.ch/docs/general/
                 </a>.
               </Paragraph>
-              <Paragraph style={{ lineHeight: "180%" }}>
-                The CERN Analysis Preservation Framework includes another
-                component, the Reusable Analyses service,{" "}
-                <a href="http://www.reana.io/">REANA</a>, which is a platform
-                for reusable research data analyses. Another related service is
-                the <a href="http://opendata.cern.ch/">CERN Open Data portal</a>,
-                which can be used to publish openly various materials, such as
-                datasets, software, configuration files, etc. These services are
-                being developed and operated by the CERN IT and the Scientific
-                Information Service.
-              </Paragraph>
-              <Heading tag="h2">What can I submit?</Heading>
-              <Paragraph style={{ lineHeight: "180%" }}>
-                There are 10 gigabytes of storage available to submit your
-                n-tuples and output macros (for each of your individual
-                analyses).
-              </Paragraph>
-              <Heading tag="h2">How can I submit?</Heading>
+              <Heading tag="h2">How can I use the service?</Heading>
               <Box
                 style={{
                   lineHeight: "180%",
@@ -86,12 +64,12 @@ class AboutPage extends React.Component {
                 <ul>
                   <li>The submission forms via the user interface</li>
                   <li>
-                    The command-line client (<a href="https://cap-client.readthedocs.io/en/latest/?badge=latest#">
+                    The command-line client (<a href="https://analysispreservation.cern.ch/docs/cli/">
                       cap-client
                     </a>)
                   </li>
                   <li>
-                    The REST API (<a href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html">
+                    The REST API (<a href="https://analysispreservation.cern.ch/docs/api/">
                       API docs
                     </a>)
                   </li>
@@ -131,7 +109,7 @@ class AboutPage extends React.Component {
                     only the creator can see or edit an analysis with default
                     permission settings For more detailed information please
                     refer to our &nbsp;
-                    <a href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access">
+                    <a href="https://analysispreservation.cern.ch/docs/general/access.html">
                       documentation
                     </a>.{" "}
                   </li>
@@ -139,10 +117,13 @@ class AboutPage extends React.Component {
               </Box>
               <Heading tag="h2">Contact</Heading>
               <Paragraph style={{ lineHeight: "180%" }}>
-                Get in touch with us! Send us a message at&nbsp;
-                <a href="mailto:analysis-preservation-support@cern.ch">
-                  analysis-preservation-support@cern.ch
-                </a>
+                You can contact us by opening tickets for requests and incidents
+                through the &nbsp;
+                <a href="https://cern.service-now.com/service-portal?id=functional_element&name=Data-Analysis-Preservation">
+                  CERN Service Portal
+                </a>. We welcome everyone to test and use the system. If you or
+                your team/working group/collaboration would like to start using
+                CAP, please get in touch.
               </Paragraph>
             </Box>
           </Box>
