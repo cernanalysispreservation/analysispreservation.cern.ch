@@ -225,11 +225,6 @@ def test_update_deposit_cannot_update_underscore_prefixed_files(
         'id': depid,
         'type': 'deposit',
         'revision': 1,
-        'schema': {
-            'fullname': '',
-            'name': 'lhcb',
-            'version': '1.0.0'
-        },
         'experiment': 'LHCb',
         'status': 'draft',
         'created_by': {'email': owner.email, 'profile': {}},
@@ -353,11 +348,6 @@ def test_patch_deposit_cannot_update_underscore_prefixed_fields(
         'id': depid,
         'type': 'deposit',
         'revision': 1,
-        'schema': {
-            'fullname': '',
-            'name': 'lhcb',
-            'version': '1.0.0'
-        },
         'experiment': 'LHCb',
         'status': 'draft',
         'labels': [],
@@ -474,11 +464,6 @@ def test_update_deposit_with_required_field_success(
         'id': depid,
         'type': 'deposit',
         'revision': 1,
-        'schema': {
-            'fullname': '',
-            'name': 'test-analysis',
-            'version': '1.0.0'
-        },
         'labels': [],
         'files': [],
         'experiment': 'CMS',

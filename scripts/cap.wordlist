@@ -23,6 +23,7 @@ json
 LDAP
 LHCb
 lhcb
+mixin
 oauthclient
 OIDC
 recid

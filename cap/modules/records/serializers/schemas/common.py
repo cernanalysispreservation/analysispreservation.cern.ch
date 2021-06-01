@@ -64,6 +64,41 @@ LABELS = {
 }
 
 
+class SchemaMixin(object):
+    """Schema Mixin."""
+
+    schema = fields.Method('get_schema', dump_only=True)
+
+    def get_schema(self, obj):
+        schema = resolve_schema_by_url(obj.get('metadata', {})['$schema'])
+        result = {
+            'name': schema.name,
+            'version': schema.version,
+            'fullname': schema.fullname or ''
+        }
+        return result
+
+
+class AccessMixin(object):
+    """Access Mixin."""
+
+    access = fields.Method('get_access', dump_only=True)
+
+    def get_access(self, obj):
+        """Return access object."""
+        access = obj.get('metadata', {})['_access']
+
+        for permission in access.values():
+            if permission['users']:
+                for index, user_id in enumerate(permission['users']):
+                    permission['users'][index] = get_remote_account_by_id(user_id)  # noqa
+            if permission['roles']:
+                for index, role_id in enumerate(permission['roles']):
+                    permission['roles'][index] = get_role_name_by_id(role_id)
+
+        return access
+
+
 class StrictKeysMixin(object):
     """Ensure only defined keys exists in data."""
     @validates_schema(pass_original=True)
@@ -86,8 +121,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     """Base record schema."""
 
     id = fields.Str(attribute='pid.pid_value', dump_only=True)
-
-    schema = fields.Method('get_schema', dump_only=True)
 
     experiment = fields.Str(attribute='metadata._experiment', dump_only=True)
     status = fields.Str(attribute='metadata._deposit.status', dump_only=True)
@@ -114,15 +147,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
 
     def get_files(self, obj):
         return obj.get('metadata', {}).get('_files', [])
-
-    def get_schema(self, obj):
-        schema = resolve_schema_by_url(obj.get('metadata', {})['$schema'])
-        result = {
-            'name': schema.name,
-            'version': schema.version,
-            'fullname': schema.fullname or ''
-        }
-        return result
 
     def get_metadata(self, obj):
         result = {

@@ -254,11 +254,6 @@ def test_get_deposit_with_default_serializer(client, users,
         'id': depid,
         'type': 'deposit',
         'revision': 1,
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
         'experiment': 'CMS',
         'status': 'draft',
         'created_by': {'email': owner.email, 'profile': {}},

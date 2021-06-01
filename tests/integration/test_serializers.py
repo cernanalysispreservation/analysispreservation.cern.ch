@@ -67,11 +67,6 @@ def test_get_deposit_with_default_serializer(client, users,
         'id': depid,
         'type': 'deposit',
         'revision': 2,
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
         'experiment': 'CMS',
         'status': 'draft',
         'created_by': {'email': owner.email, 'profile': {}},
@@ -154,11 +149,6 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         'revision': 0,
         'experiment': 'CMS',
         'status': 'published',
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
         'labels': [],
         'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),

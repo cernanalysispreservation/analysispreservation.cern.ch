@@ -161,11 +161,6 @@ def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version
                        data=json.dumps(metadata))
 
     assert resp.status_code == 201
-    assert resp.json['schema'] == {
-        'fullname': 'Test Schema',
-        'name': 'test-analysis',
-        'version': '2.0.0'
-    }
 
 
 def test_create_deposit_set_fields_correctly(client, location, users,
@@ -194,11 +189,6 @@ def test_create_deposit_set_fields_correctly(client, location, users,
         'id': depid,
         'type': 'deposit',
         'revision': 0,
-        'schema': {
-            'fullname': 'CMS Schema',
-            'name': 'test-analysis',
-            'version': '1.0.0'
-        },
         'labels': [],
         'experiment': 'CMS',
         'status': 'draft',
@@ -323,11 +313,6 @@ def test_create_deposit_with_required_fields_success(
         'id': depid,
         'type': 'deposit',
         'revision': 0,
-        'schema': {
-            'fullname': '',
-            'name': 'test-analysis',
-            'version': '1.0.0'
-        },
         'labels': [],
         'files': [],
         'experiment': 'CMS',

@@ -77,11 +77,6 @@ def test_edit_record(client, create_deposit, users, auth_headers_for_superuser):
         'recid': deposit['control_number'],
         'type': 'deposit',
         'revision': 2,
-        'schema': {
-            'fullname': '',
-            'name': 'test',
-            'version': '1.0.0'
-        },
         'experiment': 'CMS',
         'status': 'draft',
         'created_by': {'email': owner.email, 'profile': {}},

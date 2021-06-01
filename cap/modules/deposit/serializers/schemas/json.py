@@ -35,10 +35,6 @@ from cap.modules.deposit.permissions import (
 )
 from cap.modules.records.serializers.schemas import common
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
-from cap.modules.user.utils import (
-    get_role_name_by_id,
-    get_remote_account_by_id
-)
 
 
 class DepositSearchSchema(common.CommonRecordSchema):
@@ -52,26 +48,12 @@ class DepositSearchSchema(common.CommonRecordSchema):
                               dump_only=True)
 
 
-class DepositSchema(DepositSearchSchema):
+class DepositSchema(DepositSearchSchema, common.AccessMixin):
     """Schema for deposit v1 in JSON. Used in deposits, includes `access`."""
-    access = fields.Method('get_access', dump_only=True)
-
-    def get_access(self, obj):
-        """Return access object."""
-        access = obj.get('metadata', {})['_access']
-
-        for permission in access.values():
-            if permission['users']:
-                for index, user_id in enumerate(permission['users']):
-                    permission['users'][index] = get_remote_account_by_id(user_id)  # noqa
-            if permission['roles']:
-                for index, role_id in enumerate(permission['roles']):
-                    permission['roles'][index] = get_role_name_by_id(role_id)
-
-        return access
+    pass
 
 
-class DepositFormSchema(DepositSchema):
+class DepositFormSchema(DepositSchema, common.SchemaMixin):
     """Schema for deposit v1 in JSON."""
     SKIP_VALUES = set([None])
 

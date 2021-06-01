@@ -136,11 +136,6 @@ def test_deposit_publish_changes_status_and_creates_record(
         'recid': record['control_number'],
         'type': 'deposit',
         'revision': 1,
-        'schema': {
-            'fullname': '',
-            'name': 'test',
-            'version': '1.0.0'
-        },
         'experiment': 'CMS',
         'status': 'published',
         'created_by': {'email': owner.email, 'profile': {}},
@@ -237,11 +232,6 @@ def test_deposit_publish_with_required_field_success(
         'recid': record['control_number'],
         'type': 'deposit',
         'revision': 1,
-        'schema': {
-            'fullname': '',
-            'name': 'test-analysis',
-            'version': '1.0.0'
-        },
         'experiment': 'CMS',
         'status': 'published',
         'is_owner': True,

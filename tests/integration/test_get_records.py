@@ -142,11 +142,6 @@ def test_get_records_default_serializer(
         'revision': 0,
         'experiment': 'CMS',
         'status': 'published',
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
         'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
@@ -309,11 +304,6 @@ def test_get_record_when_superuser_returns_record(client, db, users,
         'revision': 0,
         'experiment': 'CMS',
         'status': 'published',
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
         'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
