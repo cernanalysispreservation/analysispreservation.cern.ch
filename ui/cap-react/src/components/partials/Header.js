@@ -9,24 +9,17 @@ import Add from "grommet/components/icons/base/Add";
 import HowToSearchPage from "../about/HowToSearch";
 
 import { Header as GrommetHeader, Heading } from "grommet";
-import {
-  AiOutlineSetting,
-  AiOutlineLogout,
-  AiOutlinePlus
-} from "react-icons/ai";
 
 import Box from "grommet/components/Box";
 import Title from "grommet/components/Title";
 import Label from "grommet/components/Label";
 
-import Menu from "./Menu";
-import MenuItem from "./MenuItem";
+import MultipleMenu from "./MultipleMenu";
 
 import Anchor from "../partials/Anchor";
 
 import SearchBar from "../search/SearchBar";
 
-import { logout } from "../../actions/auth";
 import DraftCreate from "../drafts/DraftCreate";
 import MediaQuery from "react-responsive";
 
@@ -154,43 +147,7 @@ class Header extends React.Component {
                     </Box>
                   </MediaQuery>
                 )}
-                <Menu
-                  top={48}
-                  right={3}
-                  hoverColor="rgba(67,135,170,1)"
-                  iconWrapperClassName="headerMenuAppp"
-                  dataCy="header-menu"
-                >
-                  {this.props.permissions && (
-                    <MediaQuery maxWidth={719}>
-                      <MenuItem
-                        hovered
-                        separator
-                        title="Create"
-                        onClick={() => this.toggleCreate()}
-                        href="#"
-                        icon={<AiOutlinePlus color="#000" />}
-                      />
-                    </MediaQuery>
-                  )}
-                  <MenuItem
-                    hovered
-                    separator
-                    title="Settings"
-                    icon={<AiOutlineSetting color="#000" />}
-                    path="/settings"
-                    href="#"
-                    dataCy="settings-menuitem"
-                  />
-                  <MenuItem
-                    hovered
-                    separator
-                    title="Logout"
-                    onClick={this.props.logout}
-                    href="#"
-                    icon={<AiOutlineLogout color="#000" />}
-                  />
-                </Menu>
+                <MultipleMenu openModal={() => this.toggleCreate()} />
               </Box>
             </Box>
           ) : null}
@@ -217,15 +174,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    logout: () => dispatch(logout())
-  };
-}
-
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
   )(Header)
 );
