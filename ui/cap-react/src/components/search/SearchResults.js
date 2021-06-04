@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import Truncate from "react-truncate";
 import TimeAgo from "react-timeago";
-import { AiOutlineLink, AiOutlineMail } from "react-icons/ai";
+import { AiOutlineLink, AiOutlineUser } from "react-icons/ai";
 
 import Box from "grommet/components/Box";
 
@@ -143,30 +143,40 @@ class SearchResults extends React.Component {
                   )}
                   <Box
                     direction="row"
-                    style={{ color: "rgba(0,0,0,0.3)", marginTop: "5px" }}
+                    style={{ color: "rgba(0,0,0,0.3)", marginTop: "10px" }}
                     justify="between"
                     responsive={false}
                   >
-                    <Box
-                      direction="row"
-                      align="center"
-                      justify="center"
-                      responsive={false}
-                    >
+                    <Box>
                       {created_by && (
-                        <React.Fragment>
-                          <AiOutlineMail size="14px" />
-                          <Label
-                            margin="none"
-                            size="small"
-                            style={{
-                              color: "rgba(0,0,0,0.5)",
-                              marginLeft: "5px"
-                            }}
-                          >
-                            {created_by.email}
-                          </Label>
-                        </React.Fragment>
+                        <Anchor
+                          label={
+                            <Box
+                              direction="row"
+                              align="center"
+                              responsive={false}
+                            >
+                              <AiOutlineUser
+                                size={14}
+                                color="rgba(0,0,0,0.5)"
+                              />
+                              <Label
+                                margin="none"
+                                size="small"
+                                style={{
+                                  color: "rgba(0,0,0,0.9)",
+                                  marginLeft: "5px"
+                                }}
+                              >
+                                {created_by.profile &&
+                                created_by.profile.display_name
+                                  ? created_by.profile.display_name
+                                  : created_by.email}
+                              </Label>
+                            </Box>
+                          }
+                          href={`mailto:${created_by.email}`}
+                        />
                       )}
                     </Box>
                     <Box>
