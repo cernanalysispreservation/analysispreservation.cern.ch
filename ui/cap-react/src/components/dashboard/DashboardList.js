@@ -59,7 +59,7 @@ function DashboardList(props) {
                   }}
                   uppercase
                 >
-                  {type}
+                  {type}({list[type].count})
                 </Label>
               </Box>
             ))}

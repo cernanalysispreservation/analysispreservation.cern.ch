@@ -23,27 +23,32 @@ class Dashboard extends React.Component {
       drafts: {
         all: {
           list: this.props.results.drafts.data,
-          more: this.props.results.drafts.more
+          more: this.props.results.drafts.more,
+          count: this.props.results.all_drafts_count
         },
         yours: {
           list: this.props.results.user_drafts.data,
-          more: this.props.results.user_drafts.more
+          more: this.props.results.user_drafts.more,
+          count: this.props.results.user_drafts_count
         }
       },
       published: {
         all: {
           list: this.props.results.published.data,
-          more: this.props.results.published.more
+          more: this.props.results.published.more,
+          count: this.props.results.all_published_count
         },
         yours: {
           list: this.props.results.user_published.data,
-          more: this.props.results.user_published.more
+          more: this.props.results.user_published.more,
+          count: this.props.results.user_published_count
         }
       },
       workflows: {
         yours: {
           list: this.props.results.user_workflows.data,
-          more: this.props.results.user_workflows.more
+          more: this.props.results.user_workflows.more,
+          count: 0
         }
       }
     };

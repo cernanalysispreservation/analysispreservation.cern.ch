@@ -87,6 +87,8 @@ def dashboard():
     user_drafts = _serialize_deposits(ds.get_user_deposits()[:5].execute())
     user_drafts_count = ds.get_user_deposits().count()
     user_workflows = get_user_workflows()
+    all_published_count = rs.count()
+    all_drafts_count = ds.count()
     #
     #    user_workflows = [
     #        dict(name='demo-workflow#2',
@@ -129,5 +131,7 @@ def dashboard():
         },
         'user_drafts_count': user_drafts_count,
         'user_published_count': user_published_count,
-        'user_count': user_drafts_count + user_published_count
+        'user_count': user_drafts_count + user_published_count,
+        'all_drafts_count': all_drafts_count,
+        'all_published_count': all_published_count,
     })
