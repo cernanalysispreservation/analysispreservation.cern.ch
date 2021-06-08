@@ -53,6 +53,7 @@
     "jsondiffpatch": "0.3.11",
     "lodash": "4.17.11",
     "markdown-it": "12.0.4",
+    "marked": "2.0.7",
     "mini-css-extract-plugin": "0.4.4",
     "node-sass": "4.12.0",
     "object-assign": "4.1.0",
@@ -99,6 +100,7 @@
     "redux-promises": "1.0.0",
     "redux-thunk": "2.3.0",
     "reselect": "^3.0.1",
+    "sanitize-html": "2.4.0",
     "searchkit": "2.3.0",
     "styled-components": "4.4.1"
   },

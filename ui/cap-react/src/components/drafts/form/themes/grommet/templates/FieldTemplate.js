@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
 import FieldHeader from "../../grommet-preview/components/FieldHeader";
-import { Paragraph } from "grommet";
+import MarkdownInline from "../../../../../partials/MarkdownInline";
 
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema, required } = props;
@@ -27,6 +27,7 @@ let FieldTemplate = function(props) {
     // if (props.id === "root") {
     //   gridColumns = null;
     // }
+
     return (
       <Box
         style={{
@@ -45,10 +46,20 @@ let FieldTemplate = function(props) {
       >
         {!props.schema.type.includes("array") && (
           <Box margin={props.id === "root" ? null : { bottom: "small" }}>
-            <FieldHeader required={required} title={label} italic bold />
-            <Paragraph size="small" margin="none">
-              {rawDescription}
-            </Paragraph>
+            <FieldHeader
+              required={required}
+              title={label}
+              italic
+              bold
+              uiSchema={uiSchema}
+            />
+            <MarkdownInline
+              text={rawDescription}
+              renderAsHtml={
+                uiSchema["ui:options"] &&
+                uiSchema["ui:options"].descriptionIsMarkdown
+              }
+            />
           </Box>
         )}
         {children}
@@ -60,9 +71,12 @@ let FieldTemplate = function(props) {
     <FormField
       label={
         <span>
-          <span
+          <MarkdownInline
+            text={label}
             style={{ color: "#000" }}
-            dangerouslySetInnerHTML={{ __html: label }}
+            renderAsHtml={
+              uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
+            }
           />
           {required &&
             (label ? (
@@ -76,12 +90,16 @@ let FieldTemplate = function(props) {
                 </div>
               </div>
             ))}
-          {rawDescription ? (
-            <span
+          {rawDescription && (
+            <MarkdownInline
+              text={rawDescription}
               style={{ marginLeft: "10px" }}
-              dangerouslySetInnerHTML={{ __html: rawDescription }}
+              renderAsHtml={
+                uiSchema["ui:options"] &&
+                uiSchema["ui:options"].descriptionIsMarkdown
+              }
             />
-          ) : null}
+          )}
         </span>
       }
       key={id + label}

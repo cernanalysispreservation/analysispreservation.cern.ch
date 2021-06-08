@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import FieldHeader from "../components/FieldHeader";
 
 let FieldTemplate = function(props) {
-  const { label, children, formContext } = props;
+  const { label, children, formContext, uiSchema } = props;
 
   return children[0].props &&
     children[0].props.formData === undefined ? null : (
@@ -41,7 +41,7 @@ let FieldTemplate = function(props) {
                   : "1/5"
           }}
         >
-          <FieldHeader title={label} italic bold />
+          <FieldHeader title={label} italic bold uiSchema={uiSchema} />
         </Box>
       ) : null}
 

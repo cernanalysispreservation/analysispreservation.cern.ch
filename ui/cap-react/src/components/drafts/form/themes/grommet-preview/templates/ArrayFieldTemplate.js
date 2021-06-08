@@ -16,7 +16,7 @@ let ArrayFieldTemplate = function(props) {
     return (
       <Box flex={true} direction="row">
         <Box size={{ width: "small" }}>
-          <FieldHeader title={title} />
+          <FieldHeader title={title} uiSchema={uiSchema} />
         </Box>
         <StringArrayField {...props} />
       </Box>
@@ -25,7 +25,7 @@ let ArrayFieldTemplate = function(props) {
     return (
       <Box flex={true}>
         <Box>
-          <FieldHeader title={title} />
+          <FieldHeader title={title} uiSchema={uiSchema} />
         </Box>
         <Box>
           <DefaultArrayField {...props} />

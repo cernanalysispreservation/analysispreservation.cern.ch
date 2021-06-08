@@ -135,13 +135,13 @@
           "aware_twiki":{
             "type":"string",
             "enum": ["Yes", "No"],
-            "description":"The main Statistics Committee <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee'>TWiki</a> page. The <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>Frequently Asked Questions</a>. The <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences'>statistics-related references</a>.",
+            "description":"The main Statistics Committee [TWiki](https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee) page. The [Frequently Asked Questions](https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ). The [statistics-related references](https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences).",
             "title":"2.1. Are you aware that the Statistics Committee has a TWiki page which links a number of short documents describing recommendations for statistical techniques?"
           },
           "aware_sc_answer":{
             "type":"string",
             "enum": ["Yes", "No"],
-            "description":"You can send your questions to the <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html'>Statistics Discussions Hypernews forum</a>, or to the Committee's mailing list cms-statistics-committee@cern.ch.",
+            "description":"You can send your questions to the [Statistics Discussions Hypernews forum](https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html), or to the Committee's mailing list [cms-statistics-committee@cern.ch](mailto:cms-statistics-committee@cern.ch).",
             "title":"2.2. Are you aware that the Statistics Committee will make an effort to promptly answer your question on statistics issues?"
           },
           "hn_subscription":{
@@ -169,7 +169,7 @@
           "read_sc_twiki":{
             "type":"string",
             "enum": ["Yes", "No"],
-            "title":"3.1. Have you read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection'>SC TWiki page on MVA recommendations</a>?"
+            "title":"3.1. Have you read the [SC TWiki page on MVA recommendations?](https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection)"
           },
           "read_ml_groups_page":{
             "type":"string",
@@ -281,21 +281,21 @@
         "dependencies": {
           "options": {
             "oneOf": [{
-              "properties": {
-                "options": {
-                  "enum": ["No"]
+                "properties": {
+                  "options": {
+                    "enum": ["No"]
+                  }
                 }
-              }
-            }, {
-              "properties": {
-                "options": {
-                  "enum": ["Yes"]
-                },
-                "questions":{
-                  "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-survey-v0.0.1.json"
+              },{
+                "properties": {
+                  "options": {
+                    "enum": ["Yes"]
+                  },
+                  "questions": {
+                    "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/ml-applications-survey-v0.0.1.json"
+                  }
                 }
-              }
-            }]
+              }]
           }
         },
         "title": "3.b Optional ML Survey"
@@ -411,7 +411,6 @@
                 "enum": ["Yes", "No"],
                 "description": "If the answer is \"No\", please explain in \"Additional Comments\" why you deem such tests unnecessary for the fits in your analysis. Otherwise, please provide some details of how this test is performed, in \"Additional Comments\".",
                 "title": "Select whether you perform a GoF test"
-
               },
               "comments": {
                 "type": "string",
@@ -677,7 +676,7 @@
           }
         },
         "title": "4. Data Fitting"
-        },
+       },
       "confidence_intervals_limits": {
         "type": "object",
         "properties": {
@@ -899,7 +898,7 @@
                 ]
               }
             },
-            "title": "5.9. Do you use asymptotic formulae from the paper <a target='_blank' href='https://arxiv.org/abs/1007.1727v3'>https://arxiv.org/abs/1007.1727v3</a> for your confidence interval estimations?"
+            "title": "5.9. Do you use asymptotic formulae from the paper [https://arxiv.org/abs/1007.1727v3](https://arxiv.org/abs/1007.1727v3) for your confidence interval estimations?"
           },
           "toy_data": {
             "type": "object",
@@ -979,8 +978,8 @@
                 "title": "Select the answer that applies"
               }
             },
-              "dependencies": {
-               "options": {
+            "dependencies": {
+              "options": {
                 "oneOf": [
                   {
                     "properties": {
@@ -1042,7 +1041,7 @@
           "discovery_twiki": {
             "type": "string",
             "enum": ["Yes", "No"],
-            "description": "Page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures'>Search Procedures</a>, page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations'>Sensitivity Calculations</a>, page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect'>Look-Elsewhere Effect</a>.",
+            "description": "Page on [Search Procedures](https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures), page on [Sensitivity Calculations](https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations), page on [Look-Elsewhere Effect](https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect).",
             "title": "6.1. Have you read the discovery-related TWiki pages on Search Procedures, Sensitivity Calculations, and Look-Elsewhere Effect (if applicable)?"
           },
           "discovery_related_statements": {
@@ -1114,8 +1113,8 @@
                 "title": "Select the answer that applies"
               }
             },
-             "dependencies": {
-               "options": {
+            "dependencies": {
+              "options": {
                 "oneOf": [
                   {
                     "properties": {
@@ -1166,7 +1165,7 @@
           "twiki": {
             "type": "string",
             "enum": ["Yes", "No"],
-            "title": "7.2. Have you read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/ScrecUnfolding'>SC TWiki page on recommendations for unfolding techniques</a>?"
+            "title": "7.2. Have you read the [SC TWiki page on recommendations for unfolding techniques?](https://twiki.cern.ch/twiki/bin/view/CMS/ScrecUnfolding)"
           },
           "correlation_neglect": {
             "type": "string",
@@ -1489,8 +1488,8 @@
                 "title": "Select the answer that applies"
               }
             },
-             "dependencies": {
-               "options": {
+            "dependencies": {
+              "options": {
                 "oneOf": [
                   {
                     "properties": {
@@ -1595,7 +1594,7 @@
                     }
                   }
                 ]
-              }              
+              }
             },
             "title": "9.1. How do you estimate the PDF uncertainty on your measurement, e.g. effects on the acceptance?"
           },
@@ -1761,7 +1760,7 @@
             "title": "9.3. Comparison of Your measurement to theory predictions for the interpretation of the results:"
           }
         },
-        "description": "Information about the use of parton distribution functions of the proton (PDF in this section) in your analysis. CMS PDF forum provides help for those topics and can be contacted via <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/pdfs.html'>HyperNews</a> or mailing list at <a href='mailto:cms-pdf-forum@cern.ch>cms-pdf-forum@cern.ch</a>. Useful information is provided in the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/PDFatCMS'>TWiki page</a>.",
+        "description": "Information about the use of parton distribution functions of the proton (PDF in this section) in your analysis. CMS PDF forum provides help for those topics and can be contacted via [HyperNews](https://hypernews.cern.ch/HyperNews/CMS/get/pdfs.html) or mailing list at [cms-pdf-forum@cern.ch](mailto:cms-pdf-forum@cern.ch). Useful information is provided in the [TWiki page](https://twiki.cern.ch/twiki/bin/viewauth/CMS/PDFatCMS).",
         "title": "9. Parton Distribution Functions"
       },
       "other_stats": {
@@ -1810,7 +1809,7 @@
                     }
                   }
                 ]
-             }
+              }
             },
             "title": "10.1. Do you perform a blind analysis? If so, can you succinctly describe what was done?"
           },
@@ -2091,10 +2090,16 @@
         "aware_sc_meetings"
       ],
       "aware_twiki": {
-        "ui:widget": "radio"
+        "ui:widget": "radio",
+        "ui:options": {
+          "descriptionIsMarkdown": true
+        }
       },
       "aware_sc_answer": {
-        "ui:widget": "radio"
+        "ui:widget": "radio",
+        "ui:options": {
+          "descriptionIsMarkdown": true
+        }
       },
       "hn_subscription": {
         "ui:widget": "radio"
@@ -2117,7 +2122,10 @@
         "ml_use_description"
       ],
       "read_sc_twiki": {
-        "ui:widget": "radio"
+        "ui:widget": "radio",
+        "ui:options": {
+          "titleIsMarkdown": true
+        }
       },
       "read_ml_groups_page": {
         "ui:widget": "radio"
@@ -2434,6 +2442,9 @@
         "ui:order": ["options", "other", "comments"]
       },
       "asymptotic_formulae": {
+        "ui:options": {
+          "titleIsMarkdown": true
+        },
         "ui:order": ["options", "cross_check"],
         "options": {
           "ui:widget": "radio"
@@ -2457,7 +2468,10 @@
         "look_elsewhere_effect"
       ],
       "discovery_twiki": {
-        "ui:widget": "radio"
+        "ui:widget": "radio",
+        "ui:options": {
+          "descriptionIsMarkdown": true
+        }
       },
       "test_statistic": {
         "ui:order": ["options", "comments"]
@@ -2557,6 +2571,9 @@
       }
     },
     "parton_distribution_functions": {
+      "ui:options": {
+        "descriptionIsMarkdown": true
+      },
       "ui:order": [
         "pdf_uncertainty",
         "sm",
