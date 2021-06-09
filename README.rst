@@ -6,16 +6,18 @@
 What is this?
 -------------
 
-`CERN Analysis Preservation <https://analysispreservation.cern.ch>`_ is a data preservation service developed and run at `CERN <https://home.cern/about>`_ to provide a centralized platform for high energy physicists to store and retrieve analysis information. It is currently targeting analysis information provided by the four largest LHC experiments - ALICE, ATLAS, CMS and LHCb.
+`CERN Analysis Preservation <https://analysispreservation.cern.ch>`_ is a data preservation service developed and run at `CERN <https://home.cern/about>`_ to provide a centralized platform for physicists to capture and preserve the knowledge behind their physics analyses so that it is understandable and reusable in the future. It is currently targeting analysis information produced by the LHC experiments.
 
-This is the source code behind this project licensed under the `GNU Public License 2.0 <https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html>`_. As it is designed to support physicists during their research, the data gathered is not accessible by anyone outside CERN. If you wish to get access to data from CERN please visit the `CERN Open Data Portal <http://opendata.cern.ch>`_.
+CAP is designed to support physicists during their research, so we make sure to apply access control to all information added to the platform. Users retain full control of their information and data.
 
-If you want to know more just go to our `official documentation <https://cernanalysispreservation.readthedocs.io/en/latest/>`_.
+The source code behind this project is licensed under the `GNU General Public License v3.0<LICENSE>`_.
+
+If you want to know more, please refer our `official documentation <https://analysispreservation.cern.ch/docs/general/>`_. 
 
 Installation
 ------------
 
-If you want to try it out youself or test some code you have written, you can install a demo site locally. Please check out the `installation guide <INSTALL.rst>`_ for more details.
+If you want to try it out yourself or test some code you have written, you can install a demo site locally. Please check out the `installation guide <INSTALL.rst>`_ for more details.
 
 Contributing
 ------------

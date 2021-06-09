@@ -59,4 +59,8 @@ Find our contact information [here](./support.md).
 
 ## License
 
+CERN Analysis Preservation source code is licensed under GNU General Public License version 3.
+
+Copyright (C) 2014-2021 CERN.
+
 The content of this documentation is licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) unless specifically stated otherwise.
