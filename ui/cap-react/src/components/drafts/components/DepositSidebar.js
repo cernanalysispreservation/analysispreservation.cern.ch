@@ -20,9 +20,14 @@ import { getBucketById } from "../../../actions/files";
 
 import Tag from "../../partials/Tag";
 import Button from "../../partials/Button";
-import { AiOutlinePlus, AiOutlineReload } from "react-icons/ai";
+import {
+  AiOutlinePlus,
+  AiOutlineReload,
+  AiOutlineSelect
+} from "react-icons/ai";
 import { DRAFT_ITEM } from "../../routes";
 import DepositSidebarLoading from "./DepositSidebarLoading";
+import Anchor from "../../partials/Anchor";
 
 class DepositSidebar extends React.Component {
   constructor(props) {
@@ -174,6 +179,39 @@ class DepositSidebar extends React.Component {
               responsive={false}
               align="center"
             >
+              Published URL
+              {this.props.recid ? (
+                <Tag
+                  color={{
+                    bgcolor: "#f9f0ff",
+                    border: "rgba(146,109,146,1)",
+                    color: "rgba(146,109,146,1)"
+                  }}
+                  text={
+                    <Box direction="row" align="center">
+                      <Anchor
+                        style={{
+                          color: "rgba(146,109,146,1)",
+                          marginRight: "10px"
+                        }}
+                        label={this.props.recid}
+                        path={`/published/${this.props.recid}`}
+                      />
+                      <AiOutlineSelect />
+                    </Box>
+                  }
+                />
+              ) : (
+                <span>Not published yet</span>
+              )}
+            </Box>
+            <Box
+              justify="between"
+              direction="row"
+              margin={{ bottom: "small" }}
+              responsive={false}
+              align="center"
+            >
               Created
               {this.props.created && (
                 <strong>
@@ -234,13 +272,15 @@ DepositSidebar.propTypes = {
   links: PropTypes.object,
   getBucketById: PropTypes.func,
   schema: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  recid: PropTypes.string
 };
 
 function mapStateToProps(state) {
   return {
     files: state.draftItem.get("bucket"),
     id: state.draftItem.get("id"),
+    recid: state.draftItem.get("recid"),
     status: state.draftItem.get("status"),
     schema: state.draftItem.get("schema"),
     experiment: state.draftItem.get("experiment"),

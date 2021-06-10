@@ -19,7 +19,7 @@ const Anchors = ({
   style = null,
   children = null,
   target = "",
-  reverse=false
+  reverse = false
 }) => {
   return (
     <Box pad={pad} align={align} justify={justify} margin={margin}>
@@ -57,7 +57,8 @@ Anchors.propTypes = {
   download: PropTypes.string,
   style: PropTypes.object,
   children: PropTypes.node,
-  target: PropTypes.string
+  target: PropTypes.string,
+  reverse: PropTypes.bool
 };
 
 export default Anchors;
