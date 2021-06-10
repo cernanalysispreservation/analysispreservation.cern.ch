@@ -1066,6 +1066,13 @@
               "ui:order": [
                 "number",
                 "object",
+                "electron_type",
+                "muon_type",
+                "tau_type",
+                "jet_type",
+                "photon_type",
+                "track_type",
+                "met_type",
                 "sel_criteria",
                 "pt_cut",
                 "pt_cut_min",
