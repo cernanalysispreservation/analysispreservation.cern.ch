@@ -3,6 +3,7 @@ import { Box, Sidebar } from "grommet";
 import SectionHeader from "./SectionHeader";
 import "../draftLoader.css";
 import HorizontalWithText from "../../partials/HorizontalWithText";
+import Loading from "../../partials/LoadingSkeleton";
 
 const DepositSidebarLoading = () => {
   return (
@@ -28,7 +29,7 @@ const DepositSidebarLoading = () => {
             wrap={false}
           >
             ID
-            <Box className="deposit_header loader_box" />
+            <Loading width={30} height={15} />
           </Box>
 
           <Box
@@ -40,7 +41,7 @@ const DepositSidebarLoading = () => {
             align="center"
           >
             <span>Collection</span>
-            <Box className="deposit_header loader_box" />
+            <Loading width={30} height={15} />
           </Box>
 
           <Box
@@ -52,7 +53,7 @@ const DepositSidebarLoading = () => {
             data-cy="deposit-status-tag"
           >
             <span>Status</span>
-            <Box className="deposit_header loader_box" />
+            <Loading width={30} height={15} />
           </Box>
           <Box
             justify="between"
@@ -62,7 +63,7 @@ const DepositSidebarLoading = () => {
             align="center"
           >
             Creator
-            <Box className="deposit_header loader_box" />
+            <Loading width={30} height={15} />
           </Box>
           <Box
             justify="between"
@@ -72,7 +73,7 @@ const DepositSidebarLoading = () => {
             align="center"
           >
             Created
-            <Box className="deposit_header loader_box" />
+            <Loading width={30} height={15} />
           </Box>
           <Box
             justify="between"
@@ -82,7 +83,7 @@ const DepositSidebarLoading = () => {
             align="center"
           >
             Last Updated
-            <Box className="deposit_header loader_box" />
+            <Loading width={30} height={15} />
           </Box>
         </Box>
       </Box>
@@ -94,8 +95,8 @@ const DepositSidebarLoading = () => {
           color={"#000"}
         />
         <Box align="center" style={{ marginTop: "5px" }}>
-          <Box className="deposit_row loader_box" />
-          <Box className="deposit_row loader_box" />
+          <Loading width={80} height={20} margin="0 0 5px 0 " />
+          <Loading width={80} height={20} margin="0 0 5px 0 " />
         </Box>
         <HorizontalWithText
           text="All Repositories"
@@ -103,8 +104,8 @@ const DepositSidebarLoading = () => {
           color={"#000"}
         />
         <Box align="center" style={{ marginTop: "5px" }}>
-          <Box className="deposit_row loader_box" />
-          <Box className="deposit_row loader_box" />
+          <Loading width={80} height={20} margin="0 0 5px 0 " />
+          <Loading width={80} height={20} margin="0 0 5px 0 " />
         </Box>
       </Box>
     </Sidebar>

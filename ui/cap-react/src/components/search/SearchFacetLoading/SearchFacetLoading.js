@@ -1,6 +1,7 @@
 import React from "react";
 
 import Box from "grommet/components/Box";
+import Loading from "../../partials/LoadingSkeleton";
 
 const SearchFacetLoading = () => {
   return (
@@ -10,7 +11,7 @@ const SearchFacetLoading = () => {
           return (
             <Box key={index} separator="bottom" margin={{ vertical: "medium" }}>
               <Box key={index} margin={{ bottom: "small" }}>
-                <Box className="search_facet_heading" />
+                <Loading margin="0 0 5px 0" height={20} width={50} />
                 <Box
                   size="medium"
                   styles={{ maxHeight: "100px" }}
@@ -18,7 +19,12 @@ const SearchFacetLoading = () => {
                 >
                   <Box>
                     {[...Array(5)].map((field, index) => (
-                      <Box key={index} className="search_facet_listitem" />
+                      <Loading
+                        key={index}
+                        margin="0 0 5px 0"
+                        height={20}
+                        width={100}
+                      />
                     ))}
                   </Box>
                 </Box>

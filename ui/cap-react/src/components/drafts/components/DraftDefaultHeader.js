@@ -15,6 +15,7 @@ import {
 import { updateGeneralTitle } from "../../../actions/draftItem";
 
 import EditableField from "../../partials/EditableField";
+import Loading from "../../partials/LoadingSkeleton";
 
 class DraftDefaultHeader extends React.Component {
   render() {
@@ -50,20 +51,20 @@ class DraftDefaultHeader extends React.Component {
             className="align-center-md"
             pad={{ horizontal: "small" }}
           >
-          {
-            this.props.loading ?
-            <Box className="section_header loader_box" /> :
-            <EditableField
-              value={this.props.metadata.general_title}
-              emptyValue={"Untitled document"}
-              onUpdate={val => {
-                if (val.trim() === "") return;
-                this.props.updateGeneralTitle(val);
-              }}
-              isEditable={this.props.canUpdate}
-              dataCy="general-title-input"
-            />
-          }
+            {this.props.loading ? (
+              <Loading height={20} width={10} />
+            ) : (
+              <EditableField
+                value={this.props.metadata.general_title}
+                emptyValue={"Untitled document"}
+                onUpdate={val => {
+                  if (val.trim() === "") return;
+                  this.props.updateGeneralTitle(val);
+                }}
+                isEditable={this.props.canUpdate}
+                dataCy="general-title-input"
+              />
+            )}
           </Box>
           <Box align="center" justify="center" pad={{ horizontal: "small" }}>
             {this.props.expanded ? (
@@ -115,7 +116,7 @@ DraftDefaultHeader.propTypes = {
   location: PropTypes.object,
   metadata: PropTypes.object,
   updateGeneralTitle: PropTypes.func,
-  loading: PropTypes.bool,
+  loading: PropTypes.bool
 };
 
 function mapStateToProps(state) {

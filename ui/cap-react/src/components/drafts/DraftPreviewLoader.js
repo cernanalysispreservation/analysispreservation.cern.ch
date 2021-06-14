@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "grommet";
 import "./draftLoader.css";
+import Loading from "../partials/LoadingSkeleton";
 
 const DraftPreviewLoader = () => {
   return (
@@ -24,20 +25,19 @@ const DraftPreviewLoader = () => {
             justify="between"
             pad={{ horizontal: "medium" }}
             margin={{ vertical: "small" }}
-            style={{ borderRadius: "3px" }}
+            style={{ borderRadius: "3px", height: "40px" }}
             separator="all"
-            className="info_header_box"
             align="center"
           >
-            <Box className="section_header_xs loader_box" />
-            <Box className="section_header_xs loader_box" />
-            <Box className="section_header_xs loader_box" />
-            <Box className="section_header_xs loader_box" />
-            <Box className="section_header_xs loader_box" />
+            <Loading height={20} width={10} />
+            <Loading height={20} width={10} />
+            <Loading height={20} width={10} />
+            <Loading height={20} width={10} />
+            <Loading height={20} width={10} />
           </Box>
         </Box>
         <Box pad={{ horizontal: "medium", vertical: "medium" }}>
-          <Box className="section_header loader_box" />
+          <Loading height={20} width={20} />
           <Box
             className="section_box_large"
             separator="all"
@@ -46,27 +46,27 @@ const DraftPreviewLoader = () => {
             margin={{ vertical: "small" }}
           >
             <Box pad={{ horizontal: "small" }}>
-              <Box className="section_header loader_box" />
-              <Box className="section_header_medium loader_box" />
-              <Box className="section_header_medium loader_box" />
-              <Box className="section_header_medium loader_box" />
+              <Loading height={20} width={30} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
             </Box>
             <Box pad={{ horizontal: "small" }} margin={{ vertical: "small" }}>
-              <Box className="section_header loader_box" />
-              <Box className="section_header_medium loader_box" />
-              <Box className="section_header_medium loader_box" />
-              <Box className="section_header_medium loader_box" />
+              <Loading height={20} width={30} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
             </Box>
             <Box pad={{ horizontal: "small" }} margin={{ vertical: "small" }}>
-              <Box className="section_header loader_box" />
-              <Box className="section_header_medium loader_box" />
-              <Box className="section_header_medium loader_box" />
-              <Box className="section_header_medium loader_box" />
+              <Loading height={20} width={30} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
             </Box>
           </Box>
         </Box>
         <Box pad={{ horizontal: "medium" }} margin={{ vertical: "small" }}>
-          <Box className="section_header loader_box" />
+          <Loading height={20} width={20} margin="0 0 10px 0 " />
           <Box
             className="section_box_small"
             separator="all"
@@ -74,14 +74,14 @@ const DraftPreviewLoader = () => {
             pad={{ horizontal: "large", vertical: "medium" }}
           >
             <Box pad={{ horizontal: "small" }}>
-              <Box className="section_header loader_box" />
-              <Box className="section_header_small loader_box" />
-              <Box className="section_header_medium loader_box" />
+              <Loading height={20} width={30} margin="0 0 5px 0" />
+              <Loading height={20} width={40} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
             </Box>
           </Box>
         </Box>
         <Box pad={{ horizontal: "medium" }} margin={{ vertical: "small" }}>
-          <Box className="section_header loader_box" />
+          <Loading height={20} width={20} margin="0 0 10px 0 " />
           <Box
             className="section_box_small"
             separator="all"
@@ -89,14 +89,14 @@ const DraftPreviewLoader = () => {
             pad={{ horizontal: "large", vertical: "medium" }}
           >
             <Box pad={{ horizontal: "small" }}>
-              <Box className="section_header loader_box" />
-              <Box className="section_header_small loader_box" />
-              <Box className="section_header_medium loader_box" />
+              <Loading height={20} width={30} margin="0 0 5px 0" />
+              <Loading height={20} width={40} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
             </Box>
           </Box>
         </Box>
         <Box pad={{ horizontal: "medium" }} margin={{ vertical: "small" }}>
-          <Box className="section_header loader_box" />
+          <Loading height={20} width={20} margin="0 0 10px 0 " />
           <Box
             className="section_box_small"
             separator="all"
@@ -104,9 +104,9 @@ const DraftPreviewLoader = () => {
             pad={{ horizontal: "large", vertical: "medium" }}
           >
             <Box pad={{ horizontal: "small" }}>
-              <Box className="section_header loader_box" />
-              <Box className="section_header_small loader_box" />
-              <Box className="section_header_medium loader_box" />
+              <Loading height={20} width={30} margin="0 0 5px 0" />
+              <Loading height={20} width={40} margin="0 0 5px 0" />
+              <Loading height={20} width={50} margin="0 0 5px 0" />
             </Box>
           </Box>
         </Box>

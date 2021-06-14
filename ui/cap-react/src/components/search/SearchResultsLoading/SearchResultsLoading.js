@@ -3,7 +3,8 @@ import React from "react";
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
-import Truncate from "react-truncate";
+
+import Loading from "../../partials/LoadingSkeleton";
 
 const SearchResultsLoading = () => {
   return (
@@ -18,40 +19,23 @@ const SearchResultsLoading = () => {
               pad="small"
             >
               <Box direction="row" align="center" justify="between">
-                <Box className="search_loading_title" />
-                <Box className="search_loading_tag" />
+                <Loading height={20} margin="0 0 5px 0 " width={30} />
+                <Loading height={20} margin="0 0 5px 0 " width={10} />
               </Box>
               <Box>
-                <Box className="search_loading_date" />
-                <Box
-                  flex={false}
-                  direction="row"
-                  wrap
-                  margin={{ top: "small" }}
-                  className="search_loading_tag"
-                />
+                <Loading height={20} margin="0 0 5px 0 " width={20} />
+                <Loading height={20} margin="0 0 5px 0 " width={10} />
               </Box>
 
-              <Box
-                margin={{ top: "small" }}
-                className="search_loading_description"
-                style={{ width: "100%", color: "#f2f2f2" }}
-              >
-                <Truncate lines={2} ellipsis={<span>...</span>} />
-              </Box>
+              <Loading height={30} margin="0 0 5px 0 " width={100} />
 
               <Box
                 direction="row"
                 style={{ marginTop: "5px" }}
                 justify="between"
               >
-                <Box
-                  direction="row"
-                  align="center"
-                  justify="center"
-                  className="search_loading_date"
-                />
-                <Box className="search_loading_date" />
+                <Loading height={20} margin="0 0 5px 0 " width={10} />
+                <Loading height={20} margin="0 0 5px 0 " width={10} />
               </Box>
             </Box>
           </ListItem>

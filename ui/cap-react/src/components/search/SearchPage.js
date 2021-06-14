@@ -195,7 +195,7 @@ class SearchPage extends React.Component {
               />
             }
           />
-          <Box direction="row" >
+          <Box direction="row">
             <Box id="sidebar">
               <SearchFacets
                 removeType={this.props.match.params.anatype}

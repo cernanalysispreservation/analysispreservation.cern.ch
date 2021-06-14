@@ -1,13 +1,19 @@
 import React from "react";
 import { Box, List, ListItem } from "grommet";
-import "./DashboardListLoader.css";
+import Loading from "../partials/LoadingSkeleton";
 
 const DashboardListLoader = () => {
   return (
     <Box>
       <List>
         {[...Array(5)].map((item, index) => (
-          <ListItem key={index} className="listitem_ds-loader-box">
+          <ListItem
+            key={index}
+            style={{
+              height: "71px",
+              width: "100%"
+            }}
+          >
             <Box
               justify="between"
               responsive={false}
@@ -23,10 +29,10 @@ const DashboardListLoader = () => {
                 flex
               >
                 <Box direction="row">
-                  <Box className="ds_box_header" />
+                  <Loading height={15} margin="0 0 5px 0" width={20} />
                 </Box>
                 <Box flex={true} style={{ overflow: "visible" }}>
-                  <Box className="ds_box_header_large" />
+                  <Loading height={15} width={40} margin="0 0 5px 0" />
                 </Box>
               </Box>
             </Box>
