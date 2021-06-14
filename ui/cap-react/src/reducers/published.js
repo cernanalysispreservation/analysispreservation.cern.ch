@@ -12,7 +12,8 @@ import {
   PUBLISHED_ITEM_ERROR,
   REVIEW_PUBISHED_ERROR,
   REVIEW_PUBISHED_REQUEST,
-  REVIEW_PUBISHED_SUCCESS
+  REVIEW_PUBISHED_SUCCESS,
+  INIT_STATE
 } from "../actions/published";
 
 const initialState = Map({
@@ -27,6 +28,8 @@ const initialState = Map({
 
 export default function publishedReducer(state = initialState, action) {
   switch (action.type) {
+    case INIT_STATE:
+      return initialState;
     case FETCH_SCHEMA_REQUEST:
       return state.set("loading", true).set("error", false);
     case FETCH_SCHEMA_SUCCESS:

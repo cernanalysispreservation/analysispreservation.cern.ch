@@ -133,21 +133,23 @@ class PublishedPreview extends React.Component {
               <FormHeader
                 title={this.props.metadata.general_title}
                 tags={this.getTagsList()}
-                reviewAnchor={config_reviewable && 
-                  <Box direction="row" wrap={false}>
-                    <Button
-                      text="Show Reviews"
-                      size="small"
-                      margin="0 10px"
-                      onClick={() => this.setState({ showReviews: true })}
-                    />
-                    {this.props.canReview && (
-                      <Review
-                        isReviewingPublished
-                        buttonProps={{ size: "small" }}
+                reviewAnchor={
+                  config_reviewable && (
+                    <Box direction="row" wrap={false}>
+                      <Button
+                        text="Show Reviews"
+                        size="small"
+                        margin="0 10px"
+                        onClick={() => this.setState({ showReviews: true })}
                       />
-                    )}
-                  </Box>
+                      {this.props.canReview && (
+                        <Review
+                          isReviewingPublished
+                          buttonProps={{ size: "small" }}
+                        />
+                      )}
+                    </Box>
+                  )
                 }
                 editAnchor={
                   this.props.canUpdate && (

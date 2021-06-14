@@ -9,6 +9,8 @@ export const REVIEW_PUBISHED_REQUEST = "REVIEW_PUBLISHED_REQUEST";
 export const REVIEW_PUBISHED_SUCCESS = "REVIEW_PUBLISHED_SUCCESS";
 export const REVIEW_PUBISHED_ERROR = "REVIEW_PUBLISHED_ERROR";
 
+export const INIT_STATE = "INIT_STATE";
+
 export function reviewPublishedRequest() {
   return {
     type: REVIEW_PUBISHED_REQUEST
@@ -37,6 +39,11 @@ export function publishedItemSuccess(published) {
   return {
     type: PUBLISHED_ITEM_SUCCESS,
     published
+  };
+}
+export function clearPublishedState() {
+  return {
+    type: INIT_STATE
   };
 }
 

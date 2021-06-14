@@ -5,7 +5,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import { getPublishedItem } from "../../actions/published";
+import { getPublishedItem, clearPublishedState } from "../../actions/published";
 
 import RerunPublished from "../published/RerunPublished";
 import RunsIndex from "../published/RunsIndex";
@@ -27,6 +27,10 @@ class PublishedItemIndex extends React.Component {
   componentDidMount() {
     let { id } = this.props.match.params;
     this.props.getPublishedItem(id);
+  }
+
+  componentWillUnmount() {
+    this.props.clearPublishedState();
   }
 
   render() {
@@ -74,7 +78,8 @@ PublishedItemIndex.propTypes = {
   getPublishedItem: PropTypes.func,
   item: PropTypes.object,
   match: PropTypes.object,
-  error: PropTypes.object
+  error: PropTypes.object,
+  clearPublishedState: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -87,7 +92,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getPublishedItem: id => dispatch(getPublishedItem(id))
+    getPublishedItem: id => dispatch(getPublishedItem(id)),
+    clearPublishedState: () => dispatch(clearPublishedState())
   };
 };
 
