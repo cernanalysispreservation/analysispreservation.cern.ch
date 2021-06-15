@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
-import FieldHeader from "../../grommet-preview/components/FieldHeader";
-import MarkdownInline from "../../../../../partials/MarkdownInline";
+import FieldHeader from "../../grommet/components/FieldHeader";
 
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema, required } = props;
@@ -49,16 +48,13 @@ let FieldTemplate = function(props) {
             <FieldHeader
               required={required}
               title={label}
-              italic
-              bold
+              description={rawDescription}
               uiSchema={uiSchema}
-            />
-            <MarkdownInline
-              text={rawDescription}
-              renderAsHtml={
-                uiSchema["ui:options"] &&
-                uiSchema["ui:options"].descriptionIsMarkdown
-              }
+              titleStyle={{
+                fontWeight: 600
+              }}
+              descriptionStyle={{ display: "block" }}
+              margin="none"
             />
           </Box>
         )}
@@ -70,37 +66,14 @@ let FieldTemplate = function(props) {
   return (
     <FormField
       label={
-        <span>
-          <MarkdownInline
-            text={label}
-            style={{ color: "#000" }}
-            renderAsHtml={
-              uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
-            }
-          />
-          {required &&
-            (label ? (
-              <strong style={{ padding: "0 3px" }}>*</strong>
-            ) : (
-              <div
-                style={{ position: "absolute", marginLeft: "10px", left: 0 }}
-              >
-                <div>
-                  <strong>*</strong>
-                </div>
-              </div>
-            ))}
-          {rawDescription && (
-            <MarkdownInline
-              text={rawDescription}
-              style={{ marginLeft: "10px" }}
-              renderAsHtml={
-                uiSchema["ui:options"] &&
-                uiSchema["ui:options"].descriptionIsMarkdown
-              }
-            />
-          )}
-        </span>
+        <FieldHeader
+          required={required}
+          title={label}
+          description={rawDescription}
+          uiSchema={uiSchema}
+          descriptionStyle={{ marginLeft: "10px" }}
+          margin="none"
+        />
       }
       key={id + label}
       error={props.rawErrors && props.rawErrors.length ? true : false}

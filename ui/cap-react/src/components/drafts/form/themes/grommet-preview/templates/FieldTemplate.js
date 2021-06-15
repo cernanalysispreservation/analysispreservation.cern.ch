@@ -41,7 +41,7 @@ let FieldTemplate = function(props) {
                   : "1/5"
           }}
         >
-          <FieldHeader title={label} italic bold uiSchema={uiSchema} />
+          <FieldHeader title={label} bold uiSchema={uiSchema} />
         </Box>
       ) : null}
 
@@ -69,7 +69,8 @@ FieldTemplate.propTypes = {
   label: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
   schema: PropTypes.object,
-  formContext: PropTypes.object
+  formContext: PropTypes.object,
+  uiSchema: PropTypes.object
 };
 
 export default FieldTemplate;

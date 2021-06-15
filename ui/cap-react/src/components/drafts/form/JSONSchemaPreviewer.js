@@ -6,7 +6,6 @@ import Box from "grommet/components/Box";
 // Customized RJSF component ( Grommet )
 import FieldTemplate from "./themes/grommet-preview/templates/FieldTemplate";
 import ArrayFieldTemplate from "./themes/grommet/templates/ArrayFieldTemplate";
-
 import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";
 
 import widgets from "./themes/grommet-preview/widgets";

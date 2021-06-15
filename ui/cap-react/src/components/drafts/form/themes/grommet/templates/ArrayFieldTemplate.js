@@ -245,6 +245,8 @@ class ArrayFieldTemplate extends React.Component {
               readonly={this.props.readonly}
               description={this.props.schema.description}
               margin="none"
+              descriptionStyle={{ display: "block" }}
+              uiSchema={this.props.uiSchema}
             />
           }
           _onAddClick={this._onAddClick.bind(this)}
@@ -270,6 +272,8 @@ class ArrayFieldTemplate extends React.Component {
         latexEnabled={this.uiOptionLatex && this.state.latexEnabled}
         importEnabled={this.uiOptionLatex && this.state.importEnabled}
         margin={{ bottom: "small" }}
+        descriptionStyle={{ display: "block" }}
+        uiSchema={this.props.uiSchema}
       />
     );
 

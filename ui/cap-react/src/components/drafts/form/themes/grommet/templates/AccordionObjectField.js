@@ -39,6 +39,8 @@ class AccordionObjectField extends React.Component {
                   title={this.props.title}
                   required={this.props.required}
                   description={this.props.description}
+                  descriptionStyle={{ marginLeft: "10px" }}
+                  uiSchema={this.props.uiSchema}
                 />
               }
             >

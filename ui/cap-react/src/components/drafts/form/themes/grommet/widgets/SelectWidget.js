@@ -23,7 +23,8 @@ const SelectWidget = function(props) {
     title,
     description,
     items = {},
-    rawErrors = []
+    rawErrors = [],
+    uiSchema = {}
   } = props.schema;
   let _options = [];
 
@@ -158,16 +159,13 @@ const SelectWidget = function(props) {
     <Box style={{ border: rawErrors.length ? "1px solid #F04B37" : null }}>
       <Box direction="row" wrap={false}>
         <Box flex={true} direction="row" wrap={false}>
-          <FieldHeader margin="none" title={title || id} italic bold />
-          <Box justify="center">
-            {description ? (
-              <span style={{ color: "#bbb" }}>
-                {" "}
-                &nbsp;{" "}
-                {<span dangerouslySetInnerHTML={{ __html: description }} />}
-              </span>
-            ) : null}
-          </Box>
+          <FieldHeader
+            margin="none"
+            title={title || id}
+            description={description}
+            uiSchema={uiSchema}
+            descriptionStyle={{ marginLeft: "10px" }}
+          />
         </Box>
         <Box flex={false} alignSelf="end">
           <input

@@ -2,13 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Label";
-import Paragraph from "grommet/components/Paragraph";
 
 import Anchor from "../../../../../partials/Anchor";
+import MarkdownInline from "../../../../../partials/MarkdownInline";
 
 let FieldHeader = function(props) {
-  const { title, required, description } = props;
+  const {
+    title,
+    required,
+    description,
+    uiSchema = {},
+    titleStyle = {},
+    descriptionStyle = {}
+  } = props;
+
   return (
     <Box
       direction="row"
@@ -16,26 +23,39 @@ let FieldHeader = function(props) {
       margin={props.margin ? props.margin : { vertical: "small" }}
     >
       <Box flex={true} justify="center">
-        <Box flex={true}>
-          {title ? (
-            <Label
-              size="small"
-              // uppercase={true}
-              style={{
-                fontWeight: 600,
-                fontStyle: "italic"
-              }}
-            >
-              {title}
-              { required && <strong style={{padding: "0 3px"}}>*</strong> }
-            </Label>
-          ) : null}
+        <Box flex>
+          {title && (
+            <span>
+              <MarkdownInline
+                text={title}
+                style={{
+                  color: "#000",
+                  ...titleStyle
+                }}
+                renderAsHtml={
+                  uiSchema["ui:options"] &&
+                  uiSchema["ui:options"].titleIsMarkdown
+                }
+              />
+              {required && <strong style={{ padding: "0 3px" }}>*</strong>}
+              {description && (
+                <MarkdownInline
+                  text={description}
+                  style={{
+                    color: "#666",
+                    fontSize: "0.875rem",
+                    lineHeight: "24px",
+                    ...descriptionStyle
+                  }}
+                  renderAsHtml={
+                    uiSchema["ui:options"] &&
+                    uiSchema["ui:options"].descriptionIsMarkdown
+                  }
+                />
+              )}
+            </span>
+          )}
         </Box>
-        {description ? (
-          <Paragraph margin="none" size="small">
-            {description}
-          </Paragraph>
-        ) : null}
       </Box>
       {props.enableLatex && (
         <Box
@@ -90,7 +110,9 @@ FieldHeader.propTypes = {
   readonly: PropTypes.bool,
   enableImport: PropTypes.func,
   enableLatex: PropTypes.func,
-  pasteable: PropTypes.object
+  pasteable: PropTypes.object,
+  titleStyle: PropTypes.object,
+  descriptionStyle: PropTypes.object
 };
 
 export default FieldHeader;

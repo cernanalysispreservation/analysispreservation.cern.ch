@@ -33,6 +33,7 @@ class AccordionObjectField extends React.Component {
               <FieldHeader
                 title={this.props.title}
                 required={this.props.required}
+                uiSchema={this.props.uiSchema}
               />
             }
           >
