@@ -29,9 +29,12 @@ import os
 import copy
 import json
 import uuid
+import subprocess
 from datetime import datetime
+from random import randint
 
 import click
+from flask import current_app
 from flask_cli import with_appcontext
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
@@ -45,10 +48,12 @@ from cap.modules.deposit.minters import cap_deposit_minter
 from cap.modules.fixtures.cli import fixtures
 from cap.modules.user.utils import get_existing_or_register_user, \
     get_existing_or_register_role
+from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url, \
     schema_name_to_url
 
-from .utils import add_read_permission_for_egroup
+from .utils import add_read_permission_for_egroup, delete_keys_from_dict, \
+    schema_to_role, create_das_index, update_das_data
 
 
 @fixtures.command('add')
@@ -140,6 +145,90 @@ def create_deposit(file, ana, roles, users, owner, save_errors):
         save_errors_to_json(save_errors, errors)
 
     click.secho(f"\nProcess finished and record(s) added.", fg='green')
+
+
+@fixtures.command('create-test-deposits')
+@click.option('--name', '-s',
+              required=True,
+              help='Schema name.')
+@click.option('--num', '-n',
+              required=True,
+              default=10,
+              help='Number of test deposits (default=10).')
+@with_appcontext
+def create_test_deposits(name, num):
+    with current_app.test_request_context(
+            'https://analysispreservation.cern.ch'):
+        schema = Schema.get_latest(name)
+        data = schema.serialize(resolve=True)
+        resolved = data['deposit_schema']['properties']
+        keys_to_remove = [
+            'id', '$schema', 'control_number', 'format',
+            'next_deadline_date', 'likelihoods',
+        ]
+
+        # fix for das datasets
+        if name == 'cms-analysis':
+            create_das_index()
+
+        # create as many users as the number of deposits
+        # will select randomly which ones will be used
+        datastore = current_app.extensions['security'].datastore
+        with db.session.begin_nested():
+            users = [
+                datastore.create_user(**{
+                    'email': f'{name}-test-{str(uuid.uuid4())}@cern.ch',
+                    'password': 'test',
+                    'active': True
+                }) for i in range(num)
+            ]
+        db.session.commit()
+
+        # add roles to users
+        role_str = schema_to_role(name)
+        _, role = datastore._prepare_role_modify_args(None, role_str)
+        for user in users:
+            datastore.add_role_to_user(user, role)
+
+        # create the new schema, remove unnecessary keys
+        new_schema = {}
+        for key in resolved.keys():
+            if not key.startswith('_'):
+                new_schema[key] = resolved[key]
+        delete_keys_from_dict(new_schema, keys_to_remove)
+        new_schema['$ana_type'] = name
+        deposit_schema = json.dumps(new_schema)
+
+        with open('test-schema.json', 'w+') as tmp_schema:
+            with open('test-deposits.json', 'w+') as tmp_deposits:
+                tmp_schema.write(deposit_schema)
+                tmp_schema.close()
+
+                cmd = f'npx json-schema-faker-cli ' \
+                      f'test-schema.json test-deposits.json {int(num)}'
+                subprocess.run(cmd.split())
+
+                # read the results and load them
+                deposit_data = json.load(tmp_deposits)
+                tmp_deposits.close()
+
+                with db.session.begin_nested():
+                    for item in deposit_data:
+                        delete_keys_from_dict(item, keys_to_remove)
+                        if name == 'cms-analysis':
+                            update_das_data(item)
+
+                        user = users[randint(0, num - 1)]
+                        owner = get_existing_or_register_user(user.email)
+
+                        deposit = CAPDeposit.create(data=item, owner=owner)
+                        deposit.commit()
+
+                db.session.commit()
+
+    os.remove('test-schema.json')
+    os.remove('test-deposits.json')
+    click.secho(f'Created {num} deposits of type {name}.', fg='green')
 
 
 def save_errors_to_json(save_errors, errors):
