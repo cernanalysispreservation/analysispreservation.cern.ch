@@ -108,17 +108,29 @@ const NotificationList = ({
                 align="center"
                 responsive={false}
               >
-                <span>
-                  bcc ({`${item.getIn(["recipients", "bcc"]).size} params`})
-                </span>
-                <span>
-                  cc ({`${item.getIn(["recipients", "cc"]).size} params`})
-                </span>
-                <span>
-                  to ({`${
-                    item.getIn(["recipients", "recipients"]).size
-                  } params`})
-                </span>
+                {item.hasIn(["recipients", "bcc"]) ? (
+                  <span>
+                    bcc ({`${item.getIn(["recipients", "bcc"]).size} params`})
+                  </span>
+                ) : (
+                  <span>bcc (0)</span>
+                )}
+                {item.hasIn(["recipients", "cc"]) ? (
+                  <span>
+                    cc ({`${item.getIn(["recipients", "cc"]).size} params`})
+                  </span>
+                ) : (
+                  <span>bcc (0)</span>
+                )}
+                {item.hasIn(["recipients", "recipients"]) ? (
+                  <span>
+                    recipients ({`${
+                      item.getIn(["recipients", "recipients"]).size
+                    } params`})
+                  </span>
+                ) : (
+                  <span>bcc (0)</span>
+                )}
               </Box>
             </Box>
           </Anchor>

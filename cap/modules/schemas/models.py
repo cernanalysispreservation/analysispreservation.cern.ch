@@ -43,7 +43,8 @@ from werkzeug.utils import import_string
 from cap.types import json_type
 
 from .permissions import SchemaAdminAction, SchemaReadAction
-from .serializers import resolved_schemas_serializer, schema_serializer
+from .serializers import (resolved_schemas_serializer, schema_serializer,
+                          config_resolved_schemas_serializer)
 
 ES_FORBIDDEN = r' ,"\<*>|?'
 
@@ -197,6 +198,10 @@ class Schema(db.Model):
         """Serialize schema model."""
         serializer = resolved_schemas_serializer if resolve else schema_serializer  # noqa
         return serializer.dump(self).data
+
+    def config_serialize(self):
+        """Serialize config schema model."""
+        return config_resolved_schemas_serializer.dump(self).data
 
     def update(self, **kwargs):
         """Update schema instance."""

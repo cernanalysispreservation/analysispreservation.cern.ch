@@ -27,6 +27,15 @@ export const REVOKE_TOKEN_ERROR = "REVOKE_TOKEN_ERROR";
 
 export const INTEGRATIONS_UPDATE = "INTEGRATIONS_UPDATE";
 
+export const UPDATE_DEPOSIT_GROUPS = "UPDATE_DEPOSIT_GROUPS";
+
+export function depositGroupsUpdate(groups) {
+  return {
+    type: UPDATE_DEPOSIT_GROUPS,
+    payload: groups
+  };
+}
+
 export function initCurrentUserRequest() {
   return { type: INIT_CURRENT_USER_REQUEST };
 }
@@ -142,6 +151,25 @@ export function initCurrentUser(next = undefined) {
       .catch(function() {
         dispatch(clearAuth());
         dispatch(initCurrentUserError());
+      });
+  };
+}
+export function updateDepositGroups() {
+  return function(dispatch) {
+    axios
+      .get("/api/me")
+      .then(function(response) {
+        let { deposit_groups = [] } = response.data;
+
+        dispatch(depositGroupsUpdate(deposit_groups));
+      })
+      .catch(function() {
+        cogoToast.error("Please try again", {
+          position: "top-center",
+          bar: { size: "0" },
+          hideAfter: 3,
+          heading: "There was an issue with your request"
+        });
       });
   };
 }

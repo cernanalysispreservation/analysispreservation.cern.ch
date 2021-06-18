@@ -214,6 +214,10 @@ label {
   padding: 0 !important;
 }
 
+.newNotification .ace_scroller{
+  padding: 10px 20px;
+}
+
 // xsmall
 @media only screen and (min-width: 320px) {
   .small-center-medium-between {

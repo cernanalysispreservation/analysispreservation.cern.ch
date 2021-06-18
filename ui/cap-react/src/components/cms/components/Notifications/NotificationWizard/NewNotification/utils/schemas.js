@@ -9,40 +9,10 @@ export const schema = {
       items: {
         anyOf: [
           {
-            title: "Manually params",
-            properties: {
-              name: {
-                type: "string",
-                title: "Variable name"
-              },
-              path: {
-                type: "string",
-                title: "Variable Path"
-              }
-            },
-            required: ["name", "path"]
+            $ref: "#/definitions/params"
           },
           {
-            title: "Select from Method",
-            properties: {
-              method: {
-                type: "string",
-                title: "Variable Method",
-                enum: [
-                  "draft_url",
-                  "published_url",
-                  "working_url",
-                  "submitter_email",
-                  "reviewer_email",
-                  "cms_stats_committee_by_pag",
-                  "published_id",
-                  "draft_id",
-                  "revision",
-                  "draft_revision"
-                ]
-              }
-            },
-            required: ["method"]
+            $ref: "#/definitions/ctxMethods"
           }
         ]
       }
@@ -57,6 +27,7 @@ export const schema = {
           uniqueItems: true,
           items: {
             type: "string",
+            format: "email",
             title: "Mail"
           }
         },
@@ -75,10 +46,33 @@ export const schema = {
               ctx: {
                 $ref: "#/definitions/ctx"
               }
-            }
+            },
+            required: ["template"]
           }
         }
       }
+    },
+    ctxMethods: {
+        type: "object",
+        properties: {
+          method: {
+            type: "string",
+            title: "Method Name",
+            enum: [
+              "draft_url",
+              "published_url",
+              "working_url",
+              "submitter_email",
+              "reviewer_email",
+              "cms_stats_committee_by_pag",
+              "published_id",
+              "draft_id",
+              "revision",
+              "draft_revision"
+            ]
+          }
+        },
+        required: ["method"]
     },
     method: {
       type: "array",
@@ -97,6 +91,19 @@ export const schema = {
           "submitter_url",
           "reviewer_url",
           "cms_stats_committee_by_pag"
+        ]
+      }
+    },
+    recipient_method: {
+      type: "array",
+      title: "Methods",
+      uniqueItems: true,
+      items: {
+        type: "string",
+        enum: [
+          "get_submitter",
+          "get_owner",
+          "get_cms_stat_recipients"
         ]
       }
     },
@@ -141,6 +148,24 @@ export const schema = {
           type: "object"
         }
       }
+    },
+    params: {
+      type: "array",
+      title: "Context Parameter",
+      items: {
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            title: "Name",
+            pattern: "^[_A-z0-9]*((-|s)*[_A-z0-9])*$"
+          },
+          path: {
+            type: "string",
+            title: "Path"
+          }
+        }
+      }
     }
   },
   properties: {
@@ -153,7 +178,6 @@ export const schema = {
         {
           title: "Default Subject",
           type: "object",
-          additionalProperties: false,
           description:
             "The default email temaplate for this action will be used"
         },
@@ -254,26 +278,11 @@ export const schema = {
             additionalProperties: false,
             type: "object",
             properties: {
-              // op: {
-              //   type: "string",
-              //   title: "AND/OR",
-              //   enum: ["and", "or"],
-              //   default: "and"
-              // },
-              // checks: {
-              //   type: "array",
-              //   items: {
-              //     oneOf: [
-              //       { $ref: "#/definitions/checks" },
-              //       { $ref: "#/definitions/condition" }
-              //     ]
-              //   }
-              // },
               mails: {
                 $ref: "#/definitions/mails"
               },
               method: {
-                $ref: "#/definitions/method"
+                $ref: "#/definitions/recipient_method"
               }
             }
           }
@@ -290,7 +299,7 @@ export const schema = {
                 $ref: "#/definitions/mails"
               },
               method: {
-                $ref: "#/definitions/method"
+                $ref: "#/definitions/recipient_method"
               }
             }
           }
@@ -307,7 +316,7 @@ export const schema = {
                 $ref: "#/definitions/mails"
               },
               method: {
-                $ref: "#/definitions/method"
+                $ref: "#/definitions/recipient_method"
               }
             }
           }
@@ -322,12 +331,7 @@ export const uiSchema = {
     "ui:field": "ctx",
     items: {
       "ui:options": {
-        stringify: [
-          "method",
-          "path",
-          // {"type": "text", "text": " -|- "},
-          "name"
-        ]
+        stringify: ["method", "path", "name"]
       }
     }
   },
@@ -336,10 +340,7 @@ export const uiSchema = {
       "ui:field": "ctx"
     },
     template: {
-      "ui:widget": "richeditor"
-    },
-    template_file: {
-      "ui:widget": "richeditor"
+      "ui:widget": "jinja"
     }
   },
   body: {
@@ -347,10 +348,7 @@ export const uiSchema = {
       "ui:field": "ctx"
     },
     template: {
-      "ui:widget": "richeditor"
-    },
-    template_file: {
-      "ui:widget": "richeditor"
+      "ui:widget": "jinja"
     }
   },
   recipients: {
@@ -361,7 +359,6 @@ export const uiSchema = {
             "ui:widget": "tags"
           },
           formatted: {
-            "ui:array": "default",
             items: {
               ctx: {
                 "ui:field": "ctx"
@@ -375,7 +372,6 @@ export const uiSchema = {
       items: {
         mails: {
           formatted: {
-            "ui:array": "default",
             items: {
               ctx: {
                 "ui:field": "ctx"
@@ -389,7 +385,6 @@ export const uiSchema = {
       items: {
         mails: {
           formatted: {
-            "ui:array": "default",
             items: {
               ctx: {
                 "ui:field": "ctx"

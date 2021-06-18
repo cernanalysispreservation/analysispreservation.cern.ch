@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Box, Heading } from "grommet";
-
 import Button from "../../../../../partials/Button";
 import Anchor from "../../../../../partials/Anchor";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import CleanForm from "../../../../../drafts/form/CleanForm";
-import fields from "../../../../../drafts/form/themes/grommet/fields";
+import ContextField from "../../../../../drafts/form/themes/grommet/fields/ContextField";
+import JinjaWidget from "../../../../../drafts/form/themes/grommet/widgets/JinjaEditorWidget";
 import { schema, uiSchema } from "./utils/schemas";
 import { CMS } from "../../../../../routes";
 
@@ -22,12 +22,10 @@ const NewNotification = props => {
 
   const categoryIsValid = ["review", "publish"].includes(category);
   // in case the category is misspelled
-  if (!categoryIsValid) {
+  if (!categoryIsValid || !props.selectedNotification) {
     schema_version
-      ? props.updatePath(
-          `${CMS}/${schema_name}/${schema_version}/notifications`
-        )
-      : props.updatePath(`${CMS}/${schema_name}/notifications`);
+      ? props.pushPath(`${CMS}/${schema_name}/${schema_version}/notifications`)
+      : props.pushPath(`${CMS}/${schema_name}/notifications`);
     return null;
   }
   const notificationsByCategory = props.selectedNotification.get(category);
@@ -38,17 +36,15 @@ const NewNotification = props => {
   // in case the id is out of range
   if (!idIsValid) {
     schema_version
-      ? props.updatePath(
-          `${CMS}/${schema_name}/${schema_version}/notifications`
-        )
-      : props.updatePath(`${CMS}/${schema_name}/notifications`);
+      ? props.pushPath(`${CMS}/${schema_name}/${schema_version}/notifications`)
+      : props.pushPath(`${CMS}/${schema_name}/notifications`);
     return null;
   }
 
   let data = notificationsByCategory.get(id).toJS();
 
   return (
-    <Box>
+    <Box className="newNotification">
       <Box
         pad="small"
         direction="row"
@@ -83,8 +79,10 @@ const NewNotification = props => {
         <Box size={{ width: "xxlarge" }} pad={{ vertical: "medium" }}>
           <CleanForm
             schema={schema}
+            liveValidate
             uiSchema={uiSchema}
-            fields={fields}
+            widgets={{ jinja: JinjaWidget }}
+            fields={{ ctx: ContextField }}
             formData={data}
             onChange={forms => {
               props.updateNotificationData(forms.formData, id, category);
@@ -104,7 +102,7 @@ NewNotification.propTypes = {
   match: PropTypes.object,
   selectedNotification: PropTypes.object,
   updateNotificationData: PropTypes.object,
-  updatePath: PropTypes.func
+  pushPath: PropTypes.func
 };
 
 export default NewNotification;

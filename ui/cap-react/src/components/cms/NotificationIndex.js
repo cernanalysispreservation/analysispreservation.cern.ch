@@ -14,12 +14,12 @@ import {
 const NotificationIndex = () => {
   return (
     <Switch>
+      <Route exact path={CMS_NOTIFICATION} component={Notifications} />
       <Route
         path={CMS_NOTIFICATION_CATEGORY}
         component={NotificationWizard}
         exact
       />
-      <Route exact path={CMS_NOTIFICATION} component={Notifications} />
       <Route path={CMS_NOTIFICATION_EDIT} component={NewNotification} />
     </Switch>
   );

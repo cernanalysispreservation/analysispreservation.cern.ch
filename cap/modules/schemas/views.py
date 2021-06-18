@@ -35,7 +35,8 @@ from cap.modules.access.utils import login_required
 
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
-from .serializers import schema_serializer, update_schema_serializer
+from .serializers import (create_config_payload,
+                          update_schema_serializer)
 from .utils import get_indexed_schemas_for_user, get_schemas_for_user
 
 blueprint = Blueprint(
@@ -54,6 +55,8 @@ class SchemaAPI(MethodView):
         """Get all schemas that user has access to."""
         resolve = request.args.get('resolve', False)
         latest = request.args.get('latest', False)
+        config = request.args.get('config', False)
+
         if name:
             try:
                 if version:
@@ -66,10 +69,16 @@ class SchemaAPI(MethodView):
             if not ReadSchemaPermission(schema).can():
                 abort(403)
 
-            try:
-                response = schema.serialize(resolve=resolve)
-            except JsonRefError:
-                abort(404)
+            if config and AdminSchemaPermission(schema).can():
+                try:
+                    response = schema.config_serialize()
+                except JsonRefError:
+                    abort(404)
+            else:
+                try:
+                    response = schema.serialize(resolve=resolve)
+                except JsonRefError:
+                    abort(404)
 
         else:
             schemas = get_schemas_for_user(latest=latest)
@@ -83,7 +92,7 @@ class SchemaAPI(MethodView):
         """Create new schema."""
         data = request.get_json()
 
-        serialized_data, errors = schema_serializer.load(data)
+        serialized_data, errors = create_config_payload.load(data)
 
         if errors:
             raise abort(400, errors)
@@ -95,11 +104,12 @@ class SchemaAPI(MethodView):
                     db.session.add(schema)
 
                 schema.give_admin_access_for_user(current_user)
+            db.session.commit()
 
         except IntegrityError:
             raise abort(400, 'Error occured during saving schema in the db.')
 
-        return jsonify(schema.serialize())
+        return jsonify(schema.config_serialize())
 
     def put(self, name, version):
         """Update schema."""
@@ -119,7 +129,7 @@ class SchemaAPI(MethodView):
             schema.update(**serialized_data)
             db.session.commit()
 
-            return jsonify(schema.serialize())
+            return jsonify(schema.config_serialize())
 
     def delete(self, name, version):
         """Delete schema."""

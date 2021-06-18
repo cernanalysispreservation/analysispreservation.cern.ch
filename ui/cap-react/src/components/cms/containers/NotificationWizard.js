@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import NotificationWizard from "../components/Notifications/NotificationWizard/NotificationWizard";
-import { updatePath } from "../../../actions/support";
+import { pushPath } from "../../../actions/support";
 
 const mapStateToProps = state => ({
   schemaConfig: state.schemaWizard.getIn([
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updatePath: path => dispatch(updatePath(path))
+  pushPath: path => dispatch(pushPath(path))
 });
 
 export default connect(

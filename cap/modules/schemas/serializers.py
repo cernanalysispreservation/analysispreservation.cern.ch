@@ -40,6 +40,7 @@ EDITABLE_FIELDS = [
     'record_mapping',
     'deposit_options',
     'record_options',
+    'config'
 ]
 
 
@@ -60,7 +61,6 @@ class SchemaSerializer(Schema):
     record_schema = fields.Dict(validate=JSONSchemaValidator())
     record_options = fields.Dict()
     record_mapping = fields.Dict()
-    config = fields.Dict()
 
     links = fields.Method('build_links', dump_only=True)
 
@@ -94,18 +94,6 @@ class SchemaSerializer(Schema):
         return links
 
 
-class UpdateSchemaSerializer(SchemaSerializer):
-    """Schema serializer with resolved jsonschemas."""
-    @pre_load
-    def filter_out_fields_that_cannot_be_updated(self, data, **kwargs):
-        """Remove non editable fields from serialized data."""
-        data = {k: v for k, v in iteritems(data) if k in EDITABLE_FIELDS}
-        if not data:
-            raise ValidationError('Empty data')
-
-        return data
-
-
 class ResolvedSchemaSerializer(SchemaSerializer):
     """Schema serializer with resolved jsonschemas."""
 
@@ -128,6 +116,30 @@ class ResolvedSchemaSerializer(SchemaSerializer):
         return copy.deepcopy(schema)  # so all the JSONRefs get resoved
 
 
+class ConfigResolvedSchemaSerializer(ResolvedSchemaSerializer):
+    config = fields.Dict()
+    experiment = fields.Str(required=False)
+
+
+class CreateConfigPayload(SchemaSerializer):
+    config = fields.Dict()
+    experiment = fields.Str(required=False)
+
+
+class UpdateSchemaSerializer(ConfigResolvedSchemaSerializer):
+    """Schema serializer with resolved jsonschemas."""
+    @pre_load
+    def filter_out_fields_that_cannot_be_updated(self, data, **kwargs):
+        """Remove non editable fields from serialized data."""
+        data = {k: v for k, v in iteritems(data) if k in EDITABLE_FIELDS}
+        if not data:
+            raise ValidationError('Empty data')
+
+        return data
+
+
 schema_serializer = SchemaSerializer()
 update_schema_serializer = UpdateSchemaSerializer()
 resolved_schemas_serializer = ResolvedSchemaSerializer()
+config_resolved_schemas_serializer = ConfigResolvedSchemaSerializer()
+create_config_payload = CreateConfigPayload()

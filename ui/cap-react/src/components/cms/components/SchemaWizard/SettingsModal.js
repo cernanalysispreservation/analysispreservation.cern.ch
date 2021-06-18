@@ -10,9 +10,9 @@ import { updateSchemaConfig } from "../../../../actions/schemaWizard";
 const SettingsModal = ({ show, onClose, configs, updateSchemaConfig }) => {
   const _updateConfigs = data => {
     let { formData } = data;
-
     updateSchemaConfig(formData);
   };
+
   return (
     show && (
       <Modal onClose={onClose} separator title="Form Actions">

@@ -7,7 +7,7 @@ import SchemaWizardHeader from "./containers/SchemaWizardHeader";
 
 import NotificationIndex from "./NotificationIndex";
 
-import { CMS, CMS_EDIT, CMS_NOTIFICATION } from "../routes";
+import { CMS, CMS_EDIT, CMS_NOTIFICATION, CMS_NEW } from "../routes";
 
 const AdminIndex = ({
   location,
@@ -37,20 +37,20 @@ const AdminIndex = ({
     // in order to cover all the potential situations creating from the already exist schemas
     // and create a new one from scratch
     if (schema_name) {
-      schema_name == "empty"
+      pathname.startsWith(CMS_NEW)
         ? schema.size == 0 && schemaInit()
         : getSchema(schema_name, schema_version);
     }
   }, []);
 
+  const getPageTitle = () => {
+    return location.pathname.includes("notifications")
+      ? "Notifications"
+      : "Form Builder";
+  };
+
   return (
-    <DocumentTitle
-      title={
-        location.pathname.includes("notifications")
-          ? "Notifications"
-          : "Form Builder"
-      }
-    >
+    <DocumentTitle title={getPageTitle()}>
       <React.Fragment>
         <SchemaWizardHeader />
         <Switch>

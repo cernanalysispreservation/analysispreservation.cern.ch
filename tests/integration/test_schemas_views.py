@@ -582,6 +582,8 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
     assert resp.status_code == 200
     assert resp.json == {
         'name': 'cms-schema',
+        'config': {},
+        'experiment': None,
         'version': '1.2.3',
         'fullname': 'CMS Schema 1.2.3',
         'is_indexed': True,
@@ -737,6 +739,8 @@ def test_put(client, db, auth_headers_for_user, users, json_headers):
     assert resp.status_code == 200
     assert resp.json == {
         'name': 'cms-schema',
+        'config': {},
+        'experiment': None,
         'version': '1.2.3',
         'fullname': 'New fullname',
         'is_indexed': False,

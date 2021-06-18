@@ -26,7 +26,8 @@ const initialState = Map({
     schema: {},
     uiSchema: {}
   }),
-  config: {},
+  initialConfig: {},
+  config: Map({}),
   field: null,
   propKeyEditor: null,
   error: null,
@@ -44,6 +45,7 @@ export default function schemaReducer(state = initialState, action) {
         .set("initial", fromJS(action.data))
         .set("config", fromJS(action.configs))
         .set("version", action.configs.version)
+        .set("initialConfig", action.configs)
         .set("loader", false);
 
     case SCHEMA_ERROR:
@@ -92,7 +94,7 @@ export default function schemaReducer(state = initialState, action) {
         fromJS(action.value)
       );
     case CURRENT_UPDATE_CONFIG:
-      return state.set("config", action.config);
+      return state.set("config", fromJS(action.config));
     case UPDATE_NOTIFICATION_BY_INDEX:
       return state.setIn(action.payload.path, action.payload.value);
     case ADD_NEW_NOTIFICATION:

@@ -15,9 +15,11 @@ const NotificationWizard = props => {
 
   // if the category is not defined or it is not acceptable value
   if (!category || !ACCEPTED_ACTIONS.includes(category)) {
-    props.updatePath(props.location.pathname.split(`/${category}`)[0]);
+    props.pushPath(props.location.pathname.split(`/${category}`)[0]);
     return null;
   }
+
+  if (!props.schemaConfig) return null;
 
   const currentNotifications = props.schemaConfig.get(category);
 
@@ -58,7 +60,7 @@ NotificationWizard.propTypes = {
   match: PropTypes.object,
   location: PropTypes.object,
   schemaConfig: PropTypes.object,
-  updatePath: PropTypes.func
+  pushPath: PropTypes.func
 };
 
 export default NotificationWizard;

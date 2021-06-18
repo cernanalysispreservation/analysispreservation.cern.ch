@@ -3,7 +3,6 @@ import CapFiles from "./CapFiles";
 import JSONEditorField from "./JSONEditorField/JSONEditorField";
 import AccordionJSONEditorField from "./JSONEditorField/AccordionJSONEditorField";
 import ServiceIDGetter from "./ServiceIdGetter";
-import ContextField from "./ContextField";
 import RepoField from "./RepoField";
 
 const fields = {
@@ -12,8 +11,7 @@ const fields = {
   jsoneditor: JSONEditorField,
   repo: RepoField,
   accordion_jsoneditor: AccordionJSONEditorField,
-  idFetcher: ServiceIDGetter,
-  ctx: ContextField
+  idFetcher: ServiceIDGetter
 };
 
 export default fields;

@@ -1,58 +1,19 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CleanForm from "../../../CleanForm";
-
-const schemaForMethods = {
-  type: "array",
-  title: "Methods",
-  uniqueItems: true,
-  items: {
-    type: "string",
-    enum: [
-      "published_id",
-      "draft_id",
-      "revision",
-      "draft_revision",
-      "draft_url",
-      "published_url",
-      "working_url",
-      "submitter_url",
-      "reviewer_url",
-      "cms_stats_committee_by_pag"
-    ]
-  }
-};
-
-const schemaForManuallValues = {
-  type: "array",
-  title: "Manually param",
-  items: {
-    type: "object",
-    title: "Context Parameter",
-    properties: {
-      name: {
-        type: "string",
-        title: "Name"
-      },
-      path: {
-        type: "string",
-        title: "Path"
-      }
-    }
-  }
-};
+import { schema } from "../../../../../cms/components/Notifications/NotificationWizard/NewNotification/utils/schemas";
 
 const ContextField = ({ formData = [], onChange = null }) => {
   const [methodData, setMethodData] = useState({
-    formData: formData.filter(item => typeof item === "string")
+    formData: formData.filter(item => item.method)
   });
   const [manualData, setManualData] = useState({
-    formData: formData.filter(item => typeof item === "object")
+    formData: formData.filter(item => !item.method)
   });
 
   useEffect(
     () => {
-      let combined = [...methodData.formData, ...manualData.formData];
+      let combined = [...methodData.formData.map(i => (i.method ? i : {method: i})), ...manualData.formData];
       onChange(combined);
     },
     [methodData, manualData]
@@ -61,17 +22,18 @@ const ContextField = ({ formData = [], onChange = null }) => {
   return (
     <div>
       <CleanForm
-        schema={schemaForMethods}
+        schema={schema.definitions.method}
         onChange={setMethodData}
-        formData={methodData.formData}
+        formData={methodData.formData.map(i => (i.method ? i.method : i))}
       >
         <span />
       </CleanForm>
 
       <CleanForm
-        schema={schemaForManuallValues}
+        schema={schema.definitions.params}
         onChange={setManualData}
         formData={manualData.formData}
+        liveValidate
         uiSchema={{
           "ui:array": "default",
           items: {

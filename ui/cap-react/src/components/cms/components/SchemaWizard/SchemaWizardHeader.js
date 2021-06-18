@@ -18,7 +18,8 @@ import { CMS } from "../../../routes";
 import {
   AiOutlineSetting,
   AiOutlineArrowLeft,
-  AiOutlineInfoCircle
+  AiOutlineInfoCircle,
+  AiOutlineSave
 } from "react-icons/ai";
 import { FaCode } from "react-icons/fa";
 import JsonDiff from "./JSONDiff";
@@ -130,14 +131,14 @@ class SchemaWizardHeader extends React.Component {
           <Box direction="row" align="center" responsive={false}>
             <Box
               margin={{ right: "small" }}
-              onClick={() => this.props.updatePath(CMS)}
+              onClick={() => this.props.pushPath(CMS)}
             >
               <AiOutlineArrowLeft size={15} />
             </Box>
             {!this.props.loader && (
               <Truncate lines={1} width={200} ellipsis={<span>...</span>}>
-                {(this.props.config.size > 0 &&
-                  this.props.config.has("fullname") &&
+                {(this.props.config &&
+                  this.props.config.size > 0 &&
                   this.props.config.get("fullname")) ||
                   "Untitled Schema"}
               </Truncate>
@@ -150,7 +151,7 @@ class SchemaWizardHeader extends React.Component {
               onClick={() => {
                 this.props.pathname.includes("/builder")
                   ? null
-                  : this.props.updatePath(
+                  : this.props.pushPath(
                       this.props.pathname.split("/notifications")[0] +
                         "/builder"
                     );
@@ -163,7 +164,7 @@ class SchemaWizardHeader extends React.Component {
               onClick={() => {
                 this.props.pathname.includes("/notifications")
                   ? null
-                  : this.props.updatePath(
+                  : this.props.pushPath(
                       this.props.pathname.split("/builder")[0] +
                         "/notifications"
                     );
@@ -176,6 +177,12 @@ class SchemaWizardHeader extends React.Component {
               text="Export Schema"
               size="small"
               onClick={this._getSchema}
+            />
+            <Button
+              icon={<AiOutlineSave size={20} />}
+              text="Save Updates"
+              size="small"
+              onClick={() => this.props.saveSchemaChanges()}
             />
             <Button
               icon={<FaCode size={20} />}
@@ -282,8 +289,9 @@ SchemaWizardHeader.propTypes = {
   initialSchema: PropTypes.object,
   history: PropTypes.object,
   loader: PropTypes.bool,
-  updatePath: PropTypes.func,
-  pathname: PropTypes.string
+  pathname: PropTypes.string,
+  saveSchemaChanges: PropTypes.func,
+  pushPath: PropTypes.func
 };
 
 export default SchemaWizardHeader;

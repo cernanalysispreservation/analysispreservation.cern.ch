@@ -16,7 +16,8 @@ import {
   INIT_CURRENT_USER_REQUEST,
   INIT_CURRENT_USER_SUCCESS,
   INIT_CURRENT_USER_ERROR,
-  INTEGRATIONS_UPDATE
+  INTEGRATIONS_UPDATE,
+  UPDATE_DEPOSIT_GROUPS
 } from "../actions/auth";
 
 const initialState = Map({
@@ -77,6 +78,11 @@ export default function authReducer(state = initialState, action) {
       return state.setIn(["tokens", "error"], action.error);
     case REVOKE_TOKEN_SUCCESS:
       return state.deleteIn(["tokens", action.token]);
+    case UPDATE_DEPOSIT_GROUPS:
+      return state.setIn(
+        ["currentUser", "depositGroups"],
+        fromJS(action.payload)
+      );
     // case REVOKE_TOKEN_ERROR:
     //   return state
     default:

@@ -17,16 +17,17 @@ const Notifications = ({ schemaConfig, pathname }) => {
           justifyContent: "center"
         }}
       >
-        {schemaConfig
-          .entrySeq()
-          .map((item, index) => (
-            <NotificationBoxes
-              item={item}
-              index={index + 1}
-              key={item}
-              path={pathname}
-            />
-          ))}
+        {schemaConfig &&
+          schemaConfig
+            .entrySeq()
+            .map((item, index) => (
+              <NotificationBoxes
+                item={item}
+                index={index + 1}
+                key={item}
+                path={pathname}
+              />
+            ))}
       </Box>
     </Box>
   );

@@ -1,6 +1,6 @@
 import { push, replace } from "connected-react-router";
 
-export function updatePath(path) {
+export function pushPath(path) {
   return dispatch => {
     dispatch(push(path));
   };

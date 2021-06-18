@@ -1,7 +1,8 @@
 import { connect } from "react-redux";
 
 import SchemaWizardHeader from "../components/SchemaWizard/SchemaWizardHeader";
-import { updatePath } from "../../../actions/support";
+import { saveSchemaChanges } from "../../../actions/schemaWizard";
+import { pushPath } from "../../../actions/support";
 
 function mapStateToProps(state) {
   return {
@@ -16,7 +17,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updatePath: path => dispatch(updatePath(path))
+    saveSchemaChanges: () => dispatch(saveSchemaChanges()),
+    pushPath: path => dispatch(pushPath(path))
   };
 }
 

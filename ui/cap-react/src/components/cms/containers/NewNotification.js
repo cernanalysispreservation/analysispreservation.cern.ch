@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import NewNotification from "../components/Notifications/NotificationWizard/NewNotification";
-import { updatePath } from "../../../actions/support";
+import { pushPath } from "../../../actions/support";
 import { updateNotificationData } from "../../../actions/schemaWizard";
 
 const mapStateToProps = state => ({
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updatePath: path => dispatch(updatePath(path)),
+  pushPath: path => dispatch(pushPath(path)),
   updateNotificationData: (data, id, category) =>
     dispatch(updateNotificationData(data, id, category))
 });

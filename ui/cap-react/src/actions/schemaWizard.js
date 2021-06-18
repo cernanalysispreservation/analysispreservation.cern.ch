@@ -3,8 +3,9 @@ import { merge } from "lodash";
 import { fromJS } from "immutable";
 import { push } from "connected-react-router";
 import cogoToast from "cogo-toast";
-import { CMS } from "../components/routes";
+import { CMS, CMS_NEW } from "../components/routes";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
+import { updateDepositGroups } from "./auth";
 
 export const ADD_PROPERTY = "ADD_PROPERTY";
 export const ADD_PROPERTY_INIT = "ADD_PROPERTY_INIT";
@@ -101,15 +102,16 @@ export function initSchemaWizard(data) {
         configs
       )
     );
-    dispatch(push(`${CMS}/builder`));
+    dispatch(push(CMS_NEW));
   };
 }
 
 export function getSchema(name, version = null) {
   let schemaLink;
 
-  if (version) schemaLink = `/api/jsonschemas/${name}/${version}?resolve=1`;
-  else schemaLink = `/api/jsonschemas/${name}?resolve=1`;
+  if (version)
+    schemaLink = `/api/jsonschemas/${name}/${version}?resolve=1&config=1`;
+  else schemaLink = `/api/jsonschemas/${name}?resolve=1&config=1`;
   return function(dispatch) {
     dispatch(schemaInitRequest());
     axios
@@ -155,13 +157,12 @@ export function createContentType(content_type) {
     let name = content_type.formData.name;
     let description = content_type.formData.description;
     const _id = slugify(Math.random().toString() + "_" + name);
+    let config = {
+      config: merge({ fullname: name }, NOTIFICATIONS)
+    };
 
-    dispatch(
-      schemaInit(_id, _initSchemaStructure(name, description), {
-        fullname: name
-      })
-    );
-    dispatch(push(`${CMS}/empty`));
+    dispatch(schemaInit(_id, _initSchemaStructure(name, description), config));
+    dispatch(push(CMS_NEW));
   };
 }
 
@@ -379,22 +380,6 @@ export function renameIdByPath(item, newName) {
 
 export function createNewNotification(category) {
   return function(dispatch, getState) {
-    const newNotification = {
-      subject: {
-        template: "",
-        ctx: []
-      },
-      body: {
-        template: "",
-        ctx: []
-      },
-      recipients: {
-        bcc: [],
-        cc: [],
-        recipients: []
-      }
-    };
-
     const valuesPath = [
       "config",
       "config",
@@ -404,7 +389,7 @@ export function createNewNotification(category) {
     ];
 
     let notifications = getState().schemaWizard.getIn(valuesPath);
-    notifications = notifications.push(fromJS(newNotification));
+    notifications = notifications.push(fromJS({}));
 
     dispatch(
       addNewNotification({
@@ -446,108 +431,118 @@ export function updateNotificationData(data, id, category) {
   };
 }
 
-// export function saveSchemaChanges() {
-//   return function(dispatch, getState) {
-//     const state = getState();
-//     const config = state.schemaWizard.get("config");
-//     const sendData = {
-//       deposit_schema: state.schemaWizard.getIn(["current", "schema"]).toJS(),
-//       deposit_options: state.schemaWizard.getIn(["current", "uiSchema"]).toJS(),
-//       ...config
-//     };
-//     let { name, version, fullname } = config;
+export function saveSchemaChanges() {
+  return function(dispatch, getState) {
+    const state = getState();
+    const config = state.schemaWizard.get("config");
+    const pathname = state.router.location.pathname;
+    const sendData = {
+      deposit_schema: state.schemaWizard.getIn(["current", "schema"]).toJS(),
+      deposit_options: state.schemaWizard.getIn(["current", "uiSchema"]).toJS(),
+      ...config.toJS()
+    };
 
-//     // check if there is no name or version
-//     // these fields are required for the schema to be created or updated
-//     if (!name || !version || !fullname) {
-//       cogoToast.warn("schema name fullname and version are required", {
-//         position: "top-center",
-//         heading: "Missing information",
-//         bar: { size: "0" },
-//         hideAfter: 5
-//       });
-//       return;
-//     }
+    // check if there is no name or version
+    // these fields are required for the schema to be created or updated
+    if (
+      !config.get("name") ||
+      !config.get("version") ||
+      !config.get("fullname")
+    ) {
+      cogoToast.warn("schema name fullname and version are required", {
+        position: "top-center",
+        heading: "Missing information",
+        bar: { size: "0" },
+        hideAfter: 5
+      });
+      return;
+    }
 
-//     // check whether there are changes to the config object
-//     const isConfigVersionUpdated =
-//       version != state.schemaWizard.get("initialConfig").version;
+    // check whether there are changes to the deposit schema
+    const isSchemaUpdated = !state.schemaWizard
+      .getIn(["current", "schema"])
+      .isSubset(state.schemaWizard.getIn(["initial", "schema"]));
+    // check whether there are changes to the config object
+    const isConfigVersionUpdated =
+      config.get("version") != state.schemaWizard.get("initialConfig").version;
 
-//     // check whether there are changes to the deposit schema
-//     const isSchemaUpdated = !state.schemaWizard
-//       .getIn(["current", "schema"])
-//       .isSubset(state.schemaWizard.getIn(["initial", "schema"]));
+    if (isSchemaUpdated && !isConfigVersionUpdated) {
+      cogoToast.warn("please make sure to update the version of the schema", {
+        position: "top-center",
+        heading: "These changes require new version",
+        bar: { size: "0" },
+        hideAfter: 5
+      });
+      return;
+    }
 
-//     if (isSchemaUpdated && !isConfigVersionUpdated) {
-//       cogoToast.warn("please make sure to update the version of the schema", {
-//         position: "top-center",
-//         heading: "These changes require new version",
-//         bar: { size: "0" },
-//         hideAfter: 5
-//       });
-//       return;
-//     }
+    if (pathname.startsWith(CMS_NEW) || isSchemaUpdated) {
+      return axios
+        .post("/api/jsonschemas", sendData)
+        .then(res => {
+          const { deposit_options, deposit_schema, ...configs } = res.data;
+          configs.config = merge(configs.config, NOTIFICATIONS);
+          dispatch(
+            schemaInit(
+              "Schema Name",
+              { schema: deposit_schema, uiSchema: deposit_options },
+              configs
+            )
+          );
+          cogoToast.success("schema successfully created", {
+            position: "top-center",
+            heading: "New schema created",
+            bar: { size: "0" },
+            hideAfter: 3
+          });
+          dispatch(updateDepositGroups());
+          dispatch(
+            push(
+              `/admin/${config.get("name")}/${config.get("version")}/builder`
+            )
+          );
+        })
+        .catch(err => {
+          let errorHeading, errorMessage;
+          if (typeof err.response.data.message === "object") {
+            let errMsg = Object.entries(err.response.data.message);
+            errorHeading = errMsg[0][0];
+            errorMessage = errMsg[0][1][0];
+          } else {
+            errorHeading = "Schema Creation";
+            errorMessage =
+              err.response.data.message ||
+              "Error while creating, please try again";
+          }
+          cogoToast.error(errorMessage, {
+            position: "top-center",
+            heading: errorHeading,
+            bar: { size: "0" },
+            hideAfter: 3
+          });
+        });
+    }
 
-//     const shouldUpdate = !isSchemaUpdated && state.schemaWizard.get("version");
-
-//     if (shouldUpdate) {
-//       axios
-//         .put(`/api/jsonschemas/${name}/${version}`, sendData)
-//         .then(() =>
-//           cogoToast.success("changes successfully applied", {
-//             position: "top-center",
-//             heading: "Schema Updated",
-//             bar: { size: "0" },
-//             hideAfter: 3
-//           })
-//         )
-//         .catch(() =>
-//           cogoToast.error("Error while saving, please try again", {
-//             position: "top-center",
-//             heading: "Schema Updates",
-//             bar: { size: "0" },
-//             hideAfter: 3
-//           })
-//         );
-//     } else {
-//       axios
-//         .post("/api/jsonschemas", sendData)
-//         .then(res => {
-//           const { deposit_options, deposit_schema, ...configs } = res.data;
-//           dispatch(
-//             schemaInit(
-//               "Schema Name",
-//               { schema: deposit_schema, uiSchema: deposit_options },
-//               configs
-//             )
-//           );
-//           cogoToast.success("schema successfully created", {
-//             position: "top-center",
-//             heading: "New schema created",
-//             bar: { size: "0" },
-//             hideAfter: 3
-//           });
-//           dispatch(push(`/cms/edit/${name}/${version}`));
-//         })
-//         .catch(err => {
-//           let errorHeading, errorMessage;
-//           if (typeof err.response.data.message === "object") {
-//             let errMsg = Object.entries(err.response.data.message);
-//             errorHeading = errMsg[0][0];
-//             errorMessage = errMsg[0][1][0];
-//           } else {
-//             errorHeading = "Schema Creation";
-//             errorMessage =
-//               err.response.data.message ||
-//               "Error while creating, please try again";
-//           }
-//           cogoToast.error(errorMessage, {
-//             position: "top-center",
-//             heading: errorHeading,
-//             bar: { size: "0" },
-//             hideAfter: 3
-//           });
-//         });
-//     }
-//   };
-// }
+    return axios
+      .put(
+        `/api/jsonschemas/${config.get("name")}/${config.get("version")}`,
+        sendData
+      )
+      .then(() =>
+        cogoToast.success("changes successfully applied", {
+          position: "top-center",
+          heading: "Schema Updated",
+          bar: { size: "0" },
+          hideAfter: 3
+        })
+      )
+      .catch(() =>
+        cogoToast.error("Error while saving, please try again", {
+          position: "top-center",
+          heading: "Schema Updates",
+          bar: { size: "0" },
+          hideAfter: 3
+        })
+      );
+  };
+}

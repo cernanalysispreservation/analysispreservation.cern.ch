@@ -7,6 +7,7 @@ export const SEARCH_TIPS = "/search-tips";
 export const STATUS = "/status";
 
 export const CMS = "/admin";
+export const CMS_NEW = `${CMS}/new`;
 export const CMS_SCHEMA_PATH = `${CMS}/:schema_name?/:schema_version?`;
 export const CMS_EDIT = `${CMS_SCHEMA_PATH}/builder`;
 export const CMS_NOTIFICATION = `${CMS_SCHEMA_PATH}/notifications`;
