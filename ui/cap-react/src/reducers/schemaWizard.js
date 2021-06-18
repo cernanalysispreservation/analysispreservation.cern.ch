@@ -23,6 +23,7 @@ const initialState = Map({
     schema: {},
     uiSchema: {}
   }),
+  initialConfig: {},
   config: {},
   field: null,
   propKeyEditor: null,
@@ -38,6 +39,7 @@ export default function schemaReducer(state = initialState, action) {
       return state
         .set("current", fromJS(action.data))
         .set("initial", fromJS(action.data))
+        .set("initialConfig", action.configs)
         .set("config", action.configs)
         .set("loader", false);
     case SCHEMA_ERROR:

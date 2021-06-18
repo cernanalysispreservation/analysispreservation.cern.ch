@@ -40,6 +40,7 @@ EDITABLE_FIELDS = [
     'record_mapping',
     'deposit_options',
     'record_options',
+    'config'
 ]
 
 
@@ -52,6 +53,7 @@ class SchemaSerializer(Schema):
     fullname = fields.Str()
     is_indexed = fields.Boolean(default=False)
     use_deposit_as_record = fields.Boolean(default=False)
+    experiment = fields.Str(required=False)
 
     deposit_schema = fields.Dict(validate=JSONSchemaValidator())
     deposit_options = fields.Dict()
@@ -60,6 +62,7 @@ class SchemaSerializer(Schema):
     record_schema = fields.Dict(validate=JSONSchemaValidator())
     record_options = fields.Dict()
     record_mapping = fields.Dict()
+    config = fields.Dict()
 
     links = fields.Method('build_links', dump_only=True)
 

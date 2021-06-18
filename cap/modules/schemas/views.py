@@ -95,6 +95,7 @@ class SchemaAPI(MethodView):
                     db.session.add(schema)
 
                 schema.give_admin_access_for_user(current_user)
+            db.session.commit()
 
         except IntegrityError:
             raise abort(400, 'Error occured during saving schema in the db.')

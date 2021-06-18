@@ -16,7 +16,8 @@ import SettingsModal from "./SettingsModal";
 import {
   AiOutlineSetting,
   AiOutlineArrowLeft,
-  AiOutlineInfoCircle
+  AiOutlineInfoCircle,
+  AiOutlineSave
 } from "react-icons/ai";
 import { FaCode } from "react-icons/fa";
 import JsonDiff from "./JSONDiff";
@@ -147,6 +148,12 @@ class SchemaWizardHeader extends React.Component {
               onClick={this._getSchema}
             />
             <Button
+              icon={<AiOutlineSave size={20} />}
+              text="Save Updates"
+              size="small"
+              onClick={() => this.props.saveSchemaChanges()}
+            />
+            <Button
               icon={<FaCode size={20} />}
               size="small"
               onClick={this._toggleSchemaPreviewEnabled}
@@ -250,7 +257,8 @@ SchemaWizardHeader.propTypes = {
   initialUiSchema: PropTypes.object,
   initialSchema: PropTypes.object,
   history: PropTypes.object,
-  loader: PropTypes.bool
+  loader: PropTypes.bool,
+  saveSchemaChanges: PropTypes.func
 };
 
 export default SchemaWizardHeader;

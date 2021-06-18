@@ -354,3 +354,111 @@ export function updateSchemaProps(prop) {
     dispatch(updateSchemaByPath([], schema));
   };
 }
+
+export function saveSchemaChanges() {
+  return function(dispatch, getState) {
+    const state = getState();
+    const config = state.schemaWizard.get("config");
+    const sendData = {
+      deposit_schema: state.schemaWizard.getIn(["current", "schema"]).toJS(),
+      deposit_options: state.schemaWizard.getIn(["current", "uiSchema"]).toJS(),
+      ...config
+    };
+    let { name, version, fullname } = config;
+
+    // check if there is no name or version
+    // these fields are required for the schema to be created or updated
+    if (!name || !version || !fullname) {
+      cogoToast.warn("schema name fullname and version are required", {
+        position: "top-center",
+        heading: "Missing information",
+        bar: { size: "0" },
+        hideAfter: 5
+      });
+      return;
+    }
+
+    // decide whether the current edited schema exists in the groups or not
+    // if yes then we should check if there is update to the schema and then
+    // require update of the version. If not then we should update the uiSchema
+    // updates and save
+    const groups = state.auth.getIn(["currentUser", "depositGroups"]);
+
+    // holds the value if the schema already exists in the deposit groups of the user
+    const schemaAlreadyExists = groups.filter(
+      item => item.get("deposit_group") === name
+    ).size;
+
+    // check whether threre are changes to the config object
+    const isConfigVersionUpdated =
+      version != state.schemaWizard.get("initialConfig").version;
+
+    // check whether there are changes to the deposit schema
+    const isSchemaUpdated = !state.schemaWizard
+      .getIn(["current", "schema"])
+      .isSubset(state.schemaWizard.getIn(["initial", "schema"]));
+
+    if (schemaAlreadyExists && isSchemaUpdated && !isConfigVersionUpdated) {
+      cogoToast.warn("please make sure to update the version of the schema", {
+        position: "top-center",
+        heading: "These changes require new version",
+        bar: { size: "0" },
+        hideAfter: 5
+      });
+      return;
+    }
+
+    const shouldUpdate = schemaAlreadyExists && !isSchemaUpdated;
+
+    if (shouldUpdate) {
+      axios
+        .put(`/api/jsonschemas/${name}/${version}`, sendData)
+        .then(() =>
+          cogoToast.success("changes successfully applied", {
+            position: "top-center",
+            heading: "Schema Updated",
+            bar: { size: "0" },
+            hideAfter: 3
+          })
+        )
+        .catch(() =>
+          cogoToast.error("Error while saving, please try again", {
+            position: "top-center",
+            heading: "Schema Updates",
+            bar: { size: "0" },
+            hideAfter: 3
+          })
+        );
+    } else {
+      axios
+        .post("/api/jsonschemas", sendData)
+        .then(() =>
+          cogoToast.success("schema successfully created", {
+            position: "top-center",
+            heading: "New schema created",
+            bar: { size: "0" },
+            hideAfter: 3
+          })
+        )
+        .catch(err => {
+          let errorHeading, errorMessage;
+          if (typeof err.response.data.message === "object") {
+            let errMsg = Object.entries(err.response.data.message);
+            errorHeading = errMsg[0][0];
+            errorMessage = errMsg[0][1][0];
+          } else {
+            errorHeading = "Schema Creation";
+            errorMessage =
+              err.response.data.message ||
+              "Error while creating, please try again";
+          }
+          cogoToast.error(errorMessage, {
+            position: "top-center",
+            heading: errorHeading,
+            bar: { size: "0" },
+            hideAfter: 3
+          });
+        });
+    }
+  };
+}
