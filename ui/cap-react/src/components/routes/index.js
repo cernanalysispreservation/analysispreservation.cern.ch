@@ -6,8 +6,12 @@ export const POLICY = "/policy";
 export const SEARCH_TIPS = "/search-tips";
 export const STATUS = "/status";
 
-export const CMS = "/cms";
-export const CMS_EDIT = `${CMS}/edit`;
+export const CMS = "/admin";
+export const CMS_SCHEMA_PATH = `${CMS}/:schema_name?/:schema_version?`;
+export const CMS_EDIT = `${CMS_SCHEMA_PATH}/builder`;
+export const CMS_NOTIFICATION = `${CMS_SCHEMA_PATH}/notifications`;
+export const CMS_NOTIFICATION_CATEGORY = `${CMS_NOTIFICATION}/:category`;
+export const CMS_NOTIFICATION_EDIT = `${CMS_NOTIFICATION_CATEGORY}/:id`;
 
 export const DRAFTS = "/drafts";
 export const DRAFT_ITEM = `${DRAFTS}/:draft_id`;

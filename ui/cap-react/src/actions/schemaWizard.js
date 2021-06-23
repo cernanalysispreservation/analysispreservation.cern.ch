@@ -1,6 +1,9 @@
 import axios from "axios";
+import { merge } from "lodash";
+import { fromJS } from "immutable";
 import { push } from "connected-react-router";
 import cogoToast from "cogo-toast";
+import { CMS } from "../components/routes";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
 export const ADD_PROPERTY = "ADD_PROPERTY";
@@ -18,6 +21,40 @@ export const CURRENT_UPDATE_CONFIG = "CURRENT_UPDATE_CONFIG";
 export const CURRENT_UPDATE_PATH = "CURRENT_UPDATE_PATH";
 export const CURRENT_UPDATE_SCHEMA_PATH = "CURRENT_UPDATE_SCHEMA_PATH";
 export const CURRENT_UPDATE_UI_SCHEMA_PATH = "CURRENT_UPDATE_UI_SCHEMA_PATH";
+
+export const UPDATE_NOTIFICATION_BY_INDEX = "UPDATE_NOTIFICATION_BY_INDEX";
+export const ADD_NEW_NOTIFICATION = "ADD_NEW_NOTIFICATION";
+export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
+
+const NOTIFICATIONS = {
+  notifications: {
+    actions: {
+      review: [],
+      publish: []
+    }
+  }
+};
+
+export function updateNotification(data) {
+  return {
+    type: UPDATE_NOTIFICATION_BY_INDEX,
+    payload: data
+  };
+}
+
+export function addNewNotification(item) {
+  return {
+    type: ADD_NEW_NOTIFICATION,
+    payload: item
+  };
+}
+
+export function deleteNotification(notification) {
+  return {
+    type: REMOVE_NOTIFICATION,
+    payload: notification
+  };
+}
 
 export function schemaError(error) {
   return {
@@ -56,6 +93,7 @@ export function initSchemaWizard(data) {
   return function(dispatch) {
     const { id, deposit_schema, deposit_options, ...configs } = data;
 
+    configs.config = merge(configs.config, NOTIFICATIONS);
     dispatch(
       schemaInit(
         id || "Schema Name",
@@ -63,7 +101,7 @@ export function initSchemaWizard(data) {
         configs
       )
     );
-    dispatch(push("/cms/edit"));
+    dispatch(push(`${CMS}/builder`));
   };
 }
 
@@ -79,6 +117,9 @@ export function getSchema(name, version = null) {
       .then(resp => {
         let schema = resp.data;
         let { id, deposit_schema, deposit_options, ...configs } = schema;
+
+        configs.config = merge(configs.config, NOTIFICATIONS);
+
         if (deposit_schema && deposit_options)
           dispatch(
             schemaInit(
@@ -89,6 +130,13 @@ export function getSchema(name, version = null) {
           );
       })
       .catch(err => {
+        dispatch(push(CMS));
+        cogoToast.error("Make sure that schema name and version are correct ", {
+          position: "top-center",
+          heading: "Schema fetch failed",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
         dispatch(schemaError(err));
       });
   };
@@ -113,14 +161,13 @@ export function createContentType(content_type) {
         fullname: name
       })
     );
-    dispatch(push("/cms/edit"));
+    dispatch(push(`${CMS}/empty`));
   };
 }
 
 export function selectContentType(id) {
   return function(dispatch) {
-    dispatch(getSchema(id));
-    dispatch(push(`/cms/edit`));
+    dispatch(push(`${CMS}/${id}/builder`));
   };
 }
 
@@ -330,27 +377,177 @@ export function renameIdByPath(item, newName) {
   };
 }
 
-export function updateSchemaProps(prop) {
+export function createNewNotification(category) {
   return function(dispatch, getState) {
-    const { title, description, configs } = prop;
+    const newNotification = {
+      subject: {
+        template: "",
+        ctx: []
+      },
+      body: {
+        template: "",
+        ctx: []
+      },
+      recipients: {
+        bcc: [],
+        cc: [],
+        recipients: []
+      }
+    };
 
-    let schema = getState()
-      .schemaWizard.getIn(["current", "schema"])
-      .toJS();
+    const valuesPath = [
+      "config",
+      "config",
+      "notifications",
+      "actions",
+      category
+    ];
 
-    if (configs) {
-      dispatch(updateSchemaConfig(configs));
-      return;
-    }
+    let notifications = getState().schemaWizard.getIn(valuesPath);
+    notifications = notifications.push(fromJS(newNotification));
 
-    if (title) {
-      schema.title = title;
-    }
+    dispatch(
+      addNewNotification({
+        path: valuesPath,
+        item: notifications,
+        category,
+        index: notifications.size - 1
+      })
+    );
+    const pathname = getState().router.location.pathname;
 
-    if (description) {
-      schema.description = description;
-    }
-
-    dispatch(updateSchemaByPath([], schema));
+    dispatch(push(`${pathname}/${notifications.size - 1}`));
   };
 }
+
+export function removeNotification(index, category) {
+  return function(dispatch, getState) {
+    const path = ["config", "config", "notifications", "actions", category];
+
+    let notification = getState().schemaWizard.getIn(path);
+
+    let newNotification = notification.delete(index);
+    dispatch(deleteNotification({ path, notification: newNotification }));
+  };
+}
+
+export function updateNotificationData(data, id, category) {
+  return function(dispatch) {
+    const valuesPath = [
+      "config",
+      "config",
+      "notifications",
+      "actions",
+      category,
+      id
+    ];
+
+    dispatch(updateNotification({ path: valuesPath, value: fromJS(data) }));
+  };
+}
+
+// export function saveSchemaChanges() {
+//   return function(dispatch, getState) {
+//     const state = getState();
+//     const config = state.schemaWizard.get("config");
+//     const sendData = {
+//       deposit_schema: state.schemaWizard.getIn(["current", "schema"]).toJS(),
+//       deposit_options: state.schemaWizard.getIn(["current", "uiSchema"]).toJS(),
+//       ...config
+//     };
+//     let { name, version, fullname } = config;
+
+//     // check if there is no name or version
+//     // these fields are required for the schema to be created or updated
+//     if (!name || !version || !fullname) {
+//       cogoToast.warn("schema name fullname and version are required", {
+//         position: "top-center",
+//         heading: "Missing information",
+//         bar: { size: "0" },
+//         hideAfter: 5
+//       });
+//       return;
+//     }
+
+//     // check whether there are changes to the config object
+//     const isConfigVersionUpdated =
+//       version != state.schemaWizard.get("initialConfig").version;
+
+//     // check whether there are changes to the deposit schema
+//     const isSchemaUpdated = !state.schemaWizard
+//       .getIn(["current", "schema"])
+//       .isSubset(state.schemaWizard.getIn(["initial", "schema"]));
+
+//     if (isSchemaUpdated && !isConfigVersionUpdated) {
+//       cogoToast.warn("please make sure to update the version of the schema", {
+//         position: "top-center",
+//         heading: "These changes require new version",
+//         bar: { size: "0" },
+//         hideAfter: 5
+//       });
+//       return;
+//     }
+
+//     const shouldUpdate = !isSchemaUpdated && state.schemaWizard.get("version");
+
+//     if (shouldUpdate) {
+//       axios
+//         .put(`/api/jsonschemas/${name}/${version}`, sendData)
+//         .then(() =>
+//           cogoToast.success("changes successfully applied", {
+//             position: "top-center",
+//             heading: "Schema Updated",
+//             bar: { size: "0" },
+//             hideAfter: 3
+//           })
+//         )
+//         .catch(() =>
+//           cogoToast.error("Error while saving, please try again", {
+//             position: "top-center",
+//             heading: "Schema Updates",
+//             bar: { size: "0" },
+//             hideAfter: 3
+//           })
+//         );
+//     } else {
+//       axios
+//         .post("/api/jsonschemas", sendData)
+//         .then(res => {
+//           const { deposit_options, deposit_schema, ...configs } = res.data;
+//           dispatch(
+//             schemaInit(
+//               "Schema Name",
+//               { schema: deposit_schema, uiSchema: deposit_options },
+//               configs
+//             )
+//           );
+//           cogoToast.success("schema successfully created", {
+//             position: "top-center",
+//             heading: "New schema created",
+//             bar: { size: "0" },
+//             hideAfter: 3
+//           });
+//           dispatch(push(`/cms/edit/${name}/${version}`));
+//         })
+//         .catch(err => {
+//           let errorHeading, errorMessage;
+//           if (typeof err.response.data.message === "object") {
+//             let errMsg = Object.entries(err.response.data.message);
+//             errorHeading = errMsg[0][0];
+//             errorMessage = errMsg[0][1][0];
+//           } else {
+//             errorHeading = "Schema Creation";
+//             errorMessage =
+//               err.response.data.message ||
+//               "Error while creating, please try again";
+//           }
+//           cogoToast.error(errorMessage, {
+//             position: "top-center",
+//             heading: errorHeading,
+//             bar: { size: "0" },
+//             hideAfter: 3
+//           });
+//         });
+//     }
+//   };
+// }

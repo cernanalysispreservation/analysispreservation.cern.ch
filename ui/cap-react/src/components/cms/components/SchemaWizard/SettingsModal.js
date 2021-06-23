@@ -19,7 +19,7 @@ const SettingsModal = ({ show, onClose, configs, updateSchemaConfig }) => {
         <Box pad="small">
           <CleanForm
             {...configSchema}
-            formData={configs}
+            formData={configs.toJS()}
             onChange={_updateConfigs}
           >
             <span />

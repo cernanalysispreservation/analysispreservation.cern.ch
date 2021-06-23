@@ -11,7 +11,10 @@ import {
   ADD_PROPERTY,
   ADD_PROPERTY_INIT,
   SCHEMA_ERROR,
-  SCHEMA_INIT_REQUEST
+  SCHEMA_INIT_REQUEST,
+  UPDATE_NOTIFICATION_BY_INDEX,
+  ADD_NEW_NOTIFICATION,
+  REMOVE_NOTIFICATION
 } from "../actions/schemaWizard";
 
 const initialState = Map({
@@ -27,7 +30,8 @@ const initialState = Map({
   field: null,
   propKeyEditor: null,
   error: null,
-  loader: false
+  loader: false,
+  version: null
 });
 
 export default function schemaReducer(state = initialState, action) {
@@ -38,8 +42,10 @@ export default function schemaReducer(state = initialState, action) {
       return state
         .set("current", fromJS(action.data))
         .set("initial", fromJS(action.data))
-        .set("config", action.configs)
+        .set("config", fromJS(action.configs))
+        .set("version", action.configs.version)
         .set("loader", false);
+
     case SCHEMA_ERROR:
       return state.set("error", action.payload).set("loader", false);
 
@@ -87,6 +93,12 @@ export default function schemaReducer(state = initialState, action) {
       );
     case CURRENT_UPDATE_CONFIG:
       return state.set("config", action.config);
+    case UPDATE_NOTIFICATION_BY_INDEX:
+      return state.setIn(action.payload.path, action.payload.value);
+    case ADD_NEW_NOTIFICATION:
+      return state.setIn(action.payload.path, action.payload.item);
+    case REMOVE_NOTIFICATION:
+      return state.setIn(action.payload.path, action.payload.notification);
     default:
       return state;
   }

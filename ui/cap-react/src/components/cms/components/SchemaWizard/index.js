@@ -12,8 +12,6 @@ import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import SelectFieldType from "../../containers/SelectFieldType";
 
-import SchemaWizardHeader from "../../containers/SchemaWizardHeader";
-
 class SchemaWizard extends React.Component {
   constructor(props) {
     super(props);
@@ -21,17 +19,9 @@ class SchemaWizard extends React.Component {
       showModal: false
     };
   }
-
-  componentDidMount() {
-    if (!this.props.loader && this.props.schema.size === 0) {
-      this.props.history.push("/cms");
-    }
-  }
-
   render() {
     return (
       <DndProvider backend={HTML5Backend}>
-        <SchemaWizardHeader />
         <Box
           colorIndex="light-2"
           flex={true}
@@ -68,15 +58,8 @@ class SchemaWizard extends React.Component {
 }
 
 SchemaWizard.propTypes = {
-  current: PropTypes.object,
-  onFieldTypeSelect: PropTypes.func,
   field: PropTypes.object,
-  getSchema: PropTypes.func,
-  match: PropTypes.object,
-  selected: PropTypes.object,
-  history: PropTypes.object,
-  loader: PropTypes.bool,
-  schema: PropTypes.object
+  loader: PropTypes.bool
 };
 
 export default SchemaWizard;
