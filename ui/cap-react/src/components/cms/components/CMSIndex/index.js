@@ -9,9 +9,11 @@ import Label from "grommet/components/Label";
 import SelectContentType from "../../containers/SelectContentType";
 import CreateContentType from "../../containers/CreateContentType";
 import DropZoneForm from "./DropZoneForm";
+import NotificationPanel from "../Notifications/NotificationWizard";
 
 class CMSIndex extends React.Component {
   render() {
+    return <NotificationPanel />;
     return (
       <Box
         flex={true}
