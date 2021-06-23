@@ -10,7 +10,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    select: (id, version) => dispatch(selectContentType(id, version))
+    select: id => dispatch(selectContentType(id))
   };
 }
 

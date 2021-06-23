@@ -60,6 +60,7 @@ class SchemaSerializer(Schema):
     record_schema = fields.Dict(validate=JSONSchemaValidator())
     record_options = fields.Dict()
     record_mapping = fields.Dict()
+    config = fields.Dict()
 
     links = fields.Method('build_links', dump_only=True)
 

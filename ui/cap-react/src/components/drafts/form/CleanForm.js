@@ -32,7 +32,7 @@ class CleanForm extends React.Component {
         showErrorList={this.props.showErrorList || false}
         ErrorList={ErrorListTemplate}
         widgets={widgets}
-        fields={fields}
+        fields={{ ...fields, ...this.props.fields }}
         // tagName="div"
         uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
         liveValidate={this.props.liveValidate || false}

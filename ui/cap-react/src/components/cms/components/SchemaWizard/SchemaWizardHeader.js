@@ -13,6 +13,8 @@ import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 import { DownloadIcon } from "grommet/components/icons/base";
 import SettingsModal from "./SettingsModal";
+import { CMS } from "../../../routes";
+
 import {
   AiOutlineSetting,
   AiOutlineArrowLeft,
@@ -45,7 +47,7 @@ class SchemaWizardHeader extends React.Component {
       {
         deposit_schema: this.props.schema.toJS(),
         deposit_options: this.props.uiSchema.toJS(),
-        ...this.props.config
+        ...this.props.config.toJS()
       },
       null,
       4
@@ -128,16 +130,45 @@ class SchemaWizardHeader extends React.Component {
           <Box direction="row" align="center" responsive={false}>
             <Box
               margin={{ right: "small" }}
-              onClick={() => this.props.history.push("/cms")}
+              onClick={() => this.props.pushPath(CMS)}
             >
               <AiOutlineArrowLeft size={15} />
             </Box>
             {!this.props.loader && (
               <Truncate lines={1} width={200} ellipsis={<span>...</span>}>
-                {(this.props.config && this.props.config.fullname) ||
+                {(this.props.config.size > 0 &&
+                  this.props.config.has("fullname") &&
+                  this.props.config.get("fullname")) ||
                   "Untitled Schema"}
               </Truncate>
             )}
+          </Box>
+          <Box direction="row" responsive={false}>
+            <Button
+              text="Form Builder"
+              primary={this.props.pathname.includes("/builder")}
+              onClick={() => {
+                this.props.pathname.includes("/builder")
+                  ? null
+                  : this.props.pushPath(
+                      this.props.pathname.split("/notifications")[0] +
+                        "/builder"
+                    );
+              }}
+              margin="0 10px 0 0"
+            />
+            <Button
+              text="Notifications"
+              primary={this.props.pathname.includes("/notifications")}
+              onClick={() => {
+                this.props.pathname.includes("/notifications")
+                  ? null
+                  : this.props.pushPath(
+                      this.props.pathname.split("/builder")[0] +
+                        "/notifications"
+                    );
+              }}
+            />
           </Box>
           <Box direction="row" wrap={false} pad={{ between: "small" }}>
             <Button
@@ -250,7 +281,9 @@ SchemaWizardHeader.propTypes = {
   initialUiSchema: PropTypes.object,
   initialSchema: PropTypes.object,
   history: PropTypes.object,
-  loader: PropTypes.bool
+  loader: PropTypes.bool,
+  pushPath: PropTypes.func,
+  pathname: PropTypes.string
 };
 
 export default SchemaWizardHeader;
