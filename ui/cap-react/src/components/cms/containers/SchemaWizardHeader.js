@@ -17,7 +17,9 @@ function mapDispatchToProps() {
   return {};
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-  )(SchemaWizardHeader));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SchemaWizardHeader)
+);

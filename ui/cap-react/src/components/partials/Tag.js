@@ -12,6 +12,10 @@ const StyledTag = styled.span`
   max-width: ${props => props.maxWidth};
   word-break: break-all;
   line-height: 20px;
+
+  &:hover {
+    cursor: ${props => props.onClick && "pointer"};
+  }
 `;
 
 const Tag = ({
@@ -24,7 +28,8 @@ const Tag = ({
   },
   margin = "",
   maxWidth = "300px",
-  dataCy = ""
+  dataCy = "",
+  onClick = null
 }) => {
   const getPaddingBySize = size => {
     const choices = {
@@ -44,6 +49,7 @@ const Tag = ({
       margin={margin}
       maxWidth={maxWidth}
       data-cy={dataCy}
+      onClick={onClick}
     >
       {text}
     </StyledTag>

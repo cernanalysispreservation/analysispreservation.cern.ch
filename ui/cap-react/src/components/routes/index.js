@@ -9,6 +9,11 @@ export const STATUS = "/status";
 export const CMS = "/cms";
 export const CMS_EDIT = `${CMS}/edit`;
 
+export const NOTIFICATIONS = "/notifications";
+export const NOTIFICATIONS_CATEGORY = "/notifications/:category";
+export const NOTIFICATIONS_CREATE = "/notifications/:category/create";
+export const NOTIFICATIONS_EDIT = "/notifications/:category/edit";
+
 export const DRAFTS = "/drafts";
 export const DRAFT_ITEM = `${DRAFTS}/:draft_id`;
 export const DRAFT_ITEM_EDIT = `${DRAFT_ITEM}/edit`;

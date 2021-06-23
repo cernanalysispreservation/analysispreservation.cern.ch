@@ -1,0 +1,31 @@
+.conditionlist-list {
+  width: 100%;
+  padding: 0 10px;
+  overflow-x: auto;
+  opacity: 1;
+}
+
+.conditionlist-email-section {
+  width: 10%;
+  background-color: #f5f5f5;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  justify-content: flex-start;
+}
+.conditionlist-email-section-selected {
+  min-height: 165px;
+  height: 100%;
+  width: 100%;
+}
+
+.email-configuration {
+  display: none;
+}
+
+.email-configuration-selected {
+  display: flex;
+  opacity: 1;
+}
+
