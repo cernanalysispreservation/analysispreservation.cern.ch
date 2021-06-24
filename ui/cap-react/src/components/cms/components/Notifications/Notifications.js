@@ -22,7 +22,12 @@ const Notifications = props => {
         {notifications
           .entrySeq()
           .map((item, index) => (
-            <NotificationBoxes item={item} index={index + 1} key={item} />
+            <NotificationBoxes
+              item={item}
+              index={index + 1}
+              key={item}
+              path={props.pathname}
+            />
           ))}
       </Box>
     </Box>

@@ -8,8 +8,19 @@ import Box from "grommet/components/Box";
 import CMSIndex from "./components/CMSIndex";
 import SchemaWizard from "./containers/SchemaWizard";
 
+import Notifications from "./containers/Notifications";
+import NotificationWizard from "./containers/NotificationWizard";
+import NewNotification from "./containers/NewNotification";
+
 import DocumentTitle from "../partials/Title";
-import { CMS, CMS_EDIT } from "../routes";
+import {
+  CMS,
+  CMS_EDIT,
+  CMS_NOTIFICATION,
+  CMS_NOTIFICATION_CATEGORY,
+  CMS_NOTIFICATION_EDIT,
+  CMS_NOTIFICATION_CREATE
+} from "../routes";
 
 class IndexPage extends React.Component {
   render() {
@@ -19,6 +30,14 @@ class IndexPage extends React.Component {
           <Switch>
             <Route exact path={CMS} component={CMSIndex} />
             <Route path={CMS_EDIT} component={SchemaWizard} />
+            <Route path={CMS_NOTIFICATION} exact component={Notifications} />
+            <Route
+              exact
+              path={CMS_NOTIFICATION_CATEGORY}
+              component={NotificationWizard}
+            />
+            <Route path={CMS_NOTIFICATION_CREATE} component={NewNotification} />
+            <Route path={CMS_NOTIFICATION_EDIT} component={NewNotification} />
           </Switch>
         </DocumentTitle>
       </Box>

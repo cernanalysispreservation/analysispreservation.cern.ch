@@ -13,7 +13,8 @@ const NotificationList = ({
   setSelectedNotification,
   category,
   removeNotification,
-  createNewNotification
+  createNewNotification,
+  pathname
 }) => {
   return (
     <Box flex align="center" id="anchor-no-style">
@@ -55,7 +56,7 @@ const NotificationList = ({
           </Box>
 
           <Anchor
-            path="/notifications/review/edit"
+            path={`${pathname}/edit`}
             onClick={() => setSelectedNotification(item, index, category)}
             flex
           >
@@ -134,6 +135,7 @@ NotificationList.propTypes = {
   list: PropTypes.object,
   setSelectedNotification: PropTypes.func,
   category: PropTypes.string,
+  pathname: PropTypes.string,
   removeNotification: PropTypes.func,
   createNewNotification: PropTypes.func
 };

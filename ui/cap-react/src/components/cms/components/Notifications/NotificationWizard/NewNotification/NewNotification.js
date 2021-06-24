@@ -23,7 +23,11 @@ const NewNotification = props => {
   return (
     <Box flex>
       <Box pad="small">
-        <Anchor path="/notifications">
+        <Anchor
+          path={
+            props.location.pathname.split(`/${props.match.params.category}`)[0]
+          }
+        >
           <Button
             text="Notification list"
             icon={<AiOutlineArrowLeft size={16} />}

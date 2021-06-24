@@ -16,7 +16,7 @@ const getDescription = desc => {
   return choices[desc];
 };
 
-const NotificationBoxes = ({ item, index }) => {
+const NotificationBoxes = ({ item, index, path }) => {
   return (
     <Box style={{ backgroundColor: "#f5f5f5" }} pad="small">
       <Box justify="between" direction="row" responsive={false}>
@@ -37,7 +37,7 @@ const NotificationBoxes = ({ item, index }) => {
         <Box>
           notifications <span>{item[1].size}</span>
         </Box>
-        <Anchor path={`/notifications/${item[0]}`}>
+        <Anchor path={`${path}/${item[0]}`}>
           <Button
             text="See more"
             primaryOutline
@@ -53,7 +53,7 @@ const NotificationBoxes = ({ item, index }) => {
 NotificationBoxes.propTypes = {
   item: PropTypes.array,
   index: PropTypes.number,
-  description: PropTypes.string
+  path: PropTypes.string
 };
 
 export default NotificationBoxes;

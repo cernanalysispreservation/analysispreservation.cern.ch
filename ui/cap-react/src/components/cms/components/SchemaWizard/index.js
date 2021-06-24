@@ -25,9 +25,8 @@ class SchemaWizard extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.loader && this.props.schema.size === 0) {
-      this.props.history.push("/cms");
-    }
+    const { schema_name, schema_version } = this.props.match.params;
+    if (schema_name) this.props.getSchema(schema_name, schema_version);
   }
 
   render() {

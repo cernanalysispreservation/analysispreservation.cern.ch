@@ -13,7 +13,7 @@ const NotificationWizard = props => {
 
   // if the category is not defined or it is not acceptable value
   if (!category || !acceptedActions.includes(category))
-    props.history.push("/notifications/");
+    props.history.push(props.location.pathname.split(`/${category}`)[0]);
 
   const currentNotifications = props.schemaConfig.getIn([
     "notifications",
@@ -24,7 +24,7 @@ const NotificationWizard = props => {
   return (
     <Box flex>
       <Box align="start" pad="small">
-        <Anchor path="/notifications">
+        <Anchor path={props.location.pathname.split(`/${category}`)[0]}>
           <Button text="back" icon={<AiOutlineArrowLeft size={16} />} />
         </Anchor>
       </Box>

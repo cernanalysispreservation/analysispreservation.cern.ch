@@ -14,7 +14,11 @@ const mapDispatchToProps = dispatch => ({
   createNewNotification: category => dispatch(createNewNotification(category))
 });
 
+const mapStateToProps = state => ({
+  pathname: state.router.location.pathname
+});
+
 export default connect(
-  state => state,
+  mapStateToProps,
   mapDispatchToProps
 )(NotificationList);
