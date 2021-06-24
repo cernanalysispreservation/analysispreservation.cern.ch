@@ -28,7 +28,8 @@ const initialState = Map({
   field: null,
   propKeyEditor: null,
   error: null,
-  loader: false
+  loader: false,
+  version: null
 });
 
 export default function schemaReducer(state = initialState, action) {
@@ -41,6 +42,7 @@ export default function schemaReducer(state = initialState, action) {
         .set("initial", fromJS(action.data))
         .set("initialConfig", action.configs)
         .set("config", action.configs)
+        .set("version", action.configs.version)
         .set("loader", false);
     case SCHEMA_ERROR:
       return state.set("error", action.payload).set("loader", false);

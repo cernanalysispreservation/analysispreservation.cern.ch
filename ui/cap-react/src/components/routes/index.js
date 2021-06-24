@@ -7,7 +7,7 @@ export const SEARCH_TIPS = "/search-tips";
 export const STATUS = "/status";
 
 export const CMS = "/cms";
-export const CMS_EDIT = `${CMS}/edit`;
+export const CMS_EDIT = `${CMS}/edit/:schema_name?/:schema_version?`;
 
 export const DRAFTS = "/drafts";
 export const DRAFT_ITEM = `${DRAFTS}/:draft_id`;

@@ -89,6 +89,13 @@ export function getSchema(name, version = null) {
           );
       })
       .catch(err => {
+        dispatch(push("/cms"));
+        cogoToast.error("Make sure that schema name and version are correct ", {
+          position: "top-center",
+          heading: "Schema fetch failed",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
         dispatch(schemaError(err));
       });
   };
@@ -120,7 +127,7 @@ export function createContentType(content_type) {
 export function selectContentType(id) {
   return function(dispatch) {
     dispatch(getSchema(id));
-    dispatch(push(`/cms/edit`));
+    dispatch(push(`/cms/edit/${id}`));
   };
 }
 
@@ -378,18 +385,7 @@ export function saveSchemaChanges() {
       return;
     }
 
-    // decide whether the current edited schema exists in the groups or not
-    // if yes then we should check if there is update to the schema and then
-    // require update of the version. If not then we should update the uiSchema
-    // updates and save
-    const groups = state.auth.getIn(["currentUser", "depositGroups"]);
-
-    // holds the value if the schema already exists in the deposit groups of the user
-    const schemaAlreadyExists = groups.filter(
-      item => item.get("deposit_group") === name
-    ).size;
-
-    // check whether threre are changes to the config object
+    // check whether there are changes to the config object
     const isConfigVersionUpdated =
       version != state.schemaWizard.get("initialConfig").version;
 
@@ -398,7 +394,7 @@ export function saveSchemaChanges() {
       .getIn(["current", "schema"])
       .isSubset(state.schemaWizard.getIn(["initial", "schema"]));
 
-    if (schemaAlreadyExists && isSchemaUpdated && !isConfigVersionUpdated) {
+    if (isSchemaUpdated && !isConfigVersionUpdated) {
       cogoToast.warn("please make sure to update the version of the schema", {
         position: "top-center",
         heading: "These changes require new version",
@@ -408,7 +404,7 @@ export function saveSchemaChanges() {
       return;
     }
 
-    const shouldUpdate = schemaAlreadyExists && !isSchemaUpdated;
+    const shouldUpdate = !isSchemaUpdated && state.schemaWizard.get("version");
 
     if (shouldUpdate) {
       axios
@@ -432,14 +428,23 @@ export function saveSchemaChanges() {
     } else {
       axios
         .post("/api/jsonschemas", sendData)
-        .then(() =>
+        .then(res => {
+          const { deposit_options, deposit_schema, ...configs } = res.data;
+          dispatch(
+            schemaInit(
+              "Schema Name",
+              { schema: deposit_schema, uiSchema: deposit_options },
+              configs
+            )
+          );
           cogoToast.success("schema successfully created", {
             position: "top-center",
             heading: "New schema created",
             bar: { size: "0" },
             hideAfter: 3
-          })
-        )
+          });
+          dispatch(push(`/cms/edit/${name}/${version}`));
+        })
         .catch(err => {
           let errorHeading, errorMessage;
           if (typeof err.response.data.message === "object") {
