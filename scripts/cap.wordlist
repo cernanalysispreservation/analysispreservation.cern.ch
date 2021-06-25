@@ -16,6 +16,9 @@ devops
 docker
 docs
 formBuilder
+GNU
+GPL
+init
 invenio
 JIRA
 jira
@@ -25,11 +28,17 @@ LHCb
 lhcb
 oauthclient
 OIDC
+orcid
+readme
+reana
 recid
 reviewable
+ror
 schemas
 SchemaTreeItem
 serializer
 serializers
 ui
 url
+wordlist
+zenodo
