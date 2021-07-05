@@ -34,6 +34,7 @@ Find our contact information [here](./support.md).
 - [Sharing your analysis](./share_analysis.md)
 - [How to search](./search.md)
 - [Workflows](./workflows.md)
+- [CLI tools](./cli.md)
 
 ##### Tutorials
 
