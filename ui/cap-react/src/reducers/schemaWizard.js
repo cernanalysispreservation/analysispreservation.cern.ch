@@ -175,7 +175,7 @@ const initialState = Map({
           {
             subject: {
               template:
-                'Questionnaire for {{ cadi_id if cadi_id else "" }} {{ published_id }} - {{ "New Version of Published Analysis" if revision > 0 else "New Published Analysis" }} | CERN Analysis Preservation',
+                'Antonios Questionnaire for {{ cadi_id if cadi_id else "" }} {{ published_id }} - {{ "New Version of Published Analysis" if revision > 0 else "New Published Analysis" }} | CERN Analysis Preservation',
               ctx: [
                 {
                   name: "cadi_id",
@@ -216,15 +216,45 @@ const initialState = Map({
                     {
                       path: "parton_distribution_functions",
                       condition: "exists"
+                    },
+                    {
+                      path: "parton_distribution",
+                      condition: "exists"
+                    },
+                    {
+                      op: "and",
+                      checks: [
+                        {
+                          path: "mhden",
+                          condition: "fdjshk"
+                        },
+                        {
+                          path: "emd",
+                          condition: "fdjshk"
+                        },
+                        {
+                          path: "duo",
+                          condition: "fdjshk"
+                        }
+                      ]
                     }
                   ],
                   mails: {
-                    default: ["pdf-forum-placeholder@cern.ch"]
+                    default: ["pdf-forum-placeholder@cern.ch"],
+                    formatted: []
                   }
                 },
                 {
                   op: "or",
                   checks: [
+                    {
+                      path: "cadi_id",
+                      condition: "exists"
+                    },
+                    {
+                      path: "cadi_id",
+                      condition: "exists"
+                    },
                     {
                       path: "cadi_id",
                       condition: "exists"
@@ -248,32 +278,20 @@ const initialState = Map({
                   }
                 },
                 {
-                  mailsList: {
+                  mails: {
                     default: [
                       "some-recipient-placeholder@cern.ch",
                       "antonio@fkjdhk.com",
-                      "some--placeholder@cern.ch",
-                      "antonio@fkjdhk.com",
-                      "laceholder@cern.ch",
-                      "antonio@fkjdhk.com",
-                      "some--placeholder@cern.ch",
-                      "antonio@fkjdhk.com",
-                      "laceholder@cern.ch",
-                      "antonio@fkjdhk.com"
+                      "papa@cern.ch",
+                      "papa2@fkjdhk.com",
+                      "papa3@cern.ch",
+                      "papa4@fkjdhk.com",
+                      "papa5@cern.ch",
+                      "papa6@fkjdhk.com",
+                      "papa7@cern.ch",
+                      "papa8@fkjdhk.com"
                     ],
-                    formatted: [
-                      {
-                        template:
-                          "{% if cadi_id %}hn-cms-{{ cadi_id }}@cern.ch{% endif %}",
-                        ctx: [
-                          {
-                            name: "cadi_id",
-                            type: "path",
-                            path: "analysis_context.cadi_id"
-                          }
-                        ]
-                      }
-                    ]
+                    formatted: []
                   }
                 }
               ],

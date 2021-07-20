@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Label, Heading } from "grommet";
-import CustomChecks from "../../utils/Conditions";
+import CustomChecks from "../../../../../../../containers/Conditions";
 import Button from "../../../../../../../../partials/Button";
 import Menu from "../../../../../../../../partials/Menu";
 import MenuItem from "../../../../../../../../partials/MenuItem";
+import HorizontalWithText from "../../../../../../../../partials/HorizontalWithText";
 import RecipiensList from "../../utils/RecipiensList";
-import { Map } from "immutable";
+import { fromJS } from "immutable";
 
 import { AiOutlineMore, AiOutlineDelete } from "react-icons/ai";
 
@@ -25,10 +26,12 @@ const RecipientsCustomConditions = ({
     let results = [];
     let defaults =
       emails.has("default") &&
-      emails.get("default").map(ml => Map({ type: "default", email: ml }));
+      emails.get("default").map(ml => fromJS({ type: "default", email: ml }));
     let formatted =
       emails.has("formatted") &&
-      emails.get("formatted").map(ml => Map({ type: "formatted", email: ml }));
+      emails
+        .get("formatted")
+        .map(ml => fromJS({ type: "formatted", email: ml }));
 
     if (formatted) results = [...results, ...formatted];
     if (defaults) results = [...results, ...defaults];
@@ -50,7 +53,7 @@ const RecipientsCustomConditions = ({
   );
 
   return (
-    <Box pad="medium">
+    <Box pad="small" id="conditionCheckBoxes">
       {selectedCheck ? (
         <React.Fragment>
           <Box pad={{ horizontal: "small" }}>
@@ -66,6 +69,7 @@ const RecipientsCustomConditions = ({
             emailType={emailType}
           />
           <Box pad={{ horizontal: "small" }} margin={{ top: "small" }}>
+            <HorizontalWithText text="EMAILS" />
             <RecipiensList
               updateList={(key, val) =>
                 updateNotification([selectedCheck.index, ...key], val)

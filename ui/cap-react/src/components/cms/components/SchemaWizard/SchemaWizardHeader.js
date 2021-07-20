@@ -140,6 +140,18 @@ class SchemaWizardHeader extends React.Component {
               </Truncate>
             )}
           </Box>
+          <Box direction="row" responsive={false}>
+            <Button
+              text="Form Builder"
+              primary={this.props.tabText == "Form Builder"}
+              onClick={() => this.props.updateShowContent("Form Builder")}
+            />
+            <Button
+              text="Notifications"
+              primary={this.props.tabText == "Notifications"}
+              onClick={() => this.props.updateShowContent("Notifications")}
+            />
+          </Box>
           <Box direction="row" wrap={false} pad={{ between: "small" }}>
             <Button
               icon={<DownloadIcon size="xsmall" />}

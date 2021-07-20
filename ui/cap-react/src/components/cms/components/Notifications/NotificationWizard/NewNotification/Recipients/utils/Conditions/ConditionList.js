@@ -8,12 +8,13 @@ const ConditionList = ({
   updateConditions,
   updateOperatorByPath,
   deleteByPath,
-  updateValueByPath
+  updateValueByPath,
+  schema
 }) => {
   return (
     <ConditionsCheckBoxes
       item={item}
-      initial
+      schema={schema}
       updateConditions={updateConditions}
       updateOperatorByPath={updateOperatorByPath}
       deleteByPath={deleteByPath}

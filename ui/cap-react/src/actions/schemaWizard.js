@@ -484,7 +484,7 @@ export function updateChecksInConditions(
       "selectedNotificationCategory"
     );
     const newObject = {
-      path: "Path..",
+      path: undefined,
       condition: "Action..",
       value: "Value.."
     };
@@ -632,7 +632,6 @@ export function addNewCondition(emailType) {
       op: "and",
       checks: [
         {
-          path: "add_your_path",
           condition: "exists"
         }
       ],

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Box } from "grommet";
 import RecipiensList from "../../utils/RecipiensList";
-import { Map } from "immutable";
+import { fromJS } from "immutable";
 
 const RecipientsManuallyEmails = ({ emails, updateNotification }) => {
   let index = emails.get("index");
@@ -10,10 +10,10 @@ const RecipientsManuallyEmails = ({ emails, updateNotification }) => {
   let emailsList = [];
   let defaults =
     mails.has("default") &&
-    mails.get("default").map(ml => Map({ type: "default", email: ml }));
+    mails.get("default").map(ml => fromJS({ type: "default", email: ml }));
   let formatted =
     mails.has("formatted") &&
-    mails.get("formatted").map(ml => Map({ type: "formatted", email: ml }));
+    mails.get("formatted").map(ml => fromJS({ type: "formatted", email: ml }));
   if (defaults) emailsList = [...emailsList, ...defaults];
   if (formatted) emailsList = [...emailsList, ...formatted];
 

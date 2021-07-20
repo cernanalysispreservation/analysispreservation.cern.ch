@@ -6,12 +6,6 @@ import Button from "../../../../../../../../partials/Button";
 import EmptyIcon from "./emptyLogo";
 import Label from "grommet/components/Label";
 import { Map } from "immutable";
-import { connect } from "react-redux";
-import {
-  updateOperatorToCheck,
-  updateChecksInConditions,
-  updateValueByPath
-} from "../../../../../../../../../actions/schemaWizard";
 
 const Conditions = ({
   action = "publish",
@@ -21,7 +15,8 @@ const Conditions = ({
   checks,
   checkIndex,
   emailType,
-  updateValueByPath
+  updateValueByPath,
+  schema
 }) => {
   let myChecks = [
     Map({
@@ -67,6 +62,7 @@ const Conditions = ({
             <ConditionList
               key={index}
               item={item}
+              schema={schema}
               updateValueByPath={(path, item, condition, val) =>
                 updateValueByPath(
                   checkIndex,
@@ -100,6 +96,39 @@ const Conditions = ({
               }
             />
           ))}
+          {myChecks[0].get("checks").size === 0 && (
+            <Box style={{ minWidth: "85px", margin: "0 5px" }}>
+              <Button
+                text="add simple"
+                size="small"
+                margin="0 0 5px 0"
+                primaryOutline
+                onClick={() =>
+                  updateChecksInConditions(
+                    [],
+                    checkIndex,
+                    "add",
+                    emailType,
+                    false
+                  )
+                }
+              />
+              <Button
+                text="add multiple"
+                size="small"
+                primaryOutline
+                onClick={() =>
+                  updateChecksInConditions(
+                    [],
+                    checkIndex,
+                    "add",
+                    emailType,
+                    true
+                  )
+                }
+              />
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
@@ -107,32 +136,15 @@ const Conditions = ({
 };
 
 Conditions.propTypes = {
-  updateSelectedAction: PropTypes.func,
   action: PropTypes.string,
   updateCondition: PropTypes.func,
   updateOperatorByPath: PropTypes.func,
   updateChecksInConditions: PropTypes.func,
-  notifications: PropTypes.array
+  schema: PropTypes.object,
+  emailType: PropTypes.string,
+  updateValueByPath: PropTypes.func,
+  checkIndex: PropTypes.number,
+  checks: PropTypes.object
 };
 
-const mapStateToProps = state => ({
-  notification: state.schemaWizard.get("schemaConfig")
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateOperatorByPath: (path, index, action) =>
-    dispatch(updateOperatorToCheck(path, index, action)),
-  updateChecksInConditions: (path, index, howToUpdate, emailType, type) =>
-    dispatch(
-      updateChecksInConditions(path, index, howToUpdate, emailType, type)
-    ),
-  updateValueByPath: (checkIndex, emailType, path, item, condition, val) =>
-    dispatch(
-      updateValueByPath(checkIndex, emailType, path, item, condition, val)
-    )
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Conditions);
+export default Conditions;

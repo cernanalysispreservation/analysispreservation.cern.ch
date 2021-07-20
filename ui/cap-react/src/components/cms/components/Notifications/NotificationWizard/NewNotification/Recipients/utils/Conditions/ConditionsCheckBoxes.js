@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import Tag from "../../../../../../../../partials/Tag";
 import Button from "../../../../../../../../partials/Button";
 import EditableField from "../../../../../../../../partials/EditableField";
+import AutoComplete from "../../../../../../../../partials/JSONSchemaPathAutocomplete";
+import { transformSchema } from "../../../../../../../../drafts/DraftEditor";
 import { Box } from "grommet";
 import { AiOutlineClose } from "react-icons/ai";
 
@@ -13,7 +15,8 @@ const ConditionsCheckBoxes = ({
   index = undefined,
   updateOperatorByPath,
   deleteByPath,
-  updateValueByPath
+  updateValueByPath,
+  schema
 }) => {
   if (index) path = [...path, "checks", index];
 
@@ -38,6 +41,7 @@ const ConditionsCheckBoxes = ({
             item={items}
             path={path}
             index={index}
+            schema={schema}
             updateConditions={updateConditions}
             updateOperatorByPath={updateOperatorByPath}
             deleteByPath={deleteByPath}
@@ -93,34 +97,34 @@ const ConditionsCheckBoxes = ({
 
   return (
     <Box direction="row" responsive={false} separator="all" pad="small">
-      <Tag
-        text={
-          <EditableField
-            value={item.get("path")}
-            onUpdate={val => updateValueByPath(path, item, "path", val)}
-          />
-        }
-        size="large"
+      <AutoComplete
+        obj={transformSchema(schema.toJS())}
+        value={item.get("path")}
+        updateValue={val => updateValueByPath(path, item, "path", val)}
       />
-      <Tag
-        text={
-          <EditableField
-            value={item.get("condition")}
-            onUpdate={val => updateValueByPath(path, item, "condition", val)}
-          />
-        }
-        size="large"
-      />
-      <Tag
-        text={
-          <EditableField
-            value={item.get("value")}
-            emptyValue="true"
-            onUpdate={val => updateValueByPath(path, item, "value", val)}
-          />
-        }
-        size="large"
-      />
+      <Box align="center" justify="center">
+        <Tag
+          text={
+            <EditableField
+              value={item.get("condition")}
+              onUpdate={val => updateValueByPath(path, item, "condition", val)}
+            />
+          }
+          size="large"
+        />
+      </Box>
+      <Box align="center" justify="center">
+        <Tag
+          text={
+            <EditableField
+              value={item.get("value")}
+              emptyValue="true"
+              onUpdate={val => updateValueByPath(path, item, "value", val)}
+            />
+          }
+          size="large"
+        />
+      </Box>
     </Box>
   );
 };

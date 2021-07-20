@@ -1,1 +1,1 @@
-export { default } from "./RecipientsMAnuallyEmails";
+export { default } from "./RecipientsManuallyEmails";

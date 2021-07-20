@@ -6,9 +6,9 @@ import Button from "../../../../../partials/Button";
 
 const EmptyWizard = ({ category, createNewNotification }) => {
   return (
-    <Box flex align="center" margin={{ top: "large" }}>
+    <Box flex align="center">
       <NotificationsEmptyIcon size="xlarge" />
-      <Label>Notify your users when a record is published</Label>
+      <Label>Notify your users when a record is {`${category}ed`}</Label>
       <Paragraph>
         <ul>
           <li>add a subject</li>

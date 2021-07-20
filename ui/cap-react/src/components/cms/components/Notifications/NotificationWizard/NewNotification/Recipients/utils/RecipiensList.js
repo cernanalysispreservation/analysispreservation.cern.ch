@@ -14,11 +14,16 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
     upper: 5
   });
 
-  const filtered = emailsList.filter(item => {
-    if (item.get("type") === "default")
-      return item.get("email").includes(filters);
-    else return item.get("email").template.includes(filters);
-  });
+  // const filtered = emailsList.filter(item => {
+  //   if (item.get("type") === "default")
+  //     return item.get("email").includes(filters);
+  //   if (item.get("type") === "formatted")
+  //     return item
+  //       .get("email")
+  //       .get("template")
+  //       .includes(filters);
+  //   return false;
+  // });
 
   return (
     <Box>
@@ -37,7 +42,7 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
         justify="between"
         margin={{ bottom: "medium" }}
       >
-        <Box flex>
+        {/* <Box flex>
           <TextInput
             value={filters}
             placeHolder="filter emails ..."
@@ -45,43 +50,52 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
               setFilters(e.target.value);
             }}
           />
-        </Box>
-        <Box flex align="end">
-          <Button
-            text="add"
-            primary
-            size="small"
-            onClick={() => setOpenModal(true)}
-          />
-        </Box>
+        </Box> */}
+        {emailsList.length > 0 && (
+          <Box flex align="end">
+            <Button
+              text="add new email"
+              primary
+              size="small"
+              onClick={() => setOpenModal(true)}
+            />
+          </Box>
+        )}
       </Box>
-      <List>
-        {filtered.slice(limits.lower, limits.upper).map(email => (
-          <ListItem key={email.get("email")}>
-            <Box
-              direction="row"
-              justify="between"
-              responsive={false}
-              align="center"
-              flex
-            >
-              <Label margin="none" size="small">
-                {email.get("type") === "default"
-                  ? email.get("email")
-                  : email.get("email").template}
-              </Label>
-              <Button
-                icon={<AiOutlineDelete size={18} />}
-                size="iconSmall"
-                criticalOutline
-                onClick={() =>
-                  updateList(["mails", email.get("type")], email.get("email"))
-                }
-              />
-            </Box>
-          </ListItem>
-        ))}
-      </List>
+      {emailsList.length === 0 ? (
+        <Box align="center">
+          <Label>Notify users/groups by adding their email addresses</Label>
+          <Button text="add email" primary onClick={() => setOpenModal(true)} />
+        </Box>
+      ) : (
+        <List>
+          {emailsList.slice(limits.lower, limits.upper).map(email => (
+            <ListItem key={email.get("email")}>
+              <Box
+                direction="row"
+                justify="between"
+                responsive={false}
+                align="center"
+                flex
+              >
+                <Label margin="none" size="small">
+                  {email.get("type") === "default"
+                    ? email.get("email")
+                    : email.get("email").get("template")}
+                </Label>
+                <Button
+                  icon={<AiOutlineDelete size={18} />}
+                  size="iconSmall"
+                  criticalOutline
+                  onClick={() =>
+                    updateList(["mails", email.get("type")], email.get("email"))
+                  }
+                />
+              </Box>
+            </ListItem>
+          ))}
+        </List>
+      )}
       {emailsList.length > 5 && (
         <Box
           align="center"

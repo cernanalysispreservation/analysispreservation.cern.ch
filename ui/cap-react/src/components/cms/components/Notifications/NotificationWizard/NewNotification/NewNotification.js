@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { Box, Heading, Label } from "grommet";
 import NotificationField from "../../../../containers/NotificationField";
 import Recipients from "./Recipients";
+import Button from "../../../../../partials/Button";
+import Anchor from "../../../../../partials/Anchor";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 const NewNotification = props => {
   let header = "new notification";
@@ -19,7 +22,15 @@ const NewNotification = props => {
 
   return (
     <Box flex>
-      <Box align="center" margin={{ vertical: "large" }}>
+      <Box pad="small">
+        <Anchor path="/notifications">
+          <Button
+            text="Notification list"
+            icon={<AiOutlineArrowLeft size={16} />}
+          />
+        </Anchor>
+      </Box>
+      <Box align="center" margin={{ bottom: "medium" }}>
         <Heading tag="h3" strong margin="none">
           {header}
         </Heading>

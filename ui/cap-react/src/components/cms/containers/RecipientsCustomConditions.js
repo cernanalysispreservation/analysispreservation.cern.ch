@@ -11,7 +11,11 @@ const mapDispatchToProps = dispatch => ({
     dispatch(removeCondition(emailType, item))
 });
 
+const mapStateToProps = state => ({
+  schema: state.schemaWizard.getIn(["current", "schema"])
+});
+
 export default connect(
-  state => state,
+  mapStateToProps,
   mapDispatchToProps
 )(RecipientsCustomConditions);
