@@ -28,12 +28,15 @@ from flask_login import current_user
 from invenio_accounts.models import User
 
 
-def get_submitter(record, config=None):
+def get_submitter(record,  **kwargs):
     """Returns the submitter of the analysis, aka the current user."""
-    return [current_user.email]
+    submitter_user_id = kwargs.get('default_ctx', {}).get('submitter_id')
+    submitter_user = User.query.filter_by(id=submitter_user_id).one()
+
+    return [submitter_user.email] if submitter_user else []
 
 
-def get_owner(record, config=None):
+def get_owner(record, **kwargs):
     """Returns the owner of the analysis."""
     owner_list = record.get('_deposit', {}).get('owners')
     if owner_list:
@@ -41,11 +44,10 @@ def get_owner(record, config=None):
     return []
 
 
-def get_cms_stat_recipients(record, config=None):
+def get_cms_stat_recipients(record, **kwargs):
     """Adds PAGS committee data from JSON file."""
     committee_pags = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
     working_group = record.get('analysis_context', {}).get('wg')
-
     if working_group and committee_pags:
         return committee_pags.get(working_group, {}).get("contacts", [])
     return []

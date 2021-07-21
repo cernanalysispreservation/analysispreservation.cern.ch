@@ -34,7 +34,7 @@
               }, {
                 "method": "cms_stats_committee_by_pag"
               }, {
-                "method": "submitter_mail"
+                "method": "submitter_email"
               }]
             },
             "recipients": {
@@ -88,7 +88,7 @@
               }, {
                 "method": "cms_stats_committee_by_pag"
               }, {
-                "method": "submitter_mail"
+                "method": "submitter_email"
               }],
               "base_template": "mail/analysis_plain_text.html",
               "plain": true
@@ -135,7 +135,7 @@
               }, {
                 "method": "cms_stats_committee_by_pag"
               }, {
-                "method": "submitter_mail"
+                "method": "submitter_email"
               }],
               "base_template": "mail/analysis_plain_text.html",
               "plain": true
@@ -175,9 +175,9 @@
               },{
                 "method": "working_url"
               }, {
-                "method": "reviewer_mail"
+                "method": "reviewer_email"
               }, {
-                "method": "submitter_mail"
+                "method": "submitter_email"
               }]
             },
             "recipients": {
@@ -206,9 +206,9 @@
               },{
                 "method": "working_url"
               }, {
-                "method": "reviewer_mail"
+                "method": "reviewer_email"
               }, {
-                "method": "submitter_mail"
+                "method": "submitter_email"
               }],
               "base_template": "mail/analysis_plain_text.html",
               "plain": true

@@ -161,7 +161,7 @@ Similar to the subject, we provide a template and a context for the message of t
         "name": "title",
         "path": "general_title"
       }, {
-        "method": "submitter_mail"
+        "method": "submitter_email"
       }],
       "base_template_file": "mail/analysis_plain_text.html",
       "plain": false

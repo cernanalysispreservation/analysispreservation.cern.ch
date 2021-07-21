@@ -58,7 +58,7 @@ def test_send_mail_published(app, users, create_deposit, create_schema, client, 
                         }, {
                             "method": "published_url"
                         }, {
-                            "method": "submitter_mail"
+                            "method": "submitter_email"
                         }],
                         "base_template": "mail/analysis_plain_text.html",
                         "plain": True
@@ -107,7 +107,7 @@ def test_send_mail_published(app, users, create_deposit, create_schema, client, 
                         }, {
                             "method": "published_url"
                         }, {
-                            "method": "submitter_mail"
+                            "method": "submitter_email"
                         }]
                     },
                     "recipients": {

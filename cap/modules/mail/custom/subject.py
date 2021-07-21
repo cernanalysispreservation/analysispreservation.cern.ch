@@ -23,23 +23,30 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-def published_id(record, config=None):
+def published_id(record, **kwargs):
     try:
         return record['_deposit']['pid']['value']
     except KeyError:
         return None
 
 
-def draft_id(record, config=None):
+def draft_id(record, **kwargs):
     try:
         return record['_deposit']['id']
     except KeyError:
         return None
 
 
-def revision(deposit, config=None):
+def revision(deposit, **kwargs):
     try:
         _, record = deposit.fetch_published()
         return record.revision_id
+    except KeyError:
+        return None
+
+
+def draft_revision(deposit, **kwargs):
+    try:
+        return deposit.revision_id
     except KeyError:
         return None

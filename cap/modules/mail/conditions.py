@@ -28,32 +28,32 @@ from invenio_access.permissions import Permission
 from .utils import path_value_equals
 
 
-def equals(record, path, value, action=None):
+def equals(record, path, value, **kwargs):
     data = path_value_equals(path, record)
     return True if data and data == value else False
 
 
-def not_equals(record, path, value, action=None):
+def not_equals(record, path, value, **kwargs):
     data = path_value_equals(path, record)
     return True if data and data != value else False
 
 
-def exists(record, path, value, action=None):
+def exists(record, path, value, **kwargs):
     data = path_value_equals(path, record)
     return True if data else False
 
 
-def is_in(record, path, value, action=None):
+def is_in(record, path, value, **kwargs):
     data = path_value_equals(path, record)
     return True if data and value in data else False
 
 
-def is_not_in(record, path, value, action=None):
+def is_not_in(record, path, value, **kwargs):
     data = path_value_equals(path, record)
     return True if data and value not in data else False
 
 
-def has_permission(record, path, value, action=None):
+def has_permission(record, path, value, **kwargs):
     return Permission(RoleNeed(value)).can()
 
 

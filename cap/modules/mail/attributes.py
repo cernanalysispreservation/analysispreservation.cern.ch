@@ -28,11 +28,15 @@ from .custom import recipients as custom_recipients
 from .custom import subject as custom_subjects
 
 from .conditions import CONDITION_METHODS
-from .utils import EMAIL_REGEX, get_config_default, \
-    populate_template_from_ctx, update_mail_list
+from .utils import (
+    EMAIL_REGEX,
+    get_config_default,
+    populate_template_from_ctx,
+    update_mail_list,
+)
 
 
-def check_condition(record, condition, action=None):
+def check_condition(record, condition, default_ctx={}):
     """
     For each condition we have a group of checks to perform, which should
     return True/False
@@ -63,24 +67,22 @@ def check_condition(record, condition, action=None):
     """
     # for each condition we have a group of checks to perform
     # all of the checks should give a True/False result
-    operator = condition.get('op', 'and')
-    checks = condition.get('checks', [])
+    operator = condition.get("op", "and")
+    checks = condition.get("checks", [])
     check_results = []
 
     for check in checks:
         # get the method to apply, and use it on the required path/value
         # for malformed conditions, we assume False
-        if check.get('checks'):
-            check_results.append(
-                check_condition(record, check, action)
-            )
-        elif check.get('condition'):
+        if check.get("checks"):
+            check_results.append(check_condition(record, check, default_ctx))
+        elif check.get("condition"):
             try:
-                method = CONDITION_METHODS[check['condition']]
-                path = check.get('path')
-                value = check.get('value', True)
+                method = CONDITION_METHODS[check["condition"]]
+                path = check.get("path")
+                value = check.get("value", True)
                 check_results.append(
-                    method(record, path, value, action)
+                    method(record, path, value, default_ctx=default_ctx)
                 )
             except (KeyError, Exception):
                 check_results.append(False)
@@ -92,14 +94,14 @@ def check_condition(record, condition, action=None):
         # we check the validity of the condition depending on the operator:
         # - if 'and', then we need all the items to be true
         # - if 'or' we need at least 1 item to be true
-        if operator == 'and':
+        if operator == "and":
             return all(check_results)
-        elif operator == 'or':
+        elif operator == "or":
             return any(check_results)
     return False
 
 
-def get_recipients_from_config(record, config, action=None):
+def get_recipients_from_config(record, config, default_ctx={}):
     """
     The `recipients` field differentiates 3 categories:
     - recipients
@@ -139,55 +141,76 @@ def get_recipients_from_config(record, config, action=None):
         return []
 
     mails = []
-
     for item in config:
         if isinstance(item, str):
             mails.append(item)
-        else:
-            if item.get('checks'):
-                if check_condition(record, item, action):
-                    mail_config = item.get('mails', {})
-                    update_mail_list(record, mail_config, mails)
-                continue
-
-            if item.get('method'):
-                try:
-                    method = getattr(custom_recipients, item['method'])
-                    result = method(record, item)
-                    mails += result if isinstance(result, list) else [result]
+        elif isinstance(item, dict):
+            if item.get("checks"):
+                if not check_condition(record, item, default_ctx=default_ctx):
                     continue
-                except AttributeError as exc:
-                    current_app.logger.error(
-                        f'Recipients function not found. Skipping.\n'
-                        f'Error: {exc.args[0]}')
 
-            if item.get('mails'):
-                mail_config = item.get('mails', {})
-                update_mail_list(record, mail_config, mails)
-                continue
+            if item.get("method"):
+                if isinstance(item.get("method"), list):
+                    methods = item.get("method")
+                else:
+                    methods = [item.get("method")]
+
+                for _method in methods:
+                    try:
+                        method = getattr(custom_recipients, _method)
+                        result = method(record,
+                                        config=item,
+                                        default_ctx=default_ctx)
+                        if isinstance(result, list):
+                            mails += result
+                        else:
+                            mails += [result]
+                    except AttributeError as exc:
+                        current_app.logger.error(
+                            f"Recipients function not found. Skipping.\n"
+                            f"Error: {exc.args[0]}"
+                        )
+
+            if item.get("mails"):
+                mail_config = item.get("mails", {})
+                update_mail_list(record, mail_config,
+                                 mails, default_ctx=default_ctx)
+        else:
+            continue
 
     # remove duplicates and possible empty values
-    return [mail for mail in set(mails) if mail and EMAIL_REGEX.match(mail)]
+    _mails = []
+    for mail in set(mails):
+        if isinstance(mail, str) and EMAIL_REGEX.match(mail):
+            _mails.append(mail)
+
+    return _mails
 
 
-def generate_recipients(record, config, action=None):
+def generate_recipients(record, config, default_ctx={}):
     """
     Recipients generator for notification action.
     Using the `get_recipients_from_config` function, it retrieves and returns
     3 possible lists of mails: recipients, bcc, cc.
     """
-    re_config = config.get('recipients')
+    re_config = config.get("recipients")
     if not re_config:
         return [], [], []
 
-    recipients = get_recipients_from_config(record, re_config.get('recipients'), action)  # noqa
-    cc = get_recipients_from_config(record, re_config.get('cc'), action)
-    bcc = get_recipients_from_config(record, re_config.get('bcc'), action)
+    recipients = get_recipients_from_config(
+        record, re_config.get("recipients"), default_ctx=default_ctx
+    )
+    cc = get_recipients_from_config(
+        record, re_config.get("cc"), default_ctx=default_ctx
+    )
+    bcc = get_recipients_from_config(
+        record, re_config.get("bcc"), default_ctx=default_ctx
+    )
 
     return recipients, cc, bcc
 
 
-def generate_body(record, config, action):
+def generate_body(record, config, action, default_ctx={}):
     """
     Body generator for notification action.
     It requires a template and a context (dict of vars-values), to populate it.
@@ -203,7 +226,7 @@ def generate_body(record, config, action):
         "name": "title",
         "path": "general_title"
       }, {
-        "method": "submitter_mail"
+        "method": "submitter_email"
       }],
       "base_template_file": "mail/analysis_plain_text.html",
       "plain": false
@@ -212,35 +235,37 @@ def generate_body(record, config, action):
     In case of `method`, then the message will be retrieved from the result of
     the method. It's implementation should always be in the mail.custom.messages.py file  # noqa
     """
-    body_config = config.get('body')
-    if not body_config:
-        return None, get_config_default(action, 'template'), None
+    body_config = config.get("body", {})
 
     # first get the body information
-    func = body_config.get('method')
-    if func:
-        try:
-            custom_message_func = getattr(custom_body, func)
-            body = custom_message_func(record, config)
-        except AttributeError as exc:
-            current_app.logger.error(
-                f'Body function not found. Providing default body.\n'
-                f'Error: {exc.args[0]}')
-            body = None
-    else:
-        body = populate_template_from_ctx(
-            record, body_config, action,
-            module=custom_body
-        )
+    # func = body_config.get('method')
+    # if func:
+    #     try:
+    #         custom_message_func = getattr(custom_body, func)
+    #         body = custom_message_func(record, config)
+    #     except AttributeError as exc:
+    #         current_app.logger.error(
+    #             f'Body function not found. Providing default body.\n'
+    #             f'Error: {exc.args[0]}')
+    #         body = None
+    # else:
+    body = populate_template_from_ctx(record, body_config, module=custom_body,
+                                      type="body", default_ctx=default_ctx)
 
-    # then we get the template info if available
-    plain = body_config.get('plain')
-    base = body_config.get('base_template', get_config_default(action, 'template'))  # noqa
+    base = "mail/base_plain.html"
 
-    return body, base, plain
+    if body_config.get("plain"):
+        base = "mail/base_plain.html"
+
+    if body_config.get("base_template"):
+        base = body_config.get("base_template")
+        # # then we get the template info if available
+        # base = body_config.get('base_template', get_config_default(action, 'body'))  # noqa
+
+    return body, base
 
 
-def generate_subject(record, config, action):
+def generate_subject(record, config, action, default_ctx={}):
     """
     Subject generator for notification action.
     It requires a template and a context (dict of vars-values), to populate it.
@@ -260,11 +285,11 @@ def generate_subject(record, config, action):
     In case of `method`, then the subject will be retrieved from the result of
     the method. It's implementation should always be in the mail.custom.subjects.py file  # noqa
     """
-    subj_config = config.get('subject')
+    subj_config = config.get("subject")
     if not subj_config:
-        return get_config_default(action, 'subject')
+        return get_config_default(action, "subject")
 
-    func = subj_config.get('method')
+    func = subj_config.get("method")
     if func:
         try:
             custom_subject_func = getattr(custom_subjects, func)
@@ -272,12 +297,15 @@ def generate_subject(record, config, action):
             return subject
         except AttributeError as exc:
             current_app.logger.error(
-                f'Subject function not found. Providing default subject.\n'
-                f'Error: {exc.args[0]}')
-            return get_config_default(action, 'subject')
+                f"Subject function not found. Providing default subject.\n"
+                f"Error: {exc.args[0]}"
+            )
+            return get_config_default(action, "subject")
 
     return populate_template_from_ctx(
-        record, subj_config, action,
+        record,
+        subj_config,
         module=custom_subjects,
-        type='subject'
+        default_ctx=default_ctx,
+        type="subject",
     )

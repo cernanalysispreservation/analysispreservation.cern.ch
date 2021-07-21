@@ -90,7 +90,7 @@ def test_generate_body(mock_user, app, users, location, create_schema, create_de
             }, {
                 "method": "published_url"
             }, {
-                "method": "submitter_mail"
+                "method": "submitter_email"
             }]
         }
     }
@@ -106,7 +106,7 @@ def test_generate_body(mock_user, app, users, location, create_schema, create_de
                              experiment='CMS',
                              publish=True)
 
-    body, _, _ = generate_body(deposit, config, 'publish')
+    body, _ = generate_body(deposit, config, 'publish')
     assert 'CADI URL: https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in body
     assert 'Title: Test' in body
     assert 'Submitted by cms_user@cern.ch.' in body

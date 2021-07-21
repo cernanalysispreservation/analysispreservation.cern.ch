@@ -1,0 +1,16 @@
+{% block paragraph %}
+{% if revision and revision > 0 %}
+An newer version of document {{ published_id }} has been published.
+You can check it here <{{ working_url }}>.
+{% else %}
+A new document has been published, with id {{ published_id }}.
+You can check it here <{{ working_url }}>.
+{% endif %}
+
+{% if message %}
+{{ message | safe }}
+{% endif %}
+{% endblock %}
+
+{{ "Check new version" if revision and revision > 0 else "Check document"}} <{{ working_url }}>
+

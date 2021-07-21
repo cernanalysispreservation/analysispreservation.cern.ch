@@ -128,12 +128,30 @@ def default_config():
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken',
                 MAIL_DEFAULT_SENDER="analysis-preservation-support@cern.ch",
                 CADI_REGEX="^[A-Z]{3}-[0-9]{2}-[0-9]{3}$",
-                CMS_STATS_COMMITEE_AND_PAGS={'key': {'contacts': []}},
+                CMS_STATS_COMMITEE_AND_PAGS=dict({
+                    'ABC': {
+                        'params': {
+                            'primary': 'Admin Rev 1',
+                            'secondary': 'Admin Rev 2'
+                        },
+                        'contacts': [
+                            'admin-rev-1@cern0.ch',
+                            'admin-rev-2@cern0.ch',
+                            'admin-rev-group-1@cern0.ch',
+                        ]
+                    },
+                    'ABD': {
+                        'contacts': [
+
+                        ]
+                    }
+                }),    
                 PDF_FORUM_MAIL='pdf-forum-test@cern0.ch',
                 CONVENERS_ML_MAIL='ml-conveners-test@cern0.ch',
                 CONVENERS_ML_JIRA_MAIL='ml-conveners-jira-test@cern0.ch',
                 CMS_HYPERNEWS_EMAIL_FORMAT='hn-cms-{}@cern0.ch',
                 CMS_STATS_QUESTIONNAIRE_ADMIN_ROLES='cms-admins@cern0.ch')
+
 
 
 @pytest.fixture(scope='session')

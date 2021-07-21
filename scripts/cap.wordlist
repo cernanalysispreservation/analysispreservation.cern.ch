@@ -16,6 +16,7 @@ configs
 devops
 docker
 docs
+docstrings
 formBuilder
 GNU
 GPL
@@ -30,6 +31,7 @@ lhcb
 oauthclient
 OIDC
 orcid
+py
 readme
 reana
 recid
@@ -44,5 +46,3 @@ url
 wordlist
 zenodo
 utils
-bcc
-docstrings

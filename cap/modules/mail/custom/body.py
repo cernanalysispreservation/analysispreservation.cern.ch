@@ -28,46 +28,48 @@ from flask_login import current_user
 from invenio_accounts.models import User
 
 
-def draft_url(record, config=None):
+def draft_url(record, **kwargs):
     """Get the draft html url of the analysis."""
     return f'{request.host_url}drafts/{record["_deposit"]["id"]}'
 
 
-def published_url(record, config=None):
+def published_url(record, **kwargs):
     """Get the published html url of the analysis."""
-    if record.get('control_number'):
+    if record.get("control_number"):
         return f'{request.host_url}published/{record["control_number"]}'
     return None
 
 
-def working_url(record, config=None):
+def working_url(record, **kwargs):
     """Get the working html url of the analysis."""
-    status = record.get('_deposit', {}).get('status')
-    if status == 'draft':
-        return draft_url(record, config)
-    elif status == 'published':
-        return published_url(record, config)
+    status = record.get("_deposit", {}).get("status")
+
+    if status == "draft":
+        return draft_url(record)
+    elif status == "published":
+        return published_url(record)
     else:
         return None
 
 
-def submitter_mail(record, config=None):
+def submitter_email(record, **kwargs):
     """Returns the submitter of the analysis, aka the current user."""
     return current_user.email
 
 
-def reviewer_mail(record, config=None):
+# error in cms-questionnaire config, reviewer should come from WG
+def reviewer_email(record, **kwargs):
     """Returns the owner of the analysis."""
-    owner_list = record.get('_deposit', {}).get('owners')
+    owner_list = record.get("_deposit", {}).get("owners")
     if owner_list:
         return User.query.filter_by(id=owner_list[0]).one().email
     return None
 
 
-def cms_stats_committee_by_pag(record, config=None):
+def cms_stats_committee_by_pag(record, **kwargs):
     """Retrieve reviewer parameters according to the working group."""
     committee_pags = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
-    working_group = record.get('analysis_context', {}).get('wg')
+    working_group = record.get("analysis_context", {}).get("wg")
 
     if working_group and committee_pags:
         return committee_pags.get(working_group, {}).get("params", {})
