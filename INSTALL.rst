@@ -346,6 +346,7 @@ Existing recipes list:
     init.sh // Init DB, ES, data location, redis
     init-db.sh // clean-and-init.sh + create-demo-users.sh
 
+More documentation about CLI recipes exist `here <docs/cli.md>`_
 
 Additional information
 ----------------------
