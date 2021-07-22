@@ -7,6 +7,8 @@ import AutoComplete from "../../../../../../../../partials/JSONSchemaPathAutocom
 import { transformSchema } from "../../../../../../../../drafts/DraftEditor";
 import { Box } from "grommet";
 import { AiOutlineClose } from "react-icons/ai";
+import { OPERATIONS } from "./operations";
+import Select from "react-select";
 
 const ConditionsCheckBoxes = ({
   item,
@@ -103,14 +105,20 @@ const ConditionsCheckBoxes = ({
         updateValue={val => updateValueByPath(path, item, "path", val)}
       />
       <Box align="center" justify="center">
-        <Tag
-          text={
-            <EditableField
-              value={item.get("condition")}
-              onUpdate={val => updateValueByPath(path, item, "condition", val)}
-            />
+        <Select
+          menuPortalTarget={document.querySelector("#conditionCheckBoxes")}
+          onChange={val =>
+            updateValueByPath(path, item, "condition", val.value)
           }
-          size="large"
+          options={OPERATIONS}
+          value={{ label: item.get("condition"), value: item.get("condition") }}
+          styles={{
+            menu: () => ({ width: "100px", background: "#fff" }),
+            singleValue: () => ({
+              width: "50px"
+            })
+          }}
+          placeHolder="Select condition"
         />
       </Box>
       <Box align="center" justify="center">

@@ -25,6 +25,7 @@ const NotificationField = ({
         title={`add new ${header} parameter`}
         onChange={val => updateNotification([field, "ctx"], Map(val))}
         field={field}
+        header={header}
       />
       <Box
         style={{ width: "90%", maxWidth: "992px" }}

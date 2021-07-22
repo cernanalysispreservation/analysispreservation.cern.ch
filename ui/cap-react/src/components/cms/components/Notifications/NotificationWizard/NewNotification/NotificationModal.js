@@ -4,22 +4,22 @@ import Modal from "../../../../../partials/Modal";
 import { Box, Heading, Label } from "grommet";
 import Button from "../../../../../partials/Button";
 import Select from "react-select";
-import { METHODS_OPTIONS } from "../utils/acceptedMethods";
 import AddParameterManually from "./utils/AddParameterManually";
+import { getMethodsByType } from "./utils/customMethds";
 
-const NotificationModal = ({ open, onClose, title, onChange, ctx }) => {
+const NotificationModal = ({ open, onClose, title, onChange, ctx, header }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const selectedOptions = ctx
     .map(item => (item.has("method") ? item.get("method") : null))
     .filter(item => item != undefined);
 
-  const allowedMethods = METHODS_OPTIONS.filter(
+  const allowedMethods = getMethodsByType(header).filter(
     item => !selectedOptions.includes(item.value)
   );
 
   return (
     open && (
-      <Modal onClose={onClose} title={title}>
+      <Modal onClose={onClose} title={title} overflowVisible>
         <Box
           style={{
             display: "grid",
@@ -31,20 +31,6 @@ const NotificationModal = ({ open, onClose, title, onChange, ctx }) => {
           }}
           pad="medium"
         >
-          <Box colorIndex="light-2" align="center" pad="small">
-            <Heading margin="none" tag="h4">
-              Add Parameter Manually
-            </Heading>
-            <Label margin="none" size="small">
-              provide the fields below
-            </Label>
-            <AddParameterManually
-              onUpdate={val => {
-                onChange(val);
-                onClose();
-              }}
-            />
-          </Box>
           <Box
             colorIndex="light-2"
             align="center"
@@ -89,6 +75,20 @@ const NotificationModal = ({ open, onClose, title, onChange, ctx }) => {
                 />
               )}
             </Box>
+          </Box>
+          <Box colorIndex="light-2" align="center" pad="small">
+            <Heading margin="none" tag="h4">
+              Add Parameter Manually
+            </Heading>
+            <Label margin="none" size="small">
+              provide the fields below
+            </Label>
+            <AddParameterManually
+              onUpdate={val => {
+                onChange(val);
+                onClose();
+              }}
+            />
           </Box>
         </Box>
       </Modal>
