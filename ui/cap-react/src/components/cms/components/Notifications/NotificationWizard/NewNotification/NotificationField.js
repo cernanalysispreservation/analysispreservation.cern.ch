@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Box, Heading, FormField } from "grommet";
+import { Box, Heading } from "grommet";
 import NotificationModal from "./NotificationModal";
 import Parameter from "./utils/Parameter";
 import { Map } from "immutable";
+import AceEditor from "react-ace";
+import "ace-builds/webpack-resolver";
 
 const NotificationField = ({
   header,
@@ -13,7 +15,6 @@ const NotificationField = ({
   updateNotification = null
 }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [inputValue, setInputValue] = useState(template);
 
   return (
     <React.Fragment>
@@ -32,18 +33,24 @@ const NotificationField = ({
         <Heading tag="h3" strong>
           {header}
         </Heading>
-        <FormField>
-          <textarea
-            name="subject-input"
-            placeHolder="add your subject"
-            value={inputValue}
-            rows="3"
-            onChange={e => {
-              setInputValue(e.target.value);
-              updateNotification([field, "template"], inputValue);
+
+        <Box separator="all">
+          <AceEditor
+            mode="django"
+            theme="github"
+            showPrintMargin={false}
+            showGutter={false}
+            highlightActiveLine={false}
+            width="100%"
+            height="200px"
+            name="UNIQUE_ID_OF_DIV"
+            value={template}
+            onChange={val => {
+              updateNotification([field, "template"], val);
             }}
+            editorProps={{ $blockScrolling: true }}
           />
-        </FormField>
+        </Box>
         <Parameter
           ctx={ctx}
           onClick={() => setOpenModal(true)}

@@ -493,12 +493,12 @@ export function updateChecksInConditions(
       op: "and",
       checks: [
         {
-          path: "first",
+          path: undefined,
           condition: "equals",
           value: "yes"
         },
         {
-          path: "second",
+          path: undefined,
           condition: "exists",
           value: "true"
         }
