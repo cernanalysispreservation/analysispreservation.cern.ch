@@ -5,9 +5,7 @@ const mapStateToProps = state => ({
   schemaConfig: state.schemaWizard.get("schemaConfig")
 });
 
-const mapDispatchToProps = {};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(NotificationWizard);

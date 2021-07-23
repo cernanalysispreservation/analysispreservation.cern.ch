@@ -211,7 +211,6 @@ export function createContentType(content_type) {
 
 export function selectContentType(id) {
   return function(dispatch) {
-    dispatch(getSchema(id));
     dispatch(push(`/admin/${id}/builder`));
   };
 }

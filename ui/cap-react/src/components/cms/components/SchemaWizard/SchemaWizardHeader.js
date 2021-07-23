@@ -129,7 +129,7 @@ class SchemaWizardHeader extends React.Component {
           <Box direction="row" align="center" responsive={false}>
             <Box
               margin={{ right: "small" }}
-              onClick={() => this.props.history.push("/cms")}
+              onClick={() => this.props.history.push("/admin")}
             >
               <AiOutlineArrowLeft size={15} />
             </Box>
@@ -143,13 +143,27 @@ class SchemaWizardHeader extends React.Component {
           <Box direction="row" responsive={false}>
             <Button
               text="Form Builder"
-              primary={this.props.tabText == "Form Builder"}
-              onClick={() => this.props.updateShowContent("Form Builder")}
+              primary={this.props.location.pathname.includes("/builder")}
+              onClick={() => {
+                this.props.location.pathname.includes("/builder")
+                  ? null
+                  : this.props.history.push(
+                      this.props.location.pathname.split("/notifications")[0] +
+                        "/builder"
+                    );
+              }}
             />
             <Button
               text="Notifications"
-              primary={this.props.tabText == "Notifications"}
-              onClick={() => this.props.updateShowContent("Notifications")}
+              primary={this.props.location.pathname.includes("/notifications")}
+              onClick={() => {
+                this.props.location.pathname.includes("/notifications")
+                  ? null
+                  : this.props.history.push(
+                      this.props.location.pathname.split("/builder")[0] +
+                        "/notifications"
+                    );
+              }}
             />
           </Box>
           <Box direction="row" wrap={false} pad={{ between: "small" }}>

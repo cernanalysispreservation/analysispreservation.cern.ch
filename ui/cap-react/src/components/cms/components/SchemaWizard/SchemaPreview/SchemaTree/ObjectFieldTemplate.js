@@ -17,57 +17,91 @@ const ObjectFieldTemplate = function(props) {
       // if there is difference between the two arrays means that something changed
       // an item might be deleted, and we want to re fetch everything from properties and update the cards
       if (propsLength < cardsLength) {
-        let temp = [];
-        props.properties.map((prop, index) => {
-          let item = {
+        let temp = props.properties.map((prop, index) => {
+          return {
             id: index + 1,
             name: prop.name,
             prop: prop
           };
-
-          temp.push(item);
         });
         setCards(temp);
       }
-
-      // if there is no change with the number of the items it means that either there is a re ordering
-      // or some update at each props data
+    },
+    [props.properties]
+  );
+  // this effect will be enabled when there is no delete or add of items
+  // and there is an update on the keys props
+  useEffect(
+    () => {
+      let propsLength = props.properties.length;
+      let cardsLength = cards.length;
       if (propsLength === cardsLength) {
-        let diffIndex;
-        let uiCards = cards.map(item => item.name);
-        let uiProperties = props.properties.map(item => item.name);
-        let different = false;
-        let differentItem;
-        uiProperties.map(item => {
-          if (!uiCards.includes(item)) {
-            different = true;
-            differentItem = item;
-          }
+        let isAllKeysSame = cards.every((card, index) => {
+          return card.name == props.properties[index].name;
         });
-
-        // the different variable will define if there was a change in the prop keys or there is just a re ordering
-        // if the value is true it means that there is change at the prop key, if not just re order the cards
-        if (different) {
-          uiCards.map((item, index) => {
-            if (!uiProperties.includes(item)) diffIndex = index;
+        if (!isAllKeysSame) {
+          let temp = props.properties.map((prop, index) => {
+            return {
+              id: index + 1,
+              name: prop.name,
+              prop: prop
+            };
           });
-
-          let propss;
-          props.properties.map(item => {
-            if (item.name === differentItem) propss = item;
+          setCards(temp);
+        }
+      }
+    },
+    [props.properties]
+  );
+  // this effect will be enabled when there is no delete or add of items
+  // and there is an update on the schema props
+  useEffect(
+    () => {
+      let propsLength = props.properties.length;
+      let cardsLength = cards.length;
+      if (propsLength == cardsLength) {
+        let isPropsSame = cards.every((card, index) => {
+          return (
+            JSON.stringify(card.prop.content.props.schema) ===
+            JSON.stringify(props.properties[index].content.props.schema)
+          );
+        });
+        if (!isPropsSame) {
+          let temp = props.properties.map((prop, index) => {
+            return {
+              id: index + 1,
+              name: prop.name,
+              prop: prop
+            };
           });
-
-          let item = {
-            id: diffIndex + 1,
-            name: differentItem,
-            prop: propss
-          };
-          cards[diffIndex] = item;
-          setCards(cards);
-        } else {
-          cards.map((card, index) => {
-            card.prop = props.properties[index];
+          setCards(temp);
+        }
+      }
+    },
+    [props.properties]
+  );
+  // this effect will be enabled when there is no delete or add of items
+  // and there is an update on the uiSchema props
+  useEffect(
+    () => {
+      let propsLength = props.properties.length;
+      let cardsLength = cards.length;
+      if (propsLength === cardsLength) {
+        let isUiPropsSame = cards.every((card, index) => {
+          return (
+            JSON.stringify(card.prop.content.props.uiSchema) ===
+            JSON.stringify(props.properties[index].content.props.uiSchema)
+          );
+        });
+        if (!isUiPropsSame) {
+          let temp = props.properties.map((prop, index) => {
+            return {
+              id: index + 1,
+              name: prop.name,
+              prop: prop
+            };
           });
+          setCards(temp);
         }
       }
     },
@@ -93,7 +127,7 @@ const ObjectFieldTemplate = function(props) {
         }
       );
     },
-    [props.properties, cards]
+    [cards]
   );
 
   // create a new array to keep track of the changes in the order

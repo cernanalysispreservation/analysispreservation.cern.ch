@@ -9,7 +9,7 @@ import Button from "../../../../partials/Button";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 const NotificationWizard = props => {
-  const { category } = props.match.params;
+  const { category = "review" } = props.match.params;
 
   // if the category is not defined or it is not acceptable value
   if (!category || !acceptedActions.includes(category))
@@ -45,6 +45,7 @@ const NotificationWizard = props => {
 NotificationWizard.propTypes = {
   history: PropTypes.object,
   match: PropTypes.object,
+  location: PropTypes.object,
   schemaConfig: PropTypes.object
 };
 
