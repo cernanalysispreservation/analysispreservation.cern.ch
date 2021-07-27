@@ -787,6 +787,9 @@
                         "copy_to": "trigger"
                       }
                     }
+                  },
+                  "prescale": {
+                    "type": "half_float"
                   }
                 }
               },
@@ -836,10 +839,12 @@
                 "analyzer": "lowercase_whitespace_analyzer"
               },
               "created": {
-                "type": "text"
+                "type": "date",
+                "format": "dd/MM/YYYY||dd-MM-YYYY||YYYY-MM-dd"
               },
               "updated": {
-                "type": "text"
+                "type": "date",
+                "format": "dd/MM/YYYY||dd-MM-YYYY||YYYY-MM-dd"
               }
             }
           },

@@ -1992,6 +1992,35 @@
               }
             }
           },
+          "ml_app_use": {
+            "properties": {
+              "development": {
+                "properties": {
+                  "dev": {
+                    "properties": {
+                      "cross_validation": {
+                        "properties": {
+                          "comments_no": {
+                            "properties": {
+                              "training": {
+                                "type": "string"
+                              },
+                              "testing": {
+                                "type": "string"
+                              },
+                              "validation": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "_deposit":{
             "type":"object",
             "properties":{
