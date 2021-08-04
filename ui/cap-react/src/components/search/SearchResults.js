@@ -85,6 +85,7 @@ class SearchResults extends React.Component {
                         style={{ textDecoration: "none", color: "#666" }}
                         reverse
                         pad="none"
+                        dataCy={getTitle()}
                       >
                         <Label
                           margin="none"
