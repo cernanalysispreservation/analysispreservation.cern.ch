@@ -262,6 +262,7 @@ class SearchPage extends React.Component {
               >
                 <Box align="center">
                   <SortSelect
+                    dataCy="search-page-sorting"
                     onChange={val => this._updateSortOption(val)}
                     locationSort={
                       queryString.parse(this.props.location.search).sort

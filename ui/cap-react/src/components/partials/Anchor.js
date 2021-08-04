@@ -19,10 +19,17 @@ const Anchors = ({
   style = null,
   children = null,
   target = "",
-  reverse = false
+  reverse = false,
+  dataCy = ""
 }) => {
   return (
-    <Box pad={pad} align={align} justify={justify} margin={margin}>
+    <Box
+      pad={pad}
+      align={align}
+      justify={justify}
+      margin={margin}
+      data-cy={dataCy}
+    >
       <Anchor
         style={style}
         icon={icon}
@@ -58,6 +65,7 @@ Anchors.propTypes = {
   style: PropTypes.object,
   children: PropTypes.node,
   target: PropTypes.string,
+  dataCy: PropTypes.string,
   reverse: PropTypes.bool
 };
 

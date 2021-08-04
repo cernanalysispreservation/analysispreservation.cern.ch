@@ -20,13 +20,14 @@ const getValueFromLocation = (value = "mostrecent") => {
   return choices[value];
 };
 
-const SortSelect = ({ locationSort, onChange }) => {
+const SortSelect = ({ locationSort, onChange, dataCy = "" }) => {
   return (
     <Box style={{ position: "relative" }}>
       <Menu
         top={35}
         left={1}
         right={null}
+        dataCy={dataCy}
         shadow
         icon={<AiOutlineDown />}
         buttonProps={{
@@ -37,6 +38,7 @@ const SortSelect = ({ locationSort, onChange }) => {
       >
         {SORT_OPTIONS.map(item => (
           <MenuItem
+            dataCy={`${dataCy}-${item.value}`}
             hovered
             key={item.value}
             title={item.label}
@@ -51,7 +53,8 @@ const SortSelect = ({ locationSort, onChange }) => {
 
 SortSelect.propTypes = {
   onChange: PropTypes.func,
-  locationSort: PropTypes.object
+  locationSort: PropTypes.object,
+  dataCy: PropTypes.string
 };
 
 export default SortSelect;
