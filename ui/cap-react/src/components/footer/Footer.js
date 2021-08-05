@@ -33,22 +33,7 @@ class GrommetFooter extends React.Component {
             <Box margin={{ horizontal: "small" }}>
               <Anchor label="Policy" path="/policy" />
             </Box>
-            {/* <Box margin={{ horizontal: "small" }}>
-              <Anchor label="Status" path="/status" />
-            </Box> */}
-            <Box margin={{ horizontal: "small" }}>
-              <Anchor
-                label="Contact"
-                href="mailto:analysis-preservation-support@cern.ch"
-              />
-            </Box>
-            <Box margin={{ horizontal: "small" }}>
-              <Anchor
-                target="_blank"
-                label="Documentation"
-                href="/docs/general/"
-              />
-            </Box>
+
             <div style={styles.version}>ver. {capPackageJSON.version}</div>
           </Box>
         </Box>
