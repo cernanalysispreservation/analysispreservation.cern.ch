@@ -7,9 +7,9 @@ import { Switch, Route } from "react-router-dom";
 import Box from "grommet/components/Box";
 
 import SearchPage from "../search/SearchPage";
+import CollectionPage from "../collection";
 
 import Header from "../partials/Header";
-
 import Dashboard from "../dashboard/Dashboard";
 
 import DraftsItemIndex from "../drafts/DraftsItemIndex";
@@ -27,7 +27,8 @@ import {
   SETTINGS,
   CREATE_INDEX,
   SEARCH,
-  DRAFT_ITEM
+  DRAFT_ITEM,
+  COLLECTION
 } from "../routes";
 
 class IndexPage extends React.Component {
@@ -48,6 +49,7 @@ class IndexPage extends React.Component {
             <Route path={PUBLISHED} component={PublishedIndex} />
             <Route path={SETTINGS} component={SettingsIndex} />
             <Route path={CREATE_INDEX} component={CreateIndex} />
+            <Route path={COLLECTION} component={CollectionPage} />
             <Route component={ErrorPage} />
           </Switch>
         </Box>

@@ -138,8 +138,24 @@ class UpdateSchemaSerializer(ConfigResolvedSchemaSerializer):
         return data
 
 
+class CollectionSerializer(Schema):
+    """Serializer for the collection endpoint"""
+
+    name = fields.Str(required=True)
+    version = fields.Str(required=True,
+                         validate=validate.Regexp(regex=r"(\d+).(\d+).(\d+)"))
+    fullname = fields.Str()
+    config = fields.Dict()
+    versions = fields.Method("get_schema_versions", dump_only=True)
+
+    def get_schema_versions(self, obj):
+        versions = obj.get_versions()
+        return versions
+
+
 schema_serializer = SchemaSerializer()
 update_schema_serializer = UpdateSchemaSerializer()
 resolved_schemas_serializer = ResolvedSchemaSerializer()
 config_resolved_schemas_serializer = ConfigResolvedSchemaSerializer()
 create_config_payload = CreateConfigPayload()
+collection_serializer = CollectionSerializer()

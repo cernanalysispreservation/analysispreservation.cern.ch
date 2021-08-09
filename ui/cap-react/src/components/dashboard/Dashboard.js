@@ -76,15 +76,17 @@ class Dashboard extends React.Component {
             flex
             basis="1/2"
             pad={{ horizontal: "medium" }}
-            align="center"
             justify="center"
+            align="center"
             className="sm-order-2"
           >
-            <DashboardMeter
-              total={this.props.results.user_count}
-              drafts={this.props.results.user_drafts_count}
-              published={this.props.results.user_published_count}
-            />
+            <Box direction="row" responsive={false} justify="between">
+              <DashboardMeter
+                total={this.props.results.user_count}
+                drafts={this.props.results.user_drafts_count}
+                published={this.props.results.user_published_count}
+              />
+            </Box>
             <DashboardQuickSearch />
           </Box>
           <Box
@@ -138,7 +140,8 @@ Dashboard.propTypes = {
 function mapStateToProps(state) {
   return {
     loading: state.dashboard.get("loading"),
-    results: state.dashboard.getIn(["results"])
+    results: state.dashboard.getIn(["results"]),
+    depositGroups: state.auth.getIn(["currentUser", "depositGroups"])
   };
 }
 

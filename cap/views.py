@@ -17,11 +17,16 @@ from __future__ import absolute_import, print_function
 import json
 from os.path import join
 
+from sqlalchemy import schema
+
 from elasticsearch import ConnectionError
-from flask import Blueprint, jsonify
+from elasticsearch.exceptions import NotFoundError
+from flask import Blueprint, jsonify, abort
 from invenio_files_rest.models import Location
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
 from sqlalchemy.exc import OperationalError
+from jsonref import JsonRefError
 
 from cap.modules.access.utils import login_required
 from cap.modules.deposit.fetchers import cap_deposit_fetcher
@@ -31,6 +36,9 @@ from cap.modules.records.fetchers import cap_record_fetcher
 from cap.modules.records.search import CAPRecordSearch
 from cap.modules.records.serializers import record_json_v1
 from cap.modules.workflows.utils import get_user_workflows
+from cap.modules.schemas.models import Schema
+from cap.modules.schemas.serializers import collection_serializer
+from cap.modules.schemas.permissions import ReadSchemaPermission
 
 blueprint = Blueprint(
     'cap',
@@ -87,29 +95,6 @@ def dashboard():
     user_drafts = _serialize_deposits(ds.get_user_deposits()[:5].execute())
     user_drafts_count = ds.get_user_deposits().count()
     user_workflows = get_user_workflows()
-    #
-    #    user_workflows = [
-    #        dict(name='demo-workflow#2',
-    #             engine='serial',
-    #             service='reana',
-    #             status='running',
-    #             record='Search for VH in the (l l, l nu, nu nu)'),
-    #        dict(name='workflow#3',
-    #             engine='yadage',
-    #             service='reana',
-    #             status='finished',
-    #             record='Open Data validation Mu MuMonitor 2010'),
-    #        dict(name='demo-workflow#1',
-    #             engine='serial',
-    #             service='reana',
-    #             status='finished',
-    #             record='Search for VH in the (l l, l nu, nu nu)'),
-    #        dict(name='workflow#2',
-    #             engine='yadage',
-    #             service='reana',
-    #             status='finished',
-    #             record='Open Data validation Mu MuMonitor 2010')
-    #    ]
 
     return jsonify({
         'published': {
@@ -130,4 +115,94 @@ def dashboard():
         'user_drafts_count': user_drafts_count,
         'user_published_count': user_published_count,
         'user_count': user_drafts_count + user_published_count
+    })
+
+
+@blueprint.route('/collection/<string:collection_name>')
+@blueprint.route('/collection/<string:collection_name>/<string:version>')
+@login_required
+def collection(collection_name, version=None):
+    """Collection view."""
+    def _serialize_records(records):
+        return json.loads(
+            record_json_v1.serialize_search(
+                cap_record_fetcher,
+                records.to_dict()))['hits']['hits']    # noqa
+
+    def _serialize_deposits(deposits):
+        return json.loads(
+            deposit_json_v1.serialize_search(
+                cap_deposit_fetcher,
+                deposits.to_dict()))['hits']['hits']    # noqa
+
+    if not collection_name:
+        return abort(404)
+
+    try:
+        # if the version is not provided, fetch the latest
+        if version:
+            collection_schema = Schema.get(collection_name, version)
+        else:
+            collection_schema = Schema.get_latest(collection_name)
+
+    except JSONSchemaNotFound:
+        abort(404)
+
+    if not ReadSchemaPermission(collection_schema).can():
+        abort(403)
+
+    try:
+        schema_data = collection_serializer.dump(
+            collection_schema).data
+    except JsonRefError:
+        abort(404)
+
+    rs = CAPRecordSearch().extra(version=True).sort_by_latest()
+    ds = CAPDepositSearch().extra(version=True).sort_by_latest()
+
+    try:
+        published = _serialize_records(
+            rs.get_collection_records(collection_schema.name,
+                                      collection_version=version
+                                      )[:5].execute()
+        )
+        drafts = _serialize_deposits(
+            ds.get_collection_deposits(collection_schema.name,
+                                       collection_version=version
+                                       )[:5].execute()
+        )
+        user_drafts = _serialize_deposits(ds.get_collection_deposits(
+            collection_schema.name, by_me=True, collection_version=version
+        )[:5].execute())
+
+        user_published = _serialize_records(rs.get_collection_records(
+            collection_schema.name, by_me=True, collection_version=version
+        )[:5].execute())
+
+    except NotFoundError as e:
+        published = []
+        drafts = []
+        user_published = []
+        user_drafts = []
+
+    collection_args = f'collection={collection_name}'
+    if version:
+        collection_args += f'&collection_version={version}'
+
+    return jsonify({
+        'published': {
+            'data': published, 'more': f'/search?{collection_args}&q='
+        },
+        'drafts': {
+            'data': drafts, 'more': f'/drafts?{collection_args}&q='
+        },
+        'user_published': {
+            'data': user_published,
+            'more': f'/search?{collection_args}&q=&by_me=True'
+        },
+        'user_drafts': {
+            'data': user_drafts,
+            'more': f'/drafts?{collection_args}&q=&by_me=True'
+        },
+        'schema_data': schema_data
     })

@@ -242,6 +242,16 @@ class Schema(db.Model):
         else:
             raise JSONSchemaNotFound(schema=name)
 
+    def get_versions(self):
+        """Get the latest version of schema with given name"""
+        schemas = self.query \
+            .filter_by(name=self.name) \
+            .all()
+        if schemas:
+            return [s.version for s in schemas]
+        else:
+            raise JSONSchemaNotFound(schema=self.name)
+
     @classmethod
     def get(cls, name, version):
         """Get schema by name and version."""

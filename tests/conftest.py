@@ -413,8 +413,8 @@ def create_deposit(app, db, es, location, create_schema):
             schema = create_schema(schema_name,
                                    experiment=experiment,
                                    deposit_schema=deposit_schema,
-                                   version=version,
-                                   deposit_mapping=default_mapping)
+                                   deposit_mapping=default_mapping,
+                                   version=version)
             deposit_schema_url = current_jsonschemas.path_to_url(
                 schema.deposit_path)
 

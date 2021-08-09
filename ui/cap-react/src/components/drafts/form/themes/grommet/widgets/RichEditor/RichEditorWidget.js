@@ -29,8 +29,13 @@ const RichEditorWidget = props => {
       <MdEditor
         style={{ height: "500px" }}
         config={{
-          canView: { fullScreen: false, md: false, html: false },
-          view: { html: false, md: true }
+          canView: {
+            fullScreen: false,
+            md: false,
+            html: false,
+            ...props.canViewProps
+          },
+          view: { html: false, md: true, ...props.viewProps }
         }}
         readOnly={props.readonly}
         renderHTML={text => mdParser.render(text)}
@@ -46,7 +51,9 @@ RichEditorWidget.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
   readonly: PropTypes.bool,
-  displayedFromModal: PropTypes.bool
+  displayedFromModal: PropTypes.bool,
+  canViewProps: PropTypes.object,
+  viewProps: PropTypes.object
 };
 
 export default RichEditorWidget;

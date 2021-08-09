@@ -23,9 +23,11 @@ import Button from "../../partials/Button";
 import {
   AiOutlinePlus,
   AiOutlineReload,
-  AiOutlineSelect
+  AiOutlineSelect,
+  AiOutlineLink
 } from "react-icons/ai";
-import { DRAFT_ITEM } from "../../routes";
+
+import { DRAFT_ITEM, COLLECTION_BASE } from "../../routes";
 import DepositSidebarLoading from "./DepositSidebarLoading";
 import Anchor from "../../partials/Anchor";
 import { canEdit } from "../utils/permissions";
@@ -140,12 +142,24 @@ class DepositSidebar extends React.Component {
                 align="center"
               >
                 <span>Collection</span>
-                <Tag
-                  text={`${this.props.schema.fullname} v${
-                    this.props.schema.version
-                  }`}
-                  size="small"
-                />
+                <Anchor path={`${COLLECTION_BASE}/${this.props.schema.name}`}>
+                  <Tag
+                    size="large"
+                    color={{
+                      bgcolor: "rgba(0,24,72,0.1)",
+                      border: "rgba(0,24,72,0.1)",
+                      color: "rgba(0,24,72,0.7)"
+                    }}
+                    text={
+                      <span>
+                        <span style={{ margin: "0 5px 0 0 " }}>{`${
+                          this.props.schema.fullname
+                        } v${this.props.schema.version}`}</span>
+                        <AiOutlineLink />
+                      </span>
+                    }
+                  />
+                </Anchor>
               </Box>
             )}
             <Box

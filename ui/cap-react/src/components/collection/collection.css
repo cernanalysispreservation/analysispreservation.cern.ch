@@ -1,0 +1,33 @@
+.collection-grid-small-column {
+  grid-column: 1 / 6;
+}
+.collection-grid-large-column {
+  grid-column: 1/ 6;
+}
+.horizontal-line {
+  display:none !important;
+}
+@media only screen and (min-width: 800px) {
+  .horizontal-line {
+    display:block !important;
+  }
+  .collection-grid-small-column {
+    grid-column: 4 / 6;
+  }
+  .collection-grid-large-column {
+    grid-column: 1/ 4;
+  }
+}
+
+/* remove the edit button from the editor */
+.collection-rich-editor .editor-container > .tool-bar{
+  display: none;
+}
+.collection-rich-editor
+.richeditor-theme-grommet
+  .rc-md-editor
+  .editor-container
+  > .section
+  > .section-container {
+    border:0
+  }

@@ -1,9 +1,36 @@
 import axios from "axios";
+import cogoToast from "cogo-toast";
+import { COLLECTION_BASE } from "../components/routes";
 
 export const FETCH_SCHEMA_REQUEST = "FETCH_SCHEMA_REQUEST";
 export const FETCH_SCHEMA_SUCCESS = "FETCH_SCHEMA_SUCCESS";
 export const FETCH_SCHEMA_ERROR = "FETCH_SCHEMA_ERROR";
 export const FORM_ERRORS = "FORM_ERRORS";
+
+export const FETCH_RECORDS_RESULTS_REQUEST = "FETCH_RECORDS_RESULTS_REQUEST";
+export const FETCH_RECORDS_RESULTS_SUCCESS = "FETCH_RECORDS_RESULTS_SUCCESS";
+export const FETCH_RECORDS_RESULTS_ERROR = "FETCH_RECORDS_RESULTS_ERROR";
+
+export const fetchRecordsResultsRequest = () => {
+  return {
+    type: FETCH_RECORDS_RESULTS_REQUEST
+  };
+};
+
+export const fetchRecordsResultsSuccess = (schema_data, rest) => {
+  return {
+    type: FETCH_RECORDS_RESULTS_SUCCESS,
+    schema_data,
+    rest
+  };
+};
+
+export const fetchRecordsResultsError = error => {
+  return {
+    type: FETCH_RECORDS_RESULTS_ERROR,
+    payload: error
+  };
+};
 
 export const formErrorsChange = errors => ({
   type: FORM_ERRORS,
@@ -140,6 +167,42 @@ export function fetchSchemaByNameVersion(name = null) {
             status: error.response.status,
             statusText: error.response.statusText
           })
+        );
+      });
+  };
+}
+
+// fetch deposit/records results
+// this function is the same with the fetchDashboard
+
+export function fetchRecordsResults(name, version = null) {
+  return dispatch => {
+    dispatch(fetchRecordsResultsRequest());
+
+    let url = version
+      ? `/api${COLLECTION_BASE}/${name}/${version}`
+      : `/api${COLLECTION_BASE}/${name}`;
+
+    axios
+      .get(url)
+      .then(response => {
+        const { schema_data, ...rest } = response.data;
+        dispatch(fetchRecordsResultsSuccess(schema_data, rest));
+      })
+      .catch(() => {
+        // should make sure that the returned error is properly handled
+        // TODO: the response from the backend is an html string
+        cogoToast.error(
+          "Collection name or version are not typed properly, or, you have no permissions for this collection page",
+          {
+            position: "top-center",
+            bar: { size: "0" },
+            heading: "Fetching Records Failed",
+            hideAfter: 5
+          }
+        );
+        dispatch(
+          fetchRecordsResultsError("Fetching Records Failed. Please try again")
         );
       });
   };

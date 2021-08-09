@@ -52,6 +52,19 @@ class CAPRecordSearch(RecordsSearch):
             Q('multi_match', query=current_user.id, fields=['_deposit.owners'])
         )
 
+    def get_collection_records(self, collection_name,
+                               collection_version=None, by_me=False):
+        """Get records by collection name and version"""
+        q = Q('term', **{'_collection.name': collection_name})
+
+        if by_me:
+            q = q & Q('multi_match', query=current_user.id,
+                      fields=['_deposit.owners'])
+        if collection_version:
+            q = q & Q('term', **{'_collection.version': collection_version})
+
+        return self.filter(q)
+
     def sort_by_latest(self):
         """Sort by latest (updated)."""
         return self.sort(
