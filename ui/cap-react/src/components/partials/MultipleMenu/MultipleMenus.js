@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import MenuItem from "../MenuItem";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -6,52 +6,15 @@ import { Box } from "grommet";
 import "./MultipleMenus.css";
 
 const MultipleMenus = ({ children, displayMenu, menus, onClick }) => {
-  const [shouldAnimationActive, setShouldAnimationActive] = useState(false);
-
-  useEffect(
-    () => {
-      if (displayMenu && !shouldAnimationActive) setShouldAnimationActive(true);
-    },
-    [displayMenu]
-  );
-
   return (
-    <div
-      style={{
-        position: "relative",
-        overflowX: "hidden",
-        height: "100%",
-        minHeight: "300px"
-      }}
-    >
-      <div
-        className={
-          shouldAnimationActive
-            ? displayMenu
-              ? "main-menu main-menu-out"
-              : "main-menu main-menu-in"
-            : "main-menu"
-        }
-      >
-        {children}
-      </div>
-      <div
-        className={
-          shouldAnimationActive
-            ? displayMenu
-              ? "embeded-menu embeded-menu-in"
-              : "embeded-menu embeded-menu-out"
-            : "embeded-menu"
-        }
-      >
+    <div>
+      <div className={displayMenu ? "hide" : "show"}>{children}</div>
+      <div className={displayMenu ? "show" : "hide"}>
         <MenuItem
           headerTitle
           separator
           title={displayMenu}
-          onClick={() => {
-            setShouldAnimationActive(true);
-            onClick();
-          }}
+          onClick={() => onClick()}
           href="#"
           icon={
             <Box
