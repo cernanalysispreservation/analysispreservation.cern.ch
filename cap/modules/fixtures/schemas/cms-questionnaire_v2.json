@@ -729,7 +729,7 @@
               "Yes",
               "No"
             ],
-            "title": "5.4. Are you aware that the Statistics Committee provides support and a simple recipe to include the derivation of Feldman-Cousins confidence intervals in RooStats jobs that are currently used to compute CLs limits?"
+            "title": "5.4. Are you aware that the Higgs Combine tool provides a simple recipe to include the derivation of Feldman-Cousins confidence intervals?"
           },
           "aware_bayesian": {
             "type": "string",
@@ -1438,10 +1438,14 @@
             "enum": ["Yes", "No"],
             "title": "8.2. Have you considered that systematic uncertainties constrained by sideband measurements in the data, and whose estimate thus depends on the size of the analyzed dataset, should be treated as statistical uncertainties?"
           },
+          "artificial_constraints": {
+            "type": "string",
+            "title": "8.3. If you observe unexpectedly strong constraints on the parameters of shape-altering uncertainties, have you investigated whether these could be artificial, due to statistical fluctuations in the systematic templates?"
+          },
           "systematic_effect": {
             "type": "string",
             "enum": ["Yes", "No"],
-            "title": "8.3. If including a systematic effect as nuisance parameter in the model, are you aware that the SC recommends the use of Gamma or Log-Normal priors instead of truncated Gaussians?"
+            "title": "8.4. If including a systematic effect as nuisance parameter in the model, are you aware that the SC recommends the use of Gamma or Log-Normal priors instead of truncated Gaussians?"
           },
           "cross_check": {
             "type": "object",
@@ -1463,18 +1467,18 @@
                   "Yes",
                   "No"
                 ],
-                "title": "8.4.1. Are you deriving a systematic uncertainty on your main measurement from the level of agreement you observe in the cross-check?"
+                "title": "8.5.1. Are you deriving a systematic uncertainty on your main measurement from the level of agreement you observe in the cross-check?"
               },
               "failure": {
                 "type": "string",
-                "title": "8.4.2. What would you have done if the cross-check failed (e.g. p-value below 0.01, or other pre-defined criterion)?"
+                "title": "8.5.2. What would you have done if the cross-check failed (e.g. p-value below 0.01, or other pre-defined criterion)?"
               },
               "comments": {
                 "type": "string",
                 "title": "Additional comments"
               }
             },
-            "title": "8.4. Does your analysis include \"cross-checks\" of your method, e.g. the verification of a technique on a subsidiary set of data?"
+            "title": "8.5. Does your analysis include \"cross-checks\" of your method, e.g. the verification of a technique on a subsidiary set of data?"
           },
           "template_morphing": {
             "type": "object",
@@ -1512,7 +1516,7 @@
                 ]
               }
             },
-            "title": "8.5. Do you use \"template morphing\" in you analysis, e.g. to model a systematic uncertainty in the statistical model?"
+            "title": "8.6. Do you use \"template morphing\" in you analysis, e.g. to model a systematic uncertainty in the statistical model?"
           }
         },
         "title": "8. Systematic Uncertainties"
@@ -2574,6 +2578,7 @@
       "ui:order": [
         "twiki",
         "statistic_uncertainties",
+        "artificial_constraints",
         "systematic_effect",
         "cross_check",
         "template_morphing"
@@ -2583,6 +2588,9 @@
       },
       "statistic_uncertainties": {
         "ui:widget": "radio"
+      },
+      "artificial_constraints": {
+        "ui:widget": "textarea"
       },
       "systematic_effect": {
         "ui:widget": "radio"
