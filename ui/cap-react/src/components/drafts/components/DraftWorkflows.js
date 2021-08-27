@@ -39,7 +39,6 @@ DraftWorkflows.propTypes = {
   loading: PropTypes.bool,
   draft_id: PropTypes.string,
   draft: PropTypes.object,
-  getUsers: PropTypes.func,
   permissions: PropTypes.array
 };
 

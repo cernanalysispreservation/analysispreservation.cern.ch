@@ -176,7 +176,6 @@ DepositSettings.propTypes = {
   loading: PropTypes.bool,
   draft_id: PropTypes.string,
   draft: PropTypes.object,
-  getUsers: PropTypes.func,
   permissions: PropTypes.array,
   publishDraft: PropTypes.func,
   status: PropTypes.string,
