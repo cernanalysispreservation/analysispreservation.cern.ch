@@ -31,7 +31,7 @@ export default function publishedReducer(state = initialState, action) {
     case INIT_STATE:
       return initialState;
     case FETCH_SCHEMA_REQUEST:
-      return state.set("loading", true).set("error", false);
+      return state.set("loading", true).set("error", null);
     case FETCH_SCHEMA_SUCCESS:
       return state
         .set("loading", false)
@@ -40,7 +40,7 @@ export default function publishedReducer(state = initialState, action) {
     case FETCH_SCHEMA_ERROR:
       return state.set("loading", false).set("error", action.error);
     case PUBLISHED_ITEM_REQUEST:
-      return state.set("loading", true).set("error", false);
+      return state.set("loading", true).set("error", null);
     case PUBLISHED_ITEM_SUCCESS:
       return state
         .set("loading", false)
