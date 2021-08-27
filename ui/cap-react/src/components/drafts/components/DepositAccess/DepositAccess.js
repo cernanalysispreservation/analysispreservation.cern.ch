@@ -181,7 +181,6 @@ DepositAccess.propTypes = {
   loading: PropTypes.bool,
   draft_id: PropTypes.string,
   draft: PropTypes.object,
-  getUsers: PropTypes.func,
   permissions: PropTypes.object,
   handlePermissions: PropTypes.func,
   canAdmin: PropTypes.bool
