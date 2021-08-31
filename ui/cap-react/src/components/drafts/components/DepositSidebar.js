@@ -28,6 +28,7 @@ import {
 import { DRAFT_ITEM } from "../../routes";
 import DepositSidebarLoading from "./DepositSidebarLoading";
 import Anchor from "../../partials/Anchor";
+import { canEdit } from "../utils/permissions";
 
 class DepositSidebar extends React.Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class DepositSidebar extends React.Component {
 
   _renderAddFileIcon() {
     if (this.props.status !== "published") {
-      if (this.props.canUpdate) {
+      if (canEdit(this.props.canAdmin, this.props.canUpdate)) {
         return (
           <Route
             path={DRAFT_ITEM}
@@ -57,7 +58,7 @@ class DepositSidebar extends React.Component {
 
   _renderRefreshFilesButton() {
     if (this.props.status !== "published") {
-      if (this.props.canUpdate) {
+      if (canEdit(this.props.canAdmin, this.props.canUpdate)) {
         return (
           <Route
             path={DRAFT_ITEM}
@@ -289,6 +290,7 @@ function mapStateToProps(state) {
     created: state.draftItem.get("created"),
     updated: state.draftItem.get("updated"),
     canUpdate: state.draftItem.get("can_update"),
+    canAdmin: state.draftItem.get("can_admin"),
     links: state.draftItem.get("links"),
     loading: state.draftItem.get("loading")
   };

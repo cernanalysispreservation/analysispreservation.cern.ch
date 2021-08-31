@@ -13,9 +13,11 @@ import {
 } from "react-icons/ai";
 
 import { updateGeneralTitle } from "../../../actions/draftItem";
-
+import ReactTooltip from "react-tooltip";
 import EditableField from "../../partials/EditableField";
 import Loading from "../../partials/LoadingSkeleton";
+import { canEdit } from "../utils/permissions";
+import Tag from "../../partials/Tag";
 
 class DraftDefaultHeader extends React.Component {
   render() {
@@ -54,18 +56,51 @@ class DraftDefaultHeader extends React.Component {
             {this.props.loading ? (
               <Loading height={20} width={10} />
             ) : (
-              <EditableField
-                value={this.props.metadata.general_title}
-                emptyValue={"Untitled document"}
-                onUpdate={val => {
-                  if (val.trim() === "") return;
-                  this.props.updateGeneralTitle(val);
-                }}
-                isEditable={this.props.canUpdate}
-                dataCy="general-title-input"
-              />
+              <Box direction="row">
+                <EditableField
+                  value={this.props.metadata.general_title}
+                  emptyValue={"Untitled document"}
+                  onUpdate={val => {
+                    if (val.trim() === "") return;
+                    this.props.updateGeneralTitle(val);
+                  }}
+                  isEditable={canEdit(
+                    this.props.canAdmin,
+                    this.props.canUpdate
+                  )}
+                  dataCy="general-title-input"
+                />
+              </Box>
             )}
           </Box>
+          {!canEdit(this.props.canAdmin, this.props.canUpdate) && (
+            <Box
+              data-tip="You do not have permissions to edit this draft"
+              align="center"
+              justify="center"
+            >
+              <Tag
+                size="large"
+                color={{
+                  bgcolor: "rgb(254, 247, 225)",
+                  border: "rgb(254, 247, 225)",
+                  color: "rgb(232,134,34)"
+                }}
+                margin="0 10px  "
+                text={
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      letterSpacing: "1px"
+                    }}
+                  >
+                    READ ONLY
+                  </span>
+                }
+              />
+              <ReactTooltip />
+            </Box>
+          )}
           <Box align="center" justify="center" pad={{ horizontal: "small" }}>
             {this.props.expanded ? (
               <Box
@@ -124,6 +159,7 @@ function mapStateToProps(state) {
     draft_id: state.draftItem.get("id"),
     status: state.draftItem.get("status"),
     canUpdate: state.draftItem.get("can_update"),
+    canAdmin: state.draftItem.get("can_admin"),
     draft: state.draftItem.get("metadata"),
     errors: state.draftItem.get("errors"),
     schema: state.draftItem.get("schema"),

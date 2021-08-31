@@ -30,7 +30,7 @@ let store = mockStore({
     // From backend: deposit resource
     access: null,
     can_admin: false,
-    can_update: false,
+    can_update: true,
     created: null,
     loading: false,
     created_by: null,
