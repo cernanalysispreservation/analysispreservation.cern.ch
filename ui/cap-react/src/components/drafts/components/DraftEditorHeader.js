@@ -16,7 +16,6 @@ import { withRouter } from "react-router";
 import { formErrorsChange } from "../../../actions/common";
 import Button from "../../partials/Button";
 import { AiOutlineSave } from "react-icons/ai";
-
 class DraftEditorHeader extends React.Component {
   // checks if the value is empty undefined or null
   isEmptyValues = value => {
@@ -120,15 +119,12 @@ class DraftEditorHeader extends React.Component {
     // if the form is empty display warning and return false
     // if not save it
     if (this._checkIfEmpty(formDataWithoutGeneralTitle)) {
-      cogoToast.warn(
-        "Please add some content first, and try saving again",
-        {
-          position: "top-center",
-          heading: "Form is empty",
-          bar: { size: "0" },
-          hideAfter: 3
-        }
-      );
+      cogoToast.warn("Please add some content first, and try saving again", {
+        position: "top-center",
+        heading: "Form is empty",
+        bar: { size: "0" },
+        hideAfter: 3
+      });
       return { errorFlag: true, errorSchema: [] };
     } else {
       return { errorFlag: false, errorSchema: [] };
@@ -242,19 +238,14 @@ DraftEditorHeader.propTypes = {
   draft: PropTypes.object,
   id: PropTypes.string,
   formRef: PropTypes.object,
-  message: PropTypes.string,
   loading: PropTypes.bool,
   schemaErrors: PropTypes.array,
-  discardDraft: PropTypes.func,
   updateDraft: PropTypes.func,
   editPublished: PropTypes.func,
-  publishDraft: PropTypes.func,
   formData: PropTypes.object,
-  deleteDraft: PropTypes.func,
   schema: PropTypes.object,
   status: PropTypes.string,
   draft_id: PropTypes.string,
-  recid: PropTypes.string,
   formErrorsChange: PropTypes.func,
   onChangeMode: PropTypes.func,
   mode: PropTypes.string
@@ -263,18 +254,13 @@ DraftEditorHeader.propTypes = {
 function mapStateToProps(state) {
   return {
     draft_id: state.draftItem.get("id"),
-    recid: state.draftItem.get("recid"),
     draft: state.draftItem.get("metadata"),
     schema: state.draftItem.get("schema"),
     status: state.draftItem.get("status"),
-    // schema: state.draftItem.getIn(["current_item", "schema"]),
     formData: state.draftItem.get("formData"),
-    // depositGroups: state.auth.getIn(["currentUser", "depositGroups"]),
     errors: state.draftItem.get("errors"),
     schemaErrors: state.draftItem.get("schemaErrors"),
     loading: state.draftItem.get("loading")
-    // loading: state.draftItem.getIn(["current_item", "loading"]),
-    // message: state.drafts.getIn(["current_item", "message"])
   };
 }
 

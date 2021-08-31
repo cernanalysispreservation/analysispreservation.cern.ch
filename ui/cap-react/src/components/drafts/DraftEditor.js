@@ -17,6 +17,7 @@ import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
 import ErrorPage from "../partials/ErrorPage";
 import DraftEditorHeader from "./components/DraftEditorHeader";
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
+import { canEdit } from "./utils/permissions";
 
 export const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -101,7 +102,7 @@ class DraftEditor extends React.Component {
         {this.props.schemas &&
           this.props.schemas.schema && (
             <Box flex={true}>
-              {this.props.canUpdate && (
+              {canEdit(this.props.canAdmin, this.props.canUpdate) && (
                 <Box flex={false} separator="bottom" style={{ padding: "5px" }}>
                   <DraftEditorHeader
                     formRef={this.props.formRef}
@@ -117,7 +118,8 @@ class DraftEditor extends React.Component {
                 flex={true}
                 wrap={false}
               >
-                {this.state.mode === "edit" ? (
+                {this.state.mode === "edit" &&
+                canEdit(this.props.canAdmin, this.props.canUpdate) ? (
                   <React.Fragment>
                     <Form
                       formRef={this.props.formRef}
@@ -166,6 +168,7 @@ DraftEditor.propTypes = {
   fetchSchemaByNameVersion: PropTypes.func,
   formRef: PropTypes.object,
   canUpdate: PropTypes.bool,
+  canAdmin: PropTypes.bool,
   location: PropTypes.object
 };
 
@@ -180,7 +183,8 @@ function mapStateToProps(state) {
     formData: state.draftItem.get("formData"),
     extraErrors: state.draftItem.get("extraErrors"),
     schemaErrors: state.draftItem.get("schemaErrors"),
-    canUpdate: state.draftItem.get("can_update")
+    canUpdate: state.draftItem.get("can_update"),
+    canAdmin: state.draftItem.get("can_admin")
   };
 }
 
