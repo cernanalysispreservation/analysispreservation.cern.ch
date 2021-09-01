@@ -26,7 +26,7 @@ export function fetchDashboard() {
     dispatch(dashboardQueryRequest());
     let url = "/api/dashboard";
 
-    axios
+    return axios
       .get(url)
       .then(response => {
         let results = response.data;
