@@ -59,7 +59,7 @@ export function getPublishedItem(id) {
     dispatch(publishedItemRequest());
 
     let uri = `/api/records/${id}`;
-    axios
+    return axios
       .get(uri, {
         headers: {
           Accept: "application/form+json",
