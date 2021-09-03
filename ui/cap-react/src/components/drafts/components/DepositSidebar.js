@@ -241,7 +241,7 @@ class DepositSidebar extends React.Component {
           <Box size={{ width: { max: "medium" } }} pad="small" align="center">
             <Notification
               action={this._renderRefreshFilesButton()}
-              type={this.props.bucketError.status === 500 ? "error" : "warning"}
+              type="error"
               text="There is an error while loading files, please try again by clicking the refresh button"
             />
           </Box>

@@ -10,8 +10,7 @@ import Label from "grommet/components/Label";
 
 import {
   updateDraft,
-  editPublished,
-  toggleActionsLayer
+  editPublished
 } from "../../../actions/draftItem";
 import { withRouter } from "react-router";
 import { formErrorsChange } from "../../../actions/common";
@@ -171,10 +170,6 @@ class DraftEditorHeader extends React.Component {
     }
   }
 
-  _actionHandler = type => () => {
-    this.props.toggleActionsLayer(type);
-  };
-
   render() {
     if (this.props.schemaErrors.length > 0) {
       return null;
@@ -255,7 +250,6 @@ DraftEditorHeader.propTypes = {
   editPublished: PropTypes.func,
   publishDraft: PropTypes.func,
   formData: PropTypes.object,
-  toggleActionsLayer: PropTypes.func,
   deleteDraft: PropTypes.func,
   schema: PropTypes.object,
   status: PropTypes.string,
@@ -289,7 +283,6 @@ function mapDispatchToProps(dispatch) {
     updateDraft: (data, draft_id) => dispatch(updateDraft(data, draft_id)),
     editPublished: (data, schema, draft_id) =>
       dispatch(editPublished(data, schema, draft_id)),
-    toggleActionsLayer: type => dispatch(toggleActionsLayer(type)),
     formErrorsChange: errors => dispatch(formErrorsChange(errors))
   };
 }

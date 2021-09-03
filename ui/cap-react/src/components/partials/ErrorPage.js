@@ -28,7 +28,7 @@ const ErrorPage = ({ history, status = 404, message }) => {
       ),
       403: (
         <span>
-          Your account has not the permissions to access the content of this
+          Your account doesn't have permissions to access the content of this
           page
         </span>
       ),
