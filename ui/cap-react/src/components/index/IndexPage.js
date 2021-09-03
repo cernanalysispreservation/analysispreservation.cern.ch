@@ -14,7 +14,6 @@ import Dashboard from "../dashboard/Dashboard";
 
 import DraftsItemIndex from "../drafts/DraftsItemIndex";
 import SettingsIndex from "../settings";
-import WorkflowsIndex from "../workflows";
 import CreateIndex from "../create";
 
 import PublishedIndex from "../published/PublishedIndex";
@@ -26,7 +25,6 @@ import {
   DRAFTS,
   PUBLISHED,
   SETTINGS,
-  WORKFLOWS,
   CREATE_INDEX,
   SEARCH,
   DRAFT_ITEM
@@ -49,7 +47,6 @@ class IndexPage extends React.Component {
             <Route exact path={DRAFTS} component={SearchPage} />
             <Route path={PUBLISHED} component={PublishedIndex} />
             <Route path={SETTINGS} component={SettingsIndex} />
-            <Route path={WORKFLOWS} component={WorkflowsIndex} />
             <Route path={CREATE_INDEX} component={CreateIndex} />
             <Route component={ErrorPage} />
           </Switch>
