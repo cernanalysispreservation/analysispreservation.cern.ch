@@ -57,7 +57,7 @@ def random_pid(experiment):
 
 def url_to_api_url(url):
     """Translate url to api url."""
-    if current_app.config['DEBUG'] is True:
+    if current_app.config.get('CAP_CLIENT_DEBUG'):
         return url
 
     parts = parse.urlsplit(url)

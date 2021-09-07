@@ -227,6 +227,9 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 DEBUG_MODE = os.environ.get('DEBUG_MODE')
 DEBUG = True if DEBUG_MODE == 'True' else False
+#: Enable 'cap-client' DEBUG mode for CLI developement, mainly
+#: for '/api' link construction
+CAP_CLIENT_DEBUG = os.environ.get('CAP_CLIENT_DEBUG')
 
 if DEBUG:
     REST_ENABLE_CORS = True
