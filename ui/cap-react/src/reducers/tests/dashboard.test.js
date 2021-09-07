@@ -2,7 +2,6 @@ import * as actions from "../../actions/dashboard";
 import dashboardReducer from "../dashboard";
 import { Map } from "immutable";
 
-const ERROR_MESSAGE = "this is an error";
 const RESULTS = {
   drafts: { data: [{ general_title: "One Draft" }], more: "drafts?q=" },
   published: { data: [{ general_title: "One Published" }], more: "search?q=" },
@@ -49,7 +48,7 @@ const loadingState = Map({
 });
 const errorState = Map({
   loading: false,
-  error: ERROR_MESSAGE,
+  error: null,
   results: {
     drafts: { data: [], more: null },
     published: { data: [], more: null },
@@ -94,12 +93,11 @@ describe("Dashboard Reducer Test", () => {
   });
   it("Dashboard Error", () => {
     const action = {
-      type: actions.DASHBOARD_QUERY_ERROR,
-      error: ERROR_MESSAGE
+      type: actions.DASHBOARD_QUERY_ERROR
     };
 
     expect(dashboardReducer(initialState, action)).toEqual(errorState);
-    expect(dashboardReducer(initialState, action)).not.toEqual(initialState);
+    expect(dashboardReducer(initialState, action)).toEqual(initialState);
     expect(dashboardReducer(initialState, action)).not.toEqual(loadingState);
   });
   it("Dashboard Success", () => {

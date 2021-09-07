@@ -67,10 +67,7 @@ describe("Dashboard actions testing suite", () => {
   it("Fail to fetch dashboard", async () => {
     const expectedActions = [
       { type: actions.DASHBOARD_QUERY_REQUEST },
-      {
-        type: actions.DASHBOARD_QUERY_ERROR,
-        error: ERROR
-      }
+      { type: actions.DASHBOARD_QUERY_ERROR }
     ];
 
     axios.get = jest.fn(() => {
