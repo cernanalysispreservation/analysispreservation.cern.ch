@@ -49,6 +49,7 @@ from jsonschema.exceptions import RefResolutionError, ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
+from .errors import UniqueRequiredValidationError
 
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.validators import NoRequiredValidator
@@ -571,10 +572,14 @@ class CAPDeposit(Deposit, Reviewable):
 
                 validator = NoRequiredValidator(schema, resolver=resolver)
 
-                errors = [
-                    FieldError(get_error_path(error), str(error.message))
-                    for error in validator.iter_errors(self)
-                ]
+                errors = []
+                for err in validator.iter_errors(self):
+                    if err.__class__ is UniqueRequiredValidationError and \
+                         self["_deposit"]["id"] in err.uuids:
+                        pass
+                    else:
+                        errors.append(FieldError(
+                           get_error_path(err), str(err.message)))
 
                 if errors:
                     raise DepositValidationError(None, errors=errors)

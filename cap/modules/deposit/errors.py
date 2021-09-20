@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Deposit errors."""
 
+from jsonschema.exceptions import ValidationError
 from invenio_rest.errors import RESTException, RESTValidationError, FieldError
 
 
@@ -30,6 +31,12 @@ class DepositDoesNotExist(Exception):
     """Deposit with given key does not exist exception."""
 
     pass
+
+
+class UniqueRequiredValidationError(ValidationError):
+    def __init__(self, message, uuids=[], **kwargs):
+        self.uuids = uuids
+        return super().__init__(message=message, **kwargs)
 
 
 class WrongJSONSchemaError(RESTValidationError):

@@ -286,7 +286,6 @@ def create_schema(db, clear_caches):
             if not schema.experiment:
                 schema.add_read_access_for_all_users()
                 db.session.commit()
-
         return schema
 
     yield _add_schema
@@ -373,7 +372,8 @@ def create_deposit(app, db, es, location, create_schema):
                         experiment=None,
                         files={},
                         publish=False,
-                        mapping=None):
+                        mapping=None,
+                        deposit_schema=None):
         """Create a new deposit for given user and schema name.
 
         e.g cms-analysis-v0.0.1,
@@ -383,7 +383,8 @@ def create_deposit(app, db, es, location, create_schema):
         with app.test_request_context():
             schema = create_schema(schema_name,
                                    experiment=experiment,
-                                   deposit_mapping=mapping)
+                                   deposit_mapping=mapping,
+                                   deposit_schema=deposit_schema)
             deposit_schema_url = current_jsonschemas.path_to_url(
                 schema.deposit_path)
 

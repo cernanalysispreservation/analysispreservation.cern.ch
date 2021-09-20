@@ -30,15 +30,16 @@ from jsonschema.validators import extend
 
 from cap.modules.experiments.validators import (validate_cadi_id,
                                                 validate_cms_trigger,
-                                                validate_das_path)
+                                                validate_das_path,
+                                                validate_unique_cadi)
 
 deposit_validators = dict(Draft4Validator.VALIDATORS)
 
 if not os.environ.get("CAP_CMS_VALIDATION_DISABLE"):
     deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
     deposit_validators['x-validate-das-path'] = validate_das_path
+deposit_validators['x-validate-unique-cadi'] = validate_unique_cadi
 # deposit_validators['x-validate-cadi-id'] = validate_cadi_id
 
 DepositValidator = extend(Draft4Validator, validators=deposit_validators)
-
 NoRequiredValidator = extend(DepositValidator, {'required': None})

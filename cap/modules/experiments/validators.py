@@ -27,6 +27,8 @@ from jsonschema.exceptions import ValidationError
 
 from .search.cms_triggers import CMSTriggerSearch
 from .search.das import DASSearch
+from cap.modules.deposit.errors import (DepositDoesNotExist,
+                                        UniqueRequiredValidationError)
 
 
 def validate_cms_trigger(validator, value, instance, schema):
@@ -59,3 +61,13 @@ def validate_cadi_id(validator, value, instance, schema):
     from .utils.cadi import get_from_cadi_by_id
     if not get_from_cadi_by_id(instance, from_validator=True):
         yield ValidationError("{} not found in CADI.".format(instance))
+
+
+def validate_unique_cadi(validator, value, instance, schema):
+    from .utils.cadi import get_uuids_with_same_cadi_id
+    try:
+        uuids = get_uuids_with_same_cadi_id(instance)
+        yield UniqueRequiredValidationError(
+            "This ID is already attached to another record", uuids=uuids)
+    except DepositDoesNotExist:
+            pass

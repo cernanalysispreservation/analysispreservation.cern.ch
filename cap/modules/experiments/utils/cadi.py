@@ -248,6 +248,26 @@ def get_deposit_by_cadi_id(cadi_id):
     return deposit
 
 
+def get_uuids_with_same_cadi_id(cadi_id):
+    """Return list with ids attached with a specific cadi_id.
+
+    :params str cadi_id: CADI identifier
+    """
+    rs = RecordsSearch(index='deposits-cms-analysis')
+
+    res = rs.query(Q('match', basic_info__cadi_id=cadi_id)) \
+        .execute().hits.hits
+
+    if not res:
+        raise DepositDoesNotExist
+    else:
+        uuids = [
+                r.get("_source", {}).get("_deposit", {}).get("id")
+                for r in res
+            ]
+
+    return uuids
+
 # KEEP IN MIND: DUE TO API PROBLEMS, CALL TO CADI SERVER SOMETIMES FAIL
 #
 # def get_updated_entries_from_cadi(from_date=None, until_date=None):
