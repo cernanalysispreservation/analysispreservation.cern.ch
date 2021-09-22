@@ -255,22 +255,21 @@ class SearchPage extends React.Component {
                 onClick={this._updateParams}
                 removeQuery={this._updateSearchQuery}
               />
-              <Box
-                className="small-center-medium-between"
-                align="center"
-                direction="row"
-              >
-                <Box align="center">
-                  <SortSelect
-                    onChange={val => this._updateSortOption(val)}
-                    locationSort={
-                      queryString.parse(this.props.location.search).sort
-                    }
-                  />
-                </Box>
-
-                <Box>
-                  {total > 10 && (
+              {total > 0 && (
+                <Box
+                  className="small-center-medium-between"
+                  align="center"
+                  direction="row"
+                >
+                  <Box align="center">
+                    <SortSelect
+                      onChange={val => this._updateSortOption(val)}
+                      locationSort={
+                        queryString.parse(this.props.location.search).sort
+                      }
+                    />
+                  </Box>
+                  <Box>
                     <Pagination
                       className="search-pagination-top"
                       total_results={total || 0}
@@ -289,9 +288,9 @@ class SearchPage extends React.Component {
                       showSizeChanger={false}
                       showPrevNextJumpers={false}
                     />
-                  )}
+                  </Box>
                 </Box>
-              </Box>
+              )}
               {results}
             </Box>
           </Box>
