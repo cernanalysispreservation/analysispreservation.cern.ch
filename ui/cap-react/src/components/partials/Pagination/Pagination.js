@@ -23,7 +23,8 @@ const Paginate = ({
 }) => {
   const updatePageFromArrows = move => {
     if (move > 0) {
-      if (current_page < size) onPageChange(current_page + 1, size);
+      if (current_page < Math.ceil(total_results / size))
+        onPageChange(current_page + 1, size);
     } else {
       if (current_page > 1) onPageChange(current_page - 1, size);
     }
