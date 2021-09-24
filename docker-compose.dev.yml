@@ -7,20 +7,25 @@
 
 version: "2.3"
 services:
-  # Load balancer
-  lb:
-    extends:
-      file: docker-services.yml
-      service: lb
-    links:
+  nginx:
+    restart: "always"
+    build:
+      context: ./docker/nginxdev
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
       - frontend
+      - web-api
   # Frontend
   frontend:
-    extends:
-      file: docker-services.yml
-      service: frontend
+    build:
+      context: ./ui
+    ports:
+      - "3000:3000"
     volumes:
-      - ./ui/cap-react/dist:/usr/share/nginx/html
+      - ./ui/cap-react/src:/app/cap-react/src
+      - ./ui/cap-react/tools:/app/cap-react/tools
     links:
       - web-api
   # API Rest Application
@@ -35,7 +40,12 @@ services:
     volumes:
       - static_data:/opt/cap/var/instance/static
       - uploaded_data:/opt/cap/var/instance/data
+      - media_data:/opt/cap/var/data
       - ./cap:/opt/cap/src/cap
+      - ./demo:/opt/cap/demo
+    environment:
+      - "FLASK_DEBUG=True"
+      - "DEBUG_MODE=True"
     links:
       - cache
       - es
@@ -103,3 +113,4 @@ services:
 volumes:
   static_data:
   uploaded_data:
+  media_data:

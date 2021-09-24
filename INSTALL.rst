@@ -74,8 +74,8 @@ build all docker images and boot them up using ``docker-compose``:
     $ docker-compose -f docker-compose.full.yml build
     $ docker-compose -f docker-compose.full.yml up -d
 
-Keep the session with the docker-compose above alive, and in a new shell, 
-go to the project directory and run the init script which creates the database 
+Keep the session with the docker-compose above alive, and in a new shell,
+go to the project directory and run the init script which creates the database
 tables, search indexes and some data fixtures:
 
 .. code-block:: console
@@ -244,7 +244,7 @@ fixtures for schemas, users and roles in a new shell session:
 .. code-block:: console
 
    $ cd <to-project-dir>
-   $ workon cap
+   $ workon cap (or activate your virtual environment)
    (cap)$ sh ./scripts/init.sh
 
 Let's also run the Celery worker on a different shell session:
@@ -252,7 +252,7 @@ Let's also run the Celery worker on a different shell session:
 .. code-block:: console
 
    $ cd <to-project-dir>
-   $ workon cap
+   $ workon cap (or activate your virtual environment)
    (cap)$ celery worker -A cap.celery -l INFO --purge
 
 .. note::
@@ -287,7 +287,7 @@ loading commands in a separate shell:
 .. code-block:: console
 
    $ cd <to-project-dir>
-   $ workon cap
+   $ workon cap (or activate your virtual environment)
    (cap)$ cap fixtures cms sync-cadi
 
 Finally, run the CAP development server and the React SPA app in debug mode:
@@ -295,14 +295,14 @@ Finally, run the CAP development server and the React SPA app in debug mode:
 .. code-block:: console
 
    $ cd <to-project-dir>
-   $ workon cap   
+   $ workon cap (or activate your virtual environment)
    (cap)$ export FLASK_DEBUG=True
    (cap)$ export DEBUG_MODE=True
    (cap)$ cap run --reload
 
 And in another shell the React SPA application developement server, also in debug mode - so that requests point to the above server http://localhost:5000 :
 
-First install all the dependencies in the ui root directory 
+First install all the dependencies in the ui root directory
 
 .. code-block:: console
 
@@ -351,7 +351,7 @@ More documentation about CLI recipes exist `here <docs/cli.md>`_
 Additional information
 ----------------------
 
-For a more detailed guide on how to install CAP on Mac OS X check `here <docs/osx_installation.rst>`_ 
+For a more detailed guide on how to install CAP on Mac OS X check `here <docs/osx_installation.rst>`_
 
 If you are working in Linux, you may need those additional libraries for python-ldap:
 
@@ -383,9 +383,9 @@ To make sure, that your database is up to date with all the changes, run:
 
 .. code-block:: shell
 
-   cap alembic upgrade heads               
+   cap alembic upgrade heads
 
-If you made some changes in one of the CAP models, Alembic can generate migration file for you. Keep in mind, that you need to specify parent revision for each of the revision (should be the latest revision for cap branch). 
+If you made some changes in one of the CAP models, Alembic can generate migration file for you. Keep in mind, that you need to specify parent revision for each of the revision (should be the latest revision for cap branch).
 
 .. code-block:: shell
 
@@ -423,6 +423,49 @@ and if that does not work try:
 
    curl -XDELETE 'http://localhost:9200/_all'
    cap db init
+
+
+
+Development Full docker environment
+----------------------
+
+Open the project to a terminal window
+
+
+Run the following command
+
+
+.. code-block:: shell
+
+	docker-compose -f docker-compose.dev.yml up   --remove-orphans
+
+When all the services are running you can navigate to a browser
+
+
+.. code-block:: shell
+
+	https://localhost
+
+
+Open a second terminal window with the project
+
+Do the following commands in the exact order
+
+.. code-block:: shell
+
+    docker-compose -f docker-compose.dev.yml run web-api  curl -XDELETE es:9200/_all
+
+    docker-compose -f docker-compose.dev.yml run web-api sh scripts/clean-and-init.sh
+
+    docker-compose -f docker-compose.dev.yml run web-api  cap files location local var/data --default
+
+    docker-compose -f docker-compose.dev.yml run web-api  cap fixtures cms index-datasets --file /opt/cap/demo/das.txt
+
+    docker-compose -f docker-compose.dev.yml run web-api  cap fixtures cms index-triggers --file /opt/cap/demo/cms-triggers.json
+
+
+
+
 
 
 
