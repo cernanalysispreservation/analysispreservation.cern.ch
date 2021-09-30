@@ -23,7 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 from flask import current_app
-from flask_login import current_user
 
 from invenio_accounts.models import User
 

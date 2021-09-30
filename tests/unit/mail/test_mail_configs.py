@@ -116,7 +116,7 @@ def test_send_mail_when_ctx_method_doesnt_exist(
 
             assert resp.status_code == 202
             assert len(outbox) == 1
-            assert 'Message with cadi id: ABC-11-111 and val None' in outbox[0].html
+            assert 'Message with cadi id: ABC-11-111 and val ' in outbox[0].html
 
 
 @mark.parametrize('config', [

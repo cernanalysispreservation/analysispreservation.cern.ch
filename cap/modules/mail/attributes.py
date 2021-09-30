@@ -210,7 +210,7 @@ def generate_recipients(record, config, default_ctx={}):
     return recipients, cc, bcc
 
 
-def generate_body(record, config, action, default_ctx={}):
+def generate_body(record, config, default_ctx={}):
     """
     Body generator for notification action.
     It requires a template and a context (dict of vars-values), to populate it.
@@ -265,7 +265,7 @@ def generate_body(record, config, action, default_ctx={}):
     return body, base
 
 
-def generate_subject(record, config, action, default_ctx={}):
+def generate_subject(record, config, default_ctx={}):
     """
     Subject generator for notification action.
     It requires a template and a context (dict of vars-values), to populate it.
@@ -286,6 +286,8 @@ def generate_subject(record, config, action, default_ctx={}):
     the method. It's implementation should always be in the mail.custom.subjects.py file  # noqa
     """
     subj_config = config.get("subject")
+    action = default_ctx.get("action", "")
+
     if not subj_config:
         return get_config_default(action, "subject")
 

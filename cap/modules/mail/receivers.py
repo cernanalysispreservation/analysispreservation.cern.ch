@@ -94,9 +94,9 @@ def send_deposit_notifications(record_uuid, user_id, action):
             continue
 
         try:
-            subject = generate_subject(deposit, config, action,
+            subject = generate_subject(deposit, config,
                                        default_ctx=msg_ctx)
-            body, base = generate_body(deposit, config, action,
+            body, base = generate_body(deposit, config,
                                        default_ctx=msg_ctx)
         except UnsuccessfulMail as err:
             # TODO: FIX log error with recid, msg, ctx, etc

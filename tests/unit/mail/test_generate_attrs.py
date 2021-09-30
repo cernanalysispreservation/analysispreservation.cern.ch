@@ -27,10 +27,10 @@ from cap.modules.mail.attributes import generate_recipients, generate_body, \
     generate_subject
 
 
-@patch('cap.modules.mail.custom.recipients.current_user')
-def test_generate_recipients(mock_user, app, users, location, create_schema, create_deposit):
+# @patch('cap.modules.mail.custom.recipients.current_user')
+def test_generate_recipients(app, users, location, create_schema, create_deposit):
     user = users['cms_user']
-    mock_user.email = user.email
+    # mock_user.email = user.email
     config = {
         "recipients": {
             "bcc": [{
@@ -67,16 +67,17 @@ def test_generate_recipients(mock_user, app, users, location, create_schema, cre
                              experiment='CMS',
                              publish=True)
 
-    recipients, cc, bcc = generate_recipients(deposit, config)
+    recipients, cc, bcc = generate_recipients(deposit, config,
+        default_ctx={'submitter_id': user.id})
     assert set(recipients) == {'cms_user@cern.ch', 'default@cern0.ch', 'test-mail@cern0.ch'}
     assert set(bcc) == {"ml-conveners-test@cern0.ch", "ml-conveners-jira-test@cern0.ch"}
     assert cc == []
 
 
-@patch('cap.modules.mail.custom.body.current_user')
-def test_generate_body(mock_user, app, users, location, create_schema, create_deposit):
+# @patch('cap.modules.mail.custom.body.current_user')
+def test_generate_body(app, users, location, create_schema, create_deposit):
     user = users['cms_user']
-    mock_user.email = user.email
+    # mock_user.email = user.email
 
     config = {
         "body": {
@@ -106,16 +107,17 @@ def test_generate_body(mock_user, app, users, location, create_schema, create_de
                              experiment='CMS',
                              publish=True)
 
-    body, _ = generate_body(deposit, config, 'publish')
+    body, _ = generate_body(deposit, config,
+        default_ctx={'submitter_id': user.id, 'action': 'publish'})
     assert 'CADI URL: https://cms.cern.ch/iCMS/analysisadmin/cadi?ancode=ABC-11-111' in body
     assert 'Title: Test' in body
     assert 'Submitted by cms_user@cern.ch.' in body
 
 
-@patch('cap.modules.mail.custom.recipients.current_user')
-def test_generate_subject(mock_user, app, users, location, create_schema, create_deposit):
+# @patch('cap.modules.mail.custom.recipients.current_user')
+def test_generate_subject(app, users, location, create_schema, create_deposit):
     user = users['cms_user']
-    mock_user.email = user.email
+    # mock_user.email = user.email
 
     config = {
         "subject": {
@@ -142,14 +144,16 @@ def test_generate_subject(mock_user, app, users, location, create_schema, create
                              publish=True)
 
     pid = deposit['_deposit']['pid']['value']
-    subject = generate_subject(deposit, config, 'publish')
+    subject = generate_subject(deposit, config, 
+        default_ctx={'submitter_id': user.id, 'action': 'publish'})
+    
     assert subject == f'Questionnaire for ABC-11-111 {pid} - New Published Analysis | CERN Analysis Preservation'
 
 
-@patch('cap.modules.mail.custom.recipients.current_user')
-def test_generate_recipients_with_nested_conditions(mock_user, app, users, location, create_schema, create_deposit):
+# @patch('cap.modules.mail.custom.recipients.current_user')
+def test_generate_recipients_with_nested_conditions(app, users, location, create_schema, create_deposit):
     user = users['cms_user']
-    mock_user.email = user.email
+    # mock_user.email = user.email
 
     config = {
         "recipients": {
@@ -210,7 +214,8 @@ def test_generate_recipients_with_nested_conditions(mock_user, app, users, locat
                              experiment='CMS',
                              publish=True)
 
-    recipients, cc, bcc = generate_recipients(deposit, config)
+    recipients, cc, bcc = generate_recipients(deposit, config,
+        default_ctx={'submitter_id': user.id, 'action': 'publish'})
     assert set(recipients) == {'cms_user@cern.ch', 'default@cern0.ch'}
     assert set(bcc) == {"ml-conveners-test@cern0.ch", "ml-conveners-jira-test@cern0.ch"}
     assert cc == []

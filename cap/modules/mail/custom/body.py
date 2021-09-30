@@ -23,7 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 from flask import current_app, request
-from flask_login import current_user
 
 from invenio_accounts.models import User
 
@@ -54,10 +53,13 @@ def working_url(record, **kwargs):
 
 def submitter_email(record, **kwargs):
     """Returns the submitter of the analysis, aka the current user."""
-    return current_user.email
+    submitter_user_id = kwargs.get('default_ctx', {}).get('submitter_id')
+    submitter_user = User.query.filter_by(id=submitter_user_id).one()
+
+    return submitter_user.email
 
 
-# error in cms-questionnaire config, reviewer should come from WG
+# TODO: error in cms-questionnaire config, reviewer should come from WG
 def reviewer_email(record, **kwargs):
     """Returns the owner of the analysis."""
     owner_list = record.get("_deposit", {}).get("owners")

@@ -70,10 +70,10 @@ def test_get_user_by_experiment(remote_accounts):
     assert len(alice_users) == 1
 
 
-@patch('cap.modules.mail.custom.recipients.current_user')
-def test_get_current_user(mock_user):
-    mock_user.email = 'test@cern.ch'
-    assert get_submitter(None) == ['test@cern.ch']
+def test_get_current_user(app, db, users):
+    user1 = users['alice_user']
+    assert get_submitter(None,
+        default_ctx={'submitter_id': user1.id}) == ['alice_user@cern.ch']
 
 
 def test_get_record_owner(users, location, create_schema, create_deposit):
