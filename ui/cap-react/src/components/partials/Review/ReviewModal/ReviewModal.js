@@ -19,7 +19,12 @@ const ReviewModal = props => {
 
   return (
     <div>
-      <Modal title="Add a review" onClose={props.onClose} disableCloseHandlers>
+      <Modal
+        title="Add a review"
+        onClose={props.onClose}
+        disableClickHandlers
+        disableEscHandlder
+      >
         <Box flex={false} size="large" pad="small">
           <Box pad={{ vertical: "medium" }}>
             <Box pad={{ between: "small" }}>

@@ -18,7 +18,6 @@ const leftAnimation = keyframes`
 const centerAnimation = keyframes`
   0%{transform: translate(-50%, -50%);opacity:0}
   100%{transform:translate(-50%, -50%);opacity:1}
-  
 `;
 
 const getAnimationFromPosition = position => {
@@ -125,14 +124,15 @@ const Modal = ({
   full = false,
   animated = false,
   flush = false,
-  disableCloseHandlers = false,
+  disableClickHandlers = false,
+  disableEscHandlder = false,
   overflowVisible = false
 }) => {
   const modal = useRef(null);
 
   useEffect(() => {
     {
-      !disableCloseHandlers &&
+      !disableEscHandlder &&
         document.addEventListener("keydown", escFunction, false);
     }
     return () => {
@@ -159,7 +159,7 @@ const Modal = ({
       }
       // Bind the event listener
       {
-        !disableCloseHandlers &&
+        !disableClickHandlers &&
           document.addEventListener("mousedown", handleClickOutside);
       }
       return () => {
@@ -239,7 +239,8 @@ Modal.propTypes = {
   full: PropTypes.bool,
   animated: PropTypes.bool,
   flush: PropTypes.bool,
-  disableCloseHandlers: PropTypes.bool,
+  disableClickHandlers: PropTypes.bool,
+  disableEscHandlder: PropTypes.bool,
   overflowVisible: PropTypes.bool
 };
 
