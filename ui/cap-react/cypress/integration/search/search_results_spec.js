@@ -20,6 +20,7 @@ describe("Search Results Suite", () => {
     cy.get("[data-cy=layer-primary-action]").click();
 
     cy.url().should("not.include", "/drafts");
+    cy.wait(1000);
   });
 
   it("Update the sorting", () => {
