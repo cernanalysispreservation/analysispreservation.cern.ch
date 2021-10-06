@@ -87,12 +87,12 @@ services:
       - mq
       - db
   # Monitoring
-  flower:
-    extends:
-      file: docker-services.yml
-      service: flower
-    links:
-      - mq
+  # flower:
+  #   extends:
+  #     file: docker-services.yml
+  #     service: flower
+  #   links:
+  #     - mq
   # Base services
   cache:
     extends:
