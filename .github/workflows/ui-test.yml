@@ -5,44 +5,54 @@ on:
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"
+      - "*/**"
   pull_request:
     branches: [master]
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"
 jobs:
-  UITest:
-    name: UI Tests
-    runs-on: ubuntu-18.04
+  Cypress:
+    name: Cypress
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          # fetch-depth is needed to get the full list of commits
-          # necessary for commit msg linting when a PR has 2 commits or more
-          # to avoid getting ALL the commits, we get current commits + origin
-          fetch-depth: ${{ github.event.pull_request.commits }} + 1
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Setup python 3.6
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.6.9
-      - name: Checking commit quality (messages, signatures, etc)
-        env:
-          GIT_HEAD: ${{ github.event.after }}
-          GIT_ORIGIN: ${{ github.event.pull_request.base.sha }}
-        run: |
-          sh ./scripts/ci/prebuild.sh
+      -  uses: actions/checkout@v2
+      -  name: Run docker-compose stack
+         run: docker-compose -f docker-compose.dev.yml up
+      -  name: Run tests
+         run: docker-compose -f docker-compose.dev.yml run frontend test:e2e:run
+  # UITest:
+  #   name: UI Tests
+  #   runs-on: ubuntu-18.04
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #       with:
+  #         # fetch-depth is needed to get the full list of commits
+  #         # necessary for commit msg linting when a PR has 2 commits or more
+  #         # to avoid getting ALL the commits, we get current commits + origin
+  #         fetch-depth: ${{ github.event.pull_request.commits }} + 1
+  #         ref: ${{ github.event.pull_request.head.sha }}
+  #     - name: Setup python 3.6
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: 3.6.9
+  #     - name: Checking commit quality (messages, signatures, etc)
+  #       env:
+  #         GIT_HEAD: ${{ github.event.after }}
+  #         GIT_ORIGIN: ${{ github.event.pull_request.base.sha }}
+  #       run: |
+  #         sh ./scripts/ci/prebuild.sh
 
-      - name: Setup node
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: "10"
+  #     - name: Setup node
+  #       uses: actions/setup-node@v2-beta
+  #       with:
+  #         node-version: "10"
 
-      - name: Build
-        working-directory: ./ui
-        run: yarn
+  #     - name: Build
+  #       working-directory: ./ui
+  #       run: yarn
 
-      - name: Test
-        working-directory: ./ui/cap-react
-        run: yarn prebuild
+  #     - name: Test
+  #       working-directory: ./ui/cap-react
+  #       run: yarn prebuild
