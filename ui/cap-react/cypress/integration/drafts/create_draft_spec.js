@@ -2,7 +2,7 @@ describe("Create Draft", function() {
   let firstTitle = "Random Title";
   let updatedTitle = "This is my new title";
   it("Create a new Draft", () => {
-    // create a new ALICE Analysis
+    // create a new CMS Analysis
     // given a random tiltle
     cy.createDraft("CMS Analysis", firstTitle);
   });

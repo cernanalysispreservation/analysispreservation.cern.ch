@@ -7,52 +7,64 @@
 
 version: "2.3"
 services:
-  # Load balancer
-  lb:
-    extends:
-      file: docker-services.yml
-      service: lb
-    links:
-      - frontend
-  # Frontend
-  frontend:
-    extends:
-      file: docker-services.yml
-      service: frontend
-    volumes:
-      - ./ui/cap-react/dist:/usr/share/nginx/html
-    environment:
-      - "ENABLE_E2E=true"
-    links:
+  nginx:
+    restart: "always"
+    build:
+      context: ./docker/nginxdev
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
       - web-api
-  # API Rest Application
+      - frontend
   cypress:
     image: "cypress/included:6.3.0"
     # entrypoint: cypress run --headless --browser chrome
     environment:
-      - CYPRESS_BASE_URL=https://frontend
-      - CYPRESS_baseUrl=https://frontend
-    working_dir: /ui/cap-react
+      - CYPRESS_BASE_URL=https://nginx
+      - CYPRESS_baseUrl=https://nginx
+    working_dir: /app/cap-react
     volumes:
-      - ./ui/cap-react:/ui/cap-react
+      - ./ui/cap-react/cypress:/app/cap-react/cypress
+      - ./ui/cap-react/cypress.json:/app/cap-react/cypress.json
+    links:
+      - frontend
+      - web-api
+      - nginx
     depends_on:
       - frontend
       - web-api
+      - nginx
+  # Frontend
+  frontend:
+    build:
+      context: ./ui
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./ui/cap-react/src:/app/cap-react/src
+      - ./ui/cap-react/tools:/app/cap-react/tools
+    links:
+      - web-api
+  # API Rest Application
   web-api:
     extends:
       file: docker-services.yml
       service: app
     command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
     image: cap-web-api
-    environment:
-      - "ENABLE_E2E=TRUE"
-      - "DEV_HOST=frontend"
     ports:
       - "5000"
     volumes:
       - static_data:/opt/cap/var/instance/static
       - uploaded_data:/opt/cap/var/instance/data
+      - media_data:/opt/cap/var/data
       - ./cap:/opt/cap/src/cap
+      - ./demo:/opt/cap/demo
+    environment:
+      - "FLASK_DEBUG=True"
+      - "DEBUG_MODE=True"
+      - "DEV_HOST=nginx"
     links:
       - cache
       - es
@@ -67,11 +79,10 @@ services:
       service: app
     command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
     image: cap-files-api
-    environment:
-      - "ENABLE_E2E=TRUE"
-      - "DEV_HOST=frontend"
     ports:
       - "5000"
+    environment:
+      - "DEV_HOST=nginx"
     volumes:
       - static_data:/opt/cap/var/instance/static
       - uploaded_data:/opt/cap/var/instance/data
@@ -89,9 +100,6 @@ services:
       file: docker-services.yml
       service: app
     restart: "always"
-    environment:
-      - "ENABLE_E2E=TRUE"
-      - "DEV_HOST=frontend"
     command: "celery worker -A cap.celery --loglevel=INFO"
     image: cap-worker
     links:
@@ -119,3 +127,4 @@ services:
 volumes:
   static_data:
   uploaded_data:
+  media_data:
