@@ -71,7 +71,8 @@ def _ldap(query, sf=None, by=None):
     if by == 'mail':
         ldap_fields = LDAP_USER_RESP_FIELDS
         search_at = 'OU=Users,OU=Organic Units,DC=cern,DC=ch'
-        ldap_query = f'(&(cernAccountType=Primary)(mail=*{ldap.filter.escape_filter_chars(query)}*))'
+        ldap_query = f'(&(cernAccountType=Primary)' \
+                     f'(mail=*{ldap.filter.escape_filter_chars(query)}*))'
     else:
         ldap_fields = LDAP_EGROUP_RESP_FIELDS
         search_at = 'OU=e-groups,OU=Workgroups,DC=cern,DC=ch'
