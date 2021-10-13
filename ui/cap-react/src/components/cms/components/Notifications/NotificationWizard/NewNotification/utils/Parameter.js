@@ -20,11 +20,7 @@ const Parameter = ({ ctx, onClick, header, updateNotification }) => {
         <Heading margin="none" tag="h4">
           {header}
         </Heading>
-        <Button
-          text="add parameter"
-          icon={<AiOutlinePlus />}
-          onClick={onClick}
-        />
+        <Button text="add context" icon={<AiOutlinePlus />} onClick={onClick} />
       </Box>
       <Box
         direction="row"

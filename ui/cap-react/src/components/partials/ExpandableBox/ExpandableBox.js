@@ -3,14 +3,19 @@ import PropTypes from "prop-types";
 import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
 import { Box, Heading, Label } from "grommet";
 
-const RecipientsBox = ({ header, label, children, count = 0 }) => {
-  const [display, setDisplay] = useState(false);
+const ExpandableBox = ({
+  header,
+  label,
+  children,
+  shouldBeOpen,
+  rightLabel = null
+}) => {
+  const [display, setDisplay] = useState(shouldBeOpen);
   return (
     <Box
       style={{
-        border: "1px solid rgba(0,0,0,0.5)",
-        borderRadius: "3px",
-        width: "100%"
+        border: "0.5px solid rgba(0,0,0,0.3)",
+        borderRadius: "3px"
       }}
       pad="small"
       margin={{ bottom: "large" }}
@@ -23,31 +28,37 @@ const RecipientsBox = ({ header, label, children, count = 0 }) => {
         onClick={() => setDisplay(display => !display)}
       >
         <Box>
-          <Heading tag="h4" margin="none">
+          <Heading tag="h3" margin="none" strong>
             {header}
           </Heading>
           <Label size="small">{label}</Label>
         </Box>
         <Box direction="row" responsive={false} align="center">
-          <Label
-            style={{ marginRight: "10px", color: "rgba(0,0,0,0.5)" }}
-            margin="none"
-          >
-            {count} selected
-          </Label>
+          {rightLabel && (
+            <Label
+              style={{ marginRight: "10px", color: "rgba(0,0,0,0.5)" }}
+              margin="none"
+            >
+              {rightLabel}
+            </Label>
+          )}
           {display ? <AiOutlineUp size={18} /> : <AiOutlineDown size={18} />}
         </Box>
       </Box>
 
-      {display && children}
+      {display && (
+        <Box flex margin={{ top: "medium" }}>
+          {children}
+        </Box>
+      )}
     </Box>
   );
 };
 
-RecipientsBox.propTypes = {
+ExpandableBox.propTypes = {
   header: PropTypes.string,
   label: PropTypes.string,
   children: PropTypes.node
 };
 
-export default RecipientsBox;
+export default ExpandableBox;

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Box, Heading } from "grommet";
 import Tag from "../../../../../../partials/Tag";
-import RecipientsBox from "./RecipientsBox";
+import ExpandableBox from "../../../../../../partials/ExpandableBox";
 import RecipientsEmailList from "./RecipientsChoices/RecipientsEmailList";
 import RecipientsManuallyEmails from "./RecipientsChoices/RecipientsManuallyEmails";
 import RecipientsCustomConditions from "../../../../../containers/RecipientsCustomConditions";
 import { Map, fromJS } from "immutable";
 
 const Recipients = ({ recipients, updateNotification }) => {
-  const [emailType, setEmailType] = useState(undefined);
+  const [emailType, setEmailType] = useState("bcc");
 
   const getTagType = isTagSelected => {
     const choices = {
@@ -59,8 +59,8 @@ const Recipients = ({ recipients, updateNotification }) => {
   };
 
   return (
-    <Box flex>
-      <Box align="center">
+    <Box>
+      <Box align="center" justify="center">
         <Heading margin="none" tag="h4">
           Type of email
         </Heading>
@@ -89,56 +89,37 @@ const Recipients = ({ recipients, updateNotification }) => {
             color={getTagType(emailType == "to")}
           />
         </Box>
-        {emailType && (
-          <React.Fragment>
-            <RecipientsBox
-              header="Create custom conditions"
-              label="Create your own conditions, and define who will be notified"
-              count={checkEmailList.length}
-            >
-              <Box margin={{ top: "medium" }}>
-                <RecipientsCustomConditions
-                  emailType={emailType}
-                  emails={checkEmailList}
-                  updateNotification={(key, val) =>
-                    updateNotification(["recipients", emailType, ...key], val)
-                  }
-                />
-              </Box>
-            </RecipientsBox>
-            <RecipientsBox
-              header="Add email manually"
-              label="Create your own list, and add the emails you like to notify"
-              count={calculateSimpleEmailListCount(
-                simpleEmailList.get("mails")
-              )}
-            >
-              <Box margin={{ top: "medium" }}>
-                <RecipientsManuallyEmails
-                  emails={simpleEmailList}
-                  updateNotification={(key, val) =>
-                    updateNotification(["recipients", emailType, ...key], val)
-                  }
-                />
-              </Box>
-            </RecipientsBox>
-            <RecipientsBox
-              header="Select emails from lists"
-              label="You can select your emails from a pre defined list"
-              count={methodEmailList.length}
-            >
-              <Box margin={{ top: "medium" }}>
-                <RecipientsEmailList
-                  emails={methodEmailList}
-                  updateNotification={val =>
-                    updateNotification(["recipients", emailType], Map(val))
-                  }
-                />
-              </Box>
-            </RecipientsBox>
-          </React.Fragment>
-        )}
       </Box>
+      {emailType && (
+        <React.Fragment>
+          <Box margin={{ vertical: "medium" }} colorIndex="light-2">
+            <RecipientsEmailList
+              emails={methodEmailList}
+              updateNotification={val =>
+                updateNotification(["recipients", emailType], Map(val))
+              }
+            />
+          </Box>
+          <Box margin={{ bottom: "medium" }} colorIndex="light-2">
+            <RecipientsManuallyEmails
+              emails={simpleEmailList}
+              updateNotification={(key, val) =>
+                updateNotification(["recipients", emailType, ...key], val)
+              }
+            />
+          </Box>
+
+          <Box margin={{ bottom: "medium" }} colorIndex="light-2">
+            <RecipientsCustomConditions
+              emailType={emailType}
+              emails={checkEmailList}
+              updateNotification={(key, val) =>
+                updateNotification(["recipients", emailType, ...key], val)
+              }
+            />
+          </Box>
+        </React.Fragment>
+      )}
     </Box>
   );
 };

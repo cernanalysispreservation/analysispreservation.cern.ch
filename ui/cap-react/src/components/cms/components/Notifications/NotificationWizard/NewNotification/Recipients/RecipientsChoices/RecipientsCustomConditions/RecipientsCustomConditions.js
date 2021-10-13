@@ -53,7 +53,13 @@ const RecipientsCustomConditions = ({
   );
 
   return (
-    <Box pad="small" id="conditionCheckBoxes">
+    <Box pad="medium" id="conditionCheckBoxes">
+      <Heading tag="h4" strong margin="none">
+        Create custom conditions
+      </Heading>
+      <Label size="small">
+        Create your own conditions, and define who will be notified
+      </Label>
       {selectedCheck ? (
         <React.Fragment>
           <Box pad={{ horizontal: "small" }}>
@@ -80,10 +86,10 @@ const RecipientsCustomConditions = ({
         </React.Fragment>
       ) : emails.length === 0 ? (
         <Box align="center">
-          <Label>Create your first condition</Label>
           <Button
-            text="new condition"
+            text="create condition"
             primary
+            margin="10px 0 0 0"
             onClick={() => addNewCondition(emailType)}
           />
         </Box>
@@ -113,7 +119,6 @@ const RecipientsCustomConditions = ({
                 align="center"
                 justify="between"
                 responsive={false}
-                flex
                 margin={{ right: "small" }}
                 onClick={() => setSelectedCheck(item)}
               >

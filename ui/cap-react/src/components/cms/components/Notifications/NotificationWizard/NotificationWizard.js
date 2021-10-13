@@ -23,15 +23,26 @@ const NotificationWizard = props => {
 
   return (
     <Box flex>
-      <Box align="start" pad="small">
-        <Anchor path={props.location.pathname.split(`/${category}`)[0]}>
-          <Button text="back" icon={<AiOutlineArrowLeft size={16} />} />
-        </Anchor>
-      </Box>
-      <Box align="center" margin={{ bottom: "medium" }}>
-        <Heading tag="h3" strong margin="none">
-          {`when ${category}ed`}
-        </Heading>
+      <Box
+        pad="small"
+        direction="row"
+        colorIndex="light-2"
+        margin={{ bottom: "medium" }}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4,1fr)"
+        }}
+      >
+        <Box style={{ gridColumn: "1/2" }}>
+          <Anchor path={props.location.pathname.split(`/${category}`)[0]}>
+            <Button text="back" icon={<AiOutlineArrowLeft size={16} />} />
+          </Anchor>
+        </Box>
+        <Box align="center" style={{ gridColumn: "2/4" }}>
+          <Heading tag="h3" strong margin="none">
+            {`when ${category}ed`}
+          </Heading>
+        </Box>
       </Box>
       {currentNotifications.size === 0 ? (
         <EmptyWizard category={category} />

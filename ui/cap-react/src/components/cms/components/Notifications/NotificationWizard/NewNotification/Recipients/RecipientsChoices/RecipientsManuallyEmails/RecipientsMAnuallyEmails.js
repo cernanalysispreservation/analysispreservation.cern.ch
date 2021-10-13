@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Box } from "grommet";
+import { Box, Heading, Label } from "grommet";
 import RecipiensList from "../../utils/RecipiensList";
 import { fromJS } from "immutable";
 
@@ -18,7 +18,13 @@ const RecipientsManuallyEmails = ({ emails, updateNotification }) => {
   if (formatted) emailsList = [...emailsList, ...formatted];
 
   return (
-    <Box pad="small">
+    <Box pad="medium">
+      <Heading tag="h4" margin="none" strong>
+        Add email manually
+      </Heading>
+      <Label size="small" margin="none">
+        Create your own list, and add the emails you like to notify
+      </Label>
       <RecipiensList
         emailsList={emailsList}
         updateList={(key, val) => updateNotification([index, ...key], val)}

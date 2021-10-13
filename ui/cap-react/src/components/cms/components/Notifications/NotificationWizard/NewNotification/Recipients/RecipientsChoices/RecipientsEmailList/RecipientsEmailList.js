@@ -24,8 +24,10 @@ const getTagType = isTagSelected => {
 
 const RecipientsEmailList = ({ emails, updateNotification }) => {
   return (
-    <Box align="center">
-      <Heading tag="h4">Select the emails you want to include </Heading>
+    <Box pad="medium">
+      <Heading tag="h4" margin="none" strong>
+        Select emails from list
+      </Heading>
       <Box
         direction="row"
         responsive={false}

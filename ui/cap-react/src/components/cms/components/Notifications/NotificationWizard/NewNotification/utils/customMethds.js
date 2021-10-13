@@ -17,7 +17,8 @@ const SUBJECT_METHODS = [
 export const getMethodsByType = type => {
   const choices = {
     Body: BODY_METHODS,
-    Subject: SUBJECT_METHODS
+    Subject: SUBJECT_METHODS,
+    Context: [...BODY_METHODS, ...SUBJECT_METHODS]
   };
 
   return choices[type];

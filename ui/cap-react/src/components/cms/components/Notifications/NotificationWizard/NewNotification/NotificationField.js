@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Box, Heading } from "grommet";
+import { Box } from "grommet";
 import NotificationModal from "./NotificationModal";
 import Parameter from "./utils/Parameter";
 import { Map } from "immutable";
@@ -12,7 +12,8 @@ const NotificationField = ({
   template = "",
   ctx,
   field = "",
-  updateNotification = null
+  updateNotification = null,
+  hideText = false
 }) => {
   const [openModal, setOpenModal] = useState(false);
 
@@ -27,35 +28,30 @@ const NotificationField = ({
         field={field}
         header={header}
       />
-      <Box
-        style={{ width: "90%", maxWidth: "992px" }}
-        margin={{ bottom: "large" }}
-      >
-        <Heading tag="h3" strong>
-          {header}
-        </Heading>
-
-        <Box separator="all">
-          <AceEditor
-            mode="django"
-            theme="github"
-            showPrintMargin={false}
-            showGutter={false}
-            highlightActiveLine={false}
-            width="100%"
-            height="200px"
-            name="UNIQUE_ID_OF_DIV"
-            value={template}
-            onChange={val => {
-              updateNotification([field, "template"], val);
-            }}
-            editorProps={{ $blockScrolling: true }}
-          />
-        </Box>
+      <Box margin={{ bottom: "large" }}>
+        {!hideText && (
+          <Box separator="all">
+            <AceEditor
+              mode="django"
+              theme="github"
+              showPrintMargin={false}
+              showGutter={false}
+              highlightActiveLine={false}
+              width="100%"
+              height="200px"
+              name="UNIQUE_ID_OF_DIV"
+              value={template}
+              onChange={val => {
+                updateNotification([field, "template"], val);
+              }}
+              editorProps={{ $blockScrolling: true }}
+            />
+          </Box>
+        )}
         <Parameter
           ctx={ctx}
           onClick={() => setOpenModal(true)}
-          header="Parameters"
+          header="Context"
           updateNotification={val => updateNotification([field, "ctx"], val)}
         />
       </Box>

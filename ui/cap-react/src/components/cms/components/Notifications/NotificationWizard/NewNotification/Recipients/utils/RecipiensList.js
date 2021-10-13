@@ -1,29 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { Box, List, ListItem, Label, TextInput } from "grommet";
+import { Box, Label } from "grommet";
 import Button from "../../../../../../../partials/Button";
-import ReactPaginate from "react-paginate";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import Modal from "./RecipiensEmailModal";
+import EmailModal from "./FormattedEmailModal";
+import Tag from "../../../../../../../partials/Tag";
 
 const RecipiensList = ({ emailsList = [], updateList }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [filters, setFilters] = useState("");
-  const [limits, setLimits] = useState({
-    lower: 0,
-    upper: 5
-  });
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [emailDisplay, setEmailDisplay] = useState("default");
 
-  // const filtered = emailsList.filter(item => {
-  //   if (item.get("type") === "default")
-  //     return item.get("email").includes(filters);
-  //   if (item.get("type") === "formatted")
-  //     return item
-  //       .get("email")
-  //       .get("template")
-  //       .includes(filters);
-  //   return false;
-  // });
+  const { selectedEmailsList, formattedEmails, defaultEmails } = useMemo(
+    () => {
+      let defaultEmails = emailsList.filter(
+        email => email.get("type") == "default"
+      );
+
+      let formattedEmails = emailsList.filter(
+        email => email.get("type") == "formatted"
+      );
+
+      return {
+        selectedEmailsList:
+          emailDisplay == "default" ? defaultEmails : formattedEmails,
+        defaultEmails,
+        formattedEmails
+      };
+    },
+    [emailsList, emailDisplay]
+  );
+
+  const getTagType = isTagSelected => {
+    const choices = {
+      true: {
+        bgcolor: "#e6f7ff",
+        border: "rgba(0, 106, 147, 1)",
+        color: "rgba(0, 106, 147, 1)"
+      },
+      false: {
+        bgcolor: "#fafafa",
+        border: "#d9d9d9",
+        color: "rgba(0,0,0,0.65)"
+      }
+    };
+
+    return choices[isTagSelected];
+  };
 
   return (
     <Box>
@@ -35,6 +59,12 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
           size={emailsList.length}
         />
       )}
+      {selectedEmail && (
+        <EmailModal
+          onClose={() => setSelectedEmail(null)}
+          email={selectedEmail}
+        />
+      )}
       <Box
         align="center"
         direction="row"
@@ -42,17 +72,30 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
         justify="between"
         margin={{ bottom: "medium" }}
       >
-        {/* <Box flex>
-          <TextInput
-            value={filters}
-            placeHolder="filter emails ..."
-            onDOMChange={e => {
-              setFilters(e.target.value);
-            }}
-          />
-        </Box> */}
         {emailsList.length > 0 && (
-          <Box flex align="end">
+          <Box
+            flex
+            align="center"
+            justify="between"
+            direction="row"
+            margin={{ top: "medium" }}
+            responsive={false}
+          >
+            <Box direction="row" align="center">
+              <Tag
+                text={`Default (${defaultEmails.length})`}
+                margin="0 10px 0 0"
+                size="small"
+                color={getTagType(emailDisplay == "default")}
+                onClick={() => setEmailDisplay("default")}
+              />
+              <Tag
+                text={`Dynamic (${formattedEmails.length})`}
+                size="small"
+                color={getTagType(emailDisplay == "formatted")}
+                onClick={() => setEmailDisplay("formatted")}
+              />
+            </Box>
             <Button
               text="add new email"
               primary
@@ -64,61 +107,45 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
       </Box>
       {emailsList.length === 0 ? (
         <Box align="center">
-          <Label>Notify users/groups by adding their email addresses</Label>
-          <Button text="add email" primary onClick={() => setOpenModal(true)} />
+          <Label margin="none">
+            Notify users/groups by adding their email addresses
+          </Label>
+          <Button
+            text="add email"
+            primary
+            onClick={() => setOpenModal(true)}
+            margin="10px 0 0 0 "
+          />
         </Box>
       ) : (
-        <List>
-          {emailsList.slice(limits.lower, limits.upper).map(email => (
-            <ListItem key={email.get("email")}>
-              <Box
-                direction="row"
-                justify="between"
-                responsive={false}
-                align="center"
-                flex
-              >
-                <Label margin="none" size="small">
-                  {email.get("type") === "default"
+        <Box direction="row" wrap>
+          {selectedEmailsList.map(email => (
+            <Box
+              key={email.get("email")}
+              style={{ position: "relative", margin: "10px" }}
+            >
+              <Tag
+                size="small"
+                text={
+                  email.get("type") === "default"
                     ? email.get("email")
-                    : email.get("email").get("template")}
-                </Label>
+                    : email.get("email").get("template")
+                }
+                onClick={() =>
+                  email.get("type") == "formatted" && setSelectedEmail(email)
+                }
+              />
+              <Box style={{ position: "absolute", right: -14, top: -18 }}>
                 <Button
-                  icon={<AiOutlineDelete size={18} />}
+                  icon={<AiOutlineClose />}
                   size="iconSmall"
                   criticalOutline
-                  onClick={() =>
-                    updateList(["mails", email.get("type")], email.get("email"))
-                  }
+                  rounded
+                  onClick={() => {}}
                 />
               </Box>
-            </ListItem>
+            </Box>
           ))}
-        </List>
-      )}
-      {emailsList.length > 5 && (
-        <Box
-          align="center"
-          direction="row"
-          justify="center"
-          pad="small"
-          id="deposit-access-react-paginate"
-        >
-          <ReactPaginate
-            pageCount={Math.ceil(emailsList.length / 5)}
-            pageRangeDisplayed={2}
-            marginPageDisplayed={2}
-            previousLabel="<"
-            nextLabel=">"
-            activeClassName="react-paginate-selected-li"
-            activeLinkClassName="react-paginate-selected-li-a"
-            onPageChange={page => {
-              setLimits({
-                upper: 5 * (page.selected + 1),
-                lower: 5 * (page.selected + 1) - 5
-              });
-            }}
-          />
         </Box>
       )}
     </Box>

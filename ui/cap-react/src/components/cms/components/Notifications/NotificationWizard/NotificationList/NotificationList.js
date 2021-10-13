@@ -27,14 +27,12 @@ const NotificationList = ({
       </Box>
       {list.map((item, index) => (
         <Box
+          size={{ width: "xxlarge" }}
+          pad="small"
+          margin={{ bottom: "medium" }}
           style={{
-            width: "90%",
-            maxWidth: "992px",
-            border: "1px solid rgba(0,0,0,0.5)",
-            padding: "10px",
+            border: "1px solid rgba(0,0,0,0.3)",
             borderRadius: "3px",
-            color: "#000",
-            margin: "0 0 10px 0 ",
             position: "relative"
           }}
           key={item.get("subject") + item.get("body") + index}
