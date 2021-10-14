@@ -4,7 +4,8 @@ from __future__ import absolute_import, print_function
 import json
 
 from invenio_files_rest.views import blueprint as files_blueprint
-from cap.modules.deposit.utils import fix_bucket_links
+from invenio_indexer.signals import before_record_index
+from cap.modules.deposit.utils import fix_bucket_links, prepare_record
 
 
 class CAPDeposit(object):
@@ -27,5 +28,7 @@ class CAPDeposit(object):
                         fix_bucket_links(resp_json))
             finally:
                 return response
+
+        before_record_index.connect(prepare_record, sender=app)
 
         app.extensions['cap_deposit'] = self

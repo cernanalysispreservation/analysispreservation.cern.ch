@@ -108,6 +108,20 @@
               }
             }
           },
+          "_collection": {
+            "type": "object",
+            "properties": {
+                "fullname": {
+                    "type": "keyword"
+                },
+                "name": {
+                    "type": "keyword"
+                },
+                "version": {
+                    "type": "keyword"
+                }
+            }
+          },
           "_experiment": {
             "type": "text"
           },

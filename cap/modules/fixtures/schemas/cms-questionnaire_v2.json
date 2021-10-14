@@ -2025,6 +2025,20 @@
               }
             }
           },
+          "_collection": {
+            "type": "object",
+            "properties": {
+                "fullname": {
+                    "type": "keyword"
+                },
+                "name": {
+                    "type": "keyword"
+                },
+                "version": {
+                    "type": "keyword"
+                }
+            }
+          },
           "_deposit":{
             "type":"object",
             "properties":{

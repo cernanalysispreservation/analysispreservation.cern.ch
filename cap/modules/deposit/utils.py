@@ -27,8 +27,10 @@ from __future__ import absolute_import, print_function
 
 from invenio_access.models import Role
 from invenio_db import db
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 
 from cap.modules.records.utils import url_to_api_url
+from cap.modules.schemas.resolvers import resolve_schema_by_url
 
 
 def clean_empty_values(data):
@@ -75,3 +77,19 @@ def fix_bucket_links(response):
             item['links'] = add_api_to_links(item.get('links'))
 
     return response
+
+
+def prepare_record(sender, json=None, record=None,
+                   index=None, doc_type=None, arguments=None, **kwargs):
+
+    try:
+        schema = resolve_schema_by_url(json.get("$schema"))
+        name = schema.name
+        version = schema.version
+        fullname = schema.fullname or ""
+    except JSONSchemaNotFound:
+        name, version = doc_type.rsplit("-v", 1)
+        fullname = name
+
+    collection = {"name": name, "version": version, "fullname": fullname}
+    json["_collection"] = collection

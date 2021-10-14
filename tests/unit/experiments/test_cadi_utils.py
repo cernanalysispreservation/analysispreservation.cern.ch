@@ -404,7 +404,21 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
                                                "type": "keyword"
                                            }
                                        }
-                                   }
+                                   },
+                                    "_collection": {
+                                        "type": "object",
+                                        "properties": {
+                                            "fullname": {
+                                                "type": "keyword"
+                                            },
+                                            "name": {
+                                                "type": "keyword"
+                                            },
+                                            "version": {
+                                                "type": "keyword"
+                                            }
+                                        }
+                                    }
                                }
                            }
                        }

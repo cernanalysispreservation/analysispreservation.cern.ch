@@ -29,7 +29,7 @@ from pytest import mark
 from six import BytesIO
 
 from cap.modules.repos.models import GitSnapshot, GitWebhookSubscriber
-from conftest import _datastore, add_role_to_user
+from conftest import _datastore, add_role_to_user, get_default_mapping
 
 
 ######################
@@ -376,7 +376,7 @@ def test_get_deposits_with_facets(client, users, auth_headers_for_user, create_d
         'facet_collision_system', 'facet_final_states', 'facet_further_search_categorisation',
         'facet_further_search_categorisation_heavy_ion', 'facet_interpretation',
         'facet_next_deadline_date', 'facet_physics_theme', 'facet_sm_analysis_characteristics',
-        'facet_type', 'particles'
+        'facet_collection', 'particles'
     ])
 
 
@@ -400,6 +400,7 @@ def test_get_deposits_with_facets_containing_meta(client, users, auth_headers_fo
 def test_get_deposits_with_facets_non_empty_buckets_keywords(
         client, users, auth_headers_for_user, create_deposit, create_schema):
     user = users['cms_user']
+    deposit_mapping = get_default_mapping("test-schema", "1.0.0")
     create_schema('test-schema', experiment='CMS',
                   deposit_schema={
                       'title': 'deposit-test-schema', 'type': 'object',
@@ -412,7 +413,8 @@ def test_get_deposits_with_facets_non_empty_buckets_keywords(
                       'basic_info': {
                           'analysis_keywords': {'type': 'array'},
                           'final_states': {'type': 'array'}
-                      }})
+                      }},
+                  deposit_mapping=deposit_mapping)
     create_deposit(user, 'test-schema',
                    {
                        '$ana_type': 'test-schema',
@@ -458,13 +460,14 @@ def test_get_deposits_with_facets_non_empty_buckets_keywords(
 def test_get_deposits_with_facets_get_types_and_versions(
         client, users, auth_headers_for_user, json_headers, create_deposit, create_schema):
     user = users['cms_user']
-
-    create_schema('test-analysis', experiment='CMS')
+    deposit_mapping_1 = get_default_mapping('test-analysis', "1.0.0")
+    create_schema('test-analysis', fullname="test-analysis", experiment='CMS', deposit_mapping=deposit_mapping_1)
     create_deposit(user, 'test-analysis',
                    {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"},
                    experiment='CMS')
 
-    create_schema('test-analysis', experiment='CMS', version='2.0.0')
+    deposit_mapping_2 = get_default_mapping('test-analysis', "2.0.0")
+    create_schema('test-analysis', fullname="test-analysis", experiment='CMS', version='2.0.0', deposit_mapping=deposit_mapping_2)
     create_deposit(user, 'test-analysis',
                    {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v2.0.0.json"},
                    experiment='CMS')
@@ -476,14 +479,15 @@ def test_get_deposits_with_facets_get_types_and_versions(
                       headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
 
     assert resp.json['hits']['total'] == 2
-    assert resp.json['aggregations']['facet_type']['buckets'] == [{
+    assert resp.json['aggregations']['facet_collection']['buckets'] == [{
         'doc_count': 2,
-        'facet_type_version': {
-            'buckets': [{'doc_count': 1, 'key': 'v1.0.0'},
-                        {'doc_count': 1, 'key': 'v2.0.0'}],
+        'facet_collection_version': {
+            'buckets': [{'doc_count': 1, 'key': '1.0.0'},
+                        {'doc_count': 1, 'key': '2.0.0'}],
             'doc_count_error_upper_bound': 0,
             'sum_other_doc_count': 0
         },
+        '__display_name__': 'test-analysis',
         'key': 'test-analysis'
     }]
 
@@ -494,12 +498,14 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
     # is giving different results from test-ana facet, although they have the same prefix
     user = users['cms_user']
 
-    create_schema('test-analysis', experiment='CMS')
+    deposit_mapping_1 = get_default_mapping('test-analysis', "1.0.0")
+    create_schema('test-analysis', fullname="test-analysis", experiment='CMS', deposit_mapping=deposit_mapping_1)
     create_deposit(user, 'test-analysis',
                    {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"},
                    experiment='CMS')
 
-    create_schema('test-ana', experiment='CMS', version='2.0.0')
+    deposit_mapping_2 = get_default_mapping('test-ana', "1.0.0")
+    create_schema('test-ana', fullname="test-ana", experiment='CMS', deposit_mapping=deposit_mapping_2)
     create_deposit(user, 'test-ana',
                    {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"},
                    experiment='CMS')
@@ -508,7 +514,7 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
                    experiment='CMS')
 
     import time
-    time.sleep(1)
+    time.sleep(3)
 
     # total should be 3
     resp = client.get('/deposits/',
@@ -516,14 +522,14 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
     assert resp.json['hits']['total'] == 3
 
     # test-ana should return 2 results
-    url = '/deposits/?q=&type=test-ana&sort=mostrecent'
+    url = '/deposits/?q=&collection=test-ana&sort=mostrecent'
     resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
 
     assert resp.status_code == 200
     assert resp.json['hits']['total'] == 2
 
     # test-analysis should return 1 result
-    url = '/deposits/?q=&type=test-analysis&sort=mostrecent'
+    url = '/deposits/?q=&collection=test-analysis&sort=mostrecent'
     resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
 
     assert resp.status_code == 200
@@ -534,6 +540,7 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
 def test_get_deposits_with_facets_non_empty_buckets_dates(
         client, users, auth_headers_for_user, create_deposit, create_schema):
     user = users['cms_user']
+    deposit_mapping_1 = get_default_mapping('test-schema', "1.0.0")
     create_schema('test-schema', experiment='CMS',
                   deposit_schema={
                       'title': 'deposit-test-schema', 'type': 'object',
@@ -544,7 +551,8 @@ def test_get_deposits_with_facets_non_empty_buckets_dates(
                       'title': 'ui-test-schema', 'type': 'object',
                       'analysis_context': {
                           'next_deadline_date': {'type': 'string'}
-                      }})
+                      }},
+                  deposit_mapping=deposit_mapping_1)
     create_deposit(user, 'test-schema',
                    {
                        '$ana_type': 'test-schema',
@@ -596,6 +604,20 @@ def test_get_deposits_with_range_query(
                                   'next_deadline_date': {
                                       'type': 'date'
                                   },
+                                "_collection": {
+                                        "type": "object",
+                                        "properties": {
+                                            "fullname": {
+                                                "type": "keyword"
+                                            },
+                                            "name": {
+                                                "type": "keyword"
+                                            },
+                                            "version": {
+                                                "type": "keyword"
+                                            }
+                                        }
+                                    },
                                   "analysis_context": {
                                       "type": "object",
                                       "properties": {
@@ -807,6 +829,7 @@ def test_get_deposit_with_form_json_serializer(
 
     # create schema
     ###############
+    deposit_mapping = get_default_mapping("test-schema", "1.0.0")
     create_schema('test-schema', experiment='CMS', fullname='Test Schema',
                   deposit_schema={
                       'title': 'deposit-test-schema', 'type': 'object',
@@ -819,7 +842,8 @@ def test_get_deposit_with_form_json_serializer(
                       'properties': {
                           'title': {'type': 'string'},
                           'field': {'type': 'string'}
-                      }})
+                      }},
+                    deposit_mapping=deposit_mapping)
     deposit = create_deposit(example_user, 'test-schema',
                              {
                                  '$ana_type': 'test-schema',

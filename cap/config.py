@@ -278,23 +278,33 @@ RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 # for aggregations, only ones starting with facet_ will be displayed on a page
 CAP_FACETS = {
     'aggs': {
-        'facet_type': {
+        'facet_collection': {
             'terms': {
-                'size': 30,
-                'script': 'doc.containsKey("_type") ? doc["_type"].value?.substring(0,doc["_type"].value.lastIndexOf("-v")) : null'  # noqa
+                'field': '_collection.name'
             },
             'aggs': {
-                'facet_type_version': {
+                'facet_collection_version': {
                     'terms': {
-                        'script': 'doc.containsKey("_type") ? doc["_type"].value?.substring(doc["_type"].value.lastIndexOf("-v") + 1, doc["_type"].value.length()) : null'  # noqa
+                        'field': '_collection.version'
                     }
                 },
+                "__display_name__": {
+                    "top_hits": {
+                        "size": 1,
+                        "_source": [
+                            "_collection.fullname"
+                        ]
+                    }
+                }
             },
+            'meta': {
+                'order': 1
+            }
         },
         'facet_cms_working_group': {
             'terms': {
                 'size': 30,
-                'script': 'doc.containsKey("cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
+                'script': 'doc.containsKey("basic_info.cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
             },
             'meta': {
                 'title': 'CMS Working Group'
@@ -405,8 +415,8 @@ CAP_FACETS = {
         },
     },
     'post_filters': {
-        'type': regex_filter('_type'),
-        'type_version': terms_filter('_type'),
+        'collection': terms_filter('_collection.name'),
+        'collection_version': terms_filter('_collection.version'),
         'cms_working_group': prefix_filter('basic_info.cadi_id'),
         'cadi_status': terms_filter('cadi_info.status'),
         'next_deadline_date': range_filter(

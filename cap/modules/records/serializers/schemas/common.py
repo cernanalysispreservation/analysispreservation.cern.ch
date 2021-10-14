@@ -116,13 +116,17 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         return obj.get('metadata', {}).get('_files', [])
 
     def get_schema(self, obj):
-        schema = resolve_schema_by_url(obj.get('metadata', {})['$schema'])
-        result = {
-            'name': schema.name,
-            'version': schema.version,
-            'fullname': schema.fullname or ''
-        }
-        return result
+        schema = obj.get('metadata', {}).get('_collection')
+        if schema:
+            return schema
+        else:
+            schema = resolve_schema_by_url(obj.get('metadata', {})['$schema'])
+            result = {
+                'name': schema.name,
+                'version': schema.version,
+                'fullname': schema.fullname or ''
+            }
+            return result
 
     def get_metadata(self, obj):
         result = {
@@ -138,7 +142,8 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                 '_files',
                 '_review',
                 '_fetched_from',
-                '_user_edited'
+                '_user_edited',
+                '_collection'
             ]
         }
         return result

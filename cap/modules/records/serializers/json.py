@@ -25,25 +25,29 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import current_app
+
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.serializers.json import JSONSerializer
+from invenio_pidstore.errors import PIDDoesNotExistError
 
 from cap.modules.records.utils import url_to_api_url
 
 
-class RecordSerializer(JSONSerializer):
+class CAPJSONSerializer(JSONSerializer):
     """Serializer for records v1 in JSON."""
     def preprocess_search_hit(self, pid, record_hit, links_factory=None):
         """Fetch PID object for records retrievals from ES."""
-        pid = PersistentIdentifier.get(pid_type=pid.pid_type,
-                                       pid_value=pid.pid_value)
+        try:
+            pid = PersistentIdentifier.get(pid_type=pid.pid_type,
+                                           pid_value=pid.pid_value)
 
-        result = super(RecordSerializer,
-                       self).preprocess_search_hit(pid,
-                                                   record_hit,
-                                                   links_factory=links_factory)
-
-        return result
+            result = super().preprocess_search_hit(
+                pid, record_hit, links_factory=links_factory)
+            return result
+        except PIDDoesNotExistError:
+            current_app.logger.info(
+                f'PIDDoesNotExistError on search. Record:.')
 
     def serialize_search(self, pid_fetcher, search_result, links=None,
                          item_links_factory=None, **kwargs):
@@ -58,7 +62,25 @@ class RecordSerializer(JSONSerializer):
             for k, v in links.items()
         } if links else {}
 
+        # Get display title for "_collection" field
+        collection_buckets = search_result.get("aggregations", {}) \
+                                          .get("facet_collection", {}) \
+                                          .get("buckets", [])
+        for cb in collection_buckets:
+            if "__display_name__" in cb:
+                try:
+                    display_name = (cb["__display_name__"]["hits"]["hits"][0]
+                                      ["_source"]["_collection"]["fullname"])
+                    cb["__display_name__"] = display_name
+                except:
+                    del cb["__display_name__"]
+
         return super().serialize_search(pid_fetcher,
                                         search_result,
                                         links=links,
                                         item_links_factory=item_links_factory)
+
+
+class RecordSerializer(CAPJSONSerializer):
+    """Serializer for records v1 in JSON."""
+    pass

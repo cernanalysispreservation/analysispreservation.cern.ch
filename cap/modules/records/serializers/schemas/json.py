@@ -173,6 +173,7 @@ class BasicDepositSchema(Schema):
                 '_review',
                 '_user_edited',
                 '_fetched_from',
+                '_collection',
             ]
         }
         return result

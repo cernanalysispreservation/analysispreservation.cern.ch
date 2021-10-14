@@ -28,7 +28,6 @@ class SearchFacets extends React.Component {
 
   constructFacets = aggs => {
     let facets = {};
-
     let keys = Object.keys(aggs).filter(key => {
       return typeof aggs[key] === "object";
     });
@@ -183,7 +182,14 @@ class SearchFacets extends React.Component {
       if (this.props.removeType) {
         delete facets.type;
       }
-      let categories = Object.keys(facets);
+
+      // Get and sort by order aggregations
+      let categories = [];
+      for (let key in facets) {
+        categories.push([key, facets[key].meta && facets[key].meta.order ? facets[key].meta.order : 9999 ]);
+      }
+      categories.sort((a, b) => (a[1] - b[1]) )
+      categories = categories.map(c => c[0]);
 
       facets_result = (
         <Box

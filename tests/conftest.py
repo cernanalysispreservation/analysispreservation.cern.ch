@@ -348,6 +348,31 @@ def auth_headers_for_user(base_app, db):
     return _write_token
 
 
+def get_default_mapping(name, version):
+    mapping_name = f"{name}-v{version}"
+    default_mapping = { "mappings": {} }
+    collectiion_mapping = {
+        "properties": {
+            "_collection": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "keyword"
+                    },
+                    "name": {
+                        "type": "keyword"
+                    },
+                    "version": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        }
+    }
+    default_mapping["mappings"][mapping_name] = collectiion_mapping
+    return default_mapping
+
+
 @pytest.fixture
 def auth_headers_for_superuser(superuser, auth_headers_for_user):
     return auth_headers_for_user(superuser)
@@ -373,7 +398,8 @@ def create_deposit(app, db, es, location, create_schema):
                         files={},
                         publish=False,
                         mapping=None,
-                        deposit_schema=None):
+                        deposit_schema=None,
+                        version="1.0.0"):
         """Create a new deposit for given user and schema name.
 
         e.g cms-analysis-v0.0.1,
@@ -381,10 +407,14 @@ def create_deposit(app, db, es, location, create_schema):
         """
         # create schema for record
         with app.test_request_context():
+            default_mapping = mapping if mapping \
+                else get_default_mapping(schema_name, version)
+
             schema = create_schema(schema_name,
                                    experiment=experiment,
-                                   deposit_mapping=mapping,
-                                   deposit_schema=deposit_schema)
+                                   deposit_schema=deposit_schema,
+                                   version=version,
+                                   deposit_mapping=default_mapping)
             deposit_schema_url = current_jsonschemas.path_to_url(
                 schema.deposit_path)
 

@@ -6,6 +6,9 @@ import CheckBox from "grommet/components/CheckBox";
 import Button from "../../partials/Button";
 import SubFacet from "./SubFacet/SubFacet";
 
+const getDisplayName = (field) => {
+  return field["__display_name__"];
+}
 const FacetItem = ({
   limit,
   items,
@@ -29,7 +32,7 @@ const FacetItem = ({
                 }}
               >
                 <CheckBox
-                  label={`${field.key} ${
+                  label={`${"__display_name__" in field ? getDisplayName(field) : field.key } ${
                     typeof field.doc_count === "object"
                       ? `(${field.doc_count.doc_count})`
                       : `(${field.doc_count})`
