@@ -12,8 +12,10 @@ const NotificationWizard = props => {
   const { category = "review" } = props.match.params;
 
   // if the category is not defined or it is not acceptable value
-  if (!category || !acceptedActions.includes(category))
-    props.history.push(props.location.pathname.split(`/${category}`)[0]);
+  if (!category || !acceptedActions.includes(category)) {
+    props.updatePath(props.location.pathname.split(`/${category}`)[0]);
+    return null;
+  }
 
   const currentNotifications = props.schemaConfig.getIn([
     "notifications",
@@ -22,7 +24,7 @@ const NotificationWizard = props => {
   ]);
 
   return (
-    <Box flex>
+    <Box>
       <Box
         pad="small"
         direction="row"
@@ -57,7 +59,8 @@ NotificationWizard.propTypes = {
   history: PropTypes.object,
   match: PropTypes.object,
   location: PropTypes.object,
-  schemaConfig: PropTypes.object
+  schemaConfig: PropTypes.object,
+  updatePath: PropTypes.func
 };
 
 export default NotificationWizard;

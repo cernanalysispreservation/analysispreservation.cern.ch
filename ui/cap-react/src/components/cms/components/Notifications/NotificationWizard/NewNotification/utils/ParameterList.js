@@ -5,7 +5,7 @@ import Button from "../../../../../../partials/Button";
 import Tag from "../../../../../../partials/Tag";
 import { AiOutlinePlus, AiOutlineClose } from "react-icons/ai";
 
-const Parameter = ({ ctx, onClick, header, updateNotification }) => {
+const ParameterList = ({ ctx, onClick, header, updateNotification }) => {
   return (
     <Box>
       <Box
@@ -61,10 +61,11 @@ const Parameter = ({ ctx, onClick, header, updateNotification }) => {
   );
 };
 
-Parameter.propTypes = {
+ParameterList.propTypes = {
   ctx: PropTypes.array,
   header: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  updateNotification: PropTypes.func
 };
 
-export default Parameter;
+export default ParameterList;

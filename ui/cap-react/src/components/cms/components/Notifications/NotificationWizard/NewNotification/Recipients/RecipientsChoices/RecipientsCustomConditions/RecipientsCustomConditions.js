@@ -6,8 +6,9 @@ import Button from "../../../../../../../../partials/Button";
 import Menu from "../../../../../../../../partials/Menu";
 import MenuItem from "../../../../../../../../partials/MenuItem";
 import HorizontalWithText from "../../../../../../../../partials/HorizontalWithText";
-import RecipiensList from "../../utils/RecipiensList";
+import RecipientsList from "../../utils/RecipientsList";
 import { fromJS } from "immutable";
+import { getEmailListForCustomConditions } from "../../utils/utils";
 
 import { AiOutlineMore, AiOutlineDelete } from "react-icons/ai";
 
@@ -19,25 +20,6 @@ const RecipientsCustomConditions = ({
   removeCondition
 }) => {
   const [selectedCheck, setSelectedCheck] = useState(null);
-
-  const getEmailList = () => {
-    const emails = selectedCheck.mail.get("mails");
-
-    let results = [];
-    let defaults =
-      emails.has("default") &&
-      emails.get("default").map(ml => fromJS({ type: "default", email: ml }));
-    let formatted =
-      emails.has("formatted") &&
-      emails
-        .get("formatted")
-        .map(ml => fromJS({ type: "formatted", email: ml }));
-
-    if (formatted) results = [...results, ...formatted];
-    if (defaults) results = [...results, ...defaults];
-
-    return results;
-  };
 
   useEffect(
     () => {
@@ -75,12 +57,12 @@ const RecipientsCustomConditions = ({
             emailType={emailType}
           />
           <Box pad={{ horizontal: "small" }} margin={{ top: "small" }}>
-            <HorizontalWithText text="EMAILS" />
-            <RecipiensList
+            <HorizontalWithText text="EMAILS" background="#ccc" color="#000" />
+            <RecipientsList
               updateList={(key, val) =>
                 updateNotification([selectedCheck.index, ...key], val)
               }
-              emailsList={getEmailList()}
+              emailsList={getEmailListForCustomConditions(selectedCheck)}
             />
           </Box>
         </React.Fragment>
@@ -125,7 +107,12 @@ const RecipientsCustomConditions = ({
                 <Label margin="none" size="small">
                   #{index + 1}
                 </Label>
-                <Box direction="row" responsive={false} align="center">
+                <Box
+                  direction="row"
+                  responsive={false}
+                  align="center"
+                  margin={{ left: "small" }}
+                >
                   <Label margin="none" style={{ marginRight: "5px" }}>
                     {item.mail.get("checks").size}
                   </Label>
@@ -133,7 +120,12 @@ const RecipientsCustomConditions = ({
                     Checks
                   </Heading>
                 </Box>
-                <Box direction="row" responsive={false} align="center">
+                <Box
+                  direction="row"
+                  responsive={false}
+                  align="center"
+                  margin={{ left: "small" }}
+                >
                   <Label margin="none" style={{ marginRight: "5px" }}>
                     {item.mail.hasIn(["mails", "default"]) &&
                       item.mail.getIn(["mails", "default"]).size}

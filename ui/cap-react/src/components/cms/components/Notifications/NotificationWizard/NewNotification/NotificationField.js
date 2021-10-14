@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Box } from "grommet";
 import NotificationModal from "./NotificationModal";
-import Parameter from "./utils/Parameter";
+import ParameterList from "./utils/ParameterList";
 import { Map } from "immutable";
 import AceEditor from "react-ace";
 import "ace-builds/webpack-resolver";
@@ -48,7 +48,7 @@ const NotificationField = ({
             />
           </Box>
         )}
-        <Parameter
+        <ParameterList
           ctx={ctx}
           onClick={() => setOpenModal(true)}
           header="Context"
@@ -64,6 +64,7 @@ NotificationField.propTypes = {
   field: PropTypes.string,
   template: PropTypes.string,
   ctx: PropTypes.object,
+  hideText: PropTypes.bool,
   updateNotification: PropTypes.func
 };
 

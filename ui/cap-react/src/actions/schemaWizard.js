@@ -561,10 +561,10 @@ export function updateNotificationByIndex(key, value) {
       if (List.isList(item)) {
         let ind = item.indexOf(value);
         newItem = item.delete(ind);
-      } else newItem = value;
+      } else newItem = fromJS(value);
     } else {
-      if (List.isList(item)) newItem = item.push(value);
-      else newItem = value;
+      if (List.isList(item)) newItem = item.push(fromJS(value));
+      else newItem = fromJS(value);
     }
 
     dispatch(updateNotification({ path, value: newItem }));

@@ -13,8 +13,6 @@ class SelectContentType extends React.Component {
   }
 
   render() {
-    let that = this;
-
     return (
       <Box size="medium">
         <Header justify="center">
@@ -37,7 +35,7 @@ class SelectContentType extends React.Component {
                 <Button
                   size="small"
                   key={item.get("deposit_group")}
-                  onClick={that.props.select.bind(
+                  onClick={this.props.select.bind(
                     this,
                     item.get("deposit_group")
                   )}

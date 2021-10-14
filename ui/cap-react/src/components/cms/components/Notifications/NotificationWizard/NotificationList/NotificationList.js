@@ -17,7 +17,7 @@ const NotificationList = ({
   pathname
 }) => {
   return (
-    <Box flex align="center" id="anchor-no-style">
+    <Box flex align="center" id="anchor-no-style" pad="small">
       <Box margin={{ bottom: "small" }} justify="end">
         <Button
           text="add new notification"
@@ -41,7 +41,7 @@ const NotificationList = ({
             <Label margin="none" size="small">
               #{index + 1}
             </Label>
-            <Menu icon={<AiOutlineMore size={18} />} right={-100} shadow>
+            <Menu icon={<AiOutlineMore size={18} />} right={-10} shadow>
               <MenuItem
                 title="remove"
                 hovered

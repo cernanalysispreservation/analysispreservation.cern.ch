@@ -6,8 +6,9 @@ import { AiOutlineClose } from "react-icons/ai";
 import Modal from "./RecipiensEmailModal";
 import EmailModal from "./FormattedEmailModal";
 import Tag from "../../../../../../../partials/Tag";
+import { getTagType } from "../../utils/utils";
 
-const RecipiensList = ({ emailsList = [], updateList }) => {
+const RecipientsList = ({ emailsList = [], updateList }) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [emailDisplay, setEmailDisplay] = useState("default");
@@ -32,28 +33,10 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
     [emailsList, emailDisplay]
   );
 
-  const getTagType = isTagSelected => {
-    const choices = {
-      true: {
-        bgcolor: "#e6f7ff",
-        border: "rgba(0, 106, 147, 1)",
-        color: "rgba(0, 106, 147, 1)"
-      },
-      false: {
-        bgcolor: "#fafafa",
-        border: "#d9d9d9",
-        color: "rgba(0,0,0,0.65)"
-      }
-    };
-
-    return choices[isTagSelected];
-  };
-
   return (
     <Box>
       {openModal && (
         <Modal
-          open={openModal}
           onClose={() => setOpenModal(false)}
           updateEmail={updateList}
           size={emailsList.length}
@@ -141,7 +124,9 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
                   size="iconSmall"
                   criticalOutline
                   rounded
-                  onClick={() => {}}
+                  onClick={() =>
+                    updateList(["mails", email.get("type")], email.get("email"))
+                  }
                 />
               </Box>
             </Box>
@@ -152,9 +137,9 @@ const RecipiensList = ({ emailsList = [], updateList }) => {
   );
 };
 
-RecipiensList.propTypes = {
+RecipientsList.propTypes = {
   emailsList: PropTypes.array,
   updateList: PropTypes.func
 };
 
-export default RecipiensList;
+export default RecipientsList;

@@ -4,9 +4,9 @@ import { Box, Heading, Label } from "grommet";
 import Select from "react-select";
 import Button from "../../../../../../partials/Button";
 import AddParameterManually from "./AddParameterManually";
-import { getMethodsByType } from "./customMethds";
+import { getMethodsByType } from "./customMethods";
 
-const ContextParams = ({ onChange, onClose, header, ctx }) => {
+const ContextParams = ({ onChange, onClose, header, ctx, modal = false }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const selectedOptions = ctx
     .map(item => (item.has("method") ? item.get("method") : null))
@@ -21,8 +21,6 @@ const ContextParams = ({ onChange, onClose, header, ctx }) => {
         display: "grid",
         gridGap: "3rem",
         gridTemplateColumns: "repeat(auto-fit, minmax(300px, 400px))",
-        width: "100%",
-        maxWidth: "900px",
         justifyContent: "center"
       }}
       pad="medium"
@@ -61,7 +59,7 @@ const ContextParams = ({ onChange, onClose, header, ctx }) => {
                   method: selectedValue.value
                 });
                 setSelectedValue(null);
-                onClose();
+                modal && onClose();
               }}
             />
           )}
@@ -77,7 +75,7 @@ const ContextParams = ({ onChange, onClose, header, ctx }) => {
         <AddParameterManually
           onUpdate={val => {
             onChange(val);
-            onClose();
+            modal && onClose();
           }}
         />
       </Box>
@@ -85,6 +83,12 @@ const ContextParams = ({ onChange, onClose, header, ctx }) => {
   );
 };
 
-ContextParams.propTypes = {};
+ContextParams.propTypes = {
+  onClose: PropTypes.func,
+  onChange: PropTypes.func,
+  modal: PropTypes.bool,
+  ctx: PropTypes.object,
+  header: PropTypes.string
+};
 
 export default ContextParams;

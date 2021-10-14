@@ -58,7 +58,9 @@ const ExpandableBox = ({
 ExpandableBox.propTypes = {
   header: PropTypes.string,
   label: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  shouldBeOpen: PropTypes.bool,
+  rightLabel: PropTypes.string
 };
 
 export default ExpandableBox;

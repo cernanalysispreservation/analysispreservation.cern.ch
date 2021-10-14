@@ -9,19 +9,22 @@ import NotificationIndex from "./NotificationIndex";
 
 import { CMS_EDIT, CMS_NOTIFICATION } from "../routes";
 
-const AdminIndex = ({ location, match, history, getSchema }) => {
+const AdminIndex = ({ location, match, getSchema, replacePath }) => {
   useEffect(() => {
     let { schema_name, schema_version } = match.params;
     const { pathname } = location;
-    schema_version =
-      schema_version == "builder" || schema_version == "notifications"
-        ? undefined
-        : schema_version;
+
+    // check whether the user has provided specific schema version
+    schema_version = ["builder", "notifications"].includes(schema_version)
+      ? undefined
+      : schema_version;
+
     // check if for some reason the path is not complete
+    // mostly due to previews path structire
     if (!pathname.includes("builder") && !pathname.includes("notifications"))
       schema_version
-        ? history.replace(`/admin/${schema_name}/${schema_version}/builder`)
-        : history.replace(`/admin/${schema_name}/builder`);
+        ? replacePath(`/admin/${schema_name}/${schema_version}/builder`)
+        : replacePath(`/admin/${schema_name}/builder`);
 
     // fetch schema
     if (schema_name) getSchema(schema_name, schema_version);
@@ -49,7 +52,9 @@ const AdminIndex = ({ location, match, history, getSchema }) => {
 AdminIndex.propTypes = {
   location: PropTypes.object,
   history: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  getSchema: PropTypes.func,
+  replacePath: PropTypes.func
 };
 
 export default AdminIndex;

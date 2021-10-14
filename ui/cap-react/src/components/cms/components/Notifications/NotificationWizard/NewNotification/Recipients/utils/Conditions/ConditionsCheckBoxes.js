@@ -144,7 +144,9 @@ ConditionsCheckBoxes.propTypes = {
   path: PropTypes.array,
   index: PropTypes.number,
   updateOperatorByPath: PropTypes.func,
-  deleteByPath: PropTypes.func
+  deleteByPath: PropTypes.func,
+  updateValueByPath: PropTypes.func,
+  schema: PropTypes.object
 };
 
 export default ConditionsCheckBoxes;

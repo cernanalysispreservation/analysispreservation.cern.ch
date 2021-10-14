@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Box, Heading } from "grommet";
 import NotificationBoxes from "./NotificationBoxes/NotificationBoxes";
 
-const Notifications = props => {
-  const notifications = props.schemaConfig.getIn(["notifications", "actions"]);
+const Notifications = ({ schemaConfig, pathname }) => {
+  const notifications = schemaConfig.getIn(["notifications", "actions"]);
 
   return (
     <Box flex>
@@ -26,7 +26,7 @@ const Notifications = props => {
               item={item}
               index={index + 1}
               key={item}
-              path={props.pathname}
+              path={pathname}
             />
           ))}
       </Box>
@@ -35,7 +35,8 @@ const Notifications = props => {
 };
 
 Notifications.propTypes = {
-  schemaConfig: PropTypes.object
+  schemaConfig: PropTypes.object,
+  pathname: PropTypes.string
 };
 
 export default Notifications;

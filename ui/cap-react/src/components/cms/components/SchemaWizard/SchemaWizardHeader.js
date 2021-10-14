@@ -129,7 +129,7 @@ class SchemaWizardHeader extends React.Component {
           <Box direction="row" align="center" responsive={false}>
             <Box
               margin={{ right: "small" }}
-              onClick={() => this.props.history.push("/admin")}
+              onClick={() => this.props.updatePath("/admin")}
             >
               <AiOutlineArrowLeft size={15} />
             </Box>
@@ -143,24 +143,24 @@ class SchemaWizardHeader extends React.Component {
           <Box direction="row" responsive={false}>
             <Button
               text="Form Builder"
-              primary={this.props.location.pathname.includes("/builder")}
+              primary={this.props.pathname.includes("/builder")}
               onClick={() => {
-                this.props.location.pathname.includes("/builder")
+                this.props.pathname.includes("/builder")
                   ? null
-                  : this.props.history.push(
-                      this.props.location.pathname.split("/notifications")[0] +
+                  : this.props.updatePath(
+                      this.props.pathname.split("/notifications")[0] +
                         "/builder"
                     );
               }}
             />
             <Button
               text="Notifications"
-              primary={this.props.location.pathname.includes("/notifications")}
+              primary={this.props.pathname.includes("/notifications")}
               onClick={() => {
-                this.props.location.pathname.includes("/notifications")
+                this.props.pathname.includes("/notifications")
                   ? null
-                  : this.props.history.push(
-                      this.props.location.pathname.split("/builder")[0] +
+                  : this.props.updatePath(
+                      this.props.pathname.split("/builder")[0] +
                         "/notifications"
                     );
               }}
@@ -277,7 +277,9 @@ SchemaWizardHeader.propTypes = {
   initialUiSchema: PropTypes.object,
   initialSchema: PropTypes.object,
   history: PropTypes.object,
-  loader: PropTypes.bool
+  loader: PropTypes.bool,
+  updatePath: PropTypes.func,
+  pathname: PropTypes.string
 };
 
 export default SchemaWizardHeader;

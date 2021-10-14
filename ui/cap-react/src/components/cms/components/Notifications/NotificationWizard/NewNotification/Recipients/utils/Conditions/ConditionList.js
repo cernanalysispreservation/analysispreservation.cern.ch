@@ -29,7 +29,9 @@ ConditionList.propTypes = {
   updateOperatorByPath: PropTypes.func,
   updateEmailList: PropTypes.func,
   deleteByPath: PropTypes.func,
-  removeEmail: PropTypes.func
+  removeEmail: PropTypes.func,
+  updateValueByPath: PropTypes.func,
+  schema: PropTypes.object
 };
 
 export default ConditionList;

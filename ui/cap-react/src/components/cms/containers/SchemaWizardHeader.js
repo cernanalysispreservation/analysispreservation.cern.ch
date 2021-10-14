@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import SchemaWizardHeader from "../components/SchemaWizard/SchemaWizardHeader";
-import { withRouter } from "react-router-dom";
+import { updatePath } from "../../../actions/support";
 
 function mapStateToProps(state) {
   return {
@@ -9,17 +9,18 @@ function mapStateToProps(state) {
     uiSchema: state.schemaWizard.getIn(["current", "uiSchema"]),
     initialSchema: state.schemaWizard.getIn(["initial", "schema"]),
     initialUiSchema: state.schemaWizard.getIn(["initial", "uiSchema"]),
-    config: state.schemaWizard.get("config")
+    config: state.schemaWizard.get("config"),
+    pathname: state.router.location.pathname
   };
 }
 
-function mapDispatchToProps() {
-  return {};
+function mapDispatchToProps(dispatch) {
+  return {
+    updatePath: path => dispatch(updatePath(path))
+  };
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SchemaWizardHeader)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SchemaWizardHeader);

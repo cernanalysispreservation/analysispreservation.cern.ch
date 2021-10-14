@@ -6,6 +6,7 @@ import { Box, Heading, Label } from "grommet";
 const FormattedEmailModal = ({ email, onClose }) => {
   let template = email.getIn(["email", "template"]);
   let ctx = email.getIn(["email", "ctx"]);
+
   return (
     <Modal onClose={onClose} title="Formatted Email">
       <Box size={{ width: "xlarge" }} pad="medium">
@@ -21,10 +22,19 @@ const FormattedEmailModal = ({ email, onClose }) => {
                 key={item.get("name")}
                 pad="small"
                 colorIndex="light-2"
-                margin={{ horizontal: "small" }}
+                margin="small"
               >
-                <Label size="small">{item.get("name")}</Label>
-                <Label size="small">{item.get("path")}</Label>
+                {item.get("method") ? (
+                  <React.Fragment>
+                    <Label size="small">method</Label>
+                    <Label size="small">{item.get("method")}</Label>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <Label size="small">name: {item.get("name")}</Label>
+                    <Label size="small">path: {item.get("path")}</Label>
+                  </React.Fragment>
+                )}
               </Box>
             ))}
           </Box>

@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import NewNotification from "../components/Notifications/NotificationWizard/NewNotification";
 import { updateNotificationByIndex } from "../../../actions/schemaWizard";
+import { updatePath } from "../../../actions/support";
 
 const mapStateToProps = state => {
   const index = state.schemaWizard.get("selectedNotificationIndex");
@@ -21,7 +22,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   updateNotificationByIndex: (key, value) =>
-    dispatch(updateNotificationByIndex(key, value))
+    dispatch(updateNotificationByIndex(key, value)),
+  updatePath: path => dispatch(updatePath(path))
 });
 
 export default connect(
