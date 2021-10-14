@@ -1,0 +1,97 @@
+{
+  "title": "Muo Top Survey",
+  "type": "object",
+  "properties": {
+      "no_official_wp": {
+          "type": "string",
+          "title": "If the definitions of the muon ID and Isolation variables you are using do not correspond to the official working point, could you explain us why?"
+      },
+      "efficiencies": {
+          "type": "string",
+          "title": "Are the efficiencies taken from central numbers or recomputed individually for the analysis? (reply for ID, Iso, Trigger)"
+      },
+      "dataset": {
+          "type": "string",
+          "title": "Which dataset are you using (2015 and/or 2016)? Which reprocessing or prompt reco?"
+      },
+      "moc_approved": {
+          "type": "boolean",
+          "title": "Approved by MOC",
+          "description": "This field can be only submitted by the reviewers"
+      },
+      "contact": {
+          "type": "string",
+          "title": "Contact Person"
+      },
+      "disagreements": {
+          "type": "string",
+          "title": "In case of disagreements, are those justified by differences in selection/particularities of the analysis? (reply for ID, Iso, Trigger)"
+      },
+      "scale_resolution": {
+          "type": "string",
+          "title": "How is the momentum scale and resolution taken into account?"
+      },
+      "supporting_material": {
+          "type": "string",
+          "title": "Supporting material for muon selection/trigger (including performance meas. and sys. unc.)"
+      },
+      "systematic_error": {
+          "type": "string",
+          "title": "In case no efficiency corrections are applied, is there any systematic error taken into account in the analysis for this? (reply for ID, Iso, Trigger)"
+      },
+      "talk_with_muon_group": {
+          "type": "boolean",
+          "title": "Need a talk in Muon Group",
+          "description": "This field can be only submitted by the reviewers"
+      },
+      "documentation": {
+          "type": "string",
+          "title": "SFs and Documentation",
+          "x-cap-documentation": {}
+      },
+      "trigger": {
+          "type": "string",
+          "title": "Trigger with Muon(s) leg"
+      },
+      "cadi_id": {
+          "type": "string",
+          "title": "Entry line in CADI"
+      },
+      "efficiency_errors": {
+          "type": "string",
+          "title": "Which are the errors assigned to efficiencies? How do they exactly propagate into the analysis? Are there systematic uncertainties computed and propagated into the analysis that account for differences between Zs and analysis phase space? (reply for ID, Iso, Trigger)"
+      },
+      "muon_id": {
+          "type": "string",
+          "title": "Muon ID"
+      },
+      "efficiency_numbers": {
+          "type": "string",
+          "title": "How are the efficiency numbers used? Are they applied as scale factors to MC? In bins of eta/pt? (reply for ID, Iso, Trigger)"
+      },
+      "muon_iso": {
+          "type": "string",
+          "title": "Muon ISO"
+      },
+      "efficiency_recomputed": {
+          "type": "string",
+          "title": "If the efficiencies are recomputed, are there plots showing level of agreement with central results? (reply for ID, Iso, Trigger)"
+      },
+      "short_description": {
+          "type": "string",
+          "title": "Short Analysis Description"
+      },
+      "basic_info": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "cadiid": {
+                "type": "string",
+                "title": "Cadi id",
+                "x-cap-cadiid": {}
+            }
+        },
+        "title": "Basic Info"
+    }
+  }
+}

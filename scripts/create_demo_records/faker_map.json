@@ -1,0 +1,28 @@
+{
+  "x-cap-documentation": {
+    "key": "chance",
+    "params": {
+      "pickone": [
+        [
+          "banana",
+          "apple",
+          "orange"
+        ]
+      ]
+    }
+  },
+  "x-cap-cadiid": {
+    "key": "chance",
+    "params": {
+      "pickone": [
+        [
+          "CADI-123",
+          "CADI-456",
+          "poutsa3",
+          "poutsa",
+          "poutsa2"
+        ]
+      ]
+    }
+  }
+}

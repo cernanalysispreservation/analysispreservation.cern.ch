@@ -82,6 +82,8 @@ cap.env
 cap/test.db
 
 # UI npn modules
+node_modules
+package-lock.json
 ui/node_modules/*
 ui/package-lock.json
 

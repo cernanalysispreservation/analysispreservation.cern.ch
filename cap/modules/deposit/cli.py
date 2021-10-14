@@ -128,7 +128,7 @@ def create_deposit(file, ana, roles, users, owner, save_errors):
         raise click.BadParameter('Not a valid JSON file.')
 
     # create a list of all the records provided (even if it is just 1)
-    records = [data] if isinstance(data, dict) else data
+    records = data if isinstance(data, list) else [data]
     click.secho(f"{len(records)} record(s) found in file.\n", fg='green')
 
     errors = []
