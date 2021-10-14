@@ -784,6 +784,9 @@
                         "type": "text",
                         "analyzer": "lowercase_whitespace_analyzer",
                         "copy_to": "trigger"
+                      },
+                      "prescale": {
+                        "type": "half_float"
                       }
                     }
                   },
