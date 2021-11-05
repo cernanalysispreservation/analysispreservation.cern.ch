@@ -102,3 +102,9 @@ services:
       - REDIS_HOSTS=cache
     ports:
       - "8081:8081"
+  cap-client:
+    build:
+      context: https://github.com/parths007/cap-client.git#type
+      dockerfile: Dockerfile
+    working_dir: /code
+    command: "tail -F cap-client"

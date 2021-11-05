@@ -26,6 +26,7 @@
 from __future__ import absolute_import, print_function
 
 from flask import Blueprint, current_app, jsonify, request, g
+from cap.modules.access.permissions import admin_permission_factory
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
 from flask_security.views import logout
@@ -127,6 +128,8 @@ def get_identity():
         {"method": d.method, "value": d.value}
         for d in g.identity.provides
     ]
+    isAdmin = admin_permission_factory(None).can()
+    data.append({"name": "isAdmin", "isAdmin": isAdmin})
     response = jsonify(data)
     response.status_code = 200
     return response

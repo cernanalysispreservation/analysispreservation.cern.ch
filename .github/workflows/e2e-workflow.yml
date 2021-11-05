@@ -33,3 +33,28 @@ jobs:
       - name: Run Cypress
         run: docker-compose -f docker-compose.e2e.yml run cypress cypress run --headless
 
+  Client:
+    name: CAP Client
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout to Code
+
+      - name: Run docker-compose stack
+        run: docker-compose -f docker-compose.e2e.yml up -d
+
+      - name: Create DB
+        run: docker-compose -f docker-compose.e2e.yml run web-api sh scripts/clean-and-init.sh
+
+      - name: Update save folder
+        run: docker-compose -f docker-compose.e2e.yml run web-api  cap files location local var/data --default
+
+      - name: Sleep for 180 seconds
+        run: sleep 180s
+        shell: bash
+
+      - name: Run token generator
+        run: docker-compose -f docker-compose.e2e.yml run -u root web-api cap oauth2server token-generator -u info@inveniosoftware.org --token-name teste2e
+
+      - name: Run e2e cap-client test
+        run: docker-compose -f docker-compose.e2e.yml run cap-client pytest tests/e2e/

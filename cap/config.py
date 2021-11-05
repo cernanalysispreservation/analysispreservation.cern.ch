@@ -179,6 +179,10 @@ SCHEMAS_OPTIONS_PREFIX = 'options/'
 #: Path of the folder that contains the default CAP schemas.
 SCHEMAS_DEFAULT_PATH = 'cap/modules/fixtures/schemas'
 
+#: Path of the file that will contain the generated tokens.
+#: The path comes from the shared volume between web-api and cap-client.
+TESTS_E2E_TOKEN_FILE = '/usr/src/app/token.env'
+
 # Flask configuration
 # ===================
 # See details on
@@ -206,7 +210,13 @@ APP_ALLOWED_HOSTS = [
 ]
 
 if os.environ.get('DEV_HOST', False):
-    APP_ALLOWED_HOSTS.append(os.environ.get('DEV_HOST'))
+    # Multiple hosts may be present in DEV_HOST key in docker-compose.yml
+    hosts = os.environ.get('DEV_HOST')
+    if "," in hosts:
+        _hosts = hosts.split(",")
+        APP_ALLOWED_HOSTS.append(host.strip() for host in _hosts)
+    else:
+        APP_ALLOWED_HOSTS.append(hosts)
 
 # OAI-PMH
 # =======

@@ -1,0 +1,35 @@
+name: Backend tests
+
+on:
+  push:
+    branches: [ master, docker ]
+  pull_request:
+    branches: [ master, docker ]
+
+jobs:
+  Client:
+    name: CAP Client
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout to Code
+
+      - name: Run docker-compose stack
+        run: docker-compose -f docker-compose.e2e.yml up -d
+
+      - name: Create DB
+        run: docker-compose -f docker-compose.e2e.yml run web-api sh scripts/clean-and-init.sh
+
+      - name: Update save folder
+        run: docker-compose -f docker-compose.e2e.yml run web-api  cap files location local var/data --default
+
+      - name: Run token generator
+        run: docker-compose -f docker-compose.e2e.yml run -u root web-api cap oauth2server token-generator -u cms@inveniosoftware.org --token-name teste2e
+
+      - name: Give Access Permissions
+        run: |
+          docker-compose -f docker-compose.e2e.yml run web-api cap access allow superuser-access role analysis-preservation-support@cern.ch
+          docker-compose -f docker-compose.e2e.yml run web-api cap access show -r  analysis-preservation-support@cern.ch
+
+      - name: Run e2e cap-client test
+        run: docker-compose -f docker-compose.e2e.yml run cap-client pytest tests/e2e/ -s

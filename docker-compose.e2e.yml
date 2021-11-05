@@ -59,12 +59,14 @@ services:
       - static_data:/opt/cap/var/instance/static
       - uploaded_data:/opt/cap/var/instance/data
       - media_data:/opt/cap/var/data
+      - client_content:/usr/src/app
       - ./cap:/opt/cap/src/cap
       - ./demo:/opt/cap/demo
     environment:
       - "FLASK_DEBUG=True"
       - "DEBUG_MODE=True"
       - "DEV_HOST=nginx"
+      - "CAP_IDENTITY_VIEW_ENABLE=True"
     links:
       - cache
       - es
@@ -124,7 +126,23 @@ services:
     extends:
       file: docker-services.yml
       service: es
+  cap-client:
+    extends:
+      file: docker-services.yml
+      service: cap-client
+    environment:
+      - CAP_SERVER_URL=https://nginx
+      - TESTS_E2E_TOKEN_FILE=/usr/src/app/public/token.env
+    links:
+      - web-api
+      - nginx
+    depends_on:
+      - web-api
+      - nginx
+    volumes:
+      - client_content:/usr/src/app/public
 volumes:
   static_data:
   uploaded_data:
   media_data:
+  client_content:
