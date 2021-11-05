@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import Button from "./Button";
 
 import { AiOutlineUser } from "react-icons/ai";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const Wrapper = styled.div`
   padding: ${props => props.padding};
@@ -17,6 +17,23 @@ const Wrapper = styled.div`
   }
 `;
 
+const menuAnimation = keyframes`
+from {
+  height:0;
+  opacity:0;
+}
+
+to {
+  height:100%;
+  opacity:1
+}
+`;
+const ExpandedDiv = styled.div`
+  animation-name: ${menuAnimation};
+  animation-fill-mode: forwards;
+  animation-duration: 0.2s;
+`;
+
 const Menu = ({
   icon = <AiOutlineUser size={23} />,
   children,
@@ -24,11 +41,11 @@ const Menu = ({
   right = 3,
   bottom = null,
   left = null,
-  background = "",
+  background = "#fff",
   hoverColor = "rgba(235, 235, 235, 1)",
   iconWrapperClassName = "",
   padding = "5px",
-  minWidth = "120px",
+  minWidth = "100px",
   shadow = false,
   buttonProps = null,
   dataCy = ""
@@ -77,6 +94,11 @@ const Menu = ({
           primary
           {...buttonProps}
           onClick={() => setExpanded(!expanded)}
+          icon={
+            expanded
+              ? buttonProps.iconOpen || buttonProps.icon
+              : buttonProps.icon
+          }
         />
       ) : (
         <Wrapper
@@ -99,10 +121,11 @@ const Menu = ({
           zIndex: 10000,
           minWidth: minWidth,
           background: background,
-          boxShadow: shadow && " 1px 1px 49px -22px rgba(0,0,0,0.3)"
+          borderRadius: "5px",
+          boxShadow: shadow && "rgba(0, 0, 0, 0.2) 10px 2px 50px"
         }}
       >
-        {expanded && children}
+        {expanded && <ExpandedDiv>{children}</ExpandedDiv>}
       </Box>
     </Box>
   );

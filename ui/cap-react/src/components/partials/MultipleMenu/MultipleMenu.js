@@ -22,6 +22,13 @@ import { connect } from "react-redux";
 const MultipleMenu = ({ logout, permissions, openModal }) => {
   const [displayMenu, setDisplayMenu] = useState(undefined);
 
+  const itemStyle = {
+    background: "rgba(0, 114, 152, 0.1)",
+    padding: "5px",
+    borderRadius: "50%",
+    marginRight: "5px"
+  };
+
   return (
     <Menu
       top={50}
@@ -30,6 +37,7 @@ const MultipleMenu = ({ logout, permissions, openModal }) => {
       iconWrapperClassName="headerMenuAppp"
       minWidth="300px"
       dataCy="header-menu"
+      shadow
     >
       <MultipleMenus
         onClick={() => setDisplayMenu(undefined)}
@@ -38,37 +46,21 @@ const MultipleMenu = ({ logout, permissions, openModal }) => {
           Support: (
             <React.Fragment>
               <MenuItem
-                hovered
-                separator
                 title="CERN Ticketing Service"
                 target="_blank"
                 href="https://cern.service-now.com/service-portal?id=functional_element&name=Data-Analysis-Preservation"
                 icon={
-                  <Box
-                    style={{
-                      background: "rgba(0, 114, 152, 0.1)",
-                      padding: "5px",
-                      borderRadius: "50%"
-                    }}
-                  >
-                    <AiOutlineQuestionCircle color="#007298" size={18} />
+                  <Box style={itemStyle}>
+                    <AiOutlineQuestionCircle color="#007298" size={14} />
                   </Box>
                 }
               />
               <MenuItem
-                hovered
-                separator
                 title="CAP Email Support"
                 href="mailto:analysis-preservation-support@cern.ch"
                 icon={
-                  <Box
-                    style={{
-                      background: "rgba(0, 114, 152, 0.1)",
-                      padding: "5px",
-                      borderRadius: "50%"
-                    }}
-                  >
-                    <AiOutlineMail color="#007298" size={18} />
+                  <Box style={itemStyle}>
+                    <AiOutlineMail color="#007298" size={14} />
                   </Box>
                 }
               />
@@ -77,56 +69,32 @@ const MultipleMenu = ({ logout, permissions, openModal }) => {
           Documentation: (
             <React.Fragment>
               <MenuItem
-                hovered
-                separator
                 target="_blank"
                 title="General Docs"
                 href="/docs/general"
                 icon={
-                  <Box
-                    style={{
-                      background: "rgba(0, 114, 152, 0.1)",
-                      padding: "5px",
-                      borderRadius: "50%"
-                    }}
-                  >
-                    <AiOutlineBook color="#007298" size={18} />
+                  <Box style={itemStyle}>
+                    <AiOutlineBook color="#007298" size={14} />
                   </Box>
                 }
               />
               <MenuItem
-                hovered
-                separator
                 target="_blank"
                 title="Cap Client"
                 href="/docs/cli"
                 icon={
-                  <Box
-                    style={{
-                      background: "rgba(0, 114, 152, 0.1)",
-                      padding: "5px",
-                      borderRadius: "50%"
-                    }}
-                  >
-                    <AiOutlineCode color="#007298" size={18} />
+                  <Box style={itemStyle}>
+                    <AiOutlineCode color="#007298" size={14} />
                   </Box>
                 }
               />
               <MenuItem
-                hovered
-                separator
                 target="_blank"
                 title="Cap API"
                 href="/docs/api"
                 icon={
-                  <Box
-                    style={{
-                      background: "rgba(0, 114, 152, 0.1)",
-                      padding: "5px",
-                      borderRadius: "50%"
-                    }}
-                  >
-                    <AiOutlineSchedule color="#007298" size={18} />
+                  <Box style={itemStyle}>
+                    <AiOutlineSchedule color="#007298" size={14} />
                   </Box>
                 }
               />
@@ -135,78 +103,46 @@ const MultipleMenu = ({ logout, permissions, openModal }) => {
         }}
       >
         <MenuItem
-          hovered
-          separator
           title="Documentation"
           onClick={() => setDisplayMenu("Documentation")}
           multipleMenu
           href="#"
           icon={
-            <Box
-              style={{
-                background: "rgba(0, 114, 152, 0.1)",
-                padding: "5px",
-                borderRadius: "50%"
-              }}
-            >
-              <AiOutlineBook color="#007298" size={18} />
+            <Box style={itemStyle}>
+              <AiOutlineBook color="#007298" size={14} />
             </Box>
           }
         />
         <MenuItem
-          hovered
-          separator
           title="Support"
           onClick={() => setDisplayMenu("Support")}
           multipleMenu
           href="#"
           icon={
-            <Box
-              style={{
-                background: "rgba(0, 114, 152, 0.1)",
-                padding: "5px",
-                borderRadius: "50%"
-              }}
-            >
-              <AiOutlineQuestionCircle color="#007298" size={18} />
+            <Box style={itemStyle}>
+              <AiOutlineQuestionCircle color="#007298" size={14} />
             </Box>
           }
         />
         {permissions && (
           <MediaQuery maxWidth={719}>
             <MenuItem
-              hovered
-              separator
               title="Create"
               onClick={openModal}
               href="#"
               icon={
-                <Box
-                  style={{
-                    background: "rgba(0, 114, 152, 0.1)",
-                    padding: "5px",
-                    borderRadius: "50%"
-                  }}
-                >
-                  <AiOutlinePlus color="#007298" size={18} />
+                <Box style={itemStyle}>
+                  <AiOutlinePlus color="#007298" size={14} />
                 </Box>
               }
             />
           </MediaQuery>
         )}
         <MenuItem
-          hovered
-          separator
           title="Settings"
           icon={
-            <Box
-              style={{
-                background: "rgba(0, 114, 152, 0.1)",
-                padding: "5px",
-                borderRadius: "50%"
-              }}
-            >
-              <AiOutlineSetting color="#007298" size={18} />
+            <Box style={itemStyle}>
+              <AiOutlineSetting color="#007298" size={14} />
             </Box>
           }
           path="/settings"
@@ -214,20 +150,12 @@ const MultipleMenu = ({ logout, permissions, openModal }) => {
           dataCy="settings-menuitem"
         />
         <MenuItem
-          hovered
-          separator
           title="Logout"
           onClick={logout}
           href="#"
           icon={
-            <Box
-              style={{
-                background: "rgba(0, 114, 152, 0.1)",
-                padding: "5px",
-                borderRadius: "50%"
-              }}
-            >
-              <AiOutlineLogout color="#007298" size={18} />
+            <Box style={itemStyle}>
+              <AiOutlineLogout color="#007298" size={14} />
             </Box>
           }
         />
