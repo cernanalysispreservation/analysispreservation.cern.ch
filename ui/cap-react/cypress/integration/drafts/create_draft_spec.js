@@ -1,3 +1,5 @@
+import { DRAFTS } from "../../routes";
+
 describe("Create Draft", function() {
   let firstTitle = "Random Title";
   let updatedTitle = "This is my new title";
@@ -67,7 +69,7 @@ describe("Create Draft", function() {
 
     cy.get("[data-cy=layer-primary-action]").click();
 
-    cy.url().should("not.include", "/drafts");
+    cy.url().should("not.include", DRAFTS);
   });
 
   it("Does not allow to continue when anatype is not selected", () => {
@@ -87,6 +89,6 @@ describe("Create Draft", function() {
       .contains("Start Preserving")
       .click();
 
-    cy.url().should("not.include", "/drafts");
+    cy.url().should("not.include", DRAFTS);
   });
 });

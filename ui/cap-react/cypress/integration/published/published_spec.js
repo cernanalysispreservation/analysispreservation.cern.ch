@@ -1,3 +1,5 @@
+import { PUBLISHED } from "../../routes";
+
 describe("Published Tests", function() {
   const firstTitle = "My First CMS Analysis";
   it("Publish a CMS Draft", () => {
@@ -21,7 +23,7 @@ describe("Published Tests", function() {
     cy.get("[data-cy=layer-primary-action]").click();
 
     // check if it was moved to the publised
-    cy.url().should("include", "/published");
+    cy.url().should("include", PUBLISHED);
   });
   it("A published report would not be deleted", () => {
     cy.loginUrl("cms@inveniosoftware.org", "cmscms");

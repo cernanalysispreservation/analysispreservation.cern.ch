@@ -1,8 +1,10 @@
+import { CREATE } from "../../routes";
+
 describe("Validate Deposit Groups", () => {
   it("Deposit Groups for a  CMS member", () => {
     cy.login("cms@inveniosoftware.org", "cmscms");
 
-    cy.visit("/create");
+    cy.visit(CREATE);
 
     // find out if the deposit groups are the correct ones
     // CMS Analysis and CMS Statistics Questionnaire
@@ -26,7 +28,7 @@ describe("Validate Deposit Groups", () => {
   it("Deposit Groups for an ATLAS member", () => {
     cy.login("atlas@inveniosoftware.org", "atlasatlas");
 
-    cy.visit("/create");
+    cy.visit(CREATE);
 
     // find out if the deposit groups are the correct ones
     // CMS Analysis and CMS Statistics Questionnaire
@@ -49,7 +51,7 @@ describe("Validate Deposit Groups", () => {
   it("Deposit Groups for an Alice member", () => {
     cy.login("alice@inveniosoftware.org", "alicealice");
 
-    cy.visit("/create");
+    cy.visit(CREATE);
 
     // find out if the deposit groups are the correct ones
     // CMS Analysis and CMS Statistics Questionnaire
@@ -72,7 +74,7 @@ describe("Validate Deposit Groups", () => {
   it("Deposit Groups for an LHCB member", () => {
     cy.login("lhcb@inveniosoftware.org", "lhcblhcb");
 
-    cy.visit("/create");
+    cy.visit(CREATE);
 
     // find out if the deposit groups are the correct ones
     // CMS Analysis and CMS Statistics Questionnaire
@@ -98,7 +100,7 @@ describe("Visit create path, with a specific analysis name", () => {
   it("Cms analysis should be  pre selected", () => {
     cy.login("cms@inveniosoftware.org", "cmscms");
 
-    cy.visit("/create/cms-analysis");
+    cy.visit(`${CREATE}/cms-analysis`);
 
     // find out if the deposit groups are the correct ones
     // CMS Analysis and CMS Statistics Questionnaire
@@ -115,7 +117,7 @@ describe("Visit create path, with a specific analysis name", () => {
   it("Fetch an analysis with no permissions", () => {
     cy.login("cms@inveniosoftware.org", "cmscms");
 
-    cy.visit("/create/atlas-analysis");
+    cy.visit(`${CREATE}/atlas-analysis`);
 
     cy.get("[data-cy=create-form-error-page]").should("be.visible");
   });

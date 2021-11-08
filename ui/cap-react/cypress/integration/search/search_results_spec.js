@@ -1,3 +1,5 @@
+import { DRAFTS } from "../../routes";
+
 describe("Search Results Suite", () => {
   const generalTitle = "testSearchForIt";
   it("Create a draft and find it throught search", () => {
@@ -19,7 +21,7 @@ describe("Search Results Suite", () => {
 
     cy.get("[data-cy=layer-primary-action]").click();
 
-    cy.url().should("not.include", "/drafts");
+    cy.url().should("not.include", DRAFTS);
     cy.wait(1000);
   });
 

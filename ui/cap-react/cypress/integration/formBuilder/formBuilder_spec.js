@@ -1,3 +1,5 @@
+import { CMS_NEW } from "../../routes";
+
 describe("Form Builder", function() {
   // with respect to the current working folder
 
@@ -38,7 +40,7 @@ describe("Form Builder", function() {
       .contains("Create")
       .click();
 
-    cy.get("header span").contains(name);
+    cy.url().should("include", CMS_NEW);
   });
 
   // it("Download Schema File", () => {

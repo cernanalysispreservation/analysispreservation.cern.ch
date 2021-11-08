@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import { CMS } from "../routes";
+
 // Login mechanism with the UI
 Cypress.Commands.add("login", (email, password) => {
   cy.visit("/");
@@ -102,7 +104,7 @@ Cypress.Commands.add("goToFormBuilder", () => {
   cy.loginUrl("info@inveniosoftware.org", "infoinfo");
   cy.wait(2000);
 
-  cy.visit("/cms");
+  cy.visit(CMS);
 
   cy.wait(2000);
 });
