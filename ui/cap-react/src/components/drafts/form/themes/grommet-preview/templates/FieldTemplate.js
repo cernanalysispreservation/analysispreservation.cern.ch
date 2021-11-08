@@ -6,6 +6,28 @@ import FieldHeader from "../components/FieldHeader";
 
 let FieldTemplate = function(props) {
   const { label, children, formContext, uiSchema } = props;
+  const uiWidget = uiSchema["ui:widget"];
+
+  // this list consists values that will be full width in the preview mode
+  const FULL_WIDTH_ITEMS = ["richeditor"];
+
+  const getElementWidth = () => {
+    const elementIsArrayOrObject = ["array", "object"].includes(
+      props.schema.type
+    );
+
+    // uniqueItems => selectWidget
+    // label => ArrayItems without title ex array of strings
+    const shouldBeFullWidth = FULL_WIDTH_ITEMS.includes(uiWidget);
+    if (
+      shouldBeFullWidth ||
+      (elementIsArrayOrObject && !props.schema.uniqueItems) ||
+      !label
+    )
+      return "1/5";
+
+    return "3/5";
+  };
 
   return children[0].props &&
     children[0].props.formData === undefined ? null : (
@@ -31,14 +53,7 @@ let FieldTemplate = function(props) {
           flex
           style={{
             paddingRight: "10px",
-            gridColumn:
-              ["array", "object"].indexOf(props.schema.type) > -1
-                ? props.schema.uniqueItems
-                  ? "1/3"
-                  : "1/5"
-                : label
-                  ? "1/3"
-                  : "1/5"
+            gridColumn: "1/3"
           }}
         >
           <FieldHeader title={label} bold uiSchema={uiSchema} />
@@ -49,14 +64,7 @@ let FieldTemplate = function(props) {
         flex
         justify="center"
         style={{
-          gridColumn:
-            ["array", "object"].indexOf(props.schema.type) > -1
-              ? props.schema.uniqueItems
-                ? "3/5"
-                : "1/5"
-              : label
-                ? "3/5"
-                : "1/5"
+          gridColumn: getElementWidth()
         }}
       >
         {children}
