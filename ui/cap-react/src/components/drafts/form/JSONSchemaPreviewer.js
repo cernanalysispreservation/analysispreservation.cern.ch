@@ -12,6 +12,8 @@ import widgets from "./themes/grommet-preview/widgets";
 import fields from "./themes/grommet-preview/fields";
 import Form from "react-jsonschema-form";
 
+import Button from "../../partials/Button";
+
 class JSONShemaPreviewer extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +41,9 @@ class JSONShemaPreviewer extends React.Component {
     this.state = {
       formData: {},
       uiObject:
-        shouldDisplayTabViewButton && this.props.displayViewButtons
+        shouldDisplayTabViewButton &&
+        this.props.displayViewButtons &&
+        this.props.uiSchema["ui:object"] == "tabView"
           ? "tabView"
           : "",
       shouldDisplayTabViewButton
@@ -71,39 +75,20 @@ class JSONShemaPreviewer extends React.Component {
                 responsive={false}
                 style={{ padding: "5px" }}
               >
-                <Box
+                <Button
+                  text="tab"
+                  size="small"
+                  primary={this.state.uiObject == "tabView"}
+                  disabled={this.props.uiSchema["ui:object"] != "tabView"}
                   onClick={() => this.setState({ uiObject: "tabView" })}
-                  style={
-                    this.state.uiObject === "tabView"
-                      ? {
-                          color: "rgba(0,0,0,1)",
-                          fontWeight: "bold"
-                        }
-                      : {
-                          color: "rgba(0,0,0,.5)",
-                          fontWeight: "normal"
-                        }
-                  }
-                >
-                  Tab
-                </Box>
+                />
                 <Box style={{ margin: "0 5px" }}>/</Box>
-                <Box
+                <Button
+                  primary={this.state.uiObject == ""}
+                  text="List"
+                  size="small"
                   onClick={() => this.setState({ uiObject: "" })}
-                  style={
-                    this.state.uiObject !== "tabView"
-                      ? {
-                          color: "rgba(0,0,0,1)",
-                          fontWeight: "bold"
-                        }
-                      : {
-                          color: "rgba(0,0,0,.5)",
-                          fontWeight: "normal"
-                        }
-                  }
-                >
-                  List
-                </Box>
+                />
               </Box>
             </Box>
           )}
