@@ -30,6 +30,7 @@ let FieldTemplate = function(props) {
     return (
       <Box
         style={{
+          overflow: "auto",
           gridColumn: gridColumns ? gridColumns : "1 / 5",
           borderRight: "1px dotted rgba(0, 0, 0, 0.15)",
           borderLeft: "1px dotted rgba(0, 0, 0, 0.15)",

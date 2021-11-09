@@ -38,12 +38,14 @@ let FieldTemplate = function(props) {
         gridColumn: "1/5",
         display: "grid",
         gridTemplateColumns: "repeat(4, 1fr)",
-        padding: "10px"
+        padding: "10px",
+        alignItems: !formContext.tabView && "start",
+        height: !formContext.tabView && "100%"
       }}
-      id="fieldTemplate"
+      id="fieldTemplates"
       className={
         formContext.tabView
-          ? "fieldTemplate "
+          ? "fieldTemplate"
           : "fieldTemplate align-form-center"
       }
     >

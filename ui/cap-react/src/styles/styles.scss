@@ -102,15 +102,7 @@ label {
 .rjsf > .align-form-center > div {
   width: 800px;
   max-width: 100%;
-  display: flex;
   margin: 0 auto;
-  margin-top: auto;
-}
-
-// make the form's width take almost the whole width of the parent
-// but only for the instance of draft preview page
-#deposit-page .rjsf > .align-form-center > div {
-  width: 97%;
 }
 
 .fieldTemplate:nth-child(even) {
@@ -129,12 +121,9 @@ label {
   background: #e1e1e1 !important;
 }
 
-.fieldTemplate:nth-child(even) > .obj-fld-tml {
-  background: #fff !important;
-  margin-bottom: 0;
-  height: 100%;
-}
 
+// add border top and bottom for the DefaultArray & StringArrayField items
+// when there is a readonly param
 .fieldTemplateSeparator:nth-child(odd) {
   border-bottom: 1px solid #e4e4e4 !important;
   border-top: 1px solid #e4e4e4 !important;
@@ -153,9 +142,7 @@ label {
   border-top: 0px !important;
 }
 
-#fieldTemplate ~ span.fieldTemplate {
-  background: #fff !important;
-}
+
 
 
 .grommetux-check-box--toggle .grommetux-check-box__control {
@@ -206,16 +193,29 @@ label {
   fill: rgb(40, 105, 146) !important;
 }
 
-#draft-editor-page .rjsf > #fieldTemplate {
-  padding: 0 !important;
+#draft-editor-page form.rjsf {
+  overflow: auto !important
 }
 
 .newNotification .ace_scroller{
   padding: 10px 20px;
 }
 
+.tabField{
+  height: 100% !important;
+  display: grid !important;
+  grid-template-rows: auto 1fr !important;
+  overflow: auto !important
+}
+
 // xsmall
 @media only screen and (min-width: 320px) {
+  .tabField{
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: auto 1fr !important;
+    overflow: auto !important
+  }
   .small-center-medium-between {
     justify-content: center;
   }
@@ -258,14 +258,6 @@ label {
     flex-direction: column-reverse !important;
   }
 
-  #published-preview-page .rjsf > #fieldTemplate:not(.align-form-center),
-  #published-preview-page
-    .rjsf
-    > #fieldTemplate:not(.align-form-center)
-    > div
-    > div {
-    display: flex !important;
-  }
 
   .drafts-index-container {
     flex-direction: column !important;
@@ -297,24 +289,8 @@ label {
     flex-direction: column-reverse !important;
   }
 
-  .small-row-large-column {
-    flex-direction: column !important;
-  }
-
   #list {
-    display: flex;
     width: 100%;
-    overflow: visible;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #item {
-    min-width: 250px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
   }
 
   #tabs-select-component {
@@ -365,16 +341,6 @@ label {
     flex-direction: row !important;
   }
 
-  .md-column {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .tabs-list-items {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-around;
-  }
 
   .tabs-list {
     display: none !important;
@@ -410,9 +376,7 @@ label {
 
 // small
 @media only screen and (min-width: 580px) {
-  .small-row-large-column {
-    flex-direction: row !important;
-  }
+
   .sm-order-2 {
     order: 1;
   }
@@ -446,7 +410,6 @@ label {
     display: none !important;
     color: #000 !important;
   }
-
   .animated-nav:hover {
     background: #e9e9e9 !important;
 
@@ -512,19 +475,11 @@ label {
   #draft-editor-page #list {
     overflow-x: auto;
     justify-content: flex-start;
-    max-width: 90vw;
   }
 
   .tabs-list-items {
     display: flex !important;
     flex-direction: row !important;
-  }
-  .tabs-list {
-    display: flex !important;
-  }
-
-  .tabs-select-menu {
-    display: none !important;
   }
 }
 
@@ -538,26 +493,14 @@ label {
 }
 
 @media only screen and (min-width: 910px) {
-  #draft-editor-page #list {
-    max-width: 90.5vw;
-  }
-
   .footer-order {
     display: flex !important;
     flex-direction: row !important;
   }
 }
 
-@media only screen and (min-width: 920px) {
-  #draft-editor-page #list {
-    max-width: 91vw;
-  }
-}
-
 @media only screen and (min-width: 992px) {
-  #draft-editor-page #list {
-    max-width: 92vw;
-  }
+
 
   .search_result_box {
     min-width: 615px !important;
@@ -596,8 +539,21 @@ label {
 }
 
 @media only screen and (min-width: 1114px) {
-  .tab-scroll {
-    height: 1vh !important;
+  .tabs-select-menu {
+    display: none !important;
+  }
+  .tabs-list {
+    display: flex !important;
+  }
+  .tabField{
+    height: 100% !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    overflow: auto !important
+  }
+
+  .tabField{
+    grid-template-columns: auto 1fr;
   }
   .sidebar-hide-small {
     position: unset !important;
@@ -610,24 +566,14 @@ label {
     position: unset;
   }
 
-  .md-column {
-    display: flex;
-    flex-direction: row !important;
-  }
   .tabs-list-items {
     flex-direction: column !important;
     justify-content: flex-start;
   }
   #list {
+    flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    width: auto;
-    max-width: 100%;
-  }
-  #item {
-    align-items: flex-start;
-  }
-  .small-row-large-column {
-    flex-direction: column !important;
+    height: 100%
   }
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import { filter } from "lodash";
@@ -122,108 +121,79 @@ class TabField extends React.Component {
     }
 
     return (
-      <Box
-        flex={true}
-        style={{
-          display: "grid",
-          height: "100%"
-        }}
-      >
-        <Box>
-          <Box className="md-column">
-            <Box
-              fixed="true"
-              colorIndex={this.view.sidebarColor || "grey-4"}
-              pad={{ between: this.view.vertical ? "none" : "small" }}
-              className="small-row-large-column"
-              align="center"
-              id="list"
-            >
-              {this.state.analysis_mode.length > 0 ? (
-                <AnalysisReuseMode
-                  innerProps={this.state.analysis_mode[0].content.props}
-                />
-              ) : null}
+      <Box className="tabField">
+        <Box
+          colorIndex={this.view.sidebarColor || "grey-4"}
+          pad={{ between: this.view.vertical ? "none" : "small" }}
+          align="center"
+          id="list"
+        >
+          {this.state.analysis_mode.length > 0 ? (
+            <AnalysisReuseMode
+              innerProps={this.state.analysis_mode[0].content.props}
+            />
+          ) : null}
 
-              <Box
-                className="tabs-select-menu"
-                colorIndex={this.view.sidebarColor || "grey-4"}
-              >
-                <Box pad="small">
-                  <Select
-                    id="tabs-select-component"
-                    className="select-menu"
-                    options={tabs.map(tab => {
-                      return {
-                        value: tab.name,
-                        label:
-                          tab.title ||
-                          tab.content.props.schema.title ||
-                          "Untitled"
-                      };
-                    })}
-                    onChange={this.updateValueOnClick}
-                    value={{
-                      label: this.state.activeLabel,
-                      value: this.state.active
-                    }}
-                  />
-                </Box>
-              </Box>
-              <Box className="tabs-list">
-                <Box pad={{ vertical: "none" }} className="tabs-list-items">
-                  {tabs.map((tab, index) => (
-                    <ErrorFieldIndicator
-                      errors={this.props.formContext.ref}
-                      id={
-                        this.state.optionTabs
-                          ? tab.idsList
-                          : tab.content.props.idSchema.$id
-                      }
-                      properties={this.props.properties}
-                      tab={true}
-                      key={index}
-                    >
-                      <Box
-                        colorIndex={
-                          tab.name == this.state.active ? "light-1" : null
-                        }
-                        key={index}
-                        pad="small"
-                        onClick={this._onTabClick.bind(this, tab)}
-                        id="item"
-                      >
-                        <Heading tag="h5" margin="none" size="medium" strong>
-                          {tab.title ||
-                            tab.content.props.schema.title ||
-                            "Untitled"}
-                        </Heading>
-                      </Box>
-                    </ErrorFieldIndicator>
-                  ))}
-                </Box>
-              </Box>
-            </Box>
-
-            <Box flex={true}>
-              <Box
-                style={{
-                  display: "grid",
-                  padding: "10px",
-                  width: "100%"
+          <Box
+            className="tabs-select-menu"
+            colorIndex={this.view.sidebarColor || "grey-4"}
+          >
+            <Box pad="small">
+              <Select
+                id="tabs-select-component"
+                className="select-menu"
+                options={tabs.map(tab => {
+                  return {
+                    value: tab.name,
+                    label:
+                      tab.title || tab.content.props.schema.title || "Untitled"
+                  };
+                })}
+                onChange={this.updateValueOnClick}
+                value={{
+                  label: this.state.activeLabel,
+                  value: this.state.active
                 }}
-                className="justify-large  tab-scroll"
-              >
-                <Box
-                  className="rjsf xlarge_box"
-                  style={{
-                    padding: "10px"
-                  }}
-                >
-                  {active_tabs_content.map(item => item.content)}
-                </Box>
-              </Box>
+              />
             </Box>
+          </Box>
+          <Box className="tabs-list">
+            <Box pad={{ vertical: "none" }} className="tabs-list-items">
+              {tabs.map((tab, index) => (
+                <ErrorFieldIndicator
+                  errors={this.props.formContext.ref}
+                  id={
+                    this.state.optionTabs
+                      ? tab.idsList
+                      : tab.content.props.idSchema.$id
+                  }
+                  properties={this.props.properties}
+                  tab={true}
+                  key={index}
+                >
+                  <Box
+                    colorIndex={
+                      tab.name == this.state.active ? "light-1" : null
+                    }
+                    key={index}
+                    pad="small"
+                    onClick={this._onTabClick.bind(this, tab)}
+                    id="item"
+                  >
+                    <Heading tag="h5" margin="none" size="medium" strong>
+                      {tab.title ||
+                        tab.content.props.schema.title ||
+                        "Untitled"}
+                    </Heading>
+                  </Box>
+                </ErrorFieldIndicator>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+        <Box align="center" flex style={{ overflow: "auto" }}>
+          <Box pad="small" size={{ width: "xlarge" }}>
+            {active_tabs_content.map(item => item.content)}
           </Box>
         </Box>
       </Box>

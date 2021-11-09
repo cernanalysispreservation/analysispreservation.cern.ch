@@ -122,6 +122,7 @@ class DraftEditor extends React.Component {
                 canEdit(this.props.canAdmin, this.props.canUpdate) ? (
                   <React.Fragment>
                     <Form
+                      style={{ overflow: "auto" }}
                       formRef={this.props.formRef}
                       formData={this.props.formData || {}}
                       schema={_schema}

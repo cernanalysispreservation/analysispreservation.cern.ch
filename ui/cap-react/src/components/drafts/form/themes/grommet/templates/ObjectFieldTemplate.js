@@ -25,7 +25,6 @@ let ObjectFieldTemplate = function(props) {
           justifyContent:
             props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
         }}
-        className="obj-fld-tml"
       >
         <Box {...sizeProps}>
           <Box
@@ -46,11 +45,7 @@ let ObjectFieldTemplate = function(props) {
   if (!("ui:object" in props.uiSchema)) {
     return (
       <Box
-        className={
-          props.formContext.readonlyPreview
-            ? "published-array obj-fld-tml"
-            : "obj-fld-tml"
-        }
+        className={props.formContext.readonlyPreview && "published-array"}
         style={{
           padding: "3px!important"
         }}
