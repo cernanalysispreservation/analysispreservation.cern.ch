@@ -76,7 +76,7 @@ class JSONShemaPreviewer extends React.Component {
                 style={{ padding: "5px" }}
               >
                 <Button
-                  text="tab"
+                  text="Tab"
                   size="small"
                   primary={this.state.uiObject == "tabView"}
                   disabled={this.props.uiSchema["ui:object"] != "tabView"}

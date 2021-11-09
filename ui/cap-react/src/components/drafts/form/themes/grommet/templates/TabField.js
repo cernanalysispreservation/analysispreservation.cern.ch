@@ -5,8 +5,9 @@ import Heading from "grommet/components/Heading";
 import { filter } from "lodash";
 import AnalysisReuseMode from "../components/AnalysisReuseMode";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
-import Select from "react-select";
-
+import Menu from "../../../../../partials/Menu";
+import MenuItem from "../../../../../partials/MenuItem";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 class TabField extends React.Component {
   constructor(props) {
     super(props);
@@ -100,7 +101,10 @@ class TabField extends React.Component {
     );
   };
   updateValueOnClick = tab => {
-    this.setState({ active: tab.value, activeLabel: tab.label });
+    this.setState({
+      active: tab.name,
+      activeLabel: tab.content.props.schema.title
+    });
   };
 
   render() {
@@ -126,7 +130,6 @@ class TabField extends React.Component {
           colorIndex={this.view.sidebarColor || "grey-4"}
           pad={{ between: this.view.vertical ? "none" : "small" }}
           align="center"
-          id="list"
         >
           {this.state.analysis_mode.length > 0 ? (
             <AnalysisReuseMode
@@ -135,27 +138,30 @@ class TabField extends React.Component {
           ) : null}
 
           <Box
+            pad="small"
+            style={{ position: "relative" }}
             className="tabs-select-menu"
             colorIndex={this.view.sidebarColor || "grey-4"}
           >
-            <Box pad="small">
-              <Select
-                id="tabs-select-component"
-                className="select-menu"
-                options={tabs.map(tab => {
-                  return {
-                    value: tab.name,
-                    label:
-                      tab.title || tab.content.props.schema.title || "Untitled"
-                  };
-                })}
-                onChange={this.updateValueOnClick}
-                value={{
-                  label: this.state.activeLabel,
-                  value: this.state.active
-                }}
-              />
-            </Box>
+            <Menu
+              top={48}
+              right={10}
+              shadow
+              buttonProps={{
+                text: this.state.activeLabel,
+                icon: <AiOutlineDown />,
+                iconOpen: <AiOutlineUp />,
+                reverse: true
+              }}
+            >
+              {tabs.map(tab => (
+                <MenuItem
+                  title={tab.content.props.schema.title || "Untitled"}
+                  key={tab.name}
+                  onClick={() => this.updateValueOnClick(tab)}
+                />
+              ))}
+            </Menu>
           </Box>
           <Box className="tabs-list">
             <Box pad={{ vertical: "none" }} className="tabs-list-items">
@@ -177,9 +183,7 @@ class TabField extends React.Component {
                     }
                     key={index}
                     pad="small"
-                    onClick={this._onTabClick.bind(this, tab)}
-                    id="item"
-                  >
+                    onClick={this._onTabClick.bind(this, tab)}                  >
                     <Heading tag="h5" margin="none" size="medium" strong>
                       {tab.title ||
                         tab.content.props.schema.title ||
@@ -192,7 +196,7 @@ class TabField extends React.Component {
           </Box>
         </Box>
         <Box align="center" flex style={{ overflow: "auto" }}>
-          <Box pad="small" size={{ width: "xlarge" }}>
+          <Box pad="small" size={{ width: "xxlarge" }}>
             {active_tabs_content.map(item => item.content)}
           </Box>
         </Box>

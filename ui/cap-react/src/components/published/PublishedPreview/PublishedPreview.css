@@ -19,6 +19,7 @@
   align-items: center;
 }
 
+
 @media only screen and (min-width: 720px) {
   #published-preview-page .button-align {
     align-items: flex-end;
@@ -32,19 +33,6 @@
   }
 }
 
-@media only screen and (min-width: 800px) {
-  #published-preview-page #list {
-    max-width: 95vw;
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
-}
-
-@media only screen and (min-width: 850px) {
-  #published-preview-page #list {
-    max-width: 96vw;
-  }
-}
 
 @media only screen and (min-width: 1410px) {
   #published-preview-page .published-hide-sidebar {

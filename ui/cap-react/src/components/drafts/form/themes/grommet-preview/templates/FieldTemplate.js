@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import FieldHeader from "../components/FieldHeader";
 
 let FieldTemplate = function(props) {
-  const { label, children, formContext, uiSchema } = props;
+  const { label, children, formContext, uiSchema, id } = props;
   const uiWidget = uiSchema["ui:widget"];
 
   // this list consists values that will be full width in the preview mode
@@ -38,11 +38,8 @@ let FieldTemplate = function(props) {
         gridColumn: "1/5",
         display: "grid",
         gridTemplateColumns: "repeat(4, 1fr)",
-        padding: "10px",
-        alignItems: !formContext.tabView && "start",
-        height: !formContext.tabView && "100%"
+        padding: id != "root" && "10px",
       }}
-      id="fieldTemplates"
       className={
         formContext.tabView
           ? "fieldTemplate"
@@ -64,7 +61,6 @@ let FieldTemplate = function(props) {
 
       <Box
         flex
-        justify="center"
         style={{
           gridColumn: getElementWidth()
         }}

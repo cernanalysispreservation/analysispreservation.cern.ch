@@ -100,9 +100,10 @@ label {
 }
 
 .rjsf > .align-form-center > div {
-  width: 800px;
-  max-width: 100%;
+  width: 100% !important;
+  max-width: 800px !important;
   margin: 0 auto;
+  padding: 0 5px
 }
 
 .fieldTemplate:nth-child(even) {
@@ -201,12 +202,7 @@ label {
   padding: 10px 20px;
 }
 
-.tabField{
-  height: 100% !important;
-  display: grid !important;
-  grid-template-rows: auto 1fr !important;
-  overflow: auto !important
-}
+
 
 // xsmall
 @media only screen and (min-width: 320px) {
@@ -287,10 +283,6 @@ label {
 
   .lg-column {
     flex-direction: column-reverse !important;
-  }
-
-  #list {
-    width: 100%;
   }
 
   #tabs-select-component {
@@ -391,17 +383,11 @@ label {
 
 // medium
 @media only screen and (min-width: 720px) {
+
   .small-center-medium-between {
     justify-content: space-between;
   }
-  #published-preview-page .rjsf > #fieldTemplate:not(.align-form-center),
-  #published-preview-page
-    .rjsf
-    > #fieldTemplate:not(.align-form-center)
-    > div
-    > div {
-    display: grid !important;
-  }
+
   .small-row-medium-column {
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -472,10 +458,6 @@ label {
 }
 
 @media only screen and (min-width: 800px) {
-  #draft-editor-page #list {
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
 
   .tabs-list-items {
     display: flex !important;
@@ -549,12 +531,10 @@ label {
     height: 100% !important;
     display: grid !important;
     grid-template-columns: auto 1fr !important;
+    grid-template-rows: auto  !important;
     overflow: auto !important
   }
 
-  .tabField{
-    grid-template-columns: auto 1fr;
-  }
   .sidebar-hide-small {
     position: unset !important;
   }
@@ -570,10 +550,5 @@ label {
     flex-direction: column !important;
     justify-content: flex-start;
   }
-  #list {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    height: 100%
-  }
+
 }

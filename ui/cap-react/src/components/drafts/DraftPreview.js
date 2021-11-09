@@ -176,7 +176,7 @@ const DraftPreview = props => {
     >
       {props.error ? showToaster(props.error.message) : null}
 
-      <Box pad={{ between: "medium" }} direction="column" id="deposit-page">
+      <Box pad={{ between: "medium" }} direction="column">
         <Box
           direction="row"
           responsive={false}

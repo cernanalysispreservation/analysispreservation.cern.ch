@@ -8,10 +8,7 @@ import Box from "grommet/components/Box";
 
 import Label from "grommet/components/Label";
 
-import {
-  updateDraft,
-  editPublished
-} from "../../../actions/draftItem";
+import { updateDraft, editPublished } from "../../../actions/draftItem";
 import { withRouter } from "react-router";
 import { formErrorsChange } from "../../../actions/common";
 import Button from "../../partials/Button";
@@ -221,8 +218,7 @@ class DraftEditorHeader extends React.Component {
                   icon={<AiOutlineSave />}
                   disabled={this.props.mode !== "edit"}
                   loading={this.props.loading}
-                  background="#e1e1e1"
-                  hoverColor="#e9e9e9"
+                  primary={this.props.mode == "edit"}
                 />
               </Box>
             )}

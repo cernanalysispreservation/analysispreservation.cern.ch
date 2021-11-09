@@ -23,10 +23,6 @@ let FieldTemplate = function(props) {
   }
 
   if (["array", "object"].indexOf(props.schema.type) > -1) {
-    // if (props.id === "root") {
-    //   gridColumns = null;
-    // }
-
     return (
       <Box
         style={{
