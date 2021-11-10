@@ -48,7 +48,8 @@ const Menu = ({
   minWidth = "100px",
   shadow = false,
   buttonProps = null,
-  dataCy = ""
+  dataCy = "",
+  useAsSelect = false
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dropDownMenu = useRef(null);
@@ -125,7 +126,13 @@ const Menu = ({
           boxShadow: shadow && "rgba(0, 0, 0, 0.2) 10px 2px 50px"
         }}
       >
-        {expanded && <ExpandedDiv>{children}</ExpandedDiv>}
+        {expanded && (
+          <ExpandedDiv>
+            {useAsSelect
+              ? children({ onClose: () => setExpanded(false) })
+              : children}
+          </ExpandedDiv>
+        )}
       </Box>
     </Box>
   );
@@ -143,6 +150,7 @@ Menu.propTypes = {
   padding: PropTypes.string,
   minWidth: PropTypes.string,
   shadow: PropTypes.bool,
+  useAsSelect: PropTypes.bool,
   iconWrapperClassName: PropTypes.string,
   buttonProps: PropTypes.object,
   dataCy: PropTypes.string

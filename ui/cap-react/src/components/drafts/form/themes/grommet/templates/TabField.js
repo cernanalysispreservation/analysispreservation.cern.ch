@@ -153,14 +153,20 @@ class TabField extends React.Component {
                 iconOpen: <AiOutlineUp />,
                 reverse: true
               }}
+              useAsSelect
             >
-              {tabs.map(tab => (
-                <MenuItem
-                  title={tab.content.props.schema.title || "Untitled"}
-                  key={tab.name}
-                  onClick={() => this.updateValueOnClick(tab)}
-                />
-              ))}
+              {({ onClose }) =>
+                tabs.map(tab => (
+                  <MenuItem
+                    title={tab.content.props.schema.title || "Untitled"}
+                    key={tab.name}
+                    onClick={() => {
+                      this.updateValueOnClick(tab);
+                      onClose();
+                    }}
+                  />
+                ))
+              }
             </Menu>
           </Box>
           <Box className="tabs-list">
@@ -183,7 +189,8 @@ class TabField extends React.Component {
                     }
                     key={index}
                     pad="small"
-                    onClick={this._onTabClick.bind(this, tab)}                  >
+                    onClick={this._onTabClick.bind(this, tab)}
+                  >
                     <Heading tag="h5" margin="none" size="medium" strong>
                       {tab.title ||
                         tab.content.props.schema.title ||
