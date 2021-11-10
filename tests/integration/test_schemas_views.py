@@ -26,6 +26,7 @@
 import json
 
 from six import PY3
+from pytest import mark
 
 from cap.modules.schemas.models import Schema
 
@@ -536,8 +537,54 @@ def test_post_schema_when_user_not_logged_in_returns_401(
     assert resp.status_code == 401
 
 
-def test_post(client, db, users, auth_headers_for_user, json_headers):
+def test_post_by_no_suepruser(client, db, users, auth_headers_for_user, json_headers):
     owner = users['cms_user']
+    schema = json.dumps(
+        dict(
+            name='cms-schema',
+            version='1.2.3',
+            fullname='CMS Schema 1.2.3',
+            deposit_schema={'title': 'deposit_schema'},
+            deposit_options={'title': 'deposit_options'},
+            record_schema={'title': 'record_schema'},
+            record_options={'title': 'record_options'},
+            record_mapping={
+                'mappings': {
+                    'doc': {
+                        'properties': {
+                            'title': {
+                                'type': 'text'
+                            }
+                        }
+                    }
+                }
+            },
+            deposit_mapping={
+                'mappings':
+                    {
+                        'doc': {
+                            'properties': {
+                                'keyword': {
+                                    'type': 'keyword'
+                                }
+                            }
+                        }
+                    }
+            },
+            is_indexed=True,
+        ))
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 403
+
+
+def test_post(client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
     schema = json.dumps(
         dict(
             name='cms-schema',
@@ -640,7 +687,7 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
 
 def test_post_when_validation_errors_returns_400(
         client, db, users, auth_headers_for_user, json_headers):
-    owner = users['cms_user']
+    owner = users['superuser']
     schema = json.dumps(
         dict(
             version='.1.2.3',
@@ -690,8 +737,58 @@ def test_put_schema_when_user_not_logged_in_returns_401(
     assert resp.status_code == 401
 
 
+def test_put_when_no_superuser(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    cms_user = users['cms_user']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    new_schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        fullname='New fullname',
+        deposit_schema={'title': 'deposit_schema'},
+        deposit_options={'title': 'deposit_options'},
+        record_schema={'title': 'record_schema'},
+        record_options={'title': 'record_options'},
+        record_mapping={'doc': {
+            'properties': {
+                'title': {
+                    'type': 'text'
+                }
+            }
+        }},
+        deposit_mapping={
+            'doc': {
+                'properties': {
+                    'keyword': {
+                        'type': 'keyword'
+                    }
+                }
+            }
+        },
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+
+    resp = client.put(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(new_schema),
+        headers=json_headers + auth_headers_for_user(cms_user),
+    )
+
+    assert resp.status_code == 403
+
+
 def test_put(client, db, auth_headers_for_user, users, json_headers):
-    owner = users['cms_user']
+    owner = users['superuser']
     schema = json.dumps(
         dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
     new_schema = dict(
@@ -807,6 +904,7 @@ def test_put_when_validation_errors_returns_400(
     assert resp.json['message'] == {'_schema': ['Empty data']}
 
 
+@mark.skip('skipping till we allow put to non-superusers')
 def test_put_when_not_an_schema_owner_returns_403(
         client, db, auth_headers_for_user, users, json_headers):
     owner = users['cms_user']
@@ -843,7 +941,7 @@ def test_delete_schema_when_user_not_logged_in_returns_401(
 
     assert resp.status_code == 401
 
-
+@mark.skip('skipping till we allow delete to non-superusers')
 def test_delete_when_not_an_schema_owner_returns_403(
         client, db, auth_headers_for_user, users, json_headers):
     owner = users['cms_user']
@@ -867,8 +965,30 @@ def test_delete_when_not_an_schema_owner_returns_403(
     assert resp.status_code == 403
 
 
+def test_delete_when_no_superuser(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    cms_user = users['cms_user']
+    schema = json.dumps(dict(name='cms-schema', version='1.2.3'))
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+
+    resp = client.delete(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps({}),
+        headers=json_headers + auth_headers_for_user(cms_user),
+    )
+
+    assert resp.status_code == 403
+
+
 def test_delete(client, db, auth_headers_for_user, users, json_headers):
-    owner = users['cms_user']
+    owner = users['superuser']
     schema = json.dumps(dict(name='cms-schema', version='1.2.3'))
 
     resp = client.post(

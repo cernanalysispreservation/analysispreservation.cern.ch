@@ -30,6 +30,7 @@ from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from jsonref import JsonRefError
 from sqlalchemy.exc import IntegrityError
+from cap.modules.access.permissions import admin_permission_factory
 
 from cap.modules.access.utils import login_required
 
@@ -44,6 +45,8 @@ blueprint = Blueprint(
     __name__,
     url_prefix='/jsonschemas',
 )
+
+_admin_permission = admin_permission_factory(None)
 
 
 class SchemaAPI(MethodView):
@@ -88,6 +91,7 @@ class SchemaAPI(MethodView):
 
         return jsonify(response)
 
+    @_admin_permission.require(http_exception=403)
     def post(self):
         """Create new schema."""
         data = request.get_json()
@@ -111,6 +115,7 @@ class SchemaAPI(MethodView):
 
         return jsonify(schema.config_serialize())
 
+    @_admin_permission.require(http_exception=403)
     def put(self, name, version):
         """Update schema."""
         try:
@@ -131,6 +136,7 @@ class SchemaAPI(MethodView):
 
             return jsonify(schema.config_serialize())
 
+    @_admin_permission.require(http_exception=403)
     def delete(self, name, version):
         """Delete schema."""
         try:
