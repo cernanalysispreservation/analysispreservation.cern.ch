@@ -8,7 +8,8 @@ import Box from "grommet/components/Box";
 
 import SearchPage from "../search/SearchPage";
 
-import Header from "../partials/Header";
+// import Header from "../partials/Header";
+import Header from "../../antd/partials/Header";
 
 import Dashboard from "../dashboard/Dashboard";
 
@@ -17,8 +18,9 @@ import SettingsIndex from "../settings";
 import CreateIndex from "../create";
 
 import PublishedIndex from "../published/PublishedIndex";
-import GrommetFooter from "../footer/Footer";
+import Footer from "../../antd/partials/Footer";
 import ErrorPage from "../partials/ErrorPage";
+import { Layout } from "antd";
 
 import {
   HOME,
@@ -37,9 +39,11 @@ class IndexPage extends React.Component {
 
   render() {
     return (
-      <Box flex={true}>
-        <Header />
-        <Box flex={true}>
+      <Layout className="__mainLayout__">
+        <Layout.Header className="__mainHeader__">
+          <Header />
+        </Layout.Header>
+        <Layout.Content>
           <Switch>
             <Route path={DRAFT_ITEM} component={DraftsItemIndex} />
             <Route exact path={HOME} component={Dashboard} />
@@ -50,9 +54,11 @@ class IndexPage extends React.Component {
             <Route path={CREATE_INDEX} component={CreateIndex} />
             <Route component={ErrorPage} />
           </Switch>
-        </Box>
-        <GrommetFooter />
-      </Box>
+        </Layout.Content>
+        <Layout.Footer>
+          <Footer />
+        </Layout.Footer>
+      </Layout>
     );
   }
 }
