@@ -32,7 +32,7 @@ export default ComposedComponent => {
       if (!this.props.isLoggedIn) return null;
       let cc = <ComposedComponent {...this.props} />;
 
-      return <Box flex={true}>{cc}</Box>;
+      return cc;
     }
   }
 
