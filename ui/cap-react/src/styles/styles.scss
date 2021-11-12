@@ -14,42 +14,43 @@ $vin-red: #ff0000;
 //@import '~grommet/scss/vanilla/index';
 
 /* Styles */
-html,
-body {
-  height: 100vh;
-  width: 100vw;
-}
-body .grommet {
+// html,
+// body {
+//   height: 100vh;
+//   width: 100vw;
+// }
+body  {
   font: 14px CAPFont;
 }
 
-#app {
-  height: 100vh;
-  overflow-y: scroll;
-}
+// #app {
+//   height: 100vh;
+// }
 
-#app-main {
-  height: 100%; /*allows both columns to span the full height of the browser window*/
-  display: flex;
-  flex-direction: column;
-}
 
-#header {
-  height: 55.97px;
-  flex-shrink: 0;
-  display: inline-flex;
-}
+
+// #app-main {
+//   height: 100%; /*allows both columns to span the full height of the browser window*/
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// #header {
+//   height: 55.97px;
+//   flex-shrink: 0;
+//   display: inline-flex;
+// }
 
 label {
   margin-bottom: 0.15em;
 }
 
-#main-container {
-  flex-grow: 1; /*ensures that the container will take up the full height of the parent container*/
-  overflow-y: auto; /*adds scroll to this container*/
-  height: 100%;
-  display: flex;
-}
+// #main-container {
+//   flex-grow: 1; /*ensures that the container will take up the full height of the parent container*/
+//   overflow-y: auto; /*adds scroll to this container*/
+//   height: 100%;
+//   display: flex;
+// }
 
 .rjsf {
   display: flex;

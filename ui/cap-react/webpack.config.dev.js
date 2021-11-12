@@ -123,6 +123,21 @@ export default {
         ]
       },
       {
+        test: /\.less$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "less-loader",
+            options: {
+              // If you are using less-loader@5 please spread the lessOptions to options directly
+              modifyVars: {},
+              javascriptEnabled: true
+            }
+          }
+        ]
+      },
+      {
         test: /(\.css|\.scss|\.sass)$/,
         use: [
           "style-loader",
