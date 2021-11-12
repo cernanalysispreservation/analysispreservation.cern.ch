@@ -1,38 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Box from "grommet/components/Box";
+import { Redirect } from "react-router-dom";
 
 export default ComposedComponent => {
   class Authentication extends Component {
-    constructor(props) {
-      super(props);
-      if (!props.isLoggedIn) {
-        props.history.push({
-          pathname: "/login",
-          from: props.match.path,
-          search: `?next=${props.history.location.pathname}`,
-          state: { next: props.history.location.pathname }
-        });
-      }
-    }
-
-    componentDidUpdate(nextProps) {
-      if (!nextProps.isLoggedIn) {
-        const path = `/login?next=${nextProps.history.location.pathname}`;
-        this.props.history.push(path);
-      }
-    }
-
-    PropTypes = {
-      router: PropTypes.object
-    };
-
     render() {
-      if (!this.props.isLoggedIn) return null;
-      let cc = <ComposedComponent {...this.props} />;
+      if (!this.props.isLoggedIn) {
+        return (
+          <Redirect
+            to={{
+              pathname: `/login`,
+              search: `?next=${this.props.history.location.pathname}`,
+              state: { next: this.props.history.location.pathname },
+              from: this.props.match.path
+            }}
+          />
+        );
+      }
 
-      return <Box flex={true}>{cc}</Box>;
+      return <ComposedComponent {...this.props} />;
     }
   }
 
