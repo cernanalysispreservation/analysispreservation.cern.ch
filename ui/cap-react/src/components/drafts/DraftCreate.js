@@ -1,7 +1,6 @@
 import React from "react";
 
-// import Modal from "../partials/Modal";
-import { Modal } from "antd";
+import Modal from "../partials/Modal";
 
 import CreateForm from "./components/CreateForm";
 
@@ -10,12 +9,7 @@ import PropTypes from "prop-types";
 class DraftCreate extends React.Component {
   render() {
     return (
-      <Modal
-        onCancel={this.props.onCancel}
-        visible={this.props.visible}
-        title="Create Analysis"
-        footer={null}
-      >
+      <Modal onClose={this.props.toggle} title="Create Analysis">
         <CreateForm />
       </Modal>
     );

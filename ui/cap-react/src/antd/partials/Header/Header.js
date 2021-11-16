@@ -137,7 +137,8 @@ const Header = ({ logout, permissions }) => {
 };
 
 Header.propTypes = {
-  logout: PropTypes.func
+  logout: PropTypes.func,
+  permissions: PropTypes.object
 };
 
 export default Header;

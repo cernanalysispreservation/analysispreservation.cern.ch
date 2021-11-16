@@ -11,7 +11,7 @@ const SEARCH_PATHS = [
   }
 ];
 
-const AntSearchBar = ({ pushPath }) => {
+const SearchBar = ({ pushPath }) => {
   const [options, setOptions] = useState([]);
 
   const searchResult = query =>
@@ -56,8 +56,8 @@ const AntSearchBar = ({ pushPath }) => {
   );
 };
 
-AntSearchBar.propTypes = {
+SearchBar.propTypes = {
   pushPath: PropTypes.func
 };
 
-export default AntSearchBar;
+export default SearchBar;

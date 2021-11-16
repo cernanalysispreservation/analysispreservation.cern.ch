@@ -4,21 +4,20 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Switch, Route } from "react-router-dom";
 
-import Box from "grommet/components/Box";
-
-import SearchPage from "../search/SearchPage";
+import SearchPage from "../../components/search/SearchPage";
 
 import Header from "../partials/Header";
 
-import Dashboard from "../dashboard/Dashboard";
+import Dashboard from "../dashboard";
 
-import DraftsItemIndex from "../drafts/DraftsItemIndex";
-import SettingsIndex from "../settings";
-import CreateIndex from "../create";
+import DraftsItemIndex from "../../components/drafts/DraftsItemIndex";
+import SettingsIndex from "../../components/settings";
+import CreateIndex from "../../components/create";
 
-import PublishedIndex from "../published/PublishedIndex";
-import GrommetFooter from "../footer/Footer";
-import ErrorPage from "../partials/ErrorPage";
+import PublishedIndex from "../../components/published/PublishedIndex";
+import Footer from "../../antd/partials/Footer";
+import ErrorPage from "../../components/partials/ErrorPage";
+import { Layout } from "antd";
 
 import {
   HOME,
@@ -28,7 +27,7 @@ import {
   CREATE_INDEX,
   SEARCH,
   DRAFT_ITEM
-} from "../routes";
+} from "../../components/routes";
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -37,9 +36,11 @@ class IndexPage extends React.Component {
 
   render() {
     return (
-      <Box flex={true}>
-        <Header />
-        <Box flex={true}>
+      <Layout className="__mainLayout__">
+        <Layout.Header className="__mainHeader__">
+          <Header />
+        </Layout.Header>
+        <Layout.Content style={{ overflowX: "hidden" }}>
           <Switch>
             <Route path={DRAFT_ITEM} component={DraftsItemIndex} />
             <Route exact path={HOME} component={Dashboard} />
@@ -50,9 +51,11 @@ class IndexPage extends React.Component {
             <Route path={CREATE_INDEX} component={CreateIndex} />
             <Route component={ErrorPage} />
           </Switch>
-        </Box>
-        <GrommetFooter />
-      </Box>
+        </Layout.Content>
+        <Layout.Footer>
+          <Footer />
+        </Layout.Footer>
+      </Layout>
     );
   }
 }
