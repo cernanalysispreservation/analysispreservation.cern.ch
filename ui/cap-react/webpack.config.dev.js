@@ -13,7 +13,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 export default {
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".json", ".less"]
+    extensions: ["*", ".js", ".jsx", ".json"]
   },
   devtool: "cheap-module-eval-source-map", // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/
   entry: [
@@ -131,11 +131,7 @@ export default {
             loader: "less-loader",
             options: {
               // If you are using less-loader@5 please spread the lessOptions to options directly
-              modifyVars: {
-                "primary-color": "#1DA57A",
-                "link-color": "#1DA57A",
-                "border-radius-base": "2px"
-              },
+              modifyVars: {},
               javascriptEnabled: true
             }
           }

@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import "./App.less";
 import WelcomePage from "../components/welcome/WelcomePage";
-import IndexPage from "../components/index/IndexPage";
+import IndexPage from "./index/IndexPage";
 
 import HowToSearchPage from "../components/about/HowToSearch";
 import AboutPage from "../components/about/AboutPage";
