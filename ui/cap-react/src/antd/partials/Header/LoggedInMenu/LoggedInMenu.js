@@ -14,7 +14,7 @@ import {
   QuestionOutlined,
   PlusOutlined
 } from "@ant-design/icons";
-import DraftCreate from "../../../../components/drafts/DraftCreate";
+import DraftCreate from "../../../drafts/DraftCreate";
 import HowToSearchPage from "../../../../components/about/HowToSearch";
 
 const { Item, SubMenu, ItemGroup, Divider } = Menu;
@@ -25,11 +25,11 @@ const LoggedInMenu = ({ permissions, logout }) => {
 
   return (
     <React.Fragment>
-      {displayCreate && (
-        <DraftCreate
-          toggle={() => setDisplayCreate(displayCreate => !displayCreate)}
-        />
-      )}
+      <DraftCreate
+        visible={displayCreate}
+        onCancel={() => setDisplayCreate(displayCreate => !displayCreate)}
+      />
+
       <Modal
         visible={displayHowToSearch}
         onCancel={() => setDisplayHowToSearch(false)}
