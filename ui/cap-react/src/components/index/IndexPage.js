@@ -14,7 +14,7 @@ import Header from "../../antd/partials/Header";
 import Dashboard from "../dashboard/Dashboard";
 
 import DraftsItemIndex from "../drafts/DraftsItemIndex";
-import SettingsIndex from "../settings";
+import SettingsIndex from "../../antd/settings";
 import CreateIndex from "../create";
 
 import PublishedIndex from "../published/PublishedIndex";

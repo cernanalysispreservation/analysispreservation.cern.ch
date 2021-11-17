@@ -9,7 +9,7 @@ export default class OauthPopup extends React.PureComponent {
     const urlParams = new URLSearchParams(queryString);
 
     window["loginCallBack"] = function() {
-      if (props.loginCallBack) props.loginCallBack(urlParams.get('next'));
+      if (props.loginCallBack) props.loginCallBack(urlParams.get("next"));
       return null;
     };
   }
@@ -25,7 +25,11 @@ export default class OauthPopup extends React.PureComponent {
   };
 
   render() {
-    return <div onClick={this.createPopup}> {this.props.children} </div>;
+    return (
+      <div onClick={this.createPopup} style={{ textAlign: "center" }}>
+        {this.props.children}
+      </div>
+    );
   }
 }
 
@@ -37,4 +41,3 @@ OauthPopup.propTypes = {
   url: PropTypes.string,
   loginCallBack: PropTypes.func
 };
-
