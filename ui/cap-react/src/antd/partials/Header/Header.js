@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import CAPLogoLight from "../../../img/cap-logo-light.svg";
 import { Menu, Row, Col, Modal } from "antd";
-import DraftCreate from "../../../components/drafts/DraftCreate";
+import DraftCreate from "../../drafts/DraftCreate";
 import HowToSearchPage from "../../../components/about/HowToSearch";
 import { Link } from "react-router-dom";
 import "./Header.less";
