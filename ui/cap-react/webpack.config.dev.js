@@ -2,6 +2,7 @@ import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import dotenv from "dotenv";
+import theme from "./src/antd/theme";
 
 const env = dotenv.config().parsed;
 
@@ -131,7 +132,7 @@ export default {
             loader: "less-loader",
             options: {
               // If you are using less-loader@5 please spread the lessOptions to options directly
-              modifyVars: {},
+              modifyVars: theme,
               javascriptEnabled: true
             }
           }
