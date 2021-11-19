@@ -71,11 +71,12 @@ export default function authReducer(state = initialState, action) {
     case API_KEY_LIST_SUCCESS:
       return state.set("tokens", List(action.applications.tokens));
     case CREATE_TOKEN_SUCCESS:
-      return state.setIn(["tokens", action.token.t_id], action.token);
-    case CREATE_TOKEN_ERROR:
-      return state.setIn(["tokens", "error"], action.error);
+      return state.set("tokens", state.get("tokens").push(action.token));
     case REVOKE_TOKEN_SUCCESS:
-      return state.deleteIn(["tokens", action.token]);
+      return state.set(
+        "tokens",
+        state.get("tokens").filter(item => item.t_id != action.token)
+      );
     case UPDATE_DEPOSIT_GROUPS:
       return state.setIn(
         ["currentUser", "depositGroups"],
