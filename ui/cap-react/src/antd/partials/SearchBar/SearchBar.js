@@ -13,6 +13,7 @@ const SEARCH_PATHS = [
 
 const SearchBar = ({ pushPath }) => {
   const [options, setOptions] = useState([]);
+  const [value, setValue] = useState("");
 
   const searchResult = query =>
     SEARCH_PATHS.map((item, idx) => {
@@ -40,16 +41,18 @@ const SearchBar = ({ pushPath }) => {
       pathname: searchOn,
       search: `${queryString.stringify({ q: searchValue })}`
     };
+    setValue(searchValue);
     pushPath(search_location);
   };
 
   return (
     <AutoComplete
-      dropdownMatchSelectWidth={252}
       style={{ width: "100%", verticalAlign: "middle" }}
       options={options}
       onSelect={onSelect}
       onSearch={handleSearch}
+      value={value}
+      onChange={setValue}
     >
       <Input.Search size="large" placeholder="Search" enterButton />
     </AutoComplete>

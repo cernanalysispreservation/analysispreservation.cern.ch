@@ -41,9 +41,9 @@ const DashoboardList = ({ header = "", listType, list, loading }) => {
         </Link>
       )}
       footer={
-        list[activeList].list.length > 4 && (
-          <Link to={list[activeList].more}>
-            <div style={{ textAlign: "center" }}>Show More</div>
+        ["draft", "published"].includes(listType) && (
+          <Link to={list[activeList].more || "#"}>
+            <div style={{ textAlign: "center" }}>Show All</div>
           </Link>
         )
       }

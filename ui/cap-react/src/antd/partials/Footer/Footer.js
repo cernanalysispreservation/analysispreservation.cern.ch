@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Typography, Space } from "antd";
 import { Link } from "react-router-dom";
 
-const { Paragraph } = Typography;
+const { Text } = Typography;
 
 const Footer = () => {
   return (
@@ -11,11 +11,11 @@ const Footer = () => {
       justify="center"
       style={{ padding: "5px", background: "#001529" }}
     >
-      <Space direction="horizontal" size="small">
-        <Paragraph style={{ margin: 0, color: "#fff" }}>
+      <Space direction="horizontal" size="middle">
+        <Text style={{ color: "#fff" }}>
           Copyright {new Date().getFullYear()} © CERN. Created & Hosted by CERN.
           Powered by Invenio Software.
-        </Paragraph>
+        </Text>
         <Link to="/about">About</Link>
         <Link to="/policy">Policy</Link>
       </Space>

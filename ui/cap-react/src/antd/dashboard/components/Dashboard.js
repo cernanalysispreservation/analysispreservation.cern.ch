@@ -11,8 +11,12 @@ const Dashboard = ({ fetchDashboard, results, loading }) => {
     fetchDashboard();
   }, []);
   let lists = _getList(results);
+
   return (
-    <Row gutter={{ xs: 8, sm: 16, md: 24 }} className="padding10">
+    <Row
+      gutter={[{ xs: 8, sm: 16, md: 24 }, { xs: 8, sm: 16, md: 24 }]}
+      className="padding10"
+    >
       <Col
         xs={{ span: 24, order: 2 }}
         md={{ span: 12, order: 1 }}
