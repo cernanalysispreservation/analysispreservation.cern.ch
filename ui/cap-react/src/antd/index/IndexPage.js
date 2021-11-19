@@ -7,7 +7,7 @@ import SearchPage from "../../components/search/SearchPage";
 import Dashboard from "../dashboard";
 
 import DraftsItemIndex from "../../components/drafts/DraftsItemIndex";
-import SettingsIndex from "../../components/settings";
+import SettingsIndex from "../settings";
 import CreateIndex from "../../components/create";
 
 import PublishedIndex from "../../components/published/PublishedIndex";
