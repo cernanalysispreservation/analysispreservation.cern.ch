@@ -10,7 +10,7 @@ import "../../styles/styles.scss";
 class Explain extends React.Component {
   render() {
     return (
-      <span ref={this.props.scrollToRef}>
+      <span ref={this.props.scrollToRef} id="explain">
         <Box
           colorIndex="light-2"
           pad={{ horizontal: "large", between: "large", vertical: "large" }}

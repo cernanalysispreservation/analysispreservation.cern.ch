@@ -66,8 +66,8 @@ class WelcomePage extends React.Component {
 
   render() {
     return (
-      <Box>
-        <Header nav={this.nav} scrollToRef={this.scrollToRef} />
+      <React.Fragment>
+        {/* <Header nav={this.nav} scrollToRef={this.scrollToRef} /> */}
 
         <Intro scrollToRef={this.IntroRef} />
 
@@ -80,7 +80,7 @@ class WelcomePage extends React.Component {
         <Documentation scrollToRef={this.DocumentationRef} />
 
         <Footer />
-      </Box>
+      </React.Fragment>
     );
   }
 }

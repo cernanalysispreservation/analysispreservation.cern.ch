@@ -7,7 +7,7 @@ import Paragraph from "grommet/components/Paragraph";
 class Discover extends React.Component {
   render() {
     return (
-      <span ref={this.props.scrollToRef}>
+      <span ref={this.props.scrollToRef} id="discover">
         <Box
           flex={true}
           justify="center"

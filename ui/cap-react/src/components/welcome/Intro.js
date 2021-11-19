@@ -15,7 +15,7 @@ import "../../styles/styles.scss";
 class WelcomePage extends React.Component {
   render() {
     return (
-      <span ref={this.props.scrollToRef}>
+      <span ref={this.props.scrollToRef} id="home">
         <Box
           flex={true}
           pad={{ vertical: "large", horizontal: "xlarge", between: "large" }}

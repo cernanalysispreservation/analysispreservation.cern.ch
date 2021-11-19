@@ -13,7 +13,7 @@ import PIDFair from "./img/pid_fair.svg";
 class Integrations extends React.Component {
   render() {
     return (
-      <span ref={this.props.scrollToRef}>
+      <span ref={this.props.scrollToRef} id="integrations">
         <Box pad={{ horizontal: "large", between: "large", vertical: "large" }}>
           <Box flex={true} justify="center" align="center" pad="medium">
             <Heading tag="h1">Integrations</Heading>

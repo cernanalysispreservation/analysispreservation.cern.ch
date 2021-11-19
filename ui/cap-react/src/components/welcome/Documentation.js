@@ -15,7 +15,7 @@ import TerminalIcon from "./img/terminal.svg";
 class Documentation extends React.Component {
   render() {
     return (
-      <span ref={this.props.scrollToRef}>
+      <span ref={this.props.scrollToRef} id="documentation">
         <Box
           colorIndex="neutral-1"
           style={{}}
