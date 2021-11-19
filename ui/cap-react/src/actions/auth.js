@@ -90,9 +90,6 @@ export function createTokenError(error) {
 export function revokeTokenSuccess(token) {
   return { type: REVOKE_TOKEN_SUCCESS, token };
 }
-export function revokeTokenError(error) {
-  return { type: REVOKE_TOKEN_ERROR, error };
-}
 
 export function loginLocalUser(data) {
   return function(dispatch) {
@@ -263,22 +260,32 @@ export function createToken(data) {
       .then(function(response) {
         dispatch(createTokenSuccess(response.data));
       })
-      .catch(function(error) {
-        dispatch(createTokenError(error));
+      .catch(function() {
+        cogoToast.error("Please try again", {
+          position: "top-center",
+          bar: { size: "0" },
+          hideAfter: 3,
+          heading: "There was an issue with your request"
+        });
       });
   };
 }
 
-export function revokeToken(token_id, key) {
+export function revokeToken(token_id) {
   return function(dispatch) {
     // dispatch(apiKeyListRequest());
     axios
       .get(`/api/applications/tokens/${token_id}/revoke/`)
       .then(function() {
-        dispatch(revokeTokenSuccess(key));
+        dispatch(revokeTokenSuccess(token_id));
       })
-      .catch(function(error) {
-        dispatch(revokeTokenError(error));
+      .catch(function() {
+        cogoToast.error("Please try again", {
+          position: "top-center",
+          bar: { size: "0" },
+          hideAfter: 3,
+          heading: "There was an issue with your request"
+        });
       });
   };
 }

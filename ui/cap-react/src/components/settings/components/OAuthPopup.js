@@ -25,7 +25,7 @@ export default class OauthPopup extends React.PureComponent {
   };
 
   render() {
-    return <div onClick={this.createPopup}> {this.props.children} </div>;
+    return <div onClick={this.createPopup} style={{ textAlign: "center" }}>{this.props.children}</div>;
   }
 }
 
@@ -37,4 +37,3 @@ OauthPopup.propTypes = {
   url: PropTypes.string,
   loginCallBack: PropTypes.func
 };
-
