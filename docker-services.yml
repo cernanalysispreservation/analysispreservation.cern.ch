@@ -30,6 +30,8 @@ services:
       - "DEV_HOST=CHANGE_ME"
       - "INVENIO_CERN_CLIENT_ID=CHANGE_ME"
       - "INVENIO_CERN_CLIENT_SECRET=CHANGE_ME"
+      - "CACHE_REDIS_HOST=cache"
+      - "INVENIO_CACHE_REDIS_HOST=cache"
   lb:
     build: ./docker/haproxy/
     image: cap-lb
@@ -94,11 +96,10 @@ services:
     ports:
       - "5555:5555"
   redis-commander:
-    container_name: redis-commander
     hostname: redis-commander
     image: rediscommander/redis-commander:latest
     restart: always
     environment:
-      - REDIS_HOSTS=cache
+      - REDIS_HOSTS=local:cache:6379
     ports:
       - "8081:8081"

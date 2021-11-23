@@ -206,8 +206,13 @@ APP_ALLOWED_HOSTS = [
 ]
 
 if os.environ.get('DEV_HOST', False):
-    APP_ALLOWED_HOSTS.append(os.environ.get('DEV_HOST'))
-
+    # Multiple hosts may be present in DEV_HOST key in docker-compose.yml
+    hosts = os.environ.get('DEV_HOST')
+    if "," in hosts:
+        _hosts = hosts.split(",")
+        APP_ALLOWED_HOSTS.append(host.strip() for host in _hosts)
+    else:
+        APP_ALLOWED_HOSTS.append(hosts)
 # OAI-PMH
 # =======
 OAISERVER_ID_PREFIX = 'oai:analysispreservation.cern.ch:'
@@ -865,3 +870,7 @@ APP_DEFAULT_SECURE_HEADERS = {
     'strict_transport_security_max_age': 31556926,  # One year in seconds
     'strict_transport_security_preload': False,
 }
+
+#: Path of the file that will contain the generated tokens.
+#: The path comes from the shared volume between web-api and cap-client.
+TESTS_E2E_TOKEN_FILE = '/test_data/test_tokens'

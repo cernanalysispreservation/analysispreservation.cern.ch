@@ -12,7 +12,7 @@ on:
 jobs:
   Cypress:
     name: Cypress
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
         name: Checkout to Code
@@ -33,3 +33,8 @@ jobs:
       - name: Run Cypress
         run: docker-compose -f docker-compose.e2e.yml run cypress cypress run --headless
 
+      - name: Generate test file
+        run: docker-compose -f docker-compose.e2e.yml run -u root web-api cap fixtures generate-tokens
+
+      - name: Test request from 'cap-client' container
+        run: docker-compose -f docker-compose.e2e.yml run cap-client pytest tests/e2e

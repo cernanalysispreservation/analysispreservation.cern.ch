@@ -61,6 +61,7 @@ services:
       - media_data:/opt/cap/var/data
       - ./cap:/opt/cap/src/cap
       - ./demo:/opt/cap/demo
+      - test_data:/test_data
     environment:
       - "FLASK_DEBUG=True"
       - "DEBUG_MODE=True"
@@ -73,6 +74,17 @@ services:
     stdin_open: true
     tty: true
   # API Files Application
+  cap-client:
+    build:
+      context: https://github.com/cernanalysispreservation/cap-client.git
+      dockerfile: Dockerfile
+    image: cap-client
+    environment:
+      - "CAP_SERVER_URL=https://nginx"
+    links:
+      - nginx
+    volumes:
+      - test_data:/test_data
   files-api:
     extends:
       file: docker-services.yml
@@ -128,3 +140,4 @@ volumes:
   static_data:
   uploaded_data:
   media_data:
+  test_data:

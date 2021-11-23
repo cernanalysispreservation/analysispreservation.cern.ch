@@ -31,6 +31,8 @@ import requests
 from flask import current_app
 from flask_cli import with_appcontext
 from invenio_db import db
+from invenio_accounts.models import User
+from invenio_oauth2server.models import Token
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search_client
 from sqlalchemy.exc import IntegrityError
@@ -53,6 +55,46 @@ DEPOSIT_REQUIRED_FIELDS = [
     '_user_edited',
     '_access'
 ]
+
+
+@fixtures.command()
+@with_appcontext
+def generate_tokens():
+    token_file_path = current_app.config.get('TESTS_E2E_TOKEN_FILE')
+    user_list = [
+        "info@inveniosoftware.org",
+        "cms@inveniosoftware.org",
+        "atlas@inveniosoftware.org",
+        "alice@inveniosoftware.org",
+        "lhcb@inveniosoftware.org",
+        "random@inveniosoftware.org",
+    ]
+    for user_email in user_list:
+        token = _get_or_create_token("testtoken", user_email)
+        with open(token_file_path, 'a') as f:
+            f.write(f"{user_email}:{token}\n")
+            click.secho(f'User: {user_email} - Token: {token}', fg='green')
+    click.secho('Tokens saved at {}'.format(token_file_path), fg='green')
+    return
+
+
+def _get_or_create_token(token_name, user_email):
+    """Return method to fetch or create a user write token."""
+    user = User.query.filter_by(email=user_email).first()
+
+    if user:
+        token_ = Token.query.filter_by(user_id=user.id).first()
+        if not token_:
+            token_ = Token.create_personal(
+                token_name,
+                user.id,
+                scopes=['deposit:write']
+            )
+            db.session.add(token_)
+        db.session.commit()
+        return token_.access_token
+    else:
+        return None
 
 
 @fixtures.command()
