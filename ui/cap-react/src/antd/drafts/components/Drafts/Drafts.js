@@ -9,7 +9,7 @@ import {
 import { Switch, Route } from "react-router-dom";
 import DraftPreview from "../../containers/Overview";
 import DraftEditor from "../../../../components/drafts/DraftEditor";
-import DraftSettings from "../../../../components/drafts/components/DepositSettings";
+import DraftSettings from "../../containers/Settings";
 import DraftIntegrations from "../../../../components/drafts/components/DraftIntegrations";
 import DocumentTitle from "../../../../components/partials/Title";
 

@@ -658,13 +658,9 @@ export function postPublishDraft() {
 }
 
 export function publishDraft(draft_id) {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(postPublishDraft(draft_id))
-      .then(() => {
-        let state = getState();
-        const id = state.draftItem.get("recid");
-        dispatch(push(`/published/${id}`));
-      })
+      .then(() => {})
       .catch(error => {
         dispatch(publishDraftError(error));
       });
