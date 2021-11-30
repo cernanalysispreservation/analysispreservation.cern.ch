@@ -1,0 +1,19 @@
+name: Build CAP server image
+
+on:
+  push:
+    branches: master
+    paths-ignore:
+      - 'ui/**'
+
+jobs:
+  registry:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Trigger the Gitlab CI pipeline
+        run: bash ./scripts/ci/image_build.sh -b master -i app
+        env:
+          token: ${{ secrets.SERVER }}
+          trigger_uri: ${{ secrets.SERVER_TRIGGER_URI }}
