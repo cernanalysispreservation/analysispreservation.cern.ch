@@ -21,7 +21,6 @@ export const API_KEY_LIST_REQUEST = "API_KEY_LIST_REQUEST";
 export const API_KEY_LIST_SUCCESS = "API_KEY_LIST_SUCCESS";
 export const API_KEY_LIST_ERROR = "API_KEY_LIST_ERROR";
 export const CREATE_TOKEN_SUCCESS = "CREATE_TOKEN_SUCCESS";
-export const CREATE_TOKEN_ERROR = "CREATE_TOKEN_ERROR";
 export const REVOKE_TOKEN_SUCCESS = "REVOKE_TOKEN_SUCCESS";
 export const REVOKE_TOKEN_ERROR = "REVOKE_TOKEN_ERROR";
 
@@ -82,9 +81,6 @@ export function apiKeyListError(error) {
 
 export function createTokenSuccess(token) {
   return { type: CREATE_TOKEN_SUCCESS, token };
-}
-export function createTokenError(error) {
-  return { type: CREATE_TOKEN_ERROR, error };
 }
 
 export function revokeTokenSuccess(token) {
