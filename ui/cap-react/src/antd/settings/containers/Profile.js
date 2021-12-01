@@ -3,7 +3,7 @@ import Profile from "../components/Profile";
 
 const mapStateToProps = state => ({
   user: state.auth.getIn(["currentUser", "profile"]),
-  cernProfile: state.auth.getIn(["currentUser", "profile", "cern"])
+  cernProfile: state.auth.getIn(["currentUser", "profile", "profile", "cern"])
 });
 
 const mapDispatchToProps = {};
