@@ -1,8 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Row, Col, Typography, Divider, Space } from "antd";
 
-const Explain = props => {
+const Explain = () => {
   const explainBoxes = [
     {
       title: "What",
@@ -118,7 +117,5 @@ const Explain = props => {
     </Row>
   );
 };
-
-Explain.propTypes = {};
 
 export default Explain;
