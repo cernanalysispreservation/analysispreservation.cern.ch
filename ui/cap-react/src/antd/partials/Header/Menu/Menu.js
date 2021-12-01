@@ -7,8 +7,12 @@ import { LoginOutlined } from "@ant-design/icons";
 import LoginForm from "../LoginForm";
 const { Item } = Menu;
 
-const SimpleMenu = ({ pathname, initCurrentUser, loginLocalUser }) => {
-  if (pathname != WELCOME) return null;
+const SimpleMenu = ({
+  initCurrentUser,
+  loginLocalUser,
+  location = { state: { next: "/" } }
+}) => {
+  if (location.pathname != WELCOME) return null;
 
   let oauthLink =
     process.env.NODE_ENV === "development"
@@ -46,7 +50,7 @@ const SimpleMenu = ({ pathname, initCurrentUser, loginLocalUser }) => {
       <Item key="login">
         <OauthPopup
           url={oauthLink}
-          loginCallBack={() => initCurrentUser(nextLocation.next)}
+          loginCallBack={() => initCurrentUser(location.state.next)}
         >
           <Button type="primary">Log In</Button>
         </OauthPopup>
@@ -56,8 +60,7 @@ const SimpleMenu = ({ pathname, initCurrentUser, loginLocalUser }) => {
 };
 
 SimpleMenu.propTypes = {
-  nextLocation: PropTypes.object,
-  pathname: PropTypes.string,
+  location: PropTypes.object,
   initCurrentUser: PropTypes.func,
   loginLocalUser: PropTypes.func
 };
