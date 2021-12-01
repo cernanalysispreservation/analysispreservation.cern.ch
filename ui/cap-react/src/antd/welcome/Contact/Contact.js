@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Row, Col, Space, Typography, Button } from "antd";
 import {
   MailOutlined,
@@ -64,7 +63,5 @@ const Contact = () => {
     </Row>
   );
 };
-
-Contact.propTypes = {};
 
 export default Contact;
