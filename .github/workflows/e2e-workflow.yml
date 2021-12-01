@@ -37,4 +37,4 @@ jobs:
         run: docker-compose -f docker-compose.e2e.yml run -u root web-api cap fixtures generate-tokens
 
       - name: Test request from 'cap-client' container
-        run: docker-compose -f docker-compose.e2e.yml run cap-client pytest tests/e2e
+        run: docker-compose -f docker-compose.e2e.yml run cap-client ./run-tests.sh --check-pytest-e2e
