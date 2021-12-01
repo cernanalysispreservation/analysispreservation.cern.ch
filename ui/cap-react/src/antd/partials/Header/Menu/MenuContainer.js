@@ -1,8 +1,9 @@
 import { connect } from "react-redux";
 import Menu from "./Menu";
 import { loginLocalUser, initCurrentUser } from "../../../../actions/auth";
+
 const mapStateToProps = state => ({
-  pathname: state.router.location.pathname
+  location: state.router.location
 });
 
 const mapDispatchToProps = dispatch => ({
