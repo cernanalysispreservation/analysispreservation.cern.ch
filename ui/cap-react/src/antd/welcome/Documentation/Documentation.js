@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Row, Col, Typography, Button, Space } from "antd";
 import {
   WalletOutlined,
@@ -7,7 +6,7 @@ import {
   BranchesOutlined
 } from "@ant-design/icons";
 
-const Documentation = props => {
+const Documentation = () => {
   const boxes = [
     {
       title: "User Guide",
@@ -81,7 +80,5 @@ const Documentation = props => {
     </Row>
   );
 };
-
-Documentation.propTypes = {};
 
 export default Documentation;

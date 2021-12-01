@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import Applications from "./containers/Applications";
 import Integrations from "./containers/Integrations";
@@ -21,7 +20,5 @@ const Settings = () => {
     </Row>
   );
 };
-
-Settings.propTypes = {};
 
 export default Settings;
