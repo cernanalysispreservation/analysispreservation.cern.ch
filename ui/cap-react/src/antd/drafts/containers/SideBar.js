@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import SideBar from "../components/DraftSideBar/SideBar";
+import SideBar from "../components/SideBar/SideBar";
 import { getBucketById } from "../../../actions/files";
 import { toggleFilemanagerLayer } from "../../../actions/draftItem";
 
