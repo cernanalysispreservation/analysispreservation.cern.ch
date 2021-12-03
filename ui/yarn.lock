@@ -16944,9 +16944,9 @@ rc-pagination@3.1.6:
     classnames "^2.2.1"
 
 rc-pagination@~3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/rc-pagination/-/rc-pagination-3.1.9.tgz#797ad75d85b1ef7a82801207ead410110337fdd6"
-  integrity sha512-IKBKaJ4icVPeEk9qRHrFBJmHxBUrCp3+nENBYob4Ofqsu3RXjBOy4N36zONO7oubgLyiG3PxVmyAuVlTkoc7Jg==
+  version "3.1.14"
+  resolved "https://registry.yarnpkg.com/rc-pagination/-/rc-pagination-3.1.14.tgz#1f7d0342edb80dca0989e4ddbe937b1d4657d88d"
+  integrity sha512-tcugvxrtPiVU00Uh0IwC8NIUlxa4KtA9pXcaMNJdSHeO2uQqVkHEwllsULTAWRF3zRV2ozo2weP/DRKIUrX+Zg==
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
@@ -17073,9 +17073,9 @@ rc-table@~7.15.1:
     shallowequal "^1.1.0"
 
 rc-tabs@~11.10.0:
-  version "11.10.3"
-  resolved "https://registry.yarnpkg.com/rc-tabs/-/rc-tabs-11.10.3.tgz#171c33b340b5a83ababe53034c569b0422046781"
-  integrity sha512-rPxsci+76/nnJowNOBO3LTi4eL6trG49cR9yPc4XbuyHXhCHUujN5F4+jFl7trISy+yVN6gCZ/wiTtVnkcR/UA==
+  version "11.10.4"
+  resolved "https://registry.yarnpkg.com/rc-tabs/-/rc-tabs-11.10.4.tgz#36ea00a02466c90d8f843322660c713c2a45e6ed"
+  integrity sha512-FXihSD9DEF7G/C5iIHNon5jzIO66Two0aeB6uHCmSYibasCsnuBFslHXb9Pa4woqs+vVNjiKRgoDZfurwx1rzg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     classnames "2.x"
