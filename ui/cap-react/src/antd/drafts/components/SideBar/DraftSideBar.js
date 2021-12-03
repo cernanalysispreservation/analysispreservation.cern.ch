@@ -20,7 +20,7 @@ const DraftSideBar = ({ visibleFileDrawer, onClose }) => {
       <SideBar />
     </Drawer>
   ) : (
-    <Col xxl={5}>
+    <Col xxl={6}>
       <SideBar />
     </Col>
   );

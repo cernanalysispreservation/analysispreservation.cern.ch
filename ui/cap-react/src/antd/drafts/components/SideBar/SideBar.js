@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Divider, PageHeader, Row, Space, Tag, Typography } from "antd";
-import { Route } from "react-router-dom";
+import { Button, Row, Space, Tag, Typography, Descriptions, Card } from "antd";
+import { Link, Route } from "react-router-dom";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
-import DepositFilesList from "../../../../components/drafts/components/DepositFilesList";
+import DepositFilesList from "../../../partials/FileList";
 import { canEdit } from "../../utils/permissions";
 import { DRAFT_ITEM } from "../../../../components/routes";
 import Timeago from "react-timeago";
+import FileManager from "../../containers/FileManager";
 
 const SideBar = ({
   id,
@@ -20,7 +21,6 @@ const SideBar = ({
   canUpdate,
   files,
   links,
-  toggleFilemanagerLayer,
   getBucketById
 }) => {
   const contents = [
@@ -43,51 +43,46 @@ const SideBar = ({
     {
       title: <Typography.Text>Status</Typography.Text>,
       content: (
-        <Tag color={status === "published" ? "magenta" : "blue"}>{status}</Tag>
+        <Tag color={status === "published" ? "purple" : "blue"}>{status}</Tag>
       )
     },
     {
       title: <Typography.Text>Creator</Typography.Text>,
-      content: (
-        <Typography.Text>{created_by && created_by.email}</Typography.Text>
-      )
+      content: created_by && created_by.email
     },
     {
       title: <Typography.Text>Published URL</Typography.Text>,
       content: recid ? (
-        <Tag color="magenta">{recid}</Tag>
+        <Link to={`/published/${recid}`}>
+          <Tag color="purple">{recid}</Tag>
+        </Link>
       ) : (
         <Typography.Text>Not published yet</Typography.Text>
       )
     },
     {
       title: <Typography.Text>Created</Typography.Text>,
-      content: (
-        <Typography.Text strong>
-          {created && <Timeago date={created} minPeriod="60" />}
-        </Typography.Text>
-      )
+      content: created && <Timeago date={created} minPeriod="60" />
     },
     {
       title: <Typography.Text>Last Updated</Typography.Text>,
-      content: (
-        <Typography.Text strong>
-          {updated && <Timeago date={updated} minPeriod="60" />}
-        </Typography.Text>
-      )
+      content: updated && <Timeago date={updated} minPeriod="60" />
     }
   ];
+
+  const [showModal, setShowModal] = useState(false);
   return (
     <Row style={{ backgroundColor: "#fff", height: "100%" }}>
       <Space direction="vertical" style={{ width: "100%", padding: "10px" }}>
-        {contents.map((content, idx) => (
-          <Row justify="space-between" key={idx}>
-            {content.title}
-            {content.content}
-          </Row>
-        ))}
-        <Divider />
-        <PageHeader
+        <Descriptions title="Draft Info" bordered size="small">
+          {contents.map((content, idx) => (
+            <Descriptions.Item label={content.title} key={idx} span={24}>
+              {content.content}
+            </Descriptions.Item>
+          ))}
+        </Descriptions>
+        <FileManager visible={showModal} onCancel={() => setShowModal(false)} />
+        <Card
           title="Files | Data | Repos"
           extra={[
             status != "published" &&
@@ -95,34 +90,29 @@ const SideBar = ({
                 <Route
                   path={DRAFT_ITEM}
                   render={() => (
-                    <Button
-                      key="refresh"
-                      icon={<ReloadOutlined />}
-                      onClick={() => {
-                        let { bucket } = links;
-                        let bucket_id = bucket.split("/").pop();
-                        getBucketById(bucket_id);
-                      }}
-                    />
-                  )}
-                />
-              ),
-            status != "published" &&
-              canEdit(canAdmin, canUpdate) && (
-                <Route
-                  path={DRAFT_ITEM}
-                  render={() => (
-                    <Button
-                      key="add"
-                      icon={<PlusOutlined />}
-                      onClick={toggleFilemanagerLayer}
-                    />
+                    <Space direction="horizontal" size="middle">
+                      <Button
+                        key="refresh"
+                        icon={<ReloadOutlined />}
+                        onClick={() => {
+                          let { bucket } = links;
+                          let bucket_id = bucket.split("/").pop();
+                          getBucketById(bucket_id);
+                        }}
+                      />
+                      <Button
+                        key="add"
+                        icon={<PlusOutlined />}
+                        onClick={() => setShowModal(true)}
+                      />
+                    </Space>
                   )}
                 />
               )
           ]}
-        />
-        <DepositFilesList files={files} />
+        >
+          <DepositFilesList files={files} />
+        </Card>
       </Space>
     </Row>
   );
