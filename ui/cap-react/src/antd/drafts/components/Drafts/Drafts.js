@@ -7,7 +7,7 @@ import {
   DRAFT_ITEM_INTEGRATIONS
 } from "../../../../components/routes";
 import { Switch, Route } from "react-router-dom";
-import DraftPreview from "../../../../components/drafts/DraftPreview";
+import DraftPreview from "../../containers/Overview";
 import DraftEditor from "../../../../components/drafts/DraftEditor";
 import DraftSettings from "../../../../components/drafts/components/DepositSettings";
 import DraftIntegrations from "../../../../components/drafts/components/DraftIntegrations";
@@ -57,7 +57,7 @@ const Drafts = ({
           <Layout style={{ padding: 0 }}>
             <Row justify="space-between" style={{ overflowX: "hidden" }}>
               <Col xs={24} xxl={19}>
-                <Row justify="center">
+                <Row justify="center" style={{ paddingBottom: "24px" }}>
                   <Switch>
                     <Route exact path={DRAFT_ITEM} component={DraftPreview} />
                     <Route
