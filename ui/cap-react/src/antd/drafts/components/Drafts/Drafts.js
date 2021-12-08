@@ -10,7 +10,7 @@ import { Switch, Route } from "react-router-dom";
 import DraftPreview from "../../containers/Overview";
 import DraftEditor from "../../../../components/drafts/DraftEditor";
 import DraftSettings from "../../containers/Settings";
-import DraftIntegrations from "../../../../components/drafts/components/DraftIntegrations";
+import DraftIntegrations from "../../containers/Connect";
 import DocumentTitle from "../../../../components/partials/Title";
 
 import { Col, Layout, Row } from "antd";
