@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Input, Row, Space, Typography } from "antd";
+import { Input, Space, Typography } from "antd";
 import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 
 const EditableField = ({
