@@ -19,7 +19,8 @@ const PermissionPopUp = ({
   addPermissionsModal,
   hideMenu = false,
   updatePermissionsModalObj,
-  loading
+  loading,
+  isOwner = false
 }) => {
   const updateModalPermissions = permission => {
     if (permissions.includes(permission)) {
@@ -106,41 +107,42 @@ const PermissionPopUp = ({
       style={{ overflow: "visible" }}
     >
       <Box>{title}</Box>
-      {!hideMenu && (
-        <Menu
-          shadow
-          icon={
-            <Box style={{ margin: "0 0 0 5px" }}>
-              <AiOutlineDown size={15} />
-            </Box>
-          }
-          padding=""
-          top={23}
-          right={0}
-          background="#fff"
-          hoverColor="#fff"
-          minWidth="250px"
-        >
-          {contentDetails.map((item, index) => (
-            <Box
-              separator="bottom"
-              direction="row"
-              pad="small"
-              responsive={false}
-              key={index}
-            >
-              <CheckBox
-                className="permission_checkbox"
-                checked={item.checked}
-                disabled={item.disabled}
-                onChange={item.onChange}
-              />
+      {!hideMenu &&
+        !isOwner && (
+          <Menu
+            shadow
+            icon={
+              <Box style={{ margin: "0 0 0 5px" }}>
+                <AiOutlineDown size={15} />
+              </Box>
+            }
+            padding=""
+            top={23}
+            right={0}
+            background="#fff"
+            hoverColor="#fff"
+            minWidth="250px"
+          >
+            {contentDetails.map((item, index) => (
+              <Box
+                separator="bottom"
+                direction="row"
+                pad="small"
+                responsive={false}
+                key={index}
+              >
+                <CheckBox
+                  className="permission_checkbox"
+                  checked={item.checked}
+                  disabled={item.disabled}
+                  onChange={item.onChange}
+                />
 
-              {item.content}
-            </Box>
-          ))}
-        </Menu>
-      )}
+                {item.content}
+              </Box>
+            ))}
+          </Menu>
+        )}
     </Box>
   );
 };
@@ -157,7 +159,8 @@ PermissionPopUp.propTypes = {
   addPermissionsModal: PropTypes.bool,
   hideMenu: PropTypes.bool,
   updatePermissionsModalObj: PropTypes.func,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  isOwner: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

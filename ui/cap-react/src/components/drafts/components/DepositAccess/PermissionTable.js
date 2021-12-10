@@ -175,6 +175,7 @@ const PermissionTable = ({
                           email={item}
                           permissions={access[item].actions}
                           hideMenu={!canAdmin}
+                          isOwner={created_by && created_by.email === item}
                         />
                       }
                     />
