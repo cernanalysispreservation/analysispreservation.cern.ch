@@ -62,10 +62,10 @@ class DraftDefaultHeader extends React.Component {
                     if (val.trim() === "") return;
                     this.props.updateGeneralTitle(val);
                   }}
-                  isEditable={canEdit(
-                    this.props.canAdmin,
-                    this.props.canUpdate
-                  )}
+                  isEditable={
+                    this.props.status == "draft" &&
+                    canEdit(this.props.canAdmin, this.props.canUpdate)
+                  }
                   dataCy="general-title-input"
                 />
               </Box>
@@ -142,13 +142,15 @@ DraftDefaultHeader.propTypes = {
   draft: PropTypes.object,
   id: PropTypes.string,
   draft_id: PropTypes.string,
+  status: PropTypes.string,
   canUpdate: PropTypes.bool,
   expanded: PropTypes.bool,
   onClick: PropTypes.func,
   location: PropTypes.object,
   metadata: PropTypes.object,
   updateGeneralTitle: PropTypes.func,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  canAdmin: PropTypes.bool
 };
 
 function mapStateToProps(state) {
