@@ -17,12 +17,14 @@ import { Col, Layout, Row } from "antd";
 import DraftItemNav from "../../containers/DraftItemNav";
 import DraftSideBar from "../DraftSideBar";
 import DraftHeader from "../../containers/DraftHeader";
+import Error from "../../../partials/Error/";
 
 const Drafts = ({
   id,
   match,
   getDraftById,
-  metadata = { general_title: {} }
+  metadata = { general_title: {} },
+  errors
 }) => {
   useEffect(() => {
     let { draft_id } = match.params;
@@ -37,6 +39,10 @@ const Drafts = ({
   const [visibleFileDrawer, setVisibleFileDrawer] = useState(false);
 
   const formRef = useRef(null);
+
+  if (errors && [403, 404, 500, 410].includes(errors.status))
+    return <Error error={errors} />;
+
   return (
     <DocumentTitle
       title={
