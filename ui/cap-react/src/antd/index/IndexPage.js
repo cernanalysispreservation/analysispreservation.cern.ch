@@ -9,7 +9,7 @@ import Dashboard from "../dashboard";
 import SettingsIndex from "../settings";
 import DraftsItemIndex from "../drafts";
 
-import CreateIndex from "../../components/create";
+import CreateIndex from "../create";
 
 import PublishedIndex from "../../components/published/PublishedIndex";
 import ErrorPage from "../../components/partials/ErrorPage";
