@@ -1,5 +1,5 @@
 import React from "react";
-import DocumentTitle from "../../components/partials/Title";
+import DocumentTitle from "../partials/DocumentTitle";
 import { Row, Col, Typography, Space } from "antd";
 
 const About = () => {

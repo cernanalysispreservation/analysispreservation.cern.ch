@@ -14,7 +14,7 @@ import requireAuth from "../../components/auth/AuthorizationRequired";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 
-import DocumentTitle from "../../components/partials/Title";
+import DocumentTitle from "../partials/DocumentTitle";
 import { Layout } from "antd";
 
 import Loadable from "react-loadable";
