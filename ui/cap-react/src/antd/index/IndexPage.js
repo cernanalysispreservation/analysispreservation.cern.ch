@@ -11,7 +11,7 @@ import DraftsItemIndex from "../drafts";
 
 import CreateIndex from "../create";
 
-import PublishedIndex from "../../components/published/PublishedIndex";
+import PublishedIndex from "../published";
 import ErrorPage from "../../components/partials/ErrorPage";
 
 import {

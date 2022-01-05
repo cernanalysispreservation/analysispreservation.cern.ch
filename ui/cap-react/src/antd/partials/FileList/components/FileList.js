@@ -22,7 +22,11 @@ const FileList = ({
     const choices = {
       repositories: (
         <React.Fragment>
-          {displayTitle && <Divider style={{fontSize: "1em", margin: "0"}}>All Repositories</Divider> }
+          {displayTitle && (
+            <Divider style={{ fontSize: "1em", margin: "0" }}>
+              All Repositories
+            </Divider>
+          )}
           {repos && repos.length > 0 ? (
             <Tree.DirectoryTree
               treeData={repos[0].children || []}
@@ -37,7 +41,11 @@ const FileList = ({
       files: (
         <React.Fragment>
           <Space direction="vertical" style={{ width: "100%" }}>
-            {displayTitle && <Divider style={{fontSize: "1em", margin: "0"}}>All Files</Divider>}
+            {displayTitle && (
+              <Divider style={{ fontSize: "1em", margin: "0" }}>
+                All Files
+              </Divider>
+            )}
             {files.children && files.children.length > 0 ? (
               <Tree.DirectoryTree
                 treeData={files.children}
