@@ -5,7 +5,7 @@ import ErrorPage from "../../components/partials/ErrorPage";
 import OAuthConnect from "../../components/settings/components/OAuthConnect";
 import SettingsIndex from "./Settings";
 
-import DocumentTitle from "../../components/partials/Title";
+import DocumentTitle from "../partials/DocumentTitle";
 import { SETTINGS, SETTINGS_AUTH_CONNECT } from "../../components/routes";
 
 const Settings = () => {
