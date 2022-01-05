@@ -1,5 +1,5 @@
 import React from "react";
-import DocumentTitle from "../../components/partials/Title";
+import DocumentTitle from "../partials/DocumentTitle";
 import { Col, Row, Space, Typography } from "antd";
 
 const Policy = () => {
