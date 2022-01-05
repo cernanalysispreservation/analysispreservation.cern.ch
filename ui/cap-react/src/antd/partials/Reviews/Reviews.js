@@ -1,18 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Button,
-  Card,
-  Form,
-  Input,
-  List,
-  Modal,
-  Radio,
-  Typography
-} from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
-import ShowMoreText from "../ShowMoreText";
-import Description from "./Description";
+import { Button, Card, Form, Input, Modal, Radio, Typography } from "antd";
+
+import ReviewList from "./ReviewList";
 
 const Reviews = ({
   review,
@@ -21,10 +11,12 @@ const Reviews = ({
   reviewPublished,
   isReviewingPublished,
   publishedReviewError,
-  draftReviewError
+  draftReviewError,
+  action = "add"
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [form] = Form.useForm();
   const closeModal = () => {
     setShowModal(false);
@@ -101,83 +93,47 @@ const Reviews = ({
           </Typography.Text>
         )}
       </Modal>
-      <Card
-        title="Reviews"
-        extra={
-          <Button type="primary" onClick={() => setShowModal(true)}>
-            Add Review
-          </Button>
+      <Modal
+        visible={showReviewsModal}
+        footer={
+          <Button onClick={() => setShowReviewsModal(false)}>Close</Button>
         }
+        onCancel={() => setShowReviewsModal(false)}
       >
-        <List
-          style={{ maxHeight: "50vh", overflowX: "hidden" }}
-          dataSource={review}
-          renderItem={item => (
-            <List.Item
-              actions={
-                !item.resolved && [
-                  <Button
-                    key="resolve"
-                    type="primary"
-                    onClick={() =>
-                      isReviewingPublished
-                        ? reviewPublished(
-                            {
-                              action: "resolve",
-                              id: item.id
-                            },
-                            "resolved"
-                          )
-                        : reviewDraft(
-                            draft_id,
-                            {
-                              action: "resolve",
-                              id: item.id
-                            },
-                            "resolved"
-                          )
-                    }
-                  >
-                    Resolve
-                  </Button>,
-                  <Button
-                    key="delete"
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={() =>
-                      isReviewingPublished
-                        ? reviewPublished(
-                            {
-                              id: item.id,
-                              action: "delete"
-                            },
-                            "deleted"
-                          )
-                        : reviewDraft(
-                            draft_id,
-                            {
-                              id: item.id,
-                              action: "delete"
-                            },
-                            "deleted"
-                          )
-                    }
-                  />
-                ]
-              }
-            >
-              <List.Item.Meta
-                description={
-                  <ShowMoreText italic={item.resolved}>
-                    {item.body}
-                  </ShowMoreText>
-                }
-                title={<Description review={item} />}
-              />
-            </List.Item>
-          )}
+        <ReviewList
+          draft_id={draft_id}
+          review={review}
+          isReviewingPublished={isReviewingPublished}
+          reviewPublished={reviewPublished}
+          reviewDraft={reviewDraft}
         />
-      </Card>
+      </Modal>
+      {isReviewingPublished ? (
+        action == "add" ? (
+          <Button onClick={() => setShowModal(true)}>Add Review</Button>
+        ) : (
+          <Button onClick={() => setShowReviewsModal(true)}>
+            Show Reviews
+          </Button>
+        )
+      ) : (
+        <Card
+          title="Reviews"
+          extra={
+            <Button type="primary" onClick={() => setShowModal(true)}>
+              Add Review
+            </Button>
+          }
+        >
+          <ReviewList
+            draft_id={draft_id}
+            review={review}
+            isReviewingPublished={isReviewingPublished}
+            reviewPublished={reviewPublished}
+            reviewDraft={reviewDraft}
+          />
+        </Card>
+      )}
     </React.Fragment>
   );
 };
@@ -189,7 +145,8 @@ Reviews.propTypes = {
   reviewPublished: PropTypes.func,
   isReviewingPublished: PropTypes.bool,
   publishedReviewError: PropTypes.string,
-  draftReviewError: PropTypes.string
+  draftReviewError: PropTypes.string,
+  action: PropTypes.string
 };
 
 export default Reviews;
