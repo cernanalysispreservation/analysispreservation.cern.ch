@@ -2,7 +2,14 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Space, Form, Input, Radio } from "antd";
 
-const CreateForm = ({ contentTypes, updateModal, onCancel, createDraft }) => {
+const CreateForm = ({
+  contentTypes,
+  updateModal,
+  onCancel,
+  createDraft,
+  anatype = "",
+  disabled = false
+}) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -15,6 +22,7 @@ const CreateForm = ({ contentTypes, updateModal, onCancel, createDraft }) => {
         name="basic"
         layout="vertical"
         form={form}
+        initialValues={{ type: anatype }}
         onFinish={values => {
           createDraft(
             { general_title: values.generalTitle },
@@ -30,7 +38,10 @@ const CreateForm = ({ contentTypes, updateModal, onCancel, createDraft }) => {
             { required: true, message: "Title is mandatory for your analysis" }
           ]}
         >
-          <Input placeholder="give your analysis title..." />
+          <Input
+            disabled={disabled}
+            placeholder="give your analysis title..."
+          />
         </Form.Item>
 
         <Form.Item
@@ -44,6 +55,7 @@ const CreateForm = ({ contentTypes, updateModal, onCancel, createDraft }) => {
             {contentTypes &&
               contentTypes.toJS().map(type => (
                 <Radio.Button
+                  disabled={disabled}
                   style={{ margin: "5px" }}
                   value={type["deposit_group"]}
                   key={type["deposit_group"]}
@@ -62,7 +74,9 @@ CreateForm.propTypes = {
   updateModal: PropTypes.func,
   createDraft: PropTypes.func,
   onCancel: PropTypes.func,
-  contentTypes: PropTypes.object
+  contentTypes: PropTypes.object,
+  anatype: PropTypes.string,
+  disabled: PropTypes.bool
 };
 
 export default CreateForm;
