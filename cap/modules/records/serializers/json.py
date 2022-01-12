@@ -66,6 +66,12 @@ class CAPJSONSerializer(JSONSerializer):
         collection_buckets = search_result.get("aggregations", {}) \
                                           .get("facet_collection", {}) \
                                           .get("buckets", [])
+        if not collection_buckets:
+            collection_buckets = search_result.get("aggregations", {}) \
+                                              .get("facet_collection", {}) \
+                                              .get("filtered", {}) \
+                                              .get("buckets", [])
+
         for cb in collection_buckets:
             if "__display_name__" in cb:
                 try:
