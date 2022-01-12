@@ -19,6 +19,15 @@
             "description": "Please provide information about the main measurements of your analysis",
             "id": "main_measurements"
           },
+          "adl_schema": {
+            "items": {
+              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/adl-schema-v0.0.1.json"
+            },
+            "title": "ADL parsed JSON",
+            "type": "array",
+            "description": "ADL Parser",
+            "id": "adl_schema"
+          },
           "final_results": {
             "title": "Final Results",
             "type": "object",

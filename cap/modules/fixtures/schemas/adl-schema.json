@@ -1,0 +1,32 @@
+{
+	"experiment": "CMS",
+	"use_deposit_as_record": true,
+	"version": "0.0.1",
+	"is_indexed": true,
+	"fullname": "",
+	"deposit_schema": {
+			"$schema": "http://json-schema.org/draft-04/schema#",
+			"type": "object",
+			"description": "Analysis Description Language(ADL) parsed to JSON",
+			"properties": {
+			"object": {
+				"type": "array",
+				"title": "Object"
+			},
+			"region": {
+				"type": "array",
+				"title": "Region"
+			},
+			"info": {
+				"type": "array",
+				"title": "Info"
+			},
+			"table": {
+				"type": "array",
+				"title": "Table"
+			}
+		},
+		"title": "ADL"
+	},
+	"name": "adl-schema"
+}
