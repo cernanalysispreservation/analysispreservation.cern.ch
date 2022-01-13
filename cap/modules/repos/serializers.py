@@ -55,17 +55,32 @@ class GitHubPushPayloadSchema(GitHubPayloadSchema):
 
     def get_commit(self, obj):
         """Push-event-specific information."""
-        return [{
-            'id': head['id'],
-            'message': head['message'],
-            'added': head['added'],
-            'removed': head['removed'],
-            'modified': head['modified']
-        } for head in obj['commits']]
+        if obj['commits']:
+            return [{
+                'id': head['id'],
+                'message': head['message'],
+                'added': head['added'],
+                'removed': head['removed'],
+                'modified': head['modified']
+            } for head in obj['commits']]
+        elif obj['head_commit']:
+            head = obj['head_commit']
+            return [{
+                'id': head['id'],
+                'message': head['message'],
+                'added': head['added'],
+                'removed': head['removed'],
+                'modified': head['modified']
+            }]
+        else:
+            return []
 
     def get_link(self, obj):
         """Link to github page."""
-        return obj['commits'][0]['url']
+        if obj['commits']:
+            return obj['commits'][0]['url']
+        elif obj['head_commit']:
+            return obj['head_commit']['url']
 
 
 class GitHubReleasePayloadSchema(GitHubPayloadSchema):
