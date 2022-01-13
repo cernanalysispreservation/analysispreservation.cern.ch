@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
 
-import SearchPage from "../../components/search/SearchPage";
+import SearchPage from "../search";
 
 import Dashboard from "../dashboard";
 
