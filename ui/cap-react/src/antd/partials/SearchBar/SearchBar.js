@@ -54,7 +54,14 @@ const SearchBar = ({ pushPath }) => {
       value={value}
       onChange={setValue}
     >
-      <Input.Search size="large" placeholder="Search" enterButton />
+      <Input.Search
+        size="large"
+        placeholder="Search"
+        enterButton
+        onSearch={val =>
+          onSelect(null, { searchValue: val, searchOn: "/drafts" })
+        }
+      />
     </AutoComplete>
   );
 };
