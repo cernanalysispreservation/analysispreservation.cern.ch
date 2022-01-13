@@ -11,7 +11,8 @@ import {
   notification,
   Collapse,
   Row,
-  Tag
+  Tag,
+  Table
 } from "antd";
 import RepoActions from "./RepoActions";
 import { CheckCircleTwoTone } from "@ant-design/icons";
@@ -23,6 +24,40 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
 
   const [myRepo, setMyRepo] = useState(null);
   const [error, setError] = useState(null);
+
+  const columns = [
+    {
+      title: 'Ref',
+      render: snap => {
+        return snap.payload.event_type == "release" ?
+          <Tag>
+            {snap.payload.release.tag}
+          </Tag>
+          : <Typography.Text>
+            {snap.payload.commit.slice(-1)[0].message}
+          </Typography.Text>
+      },
+      width: "60%",
+      key: 'ref',
+      ellipsis: true,
+    },
+    {
+      title: 'Created',
+      render: snap => {
+        return snap.created && (
+          <ReactTimeago date={snap.created} minPeriod="60" />
+        )
+      },
+      width: "20%",
+      key: 'created',
+    },
+    {
+      title: 'Link',
+      render: snap => <Typography.Link href={snap.payload.link} target="_blank">link</Typography.Link>,
+      width: "20%",
+      key: 'link',
+    },
+  ];
 
   const uploadRepo = (
     webhook = null,
@@ -161,46 +196,13 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
                     </Space>
                   }
                 >
-                  {repo.snapshots.length > 0 ? (
-                    repo.snapshots.map((snap, idx) => (
-                      <Row
-                        key={idx}
-                        justify="space-between"
-                        style={{
-                          verticalAlign: "middle",
-                          marginBottom: "10px",
-                          background: idx % 2 != 0 && "#f5f5f5",
-                          padding: "10px"
-                        }}
-                      >
-                        <Tag>
-                          {snap.payload.event_type == "release"
-                            ? snap.payload.release.tag
-                            : snap.payload.commit.slice(-1)[0].message}
-                        </Tag>
-
-                        <Space>
-                          {snap.created && (
-                            <ReactTimeago date={snap.created} minPeriod="60" />
-                          )}
-                          <Typography.Link
-                            href={snap.payload.link}
-                            target="_blank"
-                          >
-                            link
-                          </Typography.Link>
-                        </Space>
-                      </Row>
-                    ))
-                  ) : (
-                    <Empty description="No snapshots were uploaded for this event" />
-                  )}
+                  <Table dataSource={repo.snapshots} columns={columns} />
                 </Collapse.Panel>
               ))}
             </Collapse>
           ) : (
-            <Empty description="No connected repositories" />
-          )}
+              <Empty description="No connected repositories" />
+            )}
         </Card>
       </Space>
     </Col>
