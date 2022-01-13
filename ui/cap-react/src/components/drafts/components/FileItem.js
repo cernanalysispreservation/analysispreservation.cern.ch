@@ -240,7 +240,7 @@ class FileItem extends React.Component {
                 </Box>
               ) : (
                 versions
-                  .filter(item => item.key === this.props.filename)
+                  .filter(item => item.key === this.props.file.key)
                   .map((item, index) => (
                     <Box
                       margin={{ vertical: "small" }}
