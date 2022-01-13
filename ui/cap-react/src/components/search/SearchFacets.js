@@ -164,7 +164,7 @@ class SearchFacets extends React.Component {
     // in the event that the user wants to search through the drafts, the type should be maintained
     if (anatype) {
       let currentParams = queryString.parse(this.props.location.search);
-      currentParams["type"] = anatype;
+      currentParams["collection"] = anatype;
       location = {
         search: queryString.stringify(currentParams)
       };
@@ -180,15 +180,20 @@ class SearchFacets extends React.Component {
       let facets = this.constructFacets(this.props.aggs);
 
       if (this.props.removeType) {
-        delete facets.type;
+        delete facets.collection;
       }
 
       // Get and sort by order aggregations
       let categories = [];
       for (let key in facets) {
-        categories.push([key, facets[key].meta && facets[key].meta.order ? facets[key].meta.order : 9999 ]);
+        categories.push([
+          key,
+          facets[key].meta && facets[key].meta.order
+            ? facets[key].meta.order
+            : 9999
+        ]);
       }
-      categories.sort((a, b) => (a[1] - b[1]) )
+      categories.sort((a, b) => a[1] - b[1]);
       categories = categories.map(c => c[0]);
 
       facets_result = (

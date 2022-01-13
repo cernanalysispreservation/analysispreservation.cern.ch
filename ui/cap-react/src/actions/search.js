@@ -93,8 +93,8 @@ export function fetchSearch(match) {
 
     if (!("sort" in params)) searchUrl += "&sort=mostrecent";
     if (match.params.anatype) {
-      searchUrl += `&type=${match.params.anatype}`;
-      params.type = match.params.anatype;
+      searchUrl += `&collection=${match.params.anatype}`;
+      params.collection = match.params.anatype;
     }
 
     dispatch(toggleAggs(params));
