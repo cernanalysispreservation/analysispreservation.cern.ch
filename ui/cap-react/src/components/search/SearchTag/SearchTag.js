@@ -47,7 +47,7 @@ const SearchTag = ({
       {anatype &&
         removeAnatype && (
           <Tag
-            text={`Type: ${decodeURIComponent(anatype)}`}
+            text={`collection:${decodeURIComponent(anatype)}`}
             onClick={removeAnatype}
           />
         )}
@@ -55,8 +55,8 @@ const SearchTag = ({
         types.map(type => (
           <Tag
             key={type}
-            text={`Type: ${decodeURIComponent(type)}`}
-            onClick={() => removeQuery("type", decodeURIComponent(type))}
+            text={`collection:${decodeURIComponent(type)}`}
+            onClick={() => removeQuery("collection", decodeURIComponent(type))}
           />
         ))}
       {Object.entries(params) &&
