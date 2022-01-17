@@ -19,15 +19,6 @@
             "description": "Please provide information about the main measurements of your analysis",
             "id": "main_measurements"
           },
-          "adl_schema": {
-            "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/adl-schema-v0.0.1.json"
-            },
-            "title": "ADL parsed JSON",
-            "type": "array",
-            "description": "ADL Parser",
-            "id": "adl_schema"
-          },
           "final_results": {
             "title": "Final Results",
             "type": "object",
@@ -141,6 +132,21 @@
             "placeholder": "e.g. JME-10-107",
             "title": "CADI ID",
             "description": "e.g. JME-10-107"
+          },
+          "adl_schema": {
+            "properties": {
+              "file": {
+                "type": "string",
+                "description": "Select an uploaded ADL file"
+              },
+              "content": {
+                "$ref":  "https://analysispreservation.cern.ch/schemas/deposits/records/adl-schema-v0.0.1.json"
+              }
+            },
+            "title": "ADL parsed JSON",
+            "type": "array",
+            "description": "ADL Parser",
+            "id": "adl_schema"
           },
           "analysis_keywords": {
             "type": "object",

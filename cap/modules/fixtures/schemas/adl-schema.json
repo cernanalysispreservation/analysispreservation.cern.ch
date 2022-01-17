@@ -11,10 +11,50 @@
 			"properties": {
 			"object": {
 				"type": "array",
+				"properties": {
+					"select": {
+						"type": "array"
+					},
+					"reject": {
+						"type": "string"
+					},
+					"take": {
+						"type": "string"
+					},
+					"sort": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number"
+					},
+					"histo": {
+						"type": "string"
+					}
+				},
 				"title": "Object"
 			},
 			"region": {
 				"type": "array",
+				"properties": {
+					"select": {
+						"type": "array"
+					},
+					"reject": {
+						"type": "string"
+					},
+					"take": {
+						"type": "string"
+					},
+					"sort": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number"
+					},
+					"histo": {
+						"type": "string"
+					}
+				},
 				"title": "Region"
 			},
 			"info": {
