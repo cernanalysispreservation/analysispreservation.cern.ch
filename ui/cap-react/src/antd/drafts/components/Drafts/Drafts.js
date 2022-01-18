@@ -62,21 +62,16 @@ const Drafts = ({
             visibleMenuDrawer={visibleMenuDrawer}
             onClose={() => setVisibleMenuDrawer(false)}
           />
-          <Layout style={{ padding: 0, height: "100%" }}>
+          <Layout style={{ padding: 0 }}>
             <Row
               justify="space-between"
               style={{ overflowX: "hidden", height: "100%" }}
             >
-              <Col
-                xs={24}
-                xxl={18}
-                style={{
-                  height: "100%",
-                  overflowX: "hidden",
-                  paddingBottom: "24px"
-                }}
-              >
-                <Row justify="center">
+              <Col xs={24} xxl={18} style={{ height: "100%" }}>
+                <Row
+                  justify="center"
+                  style={{ paddingBottom: "24px", height: "100%" }}
+                >
                   <Switch>
                     <Route exact path={DRAFT_ITEM} component={DraftPreview} />
                     <Route
