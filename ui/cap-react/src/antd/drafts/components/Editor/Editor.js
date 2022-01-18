@@ -30,7 +30,7 @@ const Editor = ({
     schemas && schemas.schema ? transformSchema(schemas.schema) : null;
 
   return (
-    <Col span={24}>
+    <Col span={24} style={{ height: "100%" }}>
       {canEdit(canAdmin, canUpdate) && (
         <Row
           justify="space-between"

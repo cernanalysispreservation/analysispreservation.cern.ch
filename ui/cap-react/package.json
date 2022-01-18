@@ -43,6 +43,7 @@
     "@storybook/addon-actions": "5.1.11",
     "@storybook/addon-knobs": "5.1.11",
     "antd": "4.18.3",
+    "classnames": "2.3.1",
     "clean-deep": "3.3.0",
     "cogo-toast": "4.1.1",
     "connected-react-router": "6.5.2",
