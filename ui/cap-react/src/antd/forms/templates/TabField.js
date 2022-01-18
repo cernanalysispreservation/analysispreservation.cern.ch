@@ -69,8 +69,16 @@ const TabField = ({ uiSchema, properties }) => {
   }, []);
 
   return (
-    <Row>
-      <Col flex="0 1 200px">
+    <div
+      style={{
+        height: "100%",
+        display: "grid",
+        gridTemplateColumns: "auto 1fr",
+        gridTemplateRows: "auto",
+        overflow: "auto"
+      }}
+    >
+      <div>
         <Menu mode="inline" selectedKeys={[active]} style={{ height: "100%" }}>
           {analysis_mode.length > 0 && (
             <Menu.Item>
@@ -95,15 +103,18 @@ const TabField = ({ uiSchema, properties }) => {
             </Menu.Item>
           ))}
         </Menu>
-      </Col>
+      </div>
 
-      <Col flex="1 1 500px" style={{ overflowX: "hidden", height: "100%" }}>
-        {active_tabs_content.map(item => item.content)}
-      </Col>
-    </Row>
+      <Row justify="center">
+        <Col span={16}>{active_tabs_content.map(item => item.content)}</Col>
+      </Row>
+    </div>
   );
 };
 
-TabField.propTypes = {};
+TabField.propTypes = {
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object
+};
 
 export default TabField;

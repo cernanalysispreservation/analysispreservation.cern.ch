@@ -68,7 +68,7 @@ const Drafts = ({
               <Col xs={24} xxl={19} style={{ height: "100%" }}>
                 <Row
                   justify="center"
-                  style={{ paddingBottom: "24px", height: "100%" }}
+                  style={{ height: "100%", overflowX: "hidden" }}
                 >
                   <Switch>
                     <Route exact path={DRAFT_ITEM} component={DraftPreview} />
