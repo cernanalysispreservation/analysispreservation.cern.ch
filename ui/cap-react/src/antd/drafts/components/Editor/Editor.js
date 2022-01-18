@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Row, Space, Typography } from "antd";
+import { Button, Col, Radio, Row, Space, Typography } from "antd";
 import Error from "../../../partials/Error/";
 import { transformSchema } from "../../utils/transformSchema";
 import { canEdit } from "../../utils/permissions";
 
 import Form from "../../../forms";
+import { SaveOutlined } from "@ant-design/icons";
 const Editor = ({
   schemaErrors,
   schemas = { schema: {}, uiSchema: {} },
@@ -30,22 +31,22 @@ const Editor = ({
     schemas && schemas.schema ? transformSchema(schemas.schema) : null;
 
   return (
-    <Col span={24} style={{ height: "100%" }}>
+    <Col span={24} style={{ height: "100%", overflow: "auto" }}>
       {canEdit(canAdmin, canUpdate) && (
         <Row
           justify="space-between"
           style={{
-            padding: "5px 10px",
-            background: "#fff",
-            marginBottom: "10px"
+            padding: "10px",
+            background: "#fff"
           }}
         >
-          <Space>
-            <Typography.Text>Mode:</Typography.Text>
-            <Button>Edit</Button>
-            <Button>View</Button>
-          </Space>
-          <Button>Save</Button>
+          <Radio.Group defaultValue="edit" buttonStyle="solid">
+            <Radio.Button value="edit">Edit</Radio.Button>
+            <Radio.Button value="preview">Preview</Radio.Button>
+          </Radio.Group>
+          <Button icon={<SaveOutlined />} type="primary">
+            Save
+          </Button>
         </Row>
       )}
       <Form
