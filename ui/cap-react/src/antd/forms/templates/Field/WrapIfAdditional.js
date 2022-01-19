@@ -51,8 +51,8 @@ const WrapIfAdditional = ({
 
   return (
     <div className={classNames}>
-      <Row align={toolbarAlign} gutter={rowGutter}>
-        <Col className="form-additional" flex="1">
+      <Row align={toolbarAlign} gutter={rowGutter} style={{ height: "100%" }}>
+        <Col className="form-additional" flex="1" style={{ height: "100%" }}>
           <div className="form-group">
             <Form.Item
               colon={colon}

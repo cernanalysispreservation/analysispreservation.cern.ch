@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { _filterTabs } from "./utils/tabfield";
-import { Col, Menu, Row, Space, Switch, Typography } from "antd";
+import { _filterTabs, isTabContainsError } from "./utils/tabfield";
+import { Col, Layout, Menu, Row, Space, Switch, Typography } from "antd";
+import { connect } from "react-redux";
 
-const TabField = ({ uiSchema, properties }) => {
+const TabField = ({ uiSchema, properties, formErrors }) => {
   let options = uiSchema["ui:options"];
 
   // fetch tabs either from view object or from properties
@@ -19,7 +20,9 @@ const TabField = ({ uiSchema, properties }) => {
 
   const [active, setActive] = useState("");
   const [analysisChecked, setAnalysisChecked] = useState(
-    analysis_mode ? analysis_mode[0].content.props.formData == "true" : false
+    analysis_mode.length > 0
+      ? analysis_mode[0].content.props.formData == "true"
+      : false
   );
 
   // remove components which are meant to be hidden
@@ -69,16 +72,8 @@ const TabField = ({ uiSchema, properties }) => {
   }, []);
 
   return (
-    <div
-      style={{
-        height: "100%",
-        display: "grid",
-        gridTemplateColumns: "auto 1fr",
-        gridTemplateRows: "auto",
-        overflow: "auto"
-      }}
-    >
-      <div>
+    <Layout style={{ height: "100%" }}>
+      <Layout.Sider style={{ height: "100%" }}>
         <Menu mode="inline" selectedKeys={[active]} style={{ height: "100%" }}>
           {analysis_mode.length > 0 && (
             <Menu.Item>
@@ -98,17 +93,27 @@ const TabField = ({ uiSchema, properties }) => {
             </Menu.Item>
           )}
           {tabs.map(item => (
-            <Menu.Item key={item.name} onClick={() => setActive(item.name)}>
+            <Menu.Item
+              key={item.name}
+              onClick={() => setActive(item.name)}
+              danger={isTabContainsError(
+                item.content.props.idSchema.$id,
+                formErrors
+              )}
+            >
               {item.title || item.content.props.schema.title}
             </Menu.Item>
           ))}
         </Menu>
-      </div>
-
-      <Row justify="center">
-        <Col span={16}>{active_tabs_content.map(item => item.content)}</Col>
-      </Row>
-    </div>
+      </Layout.Sider>
+      <Layout.Content>
+        <Row justify="center">
+          <Col span={16} style={{ padding: "10px 0" }}>
+            {active_tabs_content.map(item => item.content)}
+          </Col>
+        </Row>
+      </Layout.Content>
+    </Layout>
   );
 };
 
@@ -117,4 +122,11 @@ TabField.propTypes = {
   properties: PropTypes.object
 };
 
-export default TabField;
+const mapStateToProps = state => ({
+  formErrors: state.draftItem.get("formErrors")
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(TabField);
