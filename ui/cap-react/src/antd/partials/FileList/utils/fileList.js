@@ -1,4 +1,5 @@
 import React from "react";
+import { Space } from "antd";
 import DropDownFiles from "../containers/DropDown";
 import { _getIcon } from "./getFileItemIcon";
 export const constructTree = data => {
@@ -32,7 +33,7 @@ function arrangeIntoTree(paths) {
         let newPart = {
           name: part,
           key: part,
-          title: part,
+          title: <Space>{_getIcon()}{part}</Space>,
           data: pathData
         };
 

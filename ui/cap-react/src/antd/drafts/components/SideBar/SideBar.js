@@ -74,7 +74,7 @@ const SideBar = ({
   return (
     <Row style={{ backgroundColor: "#fff", height: "100%" }}>
       <Space direction="vertical" style={{ width: "100%", padding: "10px" }}>
-        <Descriptions title="Draft Info" bordered size="small">
+        <Descriptions bordered size="small">
           {contents.map((content, idx) => (
             <Descriptions.Item label={content.title} key={idx} span={24}>
               {content.content}
@@ -83,6 +83,7 @@ const SideBar = ({
         </Descriptions>
         <FileManager visible={showModal} onCancel={() => setShowModal(false)} />
         <Card
+          size="small"
           title="Files | Data | Repos"
           extra={[
             status != "published" &&
@@ -92,6 +93,7 @@ const SideBar = ({
                   render={() => (
                     <Space direction="horizontal" size="middle">
                       <Button
+                        size="small"
                         key="refresh"
                         icon={<ReloadOutlined />}
                         onClick={() => {
@@ -102,6 +104,7 @@ const SideBar = ({
                       />
                       <Button
                         key="add"
+                        size="small"
                         icon={<PlusOutlined />}
                         onClick={() => setShowModal(true)}
                       />
