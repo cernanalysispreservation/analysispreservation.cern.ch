@@ -24,3 +24,18 @@ const _checkIfHidden = (name, uiSchema) => {
     uiSchema[name]["ui:options"].hidden
   );
 };
+
+export const isTabContainsError = (id, errors) => {
+  // If there is an error that startsWith the "id", probably means that
+  //  this is the parent of an erronous field
+  let isCurrentErrored;
+  if (Array.isArray(id)) {
+    isCurrentErrored = errors.some(error => {
+      return id.filter(ids => error.startsWith(ids)).length > 0;
+    });
+  } else {
+    isCurrentErrored = errors.filter(error => error.startsWith(id));
+  }
+
+  return isCurrentErrored.size > 0;
+};
