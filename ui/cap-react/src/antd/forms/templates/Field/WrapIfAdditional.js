@@ -28,7 +28,8 @@ const WrapIfAdditional = ({
   onKeyChange,
   readonly,
   required,
-  schema
+  schema,
+  isTabView
 }) => {
   const {
     colon,
@@ -44,15 +45,22 @@ const WrapIfAdditional = ({
   const additional = schema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
 
   if (!additional) {
-    return <div className={classNames}>{children}</div>;
+    return (
+      <div
+        className={classNames}
+        style={{ height: id == "root" && isTabView && "100%" }}
+      >
+        {children}
+      </div>
+    );
   }
 
   const handleBlur = ({ target }) => onKeyChange(target.value);
 
   return (
     <div className={classNames}>
-      <Row align={toolbarAlign} gutter={rowGutter}>
-        <Col className="form-additional" flex="1">
+      <Row align={toolbarAlign} gutter={rowGutter} style={{ height: "100%" }}>
+        <Col className="form-additional" flex="1" style={{ height: "100%" }}>
           <div className="form-group">
             <Form.Item
               colon={colon}
