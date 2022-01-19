@@ -59,10 +59,11 @@ const FieldTemplate = ({
     <div
       style={{
         gridColumn: gridColumns ? gridColumns : "1 / 5",
-        padding:
-          id == "root"
-            ? null
-            : schema.type !== "array" && schema.type !== "object" && "10px 24px"
+        height: id == "root" && uiSchema["ui:object"] == "tabView" && "100%"
+        // padding:
+        //   id == "root"
+        //     ? null
+        //     : schema.type !== "array" && schema.type !== "object" && "10px 24px"
       }}
     >
       <WrapIfAdditional
@@ -76,6 +77,7 @@ const FieldTemplate = ({
         readonly={readonly}
         required={required}
         schema={schema}
+        isTabView={uiSchema["ui:object"] == "tabView"}
       >
         {id === "root" ? (
           children
@@ -87,15 +89,18 @@ const FieldTemplate = ({
             help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
             htmlFor={id}
             label={
-              <Space>
-                <Typography.Text>{displayLabel && label}</Typography.Text>
-                {schema.type !== "array" &&
-                  schema.type !== "object" && (
-                    <Typography.Text type="secondary">
-                      {description}
-                    </Typography.Text>
-                  )}
-              </Space>
+              displayLabel &&
+              label && (
+                <Space>
+                  <Typography.Text>{displayLabel && label}</Typography.Text>
+                  {schema.type !== "arrays" &&
+                    schema.type !== "objectg" && (
+                      <Typography.Text type="secondary">
+                        {description}
+                      </Typography.Text>
+                    )}
+                </Space>
+              )
             }
             labelCol={labelCol}
             required={required}
