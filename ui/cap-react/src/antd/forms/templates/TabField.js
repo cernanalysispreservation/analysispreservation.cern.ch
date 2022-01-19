@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { _filterTabs } from "./utils/tabfield";
-import { Col, Menu, Row, Space, Switch, Typography } from "antd";
+import { _filterTabs, isTabContainsError } from "./utils/tabfield";
+import {
+  Col,
+  Layout,
+  Menu,
+  Row,
+  Space,
+  Switch,
+  Typography,
+  Grid,
+  Dropdown,
+  Button
+} from "antd";
+import { connect } from "react-redux";
+import { DownOutlined } from "@ant-design/icons";
 
-const TabField = ({ uiSchema, properties }) => {
+const TabField = ({ uiSchema, properties, formErrors }) => {
   let options = uiSchema["ui:options"];
 
   // fetch tabs either from view object or from properties
@@ -18,8 +31,11 @@ const TabField = ({ uiSchema, properties }) => {
   let active_tabs_content = [];
 
   const [active, setActive] = useState("");
+  const [activeLabel, setActiveLabel] = useState("");
   const [analysisChecked, setAnalysisChecked] = useState(
-    analysis_mode ? analysis_mode[0].content.props.formData == "true" : false
+    analysis_mode.length > 0
+      ? analysis_mode[0].content.props.formData == "true"
+      : false
   );
 
   // remove components which are meant to be hidden
@@ -59,62 +75,95 @@ const TabField = ({ uiSchema, properties }) => {
         }
       }
       setActive(act);
-      // this.state = {
-      //   active,
-      //   activeLabel,
-      //   analysis_mode,
-      //   optionTabs: this.options.tabs
-      // };
+      setActiveLabel(actLabel);
     }
   }, []);
 
-  return (
-    <div
-      style={{
-        height: "100%",
-        display: "grid",
-        gridTemplateColumns: "auto 1fr",
-        gridTemplateRows: "auto",
-        overflow: "auto"
-      }}
-    >
-      <div>
-        <Menu mode="inline" selectedKeys={[active]} style={{ height: "100%" }}>
-          {analysis_mode.length > 0 && (
-            <Menu.Item>
-              <Space size="large">
-                <Typography.Text>Reuse Mode</Typography.Text>
-                <Switch
-                  disabled={analysis_mode[0].content.props.readonly}
-                  checked={analysisChecked}
-                  onChange={checked => {
-                    analysis_mode[0].content.props.onChange(
-                      checked ? "true" : undefined
-                    );
-                    setAnalysisChecked(checked);
-                  }}
-                />
-              </Space>
-            </Menu.Item>
-          )}
-          {tabs.map(item => (
-            <Menu.Item key={item.name} onClick={() => setActive(item.name)}>
-              {item.title || item.content.props.schema.title}
-            </Menu.Item>
-          ))}
-        </Menu>
-      </div>
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
 
-      <Row justify="center">
-        <Col span={16}>{active_tabs_content.map(item => item.content)}</Col>
-      </Row>
-    </div>
+  const menu = (
+    <Menu
+      mode="inline"
+      selectedKeys={[active]}
+      style={{ height: "100%", width: "220px" }}
+    >
+      {analysis_mode.length > 0 && (
+        <Menu.Item>
+          <Space size="large">
+            <Typography.Text>Reuse Mode</Typography.Text>
+            <Switch
+              disabled={analysis_mode[0].content.props.readonly}
+              checked={analysisChecked}
+              onChange={checked => {
+                analysis_mode[0].content.props.onChange(
+                  checked ? "true" : undefined
+                );
+                setAnalysisChecked(checked);
+              }}
+            />
+          </Space>
+        </Menu.Item>
+      )}
+      {tabs.map(item => (
+        <Menu.Item
+          key={item.name}
+          onClick={() => {
+            setActive(item.name);
+            setActiveLabel(item.title || item.content.props.schema.title);
+          }}
+          danger={isTabContainsError(
+            item.content.props.idSchema.$id,
+            formErrors
+          )}
+        >
+          {item.title || item.content.props.schema.title}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
+  return (
+    <Layout style={{ height: "100%", padding: 0 }}>
+      {screens.md ? (
+        <Layout.Sider style={{ height: "100%" }}>{menu}</Layout.Sider>
+      ) : (
+        <Row
+          justify="center"
+          style={{ padding: "10px", background: "#fff", marginTop: "5px" }}
+        >
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <Button>
+              {activeLabel} {<DownOutlined />}
+            </Button>
+          </Dropdown>
+        </Row>
+      )}
+
+      <Layout.Content
+        style={{ height: "100%", overflowX: "hidden", paddingBottom: "24px" }}
+      >
+        <Row justify="center">
+          <Col span={16} style={{ padding: "10px 0" }}>
+            {active_tabs_content.map(item => item.content)}
+          </Col>
+        </Row>
+      </Layout.Content>
+    </Layout>
   );
 };
 
 TabField.propTypes = {
   uiSchema: PropTypes.object,
-  properties: PropTypes.object
+  properties: PropTypes.object,
+  formErrors: PropTypes.object
 };
 
-export default TabField;
+const mapStateToProps = state => ({
+  formErrors: state.draftItem.get("formErrors")
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(TabField);
