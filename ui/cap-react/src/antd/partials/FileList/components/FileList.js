@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { filter } from "lodash";
-import HorizontalWithText from "../../LineText";
-import { Empty, Space, Tree } from "antd";
+
+import { Divider, Empty, Space, Tree } from "antd";
 import { constructTree } from "../utils/fileList";
 
 const FileList = ({
@@ -22,11 +22,12 @@ const FileList = ({
     const choices = {
       repositories: (
         <React.Fragment>
-          {displayTitle && <HorizontalWithText text="All Repositories" />}
+          {displayTitle && <Divider style={{fontSize: "1em", margin: "0"}}>All Repositories</Divider> }
           {repos && repos.length > 0 ? (
             <Tree.DirectoryTree
               treeData={repos[0].children || []}
               selectable={false}
+              showIcon={false}
             />
           ) : (
             <Empty description="No repos uploaded yet" />
@@ -36,11 +37,12 @@ const FileList = ({
       files: (
         <React.Fragment>
           <Space direction="vertical" style={{ width: "100%" }}>
-            {displayTitle && <HorizontalWithText text="All Files" />}
+            {displayTitle && <Divider style={{fontSize: "1em", margin: "0"}}>All Files</Divider>}
             {files.children && files.children.length > 0 ? (
               <Tree.DirectoryTree
                 treeData={files.children}
                 selectable={false}
+                showIcon={false}
               />
             ) : (
               <Empty description="No files uploaded yet" />
@@ -60,7 +62,7 @@ const FileList = ({
   let displayTitle = renderList.includes("title");
 
   return (
-    <Space direction="vertical" style={{ width: "100%" }} size="large">
+    <Space direction="vertical" style={{ width: "100%" }}>
       {renderList.map(item =>
         getContentFromProps(item, displayTitle, repos, allFiles)
       )}
