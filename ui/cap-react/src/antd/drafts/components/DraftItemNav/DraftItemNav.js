@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import { Layout, Grid, Drawer } from "antd";
 import NavMenu from "./NavMenu";
 
-const DraftItemNav = ({ match, history, visibleMenuDrawer, onClose }) => {
+const DraftItemNav = ({
+  match,
+  history,
+  visibleMenuDrawer,
+  onClose,
+  formErrors
+}) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
 
@@ -16,11 +22,16 @@ const DraftItemNav = ({ match, history, visibleMenuDrawer, onClose }) => {
       bodyStyle={{ padding: 0 }}
       key="menu"
     >
-      <NavMenu match={match} history={history} />
+      <NavMenu match={match} history={history} formErrors={formErrors} />
     </Drawer>
   ) : (
-    <Layout.Sider trigger={null} collapsible collapsed={!screens.xxl}>
-      <NavMenu match={match} history={history} />
+    <Layout.Sider
+      trigger={null}
+      style={{ height: "100%" }}
+      collapsible
+      collapsed={!screens.xxl}
+    >
+      <NavMenu match={match} history={history} formErrors={formErrors} />
     </Layout.Sider>
   );
 };
@@ -28,6 +39,7 @@ const DraftItemNav = ({ match, history, visibleMenuDrawer, onClose }) => {
 DraftItemNav.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
+  formErrors: PropTypes.object,
   onClose: PropTypes.func,
   visibleMenuDrawer: PropTypes.bool
 };

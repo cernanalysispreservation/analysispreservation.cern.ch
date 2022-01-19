@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import { getSelectedMenuItem } from "../../utils/menu";
 
-const NavMenu = ({ match, history }) => {
+const NavMenu = ({ match, history, formErrors }) => {
   return (
     <Menu
       style={{ height: "100%" }}
@@ -22,7 +22,11 @@ const NavMenu = ({ match, history }) => {
       <Menu.Item key="overview" icon={<AppstoreOutlined />}>
         <Link to={`/drafts/${match.params.draft_id}`}>Overview</Link>
       </Menu.Item>
-      <Menu.Item key="edit" icon={<TagOutlined />}>
+      <Menu.Item
+        key="edit"
+        icon={<TagOutlined />}
+        danger={formErrors && formErrors.size > 0}
+      >
         <Link to={`/drafts/${match.params.draft_id}/edit`}>Edit</Link>
       </Menu.Item>
       <Menu.Item key="connect" icon={<BranchesOutlined />}>
@@ -47,7 +51,8 @@ const NavMenu = ({ match, history }) => {
 
 NavMenu.propTypes = {
   match: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  formErrors: PropTypes.object
 };
 
 export default NavMenu;
