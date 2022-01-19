@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Radio, Row, Space, Typography } from "antd";
+import { Col, Layout } from "antd";
 import Error from "../../../partials/Error/";
 import { transformSchema } from "../../utils/transformSchema";
-import { canEdit } from "../../utils/permissions";
-
+import Header from "../../containers/EditorHeader";
 import Form from "../../../forms";
-import { SaveOutlined } from "@ant-design/icons";
+
 const Editor = ({
   schemaErrors,
   schemas = { schema: {}, uiSchema: {} },
@@ -14,9 +13,14 @@ const Editor = ({
   match,
   initForm,
   fetchSchemaByNameVersion,
-  canAdmin,
-  canUpdate
+  formDataChange,
+  extraErrors,
+  formRef,
+  history
 }) => {
+  const [mode, setMode] = useState(
+    (history.location.state && history.location.state.mode) || "edit"
+  );
   useEffect(() => {
     if (match.params.schema_id) {
       initForm();
@@ -32,32 +36,35 @@ const Editor = ({
 
   return (
     <Col span={24} style={{ height: "100%", overflow: "auto" }}>
-      {canEdit(canAdmin, canUpdate) && (
-        <Row
-          justify="space-between"
-          style={{
-            padding: "10px",
-            background: "#fff"
-          }}
-        >
-          <Radio.Group defaultValue="edit" buttonStyle="solid">
-            <Radio.Button value="edit">Edit</Radio.Button>
-            <Radio.Button value="preview">Preview</Radio.Button>
-          </Radio.Group>
-          <Button icon={<SaveOutlined />} type="primary">
-            Save
-          </Button>
-        </Row>
-      )}
-      <Form
-        formData={formData || {}}
-        schema={_schema}
-        uiSchema={schemas.uiSchema || {}}
-      />
+      <Layout style={{ height: "100%", padding: 0 }}>
+        <Header formRef={formRef} mode={mode} updateMode={setMode} />
+        <Layout.Content style={{ height: "100%", overflowX: "hidden" }}>
+          <Form
+            mode={mode}
+            formData={formData || {}}
+            formRef={formRef}
+            schema={_schema}
+            uiSchema={schemas.uiSchema || {}}
+            onChange={change => formDataChange(change.formData)}
+            extraErrors={extraErrors || {}}
+          />
+        </Layout.Content>
+      </Layout>
     </Col>
   );
 };
 
-Editor.propTypes = {};
+Editor.propTypes = {
+  schemaErrors: PropTypes.array,
+  schemas: PropTypes.object,
+  formData: PropTypes.object,
+  match: PropTypes.object,
+  initForm: PropTypes.func,
+  fetchSchemaByNameVersion: PropTypes.func,
+  formDataChange: PropTypes.func,
+  extraErrors: PropTypes.object,
+  formRef: PropTypes.object,
+  history: PropTypes.object
+};
 
 export default Editor;
