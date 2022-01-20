@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Checkbox, Row, Space, Tag } from "antd";
 import ShowMore from "../../partials/ShowMore";
+import EllipsisText from "../../partials/EllipsisText";
 
 const FacetItem = ({
   items,
@@ -17,16 +18,18 @@ const FacetItem = ({
         <React.Fragment>
           {current.map(item => (
             <React.Fragment key={String(item.key)}>
-              <Row justify="space-between" style={{ marginBottom: "10px" }}>
+              <Row justify="space-between" align="top" style={{ marginBottom: "10px", wordBreak: "keep-all"}}>
                 <Checkbox
                   key={item.key}
                   name={String(item.key)}
                   onChange={e => onChange(category, e)}
                   checked={isAggSelected(selectedAggs[category], item.key)}
                 >
-                  {"__display_name__" in item
-                    ? item["__display_name__"]
-                    : item.key}
+                  <EllipsisText tooltip length={30} suffixCount={10} type="secondary">
+                    {"__display_name__" in item
+                      ? item["__display_name__"]
+                      : item.key}
+                  </EllipsisText>
                 </Checkbox>
                 <Tag>
                   {typeof item.doc_count === "object"
@@ -40,8 +43,7 @@ const FacetItem = ({
                   .map((key, index) => (
                     <div key={index + key} style={{ paddingLeft: "10px" }}>
                       {item[key].buckets.map(nested => (
-                        <Row key={nested.key} style={{ marginBottom: "10px" }}>
-                          <Space>
+                        <Row flex key={nested.key} justify="space-between" align="top" style={{ marginBottom: "10px", wordBreak: "keep-all" }}>
                             <Checkbox
                               name={String(nested.key)}
                               onChange={e =>
@@ -52,14 +54,15 @@ const FacetItem = ({
                                 nested.key
                               )}
                             >
-                              {nested.key}
+                              <EllipsisText tooltip length={30} suffixCount={10} type="secondary">
+                                {nested.key}
+                              </EllipsisText>
                             </Checkbox>
                             <Tag>
                               {typeof nested.doc_count === "object"
                                 ? `${nested.doc_count.doc_count}`
                                 : `${nested.doc_count}`}
                             </Tag>
-                          </Space>
                         </Row>
                       ))}
                     </div>

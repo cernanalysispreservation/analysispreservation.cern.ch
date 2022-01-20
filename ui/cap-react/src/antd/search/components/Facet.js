@@ -4,10 +4,6 @@ import { Space, Typography } from "antd";
 import FacetItem from "./FacetItem";
 import RangeSlider from "./Slider";
 
-const getFacetTitle = title =>
-  title.replace(/_/g, " ").replace(/\w\S*/g, function(txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
 
 const Facet = ({ category, facets, isAggSelected, selectedAggs, onChange }) => {
   const getContentByType = type => {
@@ -27,6 +23,14 @@ const Facet = ({ category, facets, isAggSelected, selectedAggs, onChange }) => {
 
     return choices[type == "range"];
   };
+
+  const getFacetTitle = title =>
+    facets[category].meta && facets[category].meta.title
+            ? facets[category].meta.title
+            : title.replace(/_/g, " ").replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              });
+
   return (
     <Space direction="vertical" style={{ width: "100%", marginBottom: "10px" }}>
       <Typography.Title level={5}>{getFacetTitle(category)}</Typography.Title>
