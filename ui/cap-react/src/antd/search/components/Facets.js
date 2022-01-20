@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { withRouter } from "react-router-dom";
-import { Empty, Radio, Row, Space, Switch, Typography } from "antd";
+import { Empty, Col, Divider, Modal, Row, Space, Switch, Typography } from "antd";
 import Facet from "./Facet";
 import FacetsLoading from "../Loaders/Facets";
+import HowToSearchPage from "../../../components/about/HowToSearch";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 const Facets = ({
   aggs,
@@ -16,6 +18,7 @@ const Facets = ({
   pathname,
   results
 }) => {
+  const [showHelp, setShowHelp] = useState(false);
   const constructFacets = aggs => {
     let facets = {};
     let keys = Object.keys(aggs).filter(key => {
@@ -200,43 +203,57 @@ const Facets = ({
     return <FacetsLoading />;
   }
 
+  let searchIn = history.location &&
+    history.location.pathname &&
+    history.location.pathname.startsWith("/search") ?
+    "published" : "drafts";
+  let searchParams = queryString.parse(history.location.search);
+
   return (
     <Space style={{ width: "100%" }} direction="vertical" size="large">
+      <Modal
+        visible={showHelp}
+        onCancel={() => setShowHelp(false)}
+        background="#f5f5f5"
+        title="How to Search"
+        footer={null}>
+        <HowToSearchPage />
+      </Modal>
       <Row
         justify="space-between"
         style={{ background: "#fff", padding: "10px" }}
       >
-        <Space direction="vertical">
-          <Typography.Title level={5}>Search for:</Typography.Title>
-          <Radio.Group
-            optionType="button"
-            buttonStyle="solid"
-            value={pathname.startsWith("/search") ? "published" : "drafts"}
-            onChange={() => updateCategory()}
-          >
-            <Radio.Button value="published">Published</Radio.Button>
-            <Radio.Button value="drafts">Drafts</Radio.Button>
-          </Radio.Group>
-        </Space>
-        <Space direction="vertical">
-          <Typography.Title level={5}>Created by: </Typography.Title>
-          <Radio.Group
-            optionType="button"
-            buttonStyle="solid"
-            value={
-              "by_me" in queryString.parse(location.search) ? "yours" : "all"
-            }
-            onChange={() => _filter_by_yours()}
-          >
-            <Radio.Button value="yours">You</Radio.Button>
-            <Radio.Button value="all">All team</Radio.Button>
-          </Radio.Group>
-        </Space>
+        <Col span={24} direction="row" style={{ padding: "10px" }} align="center" justify="center">
+          <a style={{ textDecoration: "underline" }} onClick={() => setShowHelp(!showHelp)}>
+            Check tips on how to search <QuestionCircleOutlined />
+          </a>
+          <Divider style={{ margin: "10px"}} />
+        </Col>
+        <Col span={24} direction="row" style={{ padding: "10px" }}>
+          <Space align="center">
+            <Typography.Title level={5} style={{ margin: "0" }}>Status:</Typography.Title>
+            <Switch
+              checked={searchIn == "drafts"}
+              onChange={updateCategory}
+              unCheckedChildren="Published"
+              checkedChildren="Drafts" />
+          </Space>
+        </Col>
+        <Col span={24} direction="row" style={{padding: "10px"}}>
+          <Space align="center">
+            <Typography.Title level={5} style={{ margin: "0" }}>Created by:</Typography.Title>
+            <Switch
+              checked={searchParams.by_me}
+              onChange={_filter_by_yours}
+              unCheckedChildren="All"
+              checkedChildren="You" />
+          </Space>
+        </Col>
       </Row>
       {results.getIn(["hits", "total"]) > 0 ? (
         <Row
           justify="space-between"
-          style={{ background: "#fff", padding: "10px" }}
+          style={{ background: "#fff", padding: "20px" }}
         >
           {facets_result}
         </Row>

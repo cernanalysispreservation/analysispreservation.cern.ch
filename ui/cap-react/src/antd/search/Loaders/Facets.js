@@ -1,21 +1,26 @@
 import React from "react";
-import { Row, Space, Skeleton } from "antd";
+import { Row, Col, Space, Skeleton } from "antd";
 
 const Facets = () => {
   return (
     <Space style={{ width: "100%" }} direction="vertical" size="large">
       <Row
+        flex={1}
         justify="space-between"
-        style={{ background: "#fff", padding: "15px" }}
+        style={{ background: "#fff", padding: "10px" }}
       >
-        <Space direction="vertical">
-          <Skeleton.Input style={{ width: 100 }} active />
-          <Skeleton.Button active size="small" shape="round" />
-        </Space>
-        <Space direction="vertical">
-          <Skeleton.Input style={{ width: 100 }} active />
-          <Skeleton.Button active size="small" shape="round" />
-        </Space>
+        <Col span={24} direction="row" style={{ marginBottom: "10px" }}>
+          <Space align="center">
+            <Skeleton.Input style={{ width: 100 }} active />
+            <Skeleton.Button active size="small" shape="round" />
+          </Space>
+        </Col>
+        <Col span={24} direction="row">
+          <Space align="center">
+            <Skeleton.Input style={{ width: 100 }} active />
+            <Skeleton.Button active size="small" shape="round" />
+          </Space>
+        </Col>
       </Row>
       <div style={{ background: "#fff", padding: "15px" }}>
         {[...Array(10)].map(item => (
