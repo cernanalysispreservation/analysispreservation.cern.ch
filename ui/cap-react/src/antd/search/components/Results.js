@@ -43,8 +43,8 @@ const Results = ({ results, loading }) => {
             : `/drafts/${item.get("id")}`
         }
       >
-        <Typography.Title level={5}>
-          {item.getIn(["metadata", "general_title"])}
+        <Typography.Title level={5} type={!item.getIn(["metadata", "general_title"]) && "secondary"}>
+          {item.getIn(["metadata", "general_title"]) || "No title"}
         </Typography.Title>
       </Link>
 
@@ -66,7 +66,7 @@ const Results = ({ results, loading }) => {
       )}
 
       <Row justify="space-between">
-        {item.has("created_by") && (
+        {item.get("created_by") && (
           <Typography.Link
             href={`mailto:${item.getIn(["created_by", "email"])}`}
           >
