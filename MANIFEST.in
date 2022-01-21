@@ -1,30 +1,84 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018 CERN.
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2022 CERN.
 #
-# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
-# under the terms of the MIT License; see LICENSE file for more details.
-
-# TODO: Generate this manifest file by running the following commands:
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
 #
-#  git init
-#  git add -A
-#  pip install -e .[all]
-#  check-manifest -u
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation Framework; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# Check manifest will not automatically add these two files:
+
+include .flake8
+include *.env
+include *.py
+include *.rst
+include *.sh
+include *.txt
+include *.yml
+include COPYING
+include LICENSE
+include babel.ini
+include pytest.ini
+include Dockerfile
 include .dockerignore
 include .editorconfig
-include .tx/config
+include .gitlint
+include .githooks/pre-commit
+include .githooks/pre-push
 include docker/haproxy/Dockerfile
 include docker/nginx/Dockerfile
 include docker/postgres/Dockerfile
-include Dockerfile
 include scripts/bootstrap
 include scripts/console
 include scripts/server
 include scripts/setup
 include scripts/update
-prune docs/_build
-recursive-include cap *.po *.pot *.mo
+include docs/Dockerfile
+include ui/Dockerfile
+include ui/cap-react/Dockerfile
+include ui/cap-react/LICENSE
+recursive-include demo *.json *.txt
+recursive-include cap *.po *.pot *.mo *.html *.json *.py
 recursive-include docker *.cfg *.conf *.crt *.ini *.key *.pem *.sh
+recursive-include docs *.gif *.jfif *.json *.md *.png *.svg *.yml
+recursive-include scripts *.js *.json *.md *.py *.sh *.wordlist
+recursive-include tests *.py
+recursive-include ui *.babelrc
+recursive-include ui *.css
+recursive-include ui *.ejs
+recursive-include ui *.env
+recursive-include ui *.eot
+recursive-include ui *.html
+recursive-include ui *.ico
+recursive-include ui *.js
+recursive-include ui *.js_
+recursive-include ui *.json
+recursive-include ui *.lock
+recursive-include ui *.md
+recursive-include ui *.npmrc
+recursive-include ui *.png
+recursive-include ui *.scss
+recursive-include ui *.snap
+recursive-include ui *.svg
+recursive-include ui *.txt
+recursive-include ui *.watchmanconfig
+recursive-include ui *.woff
+recursive-include ui *.yarnclean
+recursive-include ui *.yml
+recursive-include ui *.editorconfig
+prune docs/_build
