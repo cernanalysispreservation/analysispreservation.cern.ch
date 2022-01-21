@@ -89,6 +89,7 @@ class RecordPermission(Permission):
 
 class CreateRecordPermission(Permission):
     """Record create permission."""
+
     def __init__(self, record):
         """Initialize state."""
         record = request.get_json(force=True)
@@ -98,6 +99,7 @@ class CreateRecordPermission(Permission):
 
 class ReadRecordPermission(RecordPermission):
     """Record read permission."""
+
     def __init__(self, record):
         """Initialize state."""
         self._needs = set()
@@ -107,6 +109,7 @@ class ReadRecordPermission(RecordPermission):
 
 class UpdateRecordPermission(RecordPermission):
     """Record update permission."""
+
     def __init__(self, record):
         """Initialize state."""
         super(UpdateRecordPermission, self).__init__(record, 'update')
@@ -114,6 +117,7 @@ class UpdateRecordPermission(RecordPermission):
 
 class DeleteRecordPermission(RecordPermission):
     """Record delete permission."""
+
     def __init__(self, record):
         """Initialize state."""
         super(DeleteRecordPermission, self).__init__(record, 'delete')
@@ -121,6 +125,7 @@ class DeleteRecordPermission(RecordPermission):
 
 class AdminRecordPermission(RecordPermission):
     """Record admin permission."""
+
     def __init__(self, record):
         """Initialize state."""
         super(AdminRecordPermission, self).__init__(record, 'admin')

@@ -28,6 +28,7 @@ from abc import ABCMeta
 
 class GitAPI:
     """Interface for Git API client classes."""
+
     __metaclass__ = ABCMeta
 
     @property

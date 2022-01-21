@@ -4,7 +4,7 @@
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
-"""Replace reana with workflows and init table - """
+"""Replace reana with workflows and init table."""
 
 import sqlalchemy as sa
 import sqlalchemy_utils

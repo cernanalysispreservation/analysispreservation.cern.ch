@@ -1,7 +1,25 @@
-.. image:: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch.png
-   :target: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch
+==============================
+ CERN Analysis Preservation
+==============================
+
+.. image:: https://github.com/cernanalysispreservation/analysispreservation.cern.ch/actions/workflows/web-api.yml/badge.svg
+   :target: https://github.com/cernanalysispreservation/analysispreservation.cern.ch/actions/workflows/web-api.yml
+
+.. image:: https://github.com/cernanalysispreservation/analysispreservation.cern.ch/actions/workflows/ui-test.yml/badge.svg
+   :target: https://github.com/cernanalysispreservation/analysispreservation.cern.ch/actions/workflows/ui-test.yml
+
+.. image:: https://github.com/cernanalysispreservation/analysispreservation.cern.ch/actions/workflows/e2e-workflow.yml/badge.svg
+   :target: https://github.com/cernanalysispreservation/analysispreservation.cern.ch/actions/workflows/e2e-workflow.yml
+
+.. image:: https://codecov.io/gh/cernanalysispreservation/analysispreservation.cern.ch/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/cernanalysispreservation/analysispreservation.cern.ch
+
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :target: https://gitter.im/cernanalysispreservation/analysispreservation.cern.ch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+
+.. image:: https://img.shields.io/github/license/cernanalysispreservation/analysispreservation.cern.ch.svg
+   :target: https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/master/LICENSE
+
 
 What is this?
 -------------

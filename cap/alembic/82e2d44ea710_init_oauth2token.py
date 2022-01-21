@@ -4,7 +4,7 @@
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
-"""init OAuth2Token"""
+"""init OAuth2Token."""
 
 from alembic import op
 import sqlalchemy as sa

@@ -66,7 +66,6 @@ class OAuth2Token(db.Model):
     @classmethod
     def get(cls, name, user_id):
         """Get schema by name and version."""
-
         try:
             token = cls.query \
                 .filter_by(name=name, user_id=user_id) \

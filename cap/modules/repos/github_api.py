@@ -39,6 +39,7 @@ from .utils import generate_secret, get_webhook_url
 
 class GithubAPI(GitAPI):
     """GitHub-specific API class."""
+
     def __init__(self, host, owner, repo, branch_or_sha=None, user_id=None):
         """Initialize a GitHub API instance."""
         self.host = host

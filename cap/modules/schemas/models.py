@@ -120,9 +120,7 @@ class Schema(db.Model):
         super(Schema, self).__init__(*args, **kwargs)
 
     def __getattribute__(self, attr):
-        """Map record attribute to deposit one,
-        if use_deposit_as_record is ```True```."""
-
+        """Map record attribute to deposit one, if use_deposit_as_record is True."""
         if attr in SERVE_DEPOSIT_AS_RECORD_MAP.keys(
         ) and self.use_deposit_as_record:
             attr = SERVE_DEPOSIT_AS_RECORD_MAP.get(attr)
@@ -243,7 +241,7 @@ class Schema(db.Model):
             raise JSONSchemaNotFound(schema=name)
 
     def get_versions(self):
-        """Get the latest version of schema with given name"""
+        """Get the latest version of schema with given name."""
         schemas = self.query \
             .filter_by(name=self.name) \
             .all()

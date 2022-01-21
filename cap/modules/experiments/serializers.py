@@ -36,6 +36,7 @@ except ImportError:
 
 class CADIField(fields.Field):
     """CADI html preprocessing field."""
+
     def _serialize(self, value, attr, obj):
         return '' if value is None \
             else unescape(unescape(value))
@@ -43,6 +44,7 @@ class CADIField(fields.Field):
 
 class CADIRelatedNotes(Schema):
     """Schema for CADI in JSON."""
+
     id = fields.Function(
         lambda entry: entry.get('noteId', '').replace('CMS ', ''),
         dump_only=True)

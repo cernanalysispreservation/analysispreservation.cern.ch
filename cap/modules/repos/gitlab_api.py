@@ -38,6 +38,7 @@ from .utils import generate_secret, get_webhook_url
 
 class GitlabAPI(GitAPI):
     """GitLab API class."""
+
     def __init__(self, host, owner, repo, branch_or_sha=None, user_id=None):
         """Initialize a GitLab API instance."""
         self.host = host

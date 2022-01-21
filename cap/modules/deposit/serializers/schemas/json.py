@@ -43,6 +43,7 @@ from cap.modules.user.utils import (
 
 class DepositSearchSchema(common.CommonRecordSchema):
     """Schema for deposit v1 in JSON, used in search."""
+
     type = fields.Str(default='deposit')
 
     recid = fields.Str(attribute='metadata._deposit.pid.value',
@@ -54,6 +55,7 @@ class DepositSearchSchema(common.CommonRecordSchema):
 
 class DepositSchema(DepositSearchSchema):
     """Schema for deposit v1 in JSON. Used in deposits, includes `access`."""
+
     access = fields.Method('get_access', dump_only=True)
 
     def get_access(self, obj):
@@ -73,6 +75,7 @@ class DepositSchema(DepositSearchSchema):
 
 class DepositFormSchema(DepositSchema):
     """Schema for deposit v1 in JSON."""
+
     SKIP_VALUES = set([None])
 
     @post_dump

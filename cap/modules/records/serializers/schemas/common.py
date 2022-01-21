@@ -66,6 +66,7 @@ LABELS = {
 
 class StrictKeysMixin(object):
     """Ensure only defined keys exists in data."""
+
     @validates_schema(pass_original=True)
     def check_unknown_fields(self, data, original_data):
         """Check for unknown keys."""

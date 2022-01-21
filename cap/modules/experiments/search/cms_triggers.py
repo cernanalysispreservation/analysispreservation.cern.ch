@@ -67,7 +67,10 @@ CMS_TRIGGERS_ES_CONFIG = {
 
 class CMSTriggerSearch(Search):
     """ES Search class for CMS triggers."""
+
     class Meta:
+        """Meta class."""
+
         index = CMS_TRIGGERS_ES_CONFIG['alias']
         fields = ('trigger', )
 

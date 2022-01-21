@@ -32,6 +32,7 @@ from .cli import *  # noqa
 
 class CAPExperiments(object):
     """Experiments extension."""
+
     def __init__(self, app=None):
         """Extension initialization."""
         if app:

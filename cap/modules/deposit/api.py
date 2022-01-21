@@ -590,13 +590,13 @@ class CAPDeposit(Deposit, Reviewable):
     def save_file(self, content, filename, size, failed=False):
         """Save file with given content in deposit bucket.
 
-           If downloading a content failed, file will be still created,
-           with tag `failed`.
+        If downloading a content failed, file will be still created,
+        with tag `failed`.
 
-           :param content: stream
-           :param filename: name that file will be saved with
-           :param size: size of content
-           :param failed: if failed during downloading the content
+        :param content: stream
+        :param filename: name that file will be saved with
+        :param size: size of content
+        :param failed: if failed during downloading the content
         """
         obj = ObjectVersion.create(bucket=self.files.bucket, key=filename)
         obj.file = FileInstance.create()
@@ -718,7 +718,7 @@ class CAPDeposit(Deposit, Reviewable):
 
         :returns: processed metadata dictionary
         :rtype: dict
-         """
+        """
         if not isinstance(data, dict) or data == {}:
             raise DepositValidationError('Empty deposit data.')
 

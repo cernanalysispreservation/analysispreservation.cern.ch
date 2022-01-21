@@ -43,7 +43,6 @@ def save_cookies_lwp(cookiejar):
 
     Session cookies member in the Netscape format.
     """
-
     lwp_cookiejar = MozillaCookieJar()
     for c in cookiejar:
         args = dict(vars(c).items())
@@ -62,7 +61,6 @@ def post_session_saml(session, response):
     Performs the SAML POST request given a session and a
     successful Keycloak authentication response in SAML
     """
-
     soup_saml = BeautifulSoup(response.text, features="html.parser")
     action = soup_saml.form.get("action")
     post_key = soup_saml.form.input.get("name")
@@ -71,8 +69,7 @@ def post_session_saml(session, response):
 
 
 def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
-    """Simulates a browser session to log in using SPNEGO protocol"""
-
+    """Simulates a browser session to log in using SPNEGO protocol."""
     session = requests.Session()
     if not silent:
         logging.info("Fetching target URL and its redirects")
@@ -135,7 +132,6 @@ def save_sso_cookie(url, verify_cert, auth_hostname, silent=True):
     Log in into a URL that redirects to the SSO and
     save the session cookies
     """
-
     try:
         session, response = login_with_kerberos(
             url, verify_cert, auth_hostname, silent=silent)

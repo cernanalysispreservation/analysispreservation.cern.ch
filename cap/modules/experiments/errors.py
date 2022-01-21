@@ -43,4 +43,5 @@ class ExternalAPIException(RESTException):
 
 class DASHarvesterException(Exception):
     """Error during harvesting DAS entries."""
+
     pass

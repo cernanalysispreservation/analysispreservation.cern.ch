@@ -32,10 +32,10 @@ from cap.factory import create_api
 
 
 class MutuallyExclusiveOption(Option):
-    """
-    Class that allows the use of mutually exclusive arguments in cli commands.
-    """
+    """Class that allows the use of mutually exclusive arguments in cli commands."""
+
     def __init__(self, *args, **kwargs):
+        """Mutually Exclusive Option initialization."""
         self.mutually_exclusive = set(kwargs.pop('mutually_exclusive', []))
         self.help = kwargs.get('help', '')
 
@@ -47,6 +47,7 @@ class MutuallyExclusiveOption(Option):
         super(MutuallyExclusiveOption, self).__init__(*args, **kwargs)
 
     def handle_parse_result(self, ctx, opts, args):
+        """Return handle_parse_result method with Mutually Exclusive Option class."""
         if self.mutually_exclusive.intersection(opts) and self.name in opts:
             raise UsageError(f'Illegal usage: `{self.name}` is mutually '
                              f'exclusive with arguments [{self.exclusives}].')

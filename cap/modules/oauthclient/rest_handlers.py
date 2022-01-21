@@ -92,7 +92,6 @@ def response_token_setter(remote, resp):
         authorized request.
     :returns: The token.
     """
-
     if resp is None:
         raise OAuthRejectedRequestError('User rejected request.', remote, resp)
     else:

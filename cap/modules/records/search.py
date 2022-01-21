@@ -54,7 +54,7 @@ class CAPRecordSearch(RecordsSearch):
 
     def get_collection_records(self, collection_name,
                                collection_version=None, by_me=False):
-        """Get records by collection name and version"""
+        """Get records by collection name and version."""
         q = Q('term', **{'_collection.name': collection_name})
 
         if by_me:

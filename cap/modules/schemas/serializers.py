@@ -128,6 +128,7 @@ class CreateConfigPayload(SchemaSerializer):
 
 class UpdateSchemaSerializer(ConfigResolvedSchemaSerializer):
     """Schema serializer with resolved jsonschemas."""
+
     @pre_load
     def filter_out_fields_that_cannot_be_updated(self, data, **kwargs):
         """Remove non editable fields from serialized data."""
@@ -139,7 +140,7 @@ class UpdateSchemaSerializer(ConfigResolvedSchemaSerializer):
 
 
 class CollectionSerializer(Schema):
-    """Serializer for the collection endpoint"""
+    """Serializer for the collection endpoint."""
 
     name = fields.Str(required=True)
     version = fields.Str(required=True,

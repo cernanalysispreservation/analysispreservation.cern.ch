@@ -44,6 +44,7 @@ from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id, \
 
 class RecordSchema(common.CommonRecordSchema):
     """Schema for records v1 in JSON."""
+
     type = fields.Str(default='record')
 
     draft_id = fields.String(attribute='metadata._deposit.id', dump_only=True)

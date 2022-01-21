@@ -34,7 +34,10 @@ class DepositDoesNotExist(Exception):
 
 
 class UniqueRequiredValidationError(ValidationError):
+    """Unique required validation error exception."""
+
     def __init__(self, message, uuids=[], **kwargs):
+        """Initialize exception."""
         self.uuids = uuids
         return super().__init__(message=message, **kwargs)
 

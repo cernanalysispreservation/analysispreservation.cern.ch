@@ -33,6 +33,10 @@ check_script () {
     shellcheck run-tests.sh
 }
 
+check_pydocstyle () {
+    pydocstyle cap
+}
+
 check_flake8 () {
     flake8 .
 }
@@ -48,6 +52,7 @@ check_pytest () {
 
 if [ $# -eq 0 ]; then
     check_script
+    check_pydocstyle
     check_flake8
     check_manifest
     check_pytest
@@ -57,6 +62,7 @@ for arg in "$@"
 do
     case $arg in
         --check-shellscript) check_script;;
+        --check-pydocstyle) check_pydocstyle;;
         --check-flake8) check_flake8;;
         --check-manifest) check_manifest;;
         --check-pytest) check_pytest;;

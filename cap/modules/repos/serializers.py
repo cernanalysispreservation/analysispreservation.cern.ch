@@ -29,6 +29,7 @@ from marshmallow import Schema, fields
 
 class GitHubPayloadSchema(Schema):
     """Serializer for a GitHub webhook payload."""
+
     host = fields.Str(default='github.com')
     repo_id = fields.Str(attribute='repository.id', dump_only=True)
     author = fields.Method('get_author', dump_only=True)
@@ -43,6 +44,7 @@ class GitHubPayloadSchema(Schema):
 
 class GitHubPushPayloadSchema(GitHubPayloadSchema):
     """Serializer for a GitHub webhook payload, from a `push` event."""
+
     event_type = fields.Str(default='push', dump_only=True)
 
     branch = fields.Method('get_branch', dump_only=True)
@@ -85,6 +87,7 @@ class GitHubPushPayloadSchema(GitHubPayloadSchema):
 
 class GitHubReleasePayloadSchema(GitHubPayloadSchema):
     """Serializer for a GitHub webhook payload, from a `release` event."""
+
     event_type = fields.Method('get_event', dump_only=True)
     release = fields.Method('get_release', dump_only=True)
     link = fields.Method('get_link', dump_only=True)
@@ -108,11 +111,13 @@ class GitHubReleasePayloadSchema(GitHubPayloadSchema):
 
 class GitHubPingPayloadSchema(GitHubPayloadSchema):
     """Serializer for a GitLab webhook payload, from a `ping` event."""
+
     event_type = fields.Str(default='ping', dump_only=True)
 
 
 class GitLabPayloadSchema(Schema):
     """Serializer for a GitLab webhook payload."""
+
     host = fields.Str(default='gitlab.cern.ch')
     repo_id = fields.Str(attribute='project_id', dump_only=True)
     author = fields.Method('get_author', dump_only=True)
@@ -127,6 +132,7 @@ class GitLabPayloadSchema(Schema):
 
 class GitLabPushPayloadSchema(GitLabPayloadSchema):
     """Serializer for a GitLab webhook payload, from a `push` event."""
+
     event_type = fields.Str(default='push', dump_only=True)
     branch = fields.Method('get_branch', dump_only=True)
     commit = fields.Method('get_commit', dump_only=True)
@@ -153,6 +159,7 @@ class GitLabPushPayloadSchema(GitLabPayloadSchema):
 
 class GitLabReleasePayloadSchema(GitLabPayloadSchema):
     """Serializer for a GitLab webhook payload, from a `release` event."""
+
     event_type = fields.Str(default='release', dump_only=True)
     release = fields.Method('get_release', dump_only=True)
     link = fields.Method('get_link', dump_only=True)
@@ -171,6 +178,7 @@ class GitLabReleasePayloadSchema(GitLabPayloadSchema):
 
 class GitSnapshotSchema(Schema):
     """Serializer for GitSnapshot model for UI."""
+
     payload = fields.Dict(dump_only=True)
     created = fields.Function(
         lambda obj: pytz.utc.localize(obj.created).isoformat(), dump_only=True)
@@ -178,6 +186,7 @@ class GitSnapshotSchema(Schema):
 
 class GitWebhookSubscriberSchema(Schema):
     """Serializer for GitWebhookSubscriber model for UI."""
+
     id = fields.Integer(dump_only=True)
     host = fields.Str(attribute='repo.host', dump_only=True)
     owner = fields.Str(attribute='repo.owner', dump_only=True)

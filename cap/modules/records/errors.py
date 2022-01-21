@@ -42,7 +42,7 @@ class RecordValidationError(RESTValidationError):
 
 
 def get_error_path(error):
-    """Helper to return correct error path"""
+    """Helper to return correct error path."""
     if error.validator == "required":
         return list(error.path) + error.validator_value
     else:

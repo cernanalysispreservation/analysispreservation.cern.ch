@@ -4,7 +4,7 @@
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
-"""Add link between GitWebhookSubscriber and GitSnapshot"""
+"""Add link between GitWebhookSubscriber and GitSnapshot."""
 
 import sqlalchemy as sa
 from alembic import op

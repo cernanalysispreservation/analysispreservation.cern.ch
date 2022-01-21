@@ -110,6 +110,7 @@ class DepositPermission(Permission):
 
 class CreateDepositPermission(Permission):
     """Deposit create permission."""
+
     def __init__(self, record):
         """Initialize state."""
         _needs = set()
@@ -145,6 +146,7 @@ class CreateDepositPermission(Permission):
 
 class ReadDepositPermission(DepositPermission):
     """Deposit read permission."""
+
     def __init__(self, record):
         """Initialize state."""
         extra_needs = self._get_schema_needs(record, 'read')
@@ -153,7 +155,6 @@ class ReadDepositPermission(DepositPermission):
 
     def _get_schema_needs(self, deposit, action):
         """Create deposit permissions are based on schema's permissions."""
-
         if "/records/cms-stats-questionnaire" in deposit.get('$schema'):
             _needs = set()
             _needs.add(cms_pag_convener_action(None))
@@ -167,6 +168,7 @@ class ReadDepositPermission(DepositPermission):
 
 class UpdateDepositPermission(DepositPermission):
     """Deposit update permission."""
+
     def __init__(self, record):
         """Initialize state."""
         super(UpdateDepositPermission, self).__init__(record, 'update')
@@ -174,6 +176,7 @@ class UpdateDepositPermission(DepositPermission):
 
 class AdminDepositPermission(DepositPermission):
     """Deposit admin permission."""
+
     def __init__(self, record):
         """Initialize state."""
         super(AdminDepositPermission, self).__init__(record, 'admin')
@@ -181,6 +184,7 @@ class AdminDepositPermission(DepositPermission):
 
 class CloneDepositPermission(DepositPermission):
     """Clone deposit permission."""
+
     def __init__(self, record):
         """Initialize state."""
         super(CloneDepositPermission, self).__init__(record, 'read')
@@ -188,6 +192,7 @@ class CloneDepositPermission(DepositPermission):
 
 class ReviewDepositPermission(ReadDepositPermission):
     """Review deposit permission."""
+
     pass
 
 

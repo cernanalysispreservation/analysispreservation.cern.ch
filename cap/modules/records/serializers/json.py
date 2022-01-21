@@ -36,6 +36,7 @@ from cap.modules.records.utils import url_to_api_url
 
 class CAPJSONSerializer(JSONSerializer):
     """Serializer for records v1 in JSON."""
+
     def preprocess_search_hit(self, pid, record_hit, links_factory=None):
         """Fetch PID object for records retrievals from ES."""
         try:
@@ -88,4 +89,5 @@ class CAPJSONSerializer(JSONSerializer):
 
 class RecordSerializer(CAPJSONSerializer):
     """Serializer for records v1 in JSON."""
+
     pass

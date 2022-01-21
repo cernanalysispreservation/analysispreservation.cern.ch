@@ -125,10 +125,10 @@ def _get_or_create_token(token_name, user_email):
 @with_appcontext
 def validate(schema_url, ana_type, ana_version, compare_with,
              status, export, export_type):
-    """
-    Validate deposit or record metadata based on their schema. Provide the
-    schema url OR ana-type and version, as well as the schema version that you
-    want to compare the records you get, to. E.g.
+    """Validate deposit or record metadata based on their schema.
+
+    Provide the schema url OR ana-type and version, as well as the schema version
+    that you want to compare the records you get, to. E.g.
 
     If you do not provide an ana-version, it will get the latest. If you do
     not provide a -c parameter, the records will compare the data to their
@@ -232,9 +232,10 @@ def validate(schema_url, ana_type, ana_version, compare_with,
               help='It this schema/version exists, update it.')
 @with_appcontext
 def schemas(dir, url, force, force_version, replace):
-    """
-    Add schemas to CAP, either by downloading them from a url, or by adding
-    them from a path. if no args are provided, then the schemas from the
+    """Add schemas to CAP.
+
+    Add schemas either by downloading them from a url, or by adding
+    them from a path. If no args are provided, then the schemas from the
     default path will be added to CAP.
 
     examples:

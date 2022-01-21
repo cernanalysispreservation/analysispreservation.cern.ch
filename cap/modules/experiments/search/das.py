@@ -53,7 +53,10 @@ DAS_DATASETS_ES_CONFIG = {
 
 class DASSearch(Search):
     """ES Search class for DAS datasets."""
+
     class Meta:
+        """Meta class."""
+
         index = DAS_DATASETS_ES_CONFIG['alias']
         fields = ('name', )
 

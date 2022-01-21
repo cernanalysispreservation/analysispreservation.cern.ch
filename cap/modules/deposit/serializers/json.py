@@ -30,6 +30,7 @@ from cap.modules.records.serializers.json import CAPJSONSerializer
 
 class DepositSerializer(CAPJSONSerializer):
     """Serializer for records v1 in JSON."""
+
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
         """Preprocess record serializing for record retrievals from the db.
 

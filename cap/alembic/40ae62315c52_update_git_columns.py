@@ -4,7 +4,7 @@
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
-"""Move branch column to GitWebhook table; Clean Snapshot table"""
+"""Move branch column to GitWebhook table; Clean Snapshot table."""
 
 import sqlalchemy as sa
 from alembic import op

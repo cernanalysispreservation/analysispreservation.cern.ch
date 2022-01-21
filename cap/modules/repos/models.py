@@ -107,6 +107,7 @@ class GitSnapshot(db.Model):
 
 class GitSubscriberSnapshots(db.Model):
     """Connection model between snapshot and webhook subscribers."""
+
     __tablename__ = 'git_subscriber_snapshots'
 
     snapshot_id = db.Column(db.Integer,

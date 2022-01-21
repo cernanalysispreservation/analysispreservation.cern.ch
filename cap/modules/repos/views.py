@@ -41,7 +41,6 @@ repos_bp = Blueprint('cap_repos', __name__, url_prefix='/repos')
 @repos_bp.route('/event', methods=['POST'])
 def get_webhook_event():
     """Endpoint for registered webhook events to send push notifications."""
-
     payload = request.get_json()
     payload.update(request.headers)  # info about type of event inside headers
 

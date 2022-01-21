@@ -30,7 +30,6 @@ from .models import Schema
 @current_cache.memoize()
 def get_mappings():
     """Implementation for mappings getter for invenio_search module."""
-
     mappings = {}
     schemas = Schema.query.filter_by(is_indexed=True).all()
 

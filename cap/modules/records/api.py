@@ -67,6 +67,7 @@ def RECORD_ACTION_NEEDS(id):
 
 class CAPRecord(Record):
     """Record API class for CAP."""
+
     def get_record_metadata(self):
         """Get Record Metadata instance for deposit."""
         return RecordMetadata.query.filter_by(id=self.id).one_or_none()

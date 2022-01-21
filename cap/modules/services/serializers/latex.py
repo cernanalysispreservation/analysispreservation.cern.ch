@@ -31,4 +31,5 @@ from marshmallow import Schema, fields
 
 class PathValidator(Schema):
     """Schema for Latex validation."""
+
     paths = fields.List(fields.Str(), required=True)

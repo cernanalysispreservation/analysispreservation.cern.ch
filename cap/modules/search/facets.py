@@ -63,7 +63,8 @@ def prefix_filter(field):
 
 
 def regex_filter(field):
-    """
+    """Return a regex filter.
+
     Create a regex filter, that uses the schema name to get all
     the associated records (regardless of version).
 

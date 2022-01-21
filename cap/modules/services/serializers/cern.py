@@ -31,6 +31,7 @@ from marshmallow import fields, Schema
 
 class LDAPUserSchema(Schema):
     """Schema for CERN LDAP."""
+
     email = fields.Method('get_mail', dump_only=True)
     profile = fields.Method('get_profile', dump_only=True)
 
@@ -47,6 +48,7 @@ class LDAPUserSchema(Schema):
 
 class OIDCUserSchema(Schema):
     """Schema for CERN OIDC Users."""
+
     email = fields.Str(attribute='emailAddress', dump_only=True)
     profile = fields.Method('get_profile', dump_only=True)
 

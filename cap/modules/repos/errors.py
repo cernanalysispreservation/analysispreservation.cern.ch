@@ -26,6 +26,7 @@
 
 class GitError(Exception):
     """General Git clients error."""
+
     def __init__(self, *args):
         """Initialize exception."""
         super().__init__(*args)
@@ -33,6 +34,7 @@ class GitError(Exception):
 
 class GitURLParsingError(GitError):
     """Git url error."""
+
     def __init__(self, message=None, **kwargs):
         """Initialize exception."""
         message = message or 'Invalid git URL.'
@@ -41,6 +43,7 @@ class GitURLParsingError(GitError):
 
 class GitPRParsingError(GitError):
     """Git url error."""
+
     def __init__(self, message=None, **kwargs):
         """Initialize exception."""
         message = message or 'Pull/Merge requests are not accepted. ' \
@@ -50,6 +53,7 @@ class GitPRParsingError(GitError):
 
 class GitRequestWithInvalidSignature(GitError):
     """Git request with invalid signature."""
+
     def __init__(self, message=None, **kwargs):
         """Initialize exception."""
         message = message or 'Signatures for this request don\'t match.'
@@ -58,6 +62,7 @@ class GitRequestWithInvalidSignature(GitError):
 
 class GitHostNotSupported(GitError):
     """API host not supported."""
+
     def __init__(self, message=None, **kwargs):
         """Initialize exception."""
         message = message or 'Host not supported'
@@ -66,6 +71,7 @@ class GitHostNotSupported(GitError):
 
 class GitIntegrationError(GitError):
     """Exception during connecting analysis with repository."""
+
     def __init__(self, message=None, **kwargs):
         """Initialize exception."""
         self.message = message or \
@@ -75,6 +81,7 @@ class GitIntegrationError(GitError):
 
 class GitUnauthorizedRequest(GitError):
     """User not authorized."""
+
     def __init__(self, message=None, **kwargs):
         """Initialize exception."""
         self.message = message or \
@@ -84,6 +91,7 @@ class GitUnauthorizedRequest(GitError):
 
 class GitObjectNotFound(GitError):
     """Git Webhook does not exist."""
+
     def __init__(self, message=None, **kwargs):
         """Initialize exception."""
         self.message = message or 'Object not found.'

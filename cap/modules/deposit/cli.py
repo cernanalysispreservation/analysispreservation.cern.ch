@@ -116,8 +116,8 @@ def add(file_path, schema, version, egroup, usermail, limit):
               help="Provide a filename, that wrong records will be saved to.")
 @with_appcontext
 def create_deposit(file, ana, roles, users, owner, save_errors):
-    """
-    Create a new deposit through the CLI.
+    """Create a new deposit through the CLI.
+
     Usage:
         cap fixtures create-deposit --f DATAFILE --r ROLE --u USER --o OWNER
     """
@@ -157,9 +157,9 @@ def save_errors_to_json(save_errors, errors):
 
 
 def check_and_update_data_with_schema(data, ana):
-    """
-    Checks if the analysis type is included in the schema, or adds it. It also
-    checks if the schema provided is valid.
+    """Checks if the analysis type is included in the schema, or adds it.
+
+    It also checks if the schema provided is valid.
     """
     schema = data.get('$schema')
     if not schema and not ana:
