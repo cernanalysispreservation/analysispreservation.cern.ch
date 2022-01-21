@@ -4,6 +4,6 @@
 
 from __future__ import absolute_import, print_function
 
-from .ext import CAPAccess
+from .ext import CAPAccess  # noqa
 
 __all__ = ('CAPAccess')

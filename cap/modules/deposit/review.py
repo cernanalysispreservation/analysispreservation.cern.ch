@@ -36,8 +36,7 @@ from cap.modules.user.utils import get_user_email_by_id
 class ReviewSchema(Schema):
     """Schema for deposit review."""
     type = fields.Str(validate=validate.OneOf(
-        ["approved", "request_changes", "declined"]),
-                      required=True)
+        ["approved", "request_changes", "declined"]), required=True)
     body = fields.Str()
     id = fields.Str(required=True)
     reviewer = fields.Method('get_reviewer', dump_only=True)
@@ -51,8 +50,7 @@ class ReviewSchema(Schema):
 class ReviewCreatePayload(Schema):
     """Schema for deposit review."""
     type = fields.Str(validate=validate.OneOf(
-        ["approved", "request_changes", "declined"]),
-                      required=True)
+        ["approved", "request_changes", "declined"]), required=True)
     body = fields.Str()
 
 
@@ -60,8 +58,7 @@ class ReviewUpdatePayload(Schema):
     """Schema for deposit review."""
     id = fields.Str(required=True)
     action = fields.Str(validate=validate.OneOf(
-        ["comment", "delete", "resolve"]),
-                        required=True)
+        ["comment", "delete", "resolve"]), required=True)
     comments = fields.Str()
 
 

@@ -27,7 +27,6 @@
 
 import requests
 from flask import jsonify
-from urllib3.exceptions import HTTPError
 
 from . import blueprint
 from ..serializers.indico import IndicoEventSchema

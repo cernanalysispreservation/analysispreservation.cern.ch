@@ -43,11 +43,8 @@ def synchronize_with_cadi():
     synchronize_cadi_entries()
 
 
-@shared_task(autoretry_for=(Exception, ),
-             retry_kwargs={
-                 'max_retries': 15,
-                 'countdown': 10
-             })
+@shared_task(autoretry_for=(Exception,),
+             retry_kwargs={'max_retries': 15, 'countdown': 10})
 def harvest_das():
     """Harvest and index DAS datasets."""
     principal, kt = current_app.config['KRB_PRINCIPALS']['CADI']
@@ -97,11 +94,8 @@ def harvest_das():
     reindex_das_entries.delay()
 
 
-@shared_task(autoretry_for=(Exception, ),
-             retry_kwargs={
-                 'max_retries': 10,
-                 'countdown': 30
-             })
+@shared_task(autoretry_for=(Exception,),
+             retry_kwargs={'max_retries': 10, 'countdown': 30})
 def reindex_das_entries():
     """Reindex DAS entries in Elastic with the latest version."""
     file_location = os.path.join(
@@ -114,11 +108,8 @@ def reindex_das_entries():
     current_app.logger.info('DAS entries indexed succesfully.')
 
 
-@shared_task(autoretry_for=(Exception, ),
-             retry_kwargs={
-                 'max_retries': 15,
-                 'countdown': 10
-             })
+@shared_task(autoretry_for=(Exception,),
+             retry_kwargs={'max_retries': 15, 'countdown': 10})
 def retrieve_cms_keywords_from_spreadsheet():
     """Task for adding keywords to CMS analysis."""
     cms_keywords_from_spreadsheet()

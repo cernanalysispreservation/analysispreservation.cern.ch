@@ -25,4 +25,4 @@
 
 from __future__ import absolute_import, print_function
 
-from .cli import schemas, validate
+from .cli import schemas, validate  # noqa: F401

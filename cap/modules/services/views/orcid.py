@@ -26,7 +26,7 @@
 """CAP ORCID service views."""
 
 import requests
-from flask import jsonify, request, current_app
+from flask import jsonify, request
 
 from . import blueprint
 from cap.modules.access.utils import login_required

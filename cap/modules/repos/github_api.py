@@ -81,8 +81,7 @@ class GithubAPI(GitAPI):
             raise GitObjectNotFound(f'File {filepath} does not exist')
 
         if isinstance(file_desc, list):
-            raise GitError(
-                f'Downloading directories is currently not supported.')
+            raise GitError('Downloading directories is currently not supported.')
 
         return file_desc.download_url.split('?token=')[0], file_desc.size
 

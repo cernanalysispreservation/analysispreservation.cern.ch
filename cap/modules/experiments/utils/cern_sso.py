@@ -29,16 +29,13 @@
 import logging
 import requests
 import time
-import uuid
 from requests_kerberos import HTTPKerberosAuth, OPTIONAL
 from bs4 import BeautifulSoup
 
 try:
     from http.cookiejar import MozillaCookieJar, Cookie
-    from urllib.parse import parse_qs
 except ImportError:  # python 2.7 compatibility
     from cookielib import MozillaCookieJar, Cookie
-    from urlparse import parse_qs
 
 
 def save_cookies_lwp(cookiejar):

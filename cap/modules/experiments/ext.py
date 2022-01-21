@@ -27,7 +27,7 @@ from __future__ import absolute_import, print_function
 
 import certifi
 
-from .cli import *
+from .cli import *  # noqa
 
 
 class CAPExperiments(object):

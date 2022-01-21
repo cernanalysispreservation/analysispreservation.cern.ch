@@ -120,8 +120,8 @@ def questionnaires(file):
             try:
                 title = f"Statistics Questionnaire for " \
                         f"{answer['analysis_context']['cadi_id']}" \
-                            if answer['analysis_context']['cadi_id'] \
-                            else "--"
+                        if answer['analysis_context']['cadi_id'] \
+                        else "--"
                 extracted = remove_none_keys(
                     _questionnaire_data(answer, title=title))
                 if title:
@@ -157,14 +157,14 @@ def questionnaires(file):
 
             except DepositValidationError as e:
                 click.secho("---------------")
-                click.secho(f"Validation Error", fg='red')
+                click.secho("Validation Error", fg='red')
                 for err in e.errors:
                     click.secho(f"{err.to_dict()}", fg='red')
                 click.secho("---------------")
                 pass
             except ValidationError:
                 click.secho("---------------")
-                click.secho(f"Validation Error", fg='red')
+                click.secho("Validation Error", fg='red')
                 click.secho("---------------")
                 pass
 

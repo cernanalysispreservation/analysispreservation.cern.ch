@@ -139,7 +139,7 @@ def create_deposit(file, ana, roles, users, owner, save_errors):
     if save_errors and errors:
         save_errors_to_json(save_errors, errors)
 
-    click.secho(f"\nProcess finished and record(s) added.", fg='green')
+    click.secho("\nProcess finished and record(s) added.", fg='green')
 
 
 def save_errors_to_json(save_errors, errors):

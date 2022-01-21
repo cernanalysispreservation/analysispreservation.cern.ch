@@ -29,15 +29,12 @@ from __future__ import absolute_import, print_function
 from functools import wraps
 
 from flask import Blueprint, _request_ctx_stack, abort, \
-    current_app, jsonify, redirect, render_template, request
-from flask_babelex import lazy_gettext as _
-from flask_login import login_required
+    current_app, jsonify, redirect, request
 from flask_principal import Identity, identity_changed
 from oauthlib.oauth2.rfc6749.errors import InvalidClientError, OAuth2Error
 
 from invenio_oauth2server.models import Client
 from invenio_oauth2server.provider import oauth2
-from invenio_oauth2server.proxies import current_oauth2server
 
 
 blueprint = Blueprint(

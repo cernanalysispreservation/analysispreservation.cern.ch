@@ -35,8 +35,7 @@ from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
 from cap.modules.oauthclient.serializers import oauth_extra_data_serializer
 from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import (nested_filter, prefix_filter,
-                                       regex_filter)
+from cap.modules.search.facets import nested_filter, prefix_filter
 from cap.modules.user.serializers import (user_account_serializer,
                                           user_account_list_serializer)
 

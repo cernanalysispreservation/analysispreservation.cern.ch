@@ -27,10 +27,8 @@
 from __future__ import absolute_import, print_function
 
 import redis
-from flask import session
 from flask_kvsession import KVSessionExtension
-from invenio_query_parser.ast import (AndOp, DoubleQuotedValue, Keyword,
-                                      KeywordOp, OrOp)
+from invenio_query_parser.ast import OrOp
 from simplekv.memory.redisstore import RedisStore
 
 

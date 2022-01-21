@@ -28,10 +28,8 @@ from invenio_mail.api import TemplatedMessage
 
 
 @shared_task(autoretry_for=(Exception, ),
-             retry_kwargs={
-                 'max_retries': 3,
-                 'countdown': 10
-             })
+             retry_kwargs={'max_retries': 3,
+                           'countdown': 10})
 def create_and_send(template, ctx, subject, recipients,
                     sender=None, type=None):
     if not current_app.config['CAP_SEND_MAIL']:

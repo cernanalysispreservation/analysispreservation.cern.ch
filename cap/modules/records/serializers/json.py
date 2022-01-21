@@ -46,8 +46,7 @@ class CAPJSONSerializer(JSONSerializer):
                 pid, record_hit, links_factory=links_factory)
             return result
         except PIDDoesNotExistError:
-            current_app.logger.info(
-                f'PIDDoesNotExistError on search. Record:.')
+            current_app.logger.info('PIDDoesNotExistError on search. Record:.')
 
     def serialize_search(self, pid_fetcher, search_result, links=None,
                          item_links_factory=None, **kwargs):
@@ -78,7 +77,7 @@ class CAPJSONSerializer(JSONSerializer):
                     display_name = (cb["__display_name__"]["hits"]["hits"][0]
                                       ["_source"]["_collection"]["fullname"])
                     cb["__display_name__"] = display_name
-                except:
+                except Exception:
                     del cb["__display_name__"]
 
         return super().serialize_search(pid_fetcher,

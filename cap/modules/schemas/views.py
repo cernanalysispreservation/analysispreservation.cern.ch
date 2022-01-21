@@ -38,7 +38,7 @@ from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
 from .serializers import (create_config_payload,
                           update_schema_serializer)
-from .utils import get_indexed_schemas_for_user, get_schemas_for_user
+from .utils import get_schemas_for_user
 
 blueprint = Blueprint(
     'cap_schemas',

@@ -35,11 +35,9 @@ from .models import GitWebhookSubscriber
 from .utils import ensure_content_length
 
 
-@shared_task(autoretry_for=(Exception, ),
-             retry_kwargs={
-                 'max_retries': 5,
-                 'countdown': 10
-             })
+@shared_task(autoretry_for=(Exception,),
+             retry_kwargs={'max_retries': 5,
+                           'countdown': 10})
 def download_repo(record_id,
                   filename,
                   download_url,
@@ -72,11 +70,9 @@ def download_repo(record_id,
         db.session.commit()
 
 
-@shared_task(autoretry_for=(Exception, ),
-             retry_kwargs={
-                 'max_retries': 5,
-                 'countdown': 10
-             })
+@shared_task(autoretry_for=(Exception,),
+             retry_kwargs={'max_retries': 5,
+                           'countdown': 10})
 def download_repo_file(record_id,
                        filename,
                        download_url,

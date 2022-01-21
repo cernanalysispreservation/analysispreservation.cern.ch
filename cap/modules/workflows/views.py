@@ -247,7 +247,7 @@ def get_reana_workflow_logs(workflow_id, workflow=None):
 
     resp = get_workflow_logs(workflow_id, token)
 
-    logs = resp.get('logs', '')
+    # logs = resp.get('logs', '')
 
     resp.update({'rec_uuid': rec_uuid})
     logs_serialized = ReanaWorkflowLogsSchema().dump(resp).data
@@ -358,7 +358,7 @@ def download_reana_workflow_files(workflow_id, path=None, workflow=None):
         return jsonify({
             'message':
             '{} did not match any existing file. '
-            'Aborting download.'.format(file)
+            'Aborting download.'.format(path)
         }), 400
 
 

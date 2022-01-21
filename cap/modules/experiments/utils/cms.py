@@ -43,24 +43,15 @@ from .questionnaire import remove_none_keys
 
 
 NEW_COLUMN_NAMES = {
-    'CADI line (e.g. HIG-12-028 for a paper, CMS-HIG-12-028 for a PAS). Add only one per entry.':  # noqa
-        'cadi_id',
-    'Collision system (will be ORed inside this category)':
-        'collision_system',
-    'Accelerator Parameters (will be ORed inside this category)':
-        'accelerator_parameters',
-    'Physics Theme':
-        'physics_theme',
-    'SM: Analysis Characteristics (will be ORed inside this category)':
-        'sm_analysis_characteristics',
-    'Interpretation (will be ORed inside this category)':
-        'interpretation',
-    'Final states (will be ORed inside this category)':
-        'final_states',
-    'Further search categorisation (will be ORed inside this category)':
-        'further_search_categorisation',
-    'Further categorisation Heavy Ion results (will be ORed inside this category)':  # noqa
-        'further_categorisation_heavy_ion'
+    'CADI line (e.g. HIG-12-028 for a paper, CMS-HIG-12-028 for a PAS). Add only one per entry.': 'cadi_id',  # noqa: E501
+    'Collision system (will be ORed inside this category)': 'collision_system',
+    'Accelerator Parameters (will be ORed inside this category)': 'accelerator_parameters',  # noqa: E501
+    'Physics Theme': 'physics_theme',
+    'SM: Analysis Characteristics (will be ORed inside this category)': 'sm_analysis_characteristics',  # noqa: E501
+    'Interpretation (will be ORed inside this category)': 'interpretation',
+    'Final states (will be ORed inside this category)': 'final_states',
+    'Further search categorisation (will be ORed inside this category)': 'further_search_categorisation',  # noqa: E501
+    'Further categorisation Heavy Ion results (will be ORed inside this category)': 'further_categorisation_heavy_ion'  # noqa: E501
 }
 
 
@@ -128,13 +119,13 @@ def get_cms_spreadsheet():
         return
     except (SpreadsheetNotFound, WorksheetNotFound):
         current_app.logger.error(
-            f"Something went wrong while accessing the workbook. "
-            f"Workbook/spreadsheet error.")
+            "Something went wrong while accessing the workbook. "
+            "Workbook/spreadsheet error.")
         return
     except (APIError, RefreshError):
         current_app.logger.error(
-            f"Accessing the Google Sheets API failed. "
-            f"Make sure you have the correct credentials, and try again.")
+            "Accessing the Google Sheets API failed. "
+            "Make sure you have the correct credentials, and try again.")
         return
 
     # process keywords

@@ -27,7 +27,7 @@
 from functools import wraps
 from authlib.integrations.base_client.errors import OAuthError
 from flask import Blueprint, url_for, current_app, jsonify, \
-                  request, session, abort, render_template
+    request, session, abort, render_template
 from flask_login import current_user
 from sqlalchemy.orm.attributes import flag_modified
 from werkzeug.exceptions import HTTPException

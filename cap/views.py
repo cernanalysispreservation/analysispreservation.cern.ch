@@ -17,8 +17,6 @@ from __future__ import absolute_import, print_function
 import json
 from os.path import join
 
-from sqlalchemy import schema
-
 from elasticsearch import ConnectionError
 from elasticsearch.exceptions import NotFoundError
 from flask import Blueprint, jsonify, abort
@@ -179,7 +177,7 @@ def collection(collection_name, version=None):
             collection_schema.name, by_me=True, collection_version=version
         )[:5].execute())
 
-    except NotFoundError as e:
+    except NotFoundError:
         published = []
         drafts = []
         user_published = []

@@ -67,6 +67,7 @@ def update_refs_jsonfile(jsonschema_path, textToSearch, textToReplace):
     output.close()
     input.close()
 
+
 for root, dirs, files in os.walk(JSONSCHEMAS_DIR):
     for file in files:
         if file.endswith(".json"):

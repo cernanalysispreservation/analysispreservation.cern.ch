@@ -32,7 +32,6 @@ from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_db import db
 from invenio_deposit.api import Deposit, has_status, index, preserve
-from invenio_deposit.signals import post_action
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import (Bucket, FileInstance, ObjectVersion,
@@ -575,11 +574,10 @@ class CAPDeposit(Deposit, Reviewable):
                 errors = []
                 for err in validator.iter_errors(self):
                     if err.__class__ is UniqueRequiredValidationError and \
-                         self["_deposit"]["id"] in err.uuids:
+                       self["_deposit"]["id"] in err.uuids:
                         pass
                     else:
-                        errors.append(FieldError(
-                           get_error_path(err), str(err.message)))
+                        errors.append(FieldError(get_error_path(err), str(err.message)))
 
                 if errors:
                     raise DepositValidationError(None, errors=errors)
@@ -699,9 +697,8 @@ class CAPDeposit(Deposit, Reviewable):
             if owner:
                 for permission in DEPOSIT_ACTIONS:
                     db.session.add(
-                        ActionUsers.allow(DEPOSIT_ACTIONS_NEEDS(
-                            deposit.id)[permission],
-                                          user=owner))
+                        ActionUsers.allow(
+                            DEPOSIT_ACTIONS_NEEDS(deposit.id)[permission], user=owner))
 
                     db.session.flush()
 

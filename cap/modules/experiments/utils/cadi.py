@@ -23,7 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Cern Analysis Preservation utils for CADI database."""
 
-import json
 from itertools import islice
 
 import requests
@@ -262,9 +261,9 @@ def get_uuids_with_same_cadi_id(cadi_id):
         raise DepositDoesNotExist
     else:
         uuids = [
-                r.get("_source", {}).get("_deposit", {}).get("id")
-                for r in res
-            ]
+            r.get("_source", {}).get("_deposit", {}).get("id")
+            for r in res
+        ]
 
     return uuids
 

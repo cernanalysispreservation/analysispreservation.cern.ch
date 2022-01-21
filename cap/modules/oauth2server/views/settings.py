@@ -143,16 +143,16 @@ def index():
     tokens = Token.query.options(db.joinedload('client')).filter(
         Token.user_id == current_user.get_id(),
         Token.is_personal == True,  # noqa
-        Token.is_internal == False,
-        Client.is_internal == True,
+        Token.is_internal == False,  # noqa
+        Client.is_internal == True,  # noqa
     ).all()
 
-    authorized_apps = Token.query.options(db.joinedload('client')).filter(
-        Token.user_id == current_user.get_id(),
-        Token.is_personal == False,  # noqa
-        Token.is_internal == False,
-        Client.is_internal == False,
-    ).all()
+    # authorized_apps = Token.query.options(db.joinedload('client')).filter(
+    #    Token.user_id == current_user.get_id(),
+    #    Token.is_personal == False,
+    #    Token.is_internal == False,
+    #    Client.is_internal == False,
+    # ).all()
 
     # scope_choices = [
     #     {

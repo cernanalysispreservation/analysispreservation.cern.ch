@@ -103,7 +103,7 @@ packages = find_packages()
 # Get the version string. Cannot be done with import!
 g = {}
 with open(os.path.join('cap', 'version.py'), 'rt') as fp:
-    exec (fp.read(), g)
+    exec(fp.read(), g)
     version = g['__version__']
 
 setup(
@@ -115,8 +115,7 @@ setup(
     license='MIT',
     author='CERN',
     author_email='analysis-preservation-support@cern.ch',
-    url=
-    'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
+    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',
     packages=packages,
     zip_safe=False,
     include_package_data=True,

@@ -24,7 +24,6 @@
 
 """CAP ROR service view."""
 from __future__ import absolute_import, print_function
-from urllib3.exceptions import HTTPError
 try:
     from json.decoder import JSONDecodeError
 except ImportError:

@@ -26,4 +26,4 @@
 
 from __future__ import absolute_import, print_function
 
-from .cli import create_deposit
+from .cli import create_deposit  # noqa

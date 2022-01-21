@@ -23,8 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Basic Serializers."""
 
-from flask import current_app
-
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.links import links_factory as deposit_links_factory
 from cap.modules.records.serializers.json import CAPJSONSerializer

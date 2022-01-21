@@ -28,8 +28,7 @@ import os
 from jsonschema import Draft4Validator
 from jsonschema.validators import extend
 
-from cap.modules.experiments.validators import (validate_cadi_id,
-                                                validate_cms_trigger,
+from cap.modules.experiments.validators import (validate_cms_trigger,
                                                 validate_das_path,
                                                 validate_unique_cadi)
 

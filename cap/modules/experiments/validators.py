@@ -70,4 +70,4 @@ def validate_unique_cadi(validator, value, instance, schema):
         yield UniqueRequiredValidationError(
             "This ID is already attached to another record", uuids=uuids)
     except DepositDoesNotExist:
-            pass
+        pass

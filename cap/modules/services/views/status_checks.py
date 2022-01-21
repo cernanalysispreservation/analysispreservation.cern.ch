@@ -34,7 +34,7 @@ from cap.modules.experiments.views.cms import _get_cadi
 from cap.views import ping
 
 from ..models import StatusCheck
-from ..test_responses.responses import (atlas_glance, cms_cadi, github, gitlab,
+from ..test_responses.responses import (atlas_glance, cms_cadi,
                                         indico, ldap_egroup, ldap_mail,
                                         orcid_id, orcid_name, ror, zenodo)
 from . import blueprint
