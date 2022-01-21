@@ -1,0 +1,33 @@
+[flake8]
+max-line-length = 89
+
+# decent quote styles
+inline-quotes = single
+multiline-quotes = single
+docstring-quotes = double
+avoid-escape = true
+
+extend-exclude =
+    build
+    dist
+    docs
+    ext_modules
+    cap.egg-info
+    node_modules
+    ui/
+    *.conf
+    .*/
+    env/
+    .git
+    __pycache__
+    cap/modules/services/test_responses/*.py
+    tests/
+
+ignore =
+    # allow omitting whitespace around arithmetic operators
+    E226
+    # don't require specific wrapping before/after binary operators
+    W503
+    W504
+    # allow assigning lambdas (it's useful for single-line functions defined inside other functions)
+    E731

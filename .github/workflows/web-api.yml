@@ -2,7 +2,7 @@ name: Backend tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, ci ]
     paths-ignore:
     - 'ui/**'
   pull_request:
@@ -11,9 +11,61 @@ on:
     - 'ui/**'
 
 jobs:
-  BackendSuite:
-    name: Backend Tests
-    runs-on: ubuntu-18.04
+  lint-flake8:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Check compliance with pep8, pyflakes and circular complexity
+        run: |
+          pip install flake8
+          ./run-tests.sh --check-flake8
+
+  lint-check-manifest:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Check Python manifest completeness
+        run: |
+          pip install check-manifest
+          ./run-tests.sh --check-manifest
+
+  lint-commit-quality:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # fetch-depth is needed to get the full list of commits
+          # necessary for commit msg linting when a PR has 2 commits or more
+          # to avoid getting ALL the commits, we get current commits + origin
+          fetch-depth: ${{ github.event.pull_request.commits }} + 1
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup python 3.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Checking commit quality (messages, signatures, etc)
+        env:
+          GIT_HEAD: ${{ github.event.after }}
+          GIT_ORIGIN: ${{ github.event.pull_request.base.sha }}
+        run: sh ./scripts/ci/prebuild.sh
+
+  python-tests:
+    runs-on: ubuntu-20.04
     services:
       redis:
         image: redis
@@ -50,39 +102,23 @@ jobs:
           # to avoid getting ALL the commits, we get current commits + origin
           fetch-depth: ${{ github.event.pull_request.commits }} + 1
           ref: ${{ github.event.pull_request.head.sha }}
+
       - name: Setup python 3.6
         uses: actions/setup-python@v2
         with:
           python-version: 3.6.9
-      - name: Checking commit quality (messages, signatures, etc)
-        env:
-          GIT_HEAD: ${{ github.event.after }}
-          GIT_ORIGIN: ${{ github.event.pull_request.base.sha }}
-        run: |
-          sh ./scripts/ci/prebuild.sh
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev libkrb5-dev
+
       - name: Install dependencies
         run: |
-          python -V
-          pip -V
           pip install --upgrade pip==20.2.4
-          # pip install flake8 pip==20.2.4
           pip install -r requirements.txt
           pip install -e .[all,docs,tests,ldap]
           pip install -r requirements-local-forks.txt
-      # - name: Lint with flake8
-      #   run: |
-      #     # stop the build if there are Python syntax errors or undefined names
-      #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-      #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-      #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
       - name: Run integration and  unit tests
-        run: |
-          ./run-tests.sh
+        run: ./run-tests.sh --check-pytest
