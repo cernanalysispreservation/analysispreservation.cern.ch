@@ -20,7 +20,7 @@ import {
   UserOutlined
 } from "@ant-design/icons";
 import OverviewLoading from "./OverviewLoading";
-import DepositFilesList from "../../../../components/drafts/components/DepositFilesList";
+import DepositFilesList from "../../../partials/FileList";
 import { calculateCollaborators } from "../../utils/calculateCollaborators";
 import InfoArrayBox from "../../../../components/partials/InfoArrayBox";
 
