@@ -1,16 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Dropdown,
-  Space,
-  Modal,
-  Typography,
-  Tag,
-  Table,
-  Row,
-  Menu,
-  Col
-} from "antd";
+import { Dropdown, Space, Typography, Row, Menu, Col } from "antd";
 import {
   CloseOutlined,
   CloudDownloadOutlined,
@@ -20,9 +10,6 @@ import {
 import prettyBytes from "pretty-bytes";
 import { Route } from "react-router-dom";
 import { DRAFT_ITEM } from "../../../../components/routes";
-import TimeAgo from "react-timeago";
-
-import moment from "moment";
 import EllipsisText from "../../EllipsisText";
 
 const { Text } = Typography;
@@ -75,99 +62,13 @@ const menu = (data, infoClick, getFileVersions, deleteFile) => (
   </Menu>
 );
 
-const timeOptions = {
-  day: "numeric",
-  month: "long",
-  year: "numeric"
-};
-
-const columns = [
-  {
-    dataIndex: "checksum",
-    key: "checksum",
-    render: text => <a>{text}</a>
-  },
-  {
-    dataIndex: "head",
-    key: "head",
-    render: is_head => is_head && <Tag color="green">latest</Tag>
-  },
-  {
-    dataIndex: "created",
-    key: "created",
-    render: created => {
-      let nowTime = moment();
-      let createdTime = moment(new Date(created));
-      let createdPlusExtraTime = createdTime.add(3, "h");
-
-      return createdPlusExtraTime.diff(nowTime) < 0 ? (
-        new Date(created).toLocaleString("en-GB", timeOptions)
-      ) : (
-        <TimeAgo date={created} minPeriod="60" />
-      );
-    }
-  },
-  {
-    dataIndex: "size",
-    key: "size",
-    width: "60px"
-  },
-  {
-    dataIndex: "link",
-    key: "link",
-    width: "32px",
-    render: link => (
-      <a download href={link}>
-        <CloudDownloadOutlined />
-      </a>
-    )
-  }
-];
 const DropDownFiles = props => {
-  const [displayFileInfo, setDisplayFileInfo] = useState(false);
   const [isShown, setIsShown] = useState(false);
 
   if (!props.file) return null;
 
-  let _versions = props.versions
-    .filter(version => version.get("key") === props.file.data.key)
-    .map(i => ({
-      checksum: i.get("checksum"),
-      created: i.get("created"),
-      head: i.get("is_head"),
-      size: prettyBytes(i.get("size")).toUpperCase(),
-      link: i.getIn(["links", "self"])
-    }))
-    .toJS();
-
   return (
     <React.Fragment>
-      <Modal
-        visible={displayFileInfo}
-        width={640}
-        onCancel={() => setDisplayFileInfo(false)}
-        okButtonProps={{
-          onClick: () => setDisplayFileInfo(false)
-        }}
-        title="File Info"
-      >
-        <Typography.Title level={5}>{props.file.name}</Typography.Title>
-        <Space style={{ margin: "10px 0 ", flexWrap: "wrap" }}>
-          {props.file.data &&
-            props.file.data.tags &&
-            Object.entries(props.file.data.tags).map(item => (
-              <Tag key={item[0] + item[1]}>
-                {item[0]}={item[1]}
-              </Tag>
-            ))}
-        </Space>
-        <Table
-          showHeader={false}
-          size="small"
-          dataSource={_versions}
-          columns={columns}
-        />
-      </Modal>
       <Row
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
@@ -207,7 +108,7 @@ const DropDownFiles = props => {
                   trigger="click"
                   overlay={menu(
                     props.file,
-                    () => setDisplayFileInfo(true),
+                    () => props.infoClick(props.file),
                     () => props.getFileVersions(),
                     (link, path) => props.deleteFile(link, path)
                   )}
