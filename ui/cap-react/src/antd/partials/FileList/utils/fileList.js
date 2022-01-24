@@ -2,19 +2,19 @@ import React from "react";
 import { Space } from "antd";
 import DropDownFiles from "../containers/DropDown";
 import { _getIcon } from "./getFileItemIcon";
-export const constructTree = data => {
+export const constructTree = (data, setFile) => {
   let paths = [];
 
   data.mapEntries(item => {
     paths.push([item[0].split("/"), item[1]]);
   });
 
-  let children = arrangeIntoTree(paths);
+  let children = arrangeIntoTree(paths, setFile);
 
   return { children };
 };
 
-function arrangeIntoTree(paths) {
+function arrangeIntoTree(paths, setFile) {
   // Adapted from http://brandonclapp.com/arranging-an-array-of-flat-paths-into-a-json-tree-like-structure/
   let tree = [];
 
@@ -45,7 +45,9 @@ function arrangeIntoTree(paths) {
         if (!(path.length > j + 1)) {
           newPart["isLeaf"] = true;
           newPart["icon"] = _getIcon(pathData.mimetype);
-          newPart["title"] = <DropDownFiles file={newPart} />;
+          newPart["title"] = (
+            <DropDownFiles file={newPart} infoClick={setFile} />
+          );
         }
 
         currentLevel.push(newPart);

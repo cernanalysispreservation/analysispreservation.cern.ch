@@ -19,12 +19,7 @@ const DraftItemNav = ({ match, history, visibleMenuDrawer, onClose }) => {
       <NavMenu match={match} history={history} />
     </Drawer>
   ) : (
-    <Layout.Sider
-      trigger={null}
-      style={{ height: "100%" }}
-      collapsible
-      collapsed={!screens.xxl}
-    >
+    <Layout.Sider trigger={null} collapsible collapsed={!screens.xxl}>
       <NavMenu match={match} history={history} />
     </Layout.Sider>
   );
