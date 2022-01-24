@@ -51,13 +51,12 @@ const Settings = ({
         {equal(cleanDeep(formData), cleanDeep(metadata)) ? (
           "Do you really want to publish?"
         ) : (
-          <Typography.Text>
-            You have unsaved changes,
-            <Typography.Text strong mark>
-              if publish
-            </Typography.Text>
-            , these changes will be saved
-          </Typography.Text>
+          <Alert
+            message="You are trying to publish with unsaved changes"
+            description="if you decide to continue, these changes will be saved first"
+            type="warning"
+            showIcon
+          />
         )}
       </Modal>
       <Col xs={22} sm={22} lg={18} xxl={16}>
