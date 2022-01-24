@@ -65,7 +65,15 @@ const Drafts = ({
               justify="space-between"
               style={{ overflowX: "hidden", height: "100%" }}
             >
-              <Col xs={24} xxl={18}>
+              <Col
+                xs={24}
+                xxl={18}
+                style={{
+                  height: "100%",
+                  overflowX: "hidden",
+                  paddingBottom: "24px"
+                }}
+              >
                 <Row justify="center">
                   <Switch>
                     <Route exact path={DRAFT_ITEM} component={DraftPreview} />
