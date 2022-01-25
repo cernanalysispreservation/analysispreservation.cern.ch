@@ -71,6 +71,18 @@ def parse_git_url(url):
     return host, owner, repo, branch, filepath
 
 
+def validate_gitlab_host(host):
+    """Validate the Gitlab host."""
+    host_pattern = re.compile(
+        '''
+        (?P<host>(?:gitlab\.cern\.ch|gitlab\.com))
+        '''
+    )
+    if not host_pattern.match(host):
+        raise GitURLParsingError
+    return True
+
+
 def ensure_content_length(resp):
     """
     Add Content-Length when it is not present.
@@ -172,8 +184,8 @@ def path_value_equals(element, JSON):
 
 
 def populate_template_from_ctx(record, config, module=None):
-    """
-    Render a template according to the context provided in the schema.
+    """Render a template according to the context provided in the schema.
+
     Args:
         record: The analysis record that has the necessary fields.
         config: The analysis config, provided in the `schema`.

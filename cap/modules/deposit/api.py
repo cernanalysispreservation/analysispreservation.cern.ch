@@ -309,7 +309,9 @@ class CAPDeposit(Deposit, Reviewable):
         create_webhook(record_uuid, api)
 
     def create_repo_as_user_and_attach(self, record_uuid, data):
-        """Create a repository according to the parameters, and attach it to
+        """Create a repository.
+
+        Create a repository according to the parameters, and attach it to
         the current analysis.
 
         Expects json with params:
@@ -348,7 +350,9 @@ class CAPDeposit(Deposit, Reviewable):
         create_webhook(record_uuid, api)
 
     def attach_repo_to_deposit(self, record_uuid, data):
-        """Attach a repo to a deposit, download it, and create webhooks
+        """Attach a repo to a deposit.
+        
+        Download the attached repo, and create webhooks
         according to the parameters.
 
         Can upload a repository or its single file and/or create a webhook.

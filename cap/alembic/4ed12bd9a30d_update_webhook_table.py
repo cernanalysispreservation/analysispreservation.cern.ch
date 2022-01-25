@@ -5,7 +5,7 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Update webhook table"""
+"""Update webhook table."""
 
 from alembic import op
 import sqlalchemy as sa
