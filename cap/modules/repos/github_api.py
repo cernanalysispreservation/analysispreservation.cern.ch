@@ -169,6 +169,7 @@ class GithubAPI(GitAPI):
                     private, license, org_name):
         """
         Create a github repo as user/organization.
+
         The available licenses can be found here:
         https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository  # noqa
         """
@@ -207,7 +208,8 @@ class GithubAPI(GitAPI):
     def create_repo_as_collaborator(cls, create_token, org_name, repo_name,
                                     description='', private=False,
                                     license=None, host=None):
-        """
+        """Return the created repository.
+
         Create repo through an organization admin,
         adding the current user as a member/collaborator.
         """

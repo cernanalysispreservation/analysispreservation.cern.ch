@@ -34,9 +34,10 @@ from cap.modules.auth.ext import _fetch_token
 from cap.modules.deposit.errors import FileUploadError
 
 from .errors import (GitIntegrationError, GitObjectNotFound,
-                     GitRequestWithInvalidSignature, GitUnauthorizedRequest)
+                     GitRequestWithInvalidSignature, GitUnauthorizedRequest,
+                     GitURLParsingError)
 from .interface import GitAPI
-from .utils import generate_secret, get_webhook_url
+from .utils import generate_secret, get_webhook_url, validate_gitlab_host
 
 
 class GitlabAPI(GitAPI):
@@ -160,10 +161,9 @@ class GitlabAPI(GitAPI):
     @classmethod
     def create_repo(cls, token, repo_name, description,
                     private, license, org_name, host):
-        """
-        Create a gitlab repo as user/organization.
-        """
+        """Create a gitlab repo as user/organization."""
         try:
+            validate_gitlab_host(host)
             gitlab = Gitlab(f'https://{host}', oauth_token=token)
             return gitlab.projects.create({
                 'name': repo_name,
@@ -175,7 +175,8 @@ class GitlabAPI(GitAPI):
 
         except (GitlabCreateError,
                 GitlabAuthenticationError,
-                GitlabGetError) as ex:
+                GitlabGetError,
+                GitURLParsingError) as ex:
             raise FileUploadError(description=ex.error_message)
 
     @classmethod
@@ -198,7 +199,8 @@ class GitlabAPI(GitAPI):
     def create_repo_as_collaborator(cls, create_token, org_name, repo_name,
                                     description='', private=False,
                                     license=None, host=None):
-        """
+        """Return the created repository.
+
         Create repo through an organization admin,
         adding the current user as a member/collaborator.
         """
