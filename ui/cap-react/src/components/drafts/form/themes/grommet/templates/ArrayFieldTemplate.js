@@ -72,11 +72,13 @@ class ArrayFieldTemplate extends React.Component {
       setTimeout(() => {
         values.map((value, index) => {
           let _index = _formDataLength + index;
+
           this.props.onAddClick(e);
 
           if (type == "object" && pasteTo) {
             value = { [pasteTo]: value };
           }
+
           this.props.items[_index].children.props.onChange(value);
         });
       }, 1);
