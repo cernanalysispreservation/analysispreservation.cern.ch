@@ -105,19 +105,21 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
           style={{ padding: "10px", background: "#fff", marginTop: "5px" }}
         >
           <Space direction="vertical" size="middle">
-            <Space>
-              <Typography.Text>Reuse Mode</Typography.Text>
-              <Switch
-                disabled={analysis_mode[0].content.props.readonly}
-                checked={analysisChecked}
-                onChange={checked => {
-                  analysis_mode[0].content.props.onChange(
-                    checked ? "true" : undefined
-                  );
-                  setAnalysisChecked(checked);
-                }}
-              />
-            </Space>
+            {analysis_mode.length > 0 && (
+              <Space>
+                <Typography.Text>Reuse Mode</Typography.Text>
+                <Switch
+                  disabled={analysis_mode[0].content.props.readonly}
+                  checked={analysisChecked}
+                  onChange={checked => {
+                    analysis_mode[0].content.props.onChange(
+                      checked ? "true" : undefined
+                    );
+                    setAnalysisChecked(checked);
+                  }}
+                />
+              </Space>
+            )}
             <Dropdown
               overlay={
                 <TabFieldMenu
