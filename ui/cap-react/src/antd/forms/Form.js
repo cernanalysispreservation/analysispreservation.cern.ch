@@ -2,11 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import ObjectFieldTemplate from "./templates/ObjectFieldTemplate";
 import FieldTemplate from "./templates/Field/FieldTemplate";
+import TitleField from "./fields/TitleField";
 import widgets from "./widgets";
 import _debounce from "lodash/debounce";
 
 import "./Form.less";
 import Form from "@rjsf/antd";
+import ArrayFieldTemplateItem from "./templates/ArrayFieldTemplates";
 
 const RJSFForm = ({
   formRef,
@@ -24,9 +26,11 @@ const RJSFForm = ({
       ref={formRef}
       schema={schema}
       uiSchema={uiSchema}
+      fields={{ TitleField }}
       formData={formData}
       widgets={widgets}
       ObjectFieldTemplate={ObjectFieldTemplate}
+      ArrayFieldTemplate={ArrayFieldTemplateItem}
       FieldTemplate={FieldTemplate}
       showErrorList={false}
       extraErrors={extraErrors}
