@@ -175,7 +175,7 @@ const MaskedInput = forwardRef(
 
     const [value, setValue] = formContext.useFormInput(name, valueProp);
 
-    const [valueParts, setValueParts] = useState(parseValue(mask, value));
+    const [valueParts, setValueParts] = useState(parseValue(mask, valueProp));
     useEffect(
       () => {
         setValueParts(parseValue(mask, value));
@@ -249,6 +249,7 @@ const MaskedInput = forwardRef(
     const onChangeInput = useCallback(
       event => {
         // Align with the mask.
+
         const nextValueParts = parseValue(mask, event.target.value);
         const nextValue = nextValueParts.map(part => part.part).join("");
 
@@ -258,6 +259,7 @@ const MaskedInput = forwardRef(
           setInputValue(nextValue);
         } else if (value !== nextValue) {
           setValue(nextValue);
+
           if (onChange) onChange(event);
         }
       },
@@ -340,7 +342,7 @@ const MaskedInput = forwardRef(
       return mask.map(item => item.placeholder || item.fixed).join("");
     };
 
-    const status = new RegExp(schemaMask).test(value);
+    const status = new RegExp(schemaMask).test(valueProp);
 
     return (
       <Box>
@@ -367,7 +369,7 @@ const MaskedInput = forwardRef(
             reverse={reverse}
             focus={focus}
             {...rest}
-            value={value}
+            value={valueProp}
             onFocus={event => {
               setFocus(true);
               setShowDrop(true);
