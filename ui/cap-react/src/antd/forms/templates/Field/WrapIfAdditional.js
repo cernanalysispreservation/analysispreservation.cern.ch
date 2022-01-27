@@ -1,11 +1,7 @@
 import React from "react";
 
 import { utils } from "@rjsf/core";
-import Button from "antd/lib/button";
-import Col from "antd/lib/col";
-import Form from "antd/lib/form";
-import Input from "antd/lib/input";
-import Row from "antd/lib/row";
+import { Button, Col, Form, Input, Row } from "antd";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 
 const { ADDITIONAL_PROPERTY_FLAG } = utils;
@@ -59,8 +55,8 @@ const WrapIfAdditional = ({
 
   return (
     <div className={classNames}>
-      <Row align={toolbarAlign} gutter={rowGutter} style={{ height: "100%" }}>
-        <Col className="form-additional" flex="1" style={{ height: "100%" }}>
+      <Row align={toolbarAlign} gutter={rowGutter}>
+        <Col className="form-additional" flex="1">
           <div className="form-group">
             <Form.Item
               colon={colon}
