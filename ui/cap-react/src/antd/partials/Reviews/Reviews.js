@@ -11,6 +11,8 @@ const Reviews = ({
   reviewPublished,
   isReviewingPublished,
   publishedReviewError,
+  publishedReviewLoading,
+  draftReviewLoading,
   draftReviewError,
   action = "add"
 }) => {
@@ -33,7 +35,10 @@ const Reviews = ({
         title="Add new Review"
         okText="Submit Review"
         okButtonProps={{
-          onClick: () => form.submit()
+          onClick: () => form.submit(),
+          loading: isReviewingPublished
+            ? publishedReviewLoading
+            : draftReviewLoading
         }}
         onCancel={() => setShowModal(false)}
       >
@@ -144,6 +149,8 @@ Reviews.propTypes = {
   reviewDraft: PropTypes.func,
   reviewPublished: PropTypes.func,
   isReviewingPublished: PropTypes.bool,
+  publishedReviewLoading: PropTypes.bool,
+  draftReviewLoading: PropTypes.bool,
   publishedReviewError: PropTypes.string,
   draftReviewError: PropTypes.string,
   action: PropTypes.string
