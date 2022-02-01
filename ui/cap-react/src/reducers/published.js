@@ -22,6 +22,7 @@ const initialState = Map({
   schema: null,
   uiSchema: null,
   loading: false,
+  reviewLoading: false,
   error: null,
   files: Map({})
 });
@@ -54,11 +55,13 @@ export default function publishedReducer(state = initialState, action) {
     case PUBLISHED_ITEM_ERROR:
       return state.set("loading", false).set("error", action.error);
     case REVIEW_PUBISHED_REQUEST:
-      return state.set("loading", true);
+      return state.set("reviewLoading", true);
     case REVIEW_PUBISHED_SUCCESS:
-      return state.set("loading", false).set("review", action.payload.review);
+      return state
+        .set("reviewLoading", false)
+        .set("review", action.payload.review);
     case REVIEW_PUBISHED_ERROR:
-      return state.set("loading", false).set("reviewError", action.error);
+      return state.set("reviewLoading", false).set("reviewError", action.error);
     default:
       return state;
   }
