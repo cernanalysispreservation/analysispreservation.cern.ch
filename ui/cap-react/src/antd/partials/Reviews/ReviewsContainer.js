@@ -11,9 +11,10 @@ const mapStateToProps = (state, props) => ({
     ? null
     : state.draftItem.get("can_review"),
   draft_id: state.draftItem.get("id"),
-  draftLoading: state.draftItem.get("loading"),
+  draftReviewLoading: state.draftItem.get("reviewLoading"),
   draftReviewError: state.draftItem.get("reviewError"),
   publishedReviewError: state.published.get("reviewError"),
+  publishedReviewLoading: state.published.get("reviewLoading"),
   shouldDisplayButtonsWhenFromPublished:
     props.isReviewingPublished && state.published.get("can_review")
 });

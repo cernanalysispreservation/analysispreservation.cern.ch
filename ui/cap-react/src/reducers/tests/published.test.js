@@ -55,7 +55,7 @@ describe("Published Reducer Suite", () => {
     // In order to review a published item it has to be published first
     // therefore there is no meaning to compare it with the initialState
     // to avoid copying all the state again we just simply update the loading
-    const state = publishedSuccessState.set("loading", true);
+    const state = publishedSuccessState.set("reviewLoading", true);
     expect(publishedReducer(publishedSuccessState, action)).toEqual(state);
   });
   it("Review Publish Error", () => {
