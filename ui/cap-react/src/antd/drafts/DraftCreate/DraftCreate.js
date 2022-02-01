@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Modal } from "antd";
+import { Alert, Modal } from "antd";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import equal from "deep-equal";
+import cleanDeep from "clean-deep";
 
 import CreateForm from "../CreateForm";
 
-const DraftCreate = ({ onCancel, visible }) => {
+const DraftCreate = ({ onCancel, visible, formData, metadata, history }) => {
   const [form, setForm] = useState(null);
 
   return (
@@ -20,6 +24,15 @@ const DraftCreate = ({ onCancel, visible }) => {
         }
       }}
     >
+      {history.location.pathname.startsWith("/drafts/") &&
+        !equal(cleanDeep(formData), cleanDeep(metadata)) && (
+          <Alert
+            message="Are you sure you want to leave this page without saving?"
+            description="It seems that you have unsaved updated data in your draft"
+            type="warning"
+            showIcon
+          />
+        )}
       <CreateForm updateModal={form => setForm(form)} onCancel={onCancel} />
     </Modal>
   );
@@ -28,7 +41,20 @@ const DraftCreate = ({ onCancel, visible }) => {
 DraftCreate.propTypes = {
   visible: PropTypes.bool,
   onCancel: PropTypes.func,
-  createDraft: PropTypes.func
+  createDraft: PropTypes.func,
+  formData: PropTypes.object,
+  metadata: PropTypes.object,
+  history: PropTypes.object
 };
 
-export default DraftCreate;
+const mapStateToProps = state => ({
+  formData: state.draftItem.get("formData"),
+  metadata: state.draftItem.get("metadata")
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    null
+  )(DraftCreate)
+);
