@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Space } from "antd";
 import Form from "react-jsonschema-form";
 
 import FieldTemplate from "../../../components/drafts/form/themes/grommet-preview/templates/FieldTemplate";
@@ -17,7 +16,8 @@ const JSONSchemaPreviewer = ({
   children,
   display = "tabView",
   onChange,
-  onSubmit
+  onSubmit,
+  formData
 }) => {
   return (
     schema && (
@@ -37,7 +37,7 @@ const JSONSchemaPreviewer = ({
         liveValidate={false}
         noValidate={true}
         onError={() => {}}
-        formData={{}}
+        formData={formData}
         onBlur={() => {}}
         onChange={onChange}
         onSubmit={onSubmit}
