@@ -9,6 +9,7 @@ export const initialState = Map({
   schema: null,
   uiSchema: null,
   loading: false,
+  reviewLoading: false,
   error: null,
   files: Map({})
 });
@@ -18,6 +19,7 @@ export const loadingState = Map({
   schema: null,
   uiSchema: null,
   loading: true,
+  reviewLoading: false,
   error: null,
   files: Map({})
 });
@@ -27,6 +29,7 @@ export const errorState = Map({
   schema: null,
   uiSchema: null,
   loading: false,
+  reviewLoading: false,
   error: ERROR,
   files: Map({})
 });
@@ -93,6 +96,7 @@ export const publishedSuccessState = Map({
   draft_id: "1023b92bc26e4bc3904c8640667e6600",
   status: "published",
   loading: false,
+  reviewLoading: false,
   error: null,
   files: Map({}),
   labels: [],
@@ -164,6 +168,7 @@ export const reviewErrorState = Map({
   draft_id: "1023b92bc26e4bc3904c8640667e6600",
   status: "published",
   loading: false,
+  reviewLoading: false,
   error: null,
   files: Map({}),
   labels: [],
@@ -235,6 +240,7 @@ export const reviewSuccessState = Map({
   draft_id: "1023b92bc26e4bc3904c8640667e6600",
   status: "published",
   loading: false,
+  reviewLoading: false,
   error: null,
   files: Map({}),
   labels: [],
