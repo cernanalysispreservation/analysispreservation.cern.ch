@@ -18,6 +18,7 @@ import DraftItemNav from "../../containers/DraftItemNav";
 import DraftSideBar from "../SideBar";
 import DraftHeader from "../../containers/DraftHeader";
 import Error from "../../../partials/Error/";
+import Guard from "../Guard/Guard";
 
 const Drafts = ({
   id,
@@ -54,6 +55,7 @@ const Drafts = ({
           openMenuDrawer={() => setVisibleMenuDrawer(true)}
           openFileDrawer={() => setVisibleFileDrawer(true)}
         />
+        <Guard draft_id={match.params.draft_id} />
 
         <Layout style={{ padding: 0 }}>
           <DraftItemNav
