@@ -33,10 +33,14 @@ function arrangeIntoTree(paths) {
         let newPart = {
           name: part,
           key: part,
-          title: <Space>{_getIcon()}{part}</Space>,
+          title: (
+            <Space>
+              {_getIcon()}
+              {part}
+            </Space>
+          ),
           data: pathData
         };
-
         if (path.length > j + 1) newPart["children"] = [];
         if (!(path.length > j + 1)) {
           newPart["isLeaf"] = true;

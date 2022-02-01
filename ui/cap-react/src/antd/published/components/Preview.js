@@ -30,7 +30,9 @@ const Preview = ({
   metadata = { general_title: "" },
   schemas = { schema: {}, uiSchema: {} }
 }) => {
-  const [display, setDisplay] = useState("tabView");
+  const [display, setDisplay] = useState(
+    schemas.uiSchema["ui:object"] == "tabView" ? "tabView" : "list"
+  );
   const [displayFiles, setDisplayFiles] = useState(false);
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
@@ -89,7 +91,12 @@ const Preview = ({
             onChange={e => setDisplay(e.target.value)}
           >
             <Space>
-              <Radio.Button value="tabView">Tabs</Radio.Button>
+              <Radio.Button
+                value="tabView"
+                disabled={schemas.uiSchema["ui:object"] != "tabView"}
+              >
+                Tabs
+              </Radio.Button>
               <Radio.Button value="list">List</Radio.Button>
             </Space>
           </Radio.Group>
