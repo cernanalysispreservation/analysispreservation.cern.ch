@@ -46,6 +46,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
             key="createAnalysis"
             icon={<PlusOutlined />}
             onClick={() => setDisplayCreate(true)}
+            data-cy="headerCreateButton"
           >
             Create
           </Item>

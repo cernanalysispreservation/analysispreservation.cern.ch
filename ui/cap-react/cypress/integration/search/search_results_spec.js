@@ -1,50 +1,51 @@
 import { DRAFTS } from "../../routes";
 
 describe("Search Results Suite", () => {
-  const generalTitle = "testSearchForIt";
+  const generalTitle = String(new Date().getTime());
   it("Create a draft and find it throught search", () => {
     // create a draft analysis
     cy.createDraft("CMS Analysis", generalTitle, "cms");
 
-    cy.get("input[type='search']")
-      .should("have.attr", "id", "searchbar")
-      .type(`${generalTitle}{enter}`);
+    // find the search bar and search with the title
+    cy.get("[data-cy=searchbar]").type(`${generalTitle}{enter}`);
 
-    cy.get("input#search_facet_published_checkbox").click({ force: true });
+    cy.get(`[data-cy=${generalTitle}]`).click({ force: true });
 
-    cy.get(`[data-cy=${generalTitle}] a`).click({ force: true });
+    // navigate to settings tab
+    cy.get("[data-cy=itemNavSettings]").click();
 
-    // navoigate to settings tab
-    cy.get("[data-cy=draft-settings]").click();
-
+    // open the Popconfirm
     cy.get("[data-cy=draft-delete-btn]").click();
 
-    cy.get("[data-cy=layer-primary-action]").click();
+    // validate delete
+    cy.get(".ant-popover-buttons button")
+      .contains("Delete")
+      .click();
 
     cy.url().should("not.include", DRAFTS);
-    cy.wait(1000);
   });
 
   it("Update the sorting", () => {
     // login as superuser
-    cy.login("info@inveniosoftware.org", "infoinfo");
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     // navigate to the search page
-    cy.get('input[type="search"]')
-      .should("have.attr", "id", "searchbar")
-      .type("{enter}");
+    cy.get("[data-cy=searchbar]").type("{enter}");
 
     // the url params should not have a sort param
     cy.url().should("not.include", "&sort=");
 
-    // open the menu and update the sorting to bestmatch
-    cy.get("[data-cy=search-page-sorting]").click();
-    cy.get("[data-cy=search-page-sorting-bestmatch]").click();
-    cy.url().should("include", "&sort=bestmatch");
-
-    // open the menu and update the sorting to bestmatch
-    cy.get("[data-cy=search-page-sorting]").click();
-    cy.get("[data-cy=search-page-sorting-mostrecent]").click();
+    // oldest first
+    cy.get("[data-cy=sortSelectMenu]").click();
+    cy.get("[data-cy=-mostrecent]").click();
+    cy.url().should("include", "&sort=-mostrecent");
+    // newest first
+    cy.get("[data-cy=sortSelectMenu]").click();
+    cy.get("[data-cy=mostrecent]").click();
     cy.url().should("include", "&sort=mostrecent");
+    // best match
+    cy.get("[data-cy=sortSelectMenu]").click();
+    cy.get("[data-cy=bestmatch]").click();
+    cy.url().should("include", "&sort=bestmatch");
   });
 });
