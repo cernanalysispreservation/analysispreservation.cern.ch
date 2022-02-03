@@ -7,6 +7,7 @@ const EditableField = ({
   text,
   isEditable = false,
   emptyValue = "Untitled Document",
+  dataCy,
   onUpdate = () => {}
 }) => {
   const [editMode, setEditMode] = useState(false);
@@ -28,8 +29,15 @@ const EditableField = ({
 
   return !editMode ? (
     <Space direction="horizontal">
-      <Typography.Text>{text || emptyValue}</Typography.Text>
-      {isEditable && <EditOutlined onClick={() => setEditMode(true)} />}
+      <Typography.Text data-cy="editableTitleValue">
+        {text || emptyValue}
+      </Typography.Text>
+      {isEditable && (
+        <EditOutlined
+          data-cy="editableTitleEdit"
+          onClick={() => setEditMode(true)}
+        />
+      )}
     </Space>
   ) : (
     <Space direction="horizontal">
@@ -38,10 +46,15 @@ const EditableField = ({
         onChange={e => setCurrentValue(e.target.value)}
         onPressEnter={handleApprove}
         onKeyDown={handleKeyDown}
+        data-cy="editableInput"
         autoFocus={true}
       />
       <CheckOutlined onClick={handleApprove} style={{ color: "#389e0d" }} />
-      <CloseOutlined style={{ color: "#cf1322" }} onClick={handleReject} />
+      <CloseOutlined
+        style={{ color: "#cf1322" }}
+        onClick={handleReject}
+        data-cy="editableTitleClose"
+      />
     </Space>
   );
 };

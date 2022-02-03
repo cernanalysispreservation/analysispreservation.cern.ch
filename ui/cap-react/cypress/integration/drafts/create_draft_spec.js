@@ -12,62 +12,55 @@ describe("Create Draft", function() {
   it("Update the title but discard saving", () => {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
-    cy.get("[data-cy=drafts-list] a")
+    // navigate to the draft
+    cy.get("[data-cy=DraftDocuments-list] a")
       .first()
       .click();
-    // get the title div
-    // and enable editing
-    cy.get("[data-cy=editable-title-wrapper]")
-      .contains(firstTitle)
-      .click();
+
+    cy.get("[data-cy=editableTitleEdit]").click();
+
+    cy.get("[data-cy=editableInput]").type(updatedTitle);
 
     // cancel the changes
-    cy.get("[data-cy=closeicon]").click();
+    cy.get("[data-cy=editableTitleClose]").click();
 
-    // search the new title
-    cy.get("[data-cy=editable-title-wrapper]").contains(firstTitle);
+    cy.get("[data-cy=editableTitleValue]").contains(firstTitle);
   });
 
   it("Update the general title of the draft", () => {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
-    cy.get("[data-cy=drafts-list] a")
+    cy.get("[data-cy=DraftDocuments-list] a")
       .first()
       .click();
-    // get the title div
-    // and enable editing
-    cy.get("[data-cy=editable-title-wrapper]")
-      .contains(firstTitle)
-      .click();
+
+    cy.get("[data-cy=editableTitleEdit]").click();
 
     // erase the previous title and insert the new one
-    cy.get("[data-cy=general-title-input]")
-      .should("have.value", firstTitle)
+    cy.get("[data-cy=editableInput]")
       .clear()
-      .type("This is my new title{enter}");
+      .type(`${updatedTitle}{enter}`);
 
-    // search the new title
-    cy.get("[data-cy=editable-title-wrapper]").contains(updatedTitle);
-
-    // make sure that the previous is not there and the update was succesfull
-    cy.get("[data-cy=editable-title-wrapper]")
-      .contains(firstTitle)
-      .should("not.exist");
+    cy.get("[data-cy=editableTitleValue]").contains(updatedTitle);
   });
 
   it("Delete Draft", () => {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
-    cy.get("[data-cy=drafts-list] a")
+    cy.get("[data-cy=DraftDocuments-list] a")
       .first()
       .click();
 
-    // navoigate to settings tab
-    cy.get("[data-cy=draft-settings]").click();
+    // navigate to settings tab
+    cy.get("[data-cy=itemNavSettings]").click();
 
+    // open the Popconfirm
     cy.get("[data-cy=draft-delete-btn]").click();
 
-    cy.get("[data-cy=layer-primary-action]").click();
+    // validate delete
+    cy.get(".ant-popover-buttons button")
+      .contains("Delete")
+      .click();
 
     cy.url().should("not.include", DRAFTS);
   });
@@ -75,9 +68,8 @@ describe("Create Draft", function() {
   it("Does not allow to continue when anatype is not selected", () => {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
-    cy.get("div#ct-container").should("not.exist");
     // open the Create modal
-    cy.get("div")
+    cy.get("[data-cy=headerCreateButton]")
       .contains("Create")
       .click();
 
