@@ -58,6 +58,7 @@ const SearchBar = ({ pushPath }) => {
         size="large"
         placeholder="Search"
         enterButton
+        data-cy="searchbar"
         onSearch={val =>
           onSelect(null, { searchValue: val, searchOn: "/drafts" })
         }

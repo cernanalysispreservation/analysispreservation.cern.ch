@@ -1,40 +1,40 @@
 describe("Search Integration Suite", function() {
-  it("Navigate to search page for published results", function() {
+  it("Navigate to search page for drafts results", function() {
+    // we login to the platform
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     // find the search bar
-    cy.get("input[type='search']")
-      .should("have.attr", "id", "searchbar")
-      .type("cern{enter}");
+    cy.get("[data-cy=searchbar]").type("cern{enter}");
 
-    cy.url().should("include", "search?q=cern");
+    cy.url().should("include", "drafts?q=cern");
 
-    cy.get("input#search_facet_published_checkbox").should(
-      "have.attr",
-      "checked"
+    // Checked means that the search is for Drafts
+    cy.get("[data-cy=searchStatus]").should("have.class", "ant-switch-checked");
+
+    // Checked means that is from me and unchecked from all
+    cy.get("[data-cy=searchCreated]").should(
+      "not.have.class",
+      "ant-switch-checked"
     );
-    cy.get("input#search_facet_yours_checkbox").should("have.attr", "checked");
   });
 
-  it("Navigate search page for drafts results", function() {
+  it("Navigate to search page for published results", function() {
     // login first
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     // find the search bar
-    cy.get('input[type="search"]')
-      .should("have.attr", "id", "searchbar")
-      .type("cern");
-    // find the draft div
-    cy.get("div.grommetux-search__suggestion")
-      .first()
-      .click();
+    cy.get("[data-cy=searchbar]").type("cern{enter}");
 
-    cy.get("input#search_facet_published_checkbox").should(
-      "not.have.attr",
-      "checked"
+    // Checked means that the search is for Drafts
+    cy.get("[data-cy=searchStatus]").should("have.class", "ant-switch-checked");
+
+    cy.get("[data-cy=searchStatus]").click();
+
+    cy.get("[data-cy=searchStatus]").should(
+      "not.have.class",
+      "ant-switch-checked"
     );
-
     // validate the url
-    cy.url().should("include", "/drafts?q=cern");
+    cy.url().should("include", "/search?q=cern");
   });
 });
