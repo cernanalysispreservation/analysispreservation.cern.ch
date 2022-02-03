@@ -75,9 +75,14 @@ const Header = ({
             defaultValue={sortParam}
             style={{ width: 120 }}
             onChange={onChange}
+            data-cy="sortSelectMenu"
           >
             {SORT_OPTIONS.map(item => (
-              <Select.Option value={item.value} key={item.value}>
+              <Select.Option
+                value={item.value}
+                key={item.value}
+                data-cy={item.value}
+              >
                 {getValueFromLocation(item.value)}
               </Select.Option>
             ))}

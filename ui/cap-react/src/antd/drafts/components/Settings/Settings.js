@@ -128,7 +128,9 @@ const Settings = ({
                   icon={<DeleteTwoTone twoToneColor="#ff4d4f" />}
                   onConfirm={() => deleteDraft(draft_id)}
                 >
-                  <Button danger>Delete</Button>
+                  <Button danger data-cy="draft-delete-btn">
+                    Delete
+                  </Button>
                 </Popconfirm>
               )
             }
