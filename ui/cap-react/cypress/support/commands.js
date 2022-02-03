@@ -39,7 +39,7 @@ Cypress.Commands.add("login", (email, password) => {
 });
 
 // login mechanism with the request without using the UI
-Cypress.Commands.add("loginUrl", (email, password) => {
+Cypress.Commands.add("loginUrl", (email, password, url = "/") => {
   cy.request({
     method: "POST",
     url: "/api/login/local?next=/",
@@ -53,7 +53,7 @@ Cypress.Commands.add("loginUrl", (email, password) => {
         method: "GET",
         url: "/api/me"
       }).then(res => {
-        cy.visit("/");
+        cy.visit(url);
       });
     });
 });
