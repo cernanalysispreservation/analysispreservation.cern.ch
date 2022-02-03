@@ -42,6 +42,7 @@ const Applications = ({
             label="Provide Access Token"
             name="tokenAccessName"
             rules={[{ required: true }]}
+            data-cy="settingsTokenInput"
           >
             <Input placeholder="Token Access name" />
           </Form.Item>
@@ -51,7 +52,11 @@ const Applications = ({
         title="Your OAuth Tokens"
         extra={
           tokens.size > 0 && (
-            <Button type="primary" onClick={() => setDisplayTokenModal(true)}>
+            <Button
+              type="primary"
+              data-cy="settingsAddToken"
+              onClick={() => setDisplayTokenModal(true)}
+            >
               Create Token
             </Button>
           )
@@ -59,7 +64,7 @@ const Applications = ({
       >
         {tokens.size > 0 ? (
           <Table
-            data-cy="settings-table-token-id"
+            data-cy="settingsTableTokens"
             pagination={false}
             dataSource={tokens
               .map((token, idx) => ({
@@ -95,6 +100,7 @@ const Applications = ({
                     data-cy={token.name}
                     type="link"
                     onClick={() => revokeToken(token.id, token.key)}
+                    data-cy="settingsRemoveToken"
                   >
                     Revoke
                   </Button>
@@ -104,7 +110,11 @@ const Applications = ({
           />
         ) : (
           <Empty description="Add a new token to grant access to CAP client and API">
-            <Button type="primary" onClick={() => setDisplayTokenModal(true)}>
+            <Button
+              type="primary"
+              data-cy="settingsAddToken"
+              onClick={() => setDisplayTokenModal(true)}
+            >
               Create Token
             </Button>
           </Empty>
