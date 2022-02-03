@@ -66,6 +66,7 @@ const Settings = ({
             title="Publish your Analysis"
             extra={
               <Button
+                data-cy="draftModalPublishButton"
                 type="primary"
                 onClick={() => setConfirmPublish(true)}
                 disabled={status != "draft" || !canUpdate}
@@ -75,7 +76,11 @@ const Settings = ({
             }
             actions={
               recid && [
-                <Link key="button" to={`/published/${recid}`}>
+                <Link
+                  key="button"
+                  to={`/published/${recid}`}
+                  data-cy="draftRecidLink"
+                >
                   <Button type="link" icon={<LinkOutlined />}>
                     Current Version
                   </Button>
@@ -129,7 +134,9 @@ const Settings = ({
                   icon={<DeleteTwoTone twoToneColor="#ff4d4f" />}
                   onConfirm={() => deleteDraft(draft_id)}
                 >
-                  <Button danger>Delete</Button>
+                  <Button danger data-cy="draft-delete-btn">
+                    Delete
+                  </Button>
                 </Popconfirm>
               )
             }
