@@ -37,13 +37,17 @@ const Results = ({ results, loading }) => {
       style={{ background: "#fff", padding: "15px", marginBottom: "10px" }}
     >
       <Link
+        data-cy={item.getIn(["metadata", "general_title"]) || "No title"}
         to={
           item.get("status") === "published"
             ? `/published/${item.get("id")}`
             : `/drafts/${item.get("id")}`
         }
       >
-        <Typography.Title level={5} type={!item.getIn(["metadata", "general_title"]) && "secondary"}>
+        <Typography.Title
+          level={5}
+          type={!item.getIn(["metadata", "general_title"]) && "secondary"}
+        >
           {item.getIn(["metadata", "general_title"]) || "No title"}
         </Typography.Title>
       </Link>
