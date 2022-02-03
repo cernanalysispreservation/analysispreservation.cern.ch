@@ -34,7 +34,12 @@ const NavMenu = ({ match, history }) => {
         Workflows
       </Menu.Item>
       <Menu.Item key="settings" icon={<SettingOutlined />}>
-        <Link to={`/drafts/${match.params.draft_id}/settings`}>Settings</Link>
+        <Link
+          data-cy="itemNavSettings"
+          to={`/drafts/${match.params.draft_id}/settings`}
+        >
+          Settings
+        </Link>
       </Menu.Item>
     </Menu>
   );

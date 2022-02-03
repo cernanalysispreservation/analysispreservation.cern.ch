@@ -33,6 +33,7 @@ const DraftHeader = ({
           onClick={() => pushPath(location.from)}
         />
         <EditableField
+          dataCy="EditableTitle"
           isEditable={canEdit(canAdmin, canUpdate)}
           text={metadata.general_title}
           onUpdate={newText =>

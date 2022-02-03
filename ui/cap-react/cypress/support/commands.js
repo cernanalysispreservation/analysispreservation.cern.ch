@@ -77,7 +77,7 @@ Cypress.Commands.add("createDraft", (anatype, generalTitle, user = "info") => {
   cy.wait(1000);
 
   // open the Create modal
-  cy.get("div")
+  cy.get("[data-cy=headerCreateButton]")
     .contains("Create")
     .click();
 

@@ -33,6 +33,9 @@ const DashoboardList = ({ header = "", listType, list, loading }) => {
       dataSource={list[activeList].list}
       renderItem={item => (
         <Link
+          data-cy={
+            item.metadata ? item.metadata.general_title : "Untitled Document"
+          }
           to={
             listType == "draft" ? `/drafts/${item.id}` : `/published/${item.id}`
           }
