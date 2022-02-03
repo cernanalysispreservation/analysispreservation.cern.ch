@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { Button, Row, Radio, Select, Space, Typography } from "antd";
-import { ArrowDownOutlined, ArrowUpOutlined, FilterOutlined } from "@ant-design/icons";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  FilterOutlined
+} from "@ant-design/icons";
 
 const SORT_OPTIONS = [
   { value: "mostrecent", label: "Newest First" },
@@ -29,7 +33,7 @@ const Header = ({
 }) => {
   const total = results.getIn(["hits", "total"]) || 0;
 
-  let searchParams = queryString.parse(location.search)
+  let searchParams = queryString.parse(location.search);
   let sortParam = searchParams.sort || "mostrecent";
   let isDescending = sortParam && sortParam[0] == "-";
   // TODO: For asc/desc sorting
@@ -37,15 +41,14 @@ const Header = ({
   // let sortDesc = isDescending? "desc" : "asc";
   // const [descSort, setDescSort] = useState(sortDesc);
 
-  const updateSort = (sort) => {
+  const updateSort = sort => {
     sort = sort.target.value;
-    if (isDescending && sort == "asc"){
-      onChange(sortParam.substring(1))
+    if (isDescending && sort == "asc") {
+      onChange(sortParam.substring(1));
+    } else if (!isDescending && sort == "desc") {
+      onChange(`-${sortParam}`);
     }
-    else if (!isDescending && sort == "desc"){
-      onChange(`-${sortParam}`)
-    }
-  }
+  };
   return (
     <Row style={{ marginBottom: "10px" }} justify="space-between">
       {queryString.parse(location.search).q ? (
@@ -79,7 +82,7 @@ const Header = ({
               </Select.Option>
             ))}
           </Select>
-          {/* 
+          {/*
           <Radio.Group size="small" value={descSort} onChange={updateSort}>
             <Radio.Button value="asc">
               <ArrowUpOutlined type="primary" />
