@@ -2,7 +2,16 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { withRouter } from "react-router-dom";
-import { Empty, Col, Divider, Modal, Row, Space, Switch, Typography } from "antd";
+import {
+  Empty,
+  Col,
+  Divider,
+  Modal,
+  Row,
+  Space,
+  Switch,
+  Typography
+} from "antd";
 import Facet from "./Facet";
 import FacetsLoading from "../Loaders/Facets";
 import HowToSearchPage from "../../../components/about/HowToSearch";
@@ -203,10 +212,12 @@ const Facets = ({
     return <FacetsLoading />;
   }
 
-  let searchIn = history.location &&
+  let searchIn =
+    history.location &&
     history.location.pathname &&
-    history.location.pathname.startsWith("/search") ?
-    "published" : "drafts";
+    history.location.pathname.startsWith("/search")
+      ? "published"
+      : "drafts";
   let searchParams = queryString.parse(history.location.search);
 
   return (
@@ -216,37 +227,55 @@ const Facets = ({
         onCancel={() => setShowHelp(false)}
         background="#f5f5f5"
         title="How to Search"
-        footer={null}>
+        footer={null}
+      >
         <HowToSearchPage />
       </Modal>
       <Row
         justify="space-between"
         style={{ background: "#fff", padding: "10px" }}
       >
-        <Col span={24} direction="row" style={{ padding: "10px" }} align="center" justify="center">
-          <a style={{ textDecoration: "underline" }} onClick={() => setShowHelp(!showHelp)}>
+        <Col
+          span={24}
+          direction="row"
+          style={{ padding: "10px" }}
+          align="center"
+          justify="center"
+        >
+          <a
+            style={{ textDecoration: "underline" }}
+            onClick={() => setShowHelp(!showHelp)}
+          >
             Check tips on how to search <QuestionCircleOutlined />
           </a>
-          <Divider style={{ margin: "10px"}} />
+          <Divider style={{ margin: "10px" }} />
         </Col>
         <Col span={24} direction="row" style={{ padding: "10px" }}>
           <Space align="center">
-            <Typography.Title level={5} style={{ margin: "0" }}>Status:</Typography.Title>
+            <Typography.Title level={5} style={{ margin: "0" }}>
+              Status:
+            </Typography.Title>
             <Switch
+              data-cy="searchStatus"
               checked={searchIn == "drafts"}
               onChange={updateCategory}
               unCheckedChildren="Published"
-              checkedChildren="Drafts" />
+              checkedChildren="Drafts"
+            />
           </Space>
         </Col>
-        <Col span={24} direction="row" style={{padding: "10px"}}>
+        <Col span={24} direction="row" style={{ padding: "10px" }}>
           <Space align="center">
-            <Typography.Title level={5} style={{ margin: "0" }}>Created by:</Typography.Title>
+            <Typography.Title level={5} style={{ margin: "0" }}>
+              Created by:
+            </Typography.Title>
             <Switch
+              data-cy="searchCreated"
               checked={searchParams.by_me}
               onChange={_filter_by_yours}
               unCheckedChildren="All"
-              checkedChildren="You" />
+              checkedChildren="You"
+            />
           </Space>
         </Col>
       </Row>
