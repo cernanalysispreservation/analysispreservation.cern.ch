@@ -43,7 +43,12 @@ const SideBar = ({
     {
       title: <Typography.Text>Status</Typography.Text>,
       content: (
-        <Tag color={status === "published" ? "purple" : "blue"}>{status}</Tag>
+        <Tag
+          data-cy="sidebarStatus"
+          color={status === "published" ? "purple" : "blue"}
+        >
+          {status}
+        </Tag>
       )
     },
     {
