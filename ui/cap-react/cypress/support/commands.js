@@ -85,7 +85,7 @@ Cypress.Commands.add("createDraft", (anatype, generalTitle, user = "info") => {
   cy.get("input[type='text']").type(generalTitle);
 
   // Select anatype
-  cy.get("div")
+  cy.get("[data-cy=anatype]")
     .contains(anatype)
     .click();
 
