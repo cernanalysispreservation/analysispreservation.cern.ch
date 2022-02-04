@@ -9,66 +9,49 @@ describe("Published Tests", function() {
 
     cy.visit("/");
 
-    cy.get("[data-cy=drafts-list] a")
+    cy.get("[data-cy=DraftDocuments-list] a")
       .first()
       .click();
 
-    // navoigate to settings tab
-    cy.get("[data-cy=draft-settings]").click();
+    // navigate to settings tab
+    cy.get("[data-cy=itemNavSettings]").click();
 
     // click publish button
-    cy.get("[data-cy=settings-publish-btn]").click();
+    cy.get("[data-cy=draftSettingsRecidButton]").click();
 
     // confirm publish action
-    cy.get("[data-cy=layer-primary-action]").click();
+    cy.get(".ant-modal-footer .ant-btn-primary").click();
 
-    // check if it was moved to the publised
-    cy.url().should("include", PUBLISHED);
+    // make sure that the current version button is visible
+    cy.get("[data-cy=draftSettingsCurrentVersionLink]");
   });
   it("A published report would not be deleted", () => {
     cy.loginUrl("cms@inveniosoftware.org", "cmscms");
 
     // safety handler, in order to have time for the re indexing of elastic
     cy.wait(1000);
-    cy.get("[data-cy=publishedincollaboration-list] a")
+    cy.get("[data-cy=PublishedinCAPDocuments-list] a")
       .first()
       .click();
 
     cy.get("[data-cy=edit-published]").click();
 
-    // navoigate to settings tab
-    cy.get("[data-cy=draft-settings]").click();
+    // navigate to settings tab
+    cy.get("[data-cy=itemNavSettings]").click();
 
     cy.get("[data-cy=draft-delete-btn]").should("have.attr", "disabled");
   });
   it("Change a published into a Draft", () => {
-    cy.createDraft("CMS Analysis", firstTitle, "cms");
+    cy.loginUrl("cms@inveniosoftware.org", "cmscms");
 
-    cy.visit("/");
-
-    cy.get("[data-cy=drafts-list] a")
+    cy.get("[data-cy=PublishedinCAPDocuments-list] a")
       .first()
       .click();
 
-    // navoigate to settings tab
-    cy.get("[data-cy=draft-settings]").click();
-
-    // click publish button
-    cy.get("[data-cy=settings-publish-btn]").click();
-
-    // confirm publish action
-    cy.get("[data-cy=layer-primary-action]").click();
     cy.get("[data-cy=edit-published]").click();
 
-    cy.wait(1000);
-    // check the status to be published
-    cy.get("[data-cy=deposit-status-tag]").contains("published");
+    cy.get("[data-cy=changeToDraftButton]").click();
 
-    // find the button to change the status to draft
-    cy.get("[data-cy=change-to-draft]").click();
-
-    cy.wait(1000);
-    // check the status to be published
-    cy.get("[data-cy=deposit-status-tag]").contains("draft");
+    cy.get("[ data-cy=sidebarStatus]").contains("draft");
   });
 });
