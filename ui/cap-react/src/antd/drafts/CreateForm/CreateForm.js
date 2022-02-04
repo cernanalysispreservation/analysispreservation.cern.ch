@@ -51,7 +51,7 @@ const CreateForm = ({
             { required: true, message: "Type is mandatory for your analysis" }
           ]}
         >
-          <Radio.Group size="large" buttonStyle="solid">
+          <Radio.Group size="large" buttonStyle="solid" data-cy="anatype">
             {contentTypes &&
               contentTypes.toJS().map(type => (
                 <Radio.Button
