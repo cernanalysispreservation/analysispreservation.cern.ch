@@ -65,6 +65,7 @@ const Settings = ({
             title="Publish your Analysis"
             extra={
               <Button
+                data-cy="draftSettingsRecidButton"
                 type="primary"
                 onClick={() => setConfirmPublish(true)}
                 disabled={status != "draft" || !canUpdate}
@@ -74,7 +75,11 @@ const Settings = ({
             }
             actions={
               recid && [
-                <Link key="button" to={`/published/${recid}`}>
+                <Link
+                  key="button"
+                  to={`/published/${recid}`}
+                  data-cy="draftSettingsCurrentVersionLink"
+                >
                   <Button type="link" icon={<LinkOutlined />}>
                     Current Version
                   </Button>
@@ -116,7 +121,7 @@ const Settings = ({
             type="error"
             action={
               recid ? (
-                <Button type="danger" disabled>
+                <Button type="danger" disabled data-cy="draft-delete-btn">
                   Delete
                 </Button>
               ) : (
