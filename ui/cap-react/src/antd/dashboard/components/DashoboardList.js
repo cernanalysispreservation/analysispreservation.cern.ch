@@ -28,7 +28,7 @@ const DashoboardList = ({ header = "", listType, list, loading }) => {
           </Col>
         </Row>
       }
-      data-cy={`${header.replace(/\s/g, "")}-list`}
+      data-cy={`${header.replace(/\s/g, "").replace(/[^\w\s]/gi, "")}-list`}
       itemLayout="horizontal"
       dataSource={list[activeList].list}
       renderItem={item => (
