@@ -21,6 +21,7 @@ const Create = ({ contentTypes, match }) => {
         <Space direction="vertical" size="large">
           {!allow && (
             <Alert
+              data-cy="permission-warning-alert"
               type="warning"
               showIcon
               description="Your account has no permissions for this type of analysis or  the analysis type is incorrect"
