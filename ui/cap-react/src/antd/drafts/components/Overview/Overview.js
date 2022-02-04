@@ -106,7 +106,12 @@ const Overview = ({
             description="This is a published version. If you want to upload files and repos or update form metadata and the title you have to change to Draft mode"
             showIcon
             action={
-              <Button onClick={() => edit(draft_id)}>Change to Draft</Button>
+              <Button
+                data-cy="changeToDraftButton"
+                onClick={() => edit(draft_id)}
+              >
+                Change to Draft
+              </Button>
             }
           />
         )}
