@@ -45,7 +45,10 @@ const Settings = ({
         visible={confirmPublish}
         title="Publish Draft"
         onCancel={() => setConfirmPublish(false)}
-        okButtonProps={{ onClick: publishMyDraft }}
+        okButtonProps={{
+          onClick: publishMyDraft,
+          "data-cy": "draftSettingsPublish"
+        }}
         okText="Publish"
       >
         {equal(cleanDeep(formData), cleanDeep(metadata)) ? (
