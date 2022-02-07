@@ -163,7 +163,7 @@ def validate(schema_url, ana_type, ana_version, compare_with,
 
     # get all the records for this specific schema/type combination
     records = current_search_client.search(
-        search_path,
+        index=search_path,
         q=f'_deposit.status: {status} AND '
           f'$schema: "{schema_name_to_url(schema.name, schema.version)}"',
         size=5000

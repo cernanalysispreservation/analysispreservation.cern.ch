@@ -260,8 +260,10 @@ def get_uuids_with_same_cadi_id(cadi_id):
     if not res:
         raise DepositDoesNotExist
     else:
+        # From es-dsl>=7.0.0, elasticsearch_dsl.response.hit.Hit
+        # returns Attrdict(https://github.com/elastic/elasticsearch-dsl-py/issues/1284) # noqa
         uuids = [
-            r.get("_source", {}).get("_deposit", {}).get("id")
+            r._source._deposit.id
             for r in res
         ]
 

@@ -79,11 +79,13 @@ services:
       - "15672:15672"
       - "5672:5672"
   es:
-    image: elasticsearch:5.6.4
+    image: elasticsearch:7.16.3
+    # platform: linux/arm64/v8 : Uncomment for Apple M1
     restart: "always"
     environment:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
     ulimits:
       memlock:
         soft: -1
@@ -93,7 +95,8 @@ services:
       - "9200:9200"
       - "9300:9300"
   kibana:
-    image: kibana:5.6.4
+    image: kibana:7.16.3
+    # platform: linux/arm64/v8 : Uncomment for Apple M1
     environment:
       - "ELASTICSEARCH_URL=http://es:9200"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"

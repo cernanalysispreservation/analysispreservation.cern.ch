@@ -57,26 +57,21 @@ def test_get_when_user_outside_of_experiment_returns_403(
         record_options={'title': 'record_options'},
         record_mapping={
             'mappings': {
-                'doc': {
-                    'properties': {
-                        'title': {
-                            'type': 'text'
-                        }
+                'properties': {
+                    'title': {
+                        'type': 'text'
                     }
                 }
             }
         },
         deposit_mapping={
-            'mappings':
-                {
-                    'doc': {
-                        'properties': {
-                            'keyword': {
-                                'type': 'keyword'
-                            }
-                        }
+            'mappings': {
+                'properties': {
+                    'keywords': {
+                        'type': 'keyword'
                     }
                 }
+            }
         },
         is_indexed=True,
     )
@@ -106,26 +101,21 @@ def test_get(client, db, users, auth_headers_for_user):
         record_options={'title': 'record_options'},
         record_mapping={
             'mappings': {
-                'doc': {
-                    'properties': {
-                        'title': {
-                            'type': 'text'
-                        }
+                'properties': {
+                    'title': {
+                        'type': 'text'
                     }
                 }
             }
         },
         deposit_mapping={
-            'mappings':
-                {
-                    'doc': {
-                        'properties': {
-                            'keyword': {
-                                'type': 'keyword'
-                            }
-                        }
+            'mappings':  {
+                'properties': {
+                    'keywords': {
+                        'type': 'keyword'
                     }
                 }
+            }
         },
         is_indexed=True,
     )
@@ -159,31 +149,23 @@ def test_get(client, db, users, auth_headers_for_user):
             },
             'record_mapping':
                 {
-                    'mappings':
-                        {
-                            'doc': {
-                                'properties': {
-                                    'title': {
-                                        'type': 'text'
-                                    }
-                                }
+                    'mappings':  {
+                        'properties': {
+                            'title': {
+                                'type': 'text'
                             }
                         }
+                    }
                 },
             'deposit_mapping':
                 {
-                    'mappings':
-                        {
-                            'doc':
-                                {
-                                    'properties':
-                                        {
-                                            'keyword': {
-                                                'type': 'keyword'
-                                            }
-                                        }
-                                }
+                    'mappings':  {
+                        'properties':  {
+                            'keywords': {
+                                'type': 'keyword'
+                            }
                         }
+                    }
                 },
             'links':
                 {
@@ -224,27 +206,22 @@ def test_get(client, db, users, auth_headers_for_user):
         'record_mapping':
             {
                 'mappings': {
-                    'doc': {
-                        'properties': {
-                            'title': {
-                                'type': 'text'
-                            }
+                    'properties': {
+                        'title': {
+                            'type': 'text'
                         }
                     }
                 }
             },
         'deposit_mapping':
             {
-                'mappings':
-                    {
-                        'doc': {
-                            'properties': {
-                                'keyword': {
-                                    'type': 'keyword'
-                                }
-                            }
+                'mappings':  {
+                    'properties': {
+                        'keywords': {
+                            'type': 'keyword'
                         }
                     }
+                }
             },
         'links':
             {
@@ -283,27 +260,22 @@ def test_get(client, db, users, auth_headers_for_user):
         'record_mapping':
             {
                 'mappings': {
-                    'doc': {
-                        'properties': {
-                            'title': {
-                                'type': 'text'
-                            }
+                    'properties': {
+                        'title': {
+                            'type': 'text'
                         }
                     }
                 }
             },
         'deposit_mapping':
             {
-                'mappings':
-                    {
-                        'doc': {
-                            'properties': {
-                                'keyword': {
-                                    'type': 'keyword'
-                                }
-                            }
+                'mappings':  {
+                    'properties': {
+                        'keywords': {
+                            'type': 'keyword'
                         }
                     }
+                }
             },
         'links':
             {
@@ -596,26 +568,21 @@ def test_post_by_no_suepruser(client, db, users, auth_headers_for_user, json_hea
             record_options={'title': 'record_options'},
             record_mapping={
                 'mappings': {
-                    'doc': {
-                        'properties': {
-                            'title': {
-                                'type': 'text'
-                            }
+                    'properties': {
+                        'title': {
+                            'type': 'text'
                         }
                     }
                 }
             },
             deposit_mapping={
-                'mappings':
-                    {
-                        'doc': {
-                            'properties': {
-                                'keyword': {
-                                    'type': 'keyword'
-                                }
-                            }
+                'mappings':  {
+                    'properties': {
+                        'keywords': {
+                            'type': 'keyword'
                         }
                     }
+                }
             },
             is_indexed=True,
         ))
@@ -642,26 +609,21 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
             record_options={'title': 'record_options'},
             record_mapping={
                 'mappings': {
-                    'doc': {
-                        'properties': {
-                            'title': {
-                                'type': 'text'
-                            }
+                    'properties': {
+                        'title': {
+                            'type': 'text'
                         }
                     }
                 }
             },
             deposit_mapping={
-                'mappings':
-                    {
-                        'doc': {
-                            'properties': {
-                                'keyword': {
-                                    'type': 'keyword'
-                                }
-                            }
+                'mappings':  {
+                    'properties': {
+                        'keywords': {
+                            'type': 'keyword'
                         }
                     }
+                }
             },
             is_indexed=True,
         ))
@@ -696,27 +658,22 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
         'record_mapping':
             {
                 'mappings': {
-                    'doc': {
-                        'properties': {
-                            'title': {
-                                'type': 'text'
-                            }
+                    'properties': {
+                        'title': {
+                            'type': 'text'
                         }
                     }
                 }
             },
         'deposit_mapping':
             {
-                'mappings':
-                    {
-                        'doc': {
-                            'properties': {
-                                'keyword': {
-                                    'type': 'keyword'
-                                }
-                            }
+                'mappings': {
+                    'properties': {
+                        'keywords': {
+                            'type': 'keyword'
                         }
                     }
+                }
             },
         'links':
             {

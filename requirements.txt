@@ -28,8 +28,8 @@ coolname==1.1.0
 cryptography==3.3.2       # via invenio-accounts, pyopenssl, sqlalchemy-utils, urllib3
 decorator==4.3.0          # via ipython, traitlets, validators
 dojson==1.4.0             # via invenio-oaiserver
-elasticsearch-dsl==5.4.0  # via invenio-search
-elasticsearch==5.5.2      # via elasticsearch-dsl, invenio-search
+elasticsearch-dsl>=7.0.0,<8.0.0  # via invenio-search
+elasticsearch>=7.0.0,<7.14      # via elasticsearch-dsl, invenio-search
 flask-admin==1.5.1        # via invenio-accounts, invenio-admin
 flask-alembic==2.0.1      # via invenio-db
 flask-assets==0.12        # via invenio-assets
@@ -97,11 +97,11 @@ invenio-rest==1.0.0
 invenio-files-rest==1.0.0
 # invenio-rest==1.0.0       # via invenio, invenio-accounts-rest, invenio-records-rest
 invenio-search-ui==1.0.1  # via invenio
-invenio-search[elasticsearch5]==1.0.0  # via invenio
+invenio-search[elasticsearch7]==1.1.1
 invenio-records-files==1.0.0a11
 invenio-theme==1.0.0      # via invenio
 invenio-userprofiles==1.0.1
-invenio[auth,base,elasticsearch5,metadata,postgresql]==3.0.0
+invenio[auth,base,metadata,postgresql]==3.0.0
 ipaddr==2.2.0             # via invenio-accounts
 ipaddress==1.0.22         # via cryptography, maxminddb, uritools, urllib3
 ipython-genutils==0.2.0   # via traitlets

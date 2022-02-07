@@ -13,21 +13,12 @@ from setuptools import find_packages, setup
 
 readme = open('README.rst').read()
 
-DATABASE = "postgresql"
-ELASTICSEARCH = "elasticsearch5"
-INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
-
 tests_require = [
     'check-manifest>=0.35',
-    'coverage>=5.2.1',
-    'isort>=4.3',
+    'coverage==4.5.4',
     'mock>=2.0.0',
-    'pydocstyle>=2.0.0',
     'pytest-cov==2.5.1',
     'pytest-invenio>=1.0.5,<=1.3.4',
-    'pytest-mock>=1.6.0',
-    'pytest-pep8>=1.0.6',
-    'pytest-random-order>=0.5.4',
     'pytest==5.3.5',
     'yapf>=0.28.0',
     'responses==0.10.6',
@@ -75,9 +66,7 @@ install_requires = [
     'invenio-oauthclient>=1.0.0',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0',
-    'invenio[{db},{es},base,auth,metadata]~={version}'.format(
-        db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION
-    ),
+    'invenio-db[postgresql,versioning]==1.0.1',
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
@@ -93,7 +82,7 @@ install_requires = [
     'webargs==3.0.1',
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
-    'requests-gssapi',
+    'requests_kerberos',
     'beautifulsoup4',
     # reana_client => bravado core dependency pin due to py3.6 drop
     'swagger-spec-validator==2.7.6',

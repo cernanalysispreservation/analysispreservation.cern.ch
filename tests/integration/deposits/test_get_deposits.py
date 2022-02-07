@@ -994,80 +994,80 @@ def test_get_deposits_with_range_query(
     user = users['cms_user']
     headers = auth_headers_for_user(user) + [('Accept', 'application/basic+json')]
 
-    create_schema(
-        'test-schema',
-        experiment='CMS',
-        deposit_schema={
-            'title': 'deposit-test-schema',
-            'type': 'object',
-            'analysis_context': {'next_deadline_date': {'type': 'string'}},
-        },
-        deposit_mapping={
-            "settings": {
-                "analysis": {
-                    "analyzer": {
-                        "lowercase_whitespace_analyzer": {
-                            "type": "custom",
-                            "tokenizer": "whitespace",
-                            "filter": ["lowercase"],
-                        }
-                    }
-                }
-            },
-            'mappings': {
-                'test-schema-v1.0.0': {
-                    'properties': {
-                        'next_deadline_date': {'type': 'date'},
-                        "_collection": {
-                            "type": "object",
-                            "properties": {
-                                "fullname": {"type": "keyword"},
-                                "name": {"type": "keyword"},
-                                "version": {"type": "keyword"},
-                            },
-                        },
-                        "analysis_context": {
-                            "type": "object",
-                            "properties": {
+    create_schema('test-schema', experiment='CMS',
+                  deposit_schema={
+                      'title': 'deposit-test-schema', 'type': 'object',
+                      'analysis_context': {
+                          'next_deadline_date': {'type': 'string'}
+                      }},
+                  deposit_mapping={
+                      "settings": {
+                          "analysis": {
+                              "analyzer": {
+                                  "lowercase_whitespace_analyzer": {
+                                      "type": "custom",
+                                      "tokenizer": "whitespace",
+                                      "filter": ["lowercase"]
+                                  }
+                              }
+                          }
+                      },
+                      'mappings': {
+                            'properties': {
                                 'next_deadline_date': {
-                                    'type': 'date',
-                                    "format": "yyyy-MM-dd",
-                                    "copy_to": "next_deadline_date",
+                                    'type': 'date'
+                                },
+                                "_collection": {
+                                    "type": "object",
+                                    "properties": {
+                                        "fullname": {
+                                            "type": "keyword"
+                                        },
+                                        "name": {
+                                            "type": "keyword"
+                                        },
+                                        "version": {
+                                            "type": "keyword"
+                                        }
+                                    }
+                                },
+                                "analysis_context": {
+                                    "type": "object",
+                                    "properties": {
+                                        'next_deadline_date': {
+                                            'type': 'date',
+                                            "format": "yyyy-MM-dd",
+                                            "copy_to": "next_deadline_date"
+                                        }
+                                    }
                                 }
-                            },
-                        },
-                    }
-                }
-            },
-        },
-    )
-    create_deposit(
-        user,
-        'test-schema',
-        {
-            '$ana_type': 'test-schema',
-            'analysis_context': {"next_deadline_date": '2018-01-01'},
-        },
-        experiment='CMS',
-    )
-    create_deposit(
-        user,
-        'test-schema',
-        {
-            '$ana_type': 'test-schema',
-            'analysis_context': {"next_deadline_date": '2018-02-01'},
-        },
-        experiment='CMS',
-    )
-    create_deposit(
-        user,
-        'test-schema',
-        {
-            '$ana_type': 'test-schema',
-            'analysis_context': {"next_deadline_date": '2017-01-01'},
-        },
-        experiment='CMS',
-    )
+                            }
+                        }
+                  })
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'analysis_context': {
+                           "next_deadline_date": '2018-01-01'
+                       }
+                   },
+                   experiment='CMS')
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'analysis_context': {
+                           "next_deadline_date": '2018-02-01'
+                       }
+                   },
+                   experiment='CMS')
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'analysis_context': {
+                           "next_deadline_date": '2017-01-01'
+                       }
+                   },
+                   experiment='CMS')
 
     # url encoded
     url = '/deposits/?q=next_deadline_date%3A%5B2018-01-01%20TO%202019-01-01%5D&sort=mostrecent'
