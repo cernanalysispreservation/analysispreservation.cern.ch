@@ -20,7 +20,7 @@ describe("Published Tests", function() {
     cy.get("[data-cy=draftSettingsRecidButton]").click();
 
     // confirm publish action
-    cy.get(".ant-modal-footer .ant-btn-primary").click();
+    cy.get("[data-cy=draftSettingsPublish]").click();
 
     // make sure that the current version button is visible
     cy.get("[data-cy=draftSettingsCurrentVersionLink]");
