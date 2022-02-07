@@ -23,6 +23,7 @@ import OverviewLoading from "./OverviewLoading";
 import DepositFilesList from "../../../partials/FileList";
 import { calculateCollaborators } from "../../utils/calculateCollaborators";
 import InfoArrayBox from "../../../../components/partials/InfoArrayBox";
+import Reviews from "../../../partials/Reviews";
 
 const Overview = ({
   canUpdate,
@@ -175,6 +176,7 @@ const Overview = ({
               </div>
             )}
         </Card>
+        <Reviews />
         <Card title="Connected Repositories">
           {webhooks && webhooks.length > 0 ? (
             <InfoArrayBox items={webhooks} type="repositories" />
