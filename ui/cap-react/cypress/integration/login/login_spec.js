@@ -2,55 +2,60 @@ describe("Login Process", () => {
   it("Password is required", function() {
     cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
-    cy.get("input[type='email']").type("{enter}");
+    cy.get("button.ant-btn-primary")
+      .contains("Submit")
+      .click();
 
-    cy.get("div.grommetux-background-color-index-critical");
+    cy.get("[data-cy=localLoginErrorMessage]");
   });
 
   it("Email is required", function() {
     cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
-    cy.get("input[type='email']").clear();
-    cy.get("input[type='email']").type("{enter}");
+    cy.get("[data-cy=emailInput] input[type='email']").clear({ force: true });
 
-    cy.get("div.grommetux-background-color-index-critical");
-  });
-  it("Password is required", function() {
-    cy.visit("/");
-    // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("button.ant-btn-primary")
+      .contains("Submit")
+      .click();
 
-    cy.get("input[type='email']").type("{enter}");
-
-    cy.get("div.grommetux-background-color-index-critical");
+    cy.get("[data-cy=localLoginErrorMessage]");
   });
 
   it("Valid email is required", function() {
     cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
-    cy.get("input[type='email']").type("vljknfjn@ckbdj.cd{enter}");
+    cy.get("[data-cy=emailInput] input[type='email']").clear({ force: true });
+    cy.get("[data-cy=emailInput] input[type='email']")
+      .first()
+      .type("hfjdhjfd@fghd.fd");
 
-    // error message
-    cy.get("div.grommetux-background-color-index-critical");
+    cy.get("button.ant-btn-primary")
+      .contains("Submit")
+      .click();
+
+    cy.get("[data-cy=localLoginErrorMessage]");
   });
 
   it("Password and email are required", function() {
     cy.visit("/");
     // open the login form
-    cy.get("div.localLogin").click();
+    cy.get("[data-cy=localLogin]").click();
 
-    cy.get("input[type='email']").clear();
-    cy.get("input[type='password']").clear();
+    cy.get("[data-cy=emailInput] input[type='email']").clear({ force: true });
+    cy.get("[data-cy=passwordInput] input[type='password']").clear({
+      force: true
+    });
 
-    cy.get("button[type='submit']").click();
+    cy.get("button.ant-btn-primary")
+      .contains("Submit")
+      .click();
 
-    // error message
-    cy.get("div.grommetux-background-color-index-critical");
+    cy.get("[data-cy=localLoginErrorMessage]");
   });
 });
