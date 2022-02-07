@@ -1,10 +1,10 @@
-import { CMS_NEW } from "../../routes";
+import { CMS } from "../../routes";
 
 describe("Form Builder", function() {
   // with respect to the current working folder
 
   it("Select the CMS Analysis from the predefined schems", function() {
-    cy.goToFormBuilder();
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo", CMS);
 
     // select the div contains the CMS Analysis text
     cy.get("div")
@@ -15,7 +15,7 @@ describe("Form Builder", function() {
   });
 
   it("Select the CMS Statistics Questionnaire from the predefined schems", function() {
-    cy.goToFormBuilder();
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo", CMS);
 
     // select the div contains the CMS Analysis text
     cy.get("div")
@@ -26,7 +26,7 @@ describe("Form Builder", function() {
   });
 
   it("Start a new schema on your own", function() {
-    cy.goToFormBuilder();
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo", CMS);
 
     const name = "Name of the form";
     const description = "Description of the form";
@@ -40,7 +40,7 @@ describe("Form Builder", function() {
       .contains("Create")
       .click();
 
-    cy.url().should("include", CMS_NEW);
+    cy.url().should("include", CMS);
   });
 
   // it("Download Schema File", () => {
