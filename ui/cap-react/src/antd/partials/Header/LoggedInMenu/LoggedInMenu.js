@@ -62,6 +62,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
           key="SubMenu"
           icon={<UserOutlined size={25} />}
           title="Account"
+          data-cy="headerMenu"
         >
           <ItemGroup title="Documentation">
             <Item key="generalDocs" icon={<BookOutlined />}>
@@ -99,7 +100,12 @@ const LoggedInMenu = ({ permissions, logout }) => {
           <Item key="settings" icon={<SettingOutlined />}>
             <Link to="/settings">Settings</Link>
           </Item>
-          <Item key="logout" icon={<LogoutOutlined />} onClick={() => logout()}>
+          <Item
+            key="logout"
+            icon={<LogoutOutlined />}
+            data-cy="logoutButton"
+            onClick={() => logout()}
+          >
             Logout
           </Item>
         </SubMenu>
