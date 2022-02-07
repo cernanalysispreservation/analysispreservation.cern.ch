@@ -20,16 +20,28 @@ const LoginForm = ({ loginLocalUser, history, authError }) => {
         }
         size="large"
       >
-        <Form.Item label="Username" required name="username">
-          <Input placeholder="Give your username" />
+        <Form.Item
+          label="Username"
+          required
+          name="username"
+          data-cy="emailInput"
+        >
+          <Input placeholder="Give your username" type="email" />
         </Form.Item>
-        <Form.Item label="Password" required name="password">
-          <Input placeholder="Give your password" />
+        <Form.Item
+          label="Password"
+          required
+          name="password"
+          data-cy="passwordInput"
+        >
+          <Input placeholder="Give your password" type="password" />
         </Form.Item>
         {authError && (
-          <Typography.Text type="danger">{authError}</Typography.Text>
+          <Typography.Text data-cy="localLoginErrorMessage" type="danger">
+            {authError}
+          </Typography.Text>
         )}
-        <Form.Item>
+        <Form.Item data-cy="submitButton">
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
