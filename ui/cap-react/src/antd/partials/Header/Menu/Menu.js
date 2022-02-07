@@ -27,7 +27,7 @@ const SimpleMenu = ({
           overlay={<LoginForm loginLocalUser={loginLocalUser} />}
           size="large"
         >
-          <Item key="locallogin" icon={<LoginOutlined />}>
+          <Item key="locallogin" icon={<LoginOutlined />} data-cy="localLogin">
             Local Login
           </Item>
         </Dropdown>
