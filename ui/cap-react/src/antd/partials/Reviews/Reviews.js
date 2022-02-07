@@ -38,7 +38,8 @@ const Reviews = ({
           onClick: () => form.submit(),
           loading: isReviewingPublished
             ? publishedReviewLoading
-            : draftReviewLoading
+            : draftReviewLoading,
+          "data-cy": "submitReview"
         }}
         onCancel={() => setShowModal(false)}
       >
@@ -72,6 +73,7 @@ const Reviews = ({
           <Form.Item
             label="Review Type"
             name="reviewType"
+            data-cy="reviewOptions"
             rules={[{ required: true }]}
           >
             <Radio.Group buttonStyle="solid">
@@ -87,7 +89,11 @@ const Reviews = ({
             rules={[{ required: true }]}
             name="comment"
           >
-            <Input.TextArea placeholder="add your comment..." rows={4} />
+            <Input.TextArea
+              data-cy="reviewAddComment"
+              placeholder="add your comment..."
+              rows={4}
+            />
           </Form.Item>
         </Form>
         {showError && (
@@ -98,10 +104,16 @@ const Reviews = ({
           </Typography.Text>
         )}
       </Modal>
-      <Modal
-        visible={showReviewsModal}
-        footer={
-          <Button onClick={() => setShowReviewsModal(false)}>Close</Button>
+      <Card
+        title="Reviews"
+        extra={
+          <Button
+            data-cy="reviewShowModal"
+            type="primary"
+            onClick={() => setShowModal(true)}
+          >
+            Add Review
+          </Button>
         }
         onCancel={() => setShowReviewsModal(false)}
       >
