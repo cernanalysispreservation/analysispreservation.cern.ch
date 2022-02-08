@@ -7,12 +7,12 @@ import ReviewList from "./ReviewList";
 const Reviews = ({
   review,
   draft_id,
+  canReview,
   reviewDraft,
   reviewPublished,
   isReviewingPublished,
   publishedReviewError,
-  publishedReviewLoading,
-  draftReviewLoading,
+  loading,
   draftReviewError,
   action = "add"
 }) => {
@@ -36,10 +36,8 @@ const Reviews = ({
         okText="Submit Review"
         okButtonProps={{
           onClick: () => form.submit(),
-          loading: isReviewingPublished
-            ? publishedReviewLoading
-            : draftReviewLoading,
-          "data-cy": "submitReview"
+          "data-cy": "submitReview",
+          loading: loading
         }}
         onCancel={() => setShowModal(false)}
       >
@@ -104,20 +102,15 @@ const Reviews = ({
           </Typography.Text>
         )}
       </Modal>
-      <Card
-        title="Reviews"
-        extra={
-          <Button
-            data-cy="reviewShowModal"
-            type="primary"
-            onClick={() => setShowModal(true)}
-          >
-            Add Review
-          </Button>
+      <Modal
+        visible={showReviewsModal}
+        footer={
+          <Button onClick={() => setShowReviewsModal(false)}>Close</Button>
         }
         onCancel={() => setShowReviewsModal(false)}
       >
         <ReviewList
+          canReview={canReview}
           draft_id={draft_id}
           review={review}
           isReviewingPublished={isReviewingPublished}
@@ -127,9 +120,19 @@ const Reviews = ({
       </Modal>
       {isReviewingPublished ? (
         action == "add" ? (
-          <Button onClick={() => setShowModal(true)}>Add Review</Button>
+          canReview && (
+            <Button
+              onClick={() => setShowModal(true)}
+              data-cy="reviewShowModal"
+            >
+              Add Review
+            </Button>
+          )
         ) : (
-          <Button onClick={() => setShowReviewsModal(true)}>
+          <Button
+            onClick={() => setShowReviewsModal(true)}
+            data-cy="reviewShowReviews"
+          >
             Show Reviews
           </Button>
         )
@@ -137,14 +140,21 @@ const Reviews = ({
         <Card
           title="Reviews"
           extra={
-            <Button type="primary" onClick={() => setShowModal(true)}>
-              Add Review
-            </Button>
+            canReview && (
+              <Button
+                data-cy="reviewShowModal"
+                type="primary"
+                onClick={() => setShowModal(true)}
+              >
+                Add Review
+              </Button>
+            )
           }
         >
           <ReviewList
             draft_id={draft_id}
             review={review}
+            canReview={canReview}
             isReviewingPublished={isReviewingPublished}
             reviewPublished={reviewPublished}
             reviewDraft={reviewDraft}
@@ -161,8 +171,7 @@ Reviews.propTypes = {
   reviewDraft: PropTypes.func,
   reviewPublished: PropTypes.func,
   isReviewingPublished: PropTypes.bool,
-  publishedReviewLoading: PropTypes.bool,
-  draftReviewLoading: PropTypes.bool,
+  loading: PropTypes.bool,
   publishedReviewError: PropTypes.string,
   draftReviewError: PropTypes.string,
   action: PropTypes.string
