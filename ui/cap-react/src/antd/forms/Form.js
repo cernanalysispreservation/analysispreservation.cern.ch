@@ -7,6 +7,7 @@ import _debounce from "lodash/debounce";
 
 import "./Form.less";
 import Form from "@rjsf/antd";
+import objectPath from "object-path";
 
 const RJSFForm = ({
   formRef,
@@ -16,8 +17,29 @@ const RJSFForm = ({
   extraErrors,
   onChange,
   formContext,
-  mode
+  mode,
+  draftEditor
 }) => {
+  // mainly this is used for the drafts forms
+  // we want to allow forms to be saved even without required fields
+  // if these fields are not filled in when publishing then an error will be shown
+  const transformErrors = errors => {
+    errors = errors.filter(item => item.name != "required");
+    errors.map(error => {
+      if (error.name == "required") return null;
+
+      // Update messages for undefined fields when required,
+      // from "should be string" ==> "Either edit or remove"
+      if (error.message == "should be string") {
+        let errorMessages = objectPath.get(formData, error.property);
+        if (errorMessages == undefined) error.message = "Either edit or remove";
+      }
+
+      return error;
+    });
+
+    return errors;
+  };
   return (
     <Form
       className="__Form__"
@@ -32,6 +54,7 @@ const RJSFForm = ({
       extraErrors={extraErrors}
       onChange={_debounce(onChange, 500)}
       readonly={mode != "edit"}
+      transformErrors={draftEditor && transformErrors}
       formContext={{
         formRef: formRef,
         ...formContext
@@ -50,7 +73,8 @@ RJSFForm.propTypes = {
   extraErrors: PropTypes.object,
   onChange: PropTypes.func,
   formContext: PropTypes.object,
-  mode: PropTypes.string
+  mode: PropTypes.string,
+  draftEditor: PropTypes.bool
 };
 
 export default RJSFForm;
