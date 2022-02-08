@@ -15,7 +15,7 @@ import {
   PlusOutlined
 } from "@ant-design/icons";
 import DraftCreate from "../../../drafts/DraftCreate";
-import HowToSearchPage from "../../../../components/about/HowToSearch";
+import HowToSearchPage from "../../HowToSearch";
 
 const { Item, SubMenu, ItemGroup, Divider } = Menu;
 
@@ -36,6 +36,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
         background="#f5f5f5"
         title="How to Search"
         footer={null}
+        width={950}
       >
         <HowToSearchPage />
       </Modal>
@@ -77,7 +78,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
             </Item>
             <Item key="capapi" icon={<ScheduleOutlined />}>
               <Link to="/docs/api" target="_blank">
-                CAP Api
+                CAP API
               </Link>
             </Item>
           </ItemGroup>
