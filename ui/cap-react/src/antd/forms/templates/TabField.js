@@ -82,29 +82,30 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
 
-  const menu = (
+  const menu = showReuseMode => (
     <Menu
       mode="inline"
       selectedKeys={[active]}
       style={{ height: "100%", width: "220px" }}
     >
-      {analysis_mode.length > 0 && (
-        <Menu.Item>
-          <Space size="large">
-            <Typography.Text>Reuse Mode</Typography.Text>
-            <Switch
-              disabled={analysis_mode[0].content.props.readonly}
-              checked={analysisChecked}
-              onChange={checked => {
-                analysis_mode[0].content.props.onChange(
-                  checked ? "true" : undefined
-                );
-                setAnalysisChecked(checked);
-              }}
-            />
-          </Space>
-        </Menu.Item>
-      )}
+      {analysis_mode.length > 0 &&
+        showReuseMode && (
+          <Menu.Item>
+            <Space size="large">
+              <Typography.Text>Reuse Mode</Typography.Text>
+              <Switch
+                disabled={analysis_mode[0].content.props.readonly}
+                checked={analysisChecked}
+                onChange={checked => {
+                  analysis_mode[0].content.props.onChange(
+                    checked ? "true" : undefined
+                  );
+                  setAnalysisChecked(checked);
+                }}
+              />
+            </Space>
+          </Menu.Item>
+        )}
       {tabs.map(item => (
         <Menu.Item
           key={item.name}
@@ -126,17 +127,32 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
   return (
     <Layout style={{ height: "100%", padding: 0 }}>
       {screens.md ? (
-        <Layout.Sider style={{ height: "100%" }}>{menu}</Layout.Sider>
+        <Layout.Sider style={{ height: "100%" }}>{menu(true)}</Layout.Sider>
       ) : (
         <Row
           justify="center"
           style={{ padding: "10px", background: "#fff", marginTop: "5px" }}
         >
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Button>
-              {activeLabel} {<DownOutlined />}
-            </Button>
-          </Dropdown>
+          <Space direction="vertical" size="middle">
+            <Space>
+              <Typography.Text>Reuse Mode</Typography.Text>
+              <Switch
+                disabled={analysis_mode[0].content.props.readonly}
+                checked={analysisChecked}
+                onChange={checked => {
+                  analysis_mode[0].content.props.onChange(
+                    checked ? "true" : undefined
+                  );
+                  setAnalysisChecked(checked);
+                }}
+              />
+            </Space>
+            <Dropdown overlay={menu()} trigger={["click"]}>
+              <Button>
+                {activeLabel} {<DownOutlined />}
+              </Button>
+            </Dropdown>
+          </Space>
         </Row>
       )}
 
