@@ -47,6 +47,7 @@ const Editor = ({
             uiSchema={schemas.uiSchema || {}}
             onChange={change => formDataChange(change.formData)}
             extraErrors={extraErrors || {}}
+            draftEditor
           />
         </Layout.Content>
       </Layout>
