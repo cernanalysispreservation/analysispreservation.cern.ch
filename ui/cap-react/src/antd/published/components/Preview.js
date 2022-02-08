@@ -61,6 +61,7 @@ const Preview = ({
           <Space style={{ width: "100%" }} wrap>
             <Button
               disabled={!canUpdate}
+              data-cy="editPublished"
               key="edit"
               icon={<EditOutlined />}
               onClick={() =>

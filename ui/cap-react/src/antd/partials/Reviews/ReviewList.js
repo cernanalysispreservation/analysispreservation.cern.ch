@@ -10,7 +10,8 @@ const ReviewList = ({
   isReviewingPublished,
   reviewPublished,
   reviewDraft,
-  draft_id
+  draft_id,
+  canReview
 }) => {
   return (
     <List
@@ -23,6 +24,7 @@ const ReviewList = ({
               <Button
                 key="resolve"
                 type="primary"
+                disabled={!canReview}
                 onClick={() =>
                   isReviewingPublished
                     ? reviewPublished(
@@ -45,6 +47,7 @@ const ReviewList = ({
                 Resolve
               </Button>,
               <Button
+                disabled={!canReview}
                 key="delete"
                 danger
                 icon={<DeleteOutlined />}
