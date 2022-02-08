@@ -1,5 +1,5 @@
 describe("Reviews Platform", () => {
-  it("Publish a record from info", () => {
+  it("Publish and review a record from info", () => {
     cy.createDraft("CMS Statistics Questionnaire", "Check for Reviews", "info");
 
     // navigate to settings tab
@@ -27,8 +27,8 @@ describe("Reviews Platform", () => {
     cy.get("[data-cy=draftSettingsCurrentVersionLink]").click();
 
     // make sure that show review modal button exists
-    cy.get("[data-cy=show-reviews]").should("exist");
-    cy.get("[data-cy=show-review-modal]").should("exist");
+    cy.get("[data-cy=reviewShowModal]").should("exist");
+    cy.get("[data-cy=reviewShowReviews]").should("exist");
   });
 
   it("Login from CMS account, and validate that you can not add reviews to the previous published", () => {
@@ -38,7 +38,7 @@ describe("Reviews Platform", () => {
       .first()
       .click();
 
-    cy.get("[data-cy=show-reviews]").should("exist");
-    cy.get("[data-cy=show-review-modal]").should("not.exist");
+    cy.get("[data-cy=reviewShowModal]").should("not.exist");
+    cy.get("[data-cy=reviewShowReviews]").should("exist");
   });
 });
