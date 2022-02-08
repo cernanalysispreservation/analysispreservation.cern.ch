@@ -14,7 +14,7 @@ import {
 } from "antd";
 import Facet from "./Facet";
 import FacetsLoading from "../Loaders/Facets";
-import HowToSearchPage from "../../../components/about/HowToSearch";
+import HowToSearchPage from "../../partials/HowToSearch";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 const Facets = ({
@@ -228,6 +228,7 @@ const Facets = ({
         background="#f5f5f5"
         title="How to Search"
         footer={null}
+        width={950}
       >
         <HowToSearchPage />
       </Modal>
