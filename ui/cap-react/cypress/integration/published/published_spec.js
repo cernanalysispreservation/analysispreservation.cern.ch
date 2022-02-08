@@ -32,7 +32,7 @@ describe("Published Tests", function() {
       .first()
       .click();
 
-    cy.get("[data-cy=edit-published]").click();
+    cy.get("[data-cy=editPublished]").click();
 
     // navigate to settings tab
     cy.get("[data-cy=itemNavSettings]").click();
@@ -46,7 +46,7 @@ describe("Published Tests", function() {
       .first()
       .click();
 
-    cy.get("[data-cy=edit-published]").click();
+    cy.get("[data-cy=editPublished]").click();
 
     cy.get("[data-cy=changeToDraftButton]").click();
 

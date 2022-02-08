@@ -8,15 +8,14 @@ const mapStateToProps = (state, props) => ({
     ? state.published.get("review")
     : state.draftItem.get("review"),
   canReview: props.isReviewingPublished
-    ? null
+    ? state.published.get("can_review")
     : state.draftItem.get("can_review"),
+  loading: props.isReviewingPublished
+    ? state.published.get("reviewLoading")
+    : state.draftItem.get("reviewLoading"),
   draft_id: state.draftItem.get("id"),
-  draftReviewLoading: state.draftItem.get("reviewLoading"),
   draftReviewError: state.draftItem.get("reviewError"),
-  publishedReviewError: state.published.get("reviewError"),
-  publishedReviewLoading: state.published.get("reviewLoading"),
-  shouldDisplayButtonsWhenFromPublished:
-    props.isReviewingPublished && state.published.get("can_review")
+  publishedReviewError: state.published.get("reviewError")
 });
 
 const mapDispatchToProps = dispatch => ({
