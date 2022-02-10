@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { _filterTabs, isTabContainsError } from "./utils/tabfield";
+import { _filterTabs } from "./utils/tabfield";
 import {
   Col,
   Layout,
-  Menu,
   Row,
   Space,
   Switch,
@@ -15,6 +14,7 @@ import {
 } from "antd";
 import { connect } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
+import TabFieldMenu from "./TabFieldMenu";
 
 const TabField = ({ uiSchema, properties, formErrors }) => {
   let options = uiSchema["ui:options"];
@@ -41,6 +41,7 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
   // remove components which are meant to be hidden
   // remove from the tab list the analysis_reuse_mode if exists
   let tabs = _filterTabs(options.tabs, idsList, options, properties);
+
   let active_tab = tabs.filter(prop => prop.name == active);
   if (options.tabs) {
     active_tabs_content = properties.filter(prop => {
@@ -82,52 +83,22 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
 
-  const menu = showReuseMode => (
-    <Menu
-      mode="inline"
-      selectedKeys={[active]}
-      style={{ height: "100%", width: "220px" }}
-    >
-      {analysis_mode.length > 0 &&
-        showReuseMode && (
-          <Menu.Item>
-            <Space size="large">
-              <Typography.Text>Reuse Mode</Typography.Text>
-              <Switch
-                disabled={analysis_mode[0].content.props.readonly}
-                checked={analysisChecked}
-                onChange={checked => {
-                  analysis_mode[0].content.props.onChange(
-                    checked ? "true" : undefined
-                  );
-                  setAnalysisChecked(checked);
-                }}
-              />
-            </Space>
-          </Menu.Item>
-        )}
-      {tabs.map(item => (
-        <Menu.Item
-          key={item.name}
-          onClick={() => {
-            setActive(item.name);
-            setActiveLabel(item.title || item.content.props.schema.title);
-          }}
-          danger={isTabContainsError(
-            item.content.props.idSchema.$id,
-            formErrors
-          )}
-        >
-          {item.title || item.content.props.schema.title}
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
-
   return (
     <Layout style={{ height: "100%", padding: 0 }}>
       {screens.md ? (
-        <Layout.Sider style={{ height: "100%" }}>{menu(true)}</Layout.Sider>
+        <Layout.Sider style={{ height: "100%" }}>
+          <TabFieldMenu
+            analysisChecked={analysisChecked}
+            analysis_mode={analysis_mode}
+            tabs={tabs}
+            active={active}
+            showReuseMode
+            setActive={setActive}
+            setActiveLabel={setActiveLabel}
+            formErrors={formErrors}
+            setAnalysisChecked={setAnalysisChecked}
+          />
+        </Layout.Sider>
       ) : (
         <Row
           justify="center"
@@ -147,7 +118,20 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
                 }}
               />
             </Space>
-            <Dropdown overlay={menu()} trigger={["click"]}>
+            <Dropdown
+              overlay={
+                <TabFieldMenu
+                  analysisChecked={analysisChecked}
+                  analysis_mode={analysis_mode}
+                  tabs={tabs}
+                  active={active}
+                  setActive={setActive}
+                  setActiveLabel={setActiveLabel}
+                  formErrors={formErrors}
+                />
+              }
+              trigger={["click"]}
+            >
               <Button>
                 {activeLabel} {<DownOutlined />}
               </Button>
