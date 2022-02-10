@@ -13,20 +13,12 @@ from setuptools import find_packages, setup
 
 readme = open('README.rst').read()
 
-DATABASE = "postgresql"
-INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
-
 tests_require = [
     'check-manifest>=0.35',
     'coverage>=5.2.1',
-    'isort>=4.3',
     'mock>=2.0.0',
-    'pydocstyle>=2.0.0',
     'pytest-cov==2.5.1',
     'pytest-invenio>=1.0.5,<=1.3.4',
-    'pytest-mock>=1.6.0',
-    'pytest-pep8>=1.0.6',
-    'pytest-random-order>=0.5.4',
     'pytest==5.3.5',
     'yapf>=0.28.0',
     'responses==0.10.6',
@@ -76,8 +68,7 @@ install_requires = [
     'invenio-oauthclient>=1.0.0',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0',
-    'invenio[{db},base,auth,metadata]~={version}'.format(
-        db=DATABASE, version=INVENIO_VERSION),
+    'invenio-db[postgresql,versioning]==1.0.1'
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
@@ -86,6 +77,7 @@ install_requires = [
     # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
     # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
     # 'invenio-logging[sentry, sentry-sdk]<=1.2.0',
+
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
@@ -94,7 +86,13 @@ install_requires = [
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
     'requests_kerberos',
-    'beautifulsoup4'
+    'beautifulsoup4',
+    'coolname==1.1.0',
+    'Authlib==0.15.1',
+    'Flask==0.12.4',
+    'Flask-Cli>=0.4.0',
+    'Flask-Cache>=0.13.1',
+    'Flask-Debugtoolbar>=0.10.1',
 ]
 
 packages = find_packages()

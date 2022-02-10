@@ -1,7 +1,4 @@
 -e git+git://github.com/parths007/invenio-deposit.git@es7#egg=invenio-deposit # es7: to change
-# -e git+git://github.com/reanahub/reana-client.git@master#egg=reana-client
-# -e git+git://github.com/reanahub/reana-commons.git@master#egg=reana-commons
-cryptography<=3.3.2
 reana-client==0.6.0
 reana-commons==0.6.0
 -e git+git://github.com/cernanalysispreservation/invenio-oauthclient.git@master#egg=invenio-oauthclient
@@ -13,4 +10,4 @@ reana-commons==0.6.0
 # Install invenio-records from last commit before 1.1.0 version release
 -e git+git://github.com/inveniosoftware/invenio-records.git@a5d4efb1e1466aa571aeef013d699dca1452f7cd#egg=invenio-records
 -e git+https://github.com/celery/celery.git@6ccdc7b9f8e02d21275e923dccc7ccb9185e6153#egg=celery
-
+-e git+git://github.com/parths007/invenio-records-rest.git@es7#egg=invenio-records-rest # es7: to change
