@@ -618,7 +618,7 @@
             "status": {
               "type": "text",
               "fields": {
-                "keyword": {
+                "keywords": {
                   "type": "keyword"
                 }
               },
@@ -693,7 +693,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }
@@ -702,7 +702,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }
@@ -711,7 +711,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }
@@ -720,7 +720,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }
@@ -729,7 +729,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }
@@ -738,7 +738,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }
@@ -747,7 +747,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }
@@ -756,7 +756,7 @@
                   "type": "text",
                   "analyzer": "lowercase_whitespace_analyzer",
                   "fields": {
-                    "keyword": {
+                    "keywords": {
                       "type": "keyword"
                     }
                   }

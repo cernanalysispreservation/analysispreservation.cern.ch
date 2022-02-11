@@ -158,7 +158,7 @@
             "status": {
               "type": "text",
               "fields": {
-                "keyword": {
+                "keywords": {
                   "type": "keyword"
                 }
               },

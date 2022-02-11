@@ -86,13 +86,7 @@ install_requires = [
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
     'requests_kerberos',
-    'beautifulsoup4',
-    'coolname==1.1.0',
-    'Authlib==0.15.1',
-    'Flask==0.12.4',
-    'Flask-Cli>=0.4.0',
-    'Flask-Cache>=0.13.1',
-    'Flask-Debugtoolbar>=0.10.1',
+    'beautifulsoup4'
 ]
 
 packages = find_packages()

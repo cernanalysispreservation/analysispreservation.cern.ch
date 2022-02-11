@@ -404,7 +404,7 @@
             "status": {
               "type": "text",
               "fields": {
-                "keyword": {
+                "keywords": {
                   "type": "keyword"
                 }
               },
@@ -448,7 +448,7 @@
           "type": "date",
           "copy_to": "updated"
         },
-        "keyword": {
+        "keywords": {
           "type": "keyword"
         },
         "basic_info": {
