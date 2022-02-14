@@ -193,12 +193,14 @@ export function fetchRecordsResults(name, version = null) {
         // should make sure that the returned error is properly handled
         // TODO: the response from the backend is an html string
         notification.error({
-          message: "Fetching Records Failed",
+          message: "Collection fetching failed",
           description:
             "Collection name or version are not typed properly, or, you have no permissions for this collection page"
         });
         dispatch(
-          fetchRecordsResultsError("Fetching Records Failed. Please try again")
+          fetchRecordsResultsError(
+            "Collection fetching failed. Please try again"
+          )
         );
       });
   };
