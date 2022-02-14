@@ -599,38 +599,36 @@ def test_get_deposits_with_range_query(
                           }
                       },
                       'mappings': {
-                          'test-schema-v1.0.0': {
-                              'properties': {
-                                  'next_deadline_date': {
-                                      'type': 'date'
-                                  },
+                            'properties': {
+                                'next_deadline_date': {
+                                    'type': 'date'
+                                },
                                 "_collection": {
-                                        "type": "object",
-                                        "properties": {
-                                            "fullname": {
-                                                "type": "keyword"
-                                            },
-                                            "name": {
-                                                "type": "keyword"
-                                            },
-                                            "version": {
-                                                "type": "keyword"
-                                            }
+                                    "type": "object",
+                                    "properties": {
+                                        "fullname": {
+                                            "type": "keyword"
+                                        },
+                                        "name": {
+                                            "type": "keyword"
+                                        },
+                                        "version": {
+                                            "type": "keyword"
                                         }
-                                    },
-                                  "analysis_context": {
-                                      "type": "object",
-                                      "properties": {
-                                          'next_deadline_date': {
-                                              'type': 'date',
-                                              "format": "yyyy-MM-dd",
-                                              "copy_to": "next_deadline_date"
-                                          }
-                                      }
-                                  }
-                              }
-                          }
-                      }
+                                    }
+                                },
+                                "analysis_context": {
+                                    "type": "object",
+                                    "properties": {
+                                        'next_deadline_date': {
+                                            'type': 'date',
+                                            "format": "yyyy-MM-dd",
+                                            "copy_to": "next_deadline_date"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                   })
     create_deposit(user, 'test-schema',
                    {

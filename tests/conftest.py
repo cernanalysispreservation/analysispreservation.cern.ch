@@ -348,7 +348,7 @@ def auth_headers_for_user(base_app, db):
     return _write_token
 
 
-def get_default_mapping():
+def get_default_mapping(name, version):
     mapping = {
         "mappings": {
             "properties": {
@@ -407,7 +407,7 @@ def create_deposit(app, db, es, location, create_schema):
         # create schema for record
         with app.test_request_context():
             default_mapping = mapping if mapping \
-                else get_default_mapping()
+                else get_default_mapping(schema_name, version)
 
             schema = create_schema(schema_name,
                                    experiment=experiment,

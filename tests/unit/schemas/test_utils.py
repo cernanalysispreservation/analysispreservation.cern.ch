@@ -52,7 +52,7 @@ def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
                 deposit_mapping={
                     'mappings': {
                         'properties': {
-                            "keyword": {
+                            "keywords": {
                                 "type": "keyword"
                             }
                         }
@@ -99,7 +99,7 @@ def test_add_schema_from_fixture_when_schema_already_exist_updates_json_for_sche
                         deposit_mapping={
                             'mappings': {
                                 'properties': {
-                                    "keyword": {
+                                    "keywords": {
                                         "type": "keyword"
                                     }
                                 }

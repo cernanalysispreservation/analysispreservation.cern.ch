@@ -79,7 +79,9 @@ install_requires = [
     # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
     # 'invenio-logging[sentry, sentry-sdk]<=1.2.0',
 
-
+    'uWSGI==2.0.17',
+    'uwsgi-tools==1.1.1',
+    'uwsgitop==0.10',
     # needed version for future use of arguments
     'webargs==3.0.1',
     'pyOpenSSL==19.1.0',
