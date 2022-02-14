@@ -348,29 +348,28 @@ def auth_headers_for_user(base_app, db):
     return _write_token
 
 
-def get_default_mapping(name, version):
-    mapping_name = f"{name}-v{version}"
-    default_mapping = { "mappings": {} }
-    collectiion_mapping = {
-        "properties": {
-            "_collection": {
-                "type": "object",
-                "properties": {
-                    "fullname": {
-                        "type": "keyword"
-                    },
-                    "name": {
-                        "type": "keyword"
-                    },
-                    "version": {
-                        "type": "keyword"
+def get_default_mapping():
+    mapping = {
+        "mappings": {
+            "properties": {
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
+                        }
                     }
                 }
             }
         }
     }
-    default_mapping["mappings"][mapping_name] = collectiion_mapping
-    return default_mapping
+    return mapping
 
 
 @pytest.fixture
@@ -408,7 +407,7 @@ def create_deposit(app, db, es, location, create_schema):
         # create schema for record
         with app.test_request_context():
             default_mapping = mapping if mapping \
-                else get_default_mapping(schema_name, version)
+                else get_default_mapping()
 
             schema = create_schema(schema_name,
                                    experiment=experiment,

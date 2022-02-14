@@ -233,26 +233,21 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
         is_indexed=True,
         record_mapping={
             'mappings': {
-                'doc': {
-                    'properties': {
-                        "title": {
-                            "type": "text"
-                        }
+                'properties': {
+                    "title": {
+                        "type": "text"
                     }
                 }
             }
         },
         deposit_mapping={
-            'mappings':
-                {
-                    'doc': {
-                        'properties': {
-                            "keyword": {
-                                "type": "keyword"
-                            }
-                        }
+            'mappings': {
+                'properties': {
+                    "keyword": {
+                        "type": "keyword"
                     }
                 }
+            }
         })
     db.session.add(schema)
     db.session.commit()
@@ -268,11 +263,9 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
         'records-cms-schema-v1.0.0':
             {
                 'mappings': {
-                    'doc': {
-                        'properties': {
-                            'title': {
-                                'type': 'text'
-                            }
+                    'properties': {
+                        'title': {
+                            'type': 'text'
                         }
                     }
                 }
@@ -282,16 +275,13 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     assert es.indices.get_mapping('deposits-records-cms-schema-v1.0.0') == {
         'deposits-records-cms-schema-v1.0.0':
             {
-                'mappings':
-                    {
-                        'doc': {
-                            'properties': {
-                                'keyword': {
-                                    'type': 'keyword'
-                                }
-                            }
+                'mappings': {
+                    'properties': {
+                        'keyword': {
+                            'type': 'keyword'
                         }
                     }
+                }
             }
     }
 

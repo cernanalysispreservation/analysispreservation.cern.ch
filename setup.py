@@ -20,6 +20,7 @@ tests_require = [
     'pytest-cov==2.5.1',
     'pytest-invenio>=1.0.5,<=1.3.4',
     'pytest==5.3.5',
+    'pytest-invenio>=1.0.5,<=1.3.4',
     'yapf>=0.28.0',
     'responses==0.10.6',
     'selenium>=3.4.3',
@@ -78,9 +79,7 @@ install_requires = [
     # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
     # 'invenio-logging[sentry, sentry-sdk]<=1.2.0',
 
-    'uWSGI==2.0.17',
-    'uwsgi-tools==1.1.1',
-    'uwsgitop==0.10',
+
     # needed version for future use of arguments
     'webargs==3.0.1',
     'pyOpenSSL==19.1.0',
