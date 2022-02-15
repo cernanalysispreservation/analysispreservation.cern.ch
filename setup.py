@@ -15,12 +15,11 @@ readme = open('README.rst').read()
 
 tests_require = [
     'check-manifest>=0.35',
-    'coverage>=5.2.1',
+    'coverage==4.5.4',
     'mock>=2.0.0',
     'pytest-cov==2.5.1',
     'pytest-invenio>=1.0.5,<=1.3.4',
     'pytest==5.3.5',
-    'pytest-invenio>=1.0.5,<=1.3.4',
     'yapf>=0.28.0',
     'responses==0.10.6',
     'selenium>=3.4.3',
@@ -69,7 +68,7 @@ install_requires = [
     'invenio-oauthclient>=1.0.0',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0',
-    'invenio-db[postgresql,versioning]==1.0.1'
+    'invenio-db[postgresql,versioning]==1.0.1',
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
@@ -78,7 +77,6 @@ install_requires = [
     # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
     # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
     # 'invenio-logging[sentry, sentry-sdk]<=1.2.0',
-
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',

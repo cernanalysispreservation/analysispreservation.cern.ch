@@ -133,9 +133,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip==20.2.4
-          pip install -r requirements.txt
           pip install -e .[all,docs,tests,ldap]
-          pip install -r requirements-local-forks.txt
+          pip install -r requirements-new.txt
 
       - name: Run integration and unit tests
         run: ./run-tests.sh --check-pytest
