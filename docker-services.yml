@@ -78,29 +78,29 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-  es:
-    image: elasticsearch:7.16.3
-    # platform: linux/arm64/v8 : Uncomment for Apple M1
-    restart: "always"
+  os:
+    image: opensearchproject/opensearch:1.2.4
+    container_name: opensearch-node
     environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node
+      - discovery.seed_hosts=opensearch-node
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
       - discovery.type=single-node
+      - network.host=0.0.0.0
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
     ports:
       - "9200:9200"
       - "9300:9300"
-  kibana:
-    image: kibana:7.16.3
-    # platform: linux/arm64/v8 : Uncomment for Apple M1
-    environment:
-      - "ELASTICSEARCH_URL=http://es:9200"
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports: ["5601:5601"]
+    volumes:
+      - ./opensearch.yml:/usr/share/opensearch/config/opensearch.yml
   flower:
     image: mher/flower
     ports:

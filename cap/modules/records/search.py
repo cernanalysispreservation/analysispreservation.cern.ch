@@ -1,6 +1,6 @@
 """Configuration for record search."""
 
-from elasticsearch_dsl import Q
+from opensearch_dsl import Q
 from flask import g
 from flask_login import current_user
 from flask_principal import RoleNeed

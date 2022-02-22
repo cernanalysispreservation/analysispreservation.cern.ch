@@ -578,90 +578,86 @@ def test_get_sorted_results_by_stage_strings(
 
     deposit_mapping_1 = {
         "mappings" : {
-            "test-analysis-v1.0.0": {
-                "properties": {
-                    "_collection": {
-                        "type": "object",
-                        "properties": {
-                            "fullname": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "version": {
-                                "type": "keyword"
+            "properties": {
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                "analysis_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "analysis_sub_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "initial": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "object",
+                            "properties": {
+                                "main_status": {
+                                    "type": "keyword",
+                                    "copy_to": "analysis_stage"
+                                },
+                                "sub_status": {
+                                    "type": "keyword",
+                                    "copy_to": "analysis_sub_stage"
+                                }		
                             }
                         }
-                    },
-                    "analysis_stage": {
-						"type": "keyword",
-						"store": True
-					},
-					"analysis_sub_stage": {
-						"type": "keyword",
-						"store": True
-					},
-                    "initial": {
-                        "type": "object",
-                        "properties": {
-                            "status": {
-                                "type": "object",
-                                "properties": {
-									"main_status": {
-										"type": "keyword",
-										"copy_to": "analysis_stage"
-									},
-									"sub_status": {
-										"type": "keyword",
-										"copy_to": "analysis_sub_stage"
-									}		
-								}
-                            }
-                        }
-                    },
-                }
+                    }
+                },
             }
         }
     }
 
     deposit_mapping_2 = {
         "mappings" : {
-            "test-ana-v1.0.0": {
-                "properties": {
-                    "_collection": {
-                        "type": "object",
-                        "properties": {
-                            "fullname": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "version": {
-                                "type": "keyword"
-                            }
+            "properties": {
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
                         }
-                    },
-                    "analysis_stage": {
-						"type": "keyword",
-						"store": True
-					},
-					"analysis_sub_stage": {
-						"type": "keyword",
-						"store": True
-					},
-                    "stat": {
-                        "type": "object",
-                        "properties": {
-                            "main_status": {
-                                "type": "keyword",
-                                "copy_to": "analysis_stage"
-                            },
-                            "sub_status": {
-                                "type": "keyword",
-                                "copy_to": "analysis_sub_stage"
-                            }
+                    }
+                },
+                "analysis_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "analysis_sub_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "stat": {
+                    "type": "object",
+                    "properties": {
+                        "main_status": {
+                            "type": "keyword",
+                            "copy_to": "analysis_stage"
+                        },
+                        "sub_status": {
+                            "type": "keyword",
+                            "copy_to": "analysis_sub_stage"
                         }
                     }
                 }
@@ -792,8 +788,9 @@ def test_get_sorted_results_by_stage_strings(
                     },
                 }
             }
-        },
+        }
     )
+
     deposit_pid_4 = create_deposit(owner, 'test-ana')['_deposit']['id']
 
     # total should be 4
@@ -917,10 +914,8 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
     time.sleep(3)
 
     # total should be 3
-    resp = client.get(
-        '/deposits/',
-        headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')],
-    )
+    resp = client.get('/deposits/',
+                      headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
     assert resp.json['hits']['total'] == 3
 
     # test-ana should return 2 results

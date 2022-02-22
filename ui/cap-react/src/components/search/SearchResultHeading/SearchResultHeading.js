@@ -22,7 +22,7 @@ const SearchResultHeading = ({ results = 0 }) => {
 };
 
 SearchResultHeading.propTypes = {
-  results: PropTypes.number
+  results: PropTypes.number,
 };
 
 export default SearchResultHeading;
