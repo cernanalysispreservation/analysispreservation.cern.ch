@@ -174,7 +174,7 @@ const Header = ({
       <Button
         icon={<SaveOutlined />}
         type="primary"
-        disabled={mode != "edit" || canEdit(canAdmin, canUpdate)}
+        disabled={mode != "edit" || !canEdit(canAdmin, canUpdate)}
         loading={loading}
         onClick={_saveData}
       >
