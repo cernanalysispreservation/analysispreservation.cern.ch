@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, List, Modal } from "antd";
 import "./ArrayFieldTemplate.less";
@@ -9,6 +9,24 @@ import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 
 const LayerArrayFieldTemplate = ({ items = [] }) => {
   const [itemToDisplay, setItemToDisplay] = useState(null);
+  const [visible, setVisible] = useState(false);
+
+  const stringifyItem = (options, item) => {
+    const stringify = options ? options.stringify : [],
+      reducer = (acc, val) => (item[val] ? `${acc} ${item[val]}` : acc);
+
+    return stringify.reduce(reducer, "");
+  };
+  useEffect(
+    () => {
+      if (items && itemToDisplay)
+        setItemToDisplay({
+          index: itemToDisplay.index,
+          children: items[itemToDisplay.index].children
+        });
+    },
+    [items]
+  );
 
   const getActionsButtons = item => {
     if (!item.hasToolbar) return [];
@@ -50,20 +68,41 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
   return (
     <React.Fragment>
       <Modal
-        visible={itemToDisplay}
-        onCancel={() => setItemToDisplay(null)}
+        className="__Form__"
+        destroyOnClose
+        visible={visible}
+        onCancel={() => {
+          setVisible(false);
+          setItemToDisplay(null);
+        }}
+        onOk={() => {
+          setVisible(false);
+          setItemToDisplay(null);
+        }}
         width={720}
       >
         {itemToDisplay && itemToDisplay.children}
       </Modal>
 
       <List
+        className="LayerArrayFieldList"
         dataSource={items}
         renderItem={item => (
           <List.Item actions={getActionsButtons(item)}>
             <List.Item.Meta
-              title={`Item #${item.index + 1}`}
-              onClick={() => setItemToDisplay(item)}
+              title={
+                stringifyItem(
+                  item.children.props.uiSchema["ui:options"],
+                  item.children.props.formData
+                ) || `Item #${item.index + 1}`
+              }
+              onClick={() => {
+                setVisible(true);
+                setItemToDisplay({
+                  index: item.index,
+                  children: item.children
+                });
+              }}
             />
           </List.Item>
         )}

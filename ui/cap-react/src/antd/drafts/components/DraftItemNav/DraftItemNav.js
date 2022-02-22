@@ -39,7 +39,7 @@ const DraftItemNav = ({
 DraftItemNav.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
-  formErrors: PropTypes.object,
+  formErrors: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   onClose: PropTypes.func,
   visibleMenuDrawer: PropTypes.bool
 };
