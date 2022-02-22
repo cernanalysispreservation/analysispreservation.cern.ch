@@ -26,7 +26,7 @@
 from itertools import islice
 
 import requests
-from elasticsearch_dsl import Q
+from opensearch_dsl import Q
 from flask import current_app, abort
 from invenio_db import db
 from invenio_search import RecordsSearch
@@ -260,7 +260,7 @@ def get_uuids_with_same_cadi_id(cadi_id):
     if not res:
         raise DepositDoesNotExist
     else:
-        # From es-dsl>=7.0.0, elasticsearch_dsl.response.hit.Hit
+        # From es-dsl>=7.0.0, opensearch_dsl.response.hit.Hit
         # returns Attrdict(https://github.com/elastic/elasticsearch-dsl-py/issues/1284) # noqa
         uuids = [
             r._source._deposit.id

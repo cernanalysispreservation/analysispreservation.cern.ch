@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 
-const SearchResultHeading = ({ results = 0 }) => {
+const SearchResultHeading = ({ results = { value : 0 } }) => {
   return (
     <Box
       direction="row"
@@ -15,7 +15,7 @@ const SearchResultHeading = ({ results = 0 }) => {
         Results
       </Heading>
       <Heading margin="none" tag="h4" style={{ marginLeft: "10px" }}>
-        ({results})
+        ({results.value})
       </Heading>
     </Box>
   );

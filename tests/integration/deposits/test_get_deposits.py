@@ -478,7 +478,7 @@ def test_get_deposits_with_facets_get_types_and_versions(
     resp = client.get('/deposits/',
                       headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
 
-    assert resp.json['hits']['total'] == 2
+    assert resp.json['hits']['total']['value'] == 2
     assert resp.json['aggregations']['facet_collection']['buckets'] == [{
         'doc_count': 2,
         'facet_collection_version': {
@@ -519,21 +519,21 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
     # total should be 3
     resp = client.get('/deposits/',
                       headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
-    assert resp.json['hits']['total'] == 3
+    assert resp.json['hits']['total']['value'] == 3
 
     # test-ana should return 2 results
     url = '/deposits/?q=&collection=test-ana&sort=mostrecent'
     resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
 
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 2
+    assert resp.json['hits']['total']['value'] == 2
 
     # test-analysis should return 1 result
     url = '/deposits/?q=&collection=test-analysis&sort=mostrecent'
     resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
 
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 1
+    assert resp.json['hits']['total']['value'] == 1
 
 
 
