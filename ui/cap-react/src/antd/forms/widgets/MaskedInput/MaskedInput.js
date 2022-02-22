@@ -7,7 +7,6 @@ import React, {
   useState
 } from "react";
 
-import { Box } from "grommet";
 import { useForwardedRef, FormContext } from "./utils";
 import { Keyboard } from "./Keyboard";
 import { Input } from "antd";
@@ -345,7 +344,7 @@ const MaskedInput = forwardRef(
     const status = new RegExp(schemaMask).test(valueProp);
 
     return (
-      <Box>
+      <div>
         <Keyboard
           onEsc={onEsc}
           onTab={showDrop ? () => setShowDrop(false) : undefined}
@@ -391,7 +390,7 @@ const MaskedInput = forwardRef(
             suffix={buttons && buttons(status)}
           />
         </Keyboard>
-      </Box>
+      </div>
     );
   }
 );
