@@ -5,6 +5,7 @@ import Error from "../../../partials/Error/";
 import { transformSchema } from "../../utils/transformSchema";
 import Header from "../../containers/EditorHeader";
 import Form from "../../../forms";
+import { canEdit } from "../../utils/permissions";
 
 const Editor = ({
   schemaErrors,
@@ -16,7 +17,9 @@ const Editor = ({
   formDataChange,
   extraErrors,
   formRef,
-  history
+  history,
+  canAdmin,
+  canUpdate
 }) => {
   const [mode, setMode] = useState(
     (history.location.state && history.location.state.mode) || "edit"
@@ -40,7 +43,6 @@ const Editor = ({
         <Header formRef={formRef} mode={mode} updateMode={setMode} />
         <Layout.Content style={{ height: "100%", overflowX: "hidden" }}>
           <Form
-            mode={mode}
             formData={formData || {}}
             formRef={formRef}
             schema={_schema}
@@ -48,6 +50,7 @@ const Editor = ({
             onChange={change => formDataChange(change.formData)}
             extraErrors={extraErrors || {}}
             draftEditor
+            readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}
           />
         </Layout.Content>
       </Layout>
@@ -65,7 +68,9 @@ Editor.propTypes = {
   formDataChange: PropTypes.func,
   extraErrors: PropTypes.object,
   formRef: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  canAdmin: PropTypes.bool,
+  canUpdate: PropTypes.bool
 };
 
 export default Editor;

@@ -3,16 +3,15 @@ import PropTypes from "prop-types";
 import { Button, Empty } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
-const EmptyArrayField = ({ items, onAddClick, disabled, readonly }) => {
+const EmptyArrayField = ({ canAdd, onAddClick, disabled, readonly }) => {
   return (
-    items &&
-    items.length == 0 && (
-      <Empty
-        imageStyle={{
-          height: 60
-        }}
-        description={"No Items added"}
-      >
+    <Empty
+      imageStyle={{
+        height: 60
+      }}
+      description={"No Items added"}
+    >
+      {canAdd && (
         <Button
           className="array-item-add"
           disabled={disabled || readonly}
@@ -22,8 +21,8 @@ const EmptyArrayField = ({ items, onAddClick, disabled, readonly }) => {
         >
           Add Item
         </Button>
-      </Empty>
-    )
+      )}
+    </Empty>
   );
 };
 
@@ -31,7 +30,8 @@ EmptyArrayField.propTypes = {
   items: PropTypes.array,
   onAddClick: PropTypes.func,
   disabled: PropTypes.bool,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  canAdd: PropTypes.bool
 };
 
 export default EmptyArrayField;

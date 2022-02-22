@@ -2,14 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import ObjectFieldTemplate from "./templates/ObjectFieldTemplate";
 import FieldTemplate from "./templates/Field/FieldTemplate";
-import TitleField from "./fields/TitleField";
+import fields from "./fields";
 import widgets from "./widgets";
 import _debounce from "lodash/debounce";
 
 import "./Form.less";
 import Form from "@rjsf/antd";
 import objectPath from "object-path";
-import ArrayFieldTemplateItem from "./templates/ArrayFieldTemplates";
+import ArrayFieldTemplate from "./templates/ArrayFieldTemplates";
 
 const RJSFForm = ({
   formRef,
@@ -19,7 +19,7 @@ const RJSFForm = ({
   extraErrors,
   onChange,
   formContext,
-  mode,
+  readonly,
   draftEditor
 }) => {
   // mainly this is used for the drafts forms
@@ -48,16 +48,21 @@ const RJSFForm = ({
       ref={formRef}
       schema={schema}
       uiSchema={uiSchema}
-      fields={{ TitleField }}
+      fields={fields}
       formData={formData}
       widgets={widgets}
       ObjectFieldTemplate={ObjectFieldTemplate}
-      ArrayFieldTemplate={ArrayFieldTemplateItem}
+      ArrayFieldTemplate={ArrayFieldTemplate}
       FieldTemplate={FieldTemplate}
+      liveValidate={false}
+      noValidate={false}
       showErrorList={false}
+      noHtml5Validate={true}
+      onError={() => {}}
+      onBlur={() => {}}
       extraErrors={extraErrors}
       onChange={_debounce(onChange, 500)}
-      readonly={mode != "edit"}
+      readonly={readonly}
       transformErrors={draftEditor && transformErrors}
       formContext={{
         formRef: formRef,
@@ -78,7 +83,8 @@ RJSFForm.propTypes = {
   onChange: PropTypes.func,
   formContext: PropTypes.object,
   mode: PropTypes.string,
-  draftEditor: PropTypes.bool
+  draftEditor: PropTypes.bool,
+  readonly: PropTypes.bool
 };
 
 export default RJSFForm;
