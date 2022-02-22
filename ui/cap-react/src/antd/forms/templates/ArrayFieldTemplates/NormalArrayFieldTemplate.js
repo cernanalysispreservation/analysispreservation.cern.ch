@@ -77,11 +77,9 @@ const NormalArrayFieldTemplate = ({
       AccordionArrayField: (
         <AccordionArrayFieldTemplate items={items} formContext={formContext} />
       ),
-      default:
-        items &&
-        items.map(itemProps => (
-          <ArrayFieldTemplateItem {...itemProps} formContext={formContext} />
-        ))
+      default: items.map(itemProps => (
+        <ArrayFieldTemplateItem {...itemProps} formContext={formContext} />
+      ))
     };
 
     return choices[type] || choices["default"];
@@ -116,12 +114,23 @@ const NormalArrayFieldTemplate = ({
     <fieldset className={className} id={idSchema.$id}>
       {uiLatex && (
         <Modal
+          destroyOnClose
           visible={showModal}
-          onCancel={() => setShowModal(false)}
+          onCancel={() => {
+            setShowModal(false);
+            setLatexData(null);
+          }}
           footer={
             <Row justify="end">
               <Space>
-                <Button onClick={() => setShowModal(false)}>Close</Button>
+                <Button
+                  onClick={() => {
+                    setShowModal(false);
+                    setLatexData(null);
+                  }}
+                >
+                  Close
+                </Button>
                 <CopyToClipboard
                   text={decodeURI(latexData)}
                   onCopy={() => !copy && setCopy(true)}
@@ -181,15 +190,20 @@ const NormalArrayFieldTemplate = ({
             />
           </Col>
         )}
-        <Col className="row array-item-list" span={24}>
-          {getArrayContent(typeOfArrayToDisplay)}
-          <EmptyArrayField
-            items={items}
-            disabled={disabled}
-            readonly={readonly}
-            onAddClick={onAddClick}
-          />
-        </Col>
+        {items && (
+          <Col className="row array-item-list" span={24}>
+            {items.length > 0 ? (
+              getArrayContent(typeOfArrayToDisplay)
+            ) : (
+              <EmptyArrayField
+                canAdd={canAdd}
+                disabled={disabled}
+                readonly={readonly}
+                onAddClick={onAddClick}
+              />
+            )}
+          </Col>
+        )}
 
         {items &&
           items.length > 0 &&
