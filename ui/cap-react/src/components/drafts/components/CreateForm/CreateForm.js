@@ -21,6 +21,7 @@ import cleanDeep from "clean-deep";
 
 import Notification from "../../../partials/Notification";
 
+const BLOCK_DEPOSIT_GROUPS = ["cms-analysis"];
 const CreateForm = props => {
   const [title, setTitle] = useState("");
 
@@ -39,6 +40,15 @@ const CreateForm = props => {
 
     props.createDraft(data, { name: contentType });
   };
+
+  let contentTypes = props.contentTypes;
+  if (process.env.NODE_ENV == "production") {
+    contentTypes =
+      props.contentTypes &&
+      props.contentTypes.filter(
+        item => !BLOCK_DEPOSIT_GROUPS.includes(item.get("deposit_group"))
+      );
+  }
 
   return (
     <Box>
@@ -72,8 +82,8 @@ const CreateForm = props => {
                     justify="between"
                     data-cy="deposit-group-list"
                   >
-                    {props.contentTypes &&
-                      props.contentTypes.map(type => (
+                    {contentTypes &&
+                      contentTypes.map(type => (
                         <Box
                           key={type.get("deposit_group")}
                           onClick={() =>
