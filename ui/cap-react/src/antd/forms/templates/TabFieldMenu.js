@@ -11,7 +11,6 @@ const TabFieldMenu = ({
   analysisChecked,
   setAnalysisChecked,
   setActive,
-  setActiveLabel,
   formErrors
 }) => {
   return (
@@ -43,7 +42,6 @@ const TabFieldMenu = ({
           key={item.name}
           onClick={() => {
             setActive(item.name);
-            setActiveLabel(item.title || item.content.props.schema.title);
           }}
           danger={isTabContainsError(
             item.content.props.idSchema.$id,
