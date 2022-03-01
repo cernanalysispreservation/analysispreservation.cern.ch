@@ -75,7 +75,11 @@ const NormalArrayFieldTemplate = ({
         <LayerArrayFieldTemplate items={items} formContext={formContext} />
       ),
       AccordionArrayField: (
-        <AccordionArrayFieldTemplate items={items} formContext={formContext} />
+        <AccordionArrayFieldTemplate
+          items={items}
+          formContext={formContext}
+          id={idSchema.$id}
+        />
       ),
       default: items.map(itemProps => (
         <ArrayFieldTemplateItem {...itemProps} formContext={formContext} />
