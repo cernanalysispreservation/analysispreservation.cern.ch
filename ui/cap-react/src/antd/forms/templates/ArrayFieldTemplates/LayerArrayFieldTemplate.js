@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, List, Modal } from "antd";
-import "./ArrayFieldTemplate.less";
 
 import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
 import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import ErrorFieldIndicator from "../../error/ErrorFieldIndicator";
 
 const LayerArrayFieldTemplate = ({ items = [] }) => {
   const [itemToDisplay, setItemToDisplay] = useState(null);
@@ -65,6 +65,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
     return toolbar;
   };
   if (items.length < 1) return null;
+
   return (
     <React.Fragment>
       <Modal
@@ -88,23 +89,25 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
         className="LayerArrayFieldList"
         dataSource={items}
         renderItem={item => (
-          <List.Item actions={getActionsButtons(item)}>
-            <List.Item.Meta
-              title={
-                stringifyItem(
-                  item.children.props.uiSchema["ui:options"],
-                  item.children.props.formData
-                ) || `Item #${item.index + 1}`
-              }
-              onClick={() => {
-                setVisible(true);
-                setItemToDisplay({
-                  index: item.index,
-                  children: item.children
-                });
-              }}
-            />
-          </List.Item>
+          <ErrorFieldIndicator id={item.children.props.idSchema.$id}>
+            <List.Item actions={getActionsButtons(item)}>
+              <List.Item.Meta
+                title={
+                  stringifyItem(
+                    item.children.props.uiSchema["ui:options"],
+                    item.children.props.formData
+                  ) || `Item #${item.index + 1}`
+                }
+                onClick={() => {
+                  setVisible(true);
+                  setItemToDisplay({
+                    index: item.index,
+                    children: item.children
+                  });
+                }}
+              />
+            </List.Item>
+          </ErrorFieldIndicator>
         )}
       />
     </React.Fragment>
