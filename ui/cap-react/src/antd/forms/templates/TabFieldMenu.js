@@ -11,7 +11,8 @@ const TabFieldMenu = ({
   analysisChecked,
   setAnalysisChecked,
   setActive,
-  formErrors
+  formErrors,
+  optionsTabs
 }) => {
   return (
     <Menu
@@ -44,7 +45,7 @@ const TabFieldMenu = ({
             setActive(item.name);
           }}
           danger={isTabContainsError(
-            item.content.props.idSchema.$id,
+            optionsTabs ? item.idsList : item.content.props.idSchema.$id,
             formErrors
           )}
         >
@@ -64,7 +65,8 @@ TabFieldMenu.propTypes = {
   active: PropTypes.string,
   analysis_mode: PropTypes.array,
   showReuseMode: PropTypes.bool,
-  analysisChecked: PropTypes.bool
+  analysisChecked: PropTypes.bool,
+  optionsTabs: PropTypes.object
 };
 
 export default TabFieldMenu;
