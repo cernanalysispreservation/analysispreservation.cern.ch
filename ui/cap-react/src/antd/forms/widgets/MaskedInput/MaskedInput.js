@@ -95,6 +95,7 @@ const parseValue = (mask, value) => {
           value.length - valueIndex;
 
         let length = maxLength;
+
         while (!found && length >= minLength) {
           // make sure that if the regex needs capidatl letters
           // then transform them to upperCase so then is provided an easier UX
@@ -166,6 +167,7 @@ const MaskedInput = forwardRef(
       reverse,
       value: valueProp,
       disabled,
+      message,
       ...rest
     },
     ref
@@ -174,7 +176,7 @@ const MaskedInput = forwardRef(
 
     const [value, setValue] = formContext.useFormInput(name, valueProp);
 
-    const [valueParts, setValueParts] = useState(parseValue(mask, valueProp));
+    const [valueParts, setValueParts] = useState(parseValue(mask, value));
     useEffect(
       () => {
         setValueParts(parseValue(mask, value));
@@ -258,33 +260,10 @@ const MaskedInput = forwardRef(
           setInputValue(nextValue);
         } else if (value !== nextValue) {
           setValue(nextValue);
-
           if (onChange) onChange(event);
         }
       },
       [mask, onChange, setInputValue, setValue, value]
-    );
-
-    const onOption = useCallback(
-      option => () => {
-        const nextValueParts = [...valueParts];
-        nextValueParts[activeMaskIndex] = { part: option };
-        // add any fixed parts that follow
-        let index = activeMaskIndex + 1;
-        while (
-          index < mask.length &&
-          !nextValueParts[index] &&
-          mask[index].fixed
-        ) {
-          nextValueParts[index] = { part: mask[index].fixed };
-          index += 1;
-        }
-        const nextValue = nextValueParts.map(part => part.part).join("");
-        setInputValue(nextValue);
-        // restore focus to input
-        inputRef.current.focus();
-      },
-      [activeMaskIndex, inputRef, mask, setInputValue, valueParts]
     );
 
     const onNextOption = useCallback(
@@ -311,17 +290,6 @@ const MaskedInput = forwardRef(
         }
       },
       [activeMaskIndex, activeOptionIndex, mask]
-    );
-
-    const onSelectOption = useCallback(
-      event => {
-        if (activeMaskIndex >= 0 && activeOptionIndex >= 0) {
-          event.preventDefault();
-          const option = mask[activeMaskIndex].options[activeOptionIndex];
-          onOption(option)();
-        }
-      },
-      [activeMaskIndex, activeOptionIndex, mask, onOption]
     );
 
     const onEsc = useCallback(
@@ -353,7 +321,7 @@ const MaskedInput = forwardRef(
           onUp={onPreviousOption}
           onDown={showDrop ? onNextOption : () => setShowDrop(true)}
           onEnter={e => status && onKeyDown(e)}
-          // onKeyDown={onKeyDown}
+          onKeyDown={onKeyDown}
         >
           <Input
             disabled={disabled}
@@ -390,6 +358,16 @@ const MaskedInput = forwardRef(
             suffix={buttons && buttons(status)}
           />
         </Keyboard>
+        {message && (
+          <div
+            style={{
+              marginLeft: "5px",
+              color: message.status == "success" ? "green" : "#ff4d4f"
+            }}
+          >
+            {message.message}
+          </div>
+        )}
       </div>
     );
   }
