@@ -40,6 +40,8 @@ const TextWidget = ({
     false
   );
 
+  const [message, setMessage] = useState(null);
+
   const [apiCalling, setApiCalling] = useState(false);
 
   const _replace_hash_with_current_indexes = path => {
@@ -73,6 +75,7 @@ const TextWidget = ({
 
     setApiCalledWithCurrentState(true);
     setApiCalling(true);
+    setMessage;
     axios
       .get(`${url}${event.target.value}`)
       .then(({ data }) => {
@@ -90,20 +93,35 @@ const TextWidget = ({
 
           formDataChange(newFormData.toJS());
           setApiCalling(false);
+          setMessage({
+            status: "success",
+            message: "Navigate to the next tab to review the fetched values."
+          });
         } else {
           setApiCalling(false);
-          // show somehow error
+          setMessage({
+            status: "error",
+            message: "Something went wrong with the request"
+          });
         }
       })
       .catch(err => {
         setApiCalling(false);
-        // show error to the field
+        setMessage({
+          status: "error",
+          message:
+            err.response.status !== 500
+              ? err.response.data && err.response.data.message
+                ? err.response.data.message
+                : "Your request was not successful, please try again "
+              : "Something went wrong with the request "
+        });
       });
   };
 
   const _onEnterAutofill = event => {
     if (event.keyCode === 13) {
-      // this.setState({ enableWarningMessage: false });
+      setMessage(null);
       autoFillOtherFields(event);
     }
   };
@@ -158,6 +176,7 @@ const TextWidget = ({
       value={value}
       schemaMask={schema.pattern}
       mask={masked_array}
+      message={message}
       buttons={
         autofill_from &&
         autofill_on &&
@@ -167,6 +186,7 @@ const TextWidget = ({
             type="primary"
             disabled={!enabled || readonly}
             loading={apiCalling}
+            onClick={() => autoFillOtherFields({ target: { value: value } })}
           >
             AutoFill
           </Button>
