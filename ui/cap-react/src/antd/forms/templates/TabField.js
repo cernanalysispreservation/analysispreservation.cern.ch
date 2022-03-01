@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { _filterTabs } from "./utils/tabfield";
+import { isTabContainsError, _filterTabs } from "./utils/tabfield";
 import {
   Col,
   Layout,
@@ -9,11 +9,10 @@ import {
   Switch,
   Typography,
   Grid,
-  Dropdown,
-  Button
+  Select
 } from "antd";
 import { connect } from "react-redux";
-import { DownOutlined } from "@ant-design/icons";
+
 import TabFieldMenu from "./TabFieldMenu";
 
 const TabField = ({ uiSchema, properties, formErrors }) => {
@@ -31,7 +30,6 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
   let active_tabs_content = [];
 
   const [active, setActive] = useState("");
-  const [activeLabel, setActiveLabel] = useState("");
   const [analysisChecked, setAnalysisChecked] = useState(
     analysis_mode.length > 0
       ? analysis_mode[0].content.props.formData == "true"
@@ -56,7 +54,6 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
   useEffect(() => {
     if (!active) {
       let act = null;
-      let actLabel = null;
       let availableTabs = _filterTabs(
         options.tabs,
         idsList,
@@ -66,17 +63,11 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
       if (availableTabs.length > 0) {
         if (options.initTab) {
           act = options.initTab;
-          actLabel = options.initTab;
         } else {
           act = availableTabs[0].name;
-          actLabel =
-            availableTabs[0].title ||
-            availableTabs[0].content.props.schema.title ||
-            active;
         }
       }
       setActive(act);
-      setActiveLabel(actLabel);
     }
   }, []);
 
@@ -94,7 +85,6 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
             active={active}
             showReuseMode
             setActive={setActive}
-            setActiveLabel={setActiveLabel}
             formErrors={formErrors}
             setAnalysisChecked={setAnalysisChecked}
           />
@@ -120,24 +110,26 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
                 />
               </Space>
             )}
-            <Dropdown
-              overlay={
-                <TabFieldMenu
-                  analysisChecked={analysisChecked}
-                  analysis_mode={analysis_mode}
-                  tabs={tabs}
-                  active={active}
-                  setActive={setActive}
-                  setActiveLabel={setActiveLabel}
-                  formErrors={formErrors}
-                />
-              }
-              trigger={["click"]}
+            <Select
+              value={active}
+              onChange={val => setActive(val)}
+              style={{ width: 220 }}
             >
-              <Button>
-                {activeLabel} {<DownOutlined />}
-              </Button>
-            </Dropdown>
+              {tabs.map(item => (
+                <Select.Option
+                  value={item.name}
+                  key={item.name}
+                  className={
+                    isTabContainsError(
+                      item.content.props.idSchema.$id,
+                      formErrors
+                    ) && "ant-select-item-error"
+                  }
+                >
+                  {item.title || item.content.props.schema.title}
+                </Select.Option>
+              ))}
+            </Select>
           </Space>
         </Row>
       )}
