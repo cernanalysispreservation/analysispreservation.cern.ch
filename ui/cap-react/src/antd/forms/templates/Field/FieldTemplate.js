@@ -91,14 +91,11 @@ const FieldTemplate = ({
             label={
               displayLabel &&
               label && (
-                <Space>
+                <Space direction="vertical" size={0}>
                   <Typography.Text>{displayLabel && label}</Typography.Text>
-                  {schema.type !== "arrays" &&
-                    schema.type !== "objectg" && (
-                      <Typography.Text type="secondary">
-                        {description}
-                      </Typography.Text>
-                    )}
+                  <Typography.Text type="secondary">
+                    {description}
+                  </Typography.Text>
                 </Space>
               )
             }
