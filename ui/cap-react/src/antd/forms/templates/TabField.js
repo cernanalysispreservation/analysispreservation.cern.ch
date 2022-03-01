@@ -87,6 +87,7 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
             setActive={setActive}
             formErrors={formErrors}
             setAnalysisChecked={setAnalysisChecked}
+            optionsTabs={options.tabs}
           />
         </Layout.Sider>
       ) : (
