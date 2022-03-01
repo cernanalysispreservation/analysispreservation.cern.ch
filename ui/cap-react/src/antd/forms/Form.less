@@ -3,6 +3,22 @@
   fieldset {
     border: 0
   }
+  label {
+    height:auto
+  }
+  .ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+    margin-bottom: 15px;
+  }
+}
+.ant-select-item-error{
+  background-color: #ff4d4f;
 }
 
 .LayerArrayFieldList{
