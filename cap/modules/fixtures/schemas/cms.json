@@ -1200,6 +1200,7 @@
     "input_data": {
       "mc_sig_datasets": {
         "items": {
+          "ui:widget":"select",
           "ui:options": {
             "suggestions": "/api/cms/mc-datasets?query="
           }
