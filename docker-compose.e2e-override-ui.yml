@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2021 CERN.
 #
 # CERN Analysis Preservation is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -9,14 +9,15 @@ version: "2.3"
 services:
   nginx:
     restart: "always"
-    build:
-      context: ./docker/nginxdev
+    image: gitlab-registry.cern.ch/pshandil/cap-ui/uinew1:master
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - web-api
-      - frontend
+    volumes:
+     - ./docker/nginx/conf.d:/etc/nginx/conf.d
+     - ./docker/nginx/ssl:/etc/ssl
   cypress:
     image: "cypress/included:6.3.0"
     # entrypoint: cypress run --headless --browser chrome
@@ -33,17 +34,6 @@ services:
     depends_on:
       - web-api
       - nginx
-  # Frontend
-  frontend:
-    build:
-      context: ./ui
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./ui/cap-react/src:/app/cap-react/src
-      - ./ui/cap-react/tools:/app/cap-react/tools
-    links:
-      - web-api
   # API Rest Application
   web-api:
     extends:
