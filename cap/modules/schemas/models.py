@@ -240,6 +240,19 @@ class Schema(db.Model):
         else:
             raise JSONSchemaNotFound(schema=name)
 
+    @classmethod
+    def get_all_versions(cls, name):
+        """Get all versions of schema with given name."""
+        schemas = cls.query \
+            .filter_by(name=name) \
+            .order_by(cls.major.desc(),
+                      cls.minor.desc(),
+                      cls.patch.desc())
+        if schemas:
+            return schemas
+        else:
+            raise JSONSchemaNotFound(schema=name)
+
     def get_versions(self):
         """Get the latest version of schema with given name."""
         schemas = self.query \

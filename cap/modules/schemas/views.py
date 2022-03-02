@@ -37,8 +37,10 @@ from cap.modules.access.utils import login_required
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
 from .serializers import (create_config_payload,
-                          update_schema_serializer)
+                          update_schema_serializer,
+                          link_serializer)
 from .utils import get_schemas_for_user
+
 
 blueprint = Blueprint(
     'cap_schemas',
@@ -47,6 +49,26 @@ blueprint = Blueprint(
 )
 
 _admin_permission = admin_permission_factory(None)
+
+
+@blueprint.route('/<string:name>/versions', methods=['GET'])
+@login_required
+def get_all_versions(name=None):
+    """Get all versions of a schema that user has access to."""
+    if name:
+        try:
+            schemas = Schema.get_all_versions(name)
+            latest = schemas.first()
+        except JSONSchemaNotFound:
+            abort(404)
+        serialized_versions = [
+            link_serializer.dump(schema).data
+            for schema in schemas]
+        response = {
+            'versions': serialized_versions,
+            'latest': link_serializer.dump(latest).data
+        }
+    return jsonify(response)
 
 
 class SchemaAPI(MethodView):
