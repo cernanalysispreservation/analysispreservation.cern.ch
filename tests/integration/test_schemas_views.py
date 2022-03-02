@@ -422,6 +422,47 @@ def test_get_resolved_schemas(
     }
 
 
+def test_get_all_version_of_schema(
+        client, db, users, auth_headers_for_user):
+    cms_user = users['cms_user']
+    db.session.add(Schema(name='schema1', version='1.2.3', experiment='CMS'))
+    db.session.add(Schema(name='schema1', version='1.2.5', experiment='CMS'))
+    db.session.commit()
+
+    resp = client.get(
+        '/jsonschemas/schema1/versions/', headers=auth_headers_for_user(cms_user))
+
+    assert resp.status_code == 200
+    assert resp.json ==  {
+        "latest": {
+            "links": {
+            "deposit": "http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.5.json",
+            "record": "http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.5.json",
+            "self": "http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.5"
+            },
+            "version": "1.2.5"
+        },
+        "versions": [
+            {
+            "links": {
+                "deposit": "http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.5.json",
+                "record": "http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.5.json",
+                "self": "http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.5"
+            },
+            "version": "1.2.5"
+            },
+            {
+            "links": {
+                "deposit": "http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json",
+                "record": "http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json",
+                "self": "http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3"
+            },
+            "version": "1.2.3"
+            }
+        ]
+    }
+
+
 def test_get_only_latest_version_of_schemas(
         client, db, users, auth_headers_for_user):
     cms_user = users['cms_user']

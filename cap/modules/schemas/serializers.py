@@ -154,9 +154,39 @@ class CollectionSerializer(Schema):
         return versions
 
 
+class LinkSerializer(Schema):
+    """Serializer to return all versions endpoint."""
+
+    version = fields.Str()
+    links = fields.Method('build_links', dump_only=True)
+
+    def build_links(self, obj):
+        """Construct schema links."""
+        deposit_path = url_for('invenio_jsonschemas.get_schema',
+                               schema_path=obj.deposit_path,
+                               _external=True)
+        record_path = url_for('invenio_jsonschemas.get_schema',
+                              schema_path=obj.record_path,
+                              _external=True)
+
+        links = {
+            'deposit': url_to_api_url(deposit_path),
+            'record': url_to_api_url(record_path)
+        }
+        links['self'] = url_to_api_url(
+            url_for('cap_schemas.schemas',
+                    name=obj.name,
+                    version=obj.version,
+                    _method='PUT',
+                    _external=True))
+
+        return links
+
+
 schema_serializer = SchemaSerializer()
 update_schema_serializer = UpdateSchemaSerializer()
 resolved_schemas_serializer = ResolvedSchemaSerializer()
 config_resolved_schemas_serializer = ConfigResolvedSchemaSerializer()
 create_config_payload = CreateConfigPayload()
 collection_serializer = CollectionSerializer()
+link_serializer = LinkSerializer()
