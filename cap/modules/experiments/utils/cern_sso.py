@@ -78,7 +78,7 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
         logging.debug("Landing page: {}".format(r_login_page.url))
         logging.info("Parsing landing page to get the Kerberos login URL")
     soup = BeautifulSoup(r_login_page.text, features="html.parser")
-    kerberos_button = soup.find(id="zocial-kerberos")
+    kerberos_button = soup.find(id="social-kerberos")
     if not kerberos_button:
         error_message = get_error_message(r_login_page.text)
         if error_message:
