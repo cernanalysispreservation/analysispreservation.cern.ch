@@ -6,6 +6,7 @@ import Select from "antd/lib/select";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import { fromJS } from "immutable";
+import { Empty } from "antd";
 
 const { asNumber, guessType } = utils;
 
@@ -105,30 +106,27 @@ const SelectWidget = ({
         );
       }
     }
-
+    setLoading(true);
     axios
       .get(`${suggestions}${value}`)
       .then(({ data }) => {
         if (cb) {
           cb(data.map(value => ({ value, label: value })));
         }
-        setSearchValues(data.map(value => ({ value, label: value })));
+        setSearchValues(data.map(value => ({ value: value, label: value })));
+        setLoading(false);
       })
-      .catch(err => {
-        // this.setState({
-        //   error:
-        //     err.response.status !== 500
-        //       ? err.response.data && err.response.data.message
-        //         ? err.response.data.message
-        //         : "Something went wrong with the request "
-        //       : "Something went wrong with the request "
-        // });
+      .catch(() => {
+        setSearchValues([]);
+        setLoading(false);
       });
   };
 
   const [searchValues, setSearchValues] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   let valuesToRender = suggestions ? searchValues : enumOptions;
+
   return (
     <Select
       autoFocus={autofocus}
@@ -145,6 +143,11 @@ const SelectWidget = ({
       style={SELECT_STYLE}
       value={typeof value !== "undefined" ? stringify(value) : undefined}
       showSearch={suggestions}
+      filterOption={!suggestions}
+      loading={loading}
+      notFoundContent={
+        <Empty description="No Results" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      }
     >
       {valuesToRender.map(({ value: optionValue, label: optionLabel }) => (
         <Select.Option
