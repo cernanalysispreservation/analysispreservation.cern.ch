@@ -16,5 +16,6 @@ jobs:
       - name: Trigger the Gitlab CI pipeline
         run: bash ./scripts/ci/image_build.sh -b master -i ui
         env:
+          enable_e2e: ${{ secrets.ENABLE_E2E }}
           token: ${{ secrets.UI }}
           trigger_uri: ${{ secrets.UI_TRIGGER_URI }}

@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2018 CERN.
+#
+# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+version: "2.3"
+services:
+  app:
+    image: gitlab-registry.cern.ch/pshandil/cap-server/app:build-e2e # To change
+  web-api:
+    extends:
+      file: docker-services.yml
+      service: app
+    volumes:
+      - ./docker/uwsgi:/opt/cap/var/instance
+  files-api:
+    extends:
+      file: docker-services.yml
+      service: app
+    volumes:
+      - ./docker/uwsgi:/opt/cap/var/instance
+  # Worker
+  worker:
+    extends:
+      file: docker-services.yml
+      service: app
