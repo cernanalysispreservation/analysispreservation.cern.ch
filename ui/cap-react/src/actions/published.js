@@ -1,6 +1,5 @@
 import axios from "axios";
-import cogoToast from "cogo-toast";
-
+import { notification } from "antd";
 export const PUBLISHED_ITEM_REQUEST = "PUBLISHED_ITEM_REQUEST";
 export const PUBLISHED_ITEM_SUCCESS = "PUBLISHED_ITEM_SUCCESS";
 export const PUBLISHED_ITEM_ERROR = "PUBLISHED_ITEM_ERROR";
@@ -89,10 +88,8 @@ export function reviewPublished(review, message = "submitted") {
         }
       })
       .then(response => {
-        cogoToast.success(`Your review has been ${message}`, {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.success({
+          description: `Your review has been ${message}`
         });
         return dispatch(reviewPublishedSuccess(response.data));
       })
