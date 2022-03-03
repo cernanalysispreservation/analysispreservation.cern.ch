@@ -2,7 +2,7 @@ import axios from "axios";
 import { push } from "connected-react-router";
 import { fetchAndAssignSchema, formErrorsChange } from "./common";
 import { getBucketByUri, getBucketById } from "./files";
-import cogoToast from "cogo-toast";
+import { notification } from "antd";
 
 export const TOGGLE_FILEMANAGER_LAYER = "TOGGLE_FILEMANAGER_LAYER";
 export const TOGGLE_PREVIEWER = "TOGGLE_PREVIEWER";
@@ -217,14 +217,14 @@ export const clearErrors = () => ({ type: CLEAR_ERRORS });
 // Create Draft
 export function createDraft(data = {}, ana_type) {
   return (dispatch, getState) => {
+    //TODO
+    // this might be obsolete check since we do not allow from the frontend to
+    // create a draft without anatype
     if (!ana_type.name) {
-      cogoToast.warn("Make sure you selected a type for your analysis", {
-        position: "top-center",
-        heading: "Form is not ready",
-        bar: { size: "0" },
-        hideAfter: 3
+      notification.warning({
+        message: "Form is not ready",
+        description: "Make sure you selected a type for your analysis"
       });
-
       return;
     }
     return dispatch(postCreateDraft(data, ana_type))
@@ -259,21 +259,16 @@ export function postCreateDraft(data = {}, ana_type) {
         let draft = response.data;
         if (draft.id) {
           dispatch(createDraftSuccess(response.data));
-          cogoToast.success("You started a new analysis.", {
-            position: "top-center",
-            heading: "",
-            bar: { size: "0" },
-            hideAfter: 3
+          notification.success({
+            message: "You started a new analysis."
           });
         }
       })
       .catch(error => {
         dispatch(createDraftError());
-        cogoToast.error(error.response.data.message, {
-          position: "top-center",
-          heading: "Something went wrong",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.error({
+          message: "Something went wrong",
+          description: error.response.data.message
         });
         throw error;
       });
@@ -310,21 +305,19 @@ export function patchGeneralTitle(draft_id, title) {
       .then(response => {
         if (response.status == 200) {
           dispatch(generalTitleSuccess(response.data));
-          cogoToast.success("Your Title has successfully changed", {
-            position: "top-center",
-            heading: "General Title",
-            bar: { size: "0" },
-            hideAfter: 3
+          notification.success({
+            message: "General Title",
+            description: "Your Title has successfully changed",
+            placement: "topLeft"
           });
         }
       })
       .catch(error => {
         dispatch(generalTitleError(error.response));
-        cogoToast.error(error.response.data.message, {
-          position: "top-center",
-          heading: "Your title was not changed",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.error({
+          message: "Your title was not changed",
+          description: error.response.data.message,
+          placement: "topLeft"
         });
       });
   };
@@ -348,23 +341,18 @@ export const publishedToDraftStatus = draft_id => dispatch => {
     .post(uri)
     .then(resp => {
       dispatch(editPublishedSuccess(draft_id, resp.data));
-      cogoToast.success("Your record status successfully changed to Draft", {
-        position: "top-center",
-        heading: "Draft Status",
-        bar: { size: "0" },
-        hideAfter: 3
+      notification.success({
+        message: "Draft Status",
+        description: "Your record status successfully changed to Draft"
       });
     })
     .catch(error => {
-      cogoToast.error(
-        "There is an error, please make sure you are connected and try again",
-        {
-          position: "top-center",
-          heading: error.message,
-          bar: { size: "0" },
-          hideAfter: 3
-        }
-      );
+      notification.error({
+        message: error.message,
+        description:
+          "There is an error, please make sure you are connected and try again"
+      });
+
       throw error;
     });
 };
@@ -383,37 +371,27 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
           .put(`/api/deposits/${draft_id}`, data)
           .then(response => {
             dispatch(updateDraftSuccess(draft_id, response.data));
-            cogoToast.success("Your data has been updated", {
-              position: "top-center",
-              heading: "Draft updated",
-              bar: { size: "0" },
-              hideAfter: 3
+            notification.success({
+              message: "Draft updated",
+              description: "Your data has been updated"
             });
           })
           .catch(error => {
             dispatch(updateDraftError(error));
-            cogoToast.error(
-              "There is an error, please make sure you are connected and try again",
-              {
-                position: "top-center",
-                heading: error.message,
-                bar: { size: "0" },
-                hideAfter: 3
-              }
-            );
+            notification.error({
+              message: error.message,
+              description:
+                "There is an error, please make sure you are connected and try again"
+            });
             throw error;
           });
       })
       .catch(error => {
-        cogoToast.error(
-          "There is an error, please make sure you are connected and try again",
-          {
-            position: "top-center",
-            heading: error.message,
-            bar: { size: "0" },
-            hideAfter: 3
-          }
-        );
+        notification.error({
+          message: error.message,
+          description:
+            "There is an error, please make sure you are connected and try again"
+        });
         throw error;
       });
   };
@@ -429,24 +407,18 @@ export function discardDraft(draft_id) {
       .post(uri)
       .then(response => {
         dispatch(discardDraftSuccess(draft_id, response.data));
-        cogoToast.success("Your data has been discarded", {
-          position: "top-center",
-          heading: "Data discarded",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.success({
+          message: "Data discarded",
+          description: "Your data has been discarded"
         });
       })
       .catch(error => {
         dispatch(discardDraftError(error));
-        cogoToast.error(
-          "There is an error, please make sure you are connected and try again",
-          {
-            position: "top-center",
-            heading: error.message,
-            bar: { size: "0" },
-            hideAfter: 3
-          }
-        );
+        notification.error({
+          message: error.message,
+          description:
+            "There is an error, please make sure you are connected and try again"
+        });
       });
   };
 }
@@ -465,10 +437,9 @@ export function reviewDraft(draft_id, review, message = "submitted") {
         }
       })
       .then(response => {
-        cogoToast.success(`Your review has been ${message}`, {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.success({
+          message: "Review Submission",
+          description: `Your review has been ${message}`
         });
         return dispatch(reviewDraftSuccess(draft_id, response.data));
       })
@@ -498,12 +469,9 @@ export function putUpdateDraft(data, draft_id) {
       .put(links.self, data)
       .then(response => {
         dispatch(updateDraftSuccess(draft_id, response.data));
-
-        cogoToast.success("Your Draft has been updated successfully", {
-          position: "top-center",
-          heading: "Draft saved",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.success({
+          message: "Draft saved",
+          description: "Your Draft has been updated successfully"
         });
       })
       .catch(error => {
@@ -550,11 +518,9 @@ export function putUpdateDraft(data, draft_id) {
         } else {
           // anything else
         }
-        cogoToast.error(errorDescription, {
-          position: "top-center",
-          heading: errorHeading,
-          bar: { size: "0" },
-          hideAfter: errorHideAfter
+        notification.error({
+          message: errorHeading,
+          description: errorDescription
         });
         throw errorThrow;
       });
@@ -586,73 +552,74 @@ export function postPublishDraft() {
 
     let links = state.draftItem.get("links");
     // let uri = `/api/deposits/${draft_id}/actions/publish`;
-    return cogoToast
-      .loading("Publishing in progress...", { hideAfter: 1 })
-      .then(() => {
-        return axios
-          .post(links.publish)
-          .then(response => {
-            dispatch(publishDraftSuccess(response.data));
-            cogoToast.success("Your Draft has been successfully published", {
-              position: "top-center",
-              heading: "Draft published",
-              bar: { size: "0" },
-              hideAfter: 3
+
+    notification.info({
+      key: "publishing",
+      message: "Publishing in progress..."
+    });
+
+    return axios
+      .post(links.publish)
+      .then(response => {
+        dispatch(publishDraftSuccess(response.data));
+        notification.success({
+          key: "publishing",
+          message: "Draft published",
+          description: "Your Draft has been successfully published"
+        });
+      })
+      .catch(error => {
+        let errorHeading = "Error while publishing";
+        let errorDescription;
+        let errorHideAfter = 6;
+        let errorThrow = "Error while publishing";
+
+        if (error.response.status == 422) {
+          let _errors = error.response.data.errors;
+          let errorTree = {};
+          _errors.map(e => {
+            let tmp = errorTree;
+            e.field.map(field => {
+              if (!tmp[field]) tmp[field] = {};
+              tmp = tmp[field];
             });
-          })
-          .catch(error => {
-            let errorHeading = "Error while publishing";
-            let errorDescription;
-            let errorHideAfter = 6;
-            let errorThrow = "Error while publishing";
 
-            if (error.response.status == 422) {
-              let _errors = error.response.data.errors;
-              let errorTree = {};
-              _errors.map(e => {
-                let tmp = errorTree;
-                e.field.map(field => {
-                  if (!tmp[field]) tmp[field] = {};
-                  tmp = tmp[field];
-                });
-
-                if (!tmp["__errors"]) tmp["__errors"] = [];
-                tmp["__errors"].push(e.message);
-              });
-
-              dispatch(formErrorsChange(_toErrorList(errorTree)));
-              errorHeading = "Validation Error while publishing";
-              errorDescription =
-                "Please fix the errors in 'Edit' tab before publishing again";
-              errorThrow = errorTree;
-            } else if (
-              error.response.status == 403 &&
-              error.response.data &&
-              error.response.data.message == "Invalid action"
-            ) {
-              errorDescription =
-                "Either you need permissions or you are trying to publish an already published item";
-            } else if (error.response) {
-              errorDescription =
-                error.response.data && error.response.data.message
-                  ? error.response.data.message
-                  : "";
-            } else if (error.request) {
-              // client never received a response, or request never left
-              errorHeading = "Something went wrong";
-              errorDescription =
-                "There is an error, please make sure you are connected and try again";
-            } else {
-              // anything else
-            }
-            cogoToast.error(errorDescription, {
-              position: "top-center",
-              heading: errorHeading,
-              bar: { size: "0" },
-              hideAfter: errorHideAfter
-            });
-            throw errorThrow;
+            if (!tmp["__errors"]) tmp["__errors"] = [];
+            tmp["__errors"].push(e.message);
           });
+
+          dispatch(formErrorsChange(_toErrorList(errorTree)));
+          errorHeading = "Validation Error while publishing";
+          errorDescription =
+            "Please fix the errors in 'Edit' tab before publishing again";
+          errorThrow = errorTree;
+        } else if (
+          error.response.status == 403 &&
+          error.response.data &&
+          error.response.data.message == "Invalid action"
+        ) {
+          errorDescription =
+            "Either you need permissions or you are trying to publish an already published item";
+        } else if (error.response) {
+          errorDescription =
+            error.response.data && error.response.data.message
+              ? error.response.data.message
+              : "";
+        } else if (error.request) {
+          // client never received a response, or request never left
+          errorHeading = "Something went wrong";
+          errorDescription =
+            "There is an error, please make sure you are connected and try again";
+        } else {
+          // anything else
+        }
+        notification.error({
+          key: "publishing",
+          message: errorHeading,
+          description: errorDescription
+        });
+
+        throw errorThrow;
       });
   };
 }
@@ -677,33 +644,29 @@ export function deleteDraft() {
     // let uri = `/api/deposits/${draft_id}`;
 
     // when deleting, send the request and wait 1sec for the ElasticSearch to complete re-indexing
+    notification.info({
+      message: "Deleting Draft....",
+      key: "deleting"
+    });
     axios
       .delete(links.self)
       .then(() => {
-        cogoToast
-          .loading("Deleting Draft....", { hideAfter: 1, bar: { size: "0" } })
-          .then(() => {
-            dispatch(push("/"));
-            cogoToast.success("Your Draft has been deleted", {
-              position: "top-center",
-              heading: "Draft deleted",
-              bar: { size: "0" },
-              hideAfter: 2
-            });
-            dispatch(deleteDraftSuccess());
-          });
+        dispatch(push("/"));
+        notification.success({
+          key: "deleting",
+          message: "Draft deleted",
+          description: "Your Draft has been deleted"
+        });
+        dispatch(deleteDraftSuccess());
       })
       .catch(error => {
         dispatch(deleteDraftError());
-        cogoToast.error(
-          "There is an error, please make sure you are connected and try again",
-          {
-            position: "top-center",
-            heading: error.message,
-            bar: { size: "0" },
-            hideAfter: 3
-          }
-        );
+        notification.success({
+          key: "deleting",
+          message: error.message,
+          description:
+            "There is an error, please make sure you are connected and try again"
+        });
       });
   };
 }
@@ -720,7 +683,9 @@ export function handlePermissions(draft_id, type, email, action, operation) {
       })
       .catch(error => {
         dispatch(remove_loading());
-        cogoToast.error(error.response.data.message, { hideAfter: 3 });
+        notification.error({
+          description: error.response.data.message
+        });
       });
   };
 }
