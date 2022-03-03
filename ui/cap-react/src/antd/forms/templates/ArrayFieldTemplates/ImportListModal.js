@@ -12,7 +12,13 @@ const ImportListModal = ({
   formData,
   formItems
 }) => {
-  const { description, listSuggestions, placeholder, to } = uiImport;
+  const {
+    description,
+    listSuggestions,
+    placeholder,
+    to,
+    delimiter = "\n"
+  } = uiImport;
 
   const [fetchedResults, setFetchedResults] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(null);
@@ -73,48 +79,57 @@ const ImportListModal = ({
     value = value.trim();
     // Remove empty lines
     value = value.replace(/^\s*[\r\n]/gm, "");
+
     // Split string depending on the delimiter passed in the uiOptionns
-    values = value.split("\n");
+    values = value.split(delimiter);
 
     // Get form configurations/options
     let { items: { type } = {} } = schema;
 
     if (Array.isArray(values)) {
-      let formDataLength = formData.length;
-      let e = new Event("e");
       setTimeout(() => {
-        values.map((value, index) => {
-          let _index = formDataLength + index;
-
-          onAddClick(e);
-
-          if (type == "object" && to) {
-            value = { [to]: value };
-          }
-          setTimeout(
-            () =>
-              setCurrentIndex({
-                index: _index,
-                value
-              }),
-            1
-          );
+        values.map(() => {
+          onAddClick();
         });
       }, 1);
     }
+
+    setTimeout(
+      () =>
+        values.map((value, index) => {
+          let _index = formData.length + index;
+          if (type == "object" && to) {
+            value = { [to]: value };
+          }
+          setCurrentIndex({
+            index: _index,
+            value
+          });
+        }),
+      1
+    );
 
     onCancel();
   };
   return (
     <Modal
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel();
+        setData(null);
+        setFetchedResults(null);
+      }}
       visible={visible}
       title="Provide a pattern to fetch available paths"
       okButtonProps={{
         disabled: !data,
-        onClick: _batchImport
+        onClick: () => {
+          _batchImport();
+          setData(null);
+          setFetchedResults(null);
+        }
       }}
       okText="Import"
+      destroyOnClose
     >
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="Fetch from URL" key="1">
