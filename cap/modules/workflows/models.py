@@ -50,7 +50,7 @@ class ReanaWorkflow(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     workflow_id = db.Column(UUIDType, unique=True, nullable=False)
-
+    service = db.Column(db.Enum('reana', name='service'), unique=False, nullable=False)
     name = db.Column(db.String(100), unique=False, nullable=False)
     workflow_name = db.Column(db.String(100), unique=False, nullable=False)
     workflow_name_run = db.Column(db.String(100), unique=False, nullable=False)

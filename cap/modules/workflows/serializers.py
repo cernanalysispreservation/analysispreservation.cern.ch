@@ -58,9 +58,7 @@ class ReanaWorkflowSchema(Schema):
                 url_for(path, workflow_id=obj['workflow_id']))
 
         links = {
-            'ui': url_for('cap_workflows.get_all_workflows_view'),
-            'all': url_to_api_url(url_for(
-                'cap_workflows.get_all_reana_workflows', depid=obj['depid'])),
+            'ui': url_for('cap_workflows.get_workflows_view'),
             'create':
                 url_to_api_url(url_for('cap_workflows.create_reana_workflow')),
             'clone': url_with_wf('cap_workflows.clone_reana_workflow'),

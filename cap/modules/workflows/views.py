@@ -182,15 +182,13 @@ def create_reana_workflow():
             'user_id': current_user.id,
             'name': name,
             'workflow_name': workflow_name,
-            'name_run': resp['workflow_name'],
+            'workflow_name_run': resp['workflow_name'],
             'workflow_id': resp['workflow_id'],
             'rec_uuid': str(rec_uuid),
-            'depid': _args.get('pid'),
             'status': 'created',
             'workflow_json': workflow_json,
         }
 
-        # TOFIX: check for integrity errors
         workflow = ReanaWorkflow(**_workflow)
 
         db.session.add(workflow)
@@ -260,11 +258,13 @@ def get_reana_workflow_logs(workflow_id, workflow=None):
 @pass_workflow(with_access=True)
 def start_reana_workflow(workflow_id, workflow=None):
     """Start a REANA workflow."""
+    _args = request.get_json()
     rec_uuid = resolve_uuid(workflow_id)
     token = get_reana_token(rec_uuid)
+    parameters = _args.get('parameters')
 
     try:
-        resp = start_workflow(workflow_id, token, None)
+        resp = start_workflow(workflow_id, token, parameters)
         update_workflow(workflow_id, 'status', resp['status'])
         return jsonify(resp)
     except Exception:
@@ -303,8 +303,8 @@ def delete_reana_workflow(workflow_id, workflow=None):
     token = get_reana_token(rec_uuid)
 
     try:
-        # all_runs, hard_delete and workspace
-        resp = delete_workflow(workflow_id, 0, 1, 1, token)
+        # all_runs and workspace
+        resp = delete_workflow(workflow_id, True, True, token)
         update_workflow(workflow_id, 'status', 'deleted')
         return jsonify(resp)
     except Exception:
@@ -348,7 +348,7 @@ def download_reana_workflow_files(workflow_id, path=None, workflow=None):
     token = get_reana_token(rec_uuid)
 
     try:
-        binary_resp = download_file(workflow_id, path, token)
+        binary_resp, _ = download_file(workflow_id, path, token)
 
         return send_file(io.BytesIO(binary_resp),
                          attachment_filename=path,
