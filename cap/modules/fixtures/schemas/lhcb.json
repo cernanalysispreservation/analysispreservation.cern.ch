@@ -700,6 +700,7 @@
         }
       },
       "analysis_title": {
+        "ui:widget":"select",
         "ui:options": {
           "autofill_from": "/api/lhcb/analysis/details?title=",
           "autofill_fields": [
