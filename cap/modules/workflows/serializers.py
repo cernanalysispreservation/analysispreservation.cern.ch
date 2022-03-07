@@ -55,7 +55,7 @@ class ReanaWorkflowSchema(Schema):
         """Construct workflow links."""
         def url_with_wf(path):
             return url_to_api_url(
-                url_for(path, workflow_id=obj['workflow_id']))
+                url_for(path, workflow_id=obj.workflow_id))
 
         links = {
             'ui': url_for('cap_workflows.get_workflows_view'),

@@ -70,6 +70,7 @@ from cap.modules.repos.models import (GitRepository, GitWebhook,
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
+from cap.modules.workflows.models import ReanaWorkflow
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -446,6 +447,35 @@ def create_deposit(app, db, es, location, create_schema):
 
 
 @pytest.fixture
+def create_reana_workflow(app, db, users):
+    """Returns function to create a new reana workflow."""
+    def _create_reana_workflow(uuid, workflow_id):
+        """Create a new workflow for given user and workflow_id."""
+        # create workflow
+        user = users['superuser']
+        with app.test_request_context():
+            login_user(user)
+            _workflow = {
+                'service': 'reana',
+                'user_id': user.id,
+                'name': 'test',
+                'workflow_name': 'demo',
+                'workflow_name_run': 'demo.1',
+                'workflow_id': workflow_id,
+                'rec_uuid': str(uuid),
+                'status': 'created',
+                'workflow_json': {},
+            }
+            workflow = ReanaWorkflow(**_workflow)
+            db.session.add(workflow)
+            db.session.commit()
+
+        return ReanaWorkflow.get_workflow_by_id(workflow_id)
+
+    yield _create_reana_workflow
+
+
+@pytest.fixture
 def deposit(example_user, create_deposit):
     """New deposit with files."""
     return create_deposit(
@@ -620,10 +650,8 @@ def get_git_attributes(app, users, auth_headers_for_user, create_deposit):
 
 
 @pytest.fixture
-def get_record_pid_uuid(app, users, create_deposit, create_schema):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
+def get_record_pid_uuid(example_user, create_deposit):
+    deposit = create_deposit(example_user, 'cms-analysis', experiment='CMS')
     pid = deposit['_deposit']['id']
 
     resolver = Resolver(pid_type='depid',
