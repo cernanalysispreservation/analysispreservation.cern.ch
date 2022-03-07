@@ -1222,6 +1222,7 @@
       },
       "mc_bg_datasets": {
         "items": {
+          "ui:widget":"select",
           "ui:options": {
             "suggestions": "/api/cms/mc-datasets?query="
           }
@@ -1260,6 +1261,7 @@
             "stringify": ["path"]
           },
           "path": {
+            "ui:widget":"select",
             "ui:options": {
               "suggestions": "/api/cms/primary-datasets?query="
             }
@@ -1272,6 +1274,7 @@
                 "stringify": ["trigger"]
               },
               "trigger": {
+                "ui:widget":"select",
                 "ui:options": {
                   "suggestions": "/api/cms/triggers?dataset=&year=&query=",
                   "params": {
