@@ -462,6 +462,11 @@ def test_get_all_version_of_schema(
         ]
     }
 
+    resp = client.get(
+        '/jsonschemas/wrong_schema/versions/', headers=auth_headers_for_user(cms_user))
+
+    assert resp.status_code == 404
+
 
 def test_get_only_latest_version_of_schemas(
         client, db, users, auth_headers_for_user):

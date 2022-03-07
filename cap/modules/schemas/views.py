@@ -58,14 +58,11 @@ def get_all_versions(name=None):
     if name:
         try:
             schemas = Schema.get_all_versions(name)
-            latest = schemas.first()
-        except JSONSchemaNotFound:
+            latest = schemas[0]
+        except (JSONSchemaNotFound, IndexError):
             abort(404)
-        serialized_versions = [
-            link_serializer.dump(schema).data
-            for schema in schemas]
         response = {
-            'versions': serialized_versions,
+            'versions': link_serializer.dump(schemas, many=True).data,
             'latest': link_serializer.dump(latest).data
         }
     return jsonify(response)

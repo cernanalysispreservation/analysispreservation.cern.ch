@@ -247,7 +247,7 @@ class Schema(db.Model):
             .filter_by(name=name) \
             .order_by(cls.major.desc(),
                       cls.minor.desc(),
-                      cls.patch.desc())
+                      cls.patch.desc()).all()
         if schemas:
             return schemas
         else:
