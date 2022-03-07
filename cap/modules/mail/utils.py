@@ -125,6 +125,7 @@ def get_review_recipients(deposit, host_url, config):
 def get_cms_stat_recipients(record, host_url, config):
     data = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
     key = path_value_equals(config.get("path", ""), record)
+    key = key if key else "other"
     recipients = data.get(key, {}).get("contacts", [])
     params = data.get(key, {}).get("params", {})
 
