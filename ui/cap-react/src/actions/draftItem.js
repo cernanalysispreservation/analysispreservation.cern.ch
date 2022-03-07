@@ -307,8 +307,7 @@ export function patchGeneralTitle(draft_id, title) {
           dispatch(generalTitleSuccess(response.data));
           notification.success({
             message: "General Title",
-            description: "Your Title has successfully changed",
-            placement: "topLeft"
+            description: "Your Title has successfully changed"
           });
         }
       })
@@ -316,8 +315,7 @@ export function patchGeneralTitle(draft_id, title) {
         dispatch(generalTitleError(error.response));
         notification.error({
           message: "Your title was not changed",
-          description: error.response.data.message,
-          placement: "topLeft"
+          description: error.response.data.message
         });
       });
   };
