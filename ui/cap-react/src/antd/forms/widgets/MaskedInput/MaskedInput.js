@@ -3,12 +3,11 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useRef,
   useState
 } from "react";
 
 import { useForwardedRef, FormContext } from "./utils";
-import { Keyboard } from "./Keyboard";
+
 import { Input } from "antd";
 
 const parseValue = (mask, value) => {
@@ -160,7 +159,7 @@ const MaskedInput = forwardRef(
       schemaMask,
       onChange,
       onFocus,
-      onKeyDown,
+      onPressEnter,
       placeholder,
       plain,
       buttons,
@@ -185,12 +184,9 @@ const MaskedInput = forwardRef(
     );
 
     const inputRef = useForwardedRef(ref);
-    const dropRef = useRef();
 
     const [focus, setFocus] = useState(focusProp);
     const [activeMaskIndex, setActiveMaskIndex] = useState();
-    const [activeOptionIndex, setActiveOptionIndex] = useState();
-    const [showDrop, setShowDrop] = useState();
 
     useEffect(
       () => {
@@ -217,8 +213,6 @@ const MaskedInput = forwardRef(
             }
             if (maskIndex !== activeMaskIndex) {
               setActiveMaskIndex(maskIndex);
-              setActiveOptionIndex(-1);
-              setShowDrop(maskIndex >= 0 && mask[maskIndex].options && true);
             }
           }, 10); // 10ms empirically chosen
           return () => clearTimeout(timer);
@@ -266,45 +260,6 @@ const MaskedInput = forwardRef(
       [mask, onChange, setInputValue, setValue, value]
     );
 
-    const onNextOption = useCallback(
-      event => {
-        const item = mask[activeMaskIndex];
-        if (item && item.options) {
-          event.preventDefault();
-          const index = Math.min(
-            activeOptionIndex + 1,
-            item.options.length - 1
-          );
-          setActiveOptionIndex(index);
-        }
-      },
-      [activeMaskIndex, activeOptionIndex, mask]
-    );
-
-    const onPreviousOption = useCallback(
-      event => {
-        if (activeMaskIndex >= 0 && mask[activeMaskIndex].options) {
-          event.preventDefault();
-          const index = Math.max(activeOptionIndex - 1, 0);
-          setActiveOptionIndex(index);
-        }
-      },
-      [activeMaskIndex, activeOptionIndex, mask]
-    );
-
-    const onEsc = useCallback(
-      event => {
-        if (showDrop) {
-          // we have to stop both synthetic events and native events
-          // drop and layer should not close by pressing esc on this input
-          event.stopPropagation();
-          event.nativeEvent.stopImmediatePropagation();
-          setShowDrop(false);
-        }
-      },
-      [showDrop]
-    );
-
     const renderPlaceholder = () => {
       return mask.map(item => item.placeholder || item.fixed).join("");
     };
@@ -313,51 +268,36 @@ const MaskedInput = forwardRef(
 
     return (
       <div>
-        <Keyboard
-          onEsc={onEsc}
-          onTab={showDrop ? () => setShowDrop(false) : undefined}
-          onLeft={undefined}
-          onRight={undefined}
-          onUp={onPreviousOption}
-          onDown={showDrop ? onNextOption : () => setShowDrop(true)}
-          onEnter={e => status && onKeyDown(e)}
-          onKeyDown={onKeyDown}
-        >
-          <Input
-            disabled={disabled}
-            ref={inputRef}
-            aria-label={a11yTitle}
-            id={id}
-            name={name}
-            autoComplete="off"
-            plain={plain}
-            placeholder={placeholder || renderPlaceholder()}
-            icon={icon}
-            reverse={reverse}
-            focus={focus}
-            {...rest}
-            value={valueProp}
-            onFocus={event => {
-              setFocus(true);
-              setShowDrop(true);
-              if (onFocus) onFocus(event);
-            }}
-            onBlur={event => {
-              if (status) {
-                if (!onBlur) return;
-                setFocus(false);
-                // This will be called when the user clicks on a suggestion,
-                // check for that and don't remove the drop in that case.
-                // Drop will already have removed itself if the user has focused
-                // outside of the Drop.
-                if (!dropRef.current) setShowDrop(false);
-                onBlur(event);
-              }
-            }}
-            onChange={onChangeInput}
-            suffix={buttons && buttons(status)}
-          />
-        </Keyboard>
+        <Input
+          disabled={disabled}
+          ref={inputRef}
+          aria-label={a11yTitle}
+          id={id}
+          name={name}
+          autoComplete="off"
+          plain={plain}
+          placeholder={placeholder || renderPlaceholder()}
+          icon={icon}
+          reverse={reverse}
+          focus={focus}
+          {...rest}
+          value={valueProp}
+          onPressEnter={onPressEnter}
+          onFocus={event => {
+            setFocus(true);
+
+            if (onFocus) onFocus(event);
+          }}
+          onBlur={event => {
+            if (status) {
+              if (!onBlur) return;
+              setFocus(false);
+              onBlur(event);
+            }
+          }}
+          onChange={onChangeInput}
+          suffix={buttons && buttons(status)}
+        />
         {message && (
           <div
             style={{
