@@ -2,7 +2,7 @@ import axios from "axios";
 import { merge } from "lodash";
 import { fromJS } from "immutable";
 import { push } from "connected-react-router";
-import cogoToast from "cogo-toast";
+import { notification } from "antd";
 import { CMS, CMS_NEW } from "../components/routes";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 import { updateDepositGroups } from "./auth";
@@ -133,11 +133,9 @@ export function getSchema(name, version = null) {
       })
       .catch(err => {
         dispatch(push(CMS));
-        cogoToast.error("Make sure that schema name and version are correct ", {
-          position: "top-center",
-          heading: "Schema fetch failed",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.error({
+          message: "Schema fetch failed",
+          description: "Make sure that schema name and version are correct "
         });
         dispatch(schemaError(err));
       });
@@ -316,10 +314,8 @@ export function renameIdByPath(item, newName) {
 
     // check if the new id is empty or exact same with the current id
     if (newName === itemToDelete || newName === "") {
-      cogoToast.warn("Make sure that the new id is different and not empty", {
-        position: "top-center",
-        bar: { size: "0" },
-        hideAfter: 3
+      notification.warning({
+        description: "Make sure that the new id is different and not empty"
       });
       return;
     }
@@ -336,10 +332,8 @@ export function renameIdByPath(item, newName) {
     let keys = Object.keys(schema);
     // make sure that the new name is unique among sibling widgets
     if (keys.includes(newName)) {
-      cogoToast.error("The id should be unique, this name already exists", {
-        position: "top-center",
-        bar: { size: "0" },
-        hideAfter: 3
+      notification.error({
+        description: "The id should be unique, this name already exists"
       });
       return;
     }
@@ -449,11 +443,9 @@ export function saveSchemaChanges() {
       !config.get("version") ||
       !config.get("fullname")
     ) {
-      cogoToast.warn("schema name fullname and version are required", {
-        position: "top-center",
-        heading: "Missing information",
-        bar: { size: "0" },
-        hideAfter: 5
+      notification.warning({
+        description: "schema name fullname and version are required",
+        message: "Missing information"
       });
       return;
     }
@@ -467,11 +459,9 @@ export function saveSchemaChanges() {
       config.get("version") != state.schemaWizard.get("initialConfig").version;
 
     if (isSchemaUpdated && !isConfigVersionUpdated) {
-      cogoToast.warn("please make sure to update the version of the schema", {
-        position: "top-center",
-        heading: "These changes require new version",
-        bar: { size: "0" },
-        hideAfter: 5
+      notification.warning({
+        message: "These changes require new version",
+        description: "please make sure to update the version of the schema"
       });
       return;
     }
@@ -489,11 +479,9 @@ export function saveSchemaChanges() {
               configs
             )
           );
-          cogoToast.success("schema successfully created", {
-            position: "top-center",
-            heading: "New schema created",
-            bar: { size: "0" },
-            hideAfter: 3
+          notification.success({
+            message: "New schema created",
+            description: "schema successfully created"
           });
           dispatch(updateDepositGroups());
           dispatch(
@@ -514,11 +502,9 @@ export function saveSchemaChanges() {
               err.response.data.message ||
               "Error while creating, please try again";
           }
-          cogoToast.error(errorMessage, {
-            position: "top-center",
-            heading: errorHeading,
-            bar: { size: "0" },
-            hideAfter: 3
+          notification.error({
+            message: errorHeading,
+            description: errorMessage
           });
         });
     }
@@ -529,19 +515,15 @@ export function saveSchemaChanges() {
         sendData
       )
       .then(() =>
-        cogoToast.success("changes successfully applied", {
-          position: "top-center",
-          heading: "Schema Updated",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.success({
+          message: "Schema Updated",
+          description: "changes successfully applied"
         })
       )
       .catch(() =>
-        cogoToast.error("Error while saving, please try again", {
-          position: "top-center",
-          heading: "Schema Updates",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.error({
+          message: "Schema Updates",
+          description: "Error while saving, please try again"
         })
       );
   };
