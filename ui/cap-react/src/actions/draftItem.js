@@ -321,14 +321,12 @@ export function patchGeneralTitle(draft_id, title) {
   };
 }
 
-export function editPublished(data = {}, schema, draft_id) {
+export function editPublished(data = {}, draft_id) {
   return dispatch => {
-    return dispatch(postAndPutPublished(data, schema, draft_id)).catch(
-      error => {
-        dispatch(dispatch(editPublishedError(error.response)));
-        throw error;
-      }
-    );
+    return dispatch(postAndPutPublished(data, draft_id)).catch(error => {
+      dispatch(dispatch(editPublishedError(error.response)));
+      throw error;
+    });
   };
 }
 
@@ -355,7 +353,7 @@ export const publishedToDraftStatus = draft_id => dispatch => {
     });
 };
 
-export function postAndPutPublished(data = {}, schema, draft_id) {
+export function postAndPutPublished(data = {}, draft_id) {
   return dispatch => {
     dispatch(editPublishedRequest());
 
