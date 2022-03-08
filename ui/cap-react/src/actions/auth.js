@@ -1,7 +1,6 @@
 import axios from "axios";
 import { history } from "../store/configureStore";
-import cogoToast from "cogo-toast";
-
+import { notification } from "antd";
 import { piwik } from "../components/Root";
 
 export const AUTHENTICATED = "AUTHENTICATED";
@@ -157,11 +156,9 @@ export function updateDepositGroups() {
         dispatch(depositGroupsUpdate(deposit_groups));
       })
       .catch(function() {
-        cogoToast.error("Please try again", {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3,
-          heading: "There was an issue with your request"
+        notification.error({
+          message: "There was an issue with your request",
+          description: "Please try again"
         });
       });
   };
@@ -201,10 +198,8 @@ export function removeIntegrations(service) {
           .catch(function() {});
       })
       .catch(function(error) {
-        cogoToast.error(error.response.data.message, {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3
+        notification.error({
+          description: error.response.data.message
         });
       });
   };
@@ -257,11 +252,9 @@ export function createToken(data) {
         dispatch(createTokenSuccess(response.data));
       })
       .catch(function() {
-        cogoToast.error("Please try again", {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3,
-          heading: "There was an issue with your request"
+        notification.error({
+          message: "There was an issue with your request",
+          description: "Please try again"
         });
       });
   };
@@ -276,11 +269,9 @@ export function revokeToken(token_id) {
         dispatch(revokeTokenSuccess(token_id));
       })
       .catch(function() {
-        cogoToast.error("Please try again", {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3,
-          heading: "There was an issue with your request"
+        notification.error({
+          message: "There was an issue with your request",
+          description: "Please try again"
         });
       });
   };
