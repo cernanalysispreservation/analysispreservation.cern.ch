@@ -1,5 +1,5 @@
 import axios from "axios";
-import cogoToast from "cogo-toast";
+import { notification } from "antd";
 import { COLLECTION_BASE } from "../components/routes";
 
 export const FETCH_SCHEMA_REQUEST = "FETCH_SCHEMA_REQUEST";
@@ -192,15 +192,11 @@ export function fetchRecordsResults(name, version = null) {
       .catch(() => {
         // should make sure that the returned error is properly handled
         // TODO: the response from the backend is an html string
-        cogoToast.error(
-          "Collection name or version are not typed properly, or, you have no permissions for this collection page",
-          {
-            position: "top-center",
-            bar: { size: "0" },
-            heading: "Fetching Records Failed",
-            hideAfter: 5
-          }
-        );
+        notification.error({
+          message: "Fetching Records Failed",
+          description:
+            "Collection name or version are not typed properly, or, you have no permissions for this collection page"
+        });
         dispatch(
           fetchRecordsResultsError("Fetching Records Failed. Please try again")
         );
