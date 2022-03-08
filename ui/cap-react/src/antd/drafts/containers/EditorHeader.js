@@ -18,8 +18,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateDraft: (data, draft_id) => dispatch(updateDraft(data, draft_id)),
-  editPublished: (data, schema, draft_id) =>
-    dispatch(editPublished(data, schema, draft_id)),
+  editPublished: (data, draft_id) => dispatch(editPublished(data, draft_id)),
   formErrorsChange: errors => dispatch(formErrorsChange(errors))
 });
 
