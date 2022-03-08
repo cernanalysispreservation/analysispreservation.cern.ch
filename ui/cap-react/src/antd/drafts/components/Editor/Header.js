@@ -145,7 +145,6 @@ const Header = ({
       } else if (status == "published")
         editPublished(
           { ...formData, $schema: draft.$schema },
-          match.params.schema_id,
           draft_id
         ).finally(() => {
           let { errorSchema } = _validateFormData();
