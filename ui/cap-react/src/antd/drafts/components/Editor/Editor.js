@@ -11,9 +11,6 @@ const Editor = ({
   schemaErrors,
   schemas = { schema: {}, uiSchema: {} },
   formData,
-  match,
-  initForm,
-  fetchSchemaByNameVersion,
   formDataChange,
   extraErrors,
   formRef,
@@ -24,12 +21,6 @@ const Editor = ({
   const [mode, setMode] = useState(
     (history.location.state && history.location.state.mode) || "edit"
   );
-  useEffect(() => {
-    if (match.params.schema_id) {
-      initForm();
-      fetchSchemaByNameVersion(match.params.schema_id);
-    }
-  }, []);
   if (!schemas) return null;
   if (schemaErrors.length > 0) {
     return <Error error={schemaErrors[0]} />;
