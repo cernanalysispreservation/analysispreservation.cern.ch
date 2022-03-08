@@ -1,10 +1,9 @@
 import axios from "axios";
+import { notification } from "antd";
 
 export const DASHBOARD_QUERY_REQUEST = "DASHBOARD_QUERY_REQUEST";
 export const DASHBOARD_QUERY = "DASHBOARD_QUERY";
 export const DASHBOARD_QUERY_ERROR = "DASHBOARD_QUERY_ERROR";
-
-import cogoToast from "cogo-toast";
 
 export function dashboardQueryRequest() {
   return {
@@ -35,11 +34,9 @@ export function fetchDashboard() {
       })
       .catch(() => {
         dispatch(dashboardQueryError());
-        cogoToast.error("fetching dashboard data was not possible", {
-          position: "top-center",
-          heading: "Something went wrong",
-          bar: { size: "0" },
-          hideAfter: 5
+        notification.error({
+          message: "Something went wrong",
+          description: "fetching dashboard data was not possible"
         });
       });
   };
