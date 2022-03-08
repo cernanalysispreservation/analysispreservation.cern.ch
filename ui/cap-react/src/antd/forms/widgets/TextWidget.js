@@ -29,20 +29,22 @@ const TextWidget = ({
 
   const handleNumberChange = nextValue => onChange(nextValue);
 
-  const handleTextChange = ({ target }) =>
+  const handleTextChange = ({ target }) => {
+    apiCalledWithCurrentState && setApiCalledWithCurrentState(false);
+    message && setMessage(null);
     onChange(target.value === "" ? options.emptyValue : target.value);
+  };
 
   const handleBlur = ({ target }) => onBlur(id, target.value);
 
   const handleFocus = ({ target }) => onFocus(id, target.value);
 
-  const [apiCalledWithCurrentState, setApiCalledWithCurrentState] = useState(
-    false
-  );
-
   const [message, setMessage] = useState(null);
 
   const [apiCalling, setApiCalling] = useState(false);
+  const [apiCalledWithCurrentState, setApiCalledWithCurrentState] = useState(
+    false
+  );
 
   const _replace_hash_with_current_indexes = path => {
     let indexes = id.split("_").filter(item => !isNaN(item)),
@@ -58,6 +60,7 @@ const TextWidget = ({
     let url = options.autofill_from,
       fieldsMap = options.autofill_fields,
       newFormData = fromJS(formData);
+
     if (
       !event.target.value ||
       (value === event.target.value && apiCalledWithCurrentState)
@@ -73,9 +76,9 @@ const TextWidget = ({
     });
     formDataChange(newFormData.toJS());
 
-    setApiCalledWithCurrentState(true);
     setApiCalling(true);
-    setMessage;
+    setApiCalledWithCurrentState(true);
+    setMessage(null);
     axios
       .get(`${url}${event.target.value}`)
       .then(({ data }) => {
@@ -101,7 +104,7 @@ const TextWidget = ({
           setApiCalling(false);
           setMessage({
             status: "error",
-            message: "Something went wrong with the request"
+            message: "Results not found"
           });
         }
       })
@@ -117,13 +120,6 @@ const TextWidget = ({
               : "Something went wrong with the request "
         });
       });
-  };
-
-  const _onEnterAutofill = event => {
-    if (event.keyCode === 13) {
-      setMessage(null);
-      autoFillOtherFields(event);
-    }
   };
 
   const {
@@ -162,11 +158,11 @@ const TextWidget = ({
           : undefined
       }
       onChange={!readonly ? handleTextChange : undefined}
-      onKeyDown={
+      onPressEnter={
         !readonly
           ? (!autofill_on ||
               (autofill_on && autofill_on.includes("onEnter"))) &&
-            _onEnterAutofill
+            autoFillOtherFields
           : undefined
       }
       onFocus={!readonly ? handleFocus : undefined}
