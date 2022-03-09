@@ -22,7 +22,7 @@ import { HOME, WELCOME, ABOUT, POLICY, CMS } from "../routes";
 import Loading from "../routes/Loading";
 
 const CMSIndex = Loadable({
-  loader: () => import("../../components/cms"),
+  loader: () => import("../admin"),
   loading: Loading,
   delay: 300
 });
