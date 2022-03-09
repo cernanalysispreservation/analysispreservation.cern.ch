@@ -209,7 +209,8 @@ if os.environ.get('DEV_HOST', False):
     hosts = os.environ.get('DEV_HOST')
     if "," in hosts:
         _hosts = hosts.split(",")
-        APP_ALLOWED_HOSTS.append(host.strip() for host in _hosts)
+        for host in _hosts:
+            APP_ALLOWED_HOSTS.append(host.strip())
     else:
         APP_ALLOWED_HOSTS.append(hosts)
 # OAI-PMH
@@ -258,6 +259,17 @@ SUPERUSER_EGROUPS = [
     RoleNeed('analysis-preservation-support@cern.ch'),
     RoleNeed('data-preservation-admins@cern.ch'),
 ]
+
+if os.environ.get('CAP_SUPERUSER_EGROUPS', False):
+    # Multiple superuser egoups may be present
+    # in CAP_SUPERUSER_EGROUPS key
+    superusers = os.environ.get('CAP_SUPERUSER_EGROUPS')
+    if "," in superusers:
+        _superusers = superusers.split(",")
+        for superuser in _superusers:
+            SUPERUSER_EGROUPS.append(RoleNeed(superuser.strip()))
+    else:
+        SUPERUSER_EGROUPS.append(RoleNeed(superusers.strip()))
 
 # Records
 # =======
