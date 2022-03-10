@@ -92,19 +92,14 @@ const SelectWidget = ({
   };
   const updateSearch = (value, cb = null) => {
     let data = fromJS(formData);
-
     if (params) {
-      for (let param in params) {
-        let path = params[param];
-
-        // replace # with current input path
-        path = _replace_hash_with_current_indexes(path);
-
-        let suggestions = suggestions.replace(
-          `${param}=`,
-          `${param}=${data.getIn(path, "") || ""}`
+      Object.entries(params).map(param => {
+        const path = _replace_hash_with_current_indexes(param[1]);
+        suggestions.replace(
+          `${param[0]}=`,
+          `${param[0]}=${data.getIn(path, "") || ""}`
         );
-      }
+      });
     }
     setLoading(true);
     axios
