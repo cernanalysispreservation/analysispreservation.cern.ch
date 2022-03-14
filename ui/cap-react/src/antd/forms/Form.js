@@ -20,7 +20,14 @@ const RJSFForm = ({
   onChange,
   formContext,
   readonly,
-  draftEditor
+  draftEditor,
+  ObjectFieldTemplate: Objects,
+  ArrayFieldTemplate: Arrays,
+  FieldTemplate: Fields,
+  widgets: Widgets,
+  validate,
+  liveValidate = false,
+  showErrorList = false
 }) => {
   // mainly this is used for the drafts forms
   // we want to allow forms to be saved even without required fields
@@ -48,18 +55,20 @@ const RJSFForm = ({
       ref={formRef}
       schema={schema}
       uiSchema={uiSchema}
+      tagName="div"
       fields={fields}
       formData={formData}
-      widgets={widgets}
-      ObjectFieldTemplate={ObjectFieldTemplate}
-      ArrayFieldTemplate={ArrayFieldTemplate}
-      FieldTemplate={FieldTemplate}
-      liveValidate={false}
+      widgets={Widgets || widgets}
+      ObjectFieldTemplate={Objects || ObjectFieldTemplate}
+      ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
+      FieldTemplate={Fields || FieldTemplate}
+      liveValidate={liveValidate}
       noValidate={false}
-      showErrorList={false}
+      showErrorList={showErrorList}
       noHtml5Validate={true}
       onError={() => {}}
       onBlur={() => {}}
+      validate={validate}
       extraErrors={extraErrors}
       onChange={_debounce(onChange, 500)}
       readonly={readonly}
