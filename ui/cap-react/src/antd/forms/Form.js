@@ -23,6 +23,13 @@ const RJSFForm = ({
   draftEditor,
   className = [],
   currentUser,
+  ObjectFieldTemplate: Objects,
+  ArrayFieldTemplate: Arrays,
+  FieldTemplate: Fields,
+  widgets: Widgets,
+  validate,
+  liveValidate = false,
+  showErrorList = false
 }) => {
   let userEmail = currentUser
     ? currentUser.getIn(["profile", "email"])
@@ -115,18 +122,20 @@ const RJSFForm = ({
       ref={formRef}
       schema={schema}
       uiSchema={uiSchema}
+      tagName="div"
       fields={fields}
       formData={formData}
-      widgets={widgets}
-      ObjectFieldTemplate={ObjectFieldTemplate}
-      ArrayFieldTemplate={ArrayFieldTemplate}
-      FieldTemplate={FieldTemplate}
-      liveValidate={false}
+      widgets={Widgets || widgets}
+      ObjectFieldTemplate={Objects || ObjectFieldTemplate}
+      ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
+      FieldTemplate={Fields || FieldTemplate}
+      liveValidate={liveValidate}
       noValidate={false}
-      showErrorList={false}
+      showErrorList={showErrorList}
       noHtml5Validate={true}
       onError={() => {}}
       onBlur={() => {}}
+      validate={validate}
       extraErrors={extraErrors}
       onChange={_debounce(onChange, 500)}
       readonly={readonly}

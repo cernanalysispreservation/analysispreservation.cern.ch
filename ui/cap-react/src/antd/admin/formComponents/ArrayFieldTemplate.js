@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Box from "grommet/components/Box";
 import SchemaTreeItem from "./SchemaTreeItem";
 import HoverBox from "./HoverBox";
-import Form from "react-jsonschema-form";
+import Form from "../../forms/Form";
 import TextWidget from "./TextWidget";
 import { connect } from "react-redux";
-import { addByPath } from "../../../../../../actions/schemaWizard";
+import { addByPath } from "../../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
-import { _validate } from "./utils/validate";
+import { _validate } from "../utils/index";
 
 const widgets = {
   TextWidget: TextWidget
@@ -18,7 +17,13 @@ const widgets = {
 const ArrayFieldTemplate = props => {
   const [display, setDisplay] = useState(false);
 
-  let { schema: schemaPath, uiSchema: uiSchemaPath } = props.rawErrors[0];
+  let schemaPath = [];
+  let uiSchemaPath = [];
+  if (props.rawErrors) {
+    let { schema, uiSchema } = props.rawErrors[0];
+    schemaPath = schema;
+    uiSchemaPath = uiSchema;
+  }
 
   let _path = {
     schema: [...props.formContext.schema, ...schemaPath, "items"],
@@ -31,7 +36,7 @@ const ArrayFieldTemplate = props => {
   };
 
   return (
-    <Box flex={true} style={{ position: "relative" }}>
+    <div style={{ position: "relative", width: "100%" }}>
       <SchemaTreeItem
         type="array"
         {...props}
@@ -40,7 +45,7 @@ const ArrayFieldTemplate = props => {
         updateDisplay={() => setDisplay(!display)}
       />
       {display && (
-        <Box flex={true} margin={{ left: "medium" }}>
+        <div style={{ marginLeft: "10px" }}>
           <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>
             <div style={{ borderBottom: "5px solid #e6e6e6" }} />
             <Form
@@ -56,14 +61,15 @@ const ArrayFieldTemplate = props => {
               liveValidate={true}
               validate={_validate}
               noHtml5Validate={true}
+              onChange={() => {}}
               formContext={_path}
             >
               <span />
             </Form>
           </HoverBox>
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 
