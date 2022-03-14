@@ -1,14 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Row, Typography } from "antd";
+import { Col, Divider, Typography } from "antd";
+import SchemaTree from "../containers/SchemaTree";
 
 const SchemaPreview = ({ schema }) => {
   return (
-    <Row style={{ height: "100%" }}>
-      <Typography.Title level={5}>
-        {(schema && schema.get("title")) || "Root"}
-      </Typography.Title>
-    </Row>
+    <Col span={24}>
+      <Divider orientation="left">
+        <Typography.Title level={5}>
+          {(schema && schema.get("title")) || "Root"}
+        </Typography.Title>
+      </Divider>
+      <SchemaTree key="schemaTree" />
+    </Col>
   );
 };
 
