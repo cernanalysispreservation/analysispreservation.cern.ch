@@ -1,10 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Alert, Col, Divider, Row, Space, Tag, Typography } from "antd";
 import fields from "../utils/fieldTypes";
 import Draggable from "./Draggable";
 
-const SelectFieldType = props => {
+const SelectFieldType = () => {
   return (
     <Row style={{ padding: "15px" }}>
       <Alert
@@ -25,7 +24,10 @@ const SelectFieldType = props => {
               {Object.entries(type.fields).map(([key, type], index) => (
                 <Col xs={22} xl={12} key={key} style={{ width: "100%" }}>
                   <Draggable key={index} data={type}>
-                    <Tag style={{ width: "100%" }} size="large">
+                    <Tag
+                      style={{ width: "100%", padding: "2px 5px" }}
+                      size="large"
+                    >
                       <Space>
                         {type.icon}
                         {type.title}
