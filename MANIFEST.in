@@ -81,4 +81,5 @@ recursive-include ui *.woff
 recursive-include ui *.yarnclean
 recursive-include ui *.yml
 recursive-include ui *.editorconfig
+recursive-include tests *.yaml
 prune docs/_build

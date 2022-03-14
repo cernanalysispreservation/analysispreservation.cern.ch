@@ -833,3 +833,29 @@ def git_repo_tar():
 def file_tar():
     return b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03+I-.Q(J-\xc8WH' \
             b'\xcb/RHN,\xe0\x02\x00\xeb\xd5!\xe0\x12\x00\x00\x00'
+
+
+@pytest.fixture(scope="session")
+def vcr_config():
+    return {
+        "filter_query_parameters": ["access_token"],
+        "ignore_localhost": True,
+        "decode_compressed_response": True,
+        "filter_headers": ("Authorization", "User-Agent"),
+        "ignore_hosts": (
+            "cache",
+            "db",
+            "elasticsearch",
+            "flower",
+            "indexer",
+            "localhost",
+            "mq",
+            "postgres",
+            "redis",
+            "ui",
+            "web-worker",
+            "web",
+            "worker",
+        ),
+        "record_mode": "once",
+    }

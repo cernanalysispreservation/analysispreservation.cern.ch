@@ -28,6 +28,7 @@ tests_require = [
     'yapf>=0.28.0',
     'responses==0.10.6',
     'selenium>=3.4.3',
+    'pytest-vcr',
 ]
 
 extras_require = {'docs': ['Sphinx>=1.5.1'], 'tests': tests_require}

@@ -2,7 +2,7 @@ name: Backend tests
 
 on:
   push:
-    branches: [ master, reana ]
+    branches: [ master ]
     paths-ignore:
     - 'ui/**'
   pull_request:
@@ -92,7 +92,6 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       REANA_SERVER_URL: https://reana.cern.ch
-      APP_REANA_CMS_ACCESS_TOKEN: ${{ secrets.APP_REANA_CMS_ACCESS_TOKEN }}
     services:
       redis:
         image: redis
