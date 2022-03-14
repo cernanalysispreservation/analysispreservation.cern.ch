@@ -29,3 +29,24 @@ export const _addSchemaToLocalStorage = (_id, name, description) => {
 
   return newAvailableSchemas;
 };
+
+let _addErrors = (errors, path) => {
+  errors.addError({ schema: path.schema, uiSchema: path.uiSchema });
+
+  Object.keys(errors).map(error => {
+    if (error != "__errors" && error != "addError") {
+      _addErrors(errors[error], {
+        schema: [...path, "properties", error],
+        uiSchema: [...path, error]
+      });
+    }
+  });
+  return errors;
+};
+export const _validate = function(formData, errors) {
+  return _addErrors(errors, { schema: [], uiSchema: [] });
+};
+
+export const shoudDisplayGuideLinePopUp = schema => {
+  return schema.get("properties") && schema.get("properties").size === 0;
+};
