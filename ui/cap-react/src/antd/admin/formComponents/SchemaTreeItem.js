@@ -74,7 +74,6 @@ const SchemaTreeItem = ({
 
   return (
     <Tag
-      onClick={_onClick}
       style={{
         width: "100%",
         marginBottom: "2px",
@@ -87,9 +86,12 @@ const SchemaTreeItem = ({
       }}
     >
       <Row justify="space-between" align="middle">
-        <Space>
+        <Space onClick={_onClick}>
           {getIconByType(uiSchema, schema)}
           <Typography.Text>{schema.title || "Untitled field"}</Typography.Text>
+          <Typography.Text type="secondary">
+            {path.schema[path.schema.length - 1]}
+          </Typography.Text>
         </Space>
         {schema ? (
           <div>
