@@ -90,6 +90,9 @@ const SchemaTreeItem = ({
         <Space>
           {getIconByType(uiSchema, schema)}
           <Typography.Text>{schema.title || "Untitled field"}</Typography.Text>
+          <Typography.Text type="secondary">
+            {path.schema[path.schema.length - 1]}
+          </Typography.Text>
         </Space>
         {schema ? (
           <div>
