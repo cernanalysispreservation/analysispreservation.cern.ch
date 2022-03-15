@@ -1,5 +1,8 @@
 import { connect } from "react-redux";
-import { saveSchemaChanges } from "../../../actions/schemaWizard";
+import {
+  saveSchemaChanges,
+  updateSchemaConfig
+} from "../../../actions/schemaWizard";
 import { pushPath } from "../../../actions/support";
 import Header from "../components/Header";
 
@@ -17,7 +20,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     saveSchemaChanges: () => dispatch(saveSchemaChanges()),
-    pushPath: path => dispatch(pushPath(path))
+    pushPath: path => dispatch(pushPath(path)),
+    updateSchemaConfig: config => dispatch(updateSchemaConfig(config))
   };
 }
 

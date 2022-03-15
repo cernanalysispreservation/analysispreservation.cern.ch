@@ -26,8 +26,7 @@ const SchemaTree = ({ schema, uiSchema }) => {
       FieldTemplate={FieldTemplate}
       onChange={() => {}}
       validate={_validate}
-      noHtml5Validate={true}
-      liveValidate={true}
+      liveValidate
       formContext={{ schema: [], uiSchema: [] }}
     />
   );
