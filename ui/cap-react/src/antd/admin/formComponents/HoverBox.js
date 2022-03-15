@@ -2,16 +2,14 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Box, Label } from "grommet";
-import { AiOutlineDownload } from "react-icons/ai";
 
-import { shoudDisplayGuideLinePopUp } from "../utils/index";
+import { shoudDisplayGuideLinePopUp } from "../utils";
+import { Space, Typography } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 
 function getStyle(isOverCurrent) {
   return {
-    color: "white",
     textAlign: "center",
-    fontSize: "1rem",
     height: "100%",
     border: isOverCurrent ? "1px dotted black " : null
   };
@@ -49,16 +47,19 @@ function HoverBox({
       index={index}
     >
       {shoudDisplayGuideLinePopUp(schema) && (
-        <Box
-          style={{ border: "1px dotted black", color: "#000" }}
-          pad="medium"
-          margin="medium"
-          align="center"
-          justify="center"
+        <Space
+          style={{
+            border: "1px dotted black",
+            color: "#000",
+            width: "100%",
+            height: "100%",
+            padding: "40px"
+          }}
+          direction="vertical"
         >
-          <Label>Drop Area</Label>
-          <AiOutlineDownload size={20} />
-        </Box>
+          <Typography.Text>Drop Area</Typography.Text>
+          <DownloadOutlined />
+        </Space>
       )}
       {children}
     </div>
