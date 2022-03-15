@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Box from "grommet/components/Box";
 import HoverBox from "./HoverBox";
 import SchemaTreeItem from "./SchemaTreeItem";
 import Form from "../../forms/Form";
@@ -36,12 +35,13 @@ const FieldTemplate = props => {
         path={path}
         shouldHideChildren={shouldBoxHideChildren(uiSchema)}
       >
-        <Box
-          flex={true}
-          pad={formContext.schema.length == 0 ? "medium" : "none"}
+        <div
+          style={{
+            padding: formContext.schema.length == 0 ? "10px" : "none"
+          }}
         >
           {children}
-        </Box>
+        </div>
       </HoverBox>
     );
   }
@@ -49,10 +49,10 @@ const FieldTemplate = props => {
   let _renderObjectArray = undefined;
 
   if (["array"].indexOf(schema.type) > -1) {
-    _renderObjectArray = <Box>{children}</Box>;
+    _renderObjectArray = <div>{children}</div>;
   } else if (["object"].indexOf(schema.type) > -1) {
     _renderObjectArray = (
-      <Box flex={true} style={{ position: "relative", overflow: "visible" }}>
+      <div>
         <SchemaTreeItem
           type="object"
           {...props}
@@ -61,7 +61,7 @@ const FieldTemplate = props => {
           updateDisplay={() => setDisplay(!display)}
         />
         {display ? (
-          <Box flex={true} margin={{ left: "medium" }}>
+          <div style={{ marginLeft: "10px" }}>
             <Form
               schema={schema}
               uiSchema={uiSchema}
@@ -73,12 +73,13 @@ const FieldTemplate = props => {
               liveValidate={true}
               validate={_validate}
               formContext={path}
+              onChange={() => {}}
             >
               <span />
             </Form>
-          </Box>
+          </div>
         ) : null}
-      </Box>
+      </div>
     );
   }
 

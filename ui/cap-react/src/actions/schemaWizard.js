@@ -152,8 +152,8 @@ export function getSchemasLocalStorage() {
 export function createContentType(content_type) {
   return function(dispatch) {
     dispatch(schemaInitRequest());
-    let name = content_type.formData.name;
-    let description = content_type.formData.description;
+
+    let { name, description } = content_type;
     const _id = slugify(Math.random().toString() + "_" + name);
     let config = {
       config: merge({ fullname: name }, NOTIFICATIONS)

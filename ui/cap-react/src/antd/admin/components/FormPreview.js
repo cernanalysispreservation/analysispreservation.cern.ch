@@ -2,8 +2,25 @@ import React from "react";
 import PropTypes from "prop-types";
 import Form from "../../forms/Form";
 import { transformSchema } from "../../partials/Utils/schema";
+import { shoudDisplayGuideLinePopUp } from "../utils";
+import { Row, Empty, Space, Typography } from "antd";
 
 const FormPreview = ({ schema, uiSchema }) => {
+  if (shoudDisplayGuideLinePopUp(schema))
+    return (
+      <Row justify="center" align="middle" style={{ height: "100%" }}>
+        <Empty
+          description={
+            <Space direction="vertical">
+              <Typography.Title level={5}>Your form is empty</Typography.Title>
+              <Typography.Text type="secondary">
+                add fields to drop area to init your form
+              </Typography.Text>
+            </Space>
+          }
+        />
+      </Row>
+    );
   return (
     <Form
       schema={transformSchema(schema.toJS())}
@@ -14,6 +31,9 @@ const FormPreview = ({ schema, uiSchema }) => {
   );
 };
 
-FormPreview.propTypes = {};
+FormPreview.propTypes = {
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object
+};
 
 export default FormPreview;

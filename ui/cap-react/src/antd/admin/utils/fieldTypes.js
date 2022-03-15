@@ -695,7 +695,7 @@ const simple = {
         type: "boolean"
       },
       uiSchema: {
-        "ui:widget": "switch",
+        // "ui:widget": "switch",
         "ui:options": {
           grid: {
             gridColumns: "1/5"
@@ -810,7 +810,7 @@ const simple = {
         enum: ["Option A", "Option B"]
       },
       uiSchema: {
-        "ui:widget": "checkboxes",
+        // "ui:widget": "checkboxes",
         "ui:options": {
           grid: {
             gridColumns: "1/5"
