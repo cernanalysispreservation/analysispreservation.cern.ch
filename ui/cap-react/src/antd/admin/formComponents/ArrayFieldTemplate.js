@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { addByPath } from "../../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
-import { _validate } from "../utils/index";
+import { _validate } from "../utils";
 
 const widgets = {
   TextWidget: TextWidget
@@ -36,7 +36,7 @@ const ArrayFieldTemplate = props => {
   };
 
   return (
-    <div style={{ position: "relative", width: "100%" }}>
+    <div>
       <SchemaTreeItem
         type="array"
         {...props}
@@ -47,7 +47,6 @@ const ArrayFieldTemplate = props => {
       {display && (
         <div style={{ marginLeft: "10px" }}>
           <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>
-            <div style={{ borderBottom: "5px solid #e6e6e6" }} />
             <Form
               schema={props.schema.items}
               uiSchema={props.uiSchema.items}

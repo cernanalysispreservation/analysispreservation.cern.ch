@@ -61,6 +61,12 @@ const AdminPanel = ({ match, replacePath, schema, schemaInit, getSchema }) => {
   );
 };
 
-AdminPanel.propTypes = {};
+AdminPanel.propTypes = {
+  match: PropTypes.object,
+  replacePath: PropTypes.func,
+  schema: PropTypes.object,
+  schemaInit: PropTypes.func,
+  getSchema: PropTypes.func
+};
 
 export default AdminPanel;

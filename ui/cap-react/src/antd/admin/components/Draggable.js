@@ -15,6 +15,9 @@ const Draggable = ({ data, children }) => {
   );
 };
 
-Draggable.propTypes = {};
+Draggable.propTypes = {
+  children: PropTypes.node,
+  data: PropTypes.object
+};
 
 export default Draggable;
