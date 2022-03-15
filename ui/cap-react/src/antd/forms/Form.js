@@ -10,6 +10,7 @@ import "./Form.less";
 import Form from "@rjsf/antd";
 import objectPath from "object-path";
 import ArrayFieldTemplate from "./templates/ArrayFieldTemplates";
+import CmsWidgets from "../admin/formComponents/widgets";
 
 const RJSFForm = ({
   formRef,
@@ -50,6 +51,7 @@ const RJSFForm = ({
 
     return errors;
   };
+
   return (
     <Form
       className={["__Form__", ...className].join(" ")}
@@ -59,7 +61,7 @@ const RJSFForm = ({
       tagName="div"
       fields={fields}
       formData={formData}
-      widgets={Widgets || widgets}
+      widgets={{ ...widgets, ...Widgets, ...CmsWidgets }}
       ObjectFieldTemplate={Objects || ObjectFieldTemplate}
       ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
       FieldTemplate={Fields || FieldTemplate}
@@ -91,11 +93,18 @@ RJSFForm.propTypes = {
   formData: PropTypes.object,
   extraErrors: PropTypes.object,
   onChange: PropTypes.func,
+  validate: PropTypes.func,
   formContext: PropTypes.object,
+  widgets: PropTypes.object,
   mode: PropTypes.string,
   draftEditor: PropTypes.bool,
   readonly: PropTypes.bool,
-  className: PropTypes.array
+  className: PropTypes.array,
+  liveValidate: PropTypes.bool,
+  showErrorList: PropTypes.bool,
+  FieldTemplate: PropTypes.node,
+  ObjectFieldTemplate: PropTypes.node,
+  ArrayFieldTemplate: PropTypes.node
 };
 
 export default RJSFForm;

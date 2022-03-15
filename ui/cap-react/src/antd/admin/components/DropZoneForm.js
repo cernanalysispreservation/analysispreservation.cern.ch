@@ -55,6 +55,8 @@ const DropZoneForm = ({ initWizard }) => {
   );
 };
 
-DropZoneForm.propTypes = {};
+DropZoneForm.propTypes = {
+  initWizard: PropTypes.func
+};
 
 export default DropZoneForm;
