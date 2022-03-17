@@ -695,7 +695,7 @@ const simple = {
         type: "boolean"
       },
       uiSchema: {
-        // "ui:widget": "switch",
+        "ui:widget": "switch",
         "ui:options": {
           grid: {
             gridColumns: "1/5"
