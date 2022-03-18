@@ -407,6 +407,8 @@ export function removeNotification(index, category) {
 
     let newNotification = notification.delete(index);
     dispatch(deleteNotification({ path, notification: newNotification }));
+    const pathname = getState().router.location.pathname;
+    dispatch(push(pathname.split(`/${index}`)[0]));
   };
 }
 

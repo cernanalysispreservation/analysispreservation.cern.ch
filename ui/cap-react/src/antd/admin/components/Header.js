@@ -144,10 +144,22 @@ const Header = ({
             justifyContent: "flex-end"
           }}
         >
-          <Menu.Item key="builder" icon={<FormOutlined />}>
+          <Menu.Item
+            key="builder"
+            icon={<FormOutlined />}
+            onClick={() =>
+              pushPath(pathname.split("notifications")[0] + "builder")
+            }
+          >
             Form Builder
           </Menu.Item>
-          <Menu.Item key="notifications" icon={<NotificationOutlined />}>
+          <Menu.Item
+            key="notifications"
+            icon={<NotificationOutlined />}
+            onClick={() =>
+              pushPath(pathname.split("builder")[0] + "notifications")
+            }
+          >
             Notifications
           </Menu.Item>
         </Menu>
