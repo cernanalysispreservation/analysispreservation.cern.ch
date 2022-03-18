@@ -49,7 +49,7 @@ const TabFieldMenu = ({
             formErrors
           )}
         >
-          {item.title || item.content.props.schema.title}
+          {item.title || item.content.props.schema.title || "Untitled field"}
         </Menu.Item>
       ))}
     </Menu>

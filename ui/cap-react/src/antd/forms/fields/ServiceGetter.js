@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import ORCidIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/ORCID/ORCidIcon";
 import { Button, Input, Select, Space, Typography } from "antd";
-import ZenodoIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/Zenodo/ZenodoIcon";
-import RORIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/ROR/RORIcon";
 import axios from "axios";
 import Ror from "./services/Ror";
 import Zenodo from "./services/Zenodo";
@@ -39,12 +36,6 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
       orcid: <Orcid data={formData.fetched} />
     };
     return choices[name];
-  };
-
-  const IconFactory = {
-    orcid: <ORCidIcon />,
-    zenodo: <ZenodoIcon />,
-    ror: <RORIcon />
   };
 
   const getId = (service, id) => {
@@ -113,7 +104,7 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
           {uiSchema["ui:servicesList"].length > 2 && (
             <Select
               value={service.value}
-              placeHolder="Select service"
+              placeholder="Select service"
               onChange={val => setService({ value: val })}
             >
               {uiSchema["ui:servicesList"].map(service => (
@@ -126,8 +117,7 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
           {service && (
             <Space direction="vertical">
               <Space>
-                {IconFactory[service.value]}
-                <Typography.Text>{service.label}</Typography.Text>
+                <Typography.Text>{service.value.toUpperCase()}</Typography.Text>
                 <Input.Search
                   placeholder="ID here"
                   enterButton="Fetch"
@@ -144,6 +134,10 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
   );
 };
 
-ServiceGetter.propTypes = {};
+ServiceGetter.propTypes = {
+  formData: PropTypes.object,
+  uiSchema: PropTypes.object,
+  onChange: PropTypes.func
+};
 
 export default ServiceGetter;
