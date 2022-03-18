@@ -11,6 +11,7 @@ import {
 import DocumentTitle from "../../partials/DocumentTitle";
 import { Route, Switch } from "react-router-dom";
 import SchemaWizard from "../containers/SchemaWizard";
+import Notifications from "../notifications";
 
 const AdminPanel = ({ match, replacePath, schema, schemaInit, getSchema }) => {
   useEffect(() => {
@@ -53,7 +54,7 @@ const AdminPanel = ({ match, replacePath, schema, schemaInit, getSchema }) => {
         <Layout.Content>
           <Switch>
             <Route path={CMS_EDIT} component={SchemaWizard} />
-            {/* <Route path={CMS_NOTIFICATION} component={NotificationIndex} /> */}
+            <Route path={CMS_NOTIFICATION} component={Notifications} />
           </Switch>
         </Layout.Content>
       </Layout>
