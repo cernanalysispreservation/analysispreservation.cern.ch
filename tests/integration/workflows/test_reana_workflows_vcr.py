@@ -60,7 +60,7 @@ def test_workflow_start_exception(mock_start, app, get_record_pid_uuid, create_r
 
         assert resp.status_code == 400
         assert resp.json == {'message': 'An exception has occured, most probably '
-                                        'the workflow cannot restart.'}
+                                        'the workflow cannot start/restart.'}
 
 
 @pytest.mark.vcr()

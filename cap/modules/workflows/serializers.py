@@ -61,6 +61,7 @@ class ReanaWorkflowSchema(Schema):
             'ui': url_for('cap_workflows.get_workflows_view'),
             'create':
                 url_to_api_url(url_for('cap_workflows.create_reana_workflow')),
+            'run': url_to_api_url(url_for('cap_workflows.run_reana_workflow')),
             'clone': url_with_wf('cap_workflows.clone_reana_workflow'),
             'start': url_with_wf('cap_workflows.start_reana_workflow'),
             'stop': url_with_wf('cap_workflows.stop_reana_workflow'),
