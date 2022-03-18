@@ -126,7 +126,9 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
                     ) && "ant-select-item-error"
                   }
                 >
-                  {item.title || item.content.props.schema.title}
+                  {item.title ||
+                    item.content.props.schema.title ||
+                    "Untitled field"}
                 </Select.Option>
               ))}
             </Select>
