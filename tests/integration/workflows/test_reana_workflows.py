@@ -25,6 +25,7 @@
 
 """Integration tests for CAP api."""
 import json
+from six import BytesIO
 from mock import patch
 
 
@@ -85,3 +86,98 @@ def test_workflow_delete_not_found(mock_token, mock_uuid, mock_start, app, get_r
                              headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 404
+
+
+@patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
+def test_validate_reana_workflow_spec(mock_token, app, users, create_deposit,
+                                      auth_headers_for_superuser, json_headers):
+    deposit = create_deposit(users['superuser'], 'cms-analysis', experiment='CMS')
+    mock_data = b"""
+        version: 0.3.0
+        inputs:
+          files:
+            - code/helloworld.py
+            - data/names.txt
+          parameters:
+            helloworld: code/helloworld.py
+            inputfile: data/names.txt
+            outputfile: results/greetings.txt
+            sleeptime: 0
+        workflow:
+          type: serial
+          specification:
+            steps:
+            - environment: 'python:2.7-slim'
+              commands:
+                - python "${helloworld}"
+                  --inputfile "${inputfile}"
+                  --outputfile "${outputfile}"
+                  --sleeptime ${sleeptime}
+        outputs:
+          files:
+            - results/greetings.txt
+    """
+    deposit.files['reana.yaml'] = BytesIO(mock_data)
+    pid = deposit['_deposit']['id']
+    mock_args = {
+        "pid": pid,
+        "files_to_validate": [
+            {
+                "path":"reana.yaml"
+            }
+        ]
+    }
+
+    with app.test_client() as client:
+        resp = client.post('workflows/reana/validate', data=json.dumps(mock_args),
+                           headers=auth_headers_for_superuser + json_headers)
+
+        assert resp.status_code == 200
+        assert resp.json['errors'] == {}
+
+
+@patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
+def test_validate_reana_workflow_spec_wrong(mock_token, app, users, create_deposit,
+                                      auth_headers_for_superuser, json_headers):
+    deposit = create_deposit(users['superuser'], 'cms-analysis', experiment='CMS')
+    mock_data = b"""
+        version: 0.3.0
+        inputs:
+          files:
+            - code/helloworld.py
+            - data/names.txt
+          parameters:
+            helloworld: code/helloworld.py
+            inputfile: data/names.txt
+            outputfile: results/greetings.txt
+            sleeptime: 0
+        workflow:
+          specification:
+            steps:
+            - environment: 'python:2.7-slim'
+              commands:
+                - python "${helloworld}"
+                  --inputfile "${inputfile}"
+                  --outputfile "${outputfile}"
+                  --sleeptime ${sleeptime}
+        outputs:
+          files:
+            - results/greetings.txt
+    """
+    deposit.files['reana.yaml'] = BytesIO(mock_data)
+    pid = deposit['_deposit']['id']
+    mock_args = {
+        "pid": pid,
+        "files_to_validate": [
+            {
+                "path":"reana.yaml"
+            }
+        ]
+    }
+
+    with app.test_client() as client:
+        resp = client.post('workflows/reana/validate', data=json.dumps(mock_args),
+                           headers=auth_headers_for_superuser + json_headers)
+
+        assert resp.status_code == 200
+        assert resp.json['errors'] == {"reana.yaml": "'type' is a required property"}
