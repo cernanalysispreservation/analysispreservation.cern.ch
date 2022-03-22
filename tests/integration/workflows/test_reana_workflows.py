@@ -44,7 +44,7 @@ def test_reana_ping_exception(mock_ping, app, auth_headers_for_superuser, json_h
         assert resp.status_code == 503
 
 
-@patch('cap.modules.workflows.views.create_reana_workflow', side_effect=Exception())
+@patch('cap.modules.workflows.views.workflow_create', side_effect=Exception())
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
 def test_create_reana_workflow_exception(mock_token, mock_created, app, get_record_pid_uuid,
                                          auth_headers_for_superuser, json_headers):
@@ -55,24 +55,24 @@ def test_create_reana_workflow_exception(mock_token, mock_created, app, get_reco
     }
 
     with app.test_client() as client:
-        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+        resp = client.post('workflows/reana/create', data=json.dumps(mock_data),
                            headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 400
 
 
-@patch('cap.modules.workflows.views.get_all_reana_workflows')
+@patch('cap.modules.workflows.views.get_all_workflows_by_deposit')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
 def test_get_all_workflows(mock_token, mock_get_all, app, get_record_pid_uuid,
                            auth_headers_for_superuser, json_headers):
     pid, uuid = get_record_pid_uuid
 
     with app.test_client() as client:
-        resp = client.get('workflows/all/record/{}'.format(pid),
+        resp = client.get('workflows/reana/all/record/{}'.format(pid),
                           headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 200
 
 
-@patch('cap.modules.workflows.views.delete_reana_workflow', side_effect=Exception())
+@patch('cap.modules.workflows.views.workflow_delete', side_effect=Exception())
 @patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
 def test_workflow_delete_not_found(mock_token, mock_uuid, mock_start, app, get_record_pid_uuid,

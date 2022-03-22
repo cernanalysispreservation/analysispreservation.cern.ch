@@ -46,7 +46,7 @@ def test_reana_workflow_logs(app, get_record_pid_uuid, create_reana_workflow,
 
 
 @pytest.mark.vcr()
-@patch('cap.modules.workflows.views.start_reana_workflow', side_effect=Exception())
+@patch('cap.modules.workflows.views.workflow_start', side_effect=Exception())
 def test_workflow_start_exception(mock_start, app, get_record_pid_uuid, create_reana_workflow,
                                   auth_headers_for_superuser, json_headers):
     _, uuid = get_record_pid_uuid
@@ -64,7 +64,7 @@ def test_workflow_start_exception(mock_start, app, get_record_pid_uuid, create_r
 
 
 @pytest.mark.vcr()
-@patch('cap.modules.workflows.views.stop_reana_workflow', side_effect=Exception())
+@patch('cap.modules.workflows.views.workflow_stop', side_effect=Exception())
 def test_workflow_stop_exception(mock_stop, app, get_record_pid_uuid,
                                  create_reana_workflow, auth_headers_for_superuser, json_headers):
     _, uuid = get_record_pid_uuid
@@ -96,7 +96,7 @@ def test_workflow_list_files(app, get_record_pid_uuid, create_reana_workflow,
 
 
 @pytest.mark.vcr()
-@patch('cap.modules.workflows.views.delete_reana_workflow_files', side_effect=FileDeletionError())
+@patch('cap.modules.workflows.views.delete_workflow_files', side_effect=FileDeletionError())
 def test_workflow_delete_files_exception(mock_rm, app, get_record_pid_uuid,
                                          create_reana_workflow, auth_headers_for_superuser, json_headers):
     pid, uuid = get_record_pid_uuid
@@ -114,7 +114,7 @@ def test_workflow_delete_files_exception(mock_rm, app, get_record_pid_uuid,
 
 
 @pytest.mark.vcr()
-@patch('cap.modules.workflows.views.download_reana_workflow_files', side_effect=Exception())
+@patch('cap.modules.workflows.views.download_workflow_files', side_effect=Exception())
 def test_workflow_download_files_exception(mock_download, app, get_record_pid_uuid,
                                            create_reana_workflow, auth_headers_for_superuser, json_headers):
     pid, uuid = get_record_pid_uuid

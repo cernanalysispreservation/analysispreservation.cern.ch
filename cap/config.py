@@ -773,6 +773,7 @@ GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITLAB_OAUTH_ACCESS_TOKEN')
 # Reana server url
 # ================
 REANA_SERVER_URL = os.environ.get('APP_REANA_SERVER_URL', 'https://reana.cern.ch')
+REANA_USER_ACCESS_TOKEN = os.environ.get('REANA_USER_ACCESS_TOKEN', "default")
 REANA_ACCESS_TOKEN = {
     'ATLAS': os.environ.get('APP_REANA_ATLAS_ACCESS_TOKEN', "default"),
     'ALICE': os.environ.get('APP_REANA_ALICE_ACCESS_TOKEN', "default"),

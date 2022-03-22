@@ -95,6 +95,14 @@ def get_reana_token(uuid, record=None):
     return token
 
 
+def get_reana_user_token():
+    """Retrieve token based on current user config."""
+    token = current_app.config['REANA_USER_ACCESS_TOKEN']
+    if not token:
+        raise 'Access token is not available.'
+    return token
+
+
 def update_deposit_workflow(deposit, user, name, workflow_name, resp,
                             rec_uuid, workflow_json):
     """Return the deposit with linking the created workflow on REANA."""

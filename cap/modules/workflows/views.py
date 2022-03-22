@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2021 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -33,13 +33,15 @@ from flask_login import current_user
 from reana_client.api.client import (
     ping, get_workflow_status, start_workflow, get_workflow_logs,
     create_workflow, delete_workflow, stop_workflow, delete_file, list_files,
-    download_file, upload_file)
+    download_file, upload_file, get_workflows, info, get_workflow_disk_usage,
+    get_user_quota, mv_files)
 from reana_client.errors import FileDeletionError, FileUploadError
 from reana_client.utils import load_reana_spec
 
 from .models import ReanaWorkflow
 from .utils import (update_workflow, clone_workflow, get_reana_token,
-                    resolve_uuid, resolve_depid, update_deposit_workflow)
+                    resolve_uuid, resolve_depid, update_deposit_workflow,
+                    get_reana_user_token)
 from .serializers import ReanaWorkflowLogsSchema
 
 from cap.modules.access.utils import login_required
@@ -47,7 +49,7 @@ from cap.modules.records.api import CAPRecord
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.experiments.errors import ExternalAPIException
 
-workflows_bp = Blueprint('cap_workflows', __name__, url_prefix='/workflows')
+workflows_bp = Blueprint('cap_workflows', __name__, url_prefix='/workflows/reana')
 
 
 def pass_workflow(with_access=False, with_record=False, with_token=False):
@@ -91,10 +93,43 @@ def pass_workflow(with_access=False, with_record=False, with_token=False):
     return _pass_workflow
 
 
-@workflows_bp.route('/reana/ping')
+####################################
+#       Quota commands
+####################################
+@workflows_bp.route('/quota', methods=['GET'])
 @login_required
-def ping_reana():
-    """Ping the service."""
+def user_quota():
+    """Retrieve REANA user quota usage and limits."""
+    token = get_reana_user_token()
+    try:
+        resp = get_user_quota(token)
+        return jsonify({'message': resp}), 200
+    except Exception:
+        raise ExternalAPIException()
+
+
+####################################
+#       Configuration commands
+####################################
+@workflows_bp.route('/info', methods=['GET'])
+@login_required
+def cluster_info():
+    """List cluster general information."""
+    token = get_reana_user_token()
+    try:
+        resp = info(token)
+        return jsonify({'message': resp}), 200
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'connecting to REANA.'.format(e)
+        }), 400
+
+
+@workflows_bp.route('/ping', methods=['GET'])
+@login_required
+def ping_reana_service():
+    """Ping the REANA service."""
     try:
         resp = ping()
         status = 200 if resp == 'OK' else 400
@@ -103,57 +138,13 @@ def ping_reana():
         raise ExternalAPIException()
 
 
-@workflows_bp.route('/reana/validate', methods=['POST'])
+####################################
+#   Workflow management commands
+####################################
+@workflows_bp.route('/create', methods=['POST'])
 @login_required
-def validate_reana_workflow_spec():
-    """Validate workflow specification file."""
-    _args = request.get_json()
-    _, rec_uuid = resolve_depid(_args.get('pid'))
-    deposit = CAPRecord.get_record(rec_uuid)
-    spec_files = _args.get('files_to_validate')
-
-    token = get_reana_token(rec_uuid)
-    errors = {}
-    validated = []
-
-    for _f in spec_files:
-        file_path = deposit.files[_f['path']].obj.file.uri
-        try:
-            load_reana_spec(file_path, access_token=token)
-            validated.append(_f['path'])
-        except ValidationError as e:
-            errors[_f['path']] = e.message
-
-    return jsonify({
-        'validated': validated,
-        'errors': errors
-    }), 200
-
-
-@workflows_bp.route('/', methods=['GET'])
-@login_required
-def get_workflows_view():
-    """Get all workflows of a single user."""
-    workflows = ReanaWorkflow.get_user_workflows(current_user.id)
-
-    _workflows = [workflow.serialize() for workflow in workflows]
-    return jsonify(_workflows)
-
-
-@workflows_bp.route('/all/record/<depid>')
-@login_required
-def get_all_reana_workflows(depid):
-    """Get all workflows for a single experiment."""
-    _, rec_uuid = resolve_depid(depid)
-    workflows = ReanaWorkflow.get_deposit_workflows(rec_uuid)
-    _workflows = [workflow.serialize() for workflow in workflows]
-    return jsonify(_workflows)
-
-
-@workflows_bp.route('/reana', methods=['POST'])
-@login_required
-def create_reana_workflow():
-    """Create a reana workflow by json."""
+def workflow_create():
+    """Create a REANA workflow by JSON."""
     _args = request.get_json()
     name = _args.get('workflow_name')
     workflow_json = _args.get('workflow_json')
@@ -178,22 +169,75 @@ def create_reana_workflow():
     if resp:
         workflow = update_deposit_workflow(deposit, current_user, name, workflow_name,
                                            resp, rec_uuid, workflow_json)
+
     return jsonify(workflow)
 
 
-@workflows_bp.route('/reana/<workflow_id>')
+@workflows_bp.route('/<workflow_id>', methods=['DELETE'])
 @login_required
 @pass_workflow(with_access=True)
-def get_workflow(workflow_id, workflow=None):
-    """Clone a workflow by returning the parameters of the original."""
+def workflow_delete(workflow_id, workflow=None):
+    """Delete a REANA workflow."""
+    rec_uuid = resolve_uuid(workflow_id)
+    token = get_reana_token(rec_uuid)
+
+    try:
+        # delete all_runs and workspace (True, True)
+        resp = delete_workflow(workflow_id, True, True, token)
+        update_workflow(workflow_id, 'status', 'deleted')
+        return jsonify(resp)
+    except Exception:
+        return jsonify({
+            'message':
+            'Workflow {} does not exist. Aborting '
+            'deletion.'.format(workflow_id)
+        }), 400
+
+
+@workflows_bp.route('/', methods=['GET'])
+@login_required
+def get_all_workflows_by_cap_user():
+    """Get all REANA workflows for a single CAP user."""
+    workflows = ReanaWorkflow.get_user_workflows(current_user.id)
+    _workflows = [workflow.serialize() for workflow in workflows]
+
+    return jsonify(_workflows)
+
+
+@workflows_bp.route('/all', methods=['GET'])
+@login_required
+def get_all_workflows_by_reana_user():
+    """Get all REANA workflows for a single REANA user."""
+    token = get_reana_user_token()
+    workflows = get_workflows(token, "batch")
+
+    return jsonify(workflows)
+
+
+@workflows_bp.route('/all/record/<depid>', methods=['GET'])
+@login_required
+def get_all_workflows_by_deposit(depid):
+    """Get all REANA workflows for a single deposit."""
+    _, rec_uuid = resolve_depid(depid)
+    workflows = ReanaWorkflow.get_deposit_workflows(rec_uuid)
+    _workflows = [workflow.serialize() for workflow in workflows]
+
+    return jsonify(_workflows)
+
+
+@workflows_bp.route('/<workflow_id>', methods=['GET'])
+@login_required
+@pass_workflow(with_access=True)
+def get_serialized_workflow(workflow_id, workflow=None):
+    """Return the serialized REANA workflow."""
     return jsonify(workflow.serialize())
 
 
-@workflows_bp.route('/reana/<workflow_id>/clone')
+@workflows_bp.route('/<workflow_id>/clone', methods=['GET'])
 @login_required
 @pass_workflow(with_access=True)
-def clone_reana_workflow(workflow_id, workflow=None):
-    """Clone a workflow by returning the parameters of the original."""
+def workflow_clone(workflow_id, workflow=None):
+    """Clone a REANA workflow by returning the parameters of the original."""
     try:
         resp = clone_workflow(workflow_id)
         return jsonify(resp)
@@ -204,75 +248,36 @@ def clone_reana_workflow(workflow_id, workflow=None):
         }), 400
 
 
-@workflows_bp.route('/reana/<workflow_id>/status')
+####################################
+#   Workflow execution commands
+####################################
+@workflows_bp.route('/<workflow_id>/logs', methods=['GET'])
 @login_required
 @pass_workflow(with_access=True)
-def get_reana_workflow_status(workflow_id, workflow=None):
-    """Get the status of a workflow."""
-    rec_uuid = resolve_uuid(workflow_id)
-    token = get_reana_token(rec_uuid)
-    resp = get_workflow_status(workflow_id, token)
-
-    update_workflow(workflow_id, 'status', resp['status'])
-    return jsonify(resp)
-
-
-@workflows_bp.route('/reana/<workflow_id>/logs')
-@login_required
-@pass_workflow(with_access=True)
-def get_reana_workflow_logs(workflow_id, workflow=None):
-    """Get the logs of a workflow."""
+def workflow_logs(workflow_id, workflow=None):
+    """Get the logs of a REANA workflow."""
     rec_uuid = resolve_uuid(workflow_id)
     token = get_reana_token(rec_uuid)
 
     resp = get_workflow_logs(workflow_id, token)
-
-    # logs = resp.get('logs', '')
-
     resp.update({'rec_uuid': rec_uuid})
     logs_serialized = ReanaWorkflowLogsSchema().dump(resp).data
-
     update_workflow(workflow_id, 'logs', logs_serialized)
+
     return jsonify(logs_serialized)
 
 
-@workflows_bp.route('/reana/<workflow_id>/start', methods=['POST'])
-@workflows_bp.route('/reana/<workflow_id>/restart', methods=['POST'])
+@workflows_bp.route('/run', methods=['POST'])
 @login_required
-@pass_workflow(with_access=True)
-def start_reana_workflow(workflow_id, workflow=None):
-    """Start/Restart a REANA workflow.
-
-    For restarting: `parameters` should have {"restart": True}
-    """
+def run_workflow():
+    """Create a new REANA workflow using JSON, upload files and start the workflow."""
     _args = request.get_json()
-    rec_uuid = resolve_uuid(workflow_id)
-    token = get_reana_token(rec_uuid)
-    parameters = _args.get('parameters')
-
-    try:
-        resp = start_workflow(workflow_id, token, parameters)
-        update_workflow(workflow_id, 'status', resp['status'])
-        return jsonify(resp)
-    except Exception:
-        return jsonify({
-            'message':
-            'An exception has occured, most probably '
-            'the workflow cannot start/restart.'
-        }), 400
-
-
-@workflows_bp.route('/reana/run', methods=['POST'])
-@login_required
-def run_reana_workflow():
-    """Create a new workflow using json, upload files and start the workflow."""
-    _args = request.get_json()
-    name = _args.get('workflow_name')
-    workflow_name = generate_slug(2)
     workflow_json = _args.get('workflow_json')
     parameters = _args.get('parameters')
     files = _args.get('files_to_upload')
+    name = _args.get('workflow_name')
 
+    workflow_name = generate_slug(2)
     _, rec_uuid = resolve_depid(_args.get('pid'))
     deposit = CAPRecord.get_record(rec_uuid)
     token = get_reana_token(rec_uuid)
@@ -321,10 +326,51 @@ def run_reana_workflow():
         }), 400
 
 
-@workflows_bp.route('/reana/<workflow_id>/stop', methods=['POST'])
+@workflows_bp.route('/<workflow_id>/start', methods=['POST'])
+@workflows_bp.route('/<workflow_id>/restart', methods=['POST'])
 @login_required
 @pass_workflow(with_access=True)
-def stop_reana_workflow(workflow_id, workflow=None):
+def workflow_start(workflow_id, workflow=None):
+    """Start/Restart a REANA workflow.
+
+    For restarting: `parameters` should have {"restart": True}
+    """
+    _args = request.get_json()
+    parameters = _args.get('parameters')
+
+    rec_uuid = resolve_uuid(workflow_id)
+    token = get_reana_token(rec_uuid)
+    try:
+        resp = start_workflow(workflow_id, token, parameters)
+        update_workflow(workflow_id, 'status', resp['status'])
+        return jsonify(resp)
+    except Exception:
+        return jsonify({
+            'message':
+            'An exception has occured, most probably '
+            'the workflow cannot start/restart.'
+        }), 400
+
+
+@workflows_bp.route('/<workflow_id>/status', methods=['GET'])
+@login_required
+@pass_workflow(with_access=True)
+def workflow_status(workflow_id, workflow=None):
+    """Get the status of a REANA workflow."""
+    rec_uuid = resolve_uuid(workflow_id)
+    token = get_reana_token(rec_uuid)
+
+    resp = get_workflow_status(workflow_id, token)
+    update_workflow(workflow_id, 'status', resp['status'])
+
+    return jsonify(resp)
+
+
+@workflows_bp.route('/<workflow_id>/stop', methods=['POST'])
+@login_required
+@pass_workflow(with_access=True)
+def workflow_stop(workflow_id, workflow=None):
+    """Stop a REANA workflow."""
     rec_uuid = resolve_uuid(workflow_id)
     token = get_reana_token(rec_uuid)
 
@@ -340,32 +386,91 @@ def stop_reana_workflow(workflow_id, workflow=None):
         }), 400
 
 
-@workflows_bp.route('/reana/<workflow_id>', methods=['DELETE'])
+@workflows_bp.route('/validate', methods=['POST'])
 @login_required
-@pass_workflow(with_access=True)
-def delete_reana_workflow(workflow_id, workflow=None):
-    """Delete a workflow."""
-    rec_uuid = resolve_uuid(workflow_id)
+def validate_workflow_spec():
+    """Validate REANA workflow specification file."""
+    _args = request.get_json()
+    spec_files = _args.get('files_to_validate')
+
+    _, rec_uuid = resolve_depid(_args.get('pid'))
+    deposit = CAPRecord.get_record(rec_uuid)
     token = get_reana_token(rec_uuid)
 
+    errors = {}
+    validated = []
+    for _f in spec_files:
+        file_path = deposit.files[_f['path']].obj.file.uri
+        try:
+            load_reana_spec(file_path, access_token=token)
+            validated.append(_f['path'])
+        except ValidationError as e:
+            errors[_f['path']] = e.message
+
+    return jsonify({
+        'validated': validated,
+        'errors': errors
+    }), 200
+
+
+#####################################
+# Workspace file management commands
+#####################################
+@workflows_bp.route('/<workflow_id>/files/<path:path>', methods=['GET'])
+@login_required
+@pass_workflow(with_access=True)
+def download_workflow_files(workflow_id, path=None, workflow=None):
+    """Download files from a REANA workflow and save in deposit."""
+    rec_uuid = resolve_uuid(workflow_id)
+    token = get_reana_token(rec_uuid)
+    deposit = CAPDeposit.get_record(rec_uuid)
+
     try:
-        # all_runs and workspace
-        resp = delete_workflow(workflow_id, True, True, token)
-        update_workflow(workflow_id, 'status', 'deleted')
-        return jsonify(resp)
+        resp, file_name = download_file(workflow_id, path, token)
     except Exception:
         return jsonify({
             'message':
-            'Workflow {} does not exist. Aborting '
-            'deletion.'.format(workflow_id)
+            '{} did not match any existing file. '
+            'Aborting download.'.format(path)
+        }), 400
+
+    # Convert the response in buffer stream
+    file = BytesIO(resp)
+    size = len(resp)
+    try:
+        deposit.save_file(file, file_name, size)
+        return jsonify({
+            'message': 'File {} successfully saved '
+            'in the deposit.'.format(file_name)
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'message':
+            '{} occured while saving the file '
+            'in the deposit.'.format(e)
         }), 400
 
 
-@workflows_bp.route('/reana/<workflow_id>/files')
+@workflows_bp.route('/<workflow_id>/usage')
 @login_required
 @pass_workflow(with_access=True)
-def list_reana_workflow_files(workflow_id, workflow=None):
-    """Show the files of a workflow."""
+def workflow_disk_usage(workflow_id, workflow=None):
+    """Get the disk usage of a REANA workflow workspace."""
+    _args = request.get_json()
+    parameters = _args.get('parameters')
+
+    rec_uuid = resolve_uuid(workflow_id)
+    token = get_reana_token(rec_uuid)
+    resp = get_workflow_disk_usage(workflow_id, parameters, token)
+
+    return jsonify(resp)
+
+
+@workflows_bp.route('/<workflow_id>/files')
+@login_required
+@pass_workflow(with_access=True)
+def list_workflow_files(workflow_id, workflow=None):
+    """Show the files in a REANA workflow workspace."""
     rec_uuid = resolve_uuid(workflow_id)
     token = get_reana_token(rec_uuid)
 
@@ -385,47 +490,69 @@ def list_reana_workflow_files(workflow_id, workflow=None):
         }), 400
 
 
-@workflows_bp.route('/reana/<workflow_id>/files/<path:path>', methods=['GET'])
+@workflows_bp.route('/<workflow_id>/file/move', methods=['POST'])
 @login_required
-@pass_workflow(with_access=True)
-def download_reana_workflow_files(workflow_id, path=None, workflow=None):
-    """Download files from a workflow and save in deposit."""
-    rec_uuid = resolve_uuid(workflow_id)
-    token = get_reana_token(rec_uuid)
+def move_workflow_files(workflow_id):
+    """Move target file within a REANA workflow workspace."""
+    _args = request.get_json()
+    file_to_move = _args.get('file_to_move')
+    token = get_reana_user_token()
 
-    deposit = CAPDeposit.get_record(rec_uuid)
+    # Check for workflow status
+    workflow_current_status = get_workflow_status(workflow_id, token).get('status')
+    update_workflow(workflow_id, 'status', workflow_current_status)
+    if workflow_current_status == 'running':
+        return jsonify({
+            'message': 'File could not be moved for running workflow.'
+        }), 400
+
     try:
-        resp, file_name = download_file(workflow_id, path, token)
+        files = list_files(workflow_id, token)
+        current_files = [file['name'] for file in files]
+        file_source_name = file_to_move['source'].split('/')[-1]
+        if not any(file_source_name in item for item in current_files):
+            return jsonify({
+                'message':
+                'Source file {} does not exist in workspace {}'.format(
+                    file_source_name,
+                    current_files
+                )
+            }), 400
+        resp = mv_files(file_to_move['source'], file_to_move['target'],
+                        workflow_id, token)
+        return jsonify({'message': resp}), 200
     except Exception:
         return jsonify({
             'message':
-            '{} did not match any existing file. '
-            'Aborting download.'.format(path)
+            'An exception has occured while moving '
+            'the workflow files in REANA.'
         }), 400
 
-    # Convert the response in buffer stream
-    file = BytesIO(resp)
-    size = len(resp)
+
+@workflows_bp.route('/<workflow_id>/files/<path:path>', methods=['DELETE'])
+@login_required
+@pass_workflow(with_access=True)
+def delete_workflow_files(workflow_id, path=None, workflow=None):
+    """Delete files from a REANA workflow workspace."""
+    rec_uuid = resolve_uuid(workflow_id)
+    token = get_reana_token(rec_uuid)
 
     try:
-        deposit.save_file(file, file_name, size)
-        return jsonify({
-            'message': 'File {} successfully saved '
-            'in the deposit.'.format(file_name)
-        }), 200
-    except Exception as e:
+        resp = delete_file(workflow_id, path, token)
+        return jsonify(resp)
+    except FileDeletionError:
         return jsonify({
             'message':
-            '{} occured while saving the file '
-            'in the deposit.'.format(e)
+            '{} did not match any existing file. '
+            'Aborting deletion.'.format(path)
         }), 400
 
 
-@workflows_bp.route('/reana/<workflow_id>/files/upload', methods=['POST'])
+@workflows_bp.route('/<workflow_id>/files/upload', methods=['POST'])
 @login_required
 @pass_workflow(with_access=True, with_record=True)
-def upload_reana_workflow_files(workflow_id, workflow=None, deposit=None):
-    """Upload files to a workflow."""
+def upload_workflow_files(workflow_id, workflow=None, deposit=None):
+    """Upload files to a REANA workflow workspace."""
     _args = request.get_json()
     files = _args.get('files_to_upload')
 
@@ -449,23 +576,3 @@ def upload_reana_workflow_files(workflow_id, workflow=None, deposit=None):
         'successful': successful,
         'errors': errors
     }), 200
-
-
-@workflows_bp.route('/reana/<workflow_id>/files/<path:path>',
-                    methods=['DELETE'])
-@login_required
-@pass_workflow(with_access=True)
-def delete_reana_workflow_files(workflow_id, path=None, workflow=None):
-    """Delete files from a workflow."""
-    rec_uuid = resolve_uuid(workflow_id)
-    token = get_reana_token(rec_uuid)
-
-    try:
-        resp = delete_file(workflow_id, path, token)
-        return jsonify(resp)
-    except FileDeletionError:
-        return jsonify({
-            'message':
-            '{} did not match any existing file. '
-            'Aborting deletion.'.format(path)
-        }), 400
