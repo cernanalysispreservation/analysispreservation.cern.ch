@@ -45,8 +45,9 @@ const ArrayFieldTemplate = props => {
         updateDisplay={() => setDisplay(!display)}
       />
       {display && (
-        <div style={{ marginLeft: "10px" }}>
+        <div style={{ marginLeft: "10px", padding: "10px" }}>
           <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>
+            <div style={{ borderBottom: "5px solid #e6e6e6" }} />
             <Form
               schema={props.schema.items}
               uiSchema={props.uiSchema.items}
