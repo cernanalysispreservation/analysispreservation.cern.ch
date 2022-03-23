@@ -9,6 +9,7 @@ import { addByPath } from "../../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
+import { Empty, Tag } from "antd";
 
 const widgets = {
   TextWidget: TextWidget,
@@ -44,10 +45,20 @@ const ArrayFieldTemplate = (props) => {
         display={display}
         updateDisplay={() => setDisplay(!display)}
       />
+
       {display && (
         <div style={{ marginLeft: "10px", padding: "10px" }}>
           <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>
-            <div style={{ borderBottom: "5px solid #e6e6e6" }} />
+            {Object.keys(props.schema.items).length == 0 ? (
+              <Empty
+                description="Please add items you want"
+                style={{ color: "#000" }}
+              />
+            ) : (
+              <Tag style={{ padding: "2px 5px", width: "100%" }}>
+                drop new items here
+              </Tag>
+            )}
             <Form
               schema={props.schema.items}
               uiSchema={props.uiSchema.items}
