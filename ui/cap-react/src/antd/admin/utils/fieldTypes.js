@@ -6,6 +6,7 @@ import {
   BorderHorizontalOutlined,
   BorderOutlined,
   BorderTopOutlined,
+  CalendarOutlined,
   CheckSquareOutlined,
   CloudDownloadOutlined,
   ContainerOutlined,
@@ -172,6 +173,84 @@ const simple = {
         },
       },
     },
+  },
+  date: {
+    title: "Date",
+    icon: <CalendarOutlined />,
+    description: "Date",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Date Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Date",
+          description: "Provide the date you want for this field"
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "Provide the description you want to be displayed to your date field"
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"]
+        }
+      }
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select"
+      }
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "Date Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns"
+          }
+        }
+      }
+    },
+    default: {
+      schema: {
+        type: "string"
+      },
+      uiSchema: {
+        "ui:widget": "date",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5"
+          }
+        }
+      }
+    }
   },
   CapFiles: {
     title: "File Upload",
