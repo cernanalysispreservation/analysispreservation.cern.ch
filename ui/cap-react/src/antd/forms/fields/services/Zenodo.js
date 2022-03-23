@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Space, Typography } from "antd";
-import ZenodoIcon from "../../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/Zenodo/ZenodoIcon";
 
 const Zenodo = ({ data }) => {
   return (
@@ -10,7 +9,6 @@ const Zenodo = ({ data }) => {
         <Typography.Text>ID</Typography.Text>
         <Space>
           <Typography.Text>{data.id}</Typography.Text>
-          <ZenodoIcon />
         </Space>
       </Space>
       <Space>
