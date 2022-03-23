@@ -26,6 +26,8 @@ const Orcid = ({ data }) => {
   );
 };
 
-Orcid.propTypes = {};
+Orcid.propTypes = {
+  data: PropTypes.object
+};
 
 export default Orcid;

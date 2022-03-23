@@ -6,7 +6,7 @@ import { SettingOutlined } from "@ant-design/icons";
 
 const SchemaPreview = ({ schema, selectProperty }) => {
   return (
-    <Col span={24}>
+    <Col span={24} style={{ height: "90%" }}>
       <Divider orientation="left">
         <Space onClick={() => selectProperty({ schema: [], uiSchema: [] })}>
           <SettingOutlined />

@@ -754,13 +754,6 @@ const simple = {
           title: "Do you want this field to be read only?",
           enum: [true, false],
           enumNames: ["ReadOnly", "Editable"]
-        },
-        type: {
-          type: "string",
-          title: "The type of the returned value",
-          description: "Define the type of the returned value",
-          enum: ["boolean", "string", "number"],
-          enumNames: ["Boolean", "String", "Number"]
         }
       }
     },
