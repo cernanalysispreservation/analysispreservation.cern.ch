@@ -32,6 +32,14 @@ from reana_client.errors import FileDeletionError
 
 
 @pytest.mark.vcr()
+def test_user_quota(app, auth_headers_for_superuser, json_headers):
+    with app.test_client() as client:
+        resp = client.get('workflows/reana/quota', headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert len(resp.json.keys()) == 2
+
+
+@pytest.mark.vcr()
 def test_reana_workflow_logs(app, get_record_pid_uuid, create_reana_workflow,
                              auth_headers_for_superuser, json_headers):
     _, uuid = get_record_pid_uuid

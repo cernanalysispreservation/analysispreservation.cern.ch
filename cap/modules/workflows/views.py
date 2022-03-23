@@ -103,7 +103,7 @@ def user_quota():
     token = get_reana_user_token()
     try:
         resp = get_user_quota(token)
-        return jsonify({'message': resp}), 200
+        return jsonify(resp), 200
     except Exception:
         raise ExternalAPIException()
 
@@ -118,7 +118,7 @@ def cluster_info():
     token = get_reana_user_token()
     try:
         resp = info(token)
-        return jsonify({'message': resp}), 200
+        return jsonify(resp), 200
     except Exception as e:
         return jsonify({
             'message': '{} has occured while '
@@ -130,10 +130,10 @@ def cluster_info():
 @login_required
 def ping_reana_service():
     """Ping the REANA service."""
+    token = get_reana_user_token()
     try:
-        resp = ping()
-        status = 200 if resp == 'OK' else 400
-        return jsonify({'message': resp}), status
+        resp = ping(token)
+        return jsonify(resp), 200
     except Exception:
         raise ExternalAPIException()
 
@@ -194,22 +194,38 @@ def workflow_delete(workflow_id, workflow=None):
         }), 400
 
 
-@workflows_bp.route('/', methods=['GET'])
+@workflows_bp.route('/all', methods=['GET'])
 @login_required
 def get_all_workflows_by_cap_user():
     """Get all REANA workflows for a single CAP user."""
-    workflows = ReanaWorkflow.get_user_workflows(current_user.id)
-    _workflows = [workflow.serialize() for workflow in workflows]
-
+    try:
+        workflows = ReanaWorkflow.get_user_workflows(current_user.id)
+        _workflows = [workflow.serialize() for workflow in workflows]
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'retreiving the workflow.'.format(e)
+        }), 400
     return jsonify(_workflows)
 
 
-@workflows_bp.route('/all', methods=['GET'])
+@workflows_bp.route('/all', methods=['POST'])
 @login_required
 def get_all_workflows_by_reana_user():
     """Get all REANA workflows for a single REANA user."""
+    _args = request.get_json()
+    sessions = _args.get('sessions')
+
     token = get_reana_user_token()
-    workflows = get_workflows(token, "batch")
+    _type = "interactive" if sessions else "batch"
+
+    try:
+        workflows = get_workflows(token, _type)
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'connecting to REANA.'.format(e)
+        }), 400
 
     return jsonify(workflows)
 
@@ -219,8 +235,15 @@ def get_all_workflows_by_reana_user():
 def get_all_workflows_by_deposit(depid):
     """Get all REANA workflows for a single deposit."""
     _, rec_uuid = resolve_depid(depid)
-    workflows = ReanaWorkflow.get_deposit_workflows(rec_uuid)
-    _workflows = [workflow.serialize() for workflow in workflows]
+
+    try:
+        workflows = ReanaWorkflow.get_deposit_workflows(rec_uuid)
+        _workflows = [workflow.serialize() for workflow in workflows]
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'connecting to REANA.'.format(e)
+        }), 400
 
     return jsonify(_workflows)
 
@@ -259,10 +282,23 @@ def workflow_logs(workflow_id, workflow=None):
     rec_uuid = resolve_uuid(workflow_id)
     token = get_reana_token(rec_uuid)
 
-    resp = get_workflow_logs(workflow_id, token)
-    resp.update({'rec_uuid': rec_uuid})
-    logs_serialized = ReanaWorkflowLogsSchema().dump(resp).data
-    update_workflow(workflow_id, 'logs', logs_serialized)
+    try:
+        resp = get_workflow_logs(workflow_id, token)
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'connecting to REANA.'.format(e)
+        }), 400
+
+    try:
+        resp.update({'rec_uuid': rec_uuid})
+        logs_serialized = ReanaWorkflowLogsSchema().dump(resp).data
+        update_workflow(workflow_id, 'logs', logs_serialized)
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'updating the workflow.'.format(e)
+        }), 500
 
     return jsonify(logs_serialized)
 
@@ -360,8 +396,14 @@ def workflow_status(workflow_id, workflow=None):
     rec_uuid = resolve_uuid(workflow_id)
     token = get_reana_token(rec_uuid)
 
-    resp = get_workflow_status(workflow_id, token)
-    update_workflow(workflow_id, 'status', resp['status'])
+    try:
+        resp = get_workflow_status(workflow_id, token)
+        update_workflow(workflow_id, 'status', resp['status'])
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'updating the workflow.'.format(e)
+        }), 500
 
     return jsonify(resp)
 
@@ -461,7 +503,14 @@ def workflow_disk_usage(workflow_id, workflow=None):
 
     rec_uuid = resolve_uuid(workflow_id)
     token = get_reana_token(rec_uuid)
-    resp = get_workflow_disk_usage(workflow_id, parameters, token)
+
+    try:
+        resp = get_workflow_disk_usage(workflow_id, parameters, token)
+    except Exception as e:
+        return jsonify({
+            'message': '{} has occured while '
+            'connecting to REANA.'.format(e)
+        }), 400
 
     return jsonify(resp)
 

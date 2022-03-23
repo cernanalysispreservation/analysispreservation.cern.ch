@@ -29,11 +29,19 @@ from six import BytesIO
 from mock import patch
 
 
+@patch('cap.modules.workflows.views.cluster_info', return_value=Exception())
+@patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
+def test_cluster_info_exception(mock_token, mock_quota, app, auth_headers_for_superuser, json_headers):
+    with app.test_client() as client:
+        resp = client.get('workflows/reana/info', headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 400
+
+
 @patch('cap.modules.workflows.views.ping', return_value='not ok!')
 def test_reana_ping_not_ok(mock_ping, app, auth_headers_for_superuser, json_headers):
     with app.test_client() as client:
         resp = client.get('workflows/reana/ping', headers=auth_headers_for_superuser + json_headers)
-        assert resp.json['message'] == 'not ok!'
+        assert resp.json == 'not ok!'
 
 
 @patch('cap.modules.workflows.views.ping', return_value=Exception())
