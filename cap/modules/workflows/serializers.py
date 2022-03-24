@@ -58,18 +58,18 @@ class ReanaWorkflowSchema(Schema):
                 url_for(path, workflow_id=obj.workflow_id))
 
         links = {
-            'ui': url_for('cap_workflows.get_workflows_view'),
+            'ui': url_for('cap_workflows.get_all_workflows_by_cap_user'),
             'create':
-                url_to_api_url(url_for('cap_workflows.create_reana_workflow')),
-            'run': url_to_api_url(url_for('cap_workflows.run_reana_workflow')),
-            'clone': url_with_wf('cap_workflows.clone_reana_workflow'),
-            'start': url_with_wf('cap_workflows.start_reana_workflow'),
-            'stop': url_with_wf('cap_workflows.stop_reana_workflow'),
-            'delete': url_with_wf('cap_workflows.delete_reana_workflow'),
-            'files': url_with_wf('cap_workflows.list_reana_workflow_files'),
-            'status': url_with_wf('cap_workflows.get_reana_workflow_status'),
-            'logs': url_with_wf('cap_workflows.get_reana_workflow_logs'),
-            'self': url_with_wf('cap_workflows.get_workflow'),
+                url_to_api_url(url_for('cap_workflows.workflow_create')),
+            'run': url_to_api_url(url_for('cap_workflows.run_workflow')),
+            'clone': url_with_wf('cap_workflows.workflow_clone'),
+            'start': url_with_wf('cap_workflows.workflow_start'),
+            'stop': url_with_wf('cap_workflows.workflow_stop'),
+            'delete': url_with_wf('cap_workflows.workflow_delete'),
+            'files': url_with_wf('cap_workflows.list_workflow_files'),
+            'status': url_with_wf('cap_workflows.workflow_status'),
+            'logs': url_with_wf('cap_workflows.workflow_logs'),
+            'self': url_with_wf('cap_workflows.get_serialized_workflow'),
         }
         return links
 
