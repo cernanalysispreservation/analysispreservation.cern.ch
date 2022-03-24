@@ -4,7 +4,7 @@ import AceEditor from "react-ace";
 import JsonDiff from "./JSONDiff";
 import "ace-builds/webpack-resolver";
 import Form from "../../forms/Form";
-import { Button, Menu, Modal, Row, Tabs } from "antd";
+import { Button, Col, Menu, Modal, Row, Tabs, Grid } from "antd";
 import {
   ArrowLeftOutlined,
   DiffOutlined,
@@ -14,8 +14,9 @@ import {
   SaveOutlined,
   SettingOutlined
 } from "@ant-design/icons";
-import { CMS } from "../../../components/routes";
+import { CMS } from "../../routes";
 import { configSchema } from "../utils/schemaSettings";
+const { useBreakpoint } = Grid;
 const Header = ({
   config,
   pushPath,
@@ -29,6 +30,7 @@ const Header = ({
 }) => {
   const [diffModal, setDiffModal] = useState(false);
   const [settingsModal, setSettingsModal] = useState(false);
+  const screens = useBreakpoint();
 
   const _getSchema = () => {
     const fileData = JSON.stringify(
@@ -86,7 +88,7 @@ const Header = ({
     return previews[schemaPreviewDisplay]; //?
   };
   return (
-    <Row align="middle" justify="space-between" style={{ color: "#fff" }}>
+    <Row align="middle" style={{ color: "#fff" }}>
       <Modal
         visible={diffModal}
         onCancel={() => setDiffModal(false)}
@@ -122,45 +124,63 @@ const Header = ({
         />
       </Modal>
 
-      <Button
-        icon={<ArrowLeftOutlined />}
-        onClick={() => pushPath(CMS)}
-        type="primary"
-      >
-        Admin Home Page
-      </Button>
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        selectedKeys={
-          pathname.includes("/builder") ? ["builder"] : ["notifications"]
-        }
-      >
-        <Menu.Item key="builder" icon={<FormOutlined />}>
-          Form Builder
-        </Menu.Item>
-        <Menu.Item key="notifications" icon={<NotificationOutlined />}>
-          Notifications
-        </Menu.Item>
-      </Menu>
-
-      <Menu mode="horizontal" theme="dark" selectable={false}>
-        <Menu.Item icon={<DownloadOutlined />} onClick={() => _getSchema()}>
-          Export Schema
-        </Menu.Item>
-        <Menu.Item icon={<SaveOutlined />} onClick={() => saveSchemaChanges()}>
-          Save Updates
-        </Menu.Item>
-        <Menu.Item icon={<DiffOutlined />} onClick={() => setDiffModal(true)}>
-          Diff
-        </Menu.Item>
-        <Menu.Item
-          icon={<SettingOutlined />}
-          onClick={() => setSettingsModal(true)}
+      <Col xs={8} md={4}>
+        <Button
+          icon={<ArrowLeftOutlined />}
+          onClick={() => pushPath(CMS)}
+          type="primary"
         >
-          Settings
-        </Menu.Item>
-      </Menu>
+          Admin Home Page
+        </Button>
+      </Col>
+      <Col xs={16} md={10}>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          selectedKeys={
+            pathname.includes("/builder") ? ["builder"] : ["notifications"]
+          }
+          style={{
+            justifyContent: "flex-end"
+          }}
+        >
+          <Menu.Item key="builder" icon={<FormOutlined />}>
+            Form Builder
+          </Menu.Item>
+          <Menu.Item key="notifications" icon={<NotificationOutlined />}>
+            Notifications
+          </Menu.Item>
+        </Menu>
+      </Col>
+      <Col xs={24} md={10}>
+        <Menu
+          mode="horizontal"
+          theme="dark"
+          selectable={false}
+          style={{
+            justifyContent: screens.md ? "flex-end" : "center"
+          }}
+        >
+          <Menu.Item icon={<DownloadOutlined />} onClick={() => _getSchema()}>
+            Export Schema
+          </Menu.Item>
+          <Menu.Item
+            icon={<SaveOutlined />}
+            onClick={() => saveSchemaChanges()}
+          >
+            Save Updates
+          </Menu.Item>
+          <Menu.Item icon={<DiffOutlined />} onClick={() => setDiffModal(true)}>
+            Diff
+          </Menu.Item>
+          <Menu.Item
+            icon={<SettingOutlined />}
+            onClick={() => setSettingsModal(true)}
+          >
+            Settings
+          </Menu.Item>
+        </Menu>
+      </Col>
     </Row>
   );
 };

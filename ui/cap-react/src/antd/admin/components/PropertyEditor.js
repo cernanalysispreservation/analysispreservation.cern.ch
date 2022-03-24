@@ -87,7 +87,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
       </Modal>
       <PageHeader
         onBack={enableCreateMode}
-        title={"Add new"}
+        title={"Show Fields"}
         extra={
           path.get("path").size > 0 && (
             <Button onClick={() => setShowModal(true)} danger>
