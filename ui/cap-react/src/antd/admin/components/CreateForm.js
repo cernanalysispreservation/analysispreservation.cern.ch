@@ -8,6 +8,7 @@ const CreateForm = ({ createContentType }) => {
       <Form.Item
         label="Name"
         name="name"
+        data-cy="admin-form-name"
         rules={[{ required: true, message: "Please input schema name!" }]}
       >
         <Input />
@@ -16,6 +17,7 @@ const CreateForm = ({ createContentType }) => {
       <Form.Item
         label="Description"
         name="description"
+        data-cy="admin-form-description"
         rules={[
           { required: true, message: "Please input schema description!" }
         ]}
@@ -24,7 +26,7 @@ const CreateForm = ({ createContentType }) => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" data-cy="admin-form-submit">
           Submit
         </Button>
       </Form.Item>
