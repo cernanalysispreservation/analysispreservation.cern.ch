@@ -2,12 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Layout } from "antd";
 import Header from "../containers/Header";
-import {
-  CMS,
-  CMS_EDIT,
-  CMS_NEW,
-  CMS_NOTIFICATION
-} from "../../../components/routes";
+import { CMS, CMS_EDIT, CMS_NEW } from "../../routes";
 import DocumentTitle from "../../partials/DocumentTitle";
 import { Route, Switch } from "react-router-dom";
 import SchemaWizard from "../containers/SchemaWizard";
@@ -39,15 +34,15 @@ const AdminPanel = ({ match, replacePath, schema, schemaInit, getSchema }) => {
     }
   }, []);
 
-  const getPageTitle = () => {
-    return location.pathname.includes("notifications")
+  const getPageTitle = () =>
+    location.pathname.includes("notifications")
       ? "Notifications"
       : "Form Builder";
-  };
+
   return (
     <DocumentTitle title={getPageTitle()}>
       <Layout style={{ height: "100%", padding: 0 }}>
-        <Layout.Header>
+        <Layout.Header style={{ padding: "0 10px" }}>
           <Header />
         </Layout.Header>
         <Layout.Content>

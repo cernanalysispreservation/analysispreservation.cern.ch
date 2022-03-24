@@ -10,6 +10,7 @@ const SelectContentType = ({ contentTypes, select }) => {
             className="hoverPointer"
             onClick={() => select(item.get("deposit_group"))}
             key={item.get("deposit_group")}
+            data-cy={"admin-predefined-content"}
           >
             {item.get("name")}
           </Tag>
