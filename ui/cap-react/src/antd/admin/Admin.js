@@ -1,7 +1,7 @@
 import React from "react";
 import DocumentTitle from "../partials/DocumentTitle";
 import { Switch, Route } from "react-router-dom";
-import { CMS, CMS_SCHEMA_PATH } from "../../components/routes";
+import { CMS, CMS_SCHEMA_PATH } from "../routes";
 import AdminIndex from "./components/AdminIndex";
 import AdminPanel from "./containers/AdminPanel";
 
