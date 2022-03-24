@@ -7,22 +7,22 @@ describe("Form Builder", function() {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo", CMS);
 
     // select the div contains the CMS Analysis text
-    cy.get("div")
+    cy.get("[data-cy=admin-predefined-content]")
       .contains("CMS Analysis")
       .click();
 
-    cy.get("header span").contains("CMS Analysis");
+    cy.url().should("include", "cms-analysis");
   });
 
   it("Select the CMS Statistics Questionnaire from the predefined schems", function() {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo", CMS);
 
     // select the div contains the CMS Analysis text
-    cy.get("div")
+    cy.get("[data-cy=admin-predefined-content]")
       .contains("CMS Statistics Questionnaire")
       .click();
 
-    cy.get("header span").contains("CMS Statistics Questionnaire");
+    cy.url().should("include", "cms-stats-questionnaire");
   });
 
   it("Start a new schema on your own", function() {
@@ -32,15 +32,13 @@ describe("Form Builder", function() {
     const description = "Description of the form";
 
     // Find the form and add a new name
-    cy.get("input#root_name").type(name);
-    cy.get("textarea#root_description").type(description);
+    cy.get("[data-cy=admin-form-name]").type(name);
+    cy.get("[data-cy=admin-form-description]").type(description);
 
     // create the form
-    cy.get("form div")
-      .contains("Create")
-      .click();
+    cy.get("[data-cy=admin-form-submit]").click();
 
-    cy.url().should("include", CMS);
+    cy.url().should("include", `${CMS}/new/builder`);
   });
 
   // it("Download Schema File", () => {
