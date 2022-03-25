@@ -16,6 +16,7 @@ import {
   FieldBinaryOutlined,
   FileOutlined,
   FontSizeOutlined,
+  LinkOutlined,
   NumberOutlined,
   SwapOutlined,
   TagOutlined,
@@ -54,7 +55,7 @@ const SchemaTreeItem = ({
       type = schema.type === "string" ? "text" : schema.type;
     } else {
       if (uiSchema["ui:widget"]) {
-        type = uiSchema["ui:widget"];
+        type = schema.format === "uri" ? schema.format : uiSchema["ui:widget"];
       }
       if (uiSchema["ui:field"]) {
         type = uiSchema["ui:field"];
@@ -161,5 +162,6 @@ let mapType2Icon = {
   zenodo: <CloudDownloadOutlined />,
   orcid: <CloudDownloadOutlined />,
   accordionObjectField: <BorderTopOutlined />,
-  richeditor: <BookOutlined />
+  richeditor: <BookOutlined />,
+  uri: <LinkOutlined />
 };

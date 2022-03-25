@@ -6,9 +6,6 @@ import FieldTemplate from "./templates/Field/FieldTemplate";
 import fields from "./fields";
 import widgets from "./widgets";
 
-import _debounce from "lodash/debounce";
-import objectPath from "object-path";
-
 import "./Form.less";
 import Form from "@rjsf/antd";
 import CmsWidgets from "../admin/formComponents/widgets";
@@ -73,7 +70,7 @@ const RJSFForm = ({
       onBlur={() => {}}
       validate={validate}
       extraErrors={extraErrors}
-      onChange={_debounce(onChange, 500)}
+      onChange={onChange}
       readonly={readonly}
       transformErrors={draftEditor && transformErrors}
       formContext={{
