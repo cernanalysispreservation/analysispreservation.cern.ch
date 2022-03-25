@@ -14,6 +14,7 @@ import {
   FileOutlined,
   FontSizeOutlined,
   LayoutOutlined,
+  LinkOutlined,
   NumberOutlined,
   SwapOutlined,
   TagOutlined,
@@ -163,6 +164,91 @@ const simple = {
     default: {
       schema: {
         type: "string",
+      },
+      uiSchema: {
+        "ui:widget": "text",
+        "ui:options": {
+          grid: {
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
+  },
+  uri: {
+    title: "Uri text",
+    icon: <LinkOutlined />,
+    description: "Add uri text",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Uri Schema",
+      properties: {
+        title: {
+          type: "string",
+          title: "Title",
+          description:
+            "Provide the title you want to be displayed to your uri field",
+        },
+        description: {
+          title: "Description",
+          type: "string",
+          description:
+            "Provide the description you want to be displayed to your uri field",
+        },
+        readOnly: {
+          type: "boolean",
+          title: "Do you want this field to be read only?",
+          enum: [true, false],
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: {
+        "ui:widget": "select",
+      },
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "Switch Widget UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            grid: {
+              type: "object",
+              title: "Grid Options",
+              properties: {
+                gridColumns: {
+                  title: "Grid Columns",
+                  type: "string",
+                },
+              },
+            },
+            suggestions: {
+              type: "string",
+              title: "Add a suggestion URL endpoint",
+              description: "Provide an URL endpoint, to fetch data from there",
+            },
+          },
+        },
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        grid: {
+          gridColumns: {
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
+    },
+    default: {
+      schema: {
+        type: "string",
+        format: "uri",
       },
       uiSchema: {
         "ui:widget": "text",
