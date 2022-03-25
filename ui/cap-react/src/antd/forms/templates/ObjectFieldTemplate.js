@@ -121,6 +121,8 @@ const ObjectFieldTemplate = ({
   );
 };
 
-ObjectFieldTemplate.propTypes = {};
+ObjectFieldTemplate.propTypes = {
+  schema: PropTypes.object
+};
 
 export default ObjectFieldTemplate;

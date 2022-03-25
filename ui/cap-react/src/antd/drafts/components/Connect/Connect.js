@@ -10,7 +10,6 @@ import {
   Typography,
   notification,
   Collapse,
-  Row,
   Tag,
   Table
 } from "antd";
@@ -27,36 +26,40 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
 
   const columns = [
     {
-      title: 'Ref',
+      title: "Ref",
       render: snap => {
-        return snap.payload.event_type == "release" ?
-          <Tag>
-            {snap.payload.release.tag}
-          </Tag>
-          : <Typography.Text>
+        return snap.payload.event_type == "release" ? (
+          <Tag>{snap.payload.release.tag}</Tag>
+        ) : (
+          <Typography.Text>
             {snap.payload.commit.slice(-1)[0].message}
           </Typography.Text>
+        );
       },
       width: "60%",
-      key: 'ref',
-      ellipsis: true,
+      key: "ref",
+      ellipsis: true
     },
     {
-      title: 'Created',
+      title: "Created",
       render: snap => {
-        return snap.created && (
-          <ReactTimeago date={snap.created} minPeriod="60" />
-        )
+        return (
+          snap.created && <ReactTimeago date={snap.created} minPeriod="60" />
+        );
       },
       width: "20%",
-      key: 'created',
+      key: "created"
     },
     {
-      title: 'Link',
-      render: snap => <Typography.Link href={snap.payload.link} target="_blank">link</Typography.Link>,
+      title: "Link",
+      render: snap => (
+        <Typography.Link href={snap.payload.link} target="_blank">
+          link
+        </Typography.Link>
+      ),
       width: "20%",
-      key: 'link',
-    },
+      key: "link"
+    }
   ];
 
   const uploadRepo = (
@@ -105,7 +108,7 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
       setError(null);
       return;
     }
-    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/;
+    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|/]([\w]+)\/([\w.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/;
     let repo = value.match(regex);
     let [href, scheme, resource, owner, name, type, ref, filepath] = repo;
     const acceptedResources = [
@@ -201,8 +204,8 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
               ))}
             </Collapse>
           ) : (
-              <Empty description="No connected repositories" />
-            )}
+            <Empty description="No connected repositories" />
+          )}
         </Card>
       </Space>
     </Col>

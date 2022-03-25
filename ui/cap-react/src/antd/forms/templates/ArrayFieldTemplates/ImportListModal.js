@@ -17,7 +17,7 @@ const ImportListModal = ({
   const [fetchedResults, setFetchedResults] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(null);
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   useEffect(
     () => {
@@ -59,7 +59,8 @@ const ImportListModal = ({
       setFetchedResults(data);
       updateAll(data, true);
     } catch (error) {
-      setError(error);
+      //display the error
+      // setError(error);
     }
   };
 

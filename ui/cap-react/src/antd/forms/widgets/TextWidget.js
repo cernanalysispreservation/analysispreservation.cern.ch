@@ -95,7 +95,7 @@ const TextWidget = ({
           // show somehow error
         }
       })
-      .catch(err => {
+      .catch(() => {
         setApiCalling(false);
         // show error to the field
       });

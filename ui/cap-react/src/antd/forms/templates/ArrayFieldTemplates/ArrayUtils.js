@@ -61,6 +61,8 @@ const ArrayUtils = ({
   );
 };
 
-ArrayUtils.propTypes = {};
+ArrayUtils.propTypes = {
+  onReorderClick: PropTypes.func
+};
 
 export default ArrayUtils;

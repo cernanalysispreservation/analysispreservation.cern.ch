@@ -473,7 +473,6 @@ export function putUpdateDraft(data, draft_id) {
       .catch(error => {
         let errorHeading = "Error while updating";
         let errorDescription;
-        let errorHideAfter = 6;
         let errorThrow = "Error while updating";
 
         if (error.response.status == 422) {
@@ -567,7 +566,6 @@ export function postPublishDraft() {
       .catch(error => {
         let errorHeading = "Error while publishing";
         let errorDescription;
-        let errorHideAfter = 6;
         let errorThrow = "Error while publishing";
 
         if (error.response.status == 422) {

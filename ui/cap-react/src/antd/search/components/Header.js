@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Button, Row, Radio, Select, Space, Typography } from "antd";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  FilterOutlined
-} from "@ant-design/icons";
+import { Button, Row, Select, Space, Typography } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
 
 const SORT_OPTIONS = [
   { value: "mostrecent", label: "Newest First" },
@@ -35,20 +31,20 @@ const Header = ({
 
   let searchParams = queryString.parse(location.search);
   let sortParam = searchParams.sort || "mostrecent";
-  let isDescending = sortParam && sortParam[0] == "-";
+  // let isDescending = sortParam && sortParam[0] == "-";
   // TODO: For asc/desc sorting
   // let sortValue = isDescending ? sortParam.substring(1) : sortParam;
   // let sortDesc = isDescending? "desc" : "asc";
   // const [descSort, setDescSort] = useState(sortDesc);
 
-  const updateSort = sort => {
-    sort = sort.target.value;
-    if (isDescending && sort == "asc") {
-      onChange(sortParam.substring(1));
-    } else if (!isDescending && sort == "desc") {
-      onChange(`-${sortParam}`);
-    }
-  };
+  // const updateSort = sort => {
+  //   sort = sort.target.value;
+  //   if (isDescending && sort == "asc") {
+  //     onChange(sortParam.substring(1));
+  //   } else if (!isDescending && sort == "desc") {
+  //     onChange(`-${sortParam}`);
+  //   }
+  // };
   return (
     <Row style={{ marginBottom: "10px" }} justify="space-between">
       {queryString.parse(location.search).q ? (

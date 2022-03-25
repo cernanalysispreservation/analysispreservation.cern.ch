@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Checkbox, Row, Space, Tag } from "antd";
+import { Button, Checkbox, Row, Tag } from "antd";
 import ShowMore from "../../partials/ShowMore";
 import EllipsisText from "../../partials/EllipsisText";
 
@@ -18,14 +18,23 @@ const FacetItem = ({
         <React.Fragment>
           {current.map(item => (
             <React.Fragment key={String(item.key)}>
-              <Row justify="space-between" align="top" style={{ marginBottom: "10px", wordBreak: "keep-all"}}>
+              <Row
+                justify="space-between"
+                align="top"
+                style={{ marginBottom: "10px", wordBreak: "keep-all" }}
+              >
                 <Checkbox
                   key={item.key}
                   name={String(item.key)}
                   onChange={e => onChange(category, e)}
                   checked={isAggSelected(selectedAggs[category], item.key)}
                 >
-                  <EllipsisText tooltip length={30} suffixCount={10} type="secondary">
+                  <EllipsisText
+                    tooltip
+                    length={30}
+                    suffixCount={10}
+                    type="secondary"
+                  >
                     {"__display_name__" in item
                       ? item["__display_name__"]
                       : item.key}
@@ -43,26 +52,40 @@ const FacetItem = ({
                   .map((key, index) => (
                     <div key={index + key} style={{ paddingLeft: "10px" }}>
                       {item[key].buckets.map(nested => (
-                        <Row flex key={nested.key} justify="space-between" align="top" style={{ marginBottom: "10px", wordBreak: "keep-all" }}>
-                            <Checkbox
-                              name={String(nested.key)}
-                              onChange={e =>
-                                onChange(key.replace("facet_", ""), e)
-                              }
-                              checked={isAggSelected(
-                                selectedAggs[key.replace("facet_", "")],
-                                nested.key
-                              )}
+                        <Row
+                          flex
+                          key={nested.key}
+                          justify="space-between"
+                          align="top"
+                          style={{
+                            marginBottom: "10px",
+                            wordBreak: "keep-all"
+                          }}
+                        >
+                          <Checkbox
+                            name={String(nested.key)}
+                            onChange={e =>
+                              onChange(key.replace("facet_", ""), e)
+                            }
+                            checked={isAggSelected(
+                              selectedAggs[key.replace("facet_", "")],
+                              nested.key
+                            )}
+                          >
+                            <EllipsisText
+                              tooltip
+                              length={30}
+                              suffixCount={10}
+                              type="secondary"
                             >
-                              <EllipsisText tooltip length={30} suffixCount={10} type="secondary">
-                                {nested.key}
-                              </EllipsisText>
-                            </Checkbox>
-                            <Tag>
-                              {typeof nested.doc_count === "object"
-                                ? `${nested.doc_count.doc_count}`
-                                : `${nested.doc_count}`}
-                            </Tag>
+                              {nested.key}
+                            </EllipsisText>
+                          </Checkbox>
+                          <Tag>
+                            {typeof nested.doc_count === "object"
+                              ? `${nested.doc_count.doc_count}`
+                              : `${nested.doc_count}`}
+                          </Tag>
                         </Row>
                       ))}
                     </div>

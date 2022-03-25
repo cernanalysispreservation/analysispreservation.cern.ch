@@ -265,27 +265,27 @@ const MaskedInput = forwardRef(
       [mask, onChange, setInputValue, setValue, value]
     );
 
-    const onOption = useCallback(
-      option => () => {
-        const nextValueParts = [...valueParts];
-        nextValueParts[activeMaskIndex] = { part: option };
-        // add any fixed parts that follow
-        let index = activeMaskIndex + 1;
-        while (
-          index < mask.length &&
-          !nextValueParts[index] &&
-          mask[index].fixed
-        ) {
-          nextValueParts[index] = { part: mask[index].fixed };
-          index += 1;
-        }
-        const nextValue = nextValueParts.map(part => part.part).join("");
-        setInputValue(nextValue);
-        // restore focus to input
-        inputRef.current.focus();
-      },
-      [activeMaskIndex, inputRef, mask, setInputValue, valueParts]
-    );
+    // const onOption = useCallback(
+    //   option => () => {
+    //     const nextValueParts = [...valueParts];
+    //     nextValueParts[activeMaskIndex] = { part: option };
+    //     // add any fixed parts that follow
+    //     let index = activeMaskIndex + 1;
+    //     while (
+    //       index < mask.length &&
+    //       !nextValueParts[index] &&
+    //       mask[index].fixed
+    //     ) {
+    //       nextValueParts[index] = { part: mask[index].fixed };
+    //       index += 1;
+    //     }
+    //     const nextValue = nextValueParts.map(part => part.part).join("");
+    //     setInputValue(nextValue);
+    //     // restore focus to input
+    //     inputRef.current.focus();
+    //   },
+    //   [activeMaskIndex, inputRef, mask, setInputValue, valueParts]
+    // );
 
     const onNextOption = useCallback(
       event => {
@@ -313,16 +313,16 @@ const MaskedInput = forwardRef(
       [activeMaskIndex, activeOptionIndex, mask]
     );
 
-    const onSelectOption = useCallback(
-      event => {
-        if (activeMaskIndex >= 0 && activeOptionIndex >= 0) {
-          event.preventDefault();
-          const option = mask[activeMaskIndex].options[activeOptionIndex];
-          onOption(option)();
-        }
-      },
-      [activeMaskIndex, activeOptionIndex, mask, onOption]
-    );
+    // const onSelectOption = useCallback(
+    //   event => {
+    //     if (activeMaskIndex >= 0 && activeOptionIndex >= 0) {
+    //       event.preventDefault();
+    //       const option = mask[activeMaskIndex].options[activeOptionIndex];
+    //       onOption(option)();
+    //     }
+    //   },
+    //   [activeMaskIndex, activeOptionIndex, mask, onOption]
+    // );
 
     const onEsc = useCallback(
       event => {
