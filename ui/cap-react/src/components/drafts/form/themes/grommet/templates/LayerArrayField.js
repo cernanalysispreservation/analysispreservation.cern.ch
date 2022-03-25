@@ -43,6 +43,7 @@ class ArrayFieldTemplate extends React.Component {
     const stringify = options ? options.stringify : [],
       reducer = (acc, val) => (item[val] ? `${acc} ${item[val]}` : acc);
 
+    if (!stringify) return null;
     return stringify.reduce(reducer, "");
   };
 
@@ -50,79 +51,87 @@ class ArrayFieldTemplate extends React.Component {
     return (
       <Box flex={false} size={{ height: { max: "small" } }}>
         <List selectable={false}>
-          {this.props.items.length > 0
-            ? this.props.items.map(element => (
-                <ListItem
-                  key={element.index}
+          {this.props.items.length > 0 ? (
+            this.props.items.map(element => (
+              <ListItem
+                key={element.index}
+                flex={true}
+                margin="none"
+                pad="none"
+                justify="between"
+                onClick={() => {}}
+              >
+                <FormLayer
+                  layerActive={this.state.layers[element.index]}
+                  onClose={this._onFormLayerClose.bind(this, element.index)}
+                  properties={element.children}
+                  size={this.props.size}
+                  remove={
+                    element.hasRemove && !this.props.readonly
+                      ? element.onDropIndexClick(element.index)
+                      : null
+                  }
+                />
+                <Box
                   flex={true}
-                  margin="none"
-                  pad="none"
-                  justify="between"
-                  onClick={() => {}}
+                  direction="row"
+                  wrap={false}
+                  responsive={false}
                 >
-                  <FormLayer
-                    layerActive={this.state.layers[element.index]}
-                    onClose={this._onFormLayerClose.bind(this, element.index)}
-                    properties={element.children}
-                    size={this.props.size}
-                    remove={
-                      element.hasRemove && !this.props.readonly
-                        ? element.onDropIndexClick(element.index)
-                        : null
-                    }
-                  />
-                  <Box
-                    flex={true}
-                    direction="row"
-                    wrap={false}
-                    responsive={false}
+                  <ErrorFieldIndicator
+                    errors={this.props.formContext.ref}
+                    id={element.children.props.idSchema.$id}
+                    formContext={this.props.formContext}
                   >
-                    <ErrorFieldIndicator
-                      errors={this.props.formContext.ref}
-                      id={element.children.props.idSchema.$id}
-                      formContext={this.props.formContext}
+                    <Box
+                      flex={true}
+                      pad="small"
+                      justify="center"
+                      onClick={this._showLayer.bind(this, element.index)}
                     >
-                      <Box
-                        flex={true}
-                        pad="small"
-                        justify="center"
-                        onClick={this._showLayer.bind(this, element.index)}
-                    >
-                        <ItemBrief
-                          index={element.index}
-                          item={element.children.props.formData}
-                          options={
-                            element.children.props.uiSchema["ui:options"]
-                          }
-                          label={
-                            this.stringifyItem(
-                              element.children.props.uiSchema["ui:options"],
-                              element.children.props.formData
-                            ) ||
-                            `${
-                              this.props.title
-                                ? pluralize.singular(this.props.title)
-                                : "Item"
-                            } #${element.index + 1}`
-                          }
-                        />
-                      </Box>
-                    </ErrorFieldIndicator>
-                    {!this.props.readonly && (
-                      <ArrayUtils
-                        propId={this.props.idSchema.$id}
-                        hasRemove={element.hasRemove}
-                        hasMoveDown={element.hasMoveDown}
-                        hasMoveUp={element.hasMoveUp}
-                        onDropIndexClick={element.onDropIndexClick}
-                        onReorderClick={element.onReorderClick}
+                      <ItemBrief
                         index={element.index}
+                        item={element.children.props.formData}
+                        options={element.children.props.uiSchema["ui:options"]}
+                        label={
+                          this.stringifyItem(
+                            element.children.props.uiSchema["ui:options"],
+                            element.children.props.formData
+                          ) ||
+                          `${
+                            this.props.title
+                              ? pluralize.singular(this.props.title)
+                              : "Item"
+                          } #${element.index + 1}`
+                        }
                       />
-                    )}
-                  </Box>
-                </ListItem>
-              ))
-            : <Box flex justify="center" align="center" pad="small" style={{background: "rgb(216 216 216 / 25%)"}}>No items</Box>
+                    </Box>
+                  </ErrorFieldIndicator>
+                  {!this.props.readonly && (
+                    <ArrayUtils
+                      propId={this.props.idSchema.$id}
+                      hasRemove={element.hasRemove}
+                      hasMoveDown={element.hasMoveDown}
+                      hasMoveUp={element.hasMoveUp}
+                      onDropIndexClick={element.onDropIndexClick}
+                      onReorderClick={element.onReorderClick}
+                      index={element.index}
+                    />
+                  )}
+                </Box>
+              </ListItem>
+            ))
+          ) : (
+            <Box
+              flex
+              justify="center"
+              align="center"
+              pad="small"
+              style={{ background: "rgb(216 216 216 / 25%)" }}
+            >
+              No items
+            </Box>
+          )
 
           // <ListPlaceholder
           //   addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
