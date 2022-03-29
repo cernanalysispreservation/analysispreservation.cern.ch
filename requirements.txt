@@ -72,7 +72,7 @@ invenio-base==1.0.1       # via invenio, invenio-app
 invenio-cache==1.0.0      # via invenio-app
 invenio-celery==1.1.0     # via invenio
 invenio-config==1.0.0     # via invenio, invenio-app
-git+https://github.com/annatrz/invenio-deposit.git#egg=invenio-deposit
+git+https://github.com/cernanalysispreservation/invenio-deposit.git#egg=invenio-deposit
 reana-client==0.6.0
 reana-commons==0.6.0
 invenio-db[postgresql,versioning]==1.0.1  # via invenio, invenio-accounts-rest, invenio-admin
