@@ -42,7 +42,7 @@ const CreateForm = props => {
   };
 
   let contentTypes = props.contentTypes;
-  if (process.env.NODE_ENV == "production") {
+  if (!(process.env.NODE_ENV === "development" || process.env.ENABLE_E2E)) {
     contentTypes =
       props.contentTypes &&
       props.contentTypes.filter(
