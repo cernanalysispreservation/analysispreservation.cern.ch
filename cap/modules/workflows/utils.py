@@ -38,29 +38,42 @@ from .serializers import ReanaWorkflowSchema
 
 def update_workflow(workflow, column, data):
     """Update a Reana column."""
-    db.session.query(ReanaWorkflow) \
-        .filter(ReanaWorkflow.workflow_id == workflow) \
-        .update({column: data})
-    db.session.commit()
+    try:
+        db.session.query(ReanaWorkflow) \
+            .filter(ReanaWorkflow.workflow_id == workflow) \
+            .update({column: data})
+        db.session.commit()
+    except Exception as e:
+        abort(500, '{} has occured while '
+              'updating the workflow.'.format(e))
 
 
 def clone_workflow(workflow_id):
     """Clone the attributes of a Reana workflow."""
-    wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
-    return {'name': wf.name, 'workflow_json': wf.workflow_json}
+    try:
+        wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
+        return {'name': wf.name, 'workflow_json': wf.workflow_json}
+    except Exception as e:
+        abort(500, '{} has occured while '
+              'cloning the workflow.'.format(e))
 
 
 def get_user_workflows():
     """."""
-    workflows = ReanaWorkflow.get_user_workflows(current_user.id)
-
-    return [workflow.serialize() for workflow in workflows]
+    try:
+        workflows = ReanaWorkflow.get_user_workflows(current_user.id)
+        return [workflow.serialize() for workflow in workflows]
+    except Exception as e:
+        abort(500, e)
 
 
 def resolve_uuid(workflow_id):
     """Resolve the workflow id into a UUID."""
-    workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
-    return workflow.rec_uuid
+    try:
+        workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
+        return workflow.rec_uuid
+    except Exception:
+        abort(500, 'You tried to find a non-existing workflow.')
 
 
 def resolve_depid(pid):
@@ -72,8 +85,8 @@ def resolve_depid(pid):
         return resolver.resolve(pid)
     except PIDDoesNotExistError:
         abort(
-            404, "You tried to create a workflow and connect"
-            " it with a non-existing record")
+            404, 'You tried to create a workflow and connect'
+            ' it with a non-existing record')
 
 
 def get_reana_token(uuid, record=None):
@@ -89,8 +102,7 @@ def get_reana_token(uuid, record=None):
     # assign the token to the correct experiment
     token = current_app.config['REANA_ACCESS_TOKEN'].get(experiment)
     if not token:
-        raise ExperimentIsNotValid(
-            'Access token for {} is not available'.format(experiment))
+        abort(500, 'Access token for {} is not available'.format(experiment))
 
     return token
 
@@ -99,7 +111,7 @@ def get_reana_user_token():
     """Retrieve token based on current user config."""
     token = current_app.config['REANA_USER_ACCESS_TOKEN']
     if not token:
-        raise 'Access token is not available.'
+        abort(500, 'Access token for current user is not available')
     return token
 
 
@@ -127,7 +139,7 @@ def update_deposit_workflow(deposit, user, name, workflow_name, resp,
             db.session.commit()
     except Exception as e:
         abort(
-            500, "An error occured while updating the record {}".format(e))
+            500, 'An error occured while updating the record {}'.format(e))
 
     workflow_serialized = ReanaWorkflowSchema().dump(_workflow).data
     return workflow_serialized

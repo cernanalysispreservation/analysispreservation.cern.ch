@@ -178,5 +178,9 @@ whichcraft==0.4.1         # via cookiecutter
 wtforms-alchemy==0.16.7   # via invenio-oauth2server
 wtforms-components==0.10.3  # via wtforms-alchemy
 wtforms==2.2.1            # via flask-admin, flask-wtf, invenio-userprofiles, wtforms-alchemy, wtforms-components
+adage==0.10.1
+yadage==0.20.1
+yadage-schemas==0.10.6
+snakemake==6.8.0
 reana-client==0.8.0
 reana-commons==0.8.0

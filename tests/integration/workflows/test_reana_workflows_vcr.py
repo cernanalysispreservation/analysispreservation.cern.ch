@@ -67,8 +67,8 @@ def test_workflow_start_exception(mock_start, app, get_record_pid_uuid, create_r
                            data=json.dumps(mock_data), headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 400
-        assert resp.json == {'message': 'An exception has occured, most probably '
-                                        'the workflow cannot start/restart.'}
+        assert resp.json == {'message': "An exception 'NoneType' object has no attribute 'get' has occured, "
+                                        "most probably the workflow cannot start/restart."}
 
 
 @pytest.mark.vcr()
@@ -84,8 +84,8 @@ def test_workflow_stop_exception(mock_stop, app, get_record_pid_uuid,
                            headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 400
-        assert resp.json == {'message': 'An exception has occured, most probably '
-                                        'the workflow is not running.'}
+        assert resp.json == {'message': 'An exception Workflow 4e4e6afc-fd57-4f59-836a-40ae19d2d6d0 is not running. '
+                                        'has occured, most probably the workflow is not running.'}
 
 
 @pytest.mark.vcr()
