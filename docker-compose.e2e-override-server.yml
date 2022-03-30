@@ -7,22 +7,20 @@
 
 version: "2.3"
 services:
-  app:
-    image: gitlab-registry.cern.ch/pshandil/cap-server/app:build-e2e # To change
   web-api:
     extends:
       file: docker-services.yml
-      service: app
+      service: app-image
     volumes:
       - ./docker/uwsgi:/opt/cap/var/instance
   files-api:
     extends:
       file: docker-services.yml
-      service: app
+      service: app-image
     volumes:
       - ./docker/uwsgi:/opt/cap/var/instance
   # Worker
   worker:
     extends:
       file: docker-services.yml
-      service: app
+      service: app-image

@@ -100,7 +100,15 @@ fi
 
 if ! [ -z "$enable_e2e" ]
 then
-    e2e_argument="-F variables[ENABLE_E2E]=$enable_e2e"
+    curl -X POST $GITLAB_PIPELINE_TRIGGER_URL \
+        -F token=$GITLAB_PIPELINE_TRIGGER_TOKEN \
+        -F ref=$GITLAB_BRANCH \
+        -F "variables[CACHE_DATE]=$(date +%Y-%m-%d:%H:%M:%S)" \
+        -F "variables[${type}]=$value" \
+        -F "variables[VERSION]=$docker_image_version-e2e" \
+        -F "variables[ENABLE_E2E]=1" \
+        $image_argument \
+        $deploy_argument
 fi
 
 # Trigger image build
@@ -110,6 +118,5 @@ curl -X POST $GITLAB_PIPELINE_TRIGGER_URL \
      -F "variables[CACHE_DATE]=$(date +%Y-%m-%d:%H:%M:%S)" \
      -F "variables[${type}]=$value" \
      -F "variables[VERSION]=$docker_image_version" \
-     $e2e_argument \
      $image_argument \
      $deploy_argument

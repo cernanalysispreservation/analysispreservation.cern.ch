@@ -8,11 +8,18 @@
 version: "2.3"
 services:
   app:
+    extends:
+      service: app-base
     build:
       context: ./
       args:
         - ENVIRONMENT=DEV
     image: cap
+  app-image:
+    extends:
+      service: app-base
+    image: gitlab-registry.cern.ch/analysispreservation/analysispreservation-openshift/app:master-e2e
+  app-base:
     environment:
       - "INVENIO_ACCOUNTS_SESSION_REDIS_URL=redis://cache:6379/1"
       - "INVENIO_BROKER_URL=amqp://guest:guest@mq:5672/"
