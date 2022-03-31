@@ -152,7 +152,8 @@ const TextWidget = ({
       name={id}
       onBlur={
         !readonly
-          ? autofill_from
+          ? autofill_from && (!autofill_on ||
+            (autofill_on && autofill_on.includes("onBlur")))
             ? autoFillOtherFields
             : handleBlur
           : undefined
