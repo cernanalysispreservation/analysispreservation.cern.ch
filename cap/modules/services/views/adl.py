@@ -34,7 +34,8 @@ from invenio_pidstore.errors import PIDDoesNotExistError
 from . import blueprint
 from cap.modules.access.utils import login_required
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.services.utils.adl import adl_parser
+from cap.modules.services.utils.adl import (
+    adl_parser, check_file_format, check_uploaded_files)
 
 
 @blueprint.route('/adl/<record_id>/<file_name>', methods=['GET'])
@@ -49,19 +50,23 @@ def ingest_adl(record_id, file_name):
 
             _, rec_uuid = resolver.resolve(record_id)
             deposit = CAPDeposit.get_record(rec_uuid)
-            adl_file = [
-                file for file in deposit['_files']
-                if file.get('key') == file_name
-            ]
         except PIDDoesNotExistError:
             return jsonify({
-                'message': 'You tried to provide a adl file'
+                'message': 'You tried to provide a adl file '
                 'with a non-existing record'}), 404
-    if not adl_file:
+
+    try:
+        adl_file = [
+            file for file in deposit['_files']
+            if file.get('key') == file_name
+        ][0]
+        check_file_format(adl_file.get('key'))
+    except Exception:
         return jsonify({
-            'message': 'You tried to provide a non existent adl file name.'
+            'message': 'You tried to provide a non-existing/wrong adl file.'
         }), 400
-    adl_file_info = ObjectVersion.get(adl_file[-1].get('bucket'), file_name)
+
+    adl_file_info = ObjectVersion.get(adl_file.get('bucket'), file_name)
     adl_file_object = FileInstance.get(adl_file_info.file_id)
 
     try:
@@ -80,8 +85,17 @@ def ingest_adl(record_id, file_name):
 @login_required
 def parse_adl_from_file():
     try:
-        file_objects = request.files
+        file_objects = request.files.to_dict()
+        check_uploaded_files(file_objects)
+    except Exception:
+        return jsonify({
+            'message':
+            'Invalid arguments. Please try again.'
+        }), 400
+
+    try:
         for _file in file_objects:
+            check_file_format(file_objects.get(_file).filename)
             adl_file = file_objects.get(_file).read()
     except Exception as e:
         return jsonify({

@@ -27,10 +27,11 @@
 from typing import List, Optional
 from dataclasses import dataclass, field
 import re
-from flask import current_app
+from flask import current_app, abort
 
 
 TABLE_HEADER = '# val    err-     err+     xmin     xmax'
+MULTI_KEYWORDS = ['select', 'histo', 'bin', 'take']
 
 
 @dataclass(frozen=True)
@@ -69,18 +70,19 @@ def _collect_blocks(lines):
     """Return a block/keyword generator."""
     _block_object = Block()
     for line in lines:
+        _keyword_object_yield = False
         _block_type = line.text.split()[0]
         if _regex_block_heading_match(line.text):
-            if _block_object.lines:
-                _block_object.lines.append(line)
+            if _block_object:
                 yield _block_object
             _block_object = Block(block_type=_block_type)
         elif _regex_keyword_match(_block_type, define=True):
             _keyword_object = Keyword(block_type=_block_type, line=line)
+            _keyword_object_yield = True
             yield _keyword_object
-        if _block_object:
+        if _block_object and not _keyword_object_yield:
             _block_object.lines.append(line)
-    if _block_object and _block_object.lines:
+    if _block_object:
         yield _block_object
 
 
@@ -136,9 +138,7 @@ def _regex_keyword_match(_keyword_type, define=False):
 def _get_key_value(line):
     # Split the keywords and values
     line_data = line.text.split(' ', 1)
-    if _regex_keyword_match(line_data[0]) or _regex_block_match(line_data[0]):
-        return line_data
-    return None
+    return line_data
 
 
 def _handle_multi_keyword(key, select_value, _block_data):
@@ -167,9 +167,9 @@ def _object_block_parser(block):
                 _type='info',
                 message='Skipping invalid keyword value pair {}'.format(line))
             continue
-        if line_key_value[0] == 'select':
+        if line_key_value[0] in MULTI_KEYWORDS:
             block_data = _handle_multi_keyword(
-                'select', line_key_value[-1], block_data)
+                line_key_value[0], line_key_value[-1], block_data)
         else:
             block_data.update({
                 line_key_value[0]: line_key_value[-1]
@@ -189,12 +189,9 @@ def _region_block_parser(block):
         if len(line_key_value) == 1:
             block_data['parent'] = line_key_value[-1]
             continue
-        if line_key_value[0] == 'select':
+        if line_key_value[0] in MULTI_KEYWORDS:
             block_data = _handle_multi_keyword(
-                'select', line_key_value[-1], block_data)
-        elif line_key_value[0] == 'histo':
-            block_data = _handle_multi_keyword(
-                'histo', line_key_value[-1], block_data)
+                line_key_value[0], line_key_value[-1], block_data)
         else:
             block_data.update({
                 line_key_value[0]: line_key_value[-1]
@@ -304,3 +301,16 @@ def adl_parser(adl_file=None, deposit=False):
             json_parsed['define'].append(_define_block_parser(block))
 
     return json_parsed
+
+
+def check_file_format(filename):
+    if not filename.endswith('.adl'):
+        abort(400, 'You tried to provide a wrong adl file.')
+
+
+def check_uploaded_files(file_objects):
+    if len(file_objects) == 0:
+        abort(400, 'Please select file for parsing.')
+
+    if len(file_objects) > 1:
+        abort(400, 'Multiple files upload is not supported yet.')
