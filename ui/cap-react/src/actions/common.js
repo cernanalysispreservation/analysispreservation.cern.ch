@@ -1,6 +1,6 @@
 import axios from "axios";
 import { notification } from "antd";
-import { COLLECTION_BASE } from "../components/routes";
+import { COLLECTION_BASE } from "../antd/routes";
 
 export const FETCH_SCHEMA_REQUEST = "FETCH_SCHEMA_REQUEST";
 export const FETCH_SCHEMA_SUCCESS = "FETCH_SCHEMA_SUCCESS";
