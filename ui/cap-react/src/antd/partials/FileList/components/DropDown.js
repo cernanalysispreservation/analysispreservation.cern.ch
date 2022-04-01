@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import prettyBytes from "pretty-bytes";
 import { Route } from "react-router-dom";
-import { DRAFT_ITEM } from "../../../../components/routes";
+import { DRAFT_ITEM } from "../../../routes";
 import EllipsisText from "../../EllipsisText";
 
 const { Text } = Typography;

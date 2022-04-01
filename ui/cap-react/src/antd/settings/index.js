@@ -6,7 +6,7 @@ import OAuthConnect from "../../components/settings/components/OAuthConnect";
 import SettingsIndex from "./Settings";
 
 import DocumentTitle from "../partials/DocumentTitle";
-import { SETTINGS, SETTINGS_AUTH_CONNECT } from "../../components/routes";
+import { SETTINGS, SETTINGS_AUTH_CONNECT } from "../routes";
 
 const Settings = () => {
   return (
