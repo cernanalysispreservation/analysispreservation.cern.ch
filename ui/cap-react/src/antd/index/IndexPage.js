@@ -25,7 +25,7 @@ import {
   SEARCH,
   DRAFT_ITEM,
   COLLECTION
-} from "../../components/routes";
+} from "../routes";
 
 class IndexPage extends React.Component {
   render() {
