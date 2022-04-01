@@ -5,7 +5,7 @@ import {
   DRAFT_ITEM_EDIT,
   DRAFT_ITEM_SETTINGS,
   DRAFT_ITEM_INTEGRATIONS
-} from "../../../../components/routes";
+} from "../../../routes";
 import { Switch, Route } from "react-router-dom";
 import DraftPreview from "../../containers/Overview";
 import DraftEditor from "../../containers/Editor";
