@@ -6,7 +6,7 @@ import {
   PUBLISHED_ITEM_RUNS_CREATE
 } from "../../routes";
 import { Route, Switch } from "react-router-dom";
-import DocumentTitle from "../../../components/partials/Title";
+import DocumentTitle from "../../partials/DocumentTitle";
 import PublishedPreview from "../containers/Preview";
 import Error from "../../partials/Error";
 import PublishedLoader from "../Loaders/Published";
