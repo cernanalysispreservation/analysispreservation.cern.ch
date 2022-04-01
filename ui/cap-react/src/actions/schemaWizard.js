@@ -3,7 +3,7 @@ import { merge } from "lodash";
 import { fromJS } from "immutable";
 import { push } from "connected-react-router";
 import { notification } from "antd";
-import { CMS, CMS_NEW } from "../components/routes";
+import { CMS, CMS_NEW } from "../antd/routes";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 import { updateDepositGroups } from "./auth";
 

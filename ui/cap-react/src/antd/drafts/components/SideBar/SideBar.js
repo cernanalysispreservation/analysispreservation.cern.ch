@@ -5,7 +5,7 @@ import { Link, Route } from "react-router-dom";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import DepositFilesList from "../../../partials/FileList";
 import { canEdit } from "../../utils/permissions";
-import { DRAFT_ITEM, COLLECTION_BASE } from "../../../../components/routes";
+import { DRAFT_ITEM, COLLECTION_BASE } from "../../../routes";
 import Timeago from "react-timeago";
 import FileManager from "../../containers/FileManager";
 

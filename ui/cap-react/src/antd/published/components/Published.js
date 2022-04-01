@@ -4,7 +4,7 @@ import {
   PUBLISHED_ITEM,
   PUBLISHED_ITEM_RUNS,
   PUBLISHED_ITEM_RUNS_CREATE
-} from "../../../components/routes";
+} from "../../routes";
 import { Route, Switch } from "react-router-dom";
 import DocumentTitle from "../../../components/partials/Title";
 import PublishedPreview from "../containers/Preview";
