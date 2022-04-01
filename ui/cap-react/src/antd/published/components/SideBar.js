@@ -1,7 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import FileTree from "../../../components/drafts/components/FileTree";
-// import FileTree from "../../../components/drafts/components/FileTree";
 import { Col, Drawer, Grid } from "antd";
 import FileList from "../../partials/FileList";
 
@@ -36,6 +34,10 @@ const SideBar = ({ files, status, onClose, visibleFileDrawer }) => {
   );
 };
 
-SideBar.propTypes = {};
+SideBar.propTypes = {
+  status: PropTypes.string,
+  onClose: PropTypes.func,
+  visibleFileDrawer: PropTypes.bool
+};
 
 export default SideBar;
