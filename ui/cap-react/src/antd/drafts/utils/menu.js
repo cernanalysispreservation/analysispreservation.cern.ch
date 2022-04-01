@@ -4,7 +4,7 @@ import {
   DRAFT_ITEM_EDIT,
   DRAFT_ITEM_INTEGRATIONS,
   DRAFT_ITEM_SETTINGS
-} from "../../../components/routes";
+} from "../../routes";
 
 export const getSelectedMenuItem = path => {
   if (

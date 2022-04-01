@@ -18,8 +18,8 @@ import DocumentTitle from "../partials/DocumentTitle";
 import { Layout } from "antd";
 
 import Loadable from "react-loadable";
-import { HOME, WELCOME, ABOUT, POLICY, CMS } from "../../components/routes";
-import Loading from "../../components/routes/Loading";
+import { HOME, WELCOME, ABOUT, POLICY, CMS } from "../routes";
+import Loading from "../routes/Loading";
 
 const CMSIndex = Loadable({
   loader: () => import("../../components/cms"),
