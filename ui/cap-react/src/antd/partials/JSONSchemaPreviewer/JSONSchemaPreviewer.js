@@ -1,13 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Form from "react-jsonschema-form";
-
-import FieldTemplate from "../../../components/drafts/form/themes/grommet-preview/templates/FieldTemplate";
-import ArrayFieldTemplate from "../../../components/drafts/form/themes/grommet/templates/ArrayFieldTemplate";
-import ObjectFieldTemplate from "../../../components/drafts/form/themes/grommet/templates/ObjectFieldTemplate";
-
-import widgets from "../../../components/drafts/form/themes/grommet-preview/widgets";
-import fields from "../../../components/drafts/form/themes/grommet-preview/fields";
+import Form from "../../forms/Form";
 
 const JSONSchemaPreviewer = ({
   isPublished,
@@ -23,12 +16,7 @@ const JSONSchemaPreviewer = ({
     schema && (
       <Form
         schema={schema}
-        FieldTemplate={FieldTemplate}
-        ObjectFieldTemplate={ObjectFieldTemplate}
-        ArrayFieldTemplate={ArrayFieldTemplate}
         showErrorList={false}
-        widgets={widgets}
-        fields={fields}
         uiSchema={{
           "ui:readonly": true,
           ...uiSchema,
