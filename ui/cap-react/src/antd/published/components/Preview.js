@@ -38,7 +38,7 @@ const Preview = ({
   const screens = useBreakpoint();
 
   const displayProps =
-    display == "tabView" ? { xxl: 19 } : { lg: 15, sm: 18, xs: 22 };
+    display == "tabView" ? { xs: 24 } : { lg: 15, sm: 18, xs: 22 };
   return (
     <Layout style={{ height: "100%", padding: "0" }}>
       <PageHeader
@@ -106,12 +106,12 @@ const Preview = ({
       <Row
         style={{ paddingRight: "10px", height: "100%", overflowX: "hidden" }}
       >
-        <Col xxl={19} style={{ height: "100%" }}>
+        <Col xs={24} xxl={19} style={{ height: "100%" }}>
           <Row
             style={{ height: "100%", overflowX: "hidden" }}
             justify={display != "tabView" && "center"}
           >
-            <Col {...displayProps}>
+            <Col {...displayProps} style={{ height: "100%" }}>
               <JSONSchemaPreviewer
                 display={display}
                 formData={metadata}
