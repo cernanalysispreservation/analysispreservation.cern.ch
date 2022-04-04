@@ -9,7 +9,6 @@ import {
   LOGOUT_SUCCESS,
   LOGIN_ERROR,
   API_KEY_LIST_SUCCESS,
-  API_KEY_LIST_ERROR,
   CREATE_TOKEN_SUCCESS,
   CREATE_TOKEN_ERROR,
   REVOKE_TOKEN_SUCCESS,
@@ -71,7 +70,6 @@ export default function authReducer(state = initialState, action) {
       return state.set("integrations", action.integrations);
     case API_KEY_LIST_SUCCESS:
       return state.set("tokens", List(action.applications.tokens));
-    case API_KEY_LIST_ERROR:
     case CREATE_TOKEN_SUCCESS:
       return state.setIn(["tokens", action.token.t_id], action.token);
     case CREATE_TOKEN_ERROR:
