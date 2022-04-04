@@ -233,11 +233,10 @@ export function getUsersAPIKeys() {
         dispatch(apiKeyListSuccess(response.data));
       })
       .catch(function() {
-        cogoToast.error("Please try again", {
-          position: "top-center",
-          bar: { size: "0" },
-          hideAfter: 3,
-          heading: "There was an error getting the API keys"
+        notification.error({
+          message: "It was not possible to get API keys",
+          description: "Please try again",
+          duration: 5
         });
       });
   };
