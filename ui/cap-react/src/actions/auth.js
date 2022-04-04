@@ -244,8 +244,13 @@ export function getUsersAPIKeys() {
       .then(function(response) {
         dispatch(apiKeyListSuccess(response.data));
       })
-      .catch(function(error) {
-        dispatch(apiKeyListError(error));
+      .catch(function() {
+        cogoToast.error("Please try again", {
+          position: "top-center",
+          bar: { size: "0" },
+          hideAfter: 3,
+          heading: "There was an error getting the API keys"
+        });
       });
   };
 }
