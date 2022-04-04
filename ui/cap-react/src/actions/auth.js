@@ -232,8 +232,12 @@ export function getUsersAPIKeys() {
       .then(function(response) {
         dispatch(apiKeyListSuccess(response.data));
       })
-      .catch(function(error) {
-        dispatch(apiKeyListError(error));
+      .catch(function() {
+        notification.error({
+          message: "It was not possible to get API keys",
+          description: "Please try again",
+          duration: 5
+        });
       });
   };
 }
