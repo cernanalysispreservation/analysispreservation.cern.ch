@@ -23,9 +23,9 @@ const ArrayFieldTemplateItem = ({
       align={toolbarAlign}
       key={`array-item-${index}`}
       gutter={rowGutter}
-      style={{ marginBottom: "10px" }}
+      style={{ marginTop: "24px" }}
     >
-      <Col flex="1" style={{ background: "rgba(240,242,245)" }}>
+      <Col flex="1" style={{ borderBottom: "1px solid #f0f0f0" }}>
         {children}
       </Col>
       {hasToolbar && (

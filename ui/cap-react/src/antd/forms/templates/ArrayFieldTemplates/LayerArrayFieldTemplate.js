@@ -15,7 +15,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
     const stringify = options ? options.stringify : [],
       reducer = (acc, val) => (item[val] ? `${acc} ${item[val]}` : acc);
 
-    return stringify.reduce(reducer, "");
+    return stringify ? stringify.reduce(reducer, "") : null;
   };
   useEffect(
     () => {
