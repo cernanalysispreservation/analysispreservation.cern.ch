@@ -89,10 +89,10 @@ const FieldTemplate = ({
             help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
             htmlFor={id}
             label={
-              displayLabel &&
+              (displayLabel || uiSchema["ui:field"]) &&
               label && (
                 <Space direction="vertical" size={0}>
-                  <Typography.Text>{displayLabel && label}</Typography.Text>
+                  <Typography.Text>{label}</Typography.Text>
                   <Typography.Text type="secondary">
                     {description}
                   </Typography.Text>
