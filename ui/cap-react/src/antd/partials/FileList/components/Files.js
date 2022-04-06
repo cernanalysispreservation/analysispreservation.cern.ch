@@ -4,8 +4,17 @@ import { Divider, Empty, Space, Tree } from "antd";
 import { filter } from "lodash";
 import { constructTree } from "../utils/fileList";
 
-const Files = ({ renderList, moodaUpate, memoFiles }) => {
-  let data = constructTree(memoFiles, file => moodaUpate(file));
+const Files = ({
+  renderList = ["files", "repositories", "title"],
+  moodaUpate,
+  memoFiles = Map({}),
+  onFileClick = null
+}) => {
+  let data = constructTree(
+    memoFiles,
+    file => moodaUpate(file),
+    file => onFileClick(file.name)
+  );
   let repos = filter(data.children, { name: "repositories" });
   let files = {
     children: filter(data.children, item => item.name != "repositories")
