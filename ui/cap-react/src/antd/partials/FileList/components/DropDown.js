@@ -81,6 +81,7 @@ const DropDownFiles = props => {
             align="center"
             style={{ width: "100%" }}
             wrap={false}
+            onClick={() => props.onFileClick && props.onFileClick(props.file)}
           >
             <Space>
               {props.file.icon}
