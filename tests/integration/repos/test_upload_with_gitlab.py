@@ -341,22 +341,22 @@ def test_upload_when_repo_file(m_gitlab, client, deposit,
     assert repo_content == 'readme'
 
 
-@mark.skip()
-@patch('cap.modules.repos.factory.host_to_git_api')
-@patch('cap.modules.repos.factory.create_git_api')
-def test_create_repo_and_attach(
-        m_create_api, m_api, client, deposit, auth_headers_for_example_user, json_headers, git_repo_tar):
+@patch('cap.modules.repos.integrator.host_to_git_api')
+@patch('cap.modules.repos.integrator.create_git_api')
+def test_create_repo_as_user_and_attach(m_create_api, m_api, client, deposit,
+                                        auth_headers_for_example_user, json_headers):
+    
     class MockRepo(object):
         attributes = {
-            'web_url': 'https://gitlab.cern.ch/owner/repository/'
+            'web_url': 'https://gitlab.cern.ch/attach-deposit/repository-create-test/'
         }
 
     class MockAPI(object):
         branch = None
         repo_id = 'id'
-        host = 'github.com'
-        owner = 'owner'
-        repo = 'repository'
+        host = 'gitlab.cern.ch'
+        owner = 'attach-deposit'
+        repo = 'repository-create-test'
 
         def create_webhook(type_):
             return 'id', 'secret'
@@ -368,13 +368,14 @@ def test_create_repo_and_attach(
 
     m_api.return_value = MockProject()
     m_create_api.return_value = MockAPI()
-    pid = deposit['_deposit']['id']
-    resp = client.post(f'/deposits/{pid}/actions/upload',
+    mock_pid = deposit['_deposit']['id']
+    resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
                            'type': 'create',
-                           'name': 'repository',
-                           'host': 'gitlab.com'
+                           'name': 'repository-create-test',
+                           'host': 'gitlab.cern.ch',
+                           'org_name': 'attach-deposit'
                        }))
 
     assert resp.status_code == 201
@@ -383,5 +384,130 @@ def test_create_repo_and_attach(
     sub = GitWebhookSubscriber.query.filter_by(record_id=deposit.id, webhook_id=webhook.id).one()
     repo = sub.webhook.repo
 
-    assert repo.name == 'repository'
-    assert repo.owner == 'owner'
+    assert repo.name == 'repository-create-test'
+    assert repo.owner == 'attach-deposit'
+
+
+@patch('cap.modules.repos.integrator.create_git_api')
+def test_attach_repo_to_deposit(m_create_api, client, deposit,
+                                auth_headers_for_example_user, json_headers):
+
+    class MockAPI(object):
+        branch = 'master'
+        repo_id = 'id'
+        host = 'gitlab.cern.ch'
+        owner = 'attach-deposit'
+        repo = 'repository-attach-test'
+
+        def create_webhook(record_uuid, api, type_=None):
+            return 'id', 'secret'
+
+    m_create_api.return_value = MockAPI()
+    mock_pid = deposit['_deposit']['id']
+
+    resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
+                       headers=auth_headers_for_example_user + json_headers,
+                       data=json.dumps({
+                           'type': 'attach',
+                           'url': 'https://gitlab.cern.ch/attach-deposit/repository-attach-test',
+                           'download': False,
+                           'webhook': 'push'
+                       }))
+
+    assert resp.status_code == 201
+
+    webhook = GitWebhook.query.filter_by(event_type=None).one()
+    sub = GitWebhookSubscriber.query.filter_by(record_id=deposit.id, webhook_id=webhook.id).one()
+    repo = sub.webhook.repo
+
+    assert repo.name == 'repository-attach-test'
+    assert repo.owner == 'attach-deposit'
+
+    webhook_push = GitWebhook.query.filter_by(event_type='push').one()
+
+    assert webhook_push.branch == 'master'
+    assert repo.id == webhook_push.repo_id
+
+
+@patch('cap.modules.repos.integrator.populate_template_from_ctx')
+@patch('cap.modules.repos.integrator.host_to_git_api')
+@patch('cap.modules.repos.integrator.create_git_api')
+def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate, client, deposit,
+                                                app, users, create_deposit, create_schema,
+                                                auth_headers_for_superuser, json_headers):
+    # Use the config
+    SAMPLE_CONFIG = {
+        "repositories": {
+            "gitlab": {
+                "admin": "ADMIN_GITLAB",
+                "org_name": "attach-deposit",
+                "repo_name": {
+                    "template": "test_info.html",
+                    "ctx": {
+                        "glance_id": {
+                            "type": "path",
+                            "path": "record.id"
+                        }
+                    }
+                },
+                "private": False,
+                "license": None,
+                "description": {
+                    "template": "test_info.html",
+                    "ctx": {
+                            "glance_id": {
+                                "method": "draft_url"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    class MockRepo(object):
+        attributes = {
+            'web_url': 'https://gitlab.cern.ch/attach-deposit/test-collab'
+        }
+
+    class MockAPI(object):
+        branch = 'master'
+        repo_id = 'id'
+        host = 'gitlab.cern.ch'
+        owner = 'attach-deposit'
+        repo = 'test-collab'
+
+        def create_webhook(record_uuid, api, type_=None):
+            return 'id', 'secret'
+
+    class MockProject(object):
+        def create_repo(cls, token, repo_name, description,
+                        private, license, org_name):
+            return MockRepo()
+
+        def create_repo_as_collaborator(cls, token, organization, name, description,
+                                        private, license, host):
+            return MockRepo(), ""
+
+    m_api.return_value = MockProject()
+    m_create_api.return_value = MockAPI()
+
+    user = users['superuser']
+    create_schema('test', config=SAMPLE_CONFIG)
+    deposit = create_deposit(user, 'test', experiment='CMS')
+    mock_pid = deposit['_deposit']['id']
+    m_populate.return_value = 'test-collab'
+
+    resp = resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
+                       headers=auth_headers_for_superuser + json_headers,
+                       data=json.dumps({
+                           'type': 'collab',
+                           'host': 'gitlab.cern.ch'
+                       }))
+
+    assert resp.status_code == 201
+
+    webhook = GitWebhook.query.filter_by(event_type=None).one()
+    sub = GitWebhookSubscriber.query.filter_by(record_id=deposit.id, webhook_id=webhook.id).one()
+    repo = sub.webhook.repo
+
+    assert repo.name == 'test-collab'
+    assert repo.owner == 'attach-deposit'

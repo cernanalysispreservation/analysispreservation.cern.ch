@@ -131,7 +131,9 @@ def default_config():
                 PDF_FORUM_MAIL='pdf-forum-test@cern0.ch',
                 CONVENERS_ML_MAIL='ml-conveners-test@cern0.ch',
                 CONVENERS_ML_JIRA_MAIL='ml-conveners-jira-test@cern0.ch',
-                CMS_HYPERNEWS_EMAIL_FORMAT='hn-cms-{}@cern0.ch')
+                CMS_HYPERNEWS_EMAIL_FORMAT='hn-cms-{}@cern0.ch',
+                ADMIN_GITHUB='testtokengithub',
+                ADMIN_GITLAB='testtokengitlab')
 
 
 @pytest.fixture(scope='session')
@@ -265,6 +267,7 @@ def create_schema(db, clear_caches):
                     is_indexed=True,
                     use_deposit_as_record=True,
                     version="1.0.0",
+                    config=None,
                     **kwargs):
         """
         Add new schema into db
@@ -279,6 +282,7 @@ def create_schema(db, clear_caches):
                             is_indexed=is_indexed,
                             use_deposit_as_record=use_deposit_as_record,
                             deposit_schema=deposit_schema or default_json,
+                            config=config,
                             **kwargs)
             db.session.add(schema)
             db.session.commit()
