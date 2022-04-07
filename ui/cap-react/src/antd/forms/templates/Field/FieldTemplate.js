@@ -2,8 +2,9 @@ import React from "react";
 
 import Form from "antd/lib/form";
 import PropTypes from "prop-types";
+import FieldHeader from "./FieldHeader";
+
 import WrapIfAdditional from "./WrapIfAdditional";
-import { Space, Typography } from "antd";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -91,12 +92,11 @@ const FieldTemplate = ({
             label={
               (displayLabel || uiSchema["ui:field"]) &&
               label && (
-                <Space direction="vertical" size={0}>
-                  <Typography.Text>{label}</Typography.Text>
-                  <Typography.Text type="secondary">
-                    {description}
-                  </Typography.Text>
-                </Space>
+                <FieldHeader
+                  label={label}
+                  description={description}
+                  uiSchema={uiSchema}
+                />
               )
             }
             labelCol={labelCol}
