@@ -207,7 +207,7 @@ def populate_template_from_ctx(record, config, module=None):
         key = key_attrs[0]
         attrs = key_attrs[1]
 
-        if attrs['type'] == 'path':
+        if attrs.get('type') == 'path':
             val = path_value_equals(attrs['path'], record)
         else:
             custom_func = getattr(module, attrs['method'])

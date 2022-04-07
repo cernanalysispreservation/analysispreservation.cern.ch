@@ -25,8 +25,7 @@
             "template": "repos/description/atlas.html",
             "ctx": {
               "glance_id": {
-                "type": "path",
-                "path": "basic_info.glance_id"
+                "method": "draft_url"
               }
             }
           }
@@ -49,8 +48,7 @@
             "template": "repos/description/atlas.html",
             "ctx": {
               "glance_id": {
-                "type": "path",
-                "path": "basic_info.glance_id"
+                "method": "draft_url"
               }
             }
           }
