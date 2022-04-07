@@ -37,6 +37,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.records.utils import url_to_api_url
 
+from .custom import custom # noqa
 from .errors import GitIntegrationError, GitURLParsingError, GitPRParsingError
 from .models import GitRepository, GitWebhook, GitWebhookSubscriber
 

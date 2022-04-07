@@ -50,7 +50,8 @@ def create_repo_as_collaborator_and_attach(record_uuid, data):
         raise FileUploadError(f'Admin API key for {host} is not provided.')
 
     name = populate_template_from_ctx(record, repos.get('repo_name'))
-    desc = populate_template_from_ctx(record, repos.get('description'))
+    desc = populate_template_from_ctx(record, repos.get('description'),
+                                      module='custom')
     organization = repos.get('org_name')
 
     api = host_to_git_api(host)
