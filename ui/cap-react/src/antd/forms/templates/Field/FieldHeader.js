@@ -7,22 +7,20 @@ const FieldHeader = ({ label, description, uiSchema }) => {
   return (
     <Space direction="vertical" size={0}>
       <Typography.Text>
-        {label && (
-          <Markdown
-            text={label}
-            style={{
-              color: "#000"
-            }}
-            renderAsHtml={
-              uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
-            }
-          />
-        )}
+        <Markdown
+          text={label}
+          style={{
+            color: "#000"
+          }}
+          renderAsHtml={
+            uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
+          }
+        />
       </Typography.Text>
       <Typography.Text type="secondary">
-        {description.props && (
+        {description && (
           <Markdown
-            text={description.props.description}
+            text={description}
             style={{
               color: "#000"
             }}

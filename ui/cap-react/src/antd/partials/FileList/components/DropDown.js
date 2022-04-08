@@ -130,7 +130,8 @@ DropDownFiles.propTypes = {
   versions: PropTypes.object,
   deleteFile: PropTypes.func,
   getFileVersions: PropTypes.func,
-  infoClick: PropTypes.func
+  infoClick: PropTypes.func,
+  onFileClick: PropTypes.func
 };
 
 export default DropDownFiles;
