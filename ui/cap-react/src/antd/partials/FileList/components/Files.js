@@ -13,7 +13,7 @@ const Files = ({
   let data = constructTree(
     memoFiles,
     file => moodaUpate(file),
-    file => onFileClick(file.name)
+    file => onFileClick(file.data.key)
   );
   let repos = filter(data.children, { name: "repositories" });
   let files = {

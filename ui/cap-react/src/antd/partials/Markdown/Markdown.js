@@ -14,6 +14,9 @@ const Markdown = ({ renderAsHtml, text }) => {
   );
 };
 
-Markdown.propTypes = {};
+Markdown.propTypes = {
+  renderAsHtml: PropTypes.bool,
+  text: PropTypes.string
+};
 
 export default Markdown;
