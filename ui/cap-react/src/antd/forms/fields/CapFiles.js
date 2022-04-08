@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Modal, Space, Typography } from "antd";
+import { Button, Modal, Row, Space, Typography } from "antd";
 import { connect } from "react-redux";
 import { selectPath } from "../../../actions/files";
 import Files from "../../partials/FileList/components/Files";
-import { WarningOutlined } from "@ant-design/icons";
+import { DeleteOutlined, WarningOutlined } from "@ant-design/icons";
 
 const CapFiles = ({ uiSchema, files, onChange, formData }) => {
   const [showModal, setShowModal] = useState(false);
   let keys = Object.keys(files.toJS());
   let missedFileError = !keys.includes(formData);
+
+  //TODO: we should investigate whether the onChange should also accept directories
   return (
     <React.Fragment>
       <Modal
@@ -17,6 +19,7 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
         onCancel={() => setShowModal(false)}
         title="File Manager"
         width={800}
+        footer={null}
       >
         <Typography.Title level={5}>
           Select a file from the list
@@ -30,19 +33,33 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
         />
       </Modal>
       {formData ? (
-        <Space>
-          <Typography.Text type={missedFileError && "secondary"}>
-            {formData}
-          </Typography.Text>
-          {missedFileError && (
-            <Space>
-              <WarningOutlined />
-              <Typography.Text type="danger">
-                This file is removed
-              </Typography.Text>
-            </Space>
-          )}
-        </Space>
+        <Row
+          align="middle"
+          justify="space-between"
+          style={{
+            borderBottom: "1px solid rgba(0, 0, 0, 0.06)",
+            padding: "5px"
+          }}
+        >
+          <Space>
+            <Typography.Text type={missedFileError && "secondary"}>
+              {formData}
+            </Typography.Text>
+            {missedFileError && (
+              <Space>
+                <WarningOutlined />
+                <Typography.Text type="danger">
+                  This file is removed
+                </Typography.Text>
+              </Space>
+            )}
+          </Space>
+          <Button
+            icon={<DeleteOutlined />}
+            type="danger"
+            onClick={() => onChange(undefined)}
+          />
+        </Row>
       ) : (
         <Button onClick={() => setShowModal(true)}>
           {(uiSchema && uiSchema.capFilesDescription) ||
@@ -53,7 +70,12 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
   );
 };
 
-CapFiles.propTypes = {};
+CapFiles.propTypes = {
+  uiSchema: PropTypes.object,
+  files: PropTypes.object,
+  onChange: PropTypes.object,
+  formData: PropTypes.object
+};
 
 const mapStateToProps = state => ({
   files: state.draftItem.get("bucket"),
