@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
 import WrapIfAdditional from "./WrapIfAdditional";
+import { Space, Typography } from "antd";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -29,7 +30,8 @@ const FieldTemplate = ({
   readonly,
   required,
   schema,
-  uiSchema
+  uiSchema,
+  rawDescription
 }) => {
   const {
     colon,
@@ -85,7 +87,6 @@ const FieldTemplate = ({
         ) : (
           <Form.Item
             colon={colon}
-            // extra={description}
             hasFeedback={schema.type !== "array" && schema.type !== "object"}
             help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
             htmlFor={id}
@@ -94,7 +95,7 @@ const FieldTemplate = ({
               label && (
                 <FieldHeader
                   label={label}
-                  description={description}
+                  description={rawDescription}
                   uiSchema={uiSchema}
                 />
               )
