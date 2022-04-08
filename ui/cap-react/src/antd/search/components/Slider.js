@@ -5,23 +5,19 @@ import queryString from "query-string";
 import { withRouter } from "react-router-dom";
 
 const RangeSlider = ({ items, category, history }) => {
-  const { marks, range } = useMemo(
+  const { range } = useMemo(
     () => {
-      let total = 0;
       let barChartData = {};
       let range = [];
       items.buckets.map(item => {
         barChartData[item.key_as_string] = item.doc_count;
-        total += item.doc_count;
         range.push(new Date(item.key).getFullYear());
       });
-      const r = range[1] - range[0];
-      const marks = {};
-      Array.from(
-        { length: r + 1 },
-        (_, i) => (marks[range[0] + i] = range[0] + i)
-      );
-      return { total, barChartData, range, marks };
+
+      // make sure the earlier date is first
+      range.sort();
+
+      return { range: [range[0], range[range.length - 1]] };
     },
     [items]
   );
@@ -56,9 +52,14 @@ const RangeSlider = ({ items, category, history }) => {
       min={range[0]}
       max={range[1]}
       range
+      tooltipVisible={false}
       defaultValue={range}
-      marks={marks}
-      value={sliderRange}
+      marks={{
+        [sliderRange[0]]: sliderRange[0],
+        [sliderRange[1]]: sliderRange[1]
+      }}
+      disabled={range.length <= 1}
+      value={[sliderRange[0], sliderRange[1]]}
       onAfterChange={onChange}
       onChange={setSliderRange}
     />
