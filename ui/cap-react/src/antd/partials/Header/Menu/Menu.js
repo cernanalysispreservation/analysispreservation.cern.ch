@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Menu, Dropdown, Button } from "antd";
 import { WELCOME } from "../../../routes";
-import OauthPopup from "../../../../components/settings/components/OAuthPopup";
+import OauthPopup from "../../OAuthPopUp";
 import { LoginOutlined } from "@ant-design/icons";
 import LoginForm from "../LoginForm";
 const { Item } = Menu;
