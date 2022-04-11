@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 
 import ErrorPage from "../../components/partials/ErrorPage";
-import OAuthConnect from "../../components/settings/components/OAuthConnect";
+import OAuthConnect from "../partials/OAuthConnect";
 import SettingsIndex from "./Settings";
 
 import DocumentTitle from "../partials/DocumentTitle";

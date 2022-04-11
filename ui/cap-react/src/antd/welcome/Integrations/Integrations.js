@@ -1,8 +1,8 @@
 import React from "react";
 import { Row, Col, Typography, Space } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
-import { ReanaIcon } from "../../../components/drafts/form/themes/grommet/fields/components/ReanaIcon";
-import PIDFair from "../../../components/welcome/img/pid_fair.svg";
+import ReanaIcon from "../img/reana.svg";
+import PIDFair from "../img/pid_fair.svg";
 
 const Integrations = () => {
   return (
