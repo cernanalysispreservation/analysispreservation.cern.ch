@@ -11,7 +11,13 @@ import _debounce from "lodash/debounce";
 import axios from "axios";
 import { AiOutlineUser, AiOutlineCloudDownload } from "react-icons/ai";
 
-const DepositAccessModal = ({ open, onClose, access }) => {
+const DepositAccessModal = ({
+  open,
+  onClose,
+  access,
+  displayAsFormField = false,
+  updateField = null
+}) => {
   const [target, setTarget] = useState("user");
   const [permissionsObj, setPermissionsObj] = useState({});
   const [loading, setLoading] = useState(false);
@@ -102,6 +108,8 @@ const DepositAccessModal = ({ open, onClose, access }) => {
               permissionsObj={permissionsObj}
               target={target}
               access={access}
+              displayAsFormField={displayAsFormField}
+              updateField={updateField}
             />
           ) : (
             <Box pad="small" align="center">
@@ -146,6 +154,7 @@ const DepositAccessModal = ({ open, onClose, access }) => {
 
 DepositAccessModal.propTypes = {
   open: PropTypes.bool,
+  displayAsFormField: PropTypes.bool,
   onClose: PropTypes.func,
   access: PropTypes.object
 };

@@ -86,7 +86,29 @@ class DepositAccess extends React.Component {
       });
     }
 
-    return (
+    return this.props.displayAsFormField ? (
+      this.props.canAdmin && (
+        <React.Fragment>
+          <Box align="center">
+            <Button
+              size="small"
+              text="Add People"
+              primary
+              icon={<AiOutlinePlus color="#fff" />}
+              onClick={() => this.setState({ showModal: true })}
+            />
+          </Box>
+          <AccessModal
+            open={this.state.showModal}
+            onClose={() => this.setState({ showModal: false })}
+            permissions={permissions}
+            access={access}
+            displayAsFormField
+            updateField={this.props.updateField}
+          />
+        </React.Fragment>
+      )
+    ) : (
       <Box className="deposit-access">
         <Heading tag="h3">Access & Permissions</Heading>
         <Box
@@ -179,7 +201,8 @@ DepositAccess.propTypes = {
   draft: PropTypes.object,
   permissions: PropTypes.object,
   handlePermissions: PropTypes.func,
-  canAdmin: PropTypes.bool
+  canAdmin: PropTypes.bool,
+  displayAsFormField: PropTypes.bool
 };
 
 function mapStateToProps(state) {
