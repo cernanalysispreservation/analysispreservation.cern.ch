@@ -23,7 +23,9 @@ const PermissionTable = ({
   permissionsObj,
   target,
   access,
-  canAdmin
+  canAdmin,
+  displayAsFormField = false,
+  updateField = null
 }) => {
   const [currentPermissionObj, setCurrentPermissionObj] = useState({});
   const [updated, setUpdated] = useState({});
@@ -79,34 +81,35 @@ const PermissionTable = ({
                   align="center"
                   responsive={false}
                 >
-                  <Box style={{ position: "relative", overflow: "visible" }}>
-                    <Tag
-                      size="small"
-                      text={
-                        <PermissionPopUp
-                          title={
-                            access[item[0].toLocaleLowerCase()]
-                              ? getTextFromPermission(
-                                  access[item[0].toLowerCase()].actions
-                                )
-                              : getTextFromPermission(item[1])
-                          }
-                          type={target}
-                          email={item[0]}
-                          permissions={item[1]}
-                          hideMenu={Object.keys(access).includes(
-                            item[0].toLowerCase()
-                          )}
-                          addPermissionsModal
-                          updatePermissionsModalObj={list => {
-                            permissionsObj[item[0]] = list;
-                            setUpdated({ list });
-                          }}
-                        />
-                      }
-                    />
-                  </Box>
-
+                  {!displayAsFormField && (
+                    <Box style={{ position: "relative", overflow: "visible" }}>
+                      <Tag
+                        size="small"
+                        text={
+                          <PermissionPopUp
+                            title={
+                              access[item[0].toLocaleLowerCase()]
+                                ? getTextFromPermission(
+                                    access[item[0].toLowerCase()].actions
+                                  )
+                                : getTextFromPermission(item[1])
+                            }
+                            type={target}
+                            email={item[0]}
+                            permissions={item[1]}
+                            hideMenu={Object.keys(access).includes(
+                              item[0].toLowerCase()
+                            )}
+                            addPermissionsModal
+                            updatePermissionsModalObj={list => {
+                              permissionsObj[item[0]] = list;
+                              setUpdated({ list });
+                            }}
+                          />
+                        }
+                      />
+                    </Box>
+                  )}
                   {Object.keys(access).includes(item[0].toLowerCase()) ? (
                     <Paragraph
                       margin="none"
@@ -129,13 +132,15 @@ const PermissionTable = ({
                       size="small"
                       primaryOutline
                       onClick={() =>
-                        handlePermissions(
-                          draft_id,
-                          target,
-                          item[0],
-                          item[1],
-                          "add"
-                        )
+                        updateField
+                          ? updateField(item[0])
+                          : handlePermissions(
+                              draft_id,
+                              target,
+                              item[0],
+                              item[1],
+                              "add"
+                            )
                       }
                     />
                   )}
