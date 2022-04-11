@@ -33,7 +33,7 @@ from .utils import generate_recid
 def cap_record_minter(record_uuid, data):
     """Mint record identifiers."""
     assert 'control_number' not in data
-    pid_value = generate_recid(data['_experiment'])
+    pid_value = generate_recid(data)
     provider = RecordUUIDProvider.create(
         pid_type='recid',
         pid_value=pid_value,

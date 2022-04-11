@@ -30,13 +30,27 @@ import uuid
 
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
+from cap.modules.schemas.resolvers import (
+    resolve_schema_by_url,
+    resolve_schema_by_name_and_version)
+from .utils import generate_auto_incremental_pid
+
 
 def cap_deposit_minter(record_uuid, data):
     """Mint deposit's identifier."""
     try:
         pid_value = data['_deposit']['id']
     except KeyError:
-        pid_value = uuid.uuid4().hex
+        pid_value, schema = None, None
+        if data.get('$ana_type'):
+            schema = resolve_schema_by_name_and_version(data.get('$ana_type'))
+        elif data.get('$schema'):
+            schema = resolve_schema_by_url(data.get('$schema'))
+
+        if schema and schema.config.get('auto_increment', False):
+            pid_value = generate_auto_incremental_pid(schema.experiment)
+        if not pid_value:
+            pid_value = uuid.uuid4().hex
 
     pid = PersistentIdentifier.create(
         'depid',
