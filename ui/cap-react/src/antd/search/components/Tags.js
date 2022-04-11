@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Space, Tag, Row } from "antd";
+import { Space, Tag } from "antd";
 
 const Tags = ({
   onClick,
