@@ -7,7 +7,6 @@ const EditableField = ({
   text,
   isEditable = false,
   emptyValue = "Untitled Document",
-  dataCy,
   onUpdate = () => {}
 }) => {
   const [editMode, setEditMode] = useState(false);

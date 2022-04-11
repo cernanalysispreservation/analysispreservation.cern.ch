@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import Results from "../containers/Results";
-import DocumentTitle from "../../../components/partials/Title";
+import DocumentTitle from "../../partials/DocumentTitle";
 import { Col, Pagination, Row, Grid, Drawer } from "antd";
 import Facets from "../containers/Facets";
 import ResultsHeader from "./Header";
