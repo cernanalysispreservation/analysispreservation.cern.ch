@@ -1,5 +1,5 @@
 import React from "react";
-import HomeImage from "../../../components/welcome/img/home-image.svg";
+import HomeImage from "../img/home-image.svg";
 import { Row, Col, Typography, Space } from "antd";
 import {
   DatabaseOutlined,

@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Button, Row, Radio, Select, Space, Typography } from "antd";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  FilterOutlined
-} from "@ant-design/icons";
+import { Button, Row, Select, Space, Typography } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
 
 const SORT_OPTIONS = [
   { value: "mostrecent", label: "Newest First" },

@@ -8,16 +8,12 @@ import {
 import { Route, Switch } from "react-router-dom";
 import DocumentTitle from "../../../components/partials/Title";
 import PublishedPreview from "../containers/Preview";
-import RunsIndex from "../../../components/published/RunsIndex";
-import RerunPublished from "../../../components/published/RerunPublished";
-import PublishedSidebar from "../../../components/published/components/PublishedSidebar";
 import Error from "../../partials/Error";
 import PublishedLoader from "../Loaders/Published";
 
 const Published = ({
   error,
   match,
-  item,
   getPublishedItem,
   clearPublishedState,
   loading
@@ -41,26 +37,6 @@ const Published = ({
     <DocumentTitle title={`${match.params.id} | Published`}>
       <Switch>
         <Route exact path={PUBLISHED_ITEM} component={PublishedPreview} />
-        {item &&
-          item.metadata &&
-          item.metadata.workflows &&
-          item.metadata.workflows.length > 0 && (
-            <Route exact path={PUBLISHED_ITEM_RUNS} component={RunsIndex} />
-          )}
-        {item &&
-          item.metadata &&
-          item.metadata.workflows &&
-          item.metadata.workflows.length > 0 && (
-            <Route
-              exact
-              path={PUBLISHED_ITEM_RUNS_CREATE}
-              component={RerunPublished}
-            />
-          )}
-        {item &&
-          item.metadata &&
-          item.metadata.workflows &&
-          item.metadata.workflows.length > 0 && <PublishedSidebar />}
       </Switch>
     </DocumentTitle>
   );
