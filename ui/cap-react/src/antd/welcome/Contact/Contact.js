@@ -6,11 +6,10 @@ import {
   GithubOutlined
 } from "@ant-design/icons";
 
-import { AliceIcon } from "../../../components/drafts/form/themes/grommet/fields/components/Alice";
-import { AtlasIcon } from "../../../components/drafts/form/themes/grommet/fields/components/Atlas";
-import { CmsIcon } from "../../../components/drafts/form/themes/grommet/fields/components/Cms";
-
-import LHCbLogo from "../../../img/lhcb-logo.svg";
+import AliceIcon from "../img/alice.svg";
+import AtlasIcon from "../img/atlas.svg";
+import CmsIcon from "../img/cms.svg";
+import LHCbLogo from "../img/lhcb-logo.svg";
 
 const Contact = () => {
   return (

@@ -8,8 +8,8 @@ import IndexPage from "../index/IndexPage";
 import AboutPage from "../about";
 import PolicyPage from "../policy";
 
-import noRequireAuth from "../../components/auth/NoAuthorizationRequired";
-import requireAuth from "../../components/auth/AuthorizationRequired";
+import noRequireAuth from "../auth/NoAuthorizationRequired";
+import requireAuth from "../auth/AuthorizationRequired";
 
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";

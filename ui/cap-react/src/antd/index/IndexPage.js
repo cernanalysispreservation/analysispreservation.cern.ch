@@ -14,7 +14,7 @@ import CreateIndex from "../create";
 import PublishedIndex from "../published";
 
 import CollectionPage from "../collection";
-import ErrorPage from "../../components/partials/ErrorPage";
+import ErrorPage from "../partials/Error";
 
 import {
   HOME,
@@ -39,7 +39,6 @@ class IndexPage extends React.Component {
         <Route path={SETTINGS} component={SettingsIndex} />
         <Route path={CREATE_INDEX} component={CreateIndex} />
         <Route path={COLLECTION} component={CollectionPage} />
-
         <Route component={ErrorPage} />
       </Switch>
     );
