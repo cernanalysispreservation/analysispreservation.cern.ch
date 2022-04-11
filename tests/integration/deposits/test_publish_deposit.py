@@ -47,6 +47,24 @@ def test_deposit_publish_when_owner_can_publish_his_deposit(
     assert resp.status_code == 202
 
 
+def test_deposit_publish_when_auto_incremental_pid_enabled(
+    client, location, create_schema, auth_headers_for_superuser,json_headers):
+    schema = create_schema('faser', experiment='FASER', config={'auto_increment': True})
+    metadata = {'$ana_type': 'faser'}
+
+    resp_create = client.post('/deposits/',
+                       headers=auth_headers_for_superuser + json_headers,
+                       data=json.dumps(metadata))
+    assert resp_create.status_code == 201
+    assert resp_create.json['id'] == 'FASER-1'
+
+    pid = resp_create.json['id']
+    resp_publish = client.post('/deposits/{}/actions/publish'.format(pid),
+                       headers=auth_headers_for_superuser + json_headers)
+    assert resp_publish.status_code == 202
+    assert resp_publish.json['id'] == pid
+
+
 def test_deposit_publish_when_superuser_can_publish_others_deposits(
         client, users, auth_headers_for_superuser, create_deposit):
     owner = users['cms_user']

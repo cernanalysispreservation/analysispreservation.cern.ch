@@ -29,14 +29,21 @@ import string
 from flask import current_app, url_for
 from six.moves.urllib import parse
 
+from cap.modules.schemas.resolvers import resolve_schema_by_url
+
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
 
 
-def generate_recid(experiment):
+def generate_recid(data):
     """CAP Pid generator."""
     while True:
-        pid_value = random_pid(experiment)
+        schema = resolve_schema_by_url(data.get('$schema'))
+        if schema.config.get('auto_increment'):
+            pid_value = data['_deposit']['id']
+        else:
+            experiment = data.get('_experiment')
+            pid_value = random_pid(experiment)
         try:
             PersistentIdentifier.get('recid', pid_value)
         except PIDDoesNotExistError:

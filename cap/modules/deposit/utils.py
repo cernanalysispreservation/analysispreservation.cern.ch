@@ -25,9 +25,12 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import jsonify
+
 from invenio_access.models import Role
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_pidstore.models import PersistentIdentifier
 
 from cap.modules.records.utils import url_to_api_url
 from cap.modules.schemas.resolvers import resolve_schema_by_url
@@ -93,3 +96,21 @@ def prepare_record(sender, json=None, record=None,
 
     collection = {"name": name, "version": version, "fullname": fullname}
     json["_collection"] = collection
+
+
+def generate_auto_incremental_pid(experiment):
+    """Method to generate auto-increment PID for records/deposits."""
+    try:
+        previous_deposit_id = 0
+        previous_deposit = PersistentIdentifier.query.filter(
+            PersistentIdentifier.pid_value.contains(experiment),
+            PersistentIdentifier.pid_type == 'depid'
+        ).order_by(PersistentIdentifier.id.desc()).first()
+        if previous_deposit:
+            previous_deposit_id = int(previous_deposit.pid_value.split('-')[-1])
+        return '{}-{}'.format(experiment, previous_deposit_id+1)
+    except Exception as e:
+        return jsonify({
+            'message': 'An error {} occured while minting '
+            'the pid for analysis.'.format(e)
+        }), 500
