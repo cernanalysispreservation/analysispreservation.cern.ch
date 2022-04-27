@@ -16,6 +16,7 @@ import Facet from "./Facet";
 import FacetsLoading from "../Loaders/Facets";
 import HowToSearchPage from "../../partials/HowToSearch";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Map } from "immutable";
 
 const Facets = ({
   aggs,
@@ -29,20 +30,22 @@ const Facets = ({
 }) => {
   const [showHelp, setShowHelp] = useState(false);
   const constructFacets = aggs => {
-    let facets = {};
-    let keys = Object.keys(aggs).filter(key => {
-      return typeof aggs[key] === "object";
-    });
-    for (let key of keys) {
-      let obj = {};
-      if (key.startsWith("facet_")) {
-        obj[key.replace("facet_", "")] =
-          "filtered" in aggs[key] ? aggs[key]["filtered"] : aggs[key];
-      } else {
-        obj = constructFacets(aggs[key]);
-      }
-      Object.assign(facets, obj);
-    }
+    let facets = Map({});
+    aggs &&
+      aggs.mapEntries(item => {
+        if (!Map.isMap(item[1])) return;
+        let obj = Map({});
+        if (item[0].startsWith("facet_")) {
+          let newItem = item[1].has("filtered")
+            ? item[1].get("filtered")
+            : item[1];
+          obj = obj.set(item[0].replace("facet_", ""), newItem);
+        } else {
+          obj = constructFacets(item[1]);
+        }
+
+        facets = facets.merge(obj);
+      });
 
     return facets;
   };
@@ -174,37 +177,37 @@ const Facets = ({
   let facets_result = null;
 
   if (aggs) {
-    let facets = constructFacets(aggs);
+    let facet = constructFacets(aggs);
 
     if (removeType) {
-      delete facets.collection;
+      facet = facet.delete("collection");
     }
 
     // Get and sort by order aggregations
     let categories = [];
-    for (let key in facets) {
+    facet.mapEntries(item => {
       categories.push([
-        key,
-        facets[key].meta && facets[key].meta.order
-          ? facets[key].meta.order
+        item[0],
+        item[1],
+        item[1].hasIn(["meta", "order"])
+          ? item[1].getIn(["meta", "order"])
           : 9999
       ]);
-    }
-    categories.sort((a, b) => a[1] - b[1]);
-    categories = categories.map(c => c[0]);
+    });
+    categories.sort((a, b) => a[2] - b[2]);
+    categories = categories.map(c => [c[0], c[1]]);
 
-    facets_result = categories.map(category => {
-      return (
-        facets[category].buckets.length > 0 && (
+    facets_result = categories.map(item => {
+      if (item[1].get("buckets").size > 0)
+        return (
           <Facet
-            category={category}
-            facets={facets}
+            category={item[0]}
+            facet={facet}
             isAggSelected={isAggSelected}
             selectedAggs={selectedAggs}
             onChange={_onChange}
           />
-        )
-      );
+        );
     });
   }
 

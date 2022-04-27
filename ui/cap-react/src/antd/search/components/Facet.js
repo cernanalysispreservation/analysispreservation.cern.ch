@@ -12,7 +12,7 @@ import { withRouter } from "react-router-dom";
 
 const Facet = ({
   category,
-  facets,
+  facet,
   isAggSelected,
   selectedAggs,
   onChange,
@@ -20,7 +20,7 @@ const Facet = ({
 }) => {
   const getContentByType = (type) => {
     const choices = {
-      range: <RangeSlider items={facets[category]} category={category} />,
+      range: <RangeSlider items={facet.get(category)} category={category} />,
       daterange: (
         <RangePicker
           onChange={(d, ds) => {
@@ -41,7 +41,7 @@ const Facet = ({
       default: (
         <FacetItem
           limit={11}
-          items={facets[category].buckets}
+          item={facet.getIn([category, "buckets"])}
           isAggSelected={isAggSelected}
           selectedAggs={selectedAggs}
           onChange={onChange}
@@ -55,24 +55,27 @@ const Facet = ({
     return choices[type];
   };
 
-  const getFacetTitle = (title) =>
-    facets[category].meta && facets[category].meta.title
-      ? facets[category].meta.title
-      : title.replace(/_/g, " ").replace(/\w\S*/g, function (txt) {
+  const getFacetTitle = title =>
+    facet.hasIn([category, "meta", "title"])
+      ? facet.getIn([category, "meta", "title"])
+      : title.replace(/_/g, " ").replace(/\w\S*/g, function(txt) {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
 
   return (
     <Space direction="vertical" style={{ width: "100%", marginBottom: "10px" }}>
       <Typography.Title level={5}>{getFacetTitle(category)}</Typography.Title>
-      {getContentByType(facets[category].meta && facets[category].meta.type)}
+      {getContentByType(
+        facet.hasIn([category, "meta", "type"]) &&
+          facet.getIn([category, "meta", "type"])
+      )}
     </Space>
   );
 };
 
 Facet.propTypes = {
   category: PropTypes.string,
-  facets: PropTypes.object,
+  facet: PropTypes.object,
   selectedAggs: PropTypes.object,
   onChange: PropTypes.func,
   isAggSelected: PropTypes.func,
