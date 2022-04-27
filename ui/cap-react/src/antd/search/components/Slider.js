@@ -9,9 +9,9 @@ const RangeSlider = ({ items, category, history }) => {
     () => {
       let barChartData = {};
       let range = [];
-      items.buckets.map(item => {
-        barChartData[item.key_as_string] = item.doc_count;
-        range.push(new Date(item.key).getFullYear());
+      items.get("buckets").map(item => {
+        barChartData[item.get("key_as_string")] = item.get("doc_count");
+        range.push(new Date(item.get("key")).getFullYear());
       });
 
       // make sure the earlier date is first
