@@ -4,15 +4,14 @@ import { Space, Typography } from "antd";
 import FacetItem from "./FacetItem";
 import RangeSlider from "./Slider";
 
-
-const Facet = ({ category, facets, isAggSelected, selectedAggs, onChange }) => {
+const Facet = ({ category, facet, isAggSelected, selectedAggs, onChange }) => {
   const getContentByType = type => {
     const choices = {
-      true: <RangeSlider items={facets[category]} category={category} />,
+      true: <RangeSlider items={facet.get(category)} category={category} />,
       false: (
         <FacetItem
           limit={11}
-          items={facets[category].buckets}
+          item={facet.getIn([category, "buckets"])}
           isAggSelected={isAggSelected}
           selectedAggs={selectedAggs}
           onChange={onChange}
@@ -25,23 +24,26 @@ const Facet = ({ category, facets, isAggSelected, selectedAggs, onChange }) => {
   };
 
   const getFacetTitle = title =>
-    facets[category].meta && facets[category].meta.title
-            ? facets[category].meta.title
-            : title.replace(/_/g, " ").replace(/\w\S*/g, function(txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-              });
+    facet.hasIn([category, "meta", "title"])
+      ? facet.getIn([category, "meta", "title"])
+      : title.replace(/_/g, " ").replace(/\w\S*/g, function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
 
   return (
     <Space direction="vertical" style={{ width: "100%", marginBottom: "10px" }}>
       <Typography.Title level={5}>{getFacetTitle(category)}</Typography.Title>
-      {getContentByType(facets[category].meta && facets[category].meta.type)}
+      {getContentByType(
+        facet.hasIn([category, "meta", "type"]) &&
+          facet.getIn([category, "meta", "type"])
+      )}
     </Space>
   );
 };
 
 Facet.propTypes = {
   category: PropTypes.string,
-  facets: PropTypes.object,
+  facet: PropTypes.object,
   selectedAggs: PropTypes.object,
   onChange: PropTypes.func,
   isAggSelected: PropTypes.func

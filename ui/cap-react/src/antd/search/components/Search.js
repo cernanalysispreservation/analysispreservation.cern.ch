@@ -115,7 +115,7 @@ const Search = ({
             <Facets
               removeType={match.params && match.params.anatype}
               results={results}
-              aggs={results.toJS().aggregations}
+              aggs={results.get("aggregations")}
             />
           </Drawer>
         ) : (
@@ -123,7 +123,7 @@ const Search = ({
             <Facets
               removeType={match.params && match.params.anatype}
               results={results}
-              aggs={results.toJS().aggregations}
+              aggs={results.get("aggregations")}
             />
           </Col>
         )}

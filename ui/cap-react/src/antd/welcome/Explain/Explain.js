@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Typography, Space, Card, Tag, Divider } from "antd";
+import { Row, Col, Typography, Space, Card, Divider } from "antd";
 
 const Explain = () => {
   const explainBoxes = [
