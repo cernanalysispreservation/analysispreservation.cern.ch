@@ -207,8 +207,9 @@ class CAPDeposit(Deposit, Reviewable):
         }]
         """
         with AdminDepositPermission(self).require(403):
-
             data = request.get_json()
+            if data is None:
+                raise InvalidDataRESTError()
 
             return self.edit_permissions(data)
 
@@ -249,8 +250,11 @@ class CAPDeposit(Deposit, Reviewable):
         with UpdateDepositPermission(self).require(403):
             if request:
                 _, rec = request.view_args.get('pid_value').data
-                record_uuid = str(rec.id)
                 data = request.get_json()
+                if data is None:
+                    raise InvalidDataRESTError()
+
+                record_uuid = str(rec.id)
                 webhook = data.get('webhook', False)
                 event_type = data.get('event_type', 'release')
 
@@ -309,10 +313,9 @@ class CAPDeposit(Deposit, Reviewable):
         Expects json with subscriber id as a param:
         """
         with UpdateDepositPermission(self).require(403):
-            try:
-                data = request.get_json()
-                sub_id = data['subscriber_id']
-            except KeyError:
+            data = request.get_json()
+            sub_id = data.get('subscriber_id')
+            if sub_id is None:
                 raise DisconnectWebhookError('Missing subscriber_id parameter')
 
             try:
@@ -332,7 +335,10 @@ class CAPDeposit(Deposit, Reviewable):
         """
         with CloneDepositPermission(self).require(403):
             data = copy.deepcopy(self.dumps())
-            del data['_deposit'], data['control_number']
+            # control number exist only in case of a published draft(record)
+            if data:
+                data.pop('_deposit', None)
+                data.pop('control_number', None)
             deposit = super(CAPDeposit, self).create(data, id_=id_)
             deposit['_deposit']['cloned_from'] = {
                 'type': pid.pid_type,
@@ -358,7 +364,7 @@ class CAPDeposit(Deposit, Reviewable):
                 if data is None:
                     raise InvalidDataRESTError()
 
-                if "id" in data:
+                if data.get('id'):
                     self.update_review(data)
                 else:
                     self.create_review(data)

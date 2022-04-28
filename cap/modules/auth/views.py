@@ -34,6 +34,7 @@ from werkzeug.exceptions import HTTPException
 
 from invenio_db import db
 from invenio_userprofiles.models import UserProfile
+from invenio_rest.errors import RESTException
 
 from .config import OAUTH_SERVICES, USER_PROFILE
 from .models import OAuth2Token
@@ -80,6 +81,10 @@ def connect(name):
     ui_flag = request.args.get('ui')
     session.update({'next': next_url, 'ui': ui_flag})
 
+    available_services = [_s.lower() for _s in list(OAUTH_SERVICES.keys())]
+    if name not in available_services:
+        raise RESTException(description='Invalid service.')
+
     client = current_auth.create_client(name)
     redirect_uri = url_for('cap_auth.authorize', name=name, _external=True)
 
@@ -104,7 +109,7 @@ def disconnect(name):
     _token = OAuth2Token.get(name=name, user_id=current_user.id)
 
     if _profile and _token:
-        del _profile.extra_data['services'][name]
+        _profile.extra_data['services'].pop(name, None)
 
         flag_modified(_profile, "extra_data")
         db.session.delete(_token)

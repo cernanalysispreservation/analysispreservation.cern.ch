@@ -37,6 +37,17 @@ from cap.modules.repos.github_api import Github, GithubAPI
 from cap.modules.repos.models import GitWebhookSubscriber
 
 
+def test_upload_when_missing_data_returns_400(client, deposit,
+                                                auth_headers_for_example_user,
+                                                json_headers):
+    pid = deposit['_deposit']['id']
+
+    resp = client.post(f'/deposits/{pid}/actions/upload',
+                       headers=auth_headers_for_example_user + json_headers)
+
+    assert resp.status_code == 400
+
+
 def test_upload_when_missing_params_returns_400(client, deposit,
                                                 auth_headers_for_example_user,
                                                 json_headers):

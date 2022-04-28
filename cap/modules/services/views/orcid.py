@@ -29,6 +29,7 @@ import requests
 from flask import jsonify, request
 
 from . import blueprint
+from invenio_rest.errors import RESTException
 from cap.modules.access.utils import login_required
 
 JSON_HEADERS = {'Content-Type': 'application/json'}
@@ -38,7 +39,7 @@ ORCID_SERVER_URL = 'https://pub.orcid.org/v2.1'
 def _get_orcid(arg, by='name'):
     """Get ORCID information depending on the argument type (name/orcid id)."""
     if by == 'name':
-        name = arg.split()
+        name = arg.split(' ', 1)
         url = "{}/search/?q=given-names:{}+AND+family-name:{}".format(
             ORCID_SERVER_URL, name[0], name[-1])
     else:
@@ -52,11 +53,12 @@ def _get_orcid(arg, by='name'):
 @login_required
 def get_orcid():
     """Get ORCID for given name (route)."""
-    name = request.args.get('name', None)
-    res = {}
+    args = request.args
+    name = args.get('name')
     if not name:
-        return jsonify(res)
+        raise RESTException(description='name parameter not found.')
 
+    res = {}
     resp, status = _get_orcid(name, by='name')
     results = resp.get('result', [])
 

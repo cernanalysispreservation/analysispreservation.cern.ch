@@ -54,23 +54,24 @@ def get_zenodo_record(zenodo_id):
 def upload_to_zenodo(bucket_id, filename):
     """Upload code to zenodo."""
     zenodo_server_url = current_app.config.get('ZENODO_SERVER_URL')
-    params = {"access_token": current_app.config.get(
-        'ZENODO_ACCESS_TOKEN')}
-    filename = filename + '.tar.gz'
+    zenodo_api_endpoint = '/deposit/depositions'
+    zenodo_server_api_create = zenodo_server_url + zenodo_api_endpoint
+    params = {"access_token": current_app.config.get('ZENODO_ACCESS_TOKEN')}
 
-    r = requests.post(zenodo_server_url,
-                      params=params, json={},
-                      )
+    # Create a new draft in zenodo to upload
+    zenodo_draft = requests.post(zenodo_server_api_create,
+                                 params=params,
+                                 json={})
 
-    file_obj = ObjectVersion.get(bucket_id, filename)
-    file = FileInstance.get(file_obj.file_id)
+    _file_obj = ObjectVersion.get(bucket_id, filename)
+    _file = FileInstance.get(_file_obj.file_id)
+    bucket_url = zenodo_draft.json().get('links').get('bucket')
 
-    bucket_url = r.json()['links']['bucket']
-    with open(file.uri, 'rb') as fp:
-        response = requests.put(
+    with open(_file.uri, 'rb') as fp:
+        upload_response = requests.put(
             bucket_url + '/{}'.format(filename),
             data=fp,
             params=params,
         )
 
-    return jsonify({"status": response.status_code})
+    return jsonify({"status": upload_response.status_code})
