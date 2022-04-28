@@ -23,10 +23,14 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
 """Integration tests for user views."""
-from __future__ import absolute_import, print_function
-
 import responses
-from mock import patch
+
+
+def test_get_orcid_when_name_not_present_returns_400(client, auth_headers_for_superuser):
+    resp = client.get("/services/orcid",
+                      headers=auth_headers_for_superuser)
+
+    assert resp.json['message'] == 'name parameter not found.'
 
 
 @responses.activate

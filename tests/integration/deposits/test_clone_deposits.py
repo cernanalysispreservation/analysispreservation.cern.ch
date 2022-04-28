@@ -44,6 +44,18 @@ def test_deposit_clone_when_owner_can_clone_his_deposit(
     assert resp.status_code == 201
 
 
+def test_deposit_clone_when_deposit_not_published(
+        client, users, auth_headers_for_user, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.post('/deposits/{}/actions/clone'.format(pid),
+                       headers=auth_headers_for_user(owner))
+
+    assert resp.status_code == 201
+
+
 def test_deposit_clone_when_superuser_can_clone_others_deposits(
         client, users, auth_headers_for_superuser, create_deposit):
     owner = users['cms_user']

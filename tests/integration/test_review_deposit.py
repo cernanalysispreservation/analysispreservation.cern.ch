@@ -97,6 +97,11 @@ def test_deposit_review_create_reviewable(
     assert resp.status_code == 400
     assert "errors" in resp.json
 
+    # Wrong - needs data
+    resp = client.post(f'/deposits/{reviewable_id}/actions/review',
+                       headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 400
+
     # Correct 1
     resp = client.post(f'/deposits/{reviewable_id}/actions/review',
                        data=json.dumps({

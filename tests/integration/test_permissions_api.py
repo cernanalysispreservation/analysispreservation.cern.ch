@@ -178,6 +178,19 @@ def test_add_permissions_for_user_that_doesnt_exist_in_ldap_returns_400(
         'message'] == 'User with this mail does not exist in LDAP.'
 
 
+def test_add_permissions_when_data_not_present_in_request(
+    client, users, auth_headers_for_superuser, create_deposit, json_headers):
+    owner = users['cms_user']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
+
+    resp = client.post(
+        f'/deposits/{pid}/actions/permissions',
+        headers=auth_headers_for_superuser + json_headers
+    )
+
+    assert resp.status_code == 400
+
+
 def test_add_permissions_when_permission_already_exist_returns_400(
     client, users, auth_headers_for_superuser, create_deposit, json_headers):
     owner = users['cms_user']
