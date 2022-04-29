@@ -30,7 +30,7 @@ from invenio_access.models import ActionRoles, ActionUsers
 from pytest import mark
 
 from cap.modules.experiments.permissions import exp_need_factory
-from conftest import _datastore
+from conftest import _datastore, add_role_to_user
 
 
 @mark.skip
@@ -337,3 +337,217 @@ def test_deposit_validation_on_validate_das_path_and_triggers(
     assert errors[1].get('field') == ['obj', 'list', 0,
                                       "triggers", 2, "trigger"]
     assert len(errors) == 2
+
+
+def test_deposit_validation_on_schema_field_user_can_edit(client, users,
+                                                          auth_headers_for_user,
+                                                          json_headers, create_schema,
+                                                          create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'users': ['cms_user@cern.ch']
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+    assert resp.status_code == 200
+
+
+def test_deposit_validation_on_schema_field_user_cannot_edit(client, users,
+                                                             auth_headers_for_user,
+                                                             json_headers, create_schema,
+                                                             create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'users': ['cms_user_non_existing@cern.ch']
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+
+    assert resp.status_code == 422
+    assert resp.json['errors'][0]['message'] == 'You cannot edit this field.'
+
+
+def test_deposit_validation_on_schema_field_user_role(client, users,
+                                                      auth_headers_for_user,
+                                                      json_headers, create_schema,
+                                                      create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'roles': ['some-egroup@cern.ch', 'some-another-egroup@cern.ch']
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    # User not present in the specified egroups
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+
+    assert resp.status_code == 422
+    assert resp.json['errors'][0]['message'] == 'You cannot edit this field.'
+
+    # Add the user to the egroup
+    add_role_to_user(owner, 'some-egroup@cern.ch')
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+
+    assert resp.status_code == 200
+
+
+def test_deposit_validation_on_schema_field_user_cannot_edit_both_present(client, users,
+                                                                          auth_headers_for_user,
+                                                                          json_headers, create_schema,
+                                                                          create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'users': ['cmsd_user@cern.ch'],
+                                  'roles': ['some-egroup@cern.ch']
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+
+    assert resp.status_code == 422
+    assert resp.json['errors'][0]['message'] == 'You cannot edit this field.'
+
+
+def test_deposit_validation_on_schema_field_user_can_edit_both_present(client, users,
+                                                                       auth_headers_for_user,
+                                                                       json_headers, create_schema,
+                                                                       create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'users': ['cms_user@cern.ch'],
+                                  'roles': ['some-egroup@cern.ch']
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+
+    assert resp.status_code == 200
+
+
+def test_deposit_validation_on_schema_field_user_cannot_edit_with_custom_message(client, users,
+                                                                                auth_headers_for_user,
+                                                                                json_headers, create_schema,
+                                                                                create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'users': ['cmsd_user@cern.ch'],
+                                  'roles': ['some-egroup@cern.ch'],
+                                  'error_message': 'Test error message from schema.'
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+
+    assert resp.status_code == 422
+    assert resp.json['errors'][0]['message'] == 'Test error message from schema.'
