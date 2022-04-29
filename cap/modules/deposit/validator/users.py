@@ -23,25 +23,29 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Deposit validators."""
 
-import os
-from jsonschema import Draft4Validator
-from jsonschema.validators import extend
-from .validator.users import validate_editing_field
-from cap.modules.experiments.validators import (validate_cms_trigger,
-                                                validate_das_path,
-                                                validate_unique_cadi)
+from flask_login import current_user
+from flask_principal import RoleNeed
+from invenio_access.permissions import Permission
+from jsonschema.exceptions import ValidationError
 
 
-deposit_validators = dict(Draft4Validator.VALIDATORS)
+# Validate for schema field permissions
+def validate_editing_field(validator, value, instance, schema):
+    allowed_users = value.get('users')
+    allowed_roles = value.get('roles')
+    error_message = value.get('error_message', 'You cannot edit this field.')
 
-if not os.environ.get("CAP_CMS_VALIDATION_DISABLE"):
-    deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
-    deposit_validators['x-validate-das-path'] = validate_das_path
-deposit_validators['x-validate-unique-cadi'] = validate_unique_cadi
-# deposit_validators['x-validate-cadi-id'] = validate_cadi_id
+    error = True
+    if allowed_users:
+        current_user_email = current_user.email
+        if current_user_email in allowed_users:
+            error = False
 
-# check for editing permission
-deposit_validators['x-cap-permission'] = validate_editing_field
+    if allowed_roles and error:
+        user_allowed = any(
+            Permission(RoleNeed(_role)).can()
+            for _role in allowed_roles)
+        error = False if user_allowed else True
 
-DepositValidator = extend(Draft4Validator, validators=deposit_validators)
-NoRequiredValidator = extend(DepositValidator, {'required': None})
+    if error:
+        yield ValidationError(error_message)
