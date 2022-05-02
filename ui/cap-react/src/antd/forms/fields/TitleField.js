@@ -15,7 +15,8 @@ const TitleField = ({
   uiLatex,
   enableEmail,
   enableImport,
-  enableLatex
+  enableLatex,
+  readonly
 }) => {
   const { colon = true } = formContext;
 
@@ -42,7 +43,7 @@ const TitleField = ({
 
   if (!title) return null;
 
-  if (uiImport || uiLatex || uiEmail) {
+  if (((uiImport && !readonly) || uiLatex || uiEmail) ) {
     return (
       <Row justify="space-between">
         <label
