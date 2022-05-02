@@ -11,17 +11,18 @@ const EmptyArrayField = ({ canAdd, onAddClick, disabled, readonly }) => {
       }}
       description={"No Items added"}
     >
-      {canAdd && (
-        <Button
-          className="array-item-add"
-          disabled={disabled || readonly}
-          onClick={onAddClick}
-          type="primary"
-          icon={<PlusCircleOutlined />}
-        >
-          Add Item
-        </Button>
-      )}
+      {canAdd &&
+        !readonly && (
+          <Button
+            className="array-item-add"
+            disabled={disabled}
+            onClick={onAddClick}
+            type="primary"
+            icon={<PlusCircleOutlined />}
+          >
+            Add Item
+          </Button>
+        )}
     </Empty>
   );
 };
