@@ -277,6 +277,7 @@ const NormalArrayFieldTemplate = ({
               uiImport={uiImport}
               uiLatex={uiLatex}
               uiEmail={uiEmail}
+              readonly={readonly}
               enableLatex={() => _enableLatex()}
               enableImport={() => setImportModal(true)}
               enableEmail={() => setEmailModal(true)}
