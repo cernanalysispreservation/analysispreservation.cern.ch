@@ -182,6 +182,7 @@ const NormalArrayFieldTemplate = ({
               title={uiSchema["ui:title"] || title}
               uiImport={uiImport}
               uiLatex={uiLatex}
+              readonly={readonly}
               enableLatex={() => _enableLatex()}
               enableImport={() => setImportModal(true)}
             />
