@@ -3,10 +3,9 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState
 } from "react";
-
-import { useForwardedRef, FormContext } from "./utils";
 
 import { Input } from "antd";
 
@@ -147,33 +146,28 @@ const version = [
 const defaultMask = version;
 
 const MaskedInput = forwardRef(
-  (
-    {
-      a11yTitle,
-      focus: focusProp,
-      icon,
-      id,
-      mask = defaultMask,
-      name,
-      onBlur,
-      schemaMask,
-      onChange,
-      onFocus,
-      onPressEnter,
-      placeholder,
-      plain,
-      buttons,
-      reverse,
-      value: valueProp,
-      disabled,
-      message,
-      ...rest
-    },
-    ref
-  ) => {
-    const formContext = useContext(FormContext);
-
-    const [value, setValue] = formContext.useFormInput(name, valueProp);
+  ({
+    a11yTitle,
+    focus: focusProp,
+    icon,
+    id,
+    mask = defaultMask,
+    name,
+    onBlur,
+    schemaMask,
+    onChange,
+    onFocus,
+    onPressEnter,
+    placeholder,
+    plain,
+    buttons,
+    reverse,
+    value: valueProp,
+    disabled,
+    message,
+    ...rest
+  }) => {
+    const [value, setValue] = useState(valueProp);
 
     const [valueParts, setValueParts] = useState(parseValue(mask, value));
     useEffect(
@@ -183,7 +177,7 @@ const MaskedInput = forwardRef(
       [mask, value]
     );
 
-    const inputRef = useForwardedRef(ref);
+    const inputRef = useRef(null);
 
     const [focus, setFocus] = useState(focusProp);
     const [activeMaskIndex, setActiveMaskIndex] = useState();
@@ -264,7 +258,7 @@ const MaskedInput = forwardRef(
       return mask.map(item => item.placeholder || item.fixed).join("");
     };
 
-    const status = new RegExp(schemaMask).test(valueProp);
+    const status = new RegExp(schemaMask).test(value);
 
     return (
       <div>
@@ -281,7 +275,7 @@ const MaskedInput = forwardRef(
           reverse={reverse}
           focus={focus}
           {...rest}
-          value={valueProp}
+          value={value}
           onPressEnter={onPressEnter}
           onFocus={event => {
             setFocus(true);
