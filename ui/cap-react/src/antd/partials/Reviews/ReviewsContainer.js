@@ -1,7 +1,13 @@
 import { connect } from "react-redux";
 import Reviews from "./Reviews";
-import { reviewDraft } from "../../../actions/draftItem";
-import { reviewPublished } from "../../../actions/published";
+import {
+  clearDraftReviewErrors,
+  reviewDraft
+} from "../../../actions/draftItem";
+import {
+  reviewPublished,
+  clearPublishedReviewErrors
+} from "../../../actions/published";
 
 const mapStateToProps = (state, props) => ({
   review: props.isReviewingPublished
@@ -14,15 +20,19 @@ const mapStateToProps = (state, props) => ({
     ? state.published.get("reviewLoading")
     : state.draftItem.get("reviewLoading"),
   draft_id: state.draftItem.get("id"),
-  draftReviewError: state.draftItem.get("reviewError"),
-  publishedReviewError: state.published.get("reviewError")
+  error: props.isReviewingPublished
+    ? state.published.get("reviewError")
+    : state.draftItem.get("reviewError")
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, props) => ({
   reviewDraft: (draft_id, review, message) =>
     dispatch(reviewDraft(draft_id, review, message)),
   reviewPublished: (review, message) =>
-    dispatch(reviewPublished(review, message))
+    dispatch(reviewPublished(review, message)),
+  clearErrors: props.isReviewingPublished
+    ? () => dispatch(clearPublishedReviewErrors())
+    : () => dispatch(clearDraftReviewErrors())
 });
 
 export default connect(
