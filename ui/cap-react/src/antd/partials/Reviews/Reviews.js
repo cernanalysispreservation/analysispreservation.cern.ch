@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Form, Input, Modal, Radio, Typography } from "antd";
 
@@ -11,19 +11,38 @@ const Reviews = ({
   reviewDraft,
   reviewPublished,
   isReviewingPublished,
-  publishedReviewError,
+  clearErrors,
   loading,
-  draftReviewError,
+  error = null,
   action = "add"
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const [showError, setShowError] = useState(false);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [form] = Form.useForm();
-  const closeModal = () => {
-    setShowModal(false);
-    form.resetFields();
-  };
+
+  useEffect(
+    () => {
+      // if the modal is open and then we have an error update
+      // but we do not have anything it means that the request went through
+      // so we can just close the modal
+      if (!loading && !error && showModal) {
+        setShowModal(false);
+      }
+    },
+    [loading, error]
+  );
+
+  useEffect(
+    () => {
+      // when there is a close modal functionality
+      // lets clear everything
+      if (!showModal) {
+        clearErrors();
+        form.resetFields();
+      }
+    },
+    [showModal]
+  );
 
   // if the draft is not reviewable then return null
   if (!review) return null;
@@ -53,8 +72,6 @@ const Reviews = ({
               ? reviewPublished({
                   body: values.comment,
                   type: values.reviewType
-                }).then(response => {
-                  response.error ? setShowError(true) : closeModal();
                 })
               : reviewDraft(
                   draft_id,
@@ -63,9 +80,7 @@ const Reviews = ({
                     type: values.reviewType
                   },
                   "submitted"
-                ).then(response => {
-                  response.error ? setShowError(true) : closeModal();
-                });
+                );
           }}
         >
           <Form.Item
@@ -94,11 +109,9 @@ const Reviews = ({
             />
           </Form.Item>
         </Form>
-        {showError && (
-          <Typography.Text>
-            {isReviewingPublished
-              ? publishedReviewError && publishedReviewError.message
-              : draftReviewError && draftReviewError.message}
+        {error && (
+          <Typography.Text type="danger">
+            {error && error.message}
           </Typography.Text>
         )}
       </Modal>
@@ -167,7 +180,9 @@ const Reviews = ({
 
 Reviews.propTypes = {
   review: PropTypes.object,
+  error: PropTypes.object,
   draft_id: PropTypes.string,
+  clearErrors: PropTypes.func,
   reviewDraft: PropTypes.func,
   reviewPublished: PropTypes.func,
   isReviewingPublished: PropTypes.bool,

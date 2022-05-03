@@ -13,7 +13,8 @@ import {
   REVIEW_PUBISHED_ERROR,
   REVIEW_PUBISHED_REQUEST,
   REVIEW_PUBISHED_SUCCESS,
-  INIT_STATE
+  INIT_STATE,
+  CLEAR_REVIEW_PUBISHED_ERROR
 } from "../actions/published";
 
 const initialState = Map({
@@ -23,6 +24,7 @@ const initialState = Map({
   uiSchema: null,
   loading: false,
   reviewLoading: false,
+  reviewError: null,
   error: null,
   files: Map({})
 });
@@ -55,11 +57,13 @@ export default function publishedReducer(state = initialState, action) {
     case PUBLISHED_ITEM_ERROR:
       return state.set("loading", false).set("error", action.error);
     case REVIEW_PUBISHED_REQUEST:
-      return state.set("reviewLoading", true);
+      return state.set("reviewLoading", true).set("reviewError", null);
     case REVIEW_PUBISHED_SUCCESS:
       return state
         .set("reviewLoading", false)
         .set("review", action.payload.review);
+    case CLEAR_REVIEW_PUBISHED_ERROR:
+      return state.set("reviewError", null);
     case REVIEW_PUBISHED_ERROR:
       return state.set("reviewLoading", false).set("reviewError", action.error);
     default:
