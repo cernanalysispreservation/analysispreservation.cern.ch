@@ -149,6 +149,8 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("review", action.draft.review)
         .set("reviewLoading", false);
+    case draftItemActions.CLEAR_REVIEW_DRAFT_ERROR:
+      return state.set("reviewError", null);
     case draftItemActions.REVIEW_DRAFT_ERROR:
       return state.set("reviewError", action.error).set("reviewLoading", false);
     case draftItemActions.REVIEW_DRAFT_REQUEST:
