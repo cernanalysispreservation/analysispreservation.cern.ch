@@ -47,6 +47,7 @@ export const DISCARD_DRAFT_ERROR = "DISCARD_DRAFT_ERROR";
 export const REVIEW_DRAFT_REQUEST = "REVIEW_DRAFT_REQUEST";
 export const REVIEW_DRAFT_SUCCESS = "REVIEW_DRAFT_SUCCESS";
 export const REVIEW_DRAFT_ERROR = "REVIEW_DRAFT_ERROR";
+export const CLEAR_REVIEW_DRAFT_ERROR = "CLEAR_REVIEW_DRAFT_ERROR";
 
 export const EDIT_PUBLISHED_REQUEST = "EDIT_PUBLISHED_REQUEST";
 export const EDIT_PUBLISHED_SUCCESS = "EDIT_PUBLISHED_SUCCESS";
@@ -174,6 +175,10 @@ export const reviewDraftSuccess = (draft_id, draft) => ({
 export const reviewDraftError = error => ({
   type: REVIEW_DRAFT_ERROR,
   error
+});
+
+export const clearDraftReviewErrors = () => ({
+  type: CLEAR_REVIEW_DRAFT_ERROR
 });
 
 export const editPublishedRequest = () => ({ type: EDIT_PUBLISHED_REQUEST });
