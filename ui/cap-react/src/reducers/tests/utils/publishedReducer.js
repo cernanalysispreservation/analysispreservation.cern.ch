@@ -10,6 +10,7 @@ export const initialState = Map({
   uiSchema: null,
   loading: false,
   reviewLoading: false,
+  reviewError: null,
   error: null,
   files: Map({})
 });
@@ -20,6 +21,7 @@ export const loadingState = Map({
   uiSchema: null,
   loading: true,
   reviewLoading: false,
+  reviewError: null,
   error: null,
   files: Map({})
 });
@@ -30,6 +32,7 @@ export const errorState = Map({
   uiSchema: null,
   loading: false,
   reviewLoading: false,
+  reviewError: null,
   error: ERROR,
   files: Map({})
 });
@@ -37,6 +40,7 @@ export const errorState = Map({
 export const publishedSuccessState = Map({
   id: "CAP.CMS.6WKQ.PKY3",
   data: null,
+  reviewError: null,
   schema: {
     fullname: "CMS Statistics Questionnaire",
     name: "cms-stats-questionnaire",
@@ -241,6 +245,7 @@ export const reviewSuccessState = Map({
   status: "published",
   loading: false,
   reviewLoading: false,
+  reviewError: null,
   error: null,
   files: Map({}),
   labels: [],

@@ -7,6 +7,7 @@ export const PUBLISHED_ITEM_ERROR = "PUBLISHED_ITEM_ERROR";
 export const REVIEW_PUBISHED_REQUEST = "REVIEW_PUBLISHED_REQUEST";
 export const REVIEW_PUBISHED_SUCCESS = "REVIEW_PUBLISHED_SUCCESS";
 export const REVIEW_PUBISHED_ERROR = "REVIEW_PUBLISHED_ERROR";
+export const CLEAR_REVIEW_PUBISHED_ERROR = "CLEAR_REVIEW_PUBISHED_ERROR";
 
 export const INIT_STATE = "INIT_STATE";
 
@@ -25,6 +26,11 @@ export function reviewPublishedError(error) {
   return {
     type: REVIEW_PUBISHED_ERROR,
     error
+  };
+}
+export function clearPublishedReviewErrors() {
+  return {
+    type: CLEAR_REVIEW_PUBISHED_ERROR
   };
 }
 
