@@ -311,7 +311,8 @@ const NormalArrayFieldTemplate = ({
 
         {items &&
           items.length > 0 &&
-          canAdd && (
+          canAdd &&
+          !readonly && (
             <Col span={24} style={{ marginTop: "10px" }}>
               <Row gutter={rowGutter} justify="end">
                 <Col flex="192px">
