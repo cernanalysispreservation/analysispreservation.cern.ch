@@ -23,12 +23,12 @@ const ArrayUtils = ({
   index,
   hasRemove
 }) => {
-  return (
+  return !readonly ? (
     <Col flex="192px">
       <Button.Group style={BTN_GRP_STYLE}>
         {(hasMoveUp || hasMoveDown) && (
           <Button
-            disabled={disabled || readonly || !hasMoveUp}
+            disabled={disabled || !hasMoveUp}
             icon={<ArrowUpOutlined />}
             onClick={onReorderClick(index, index - 1)}
             style={BTN_STYLE}
@@ -38,7 +38,7 @@ const ArrayUtils = ({
 
         {(hasMoveUp || hasMoveDown) && (
           <Button
-            disabled={disabled || readonly || !hasMoveDown}
+            disabled={disabled || !hasMoveDown}
             icon={<ArrowDownOutlined />}
             onClick={onReorderClick(index, index + 1)}
             style={BTN_STYLE}
@@ -49,7 +49,7 @@ const ArrayUtils = ({
         {hasRemove && (
           <Button
             danger
-            disabled={disabled || readonly}
+            disabled={disabled}
             icon={<DeleteOutlined />}
             onClick={onDropIndexClick(index)}
             style={BTN_STYLE}
@@ -58,7 +58,7 @@ const ArrayUtils = ({
         )}
       </Button.Group>
     </Col>
-  );
+  ) : null;
 };
 
 ArrayUtils.propTypes = {
