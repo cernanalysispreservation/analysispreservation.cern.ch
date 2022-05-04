@@ -99,23 +99,24 @@ const ObjectFieldTemplate = ({
         ))}
       </Row>
 
-      {canExpand(schema, uiSchema, formData) && (
-        <Col span={24}>
-          <Row gutter={rowGutter} justify="end">
-            <Col flex="192px">
-              <Button
-                block
-                className="object-property-expand"
-                disabled={disabled || readonly}
-                onClick={onAddClick(schema)}
-                type="primary"
-              >
-                <PlusCircleOutlined /> Add Item
-              </Button>
-            </Col>
-          </Row>
-        </Col>
-      )}
+      {canExpand(schema, uiSchema, formData) &&
+        !readonly && (
+          <Col span={24}>
+            <Row gutter={rowGutter} justify="end">
+              <Col flex="192px">
+                <Button
+                  block
+                  className="object-property-expand"
+                  disabled={disabled}
+                  onClick={onAddClick(schema)}
+                  type="primary"
+                >
+                  <PlusCircleOutlined /> Add Item
+                </Button>
+              </Col>
+            </Row>
+          </Col>
+        )}
     </fieldset>
   );
 };
