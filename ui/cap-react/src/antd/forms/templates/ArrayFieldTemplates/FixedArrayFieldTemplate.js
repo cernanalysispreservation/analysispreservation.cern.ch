@@ -74,23 +74,24 @@ const FixedArrayFieldTemplate = ({
             ))}
         </Col>
 
-        {canAdd && (
-          <Col span={24}>
-            <Row gutter={rowGutter} justify="end">
-              <Col flex="192px">
-                <Button
-                  block
-                  className="array-item-add"
-                  disabled={disabled || readonly}
-                  onClick={onAddClick}
-                  type="primary"
-                >
-                  <PlusCircleOutlined /> Add Item
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        )}
+        {canAdd &&
+          !readonly && (
+            <Col span={24}>
+              <Row gutter={rowGutter} justify="end">
+                <Col flex="192px">
+                  <Button
+                    block
+                    className="array-item-add"
+                    disabled={disabled}
+                    onClick={onAddClick}
+                    type="primary"
+                  >
+                    <PlusCircleOutlined /> Add Item
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          )}
       </Row>
     </fieldset>
   );
