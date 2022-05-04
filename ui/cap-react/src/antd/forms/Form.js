@@ -20,7 +20,8 @@ const RJSFForm = ({
   onChange,
   formContext,
   readonly,
-  draftEditor
+  draftEditor,
+  className = []
 }) => {
   // mainly this is used for the drafts forms
   // we want to allow forms to be saved even without required fields
@@ -44,7 +45,7 @@ const RJSFForm = ({
   };
   return (
     <Form
-      className="__Form__"
+      className={["__Form__", ...className].join(" ")}
       ref={formRef}
       schema={schema}
       uiSchema={uiSchema}
@@ -84,7 +85,8 @@ RJSFForm.propTypes = {
   formContext: PropTypes.object,
   mode: PropTypes.string,
   draftEditor: PropTypes.bool,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  className: PropTypes.array
 };
 
 export default RJSFForm;

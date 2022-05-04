@@ -120,6 +120,7 @@ const Preview = ({
                 uiSchema={schemas.uiSchema}
                 onChange={() => {}}
                 isPublished
+                className={["__PublishedForm__"]}
               >
                 <span />
               </JSONSchemaPreviewer>
