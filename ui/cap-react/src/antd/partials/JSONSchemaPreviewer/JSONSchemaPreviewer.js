@@ -10,11 +10,13 @@ const JSONSchemaPreviewer = ({
   display = "tabView",
   onChange,
   onSubmit,
-  formData
+  formData,
+  className
 }) => {
   return (
     schema && (
       <Form
+        className={className}
         schema={schema}
         showErrorList={false}
         uiSchema={{
