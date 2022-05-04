@@ -66,7 +66,25 @@ export function getPublishedItem(id) {
         }
       })
       .then(response => {
-        return dispatch(publishedItemSuccess(response.data));
+        let {
+          links: { bucket: bucket_link = null }
+        } = response.data;
+
+        if (bucket_link) {
+          axios
+            .get(bucket_link)
+            .then(res => {
+              if (res.data["contents"] && res.data["contents"].length > 0) {
+                response.data["files"] = res.data["contents"];
+              }
+              dispatch(publishedItemSuccess(response.data));
+            })
+            .catch(error => {
+              dispatch(publishedItemError(error.response.data));
+            });
+        } else {
+          dispatch(publishedItemSuccess(response.data));
+        }
       })
       .catch(error => {
         return dispatch(publishedItemError(error.response.data));
