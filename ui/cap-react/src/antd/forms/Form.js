@@ -43,6 +43,69 @@ const RJSFForm = ({
 
     return errors;
   };
+
+  const NESTED_CASES = ["object", "array"];
+  // checks for the user permissions
+  // if the user is in the list then we are setting readOnly field to true
+  const checkIfUserHasPermissions = (obj, user) => {
+    const users = obj["x-cap-permissions"]["users"];
+    if (users) {
+      return users.includes(user);
+    }
+    return false;
+  };
+  const checkSchemaForPermissions = schema => {
+    let nextSteps = NESTED_CASES.includes(schema.type)
+      ? schema.type == "object"
+        ? "properties"
+        : "items"
+      : null;
+
+    // check if this block has this field for permission checks
+    schema["x-cap-permissions"] &&
+    checkIfUserHasPermissions(schema, "info@inveniosoftware.org")
+      ? (schema["readOnly"] = "true")
+      : null;
+
+    // if the current block is either an object or an array
+    // then we should examine the nested fields
+    if (nextSteps) {
+      if (schema[nextSteps] && schema[nextSteps]["type"]) {
+        let next = NESTED_CASES.includes(schema[nextSteps].type)
+          ? schema[nextSteps].type == "object"
+            ? "properties"
+            : "items"
+          : null;
+
+        if (next) checkSchemaForPermissions(schema[nextSteps]);
+        else {
+          schema[nextSteps]["x-cap-permissions"] &&
+          checkIfUserHasPermissions(
+            schema[nextSteps],
+            "info@inveniosoftware.org"
+          )
+            ? (schema[nextSteps]["readOnly"] = "true")
+            : null;
+        }
+      } else {
+        // in case that we enter in a block that does not have any of the type
+        // then we shoyld start iterating for nested cases
+        schema[nextSteps] &&
+          Object.values(schema[nextSteps]).map(val => {
+            schema["x-cap-permissions"] &&
+            checkIfUserHasPermissions(schema, "info@inveniosoftware.org")
+              ? (schema["readOnly"] = "true")
+              : null;
+
+            checkSchemaForPermissions(val);
+          });
+      }
+    }
+  };
+
+  // call to update the schema fields
+  checkSchemaForPermissions(schema);
+
   return (
     <Form
       className={["__Form__", ...className].join(" ")}
