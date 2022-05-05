@@ -14,7 +14,8 @@ const mapStateToProps = state => ({
   extraErrors: state.draftItem.get("extraErrors"),
   schemaErrors: state.draftItem.get("schemaErrors"),
   canUpdate: state.draftItem.get("can_update"),
-  canAdmin: state.draftItem.get("can_admin")
+  canAdmin: state.draftItem.get("can_admin"),
+  currentUser: state.auth.get("currentUser")
 });
 
 const mapDispatchToProps = dispatch => ({
