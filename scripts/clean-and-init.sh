@@ -37,7 +37,7 @@ cap alembic upgrade heads
 
 # Create default location for files
 if [[ -z "${DEBUG}" ]]; then
-  cap files location local var/data --default
+  cap files location local /opt/invenio/instance/var/data --default
   curl -XDELETE http://localhost:9200/_all
 fi
 

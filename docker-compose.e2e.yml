@@ -90,11 +90,16 @@ services:
     ports:
       - "5000"
     environment:
+      - "FLASK_DEBUG=True"
+      - "DEBUG_MODE=True"
       - "DEV_HOST=nginx"
     volumes:
       - static_data:/opt/cap/var/instance/static
       - uploaded_data:/opt/cap/var/instance/data
+      - media_data:/opt/cap/var/data
       - ./cap:/opt/cap/src/cap
+      - ./demo:/opt/cap/demo
+      - test_data:/test_data
     links:
       - cache
       - es
@@ -114,6 +119,17 @@ services:
       - es
       - mq
       - db
+    environment:
+      - "FLASK_DEBUG=True"
+      - "DEBUG_MODE=True"
+      - "DEV_HOST=nginx"
+    volumes:
+      - static_data:/opt/cap/var/instance/static
+      - uploaded_data:/opt/cap/var/instance/data
+      - media_data:/opt/cap/var/data
+      - ./cap:/opt/cap/src/cap
+      - ./demo:/opt/cap/demo
+      - test_data:/test_data
   # Base services
   cache:
     extends:
