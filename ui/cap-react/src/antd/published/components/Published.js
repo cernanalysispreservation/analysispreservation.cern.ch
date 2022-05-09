@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   PUBLISHED_ITEM,
-  PUBLISHED_ITEM_RUNS,
-  PUBLISHED_ITEM_RUNS_CREATE
 } from "../../routes";
 import { Route, Switch } from "react-router-dom";
 import DocumentTitle from "../../partials/DocumentTitle";
