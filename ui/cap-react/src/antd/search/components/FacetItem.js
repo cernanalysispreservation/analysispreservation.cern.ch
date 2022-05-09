@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Checkbox, Row, Space, Tag } from "antd";
+import { Button, Checkbox, Row, Tag } from "antd";
 import ShowMore from "../../partials/ShowMore";
 import EllipsisText from "../../partials/EllipsisText";
 
