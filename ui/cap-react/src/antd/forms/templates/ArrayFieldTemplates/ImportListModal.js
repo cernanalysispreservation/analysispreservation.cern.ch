@@ -23,7 +23,7 @@ const ImportListModal = ({
   const [fetchedResults, setFetchedResults] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(null);
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   useEffect(
     () => {
@@ -64,8 +64,8 @@ const ImportListModal = ({
       const { data } = await axios.get(listSuggestions + val);
       setFetchedResults(data);
       updateAll(data, true);
-    } catch (error) {
-      setError(error);
+    } catch (err) {
+      // setError(error);
     }
   };
 
