@@ -16,7 +16,6 @@ const Header = ({
   draft_id,
   editPublished,
   draft,
-  match,
   formRef,
   canUpdate,
   canAdmin
@@ -195,7 +194,6 @@ Header.propTypes = {
   draft_id: PropTypes.string,
   editPublished: PropTypes.func,
   draft: PropTypes.object,
-  match: PropTypes.object,
   formRef: PropTypes.object,
   canAdmin: PropTypes.bool,
   canUpdate: PropTypes.bool

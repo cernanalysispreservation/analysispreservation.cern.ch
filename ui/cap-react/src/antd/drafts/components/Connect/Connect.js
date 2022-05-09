@@ -10,7 +10,6 @@ import {
   Typography,
   notification,
   Collapse,
-  Row,
   Tag,
   Table
 } from "antd";
@@ -105,7 +104,7 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
       setError(null);
       return;
     }
-    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/;
+    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/; //eslint-disable-line
     let repo = value.match(regex);
     let [href, scheme, resource, owner, name, type, ref, filepath] = repo;
     const acceptedResources = [
