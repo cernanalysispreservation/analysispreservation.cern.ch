@@ -66,22 +66,25 @@ const NormalArrayFieldTemplate = ({
     schema &&
     schema.items &&
     ["array", "object"].includes(schema.items.type)
-  )
-    typeOfArrayToDisplay = "LayerArrayField";
+  ) {typeOfArrayToDisplay = "LayerArrayField";}
 
   const getArrayContent = type => {
     const choices = {
-      LayerArrayField: (
-        <LayerArrayFieldTemplate items={items} formContext={formContext} />
+      "LayerArrayField": (
+        <LayerArrayFieldTemplate
+          items={items}
+          formContext={formContext}
+          id={idSchema.$id}
+        />
       ),
-      AccordionArrayField: (
+      "AccordionArrayField": (
         <AccordionArrayFieldTemplate
           items={items}
           formContext={formContext}
           id={idSchema.$id}
         />
       ),
-      default: items.map(itemProps => (
+      "default": items.map(itemProps => (
         <ArrayFieldTemplateItem {...itemProps} formContext={formContext} />
       ))
     };

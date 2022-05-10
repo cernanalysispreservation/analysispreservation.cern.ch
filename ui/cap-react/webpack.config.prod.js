@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import path from "path";
 import dotenv from "dotenv";
+import theme from "./src/antd/theme";
 
 const env = dotenv.config().parsed;
 
@@ -134,6 +135,21 @@ export default {
             loader: "file-loader",
             options: {
               name: "[name].[ext]"
+            }
+          }
+        ]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "less-loader",
+            options: {
+              // If you are using less-loader@5 please spread the lessOptions to options directly
+              modifyVars: theme,
+              javascriptEnabled: true
             }
           }
         ]
