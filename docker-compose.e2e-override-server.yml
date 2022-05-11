@@ -13,16 +13,6 @@ services:
       service: app-image
     volumes:
       - ./docker/uwsgi:/opt/cap/var/instance
-      - static_data:/opt/cap/var/instance/static
-      - uploaded_data:/opt/cap/var/instance/data
-      - media_data:/opt/cap/var/data
-      - ./cap:/opt/cap/src/cap
-      - ./demo:/opt/cap/demo
-      - test_data:/test_data
-    environment:
-      - "FLASK_DEBUG=True"
-      - "DEBUG_MODE=True"
-      - "DEV_HOST=nginx"
     links:
       - cache
       - es
@@ -35,16 +25,6 @@ services:
       service: app-image
     volumes:
       - ./docker/uwsgi:/opt/cap/var/instance
-      - static_data:/opt/cap/var/instance/static
-      - uploaded_data:/opt/cap/var/instance/data
-      - media_data:/opt/cap/var/data
-      - ./cap:/opt/cap/src/cap
-      - ./demo:/opt/cap/demo
-      - test_data:/test_data
-    environment:
-      - "FLASK_DEBUG=True"
-      - "DEBUG_MODE=True"
-      - "DEV_HOST=nginx"
   # Worker
   worker:
     extends:
