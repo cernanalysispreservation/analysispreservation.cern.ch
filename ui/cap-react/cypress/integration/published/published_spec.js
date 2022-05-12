@@ -28,6 +28,8 @@ describe("Published Tests", function() {
   it("A published report would not be deleted", () => {
     cy.loginUrl("cms@inveniosoftware.org", "cmscms");
 
+    // safety handler, in order to have time for the re indexing of elastic
+    cy.wait(1000);
     cy.get("[data-cy=publishedincollaboration-list] a")
       .first()
       .click();
