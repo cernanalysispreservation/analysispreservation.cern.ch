@@ -20,6 +20,7 @@ const DepositAccessModal = ({
 }) => {
   const [target, setTarget] = useState("user");
   const [permissionsObj, setPermissionsObj] = useState({});
+  const [cernUsers, setCernUsers] = useState({});
   const [loading, setLoading] = useState(false);
   const [userInput, setUserInput] = useState(undefined);
 
@@ -28,12 +29,15 @@ const DepositAccessModal = ({
     setLoading(true);
     axios.get(url).then(({ data }) => {
       let perm = {};
+      let c_perm= {}
       data.map(item => {
         let objTarget = target === "user" ? item.email : item;
         perm[objTarget] = ["deposit-read"];
+        c_perm[objTarget] = item;
       });
       setLoading(false);
       setPermissionsObj(perm);
+      setCernUsers(c_perm)
     });
   }, 500);
 
@@ -105,7 +109,7 @@ const DepositAccessModal = ({
           ) : Object.keys(permissionsObj).length > 0 ? (
             <PermissionTable
               addPermissionsModal
-              permissionsObj={permissionsObj}
+              permissionsObj={cernUsers}
               target={target}
               access={access}
               displayAsFormField={displayAsFormField}

@@ -4,11 +4,17 @@ import DepositAccess from "../../../../components/DepositAccess";
 import { Box } from "grommet";
 import { AiOutlineDelete } from "react-icons/ai";
 
-const CernUsersField = ({ onChange, formData }) => {
-  return formData ? (
-    <Box pad={{ horizontal: "medium" }} justify="between" direction="row">
-      {formData}
-      <AiOutlineDelete size={18} onClick={() => onChange(undefined)} />
+const CernUsersField = ({ onChange, formData, uiSchema }) => {
+  const autoOpenModal =
+    uiSchema["ui:options"] && uiSchema["ui:options"].autoOpenModal;
+
+  let isFormDataEmpty = formData ? Object.keys(formData).length === 0 : true;
+  return !isFormDataEmpty ? (
+    <Box pad={{ horizontal: "medium" }} flex={true} justify="between" direction="row">
+      {formData.name} - {formData.email} - {formData.department}
+      {
+        autoOpenModal ? null : <AiOutlineDelete size={18} onClick={() => onChange(undefined)} />
+      }
     </Box>
   ) : (
     <DepositAccess displayAsFormField updateField={onChange} />
