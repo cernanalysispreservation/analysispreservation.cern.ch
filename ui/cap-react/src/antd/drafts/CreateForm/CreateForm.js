@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Space, Form, Input, Radio } from "antd";
-
+const BLOCK_DEPOSIT_GROUPS = ["cms-analysis"];
 const CreateForm = ({
   contentTypes,
   updateModal,
@@ -15,6 +15,15 @@ const CreateForm = ({
   useEffect(() => {
     updateModal(form);
   }, []);
+
+  let contentType = contentTypes;
+  if (!(process.env.NODE_ENV === "development" || process.env.ENABLE_E2E)) {
+    contentType =
+      contentTypes &&
+      contentTypes.filter(
+        item => !BLOCK_DEPOSIT_GROUPS.includes(item.get("deposit_group"))
+      );
+  }
 
   return (
     <Space direction="vertical" size="large">
@@ -52,15 +61,15 @@ const CreateForm = ({
           ]}
         >
           <Radio.Group size="large" buttonStyle="solid" data-cy="anatype">
-            {contentTypes &&
-              contentTypes.toJS().map(type => (
+            {contentType &&
+              contentType.map(type => (
                 <Radio.Button
                   disabled={disabled}
                   style={{ margin: "5px" }}
-                  value={type["deposit_group"]}
-                  key={type["deposit_group"]}
+                  value={type.get("deposit_group")}
+                  key={type.get("deposit_group")}
                 >
-                  {type["name"]}
+                  {type.get("name")}
                 </Radio.Button>
               ))}
           </Radio.Group>
