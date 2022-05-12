@@ -58,14 +58,11 @@ cleanup() {
 # Clean up if script is interrupted or terminated.
 trap "cleanup" EXIT
 
-# create the new dictionary
-prepare_dictionary
-
 GIT_ORIGIN=$1
 GIT_HEAD=$2
 COMMIT_MESSAGES=$(git log --pretty=format:%B "$GIT_ORIGIN".."$GIT_HEAD" | grep -v 'Signed-off-by')
-ASPELL=$(which aspell)
 
+ASPELL=$(which aspell)
 if [ $? -ne 0 ]; then
     echo "Aspell not installed - unable to check spelling. Installing now..." >&2
     sudo apt-get install aspell
@@ -77,9 +74,11 @@ if [ $? -ne 0 ]; then
             exit
         fi
     fi
-else
-    WORDS=$(echo "$COMMIT_MESSAGES" | $ASPELL --mode=email --add-email-quote='#' list --lang="$lang" --extra-dicts=./"$temp_dict" --ignore-case -a | sort -u)
 fi
+
+# create the new dictionary
+prepare_dictionary
+WORDS=$(echo "$COMMIT_MESSAGES" | aspell --mode=email --add-email-quote='#' list --lang="$lang" --extra-dicts=./"$temp_dict" --ignore-case -a | sort -u)
 
 if [ -n "$WORDS" ]; then
     printf "Possible spelling errors found in commit message:\n\e[0m\e[0;31m%s\n\e[0m\e[1;33m  Use git commit --amend to change the message.\e[0m\n\n" "$WORDS" >&2
