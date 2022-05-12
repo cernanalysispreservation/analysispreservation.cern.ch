@@ -99,7 +99,6 @@ services:
     ports: ["5601:5601"]
   flower:
     image: mher/flower
-    command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
     ports:
       - "5555:5555"
   redis-commander:
