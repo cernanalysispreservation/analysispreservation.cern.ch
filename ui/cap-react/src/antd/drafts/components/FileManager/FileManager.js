@@ -60,7 +60,7 @@ const FileManager = ({
         onClick: () =>
           uploadFile(
             links.bucket.replace(".cern.ch/", "/cern.ch/api/"),
-            fileList,
+            fileList[0], // Send only first file from the list
             form.getFieldsValue().directory
               ? form.getFieldsValue().directory +
                 "/" +
