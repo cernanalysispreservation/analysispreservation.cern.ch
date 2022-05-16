@@ -130,6 +130,8 @@ export function uploadFile(bucket_link, file, filename, tags) {
 
     let oReq = new XMLHttpRequest();
     oReq.open("PUT", uri, true);
+    oReq.setRequestHeader('Content-Type', 'application/octet-stream');
+
     if (tags) oReq.setRequestHeader("X-CAP-File-Tags", tags);
 
     oReq.upload.addEventListener(
