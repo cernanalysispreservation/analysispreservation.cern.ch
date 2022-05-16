@@ -73,6 +73,7 @@ recursive-include ui *.md
 recursive-include ui *.npmrc
 recursive-include ui *.png
 recursive-include ui *.scss
+recursive-include ui *.less
 recursive-include ui *.snap
 recursive-include ui *.svg
 recursive-include ui *.txt

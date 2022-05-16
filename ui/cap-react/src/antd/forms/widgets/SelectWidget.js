@@ -7,7 +7,7 @@ import debounce from "lodash/debounce";
 import axios from "axios";
 import { fromJS } from "immutable";
 import { Empty } from "antd";
-
+import PropTypes from "prop-types";
 const { asNumber, guessType } = utils;
 
 const SELECT_STYLE = {
@@ -160,7 +160,22 @@ const SelectWidget = ({
 SelectWidget.defaultProps = {
   formContext: {}
 };
-
+SelectWidget.propTypes = {
+  autofocus: PropTypes.bool,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  id: PropTypes.string,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  options: PropTypes.object,
+  placeholder: PropTypes.string,
+  readonly: PropTypes.bool,
+  schema: PropTypes.object,
+  value: PropTypes.bool,
+  formData: PropTypes.object,
+  multiple: PropTypes.string
+};
 const mapStateToProps = state => ({
   formData: state.draftItem.get("formData")
 });

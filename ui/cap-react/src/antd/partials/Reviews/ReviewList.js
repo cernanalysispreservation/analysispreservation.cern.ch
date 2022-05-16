@@ -90,7 +90,8 @@ ReviewList.propTypes = {
   isReviewingPublished: PropTypes.bool,
   reviewPublished: PropTypes.func,
   reviewDraft: PropTypes.func,
-  draft_id: PropTypes.string
+  draft_id: PropTypes.string,
+  canReview: PropTypes.bool
 };
 
 export default ReviewList;

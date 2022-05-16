@@ -107,7 +107,8 @@ Drafts.propTypes = {
   id: PropTypes.string,
   match: PropTypes.object,
   getDraftById: PropTypes.func,
-  metadata: PropTypes.object
+  metadata: PropTypes.object,
+  errors: PropTypes.array
 };
 
 export default Drafts;

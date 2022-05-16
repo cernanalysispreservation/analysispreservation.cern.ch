@@ -174,7 +174,8 @@ Reviews.propTypes = {
   loading: PropTypes.bool,
   publishedReviewError: PropTypes.string,
   draftReviewError: PropTypes.string,
-  action: PropTypes.string
+  action: PropTypes.string,
+  canReview: PropTypes.bool
 };
 
 export default Reviews;

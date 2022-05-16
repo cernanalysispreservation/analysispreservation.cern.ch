@@ -10,7 +10,7 @@ import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
 import LayerArrayFieldTemplate from "./LayerArrayFieldTemplate";
 import EmptyArrayField from "./EmptyArrayField";
 import AccordionArrayFieldTemplate from "./AccordionArrayFieldTemplate";
-
+import PropTypes from "prop-types";
 import AceEditor from "react-ace";
 import "ace-builds/webpack-resolver";
 import axios from "axios";
@@ -28,13 +28,11 @@ const NormalArrayFieldTemplate = ({
   DescriptionField,
   disabled,
   formContext,
-  // formData,
   idSchema,
   items,
   onAddClick,
   prefixCls,
   readonly,
-  // registry,
   required,
   schema,
   title,
@@ -66,26 +64,32 @@ const NormalArrayFieldTemplate = ({
     schema &&
     schema.items &&
     ["array", "object"].includes(schema.items.type)
-  ) {typeOfArrayToDisplay = "LayerArrayField";}
+  ) {
+    typeOfArrayToDisplay = "LayerArrayField";
+  }
 
   const getArrayContent = type => {
     const choices = {
-      "LayerArrayField": (
+      LayerArrayField: (
         <LayerArrayFieldTemplate
           items={items}
           formContext={formContext}
           id={idSchema.$id}
         />
       ),
-      "AccordionArrayField": (
+      AccordionArrayField: (
         <AccordionArrayFieldTemplate
           items={items}
           formContext={formContext}
           id={idSchema.$id}
         />
       ),
-      "default": items.map(itemProps => (
-        <ArrayFieldTemplateItem {...itemProps} formContext={formContext} />
+      default: items.map((itemProps, index) => (
+        <ArrayFieldTemplateItem
+          {...itemProps}
+          formContext={formContext}
+          key={idSchema.$id + index}
+        />
       ))
     };
 
@@ -234,6 +238,25 @@ const NormalArrayFieldTemplate = ({
       </Row>
     </fieldset>
   );
+};
+
+NormalArrayFieldTemplate.propTypes = {
+  canAdd: PropTypes.bool,
+  className: PropTypes.string,
+  DescriptionField: PropTypes.node,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  idSchema: PropTypes.object,
+  items: PropTypes.array,
+  onAddClick: PropTypes.func,
+  prefixCls: PropTypes.string,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  schema: PropTypes.object,
+  title: PropTypes.string,
+  TitleField: PropTypes.node,
+  uiSchema: PropTypes.object,
+  formData: PropTypes.object
 };
 
 export default withConfigConsumer({ prefixCls: "form" })(

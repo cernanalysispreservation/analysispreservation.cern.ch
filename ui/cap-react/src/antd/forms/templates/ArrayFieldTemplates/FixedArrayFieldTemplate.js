@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-
+import PropTypes from "prop-types";
 import { Row, Col, Button } from "antd";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
@@ -65,8 +65,9 @@ const FixedArrayFieldTemplate = ({
 
         <Col className="row array-item-list" span={24}>
           {items &&
-            items.map(itemProps => (
+            items.map((itemProps, index) => (
               <ArrayFieldTemplateItem
+                key={idSchema.$id + index}
                 {...itemProps}
                 formContext={formContext}
               />
@@ -93,6 +94,24 @@ const FixedArrayFieldTemplate = ({
       </Row>
     </fieldset>
   );
+};
+
+FixedArrayFieldTemplate.propTypes = {
+  canAdd: PropTypes.bool,
+  className: PropTypes.string,
+  DescriptionField: PropTypes.node,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  idSchema: PropTypes.object,
+  items: PropTypes.node,
+  onAddClick: PropTypes.func,
+  prefixCls: PropTypes.string,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  schema: PropTypes.object,
+  title: PropTypes.string,
+  TitleField: PropTypes.node,
+  uiSchema: PropTypes.object
 };
 
 export default withConfigConsumer({ prefixCls: "form" })(

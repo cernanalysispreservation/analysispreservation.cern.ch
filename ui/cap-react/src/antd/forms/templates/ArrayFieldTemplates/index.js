@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import { utils } from "@rjsf/core";
 
 import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
@@ -162,6 +162,33 @@ const ArrayFieldTemplate = ({
       uiSchema={uiSchema}
     />
   );
+};
+
+ArrayFieldTemplate.propTypes = {
+  DescriptionField: PropTypes.node,
+  TitleField: PropTypes.node,
+  autofocus: PropTypes.bool,
+  canAdd: PropTypes.bool,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  formData: PropTypes.object,
+  idSchema: PropTypes.object,
+  items: PropTypes.array,
+  label: PropTypes.string,
+  name: PropTypes.string,
+  onAddClick: PropTypes.func,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  placeholder: PropTypes.string,
+  rawErrors: PropTypes.array,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  schema: PropTypes.object,
+  title: PropTypes.string,
+  uiSchema: PropTypes.object,
+  registry: PropTypes.object
 };
 
 export default ArrayFieldTemplate;

@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-
+import PropTypes from "prop-types";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
 import { Button, Row, Space } from "antd";
 
@@ -80,6 +80,18 @@ const TitleField = ({
 
 TitleField.defaultProps = {
   formContext: {}
+};
+
+TitleField.propTypes = {
+  formContext: PropTypes.object,
+  id: PropTypes.string,
+  prefixCls: PropTypes.string,
+  required: PropTypes.bool,
+  title: PropTypes.string,
+  uiImport: PropTypes.object,
+  uiLatex: PropTypes.object,
+  enableImport: PropTypes.func,
+  enableLatex: PropTypes.func
 };
 
 export default withConfigConsumer({ prefixCls: "form" })(TitleField);

@@ -5,6 +5,7 @@ import { utils } from "@rjsf/core";
 import { Button, Col, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import TabField from "./TabField";
+import PropTypes from "prop-types";
 const { canExpand } = utils;
 const DESCRIPTION_COL_STYLE = {
   paddingBottom: "8px"
@@ -120,6 +121,22 @@ const ObjectFieldTemplate = ({
   );
 };
 
-ObjectFieldTemplate.propTypes = {};
+ObjectFieldTemplate.propTypes = {
+  DescriptionField: PropTypes.node,
+  TitleField: PropTypes.node,
+  description: PropTypes.object,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  formData: PropTypes.object,
+  idSchema: PropTypes.string,
+  onAddClick: PropTypes.func,
+  prefixCls: PropTypes.string,
+  properties: PropTypes.array,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  schema: PropTypes.object,
+  title: PropTypes.string,
+  uiSchema: PropTypes.object
+};
 
 export default ObjectFieldTemplate;

@@ -97,7 +97,6 @@ const Applications = ({
                 key: "action",
                 render: token => (
                   <Button
-                    data-cy={token.name}
                     type="link"
                     onClick={() => revokeToken(token.id, token.key)}
                     data-cy="settingsRemoveToken"

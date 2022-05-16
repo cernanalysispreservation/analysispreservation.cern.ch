@@ -1,66 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Dropdown, Space, Typography, Row, Menu, Col } from "antd";
-import {
-  CloseOutlined,
-  CloudDownloadOutlined,
-  DownOutlined,
-  InfoCircleOutlined
-} from "@ant-design/icons";
+import { Dropdown, Space, Typography, Row, Col } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import prettyBytes from "pretty-bytes";
-import { Route } from "react-router-dom";
-import { DRAFT_ITEM } from "../../../routes";
+
 import EllipsisText from "../../EllipsisText";
+import DropDownMenu from "./DropDownMenu";
 
 const { Text } = Typography;
-
-const menu = (data, infoClick, getFileVersions, deleteFile) => (
-  <Menu>
-    <Route
-      path={DRAFT_ITEM}
-      render={() => (
-        <Menu.Item
-          key="info"
-          icon={<InfoCircleOutlined />}
-          onClick={() => {
-            infoClick();
-            getFileVersions();
-          }}
-        >
-          Info
-        </Menu.Item>
-      )}
-    />
-    <Menu.Item key="download" icon={<CloudDownloadOutlined />}>
-      <a
-        href={
-          data.data.links && data.data.links.self
-            ? data.data.links.self
-            : `/api/files/${data.data.bucket}/${data.data.key}`
-        }
-        download
-      >
-        Download
-      </a>
-    </Menu.Item>
-    <Route
-      path={DRAFT_ITEM}
-      render={() => (
-        <React.Fragment>
-          <Menu.Divider />
-          <Menu.Item
-            key="delete"
-            icon={<CloseOutlined />}
-            onClick={() => deleteFile(data.data.links.self, data.data.key)}
-            danger
-          >
-            Delete
-          </Menu.Item>
-        </React.Fragment>
-      )}
-    />
-  </Menu>
-);
 
 const DropDownFiles = props => {
   const [isShown, setIsShown] = useState(false);
@@ -106,7 +53,7 @@ const DropDownFiles = props => {
               {isShown && (
                 <Dropdown
                   trigger="click"
-                  overlay={menu(
+                  overlay={DropDownMenu(
                     props.file,
                     () => props.infoClick(props.file),
                     () => props.getFileVersions(),
@@ -128,7 +75,8 @@ DropDownFiles.propTypes = {
   file: PropTypes.object,
   versions: PropTypes.object,
   deleteFile: PropTypes.func,
-  getFileVersions: PropTypes.func
+  getFileVersions: PropTypes.func,
+  infoClick: PropTypes.func
 };
 
 export default DropDownFiles;
