@@ -90,6 +90,8 @@ jobs:
 
   python-tests:
     runs-on: ubuntu-18.04
+    env:
+      REANA_SERVER_URL: https://reana.cern.ch
     services:
       redis:
         image: redis

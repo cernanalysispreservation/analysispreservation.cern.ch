@@ -19,19 +19,16 @@ INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
-    'coverage>=5.2.1',
-    'isort>=4.3',
+    'coverage==4.5.4',
     'mock>=2.0.0',
     'pydocstyle>=2.0.0',
     'pytest-cov==2.5.1',
     'pytest-invenio>=1.0.5,<=1.3.4',
-    'pytest-mock>=1.6.0',
-    'pytest-pep8>=1.0.6',
-    'pytest-random-order>=0.5.4',
     'pytest==5.3.5',
     'yapf>=0.28.0',
     'responses==0.10.6',
     'selenium>=3.4.3',
+    'pytest-vcr',
 ]
 
 extras_require = {'docs': ['Sphinx>=1.5.1'], 'tests': tests_require}
@@ -70,9 +67,6 @@ install_requires = [
     # Pinned libraries
     'urllib3[secure]==1.22',
     'sqlalchemy==1.3.0',
-    # temporary pinned since there are 'fs' conslicts between
-    # 'reana-commons' and 'invenio-files-rest'
-    'fs==0.5.4',
     'invenio-accounts-rest>=1.0.0a4',
     'invenio-oauthclient>=1.0.0',
     'invenio-userprofiles>=1.0.0',
@@ -95,7 +89,9 @@ install_requires = [
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
     'requests_kerberos',
-    'beautifulsoup4'
+    'beautifulsoup4',
+    'reana-client==0.8.0',
+    'reana-commons==0.8.0'
 ]
 
 packages = find_packages()

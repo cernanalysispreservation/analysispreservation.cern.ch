@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://reana.cern.ch/api/you
+  response:
+    body:
+      string: "{\n  \"email\": \"test.@test.ch\", \n  \"full_name\": \"\
+        test\", \n  \"quota\": {\n    \"cpu\": {\n      \"usage\": {\n\
+        \        \"human_readable\": \"3m 55s\", \n        \"raw\": 235632\n     \
+        \ }\n    }, \n    \"disk\": {\n      \"usage\": {\n        \"human_readable\"\
+        : \"237 KiB\", \n        \"raw\": 242688\n      }\n    }\n  }, \n  \"reana_server_version\"\
+        : \"0.8.3\", \n  \"reana_token\": {\n    \"requested_at\": \"Thu, 11 Mar 2021\
+        \ 16:44:09 GMT\", \n    \"status\": \"active\", \n    \"value\": \"Xxxxxxxxxxxxxxxxxxxxxxxxx\"\
+        \n  }, \n  \"username\": \"test\"\n}\n"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Type, ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
+      Content-Length:
+      - '510'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 23 Mar 2022 10:38:20 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Retry-After:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - sameorigin
+      X-Ratelimit-Limit:
+      - '20'
+      X-Ratelimit-Remaining:
+      - '19'
+      X-Ratelimit-Reset:
+      - '1648031902'
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

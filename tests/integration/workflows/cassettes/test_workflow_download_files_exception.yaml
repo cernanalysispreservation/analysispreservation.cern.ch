@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://reana.cern.ch/api/workflows/7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f/workspace/code/code.py?file_name=code%2Fcode.py
+  response:
+    body:
+      string: '{"message":"REANA_WORKON is set to 7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f,
+        but that workflow does not exist. Please set your REANA_WORKON environment
+        variable appropriately."}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Type, ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
+      Content-Length:
+      - '174'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 14 Mar 2022 14:06:23 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Retry-After:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - sameorigin
+      X-Ratelimit-Limit:
+      - '20'
+      X-Ratelimit-Remaining:
+      - '19'
+      X-Ratelimit-Reset:
+      - '1647266785'
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found
+version: 1
