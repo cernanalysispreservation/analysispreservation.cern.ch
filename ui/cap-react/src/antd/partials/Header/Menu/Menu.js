@@ -21,7 +21,7 @@ const SimpleMenu = ({
 
   return (
     <Menu theme="dark" selectable={false} mode="horizontal">
-      {(process.env.NODE_ENV === "development" || process.env.ENABLE_E2E) && (
+      {process.env.NODE_ENV === "development" || process.env.ENABLE_E2E ? (
         <Dropdown
           trigger="click"
           overlay={<LoginForm loginLocalUser={loginLocalUser} />}
@@ -31,7 +31,7 @@ const SimpleMenu = ({
             Local Login
           </Item>
         </Dropdown>
-      )}
+      ) : null}
       <Item key="home">
         <a href="#home">Home</a>
       </Item>
