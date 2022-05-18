@@ -41,6 +41,7 @@ from invenio_rest.errors import FieldError
 from cap.modules.records.errors import get_error_path
 from cap.modules.deposit.errors import DepositValidationError
 from cap.modules.deposit.utils import clean_empty_values
+from cap.modules.schemas.resolvers import schema_name_to_url
 
 
 def json_v1_loader(data=None):
@@ -53,9 +54,11 @@ def json_v1_loader(data=None):
     result = clean_empty_values(data)
 
     # Validate for schema field permissions
-    if request.url_rule.rule.startswith('/deposits') and request.method in ['PUT']:
+    if request.method == 'PUT':
         pid = request.url.split('/')[-1]
-        field_schema_editing_validator(pid, result)
+        field_schema_editing_validator_with_pid(pid, result)
+    elif request.method == 'POST':
+        field_schema_editing_validator_without_pid(result)
     return result
 
 
@@ -110,13 +113,8 @@ def get_current_value(error_path, current_value=None):
     return current_value
 
 
-def field_schema_editing_validator(pid, data):
+def get_validator(schema):
     """Validator for checking field level validation."""
-    rec_uuid = resolve_depid(pid)
-    _record_metadata = RecordMetadata.query.filter_by(id=rec_uuid).one_or_none()
-    schema = {'$ref': _record_metadata.json.get('$schema')}
-
-    # json schema validation
     field_schema_editing_validator = dict()
     field_schema_editing_validator['x-cap-permission'] = validate_field_schema_editing
     field_schema_validator = extend(Draft4Validator,
@@ -127,6 +125,15 @@ def field_schema_editing_validator(pid, data):
     validator = extend(field_schema_validator, {'required': None})
     validator = validator(schema, resolver=resolver)
 
+    return validator
+
+
+def field_schema_editing_validator_with_pid(pid, data):
+    rec_uuid = resolve_depid(pid)
+    _record_metadata = RecordMetadata.query.filter_by(id=rec_uuid).one_or_none()
+    schema = {'$ref': _record_metadata.json.get('$schema')}
+    validator = get_validator(schema)
+
     errors = []
     for err in validator.iter_errors(data):
         error_path = get_error_path(err)
@@ -136,6 +143,22 @@ def field_schema_editing_validator(pid, data):
         if current_version != incoming_version:
             errors.append(FieldError(error_path, str(err.message)))
 
+    if errors:
+        raise DepositValidationError(None, errors=errors)
+
+    return data
+
+
+def field_schema_editing_validator_without_pid(data):
+    if '$schema' in data:
+        schema = data.get('$schema')
+    elif '$ana_type' in data:
+        schema = schema_name_to_url(data.get('$ana_type'))
+    validator = get_validator({'$ref': schema})
+
+    errors = []
+    for err in validator.iter_errors(data):
+        errors.append(FieldError(get_error_path(err), str(err.message)))
     if errors:
         raise DepositValidationError(None, errors=errors)
 
