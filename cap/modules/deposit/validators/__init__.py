@@ -31,7 +31,7 @@ from jsonschema.validators import extend
 from cap.modules.experiments.validators import (validate_cms_trigger,
                                                 validate_das_path,
                                                 validate_unique_cadi)
-from .users import validate_editing_field
+# from .users import validate_editing_field
 
 deposit_validators = dict(Draft4Validator.VALIDATORS)
 
@@ -42,7 +42,7 @@ deposit_validators['x-validate-unique-cadi'] = validate_unique_cadi
 # deposit_validators['x-validate-cadi-id'] = validate_cadi_id
 
 # check for editing permission
-deposit_validators['x-cap-permission'] = validate_editing_field
+# deposit_validators['x-cap-permission'] = validate_editing_field
 
 DepositValidator = extend(Draft4Validator, validators=deposit_validators)
 NoRequiredValidator = extend(DepositValidator, {'required': None})
