@@ -371,6 +371,45 @@ def test_deposit_validation_on_schema_field_user_can_edit(client, users,
     assert resp.status_code == 200
 
 
+def test_deposit_validation_on_schema_with_x_cap_permission(client, users,
+                                                            auth_headers_for_user,
+                                                            json_headers, create_schema,
+                                                            create_deposit):
+    owner = users['superuser']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'users': ['superuser@cern.ch']
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"obj": "test"}))
+    assert resp.status_code == 200
+
+    user = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({"title": "test"}))
+    assert resp.status_code == 200
+
+
 def test_deposit_validation_on_schema_field_user_cannot_edit(client, users,
                                                              auth_headers_for_user,
                                                              json_headers, create_schema,
