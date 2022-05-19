@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 
 import Button from "antd/lib/button";
-import { Row, Col, Modal, Space } from "antd";
+import { Row, Col, Modal, Space, Tag, Checkbox, Table } from "antd";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
@@ -45,6 +45,12 @@ const NormalArrayFieldTemplate = ({
   const { labelAlign = "right", rowGutter = 24 } = formContext;
   const [latexData, setLatexData] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [emailCernUsersModal, setEmailCernUsersModal] = useState(false);
+  const [selectedEmailList, setSelectedEmailList] = useState(
+    uiSchema["ui:options"] && uiSchema["ui:options"].emailCernUsers
+      ? formData.map(user => user[uiSchema["ui:options"].emailCernUsers])
+      : []
+  );
   const [copy, setCopy] = useState(false);
   const [importModal, setImportModal] = useState(false);
   const labelClsBasic = `${prefixCls}-item-label`;
@@ -55,9 +61,12 @@ const NormalArrayFieldTemplate = ({
   );
   let uiImport = null;
   let uiLatex = null;
+  let uiEmailCernUsers = null;
+
   if (uiSchema["ui:options"]) {
     uiImport = uiSchema["ui:options"].import;
     uiLatex = uiSchema["ui:options"].latex;
+    uiEmailCernUsers = uiSchema["ui:options"].emailCernUsers;
   }
 
   let typeOfArrayToDisplay = "default";
@@ -66,25 +75,27 @@ const NormalArrayFieldTemplate = ({
     schema &&
     schema.items &&
     ["array", "object"].includes(schema.items.type)
-  ) {typeOfArrayToDisplay = "LayerArrayField";}
+  ) {
+    typeOfArrayToDisplay = "LayerArrayField";
+  }
 
   const getArrayContent = type => {
     const choices = {
-      "LayerArrayField": (
+      LayerArrayField: (
         <LayerArrayFieldTemplate
           items={items}
           formContext={formContext}
           id={idSchema.$id}
         />
       ),
-      "AccordionArrayField": (
+      AccordionArrayField: (
         <AccordionArrayFieldTemplate
           items={items}
           formContext={formContext}
           id={idSchema.$id}
         />
       ),
-      "default": items.map(itemProps => (
+      default: items.map(itemProps => (
         <ArrayFieldTemplateItem {...itemProps} formContext={formContext} />
       ))
     };
@@ -116,6 +127,30 @@ const NormalArrayFieldTemplate = ({
       setShowModal(true);
     }
   };
+
+  const updateEmailSelectedList = email => {
+    selectedEmailList.includes(email)
+      ? setSelectedEmailList(selectedEmailList =>
+          selectedEmailList.filter(item => item != email)
+        )
+      : setSelectedEmailList(selectedEmailList => [
+          ...selectedEmailList,
+          email
+        ]);
+  };
+  const updateEmailSelectedListAll = () => {
+    formData.length === selectedEmailList.length
+      ? setSelectedEmailList([])
+      : setSelectedEmailList(formData.map(user => user.email));
+  };
+
+  useEffect(
+    () => {
+      if (emailCernUsersModal && formData.length != selectedEmailList.length)
+        setSelectedEmailList(formData.map(user => user.email));
+    },
+    [emailCernUsersModal]
+  );
 
   return (
     <fieldset className={className} id={idSchema.$id}>
@@ -172,6 +207,61 @@ const NormalArrayFieldTemplate = ({
           onCancel={() => setImportModal(false)}
         />
       )}
+      {uiEmailCernUsers &&
+        formData && (
+          <Modal
+            visible={emailCernUsersModal}
+            onCancel={() => setEmailCernUsersModal(false)}
+            title="Email Cern users"
+            okText="Send Email"
+            okType="link"
+            okButtonProps={{
+              href: `mailto:${selectedEmailList.join(",")}`
+            }}
+            width={900}
+          >
+            <Space direction="vertical" style={{ width: "100%" }} size="large">
+              <Checkbox
+                onChange={() => updateEmailSelectedListAll()}
+                checked={formData.length === selectedEmailList.length}
+              >
+                Select All Users
+              </Checkbox>
+              <Table
+                dataSource={formData}
+                columns={[
+                  {
+                    title: "Email User",
+                    key: "action",
+                    render: (_, user) => (
+                      <Checkbox
+                        checked={selectedEmailList.includes(user.email)}
+                        onChange={() => updateEmailSelectedList(user.email)}
+                      />
+                    )
+                  },
+                  {
+                    title: "Name",
+                    dataIndex: "name",
+                    key: "name"
+                  },
+                  {
+                    title: "Email",
+                    dataIndex: "email",
+                    key: "email",
+                    render: txt => <Tag color="geekblue">{txt}</Tag>
+                  },
+                  {
+                    title: "Department",
+                    dataIndex: "department",
+                    key: "department",
+                    render: txt => <Tag color="blue">{txt}</Tag>
+                  }
+                ]}
+              />
+            </Space>
+          </Modal>
+        )}
       <Row gutter={rowGutter} style={{ background: "#fff", padding: "10px" }}>
         {title && (
           <Col className={labelColClassName} span={24}>
@@ -182,8 +272,10 @@ const NormalArrayFieldTemplate = ({
               title={uiSchema["ui:title"] || title}
               uiImport={uiImport}
               uiLatex={uiLatex}
+              uiEmailCernUsers={uiEmailCernUsers}
               enableLatex={() => _enableLatex()}
               enableImport={() => setImportModal(true)}
+              sendEmailToCernUsers={() => setEmailCernUsersModal(true)}
             />
           </Col>
         )}
