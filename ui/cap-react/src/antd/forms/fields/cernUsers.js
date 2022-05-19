@@ -16,7 +16,7 @@ import axios from "axios";
 import _debounce from "lodash/debounce";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 
-const CernUsers = ({ onChange, formData, uiSchema }) => {
+const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
   const autoOpenModal =
     uiSchema["ui:options"] && uiSchema["ui:options"].autoOpenModal;
 
@@ -153,16 +153,19 @@ const CernUsers = ({ onChange, formData, uiSchema }) => {
         >
           <Space>
             <Typography.Text>{formData.name}</Typography.Text>
-            <Tag color="geekblue">{formData.email}</Tag>
+            <a href={`mailto:${formData.email}`}>
+              <Tag color="geekblue">{formData.email}</Tag>
+            </a>
             <Tag color="blue">{formData.department}</Tag>
           </Space>
-          {!autoOpenModal && (
-            <Button
-              type="danger"
-              icon={<DeleteOutlined />}
-              onClick={() => onChange(undefined)}
-            />
-          )}
+          {!autoOpenModal &&
+            !readonly && (
+              <Button
+                type="danger"
+                icon={<DeleteOutlined />}
+                onClick={() => onChange(undefined)}
+              />
+            )}
         </Row>
       ) : (
         <Row
