@@ -60,7 +60,7 @@ install_requires = [
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
     'python-cern-sso-krb==1.3.3',
-    'python-gssapi==0.6.4',
+    'gssapi',
     # FIX cryptography <=3.3.2 is needed for installation not to crash
     # https://github.com/Azure/azure-cli/issues/16858
     'cryptography<=3.3.2',
@@ -94,7 +94,7 @@ install_requires = [
     'webargs==3.0.1',
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
-    'requests_kerberos',
+    'requests-gssapi',
     'beautifulsoup4'
 ]
 

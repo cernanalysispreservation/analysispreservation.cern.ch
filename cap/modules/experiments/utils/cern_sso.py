@@ -29,8 +29,9 @@
 import logging
 import requests
 import time
-from requests_kerberos import HTTPKerberosAuth, OPTIONAL
+from requests_gssapi import HTTPSPNEGOAuth, OPTIONAL
 from bs4 import BeautifulSoup
+from . import old_cern_sso
 
 try:
     from http.cookiejar import MozillaCookieJar, Cookie
@@ -74,6 +75,12 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
     if not silent:
         logging.info("Fetching target URL and its redirects")
     r_login_page = session.get(login_page, verify=verify_cert)
+    if "login.cern.ch" in r_login_page.url:
+        # Compatibility with the old SSO, to be deleted after we retire it.
+        # Library features such as 'silent mode' are not supported for this case.
+        logging.info(
+            "Landing page is in the old SSO, re-running in compatibility mode.")
+        return old_cern_sso.krb_sign_on(login_page, session.cookies)
     if not silent:
         logging.debug("Landing page: {}".format(r_login_page.url))
         logging.info("Parsing landing page to get the Kerberos login URL")
@@ -85,7 +92,7 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
             raise Exception("Login failed: {}".format(error_message))
         else:
             raise Exception(
-                "Login failed: Landing page not recognized.")
+                "Login failed: Landing page not recognized as the CERN SSO login page.")
     kerberos_path = kerberos_button.get("href")
     if not silent:
         logging.info("Fetching Kerberos login URL")
@@ -96,7 +103,7 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
         logging.info("Logging in using Kerberos Auth")
     r_kerberos_auth = session.get(
         r_kerberos_redirect.url,
-        auth=HTTPKerberosAuth(mutual_authentication=OPTIONAL),
+        auth=HTTPSPNEGOAuth(mutual_authentication=OPTIONAL),
         allow_redirects=False,
     )
     while (
@@ -107,6 +114,10 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
             r_kerberos_auth.headers["Location"], allow_redirects=False
         )
     if r_kerberos_auth.status_code != 302:
+        if "login-actions/consent" in r_kerberos_auth.text:
+            raise Exception(
+                "Login failed: This application requires consent. "
+                "Please accept it manually before using this tool.")
         error_message = get_error_message(r_kerberos_auth.text)
         if not error_message:
             logging.debug(
