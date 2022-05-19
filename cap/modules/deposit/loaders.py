@@ -31,6 +31,7 @@ from flask_principal import RoleNeed
 from jsonschema import Draft4Validator
 from jsonschema.validators import extend
 from jsonschema.exceptions import ValidationError
+from jsonpatch import apply_patch, JsonPatchConflict
 
 from invenio_access.permissions import Permission
 from invenio_records.models import RecordMetadata
@@ -60,6 +61,30 @@ def json_v1_loader(data=None):
     elif request.method == 'POST':
         field_schema_editing_validator_without_pid(result)
     return result
+
+
+def json_v1_patch_loader(data=None):
+    """Load data from request and process URLs."""
+    data = deepcopy(data or request.get_json(force=True))
+
+    fields = [
+        '/_deposit',
+        '/_access',
+        '/_files',
+        '/_experiment',
+        '/_fetched_from',
+        '/_user_edited',
+        '/$schema',
+    ]
+
+    for k, patch in enumerate(data):
+        if patch.get("path", None) in fields:
+            del data[k]
+
+    # Validate for schema field permissions
+    pid = request.url.split('/')[-1]
+    field_schema_editing_validator_with_pid(pid, data, patch=True)
+    return data
 
 
 def get_field_level_schema(field, current_value=None):
@@ -128,11 +153,17 @@ def get_validator(schema):
     return validator
 
 
-def field_schema_editing_validator_with_pid(pid, data):
+def field_schema_editing_validator_with_pid(pid, data, patch=False):
     rec_uuid = resolve_depid(pid)
     _record_metadata = RecordMetadata.query.filter_by(id=rec_uuid).one_or_none()
     schema = {'$ref': _record_metadata.json.get('$schema')}
     validator = get_validator(schema)
+
+    if patch:
+        try:
+            data = apply_patch(_record_metadata.json, data)
+        except JsonPatchConflict as e:
+            return jsonify({'message': e.args}), 400
 
     errors = []
     for err in validator.iter_errors(data):
