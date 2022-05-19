@@ -14,7 +14,6 @@ from datetime import timedelta
 from os.path import dirname, join
 
 import requests
-from flask import request
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
@@ -693,7 +692,8 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'record_class': 'cap.modules.deposit.api:CAPDeposit',
     'record_loaders': {
         'application/json': 'cap.modules.deposit.loaders:json_v1_loader',
-        'application/json-patch+json': lambda: request.get_json(force=True),
+        'application/json-patch+json':
+            'cap.modules.deposit.loaders:json_v1_patch_loader',
     },
     'record_serializers': {
         'application/json': ('cap.modules.deposit.serializers'
