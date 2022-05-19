@@ -371,6 +371,98 @@ def test_deposit_validation_on_schema_field_user_can_edit(client, users,
     assert resp.status_code == 200
 
 
+def test_deposit_validation_on_schema_with_x_cap_permission_patch(client, location, users,
+                                                                  auth_headers_for_user,
+                                                                  json_headers, create_schema,
+                                                                  create_deposit):
+    owner = users['superuser']
+    headers = auth_headers_for_user(owner)
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'conclusion': {
+                              'type': 'string',
+                              'x-cap-permission': {
+                                  'users': ['superuser@cern.ch']
+                              },
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.patch('/deposits/{}'.format(pid),
+                        headers=headers +
+                        [('Content-Type', 'application/json-patch+json'),
+                         ('Accept', 'application/json')],
+                        data=json.dumps([{
+                            "op": "add",
+                            "path": "/conclusion",
+                            "value": "Gen Test"
+                        }]))
+    assert resp.status_code == 200
+
+    user = users['cms_user']
+    headers = auth_headers_for_user(user)
+
+    client.post(
+        f'/deposits/{pid}/actions/permissions',
+        headers=auth_headers_for_user(owner) + json_headers,
+        data=json.dumps([
+            {
+                'email': user.email,
+                'type': 'user',
+                'op': 'add',
+                'action': 'deposit-update'
+            }
+        ]),
+    )
+
+    resp = client.patch('/deposits/{}'.format(pid),
+                        headers=headers +
+                        [('Content-Type', 'application/json-patch+json'),
+                         ('Accept', 'application/json')],
+                        data=json.dumps([{
+                            "op": "add",
+                            "path": "/title",
+                            "value": "Test CMS title"
+                        }]))
+    assert resp.status_code == 200
+
+    resp = client.patch('/deposits/{}'.format(pid),
+                        headers=headers +
+                        [('Content-Type', 'application/json-patch+json'),
+                         ('Accept', 'application/json')],
+                        data=json.dumps([{
+                            "op": "replace",
+                            "path": "/conclusion",
+                            "value": "Test CMS conclusion"
+                        }]))
+    assert resp.status_code == 422
+    assert resp.json['errors'][0]['message'] == 'You cannot edit this field.'
+
+    resp = client.patch('/deposits/{}'.format(pid),
+                        headers=headers +
+                        [('Content-Type', 'application/json-patch+json'),
+                         ('Accept', 'application/json')],
+                        data=json.dumps([{
+                            "op": "replace",
+                            "path": "/conclusion",
+                            "value": "Gen Test"
+                        },{
+                            "op": "replace",
+                            "path": "/title",
+                            "value": "Test CMS"
+                        }]))
+    assert resp.status_code == 200
+
+
 def test_deposit_validation_on_schema_with_x_cap_permission(client, location, users,
                                                             auth_headers_for_user,
                                                             json_headers, create_schema,
