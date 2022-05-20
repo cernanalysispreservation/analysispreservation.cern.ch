@@ -1,7 +1,7 @@
 import React from "react";
 
 import Form from "antd/lib/form";
-
+import PropTypes from "prop-types";
 import WrapIfAdditional from "./WrapIfAdditional";
 import { Space, Typography } from "antd";
 
@@ -111,6 +111,27 @@ const FieldTemplate = ({
       </WrapIfAdditional>
     </div>
   );
+};
+
+FieldTemplate.propTypes = {
+  displayLabel: PropTypes.bool,
+  classNames: PropTypes.string,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  rawErrors: PropTypes.array,
+  onDropPropertyClick: PropTypes.func,
+  onKeyChange: PropTypes.func,
+  description: PropTypes.string,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  hidden: PropTypes.bool,
+  schema: PropTypes.object,
+  help: PropTypes.string,
+  label: PropTypes.string,
+  rawHelp: PropTypes.string,
+  id: PropTypes.string,
+  children: PropTypes.node,
+  uiSchema: PropTypes.object
 };
 
 export default FieldTemplate;
