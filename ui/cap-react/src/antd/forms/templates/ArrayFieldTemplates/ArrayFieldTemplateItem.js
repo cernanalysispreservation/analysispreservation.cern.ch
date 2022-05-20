@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "antd";
-
+import PropTypes from "prop-types";
 import ArrayUtils from "./ArrayUtils";
 
 const ArrayFieldTemplateItem = ({
@@ -42,6 +42,20 @@ const ArrayFieldTemplateItem = ({
       )}
     </Row>
   );
+};
+
+ArrayFieldTemplateItem.propTypes = {
+  children: PropTypes.node,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  hasMoveDown: PropTypes.bool,
+  hasMoveUp: PropTypes.bool,
+  hasRemove: PropTypes.bool,
+  hasToolbar: PropTypes.bool,
+  index: PropTypes.string,
+  onDropIndexClick: PropTypes.func,
+  onReorderClick: PropTypes.func,
+  readonly: PropTypes.bool
 };
 
 ArrayFieldTemplateItem.defaultProps = {
