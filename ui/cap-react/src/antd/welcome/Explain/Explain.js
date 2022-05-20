@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Typography, Divider, Space } from "antd";
+import { Row, Col, Typography, Space, Card, Tag, Divider } from "antd";
 
 const Explain = () => {
   const explainBoxes = [
@@ -75,46 +75,54 @@ const Explain = () => {
     }
   ];
   return (
-    <Row
-      justify="center"
-      style={{ textAlign: "center", minHeight: "60vh" }}
-      id="explain"
-    >
-      <Space direction="vertical" size="large">
-        <Col span={24}>
-          <Typography.Title level={1}>Start Preserving</Typography.Title>
-        </Col>
-        <Row gutter={6}>
+    <Col xs={24} style={{ margin: "2rem 0", padding: "1rem" }}>
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <Typography.Title
+          style={{ textAlign: "center", fontSize: "3rem" }}
+          italic
+        >
+          Start Preserving
+        </Typography.Title>
+
+        <Row gutter={[64, 64]} align="center">
           {explainBoxes.map(item => (
-            <Col
-              key={item.title}
-              lg={{ span: 4, offset: 3 }}
-              md={{ span: 8 }}
-              xs={{ span: 16, offset: 4 }}
-              sm={{ span: 18, offset: 3 }}
-              style={{
-                background: "white",
-                textAlign: "center",
-                padding: "25px 10px"
-              }}
-            >
-              <Typography.Title level={3}>{item.title}</Typography.Title>
-              <Divider />
-              <Space direction="vertical">
-                {item.data.map(box => (
-                  <React.Fragment key={box.title}>
-                    <Typography.Title level={5}>{box.title}</Typography.Title>
-                    <Typography.Paragraph>
-                      {box.description}
-                    </Typography.Paragraph>
-                  </React.Fragment>
-                ))}
-              </Space>
+            <Col key={item.title} xs={22} md={10} lg={8} xl={6} xxl={5}>
+              <Card
+                style={{
+                  height: "100%"
+                }}
+              >
+                <Space direction="vertical" style={{ width: "100%" }}>
+                  <Typography.Title level={3} style={{ textAlign: "center" }}>
+                    {item.title}
+                  </Typography.Title>
+                  <Divider />
+                  {item.data.map(box => (
+                    <Space
+                      direction="vertical"
+                      size="small"
+                      key={box.title}
+                      style={{
+                        width: "100%",
+                        padding: "0.2rem",
+                        textAlign: "center"
+                      }}
+                    >
+                      <Typography.Paragraph strong>
+                        {box.title}
+                      </Typography.Paragraph>
+                      <Typography.Paragraph style={{ fontSize: "1.1rem" }}>
+                        {box.description}
+                      </Typography.Paragraph>
+                    </Space>
+                  ))}
+                </Space>
+              </Card>
             </Col>
           ))}
         </Row>
       </Space>
-    </Row>
+    </Col>
   );
 };
 
