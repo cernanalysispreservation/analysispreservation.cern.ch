@@ -88,6 +88,7 @@ const ReviewList = ({
 ReviewList.propTypes = {
   review: PropTypes.object,
   isReviewingPublished: PropTypes.bool,
+  canReview: PropTypes.bool,
   reviewPublished: PropTypes.func,
   reviewDraft: PropTypes.func,
   draft_id: PropTypes.string
