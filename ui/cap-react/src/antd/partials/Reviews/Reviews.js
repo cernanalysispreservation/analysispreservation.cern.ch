@@ -171,6 +171,7 @@ Reviews.propTypes = {
   reviewDraft: PropTypes.func,
   reviewPublished: PropTypes.func,
   isReviewingPublished: PropTypes.bool,
+  canReview: PropTypes.bool,
   loading: PropTypes.bool,
   publishedReviewError: PropTypes.string,
   draftReviewError: PropTypes.string,

@@ -37,7 +37,8 @@ const SideBar = ({ files, status, onClose, visibleFileDrawer }) => {
 SideBar.propTypes = {
   status: PropTypes.string,
   onClose: PropTypes.func,
-  visibleFileDrawer: PropTypes.bool
+  visibleFileDrawer: PropTypes.bool,
+  files: PropTypes.object
 };
 
 export default SideBar;
