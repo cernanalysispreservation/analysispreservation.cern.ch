@@ -1,10 +1,6 @@
 import React from "react";
-import { Row, Col, Typography, Button, Space } from "antd";
-import {
-  WalletOutlined,
-  CodeOutlined,
-  BranchesOutlined
-} from "@ant-design/icons";
+import { Row, Col, Typography, Button, Card, Space } from "antd";
+import { CodeOutlined, CodepenOutlined, ReadOutlined } from "@ant-design/icons";
 
 const Documentation = () => {
   const boxes = [
@@ -17,7 +13,7 @@ const Documentation = () => {
           General Docs
         </Button>
       ),
-      icon: <WalletOutlined style={{ fontSize: "3em" }} />
+      icon: <ReadOutlined style={{ fontSize: "3em" }} />
     },
     {
       title: "CLI Client",
@@ -34,7 +30,7 @@ const Documentation = () => {
       title: "RESTful API",
       description:
         "Try using our RESTful interface, to integrate CAP with your daily tools and services using HTTP requests.",
-      icon: <BranchesOutlined style={{ fontSize: "3em" }} />,
+      icon: <CodepenOutlined style={{ fontSize: "3em" }} />,
       button: (
         <Button type="primary" href="/docs/api" target="_blank">
           API Guides & Docs
@@ -43,41 +39,40 @@ const Documentation = () => {
     }
   ];
   return (
-    <Row
-      justify="center"
-      style={{ textAlign: "center", minHeight: "50vh" }}
-      align="middle"
-      id="documentation"
-    >
-      <Space direction="vertical" size="large">
-        <Col span={24}>
-          <Typography.Title level={1}>Documentation</Typography.Title>
-        </Col>
-        <Row gutter={6}>
+    <Col xs={24} style={{ margin: "2rem 0", padding: "1rem" }}>
+      <Space direction="vertical" style={{ width: "100%" }} size="large">
+        <Typography.Title
+          style={{ textAlign: "center", fontSize: "3rem" }}
+          italic
+        >
+          Documentation
+        </Typography.Title>
+        <Row id="documentation" gutter={[64, 64]} justify="center">
           {boxes.map(item => (
-            <Col
-              key={item.title}
-              lg={{ span: 4, offset: 3 }}
-              md={{ span: 8 }}
-              xs={{ span: 16, offset: 4 }}
-              sm={{ span: 18, offset: 3 }}
-              style={{
-                background: "white",
-                textAlign: "center",
-                padding: "25px 10px"
-              }}
-            >
-              <Space direction="vertical" size="large">
-                {item.icon}
-                <Typography.Title level={3}>{item.title}</Typography.Title>
-                <Typography.Text level={3}>{item.description}</Typography.Text>
-                {item.button}
-              </Space>
+            <Col key={item.title} xs={22} sm={10} lg={8} xl={6} xxl={4}>
+              <Card style={{ height: "100%" }}>
+                <Space
+                  direction="vertical"
+                  style={{ width: "100%", textAlign: "center" }}
+                  size="large"
+                >
+                  {item.icon}
+                  <Typography.Title level={3} style={{ textAlign: "center" }}>
+                    {item.title}
+                  </Typography.Title>
+                  <Typography.Paragraph
+                    style={{ fontSize: "1.1rem", textAlign: "center" }}
+                  >
+                    {item.description}
+                  </Typography.Paragraph>
+                  {item.button}
+                </Space>
+              </Card>
             </Col>
           ))}
         </Row>
       </Space>
-    </Row>
+    </Col>
   );
 };
 

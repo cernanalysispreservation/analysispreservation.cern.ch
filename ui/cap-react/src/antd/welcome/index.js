@@ -5,17 +5,18 @@ import Explain from "./Explain";
 import Integrations from "./Integrations";
 import Documentation from "./Documentation";
 import Contact from "./Contact";
+import { Col, Row, Space, Typography } from "antd";
 
 const index = () => {
   return (
-    <React.Fragment>
+    <Row justify="center">
       <Intro />
       <Discover />
       <Explain />
       <Integrations />
       <Documentation />
       <Contact />
-    </React.Fragment>
+    </Row>
   );
 };
 

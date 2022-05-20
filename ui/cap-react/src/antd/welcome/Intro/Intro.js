@@ -13,13 +13,13 @@ const Intro = () => {
       title: "Capture",
       icon: <DatabaseOutlined style={{ fontSize: "2em" }} />,
       description:
-        "Collect and preserve elements needed to understand and rerun your analysis"
+        "Preserve elements needed to understand and rerun your analysis"
     },
     {
       title: "Collaborate",
       icon: <TeamOutlined style={{ fontSize: "2em" }} />,
       description:
-        "Share your analysis and components with other users, your collaboration or group"
+        "Share your analysis with other users, your collaboration or group"
     },
     {
       title: "Reuse",
@@ -29,35 +29,43 @@ const Intro = () => {
     }
   ];
   return (
-    <Row justify="center" align="middle" style={{ height: "90vh" }} id="home">
-      <Col xs={10} md={8} lg={6}>
-        <Typography.Title level={2}>
-          CERN <br />Analysis Preservation
-        </Typography.Title>
-        <Typography.Text>
-          capture, preserve and reuse physics analyses
-        </Typography.Text>
-      </Col>
-      <Col xs={18} md={10} lg={8}>
-        <HomeImage />
-      </Col>
-      <Row>
-        {boxes.map(item => (
-          <Col
-            span={4}
-            offset={3}
-            key={item.title}
-            style={{ textAlign: "center" }}
-          >
-            <Space direction="vertical" size="middle">
-              <Typography.Title level={3}>{item.title}</Typography.Title>
-              {item.icon}
-              <Typography.Paragraph>{item.description}</Typography.Paragraph>
+    <Col xs={22} lg={20} xxl={16}>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Row
+          justify="center"
+          align="middle"
+          id="home"
+          style={{ minHeight: "30vh" }}
+        >
+          <Space size="large">
+            <Space direction="vertical" size={0}>
+              <Typography.Title level={1}>
+                CERN <br /> Analysis Preservation
+              </Typography.Title>
+              <Typography.Text italic style={{ fontSize: "1.1rem" }}>
+                capture, preserve and reuse physics analyses
+              </Typography.Text>
             </Space>
-          </Col>
-        ))}
-      </Row>
-    </Row>
+            <HomeImage />
+          </Space>
+        </Row>
+        <Row justify="center" gutter={[32, 32]} style={{ minHeight: "20vh" }}>
+          {boxes.map(item => (
+            <Col key={item.title} style={{ textAlign: "center" }}>
+              <Space direction="vertical" size="middle">
+                <Space direction="vertical" size="large">
+                  {item.icon}
+                  <Typography.Title level={3}>{item.title}</Typography.Title>
+                  <Typography.Paragraph style={{ fontSize: "1.1rem" }}>
+                    {item.description}
+                  </Typography.Paragraph>
+                </Space>
+              </Space>
+            </Col>
+          ))}
+        </Row>
+      </Space>
+    </Col>
   );
 };
 
