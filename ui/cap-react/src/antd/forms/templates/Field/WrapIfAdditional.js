@@ -3,7 +3,7 @@ import React from "react";
 import { utils } from "@rjsf/core";
 import { Button, Col, Form, Input, Row } from "antd";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
-
+import PropTypes from "prop-types";
 const { ADDITIONAL_PROPERTY_FLAG } = utils;
 
 const VERTICAL_LABEL_COL = { span: 24 };
@@ -99,6 +99,21 @@ const WrapIfAdditional = ({
       </Row>
     </div>
   );
+};
+
+WrapIfAdditional.propTypes = {
+  classNames: PropTypes.string,
+  disabled: PropTypes.bool,
+  formContext: PropTypes.object,
+  onDropPropertyClick: PropTypes.func,
+  onKeyChange: PropTypes.func,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  isTabView: PropTypes.bool,
+  schema: PropTypes.object,
+  label: PropTypes.string,
+  id: PropTypes.string,
+  children: PropTypes.node
 };
 
 export default WrapIfAdditional;

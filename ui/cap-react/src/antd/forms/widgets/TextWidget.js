@@ -4,6 +4,7 @@ import { Button, InputNumber } from "antd";
 import axios from "axios";
 import { fromJS } from "immutable";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { formDataChange } from "../../../actions/draftItem";
 const INPUT_STYLE = {
   width: "100%"
@@ -152,8 +153,8 @@ const TextWidget = ({
       name={id}
       onBlur={
         !readonly
-          ? autofill_from && (!autofill_on ||
-            (autofill_on && autofill_on.includes("onBlur")))
+          ? autofill_from &&
+            (!autofill_on || (autofill_on && autofill_on.includes("onBlur")))
             ? autoFillOtherFields
             : handleBlur
           : undefined
@@ -200,6 +201,23 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   formDataChange: data => dispatch(formDataChange(data))
 });
+
+TextWidget.propTypes = {
+  disabled: PropTypes.bool,
+  autofocus: PropTypes.bool,
+  formContext: PropTypes.object,
+  id: PropTypes.string,
+  placeholder: PropTypes.string,
+  readonly: PropTypes.bool,
+  schema: PropTypes.object,
+  formData: PropTypes.object,
+  value: PropTypes.string,
+  options: PropTypes.object,
+  onBlur: PropTypes.func,
+  formDataChange: PropTypes.func,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func
+};
 
 export default connect(
   mapStateToProps,
