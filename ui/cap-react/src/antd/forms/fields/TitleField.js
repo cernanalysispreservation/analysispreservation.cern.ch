@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-
+import PropTypes from "prop-types";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
 import { Button, Row, Space } from "antd";
 
@@ -76,6 +76,18 @@ const TitleField = ({
       {labelChildren}
     </label>
   );
+};
+
+TitleField.propTypes = {
+  formContext: PropTypes.object,
+  id: PropTypes.string,
+  prefixCls: PropTypes.string,
+  required: PropTypes.bool,
+  title: PropTypes.string,
+  uiImport: PropTypes.bool,
+  uiLatex: PropTypes.bool,
+  enableLatex: PropTypes.func,
+  enableImport: PropTypes.func
 };
 
 TitleField.defaultProps = {

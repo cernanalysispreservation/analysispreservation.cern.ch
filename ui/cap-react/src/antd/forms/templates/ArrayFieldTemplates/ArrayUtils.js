@@ -3,6 +3,7 @@ import { Button, Col } from "antd";
 import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
 import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import PropTypes from "prop-types";
 
 const BTN_GRP_STYLE = {
   width: "100%"
@@ -60,6 +61,15 @@ const ArrayUtils = ({
   );
 };
 
-ArrayUtils.propTypes = {};
+ArrayUtils.propTypes = {
+  hasMoveDown: PropTypes.bool,
+  hasMoveUp: PropTypes.bool,
+  disabled: PropTypes.bool,
+  readonly: PropTypes.bool,
+  hasRemove: PropTypes.bool,
+  onReorderClick: PropTypes.func,
+  onDropIndexClick: PropTypes.func,
+  index: PropTypes.string
+};
 
 export default ArrayUtils;
