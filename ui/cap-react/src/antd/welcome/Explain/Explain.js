@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Typography, Divider, Space } from "antd";
+import { Row, Col, Typography, Space, Card } from "antd";
 
 const Explain = () => {
   const explainBoxes = [
@@ -75,45 +75,26 @@ const Explain = () => {
     }
   ];
   return (
-    <Row
-      justify="center"
-      style={{ textAlign: "center", minHeight: "60vh" }}
-      id="explain"
-    >
-      <Space direction="vertical" size="large">
-        <Col span={24}>
-          <Typography.Title level={1}>Start Preserving</Typography.Title>
+    <Row gutter={[32, 32]} align="center">
+      {explainBoxes.map(item => (
+        <Col key={item.title} xs={22} md={12} lg={8} xxl={6}>
+          <Card
+            style={{
+              height: "100%"
+            }}
+            title={item.title}
+          >
+            <Space direction="vertical">
+              {item.data.map(box => (
+                <React.Fragment key={box.title}>
+                  <Typography.Title level={5}>{box.title}</Typography.Title>
+                  <Typography.Paragraph>{box.description}</Typography.Paragraph>
+                </React.Fragment>
+              ))}
+            </Space>
+          </Card>
         </Col>
-        <Row gutter={6}>
-          {explainBoxes.map(item => (
-            <Col
-              key={item.title}
-              lg={{ span: 4, offset: 3 }}
-              md={{ span: 8 }}
-              xs={{ span: 16, offset: 4 }}
-              sm={{ span: 18, offset: 3 }}
-              style={{
-                background: "white",
-                textAlign: "center",
-                padding: "25px 10px"
-              }}
-            >
-              <Typography.Title level={3}>{item.title}</Typography.Title>
-              <Divider />
-              <Space direction="vertical">
-                {item.data.map(box => (
-                  <React.Fragment key={box.title}>
-                    <Typography.Title level={5}>{box.title}</Typography.Title>
-                    <Typography.Paragraph>
-                      {box.description}
-                    </Typography.Paragraph>
-                  </React.Fragment>
-                ))}
-              </Space>
-            </Col>
-          ))}
-        </Row>
-      </Space>
+      ))}
     </Row>
   );
 };

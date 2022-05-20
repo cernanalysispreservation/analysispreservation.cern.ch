@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Space, Typography, Button } from "antd";
+import { Row, Col, Space, Typography, Button, Layout } from "antd";
 import {
   MailOutlined,
   TwitterOutlined,
@@ -13,9 +13,12 @@ import LHCbLogo from "../img/lhcb-logo.svg";
 
 const Contact = () => {
   return (
-    <Row justify="center">
+    <Row
+      justify="space-between"
+      style={{ marginTop: "20px", background: "#001529" }}
+    >
       <Col xs={6}>
-        <Space direction="vertical">
+        <Space direction="vertical" size={0}>
           <Button
             type="link"
             href="mailto:analysis-preservation-support@cern.ch"

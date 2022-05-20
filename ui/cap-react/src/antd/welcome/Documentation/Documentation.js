@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Typography, Button, Space } from "antd";
+import { Row, Col, Typography, Button, Space, Card } from "antd";
 import {
   WalletOutlined,
   CodeOutlined,
@@ -43,40 +43,18 @@ const Documentation = () => {
     }
   ];
   return (
-    <Row
-      justify="center"
-      style={{ textAlign: "center", minHeight: "50vh" }}
-      align="middle"
-      id="documentation"
-    >
-      <Space direction="vertical" size="large">
-        <Col span={24}>
-          <Typography.Title level={1}>Documentation</Typography.Title>
+    <Row id="documentation" gutter={[32, 32]} justify="space-around">
+      {boxes.map(item => (
+        <Col key={item.title} xs={22} md={12} xl={8}>
+          <Card
+            title={item.title}
+            extra={[item.button]}
+            style={{ height: "100%" }}
+          >
+            <Typography.Paragraph>{item.description}</Typography.Paragraph>
+          </Card>
         </Col>
-        <Row gutter={6}>
-          {boxes.map(item => (
-            <Col
-              key={item.title}
-              lg={{ span: 4, offset: 3 }}
-              md={{ span: 8 }}
-              xs={{ span: 16, offset: 4 }}
-              sm={{ span: 18, offset: 3 }}
-              style={{
-                background: "white",
-                textAlign: "center",
-                padding: "25px 10px"
-              }}
-            >
-              <Space direction="vertical" size="large">
-                {item.icon}
-                <Typography.Title level={3}>{item.title}</Typography.Title>
-                <Typography.Text level={3}>{item.description}</Typography.Text>
-                {item.button}
-              </Space>
-            </Col>
-          ))}
-        </Row>
-      </Space>
+      ))}
     </Row>
   );
 };

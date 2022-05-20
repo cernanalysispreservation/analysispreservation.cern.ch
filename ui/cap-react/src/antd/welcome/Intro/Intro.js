@@ -1,6 +1,6 @@
 import React from "react";
 import HomeImage from "../img/home-image.svg";
-import { Row, Col, Typography, Space } from "antd";
+import { Row, Col, Typography, Space, Card } from "antd";
 import {
   DatabaseOutlined,
   TeamOutlined,
@@ -13,13 +13,13 @@ const Intro = () => {
       title: "Capture",
       icon: <DatabaseOutlined style={{ fontSize: "2em" }} />,
       description:
-        "Collect and preserve elements needed to understand and rerun your analysis"
+        "Preserve elements needed to understand and rerun your analysis"
     },
     {
       title: "Collaborate",
       icon: <TeamOutlined style={{ fontSize: "2em" }} />,
       description:
-        "Share your analysis and components with other users, your collaboration or group"
+        "Share your analysis with other users, your collaboration or group"
     },
     {
       title: "Reuse",
@@ -29,35 +29,42 @@ const Intro = () => {
     }
   ];
   return (
-    <Row justify="center" align="middle" style={{ height: "90vh" }} id="home">
-      <Col xs={10} md={8} lg={6}>
-        <Typography.Title level={2}>
-          CERN <br />Analysis Preservation
-        </Typography.Title>
-        <Typography.Text>
-          capture, preserve and reuse physics analyses
-        </Typography.Text>
-      </Col>
-      <Col xs={18} md={10} lg={8}>
-        <HomeImage />
-      </Col>
-      <Row>
+    <Space direction="vertical" style={{ width: "100%" }}>
+      <Row
+        justify="center"
+        align="middle"
+        id="home"
+        style={{ minHeight: "40vh" }}
+      >
+        <Space>
+          <HomeImage />
+          <Space direction="vertical" size={0}>
+            <Typography.Title level={1}>
+              CERN Analysis Preservation
+            </Typography.Title>
+            <Typography.Text italic>
+              capture, preserve and reuse physics analyses
+            </Typography.Text>
+          </Space>
+        </Space>
+      </Row>
+      <Row justify="center" gutter={[32, 32]} style={{ minHeight: "30vh" }}>
         {boxes.map(item => (
-          <Col
-            span={4}
-            offset={3}
-            key={item.title}
-            style={{ textAlign: "center" }}
-          >
+          <Col key={item.title} style={{ textAlign: "center" }}>
             <Space direction="vertical" size="middle">
-              <Typography.Title level={3}>{item.title}</Typography.Title>
-              {item.icon}
-              <Typography.Paragraph>{item.description}</Typography.Paragraph>
+              <Card title={item.title}>
+                <Space direction="vertical" size="large">
+                  {item.icon}
+                  <Typography.Paragraph>
+                    {item.description}
+                  </Typography.Paragraph>
+                </Space>
+              </Card>
             </Space>
           </Col>
         ))}
       </Row>
-    </Row>
+    </Space>
   );
 };
 
