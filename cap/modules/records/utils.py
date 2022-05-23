@@ -39,7 +39,7 @@ def generate_recid(data):
     """CAP Pid generator."""
     while True:
         schema = resolve_schema_by_url(data.get('$schema'))
-        if schema.config.get('auto_increment'):
+        if schema and schema.config.get('auto_increment_id'):
             pid_value = data['_deposit']['id']
         else:
             experiment = data.get('_experiment')

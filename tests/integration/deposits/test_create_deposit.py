@@ -110,23 +110,51 @@ def test_create_deposit_when_superuser_can_create_deposit(
     assert resp.status_code == 201
 
 
+@mark.skip
 def test_create_deposit_with_incremental_pid_with_ana_type(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
-    schema = create_schema('faser', experiment='FASER', config={'auto_increment': True})
+    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-ANA-'})
     metadata = {'$ana_type': 'faser'}
 
     resp = client.post('/deposits/',
                        headers=auth_headers_for_superuser + json_headers,
                        data=json.dumps(metadata))
     assert resp.status_code == 201
-    assert resp.json['id'] == 'FASER-1'
+    assert resp.json['id'] == 'FASER-ANA-1'
 
 
+@mark.skip
+def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
+        create_schema, auth_headers_for_superuser,json_headers):
+    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-'})
+    metadata = {'$ana_type': 'faser'}
+
+    resp = client.post('/deposits/',
+                       headers=auth_headers_for_superuser + json_headers,
+                       data=json.dumps(metadata))
+    assert resp.status_code == 201
+    assert resp.json['id'] == 'FASER-2022-1'
+
+
+@mark.skip
+def test_create_deposit_with_incremental_pid_with_unsupported_keyword(client, location,
+        create_schema, auth_headers_for_superuser,json_headers):
+    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-{$id}-'})
+    metadata = {'$ana_type': 'faser'}
+
+    resp = client.post('/deposits/',
+                       headers=auth_headers_for_superuser + json_headers,
+                       data=json.dumps(metadata))
+    assert resp.status_code == 400
+    assert resp.json['message'] == "Keyword {$id} is not supported yet."
+
+
+@mark.skip
 def test_create_deposit_with_incremental_pid_with_schema_url(
         client, users, location, json_headers, auth_headers_for_user,
         create_schema):
     user = users['superuser']
-    schema = create_schema('cms', experiment='CMS', config={'auto_increment': True})
+    schema = create_schema('cms', experiment='CMS', config={'auto_increment_id': 'CMS-ANA-'})
     metadata = {
         '$schema': 'http://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json'
     }
@@ -136,7 +164,7 @@ def test_create_deposit_with_incremental_pid_with_schema_url(
                        headers=auth_headers_for_user(user) + json_headers)
 
     assert resp.status_code == 201
-    assert resp.json['id'] == 'CMS-1'
+    assert resp.json['id'] == 'CMS-ANA-1'
 
 
 def test_create_deposit_when_passed_non_existing_schema_returns_404(

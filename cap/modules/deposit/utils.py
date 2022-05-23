@@ -22,10 +22,10 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Deposit utils."""
-
-from __future__ import absolute_import, print_function
-
-from flask import jsonify
+from copy import deepcopy
+from datetime import date
+import re
+from flask import abort
 
 from invenio_access.models import Role
 from invenio_db import db
@@ -98,19 +98,39 @@ def prepare_record(sender, json=None, record=None,
     json["_collection"] = collection
 
 
-def generate_auto_incremental_pid(experiment):
+def get_auto_incremental_pid_pattern(auto_increment_id):
+    ALLOWED_KEYWORDS = {
+        '{$year}': str(date.today().year)
+    }
+
+    pid_pattern = deepcopy(auto_increment_id)
+
+    # Find the {$keyword} from the auto_increment_id
+    keywords = re.findall(r'\{\$\w+\}', auto_increment_id)
+    for _k in keywords:
+        if _k in ALLOWED_KEYWORDS:
+            # replace the dynamic variable with the dynamic value
+            # currently replacing only the first occurence of the keyword
+            pid_pattern = pid_pattern.replace(_k, ALLOWED_KEYWORDS.get(_k), 1)
+        else:
+            return abort(400, 'Keyword {} is not supported yet.'.format(_k))
+
+    return pid_pattern
+
+
+def generate_auto_incremental_pid(auto_increment_id):
     """Method to generate auto-increment PID for records/deposits."""
-    try:
-        previous_deposit_id = 0
-        previous_deposit = PersistentIdentifier.query.filter(
-            PersistentIdentifier.pid_value.contains(experiment),
-            PersistentIdentifier.pid_type == 'depid'
-        ).order_by(PersistentIdentifier.id.desc()).first()
-        if previous_deposit:
-            previous_deposit_id = int(previous_deposit.pid_value.split('-')[-1])
-        return '{}-{}'.format(experiment, previous_deposit_id+1)
-    except Exception as e:
-        return jsonify({
-            'message': 'An error {} occured while minting '
-            'the pid for analysis.'.format(e)
-        }), 500
+    previous_deposit_id = 0
+    # create a regexp pattern and then match to find the last draft id
+    pid_pattern = get_auto_incremental_pid_pattern(auto_increment_id)
+    regexp_pattern = r'^{}\d$'.format(pid_pattern)
+
+    previous_deposit = PersistentIdentifier.query.filter(
+        PersistentIdentifier.pid_value.op('~')(regexp_pattern),
+        PersistentIdentifier.pid_type == 'depid'
+    ).order_by(PersistentIdentifier.id.desc()).first()
+
+    if previous_deposit:
+        previous_deposit_id = int(previous_deposit.pid_value.split('-')[-1])
+
+    return '{}{}'.format(pid_pattern, previous_deposit_id+1)
