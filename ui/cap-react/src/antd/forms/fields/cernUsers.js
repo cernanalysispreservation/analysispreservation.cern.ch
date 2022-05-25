@@ -16,6 +16,35 @@ import axios from "axios";
 import _debounce from "lodash/debounce";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 
+// Example 'cernUsers' field uiSchema
+// 
+// 
+// "analysis_contacts": {
+//   "ui:array": "StringArrayField",
+//   "ui:options": {
+//     "email": true
+//   },
+//   "items": {
+//     "ui:field": "cernUsers",
+//     "ui:options": {
+//       "autoOpenModal": true,
+//       "searchType": ["user", "egroup"]
+//     }
+//   }
+// },
+// "people_involved": {
+//   "ui:array": "StringArrayField",
+//   "ui:options": {
+//     "email": true
+//   },
+//   "items": {
+//     "ui:field": "cernUsers",
+//     "ui:options": {
+//       "autoOpenModal": true
+//     }
+//   }
+// }
+
 const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
   const autoOpenModal =
     uiSchema["ui:options"] && uiSchema["ui:options"].autoOpenModal;
