@@ -10,12 +10,12 @@ const TitleField = ({
   prefixCls,
   required,
   title,
+  uiEmail,
   uiImport,
   uiLatex,
-  enableLatex,
+  enableEmail,
   enableImport,
-  uiEmailCernUsers,
-  sendEmailToCernUsers
+  enableLatex
 }) => {
   const { colon = true } = formContext;
 
@@ -42,7 +42,7 @@ const TitleField = ({
 
   if (!title) return null;
 
-  if (uiImport || uiLatex || uiEmailCernUsers) {
+  if (uiImport || uiLatex || uiEmail) {
     return (
       <Row justify="space-between">
         <label
@@ -64,9 +64,9 @@ const TitleField = ({
               Export LaTeX
             </Button>
           )}
-          {uiEmailCernUsers && (
-            <Button type="link" onClick={sendEmailToCernUsers}>
-              Email users
+          {uiEmail && (
+            <Button type="link" onClick={enableEmail}>
+              Send Email
             </Button>
           )}
         </Space>
