@@ -45,10 +45,10 @@ const NormalArrayFieldTemplate = ({
   const { labelAlign = "right", rowGutter = 24 } = formContext;
   const [latexData, setLatexData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [emailCernUsersModal, setEmailCernUsersModal] = useState(false);
+  const [emailModal, setEmailModal] = useState(false);
   const [selectedEmailList, setSelectedEmailList] = useState(
-    uiSchema["ui:options"] && uiSchema["ui:options"].emailCernUsers
-      ? formData.map(user => user[uiSchema["ui:options"].emailCernUsers])
+    uiSchema["ui:options"] && uiSchema["ui:options"].email
+      ? formData.map(user => user[uiSchema["ui:options"].email])
       : []
   );
   const [copy, setCopy] = useState(false);
@@ -61,12 +61,12 @@ const NormalArrayFieldTemplate = ({
   );
   let uiImport = null;
   let uiLatex = null;
-  let uiEmailCernUsers = null;
+  let uiEmail = null;
 
   if (uiSchema["ui:options"]) {
     uiImport = uiSchema["ui:options"].import;
     uiLatex = uiSchema["ui:options"].latex;
-    uiEmailCernUsers = uiSchema["ui:options"].emailCernUsers;
+    uiEmail = uiSchema["ui:options"].email;
   }
 
   let typeOfArrayToDisplay = "default";
@@ -150,10 +150,10 @@ const NormalArrayFieldTemplate = ({
 
   useEffect(
     () => {
-      if (emailCernUsersModal && formData.length != selectedEmailList.length)
+      if (emailModal && formData.length != selectedEmailList.length)
         setSelectedEmailList(formData.map(user => user.email));
     },
-    [emailCernUsersModal]
+    [emailModal]
   );
 
   return (
@@ -211,12 +211,12 @@ const NormalArrayFieldTemplate = ({
           onCancel={() => setImportModal(false)}
         />
       )}
-      {uiEmailCernUsers &&
+      {uiEmail &&
         formData && (
           <Modal
-            visible={emailCernUsersModal}
-            onCancel={() => setEmailCernUsersModal(false)}
-            title="Email Cern users"
+            visible={emailModal}
+            onCancel={() => setEmailModal(false)}
+            title="Select user & egroups emails to send"
             okText="Send Email"
             okType="link"
             okButtonProps={{
@@ -229,7 +229,7 @@ const NormalArrayFieldTemplate = ({
                 onChange={() => updateEmailSelectedListAll()}
                 checked={formData.length === selectedEmailList.length}
               >
-                Select All Users
+                Select all
               </Checkbox>
               <Table
                 dataSource={formData}
@@ -276,10 +276,10 @@ const NormalArrayFieldTemplate = ({
               title={uiSchema["ui:title"] || title}
               uiImport={uiImport}
               uiLatex={uiLatex}
-              uiEmailCernUsers={uiEmailCernUsers}
+              uiEmail={uiEmail}
               enableLatex={() => _enableLatex()}
               enableImport={() => setImportModal(true)}
-              sendEmailToCernUsers={() => setEmailCernUsersModal(true)}
+              enableEmail={() => setEmailModal(true)}
             />
           </Col>
         )}
