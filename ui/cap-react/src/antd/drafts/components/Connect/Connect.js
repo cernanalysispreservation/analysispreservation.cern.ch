@@ -204,7 +204,7 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
               ))}
             </Collapse>
           ) : (
-            <Empty description="No connected repositories" />
+            <Empty description="No connected  repositories" />
           )}
         </Card>
       </Space>

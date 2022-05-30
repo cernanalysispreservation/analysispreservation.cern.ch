@@ -4,7 +4,7 @@ on:
   push:
     branches: uitest
   pull_request:
-    branches: master
+    branches: [master,ant]
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"
@@ -23,8 +23,8 @@ jobs:
       - name: Create DB
         run: docker-compose -f docker-compose.e2e.yml -f docker-compose.e2e-override-server.yml run web-api sh scripts/clean-and-init.sh
 
-      - name: Sleep for 180 seconds
-        run: sleep 180s
+      - name: Sleep for 250 seconds
+        run: sleep 250s
         shell: bash
 
       - name: Run Cypress
