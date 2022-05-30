@@ -9,7 +9,7 @@ version: "2.3"
 services:
   nginx:
     restart: "always"
-    image: gitlab-registry.cern.ch/analysispreservation/nginx-ui:master-e2e
+    image: gitlab-registry.cern.ch/analysispreservation/nginx-ui:ant-e2e
     ports:
       - "80:80"
       - "443:443"
