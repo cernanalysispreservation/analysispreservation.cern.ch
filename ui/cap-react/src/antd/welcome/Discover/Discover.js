@@ -3,37 +3,57 @@ import { Typography, Row, Col, Space } from "antd";
 
 const Discover = () => {
   return (
-    <Space direction="vertical" size={"large"} style={{ minHeight: "20vh" }}>
-      <Typography.Title style={{ textAlign: "center" }}>
-        Discover
-      </Typography.Title>
-      <Row
-        justify="center"
-        align="middle"
-        style={{ textAlign: "center" }}
-        id="discover"
-      >
-        <Col xs={24} sm={18} md={16} lg={14} xl={12}>
-          <Space direction="vertical" size="large">
-            <Typography.Paragraph italic>
-              CERN Analysis Preservation (CAP) is a service for researchers to
-              preserve and document the various components of their physics
-              analyses, e.g. datasets, software, documentation, so that they are
-              reusable and understandable in the future. By using this tool,
-              researchers ensure these outputs are preserved, findable and
-              accessible by their collaborators for the long-term.
-            </Typography.Paragraph>
-            <Typography.Paragraph italic>
-              CAP uses existing collaboration tools and a flexible data model,
-              and it is designed to be easily integrated into researchers'
-              workflows. CAP provides standard collaboration access restrictions
-              so that the individual users and collaborations are in full
-              control of sharing their results.
-            </Typography.Paragraph>
-          </Space>
-        </Col>
-      </Row>
-    </Space>
+    <Col
+      xs={24}
+      style={{
+        minHeight: "20vh",
+        background: "rgb(40,104,146)",
+        padding: "1rem",
+        margin: "2rem 0"
+      }}
+    >
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <Typography.Title
+          style={{ textAlign: "center", fontSize: "3rem", color: "#fff" }}
+          italic
+        >
+          Discover
+        </Typography.Title>
+        <Row
+          justify="center"
+          align="middle"
+          style={{ textAlign: "center" }}
+          id="discover"
+        >
+          <Col
+            xs={22}
+            lg={18}
+            xl={10}
+            xxl={8}
+            style={{ fontSize: "1.2rem", lineHeight: 1.5 }}
+          >
+            <Space direction="vertical" size="large">
+              <Typography.Paragraph italic style={{ color: "#fff" }}>
+                CERN Analysis Preservation (CAP) is a service for researchers to
+                preserve and document the various components of their physics
+                analyses, e.g. datasets, software, documentation, so that they
+                are reusable and understandable in the future. By using this
+                tool, researchers ensure these outputs are preserved, findable
+                and accessible by their collaborators for the long-term.
+              </Typography.Paragraph>
+
+              <Typography.Paragraph italic style={{ color: "#fff" }}>
+                CAP uses existing collaboration tools and a flexible data model,
+                and it is designed to be easily integrated into researchers'
+                workflows. CAP provides standard collaboration access
+                restrictions so that the individual users and collaborations are
+                in full control of sharing their results.
+              </Typography.Paragraph>
+            </Space>
+          </Col>
+        </Row>
+      </Space>
+    </Col>
   );
 };
 

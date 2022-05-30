@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Typography, Space, Card } from "antd";
+import { Row, Col, Typography, Space, Card, Tag, Divider } from "antd";
 
 const Explain = () => {
   const explainBoxes = [
@@ -75,27 +75,49 @@ const Explain = () => {
     }
   ];
   return (
-    <Row gutter={[32, 32]} align="center">
-      {explainBoxes.map(item => (
-        <Col key={item.title} xs={22} md={12} lg={8} xxl={6}>
-          <Card
-            style={{
-              height: "100%"
-            }}
-            title={item.title}
-          >
-            <Space direction="vertical">
-              {item.data.map(box => (
-                <React.Fragment key={box.title}>
-                  <Typography.Title level={5}>{box.title}</Typography.Title>
-                  <Typography.Paragraph>{box.description}</Typography.Paragraph>
-                </React.Fragment>
-              ))}
-            </Space>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+    <Col xs={24} style={{ margin: "2rem 0" }}>
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <Typography.Title
+          style={{ textAlign: "center", fontSize: "3rem" }}
+          italic
+        >
+          Start Preserving
+        </Typography.Title>
+
+        <Row gutter={[64, 64]} align="center">
+          {explainBoxes.map(item => (
+            <Col key={item.title} xs={22} sm={18} lg={14} xl={10} xxl={5}>
+              <Card
+                style={{
+                  height: "100%"
+                }}
+                title={item.title}
+              >
+                <Space direction="vertical">
+                  {item.data.map((box, index) => (
+                    <Space
+                      direction="vertical"
+                      size="small"
+                      key={box.title}
+                      style={{
+                        width: "100%",
+                        padding: "0.2rem"
+                      }}
+                    >
+                      <Tag color="blue">{box.title}</Tag>
+                      <Typography.Paragraph style={{ fontSize: "1.1rem" }}>
+                        {box.description}
+                      </Typography.Paragraph>
+                      {index != item.data.length - 1 && <Divider />}
+                    </Space>
+                  ))}
+                </Space>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Space>
+    </Col>
   );
 };
 
