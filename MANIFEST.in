@@ -68,6 +68,7 @@ recursive-include ui *.ico
 recursive-include ui *.js
 recursive-include ui *.js_
 recursive-include ui *.json
+recursive-include ui *.less
 recursive-include ui *.lock
 recursive-include ui *.md
 recursive-include ui *.npmrc
