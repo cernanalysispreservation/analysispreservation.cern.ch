@@ -42,8 +42,9 @@ handle_test_result(){
 run_git_check(){
     GIT_ORIGIN=$1
     GIT_HEAD=$2
+    local exit_code
     RESULT=$(gitlint --commits "$GIT_ORIGIN".."$GIT_HEAD" 2>&1)
-    local exit_code=$?
+    exit_code=$?
     handle_test_result $exit_code "$RESULT"
     return $exit_code
 }

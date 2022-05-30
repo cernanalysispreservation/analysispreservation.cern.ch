@@ -58,11 +58,12 @@ cleanup() {
 # Clean up if script is interrupted or terminated.
 trap "cleanup" EXIT
 
+
 GIT_ORIGIN=$1
 GIT_HEAD=$2
 COMMIT_MESSAGES=$(git log --pretty=format:%B "$GIT_ORIGIN".."$GIT_HEAD" | grep -v 'Signed-off-by')
-
 ASPELL=$(which aspell)
+
 if [ $? -ne 0 ]; then
     echo "Aspell not installed - unable to check spelling. Installing now..." >&2
     sudo apt-get install aspell

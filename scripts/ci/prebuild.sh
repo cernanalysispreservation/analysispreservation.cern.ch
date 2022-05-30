@@ -56,6 +56,8 @@ else
 fi
 
 COMMIT_MESSAGES=$(git log --pretty=format:%B "$GIT_ORIGIN".."$GIT_HEAD")
+# exit when any command fails
+set -e
 
 echo
 echo "* Commit messages to be checked:"
