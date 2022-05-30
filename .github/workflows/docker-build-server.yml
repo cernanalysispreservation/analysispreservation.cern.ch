@@ -2,7 +2,7 @@ name: Build CAP server image
 
 on:
   push:
-    branches: master
+    branches: [master, ant]
     paths-ignore:
       - "ui/**"
 
