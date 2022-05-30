@@ -63,12 +63,7 @@ echo "--------------------------------"
 echo "$COMMIT_MESSAGES"
 echo "--------------------------------"
 
-# 1st step: commit message rules
-echo
-echo "* RUNNING: commit message rule checks..."
-sh ./scripts/ci/commit-msg-check.sh "$GIT_ORIGIN" "$GIT_HEAD"
-
-# 2nd step: check for typos
+# check for typos
 echo
 echo "* RUNNING: commit message spelling checks..."
 sh ./scripts/ci/commit-msg-spellcheck.sh "$GIT_ORIGIN" "$GIT_HEAD"

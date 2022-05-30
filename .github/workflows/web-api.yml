@@ -81,13 +81,16 @@ jobs:
         with:
           python-version: 3.6.9
 
-      - name: Checking commit quality (messages, signatures, spelling checks, etc)
+      - name: Checking commit quality (spelling checks, etc)
         env:
           GIT_ORIGIN: ${{ github.event.pull_request.base.sha }}
           GIT_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: sh ./scripts/ci/prebuild.sh
+
+      - name: Checking commit quality (messages, signatures, etc)
         run: |
-          sh ./scripts/ci/commit-msg-check.sh "$GIT_ORIGIN" "$GIT_HEAD"
-          sh ./scripts/ci/commit-msg-spellcheck.sh "$GIT_ORIGIN" "$GIT_HEAD"
+          pip install gitlint
+          gitlint --commits "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
 
   python-tests:
     runs-on: ubuntu-18.04
