@@ -2,7 +2,7 @@ name: E2E - server changes only
 
 on:
   pull_request:
-    branches: master
+    branches: [master, ant]
     paths-ignore:
       - 'ui/**'
 
