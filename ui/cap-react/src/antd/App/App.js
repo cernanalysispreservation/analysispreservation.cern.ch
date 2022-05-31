@@ -15,7 +15,7 @@ import Header from "../partials/Header";
 import Footer from "../partials/Footer";
 
 import DocumentTitle from "../partials/DocumentTitle";
-import { Layout } from "antd";
+import { Layout, Row, Spin } from "antd";
 
 import Loadable from "react-loadable";
 import { HOME, WELCOME, ABOUT, POLICY, CMS } from "../routes";
@@ -32,7 +32,15 @@ const App = ({ initCurrentUser, loadingInit, history }) => {
     initCurrentUser(history.location.state);
   }, []);
 
-  if (loadingInit) return <div>Loading....</div>;
+  if (loadingInit)
+    return (
+      <Layout className="__mainLayout__">
+        <Row style={{ height: "100%" }} align="middle" justify="center">
+          <Spin size="large" />
+        </Row>
+      </Layout>
+    );
+
   return (
     <DocumentTitle title="Dashboard">
       <Layout className="__mainLayout__">
