@@ -498,20 +498,16 @@ def test_deposit_publish_gives_acceess_to_members_of_exp(
     deposit = create_deposit(owner, 'test', {}, experiment='CMS', publish=True)
     _, record = deposit.fetch_published()
 
-    assert record['_access'] == {
-        'record-read': {
-            'users': [owner.id, users['cms_user'].id, users['cms_user2'].id],
-            'roles': [role.id]
-        },
-        'record-update': {
-            'users': [owner.id],
-            'roles': []
-        },
-        'record-admin': {
-            'users': [owner.id],
-            'roles': []
-        }
+    assert record['_access']['record-update'] == {
+        'users': [owner.id],
+        'roles': []
     }
+    assert record['_access']['record-admin'] == {
+        'users': [owner.id],
+        'roles': []
+    }
+    assert record['_access']['record-read']['roles'] == [role.id]
+    assert record['_access']['record-read']['users'].sort() == [owner.id, users['cms_user'].id, users['cms_user2'].id].sort()
 
     assert ActionUsers.query.filter_by(action='record-read',
                                        argument=str(record.id),

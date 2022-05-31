@@ -48,7 +48,7 @@ def test_disconnect_webhook_when_non_existing_subscriber_id_provided_returns_400
 
     resp = client.post(f'/deposits/{pid}/actions/disconnect_webhook',
                        headers=auth_headers_for_example_user + json_headers,
-                       data=json.dumps({'subscriber_id': 'non-existing-id'}))
+                       data=json.dumps({'subscriber_id': 10000}))
 
     assert resp.status_code == 400
 

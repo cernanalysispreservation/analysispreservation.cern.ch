@@ -119,7 +119,7 @@ def default_config():
                 CELERY_CACHE_BACKEND='memory',
                 CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
                 CELERY_RESULT_BACKEND='cache',
-                SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
+                SQLALCHEMY_DATABASE_URI='postgresql://cap:cap@localhost/cap-test',
                 JSONSCHEMAS_HOST='analysispreservation.cern.ch',
                 SERVER_NAME='analysispreservation.cern.ch',
                 ACCESS_CACHE=None,
