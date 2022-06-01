@@ -72,10 +72,10 @@ services:
     tty: true
   # API Files Application
   cap-client:
-    build:
-      context: https://github.com/cernanalysispreservation/cap-client.git
-      dockerfile: Dockerfile
-    image: cap-client
+    # build:
+    #   context: https://github.com/cernanalysispreservation/cap-client.git
+    #   dockerfile: Dockerfile
+    image: gitlab-registry.cern.ch/analysispreservation/cap-client
     environment:
       - "CAP_SERVER_URL=https://nginx"
     links:

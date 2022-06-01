@@ -13,6 +13,7 @@ services:
       service: app-image
     volumes:
       - ./docker/uwsgi:/opt/cap/var/instance
+      - ./cap:/opt/invenio/src/cap
     links:
       - cache
       - es
@@ -25,8 +26,11 @@ services:
       service: app-image
     volumes:
       - ./docker/uwsgi:/opt/cap/var/instance
+      - ./cap:/opt/invenio/src/cap
   # Worker
   worker:
     extends:
       file: docker-services.yml
       service: app-image
+    volumes:
+      - ./cap:/opt/invenio/src/cap

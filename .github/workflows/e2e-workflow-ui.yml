@@ -1,5 +1,4 @@
-name: E2E - UI changes only
-
+name: E2E - Code Changes without new installations (UI & Server)
 on:
   push:
     branches: uitest
@@ -8,7 +7,7 @@ on:
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"
-
+      - "cap/**"
 jobs:
   UI-Change:
     name: UI

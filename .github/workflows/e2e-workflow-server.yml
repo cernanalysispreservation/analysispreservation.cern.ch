@@ -1,10 +1,14 @@
-name: E2E - server changes only
+name: E2E - Server changes with python package installations
 
 on:
   pull_request:
-    branches: master
-    paths-ignore:
-      - 'ui/**'
+    branches: [master, ant]
+    paths:
+      - "setup.py"
+      - "requirements.txt"
+      - "requirements-local-forks.txt"
+      - "Dockerfile"
+      - "docker-*.yml"
 
 jobs:
   Server-Change:
