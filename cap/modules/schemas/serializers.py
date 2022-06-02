@@ -94,6 +94,20 @@ class SchemaSerializer(Schema):
         return links
 
 
+class PatchedSchemaSerializer(Schema):
+    """Schema serializer for patching jsonschemas."""
+
+    fullname = fields.Str()
+    use_deposit_as_record = fields.Boolean(default=False)
+    config = fields.Dict()
+
+    deposit_options = fields.Dict()
+    deposit_mapping = fields.Dict()
+
+    record_options = fields.Dict()
+    record_mapping = fields.Dict()
+
+
 class ResolvedSchemaSerializer(SchemaSerializer):
     """Schema serializer with resolved jsonschemas."""
 
@@ -184,6 +198,7 @@ class LinkSerializer(Schema):
 
 
 schema_serializer = SchemaSerializer()
+patched_schema_serializer = PatchedSchemaSerializer()
 update_schema_serializer = UpdateSchemaSerializer()
 resolved_schemas_serializer = ResolvedSchemaSerializer()
 config_resolved_schemas_serializer = ConfigResolvedSchemaSerializer()

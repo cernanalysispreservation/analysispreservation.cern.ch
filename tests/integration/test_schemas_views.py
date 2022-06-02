@@ -1060,3 +1060,185 @@ def test_delete(client, db, auth_headers_for_user, users, json_headers):
     )
 
     assert resp.status_code == 404
+
+
+########################
+# api/jsonschemas/{id}/{version}  [PATCH]
+########################
+
+
+def test_patch_schema_when_user_not_logged_in_returns_401(
+        client, schema, users, json_headers):
+    resp = client.patch(
+        '/jsonschemas/{}/{}'.format(schema.name, schema.version),
+        headers=json_headers)
+
+    assert resp.status_code == 401
+
+
+def test_patch_when_no_superuser(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    cms_user = users['cms_user']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    patch_schema = [{ "op": "add", "path": "/config/reviewable", "value": True }]
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(cms_user),
+    )
+
+    assert resp.status_code == 403
+
+
+def test_patch(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    patch_schema = [{ "op": "add", "path": "/config/reviewable", "value": True }]
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {}
+
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {"reviewable": True}
+
+
+def test_patch_with_non_editable_field(client, db, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    patch_schema = [{ "op": "add", "path": "/name", "value": "cms-patch-schema" }]
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {}
+
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 400
+
+    patch_schema = [{"op": "add", "path": "name/", "value": "patch-cms-schema" }]
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+
+
+def test_patch_when_invalid_data_returns_400(
+        client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {}
+
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(''),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Invalid/No patch data provided.'
+
+
+def test_patch_when_invalid_operation(
+        client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {}
+
+    patch_schema = [{ "op": "copy", "path": "/config/reviewable", "value": True }]
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Invalid/No patch data provided.'
+
+    patch_schema = [
+        { "op": "copy", "path": "/config/reviewable", "value": True },
+        { "op": "add", "path": "/config/reviewable", "value": True }
+    ]
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {"reviewable": True}
+
+
+def test_patch_when_operation_undefined_returns_400(
+        client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {}
+
+    patch_schema = [{"path": "/config/reviewable", "value": True }]
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    assert 'Invalid/No patch data provided.' in resp.json['message']

@@ -25,6 +25,7 @@
 
 import re
 from itertools import groupby
+from jsonpatch import JsonPatchConflict
 
 from .models import Schema
 from .permissions import ReadSchemaPermission
@@ -104,3 +105,42 @@ def is_later_version(version1, version2):
                 return False
             elif patch1 == patch2:
                 return False
+
+
+def check_allowed_patch_operation(data):
+    """Return patch data after filtering in allowed operations."""
+    ALLOWED_OPERATIONS = ['add', 'remove', 'replace']
+    if not data:
+        return data
+    data = [operation for operation in data
+            if operation.get('op', '') in ALLOWED_OPERATIONS]
+    return data
+
+
+def check_allowed_patch_path(data):
+    """Raise JsonPatchConflict for patching non-editable fields."""
+    EDITABLE_FIELDS = [
+        'fullname',
+        'use_deposit_as_record',
+        'deposit_mapping',
+        'record_mapping',
+        'deposit_options',
+        'record_options',
+        'config'
+    ]
+
+    if not data:
+        return data
+
+    for operation in data:
+        _field = operation.get('path', '')
+        if re.match(r'^/', _field):
+            _field = _field.split('/')
+        else:
+            raise JsonPatchConflict
+        try:
+            if _field[1] not in EDITABLE_FIELDS:
+                raise JsonPatchConflict
+        except IndexError:
+            raise JsonPatchConflict
+    return data
