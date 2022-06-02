@@ -275,7 +275,8 @@ def test_get_deposit_with_default_serializer(client, users,
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id)
+            'version_id': str(file.version_id),
+            'mimetype': file.mimetype
         }],
         'is_owner': True,
         'links': {
@@ -978,7 +979,8 @@ def test_get_deposit_with_form_json_serializer(
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id)
+            'version_id': str(file.version_id),
+            'mimetype': file.mimetype
         }],
         'webhooks': [{
             'id': github_release_webhook.id,
