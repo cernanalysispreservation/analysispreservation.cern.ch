@@ -177,7 +177,8 @@ def test_get_records_default_serializer(
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id)
+            'version_id': str(file.version_id),
+            'mimetype': file.mimetype
         }],
        'is_owner': False,
         'links': {
@@ -343,7 +344,8 @@ def test_get_record_when_superuser_returns_record(client, db, users,
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id)
+            'version_id': str(file.version_id),
+            'mimetype': file.mimetype
         }],
        'is_owner': True,
         'links': {
@@ -440,7 +442,8 @@ def test_get_record_with_form_json_serializer(
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id)
+            'version_id': str(file.version_id),
+            'mimetype': file.mimetype
         }],
         'links': {
             'bucket': f'http://analysispreservation.cern.ch/api/files/{str(rec.files.bucket)}',
