@@ -24,6 +24,10 @@
 """Views for schemas."""
 
 from flask import Blueprint, abort, jsonify, request
+from jsonpatch import (apply_patch,
+                       JsonPatchException,
+                       JsonPointerException,
+                       JsonPatchConflict)
 from flask.views import MethodView
 from flask_login import current_user
 from invenio_db import db
@@ -39,7 +43,10 @@ from .permissions import AdminSchemaPermission, ReadSchemaPermission
 from .serializers import (create_config_payload,
                           update_schema_serializer,
                           link_serializer)
-from .utils import get_schemas_for_user
+from .utils import (
+    get_schemas_for_user,
+    check_allowed_patch_path,
+    check_allowed_patch_operation)
 
 
 blueprint = Blueprint(
@@ -169,6 +176,52 @@ class SchemaAPI(MethodView):
 
             return 'Schema deleted.', 204
 
+    @_admin_permission.require(http_exception=403)
+    def patch(self, name, version):
+        try:
+            schema = Schema.get(name, version)
+            serialized_schema = schema.patch_serialize()
+        except JSONSchemaNotFound:
+            return jsonify({
+                'message': 'Schema not found. Please try '
+                'again with existing schemas.'
+            }), 404
+
+        with AdminSchemaPermission(schema).require(403):
+            data = request.get_json()
+            data = check_allowed_patch_operation(data)
+            if not data:
+                return jsonify({
+                    'message': 'Invalid/No patch data provided.'
+                }), 400
+
+            try:
+                check_allowed_patch_path(data)
+                patched_schema = apply_patch(serialized_schema, data)
+            except (JsonPatchException, JsonPatchConflict, JsonPointerException):
+                return jsonify({
+                    'message': 'An error occured while '
+                    'applying the patch.'
+                }), 400
+
+            serialized_data, errors = update_schema_serializer.load(
+                patched_schema, partial=True)
+            if errors:
+                return jsonify({
+                    'message': 'An error {} occured while '
+                    'serializing the patched schema.'.format(errors)
+                }), 400
+
+            try:
+                schema.update(**serialized_data)
+                db.session.commit()
+            except IntegrityError:
+                return jsonify({
+                    'message': 'Error occured during saving schema in the db.'
+                }), 500
+
+            return jsonify(schema.config_serialize())
+
 
 schema_view_func = SchemaAPI.as_view('schemas')
 
@@ -185,4 +238,4 @@ blueprint.add_url_rule('/<string:name>',
                        ])
 blueprint.add_url_rule('/<string:name>/<string:version>',
                        view_func=schema_view_func,
-                       methods=['GET', 'PUT', 'DELETE'])
+                       methods=['GET', 'PUT', 'DELETE', 'PATCH'])

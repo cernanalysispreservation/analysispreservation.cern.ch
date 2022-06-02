@@ -44,7 +44,8 @@ from cap.types import json_type
 
 from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import (resolved_schemas_serializer, schema_serializer,
-                          config_resolved_schemas_serializer)
+                          config_resolved_schemas_serializer,
+                          patched_schema_serializer)
 
 ES_FORBIDDEN = r' ,"\<*>|?'
 
@@ -200,6 +201,10 @@ class Schema(db.Model):
     def config_serialize(self):
         """Serialize config schema model."""
         return config_resolved_schemas_serializer.dump(self).data
+
+    def patch_serialize(self):
+        """Serialize schema for patching schema."""
+        return patched_schema_serializer.dump(self).data
 
     def update(self, **kwargs):
         """Update schema instance."""
