@@ -88,7 +88,8 @@ def test_get_deposit_with_default_serializer(client, users,
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id)
+            'version_id': str(file.version_id),
+            'mimetype': file.mimetype
         }],
         'access': {
             'deposit-admin': {
@@ -188,7 +189,8 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id)
+            'version_id': str(file.version_id),
+            'mimetype': file.mimetype
         }],
         'is_owner': True,
         'links': {

@@ -25,6 +25,7 @@
 
 from flask_login import current_user
 from marshmallow import Schema, ValidationError, fields, validates_schema
+from invenio_files_rest.models import Bucket, ObjectVersion
 
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_remote_account_by_id  # noqa
@@ -114,7 +115,17 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         return False
 
     def get_files(self, obj):
-        return obj.get('metadata', {}).get('_files', [])
+        files_bucket_id = None
+        files = obj.get('metadata', {}).get('_files', [])
+        if files:
+            files_bucket_id = files[-1].get('bucket')
+            for file in files:
+                file_metadata = ObjectVersion.get(
+                    Bucket.get(files_bucket_id),
+                    file.get('key'),
+                    file.get('version_id'))
+                file.update({'mimetype': file_metadata.mimetype})
+        return files
 
     def get_schema(self, obj):
         schema = obj.get('metadata', {}).get('_collection')
