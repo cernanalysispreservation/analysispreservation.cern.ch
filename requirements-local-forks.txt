@@ -7,6 +7,7 @@ reana-commons==0.6.0
 -e git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@master#egg=invenio-oauthclient
 -e git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@master#egg=invenio-jsonschemas
 -e git+https://github.com/cernanalysispreservation/invenio-search.git@master#egg=invenio-search
+-e git+https://github.com/cernanalysispreservation/invenio-files-rest.git@fix-ensure-stream#egg=invenio-files-rest
 -e git+https://github.com/cernanalysispreservation/invenio-userprofiles.git#egg=invenio-userprofiles
 -e git+https://github.com/cernanalysispreservation/invenio-logging.git@v1.2.0-without-invenio-base-des#egg=invenio-logging[sentry,sentry-sdk]
 -e git+https://github.com/cernanalysispreservation/flask-celeryext.git@master#egg=flask-celeryext
