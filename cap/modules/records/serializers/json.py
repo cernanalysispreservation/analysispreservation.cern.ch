@@ -31,6 +31,7 @@ from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.serializers.json import JSONSerializer
 from invenio_pidstore.errors import PIDDoesNotExistError
 
+from cap.modules.records.api import CAPRecord
 from cap.modules.records.utils import url_to_api_url
 
 
@@ -90,4 +91,18 @@ class CAPJSONSerializer(JSONSerializer):
 class RecordSerializer(CAPJSONSerializer):
     """Serializer for records v1 in JSON."""
 
-    pass
+    def preprocess_record(self, pid, record, links_factory=None, **kwargs):
+        """Preprocess record serializing for to add bucket.
+
+        Preprocess record serializing for to add bucket for fetching
+        files later
+        """
+        result = super().preprocess_record(
+            pid, record, links_factory=links_factory)
+
+        # add bucket id for fetching files later
+        record.__class__ = CAPRecord
+        if record.files:
+            result['bucket'] = record.files.bucket
+
+        return result
