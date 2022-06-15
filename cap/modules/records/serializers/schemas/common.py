@@ -24,11 +24,14 @@
 """CAP Marshmallow Schemas."""
 
 from flask_login import current_user
+from flask import url_for
 from marshmallow import Schema, ValidationError, fields, validates_schema
-from invenio_files_rest.models import Bucket, ObjectVersion
+from invenio_files_rest.models import ObjectVersion
+from invenio_files_rest.serializer import ObjectVersionSchema
 
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_remote_account_by_id  # noqa
+from cap.modules.records.utils import url_to_api_url
 
 
 LABELS = {
@@ -84,6 +87,42 @@ class StrictKeysMixin(object):
                     )
 
 
+class CAPObjectVersionSchema(ObjectVersionSchema):
+    """Schema for ObjectVersions."""
+
+    bucket = fields.UUID(attribute='bucket_id', dump_only=True)
+
+    def dump_links(self, o):
+        """Dump links."""
+        params = {'versionId': o.version_id}
+        data = {
+            'self': url_to_api_url(url_for(
+                'invenio_files_rest.object_api',
+                bucket_id=o.bucket_id,
+                key=o.key,
+                _external=True,
+                **(params if not o.is_head or o.deleted else {})
+            )),
+            'version': url_to_api_url(url_for(
+                'invenio_files_rest.object_api',
+                bucket_id=o.bucket_id,
+                key=o.key,
+                _external=True,
+                **params
+            ))
+        }
+
+        if o.is_head and not o.deleted:
+            data.update({'uploads': url_to_api_url(url_for(
+                'invenio_files_rest.object_api',
+                bucket_id=o.bucket_id,
+                key=o.key,
+                _external=True
+            )) + '?uploads', })
+
+        return data
+
+
 class CommonRecordSchema(Schema, StrictKeysMixin):
     """Base record schema."""
 
@@ -115,17 +154,17 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         return False
 
     def get_files(self, obj):
-        files_bucket_id = None
-        files = obj.get('metadata', {}).get('_files', [])
-        if files:
-            files_bucket_id = files[-1].get('bucket')
-            for file in files:
-                file_metadata = ObjectVersion.get(
-                    Bucket.get(files_bucket_id),
-                    file.get('key'),
-                    file.get('version_id'))
-                file.update({'mimetype': file_metadata.mimetype})
-        return files
+        files_bucket_id = obj.get("bucket")
+        if files_bucket_id:
+            files = ObjectVersion.get_by_bucket(
+                files_bucket_id, versions=False).limit(1000).all()
+
+            res = CAPObjectVersionSchema().dump(files, many=True)
+            serialized_files = res.data.get('contents', [])
+
+            return serialized_files
+        else:
+            return obj.get("metadata", {}).get("_files", [])
 
     def get_schema(self, obj):
         schema = obj.get('metadata', {}).get('_collection')

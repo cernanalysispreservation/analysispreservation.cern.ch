@@ -177,8 +177,7 @@ def test_get_records_default_serializer(
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id),
-            'mimetype': file.mimetype
+            'version_id': str(file.version_id)
         }],
        'is_owner': False,
         'links': {
@@ -345,7 +344,18 @@ def test_get_record_when_superuser_returns_record(client, db, users,
             'key': file.key,
             'size': file.file.size,
             'version_id': str(file.version_id),
-            'mimetype': file.mimetype
+            'mimetype': file.mimetype,
+            'created': file.created.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'updated': file.updated.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'delete_marker': False,
+            'is_head': True,
+            'tags': {},
+            'links': {
+                'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt',
+                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?uploads',
+                'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?versionId={str(file.version_id)}'},
         }],
        'is_owner': True,
         'links': {
@@ -405,7 +415,8 @@ def test_get_record_with_form_json_serializer(
                              files={'readme': BytesIO(b'Hello!')},
                              publish=True)
     _, rec = deposit.fetch_published()
-    file = deposit.files['readme']
+    file = rec.files['readme']
+
     pid = deposit['control_number']
 
     headers = auth_headers_for_example_user + [('Accept', 'application/form+json')]
@@ -436,14 +447,24 @@ def test_get_record_with_form_json_serializer(
         'experiment': rec['_experiment'],
         'draft_id': rec['_deposit']['id'],
         'id': pid,
-        # TOFIX shouldnt be deposit.files but record.files here!
         'files': [{
-            'bucket': str(deposit.files.bucket),
+            'bucket': str(rec.files.bucket),
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
             'version_id': str(file.version_id),
-            'mimetype': file.mimetype
+            'mimetype': file.mimetype,
+            'created': file.created.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'updated': file.updated.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'delete_marker': False,
+            'is_head': True,
+            'tags': {},
+            'links': {
+                'self': f'http://analysispreservation.cern.ch/api/files/{str(rec.files.bucket)}/readme',
+                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(rec.files.bucket)}/readme?uploads',
+                'version': f'http://analysispreservation.cern.ch/api/files/{str(rec.files.bucket)}/readme?versionId={str(file.version_id)}'},
         }],
         'links': {
             'bucket': f'http://analysispreservation.cern.ch/api/files/{str(rec.files.bucket)}',
