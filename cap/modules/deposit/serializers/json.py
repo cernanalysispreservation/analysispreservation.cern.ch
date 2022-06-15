@@ -41,5 +41,10 @@ class DepositSerializer(CAPJSONSerializer):
         result = super().preprocess_record(
             pid, record, links_factory=deposit_links_factory)
 
-        result['deposit'] = CAPDeposit.get_record(pid.object_uuid)
+        deposit = CAPDeposit.get_record(pid.object_uuid)
+        result['deposit'] = deposit
+
+        # add bucket id for fetching files later
+        if deposit.files:
+            result['bucket'] = deposit.files.bucket
         return result

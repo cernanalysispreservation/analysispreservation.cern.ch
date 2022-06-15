@@ -26,6 +26,7 @@
 import json
 from invenio_search import current_search
 from pytest import mark
+from requests import delete
 from six import BytesIO
 
 from cap.modules.repos.models import GitSnapshot, GitWebhookSubscriber
@@ -275,8 +276,7 @@ def test_get_deposit_with_default_serializer(client, users,
             'checksum': file.file.checksum,
             'key': file.key,
             'size': file.file.size,
-            'version_id': str(file.version_id),
-            'mimetype': file.mimetype
+            'version_id': str(file.version_id)
         }],
         'is_owner': True,
         'links': {
@@ -980,7 +980,18 @@ def test_get_deposit_with_form_json_serializer(
             'key': file.key,
             'size': file.file.size,
             'version_id': str(file.version_id),
-            'mimetype': file.mimetype
+            'mimetype': file.mimetype,
+            'created': file.created.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'updated': file.updated.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'delete_marker': False,
+            'is_head': True,
+            'tags': {},
+            'links': {
+                'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme',
+                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme?uploads',
+                'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme?versionId={str(file.version_id)}'},
         }],
         'webhooks': [{
             'id': github_release_webhook.id,

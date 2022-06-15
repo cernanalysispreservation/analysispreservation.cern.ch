@@ -89,7 +89,18 @@ def test_get_deposit_with_default_serializer(client, users,
             'key': file.key,
             'size': file.file.size,
             'version_id': str(file.version_id),
-            'mimetype': file.mimetype
+            'mimetype': file.mimetype,
+            'created': file.created.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'updated': file.updated.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'delete_marker': False,
+            'is_head': True,
+            'tags': {},
+            'links': {
+                'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt',
+                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?uploads',
+                'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?versionId={str(file.version_id)}'},
         }],
         'access': {
             'deposit-admin': {
@@ -190,7 +201,18 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
             'key': file.key,
             'size': file.file.size,
             'version_id': str(file.version_id),
-            'mimetype': file.mimetype
+            'mimetype': file.mimetype,
+            'created': file.created.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'updated': file.updated.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'delete_marker': False,
+            'is_head': True,
+            'tags': {},
+            'links': {
+                'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt',
+                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?uploads',
+                'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?versionId={str(file.version_id)}'},
         }],
         'is_owner': True,
         'links': {
