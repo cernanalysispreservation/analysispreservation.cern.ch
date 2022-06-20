@@ -124,6 +124,37 @@ commits with a gpg key, verifying it was you who created this commit).
 In case of an error, gitlint will also run in CI, and the checks will fail if the rules are not followed,
 making sure that there is conformity in the commit messages.
 
+Pre Commit Checks
+-------------------------
+
+CAP is using `pre-commit` framework for managing and maintaining pre-commit git hooks.
+
+Currently, CAP supports the following pre-commit hooks:
+
+1. Python Code Formating
+
+   * Black
+   * isort
+   * flake8
+
+2. JavaScript Code Formating
+   
+   * Prettier
+
+3. Commit Message Formating
+   
+   * Gitlint
+   * Spell check
+
+Setup Instructions:
+
+1. Install pre-commit: `pip install pre-commit`
+2. Install the git hook script: `pre-commit install`
+3. Install different hook types: `pre-commit install --hook-type pre-commit --hook-type pre-push --hook-type commit-msg`
+
+`pre-commit` will now run on every commit. 
+
+
 Change Propagation
 ------------------
 
