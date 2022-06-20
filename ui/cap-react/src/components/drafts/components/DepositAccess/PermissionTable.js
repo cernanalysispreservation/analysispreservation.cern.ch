@@ -138,7 +138,7 @@ const PermissionTable = ({
                             department: item[1].email ? item[1].profile.department : "egroup",
                             name: item[1].email
                               ? item[1].profile.display_name
-                              : item[1].email ? item[1].email.split("@cern.ch")[0] : item[1].split("@cern.ch")[0] 
+                              : item[1].email ? item[1].email.split("@cern.ch")[0] : item[1].split("@cern.ch")[0]
                           })
                           : handlePermissions(
                               draft_id,
