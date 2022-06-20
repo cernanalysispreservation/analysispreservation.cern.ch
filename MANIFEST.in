@@ -30,6 +30,9 @@ include *.rst
 include *.sh
 include *.txt
 include *.yml
+include *.toml
+include *.yaml
+include *.json
 include COPYING
 include LICENSE
 include babel.ini
@@ -38,6 +41,7 @@ include Dockerfile
 include .dockerignore
 include .editorconfig
 include .gitlint
+include .prettierignore
 include .githooks/pre-commit
 include .githooks/pre-push
 include docker/haproxy/Dockerfile

@@ -1,0 +1,22 @@
+[tool.black]
+line-length = 88
+force-exclude = '''
+^/(
+    (
+      | cap\.egg-info
+      | cap\/alembic
+      | cap\/modules\/services\/test_responses
+    )/
+    | node_modules
+    | build
+    | docs
+    | ext_modules
+    | tests
+    | ui
+    | \*\.conf
+    | \.\*\/
+    | env
+    | \.git
+    | __pycache__
+)
+'''

@@ -1,5 +1,5 @@
 [flake8]
-max-line-length = 89
+max-line-length = 88
 
 # decent quote styles
 inline-quotes = single
@@ -22,7 +22,7 @@ extend-exclude =
     __pycache__
     cap/modules/services/test_responses/*.py
     cap/alembic/*.py
-    tests/
+    tests/*
 
 ignore =
     # allow omitting whitespace around arithmetic operators
