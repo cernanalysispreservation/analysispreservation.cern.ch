@@ -29,7 +29,7 @@ const DepositAccessModal = ({
     setLoading(true);
     axios.get(url).then(({ data }) => {
       let perm = {};
-      let c_perm= {}
+      let c_perm= {};
       data.map(item => {
         let objTarget = target === "user" ? item.email : item;
         perm[objTarget] = ["deposit-read"];
@@ -37,7 +37,7 @@ const DepositAccessModal = ({
       });
       setLoading(false);
       setPermissionsObj(perm);
-      setCernUsers(c_perm)
+      setCernUsers(c_perm);
     });
   }, 500);
 
@@ -109,7 +109,7 @@ const DepositAccessModal = ({
           ) : Object.keys(permissionsObj).length > 0 ? (
             <PermissionTable
               addPermissionsModal
-              permissionsObj={cernUsers}
+              permissionsObj={displayAsFormField ? cernUsers : permissionsObj}
               target={target}
               access={access}
               displayAsFormField={displayAsFormField}
