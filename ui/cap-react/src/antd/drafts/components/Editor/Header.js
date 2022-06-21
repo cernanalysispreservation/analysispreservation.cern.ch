@@ -162,7 +162,7 @@ const Header = ({
       }}
     >
       <Radio.Group
-        defaultValue="edit"
+        defaultValue={mode}
         buttonStyle="solid"
         onChange={e => updateMode(e.target.value)}
       >
