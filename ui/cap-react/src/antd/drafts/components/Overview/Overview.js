@@ -12,7 +12,7 @@ import {
   Typography
 } from "antd";
 import { transformSchema } from "../../utils/transformSchema";
-import JSONSchemaPreviewer from "../../../../components/drafts/form/JSONSchemaPreviewer";
+import JSONSchemaPreviewer from "../../../partials/JSONSchemaPreviewer";
 import {
   CodeOutlined,
   FolderOutlined,
@@ -22,7 +22,7 @@ import {
 import OverviewLoading from "./OverviewLoading";
 import DepositFilesList from "../../../partials/FileList";
 import { calculateCollaborators } from "../../utils/calculateCollaborators";
-import InfoArrayBox from "../../../../components/partials/InfoArrayBox";
+import InfoArrayBox from "../../../partials/infoArrayBox";
 import Reviews from "../../../partials/Reviews";
 
 const Overview = ({
@@ -88,7 +88,7 @@ const Overview = ({
       </Col>
     );
   return (
-    <Col xxl={16} lg={18} xs={22} sm={22}>
+    <Col xxl={16} lg={18} xs={22} sm={22} style={{ padding: "0 0 15px 0 " }}>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Row
           justify="space-around"
@@ -169,6 +169,7 @@ const Overview = ({
                   schema={transformSchema(schemas.schema)}
                   schemaType={mySchema}
                   uiSchema={schemas.uiSchema || {}}
+                  display="list"
                   onChange={() => {}}
                 >
                   <span />
