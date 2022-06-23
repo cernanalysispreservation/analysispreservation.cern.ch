@@ -7,30 +7,29 @@ multiline-quotes = single
 docstring-quotes = double
 avoid-escape = true
 
-extend-exclude =
+exclude =
     build
     dist
     docs
-    ext_modules
     cap.egg-info
-    node_modules
-    ui/
+    node_modules/*
+    ui/*
     *.conf
     .*/
-    env/
+    env/*
     .git
     __pycache__
     cap/modules/services/test_responses/*.py
     cap/alembic/*.py
-    tests/
+    tests/*
 
 ignore =
     # allow omitting whitespace around arithmetic operators
-    E226
+    E226,
     # don't require specific wrapping before/after binary operators
-    W503
-    W504
+    W503,
+    W504,
     # allow assigning lambdas (it's useful for single-line functions defined inside other functions)
-    E731
+    E731,
     # allow regexp and to ignore invalid escape sequence warning
-    W605
+    W605,
