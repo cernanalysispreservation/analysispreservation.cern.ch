@@ -8,19 +8,19 @@ docstring-quotes = double
 avoid-escape = true
 
 exclude =
-    build
-    dist
-    docs
-    cap.egg-info
-    node_modules/*
-    ui/*
-    *.conf
-    .*/
-    env/*
-    .git
-    __pycache__
-    cap/modules/services/test_responses/*.py
-    cap/alembic/*.py
+    build/*,
+    dist/*,
+    docs/*,
+    cap.egg-info,
+    node_modules/*,
+    ui/*,
+    *.conf,
+    .*/,
+    env/*,
+    .git,
+    __pycache__,
+    cap/modules/services/test_responses/*.py,
+    cap/alembic/*.py,
     tests/*
 
 ignore =
@@ -32,4 +32,4 @@ ignore =
     # allow assigning lambdas (it's useful for single-line functions defined inside other functions)
     E731,
     # allow regexp and to ignore invalid escape sequence warning
-    W605,
+    W605
