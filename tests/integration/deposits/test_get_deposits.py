@@ -43,10 +43,11 @@ def test_get_deposits_when_user_not_logged_in_returns_401(client, users):
 
 
 def test_get_deposits_when_superuser_returns_all_deposits(
-        client, users, auth_headers_for_superuser, create_deposit):
+    client, users, auth_headers_for_superuser, create_deposit
+):
     deposits = [
         create_deposit(users['cms_user'], 'cms'),
-        create_deposit(users['lhcb_user'], 'lhcb')
+        create_deposit(users['lhcb_user'], 'lhcb'),
     ]
 
     resp = client.get('/deposits/', headers=auth_headers_for_superuser)
@@ -56,13 +57,14 @@ def test_get_deposits_when_superuser_returns_all_deposits(
     assert len(hits) == 2
 
 
-def test_get_deposits_when_owner_returns_his_deposits(client, db, users,
-                                                      auth_headers_for_user,
-                                                      create_deposit):
+def test_get_deposits_when_owner_returns_his_deposits(
+    client, db, users, auth_headers_for_user, create_deposit
+):
     user = users['cms_user']
 
     user_deposits_ids = [
-        x['_deposit']['id'] for x in [
+        x['_deposit']['id']
+        for x in [
             create_deposit(user, 'cms'),
             create_deposit(user, 'cms'),
         ]
@@ -79,9 +81,9 @@ def test_get_deposits_when_owner_returns_his_deposits(client, db, users,
         assert hit['id'] in user_deposits_ids
 
 
-def test_get_deposits_doesnt_return_published_ones(client, db, users,
-                                                   auth_headers_for_user,
-                                                   create_deposit):
+def test_get_deposits_doesnt_return_published_ones(
+    client, db, users, auth_headers_for_user, create_deposit
+):
     user = users['cms_user']
 
     create_deposit(user, 'cms', publish=True)
@@ -99,7 +101,8 @@ def test_get_deposits_doesnt_return_published_ones(client, db, users,
 
 @mark.parametrize("action", [("deposit-read"), ("deposit-admin")])
 def test_get_deposits_returns_deposits_that_user_has_read_or_admin_access_to(
-        action, client, db, users, auth_headers_for_user, create_deposit):
+    action, client, db, users, auth_headers_for_user, create_deposit
+):
     user, other_user = users['cms_user'], users['lhcb_user']
 
     deposit = create_deposit(user, 'cms')
@@ -110,12 +113,9 @@ def test_get_deposits_returns_deposits_that_user_has_read_or_admin_access_to(
 
     assert len(hits) == 0
 
-    permissions = [{
-        'email': other_user.email,
-        'type': 'user',
-        'op': 'add',
-        'action': action
-    }]
+    permissions = [
+        {'email': other_user.email, 'type': 'user', 'op': 'add', 'action': action}
+    ]
 
     deposit.edit_permissions(permissions)
 
@@ -130,7 +130,8 @@ def test_get_deposits_returns_deposits_that_user_has_read_or_admin_access_to(
 
 @mark.parametrize("action", [("deposit-read"), ("deposit-admin")])
 def test_get_deposits_returns_deposits_that_users_egroups_have_read_or_admin_access_to(
-        action, client, db, users, auth_headers_for_user, create_deposit):
+    action, client, db, users, auth_headers_for_user, create_deposit
+):
     user, other_user = users['cms_user'], users['lhcb_user']
     add_role_to_user(users['lhcb_user'], 'some-egroup@cern.ch')
 
@@ -142,12 +143,14 @@ def test_get_deposits_returns_deposits_that_users_egroups_have_read_or_admin_acc
 
     assert len(hits) == 0
 
-    permissions = [{
-        'email': 'some-egroup@cern.ch',
-        'type': 'egroup',
-        'op': 'add',
-        'action': action
-    }]
+    permissions = [
+        {
+            'email': 'some-egroup@cern.ch',
+            'type': 'egroup',
+            'op': 'add',
+            'action': action,
+        }
+    ]
 
     deposit.edit_permissions(permissions)
 
@@ -161,21 +164,23 @@ def test_get_deposits_returns_deposits_that_users_egroups_have_read_or_admin_acc
 
 
 def test_get_deposits_with_basic_json_serializer_returns_serialized_deposit_properly(
-        client, users, auth_headers_for_user, create_deposit):
+    client, users, auth_headers_for_user, create_deposit
+):
     user = users['cms_user']
     deposit = create_deposit(
-        user, 'cms', {
+        user,
+        'cms',
+        {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json',
-            'basic_info': {
-                'analysis_number': 'dream_team',
-                'people_info': [{}]
-            }
-        })
+            'basic_info': {'analysis_number': 'dream_team', 'people_info': [{}]},
+        },
+    )
     metadata = deposit.get_record_metadata()
 
-    resp = client.get('/deposits/',
-                      headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_user(user))
+    resp = client.get(
+        '/deposits/',
+        headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
+    )
 
     hit = resp.json['hits']['hits'][0]
 
@@ -183,10 +188,7 @@ def test_get_deposits_with_basic_json_serializer_returns_serialized_deposit_prop
     assert hit == {
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
-            'basic_info': {
-                'people_info': [{}],
-                'analysis_number': 'dream_team'
-            }
+            'basic_info': {'people_info': [{}], 'analysis_number': 'dream_team'}
         },
         'pid': deposit['_deposit']['id'],
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
@@ -194,32 +196,32 @@ def test_get_deposits_with_basic_json_serializer_returns_serialized_deposit_prop
 
 
 def test_get_deposit_published_with_basic_json_serializer_returns_recid(
-        client, users, auth_headers_for_user, create_deposit):
+    client, users, auth_headers_for_user, create_deposit
+):
     user = users['cms_user']
     deposit = create_deposit(
-        user, 'cms', {
+        user,
+        'cms',
+        {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json',
-            'basic_info': {
-                'analysis_number': 'dream_team',
-                'people_info': [{}]
-            }
-        }, publish=True)
+            'basic_info': {'analysis_number': 'dream_team', 'people_info': [{}]},
+        },
+        publish=True,
+    )
 
     _, rec = deposit.fetch_published()
     metadata = deposit.get_record_metadata()
 
-    resp = client.get(f'/deposits/{deposit["_deposit"]["id"]}',
-                      headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_user(user))
+    resp = client.get(
+        f'/deposits/{deposit["_deposit"]["id"]}',
+        headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
+    )
 
     assert resp.status_code == 200
     assert resp.json == {
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
-            'basic_info': {
-                'people_info': [{}],
-                'analysis_number': 'dream_team'
-            }
+            'basic_info': {'people_info': [{}], 'analysis_number': 'dream_team'}
         },
         'pid': deposit['_deposit']['id'],
         'recid': deposit['_deposit']['pid']['value'],
@@ -227,114 +229,127 @@ def test_get_deposit_published_with_basic_json_serializer_returns_recid(
     }
 
 
-def test_get_deposit_with_default_serializer(client, users,
-                                             auth_headers_for_user,
-                                             create_deposit):
+def test_get_deposit_with_default_serializer(
+    client, users, auth_headers_for_user, create_deposit
+):
     owner = users['cms_user']
     deposit = create_deposit(
         owner,
-        'cms-analysis', {
+        'cms-analysis',
+        {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
             'basic_info': {
                 'analysis_number': 'dream_team',
-            }
+            },
         },
         files={'file_1.txt': BytesIO(b'Hello world!')},
-        experiment='CMS')
+        experiment='CMS',
+    )
 
     depid = deposit['_deposit']['id']
     metadata = deposit.get_record_metadata()
     file = deposit.files['file_1.txt']
 
-    resp = client.get('/deposits/',
-                      headers=[('Accept', 'application/json')] +
-                      auth_headers_for_user(owner))
+    resp = client.get(
+        '/deposits/',
+        headers=[('Accept', 'application/json')] + auth_headers_for_user(owner),
+    )
 
     assert resp.status_code == 200
-    assert resp.json['hits']['hits'] == [{
-        'id': depid,
-        'type': 'deposit',
-        'revision': 1,
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
-        'experiment': 'CMS',
-        'status': 'draft',
-        'created_by': {'email': owner.email, 'profile': {}},
-        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-        'metadata': {
-            'basic_info': {
-                'analysis_number': 'dream_team'
-            }
-        },
-        'labels': [],
-        'files': [{
-            'bucket': str(file.bucket),
-            'checksum': file.file.checksum,
-            'key': file.key,
-            'size': file.file.size,
-            'version_id': str(file.version_id)
-        }],
-        'is_owner': True,
-        'links': {
-            'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
-            format(deposit.files.bucket),
-            'clone': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
-            .format(depid),
-            'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
-            .format(depid),
-            'disconnect_webhook': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/disconnect_webhook'
-            .format(depid),
-            'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
-            .format(depid),
-            'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'
-            .format(depid),
-            'html': 'http://analysispreservation.cern.ch/drafts/{}'.format(
-                depid),
-            'permissions': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
-            .format(depid),
-            'publish': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
-            .format(depid),
-            'self': 'http://analysispreservation.cern.ch/api/deposits/{}'.
-            format(depid),
-            'upload': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
-            .format(depid)
+    assert resp.json['hits']['hits'] == [
+        {
+            'id': depid,
+            'type': 'deposit',
+            'revision': 1,
+            'schema': {'fullname': '', 'name': 'cms-analysis', 'version': '1.0.0'},
+            'experiment': 'CMS',
+            'status': 'draft',
+            'created_by': {'email': owner.email, 'profile': {}},
+            'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'metadata': {'basic_info': {'analysis_number': 'dream_team'}},
+            'labels': [],
+            'files': [
+                {
+                    'bucket': str(file.bucket),
+                    'checksum': file.file.checksum,
+                    'key': file.key,
+                    'size': file.file.size,
+                    'version_id': str(file.version_id),
+                }
+            ],
+            'is_owner': True,
+            'links': {
+                'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.format(
+                    deposit.files.bucket
+                ),
+                'clone': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'.format(
+                    depid
+                ),
+                'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'.format(
+                    depid
+                ),
+                'disconnect_webhook': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/disconnect_webhook'.format(
+                    depid
+                ),
+                'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'.format(
+                    depid
+                ),
+                'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'.format(
+                    depid
+                ),
+                'html': 'http://analysispreservation.cern.ch/drafts/{}'.format(depid),
+                'permissions': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'.format(
+                    depid
+                ),
+                'publish': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'.format(
+                    depid
+                ),
+                'self': 'http://analysispreservation.cern.ch/api/deposits/{}'.format(
+                    depid
+                ),
+                'upload': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'.format(
+                    depid
+                ),
+            },
         }
-    }]
+    ]
 
 
-def test_get_deposits_with_correct_search_links(client, users, auth_headers_for_user,
-                                                create_deposit):
+def test_get_deposits_with_correct_search_links(
+    client, users, auth_headers_for_user, create_deposit
+):
     owner = users['cms_user']
 
     for i in range(11):
         deposit = create_deposit(
             owner,
-            'cms-analysis', {
+            'cms-analysis',
+            {
                 '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
                 'basic_info': {
                     'analysis_number': 'dream_team',
-                }
+                },
             },
-            experiment='CMS')
+            experiment='CMS',
+        )
 
-    resp = client.get('/deposits/',
-                      headers=[('Accept', 'application/json')] +
-                      auth_headers_for_user(owner))
+    resp = client.get(
+        '/deposits/',
+        headers=[('Accept', 'application/json')] + auth_headers_for_user(owner),
+    )
 
     assert resp.status_code == 200
     assert resp.json['links'] == {
         'self': 'http://analysispreservation.cern.ch/api/deposits/?page=1&size=10',
-        'next': 'http://analysispreservation.cern.ch/api/deposits/?page=2&size=10'
+        'next': 'http://analysispreservation.cern.ch/api/deposits/?page=2&size=10',
     }
 
 
 @mark.skip
 def test_get_deposits_with_correct_search_links_in_debug_mode(
-         users, auth_headers_for_user, create_deposit, app):
+    users, auth_headers_for_user, create_deposit, app
+):
     owner = users['cms_user']
     app.config['DEBUG'] = True
 
@@ -346,102 +361,135 @@ def test_get_deposits_with_correct_search_links_in_debug_mode(
                     '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
                     'basic_info': {
                         'analysis_number': 'dream_team',
-                    }
+                    },
                 },
-                experiment='CMS'
+                experiment='CMS',
             )
 
-        resp = client.get('/deposits/',
-                          headers=[('Accept', 'application/json')] +
-                          auth_headers_for_user(owner))
+        resp = client.get(
+            '/deposits/',
+            headers=[('Accept', 'application/json')] + auth_headers_for_user(owner),
+        )
 
         assert resp.status_code == 200
         assert resp.json['links'] == {
             'self': 'http://analysispreservation.cern.ch/deposits/?page=1&size=10',
-            'next': 'http://analysispreservation.cern.ch/deposits/?page=2&size=10'
+            'next': 'http://analysispreservation.cern.ch/deposits/?page=2&size=10',
         }
 
 
 def test_get_deposits_with_facets(client, users, auth_headers_for_user, create_deposit):
     user = users['cms_user']
-    resp = client.get('/deposits/',
-                      headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_user(user))
+    resp = client.get(
+        '/deposits/',
+        headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
+    )
 
     assert resp.status_code == 200
 
     aggs = resp.json['aggregations']
 
-    assert sorted(aggs.keys()) == sorted([
-        'facet_accelerator_parameters', 'facet_cadi_status', 'facet_cms_working_group',
-        'facet_collision_system', 'facet_final_states', 'facet_further_search_categorisation',
-        'facet_further_search_categorisation_heavy_ion', 'facet_interpretation',
-        'facet_next_deadline_date', 'facet_physics_theme', 'facet_sm_analysis_characteristics',
-        'facet_collection', 'particles'
-    ])
+    assert sorted(aggs.keys()) == sorted(
+        [
+            'facet_accelerator_parameters',
+            'facet_cadi_status',
+            'facet_cms_working_group',
+            'facet_collision_system',
+            'facet_final_states',
+            'facet_further_search_categorisation',
+            'facet_further_search_categorisation_heavy_ion',
+            'facet_interpretation',
+            'facet_next_deadline_date',
+            'facet_physics_theme',
+            'facet_sm_analysis_characteristics',
+            'facet_collection',
+            'particles',
+        ]
+    )
 
 
-def test_get_deposits_with_facets_containing_meta(client, users, auth_headers_for_user, create_deposit):
+def test_get_deposits_with_facets_containing_meta(
+    client, users, auth_headers_for_user, create_deposit
+):
     user = users['cms_user']
-    resp = client.get('/deposits/',
-                      headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_user(user))
+    resp = client.get(
+        '/deposits/',
+        headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
+    )
 
     assert resp.status_code == 200
 
     aggs = resp.json['aggregations']
 
     assert aggs['facet_cms_working_group']['meta']['title'] == 'CMS Working Group'
-    assert aggs['facet_sm_analysis_characteristics']['meta']['title'] == 'SM Analysis Characteristics'
+    assert (
+        aggs['facet_sm_analysis_characteristics']['meta']['title']
+        == 'SM Analysis Characteristics'
+    )
 
     assert aggs['facet_next_deadline_date']['meta']['title'] == 'Next Deadline Date'
     assert aggs['facet_next_deadline_date']['meta']['type'] == 'range'
 
 
 def test_get_deposits_with_facets_non_empty_buckets_keywords(
-        client, users, auth_headers_for_user, create_deposit, create_schema):
+    client, users, auth_headers_for_user, create_deposit, create_schema
+):
     user = users['cms_user']
     deposit_mapping = get_default_mapping("test-schema", "1.0.0")
-    create_schema('test-schema', experiment='CMS',
-                  deposit_schema={
-                      'title': 'deposit-test-schema', 'type': 'object',
-                      'basic_info': {
-                          'analysis_keywords': {'type': 'array'},
-                          'final_states': {'type': 'array'}
-                      }},
-                  deposit_options={
-                      'title': 'ui-test-schema', 'type': 'object',
-                      'basic_info': {
-                          'analysis_keywords': {'type': 'array'},
-                          'final_states': {'type': 'array'}
-                      }},
-                  deposit_mapping=deposit_mapping)
-    create_deposit(user, 'test-schema',
-                   {
-                       '$ana_type': 'test-schema',
-                       'basic_info': {
-                           'analysis_keywords': {
-                               "collision_system": ["p-p", "p-Pb"],
-                               "final_states": ["B-hadrons", "C-hadrons"]
-                           }
-                       }
-                   },
-                   experiment='CMS')
-    create_deposit(user, 'test-schema',
-                   {
-                       '$ana_type': 'test-schema',
-                       'basic_info': {
-                           'analysis_keywords': {
-                               "collision_system": ["p-p"],
-                               "final_states": ["B-hadrons", "Tracks"]
-                           }
-                       }
-                   },
-                   experiment='CMS')
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        deposit_schema={
+            'title': 'deposit-test-schema',
+            'type': 'object',
+            'basic_info': {
+                'analysis_keywords': {'type': 'array'},
+                'final_states': {'type': 'array'},
+            },
+        },
+        deposit_options={
+            'title': 'ui-test-schema',
+            'type': 'object',
+            'basic_info': {
+                'analysis_keywords': {'type': 'array'},
+                'final_states': {'type': 'array'},
+            },
+        },
+        deposit_mapping=deposit_mapping,
+    )
+    create_deposit(
+        user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'basic_info': {
+                'analysis_keywords': {
+                    "collision_system": ["p-p", "p-Pb"],
+                    "final_states": ["B-hadrons", "C-hadrons"],
+                }
+            },
+        },
+        experiment='CMS',
+    )
+    create_deposit(
+        user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'basic_info': {
+                'analysis_keywords': {
+                    "collision_system": ["p-p"],
+                    "final_states": ["B-hadrons", "Tracks"],
+                }
+            },
+        },
+        experiment='CMS',
+    )
 
-    resp = client.get('/deposits/',
-                      headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_user(user))
+    resp = client.get(
+        '/deposits/',
+        headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
+    )
 
     assert resp.status_code == 200
 
@@ -449,123 +497,192 @@ def test_get_deposits_with_facets_non_empty_buckets_keywords(
 
     assert aggs['facet_collision_system']['buckets'] == [
         {'doc_count': 2, 'key': 'p-p'},
-        {'doc_count': 1, 'key': 'p-Pb'}
+        {'doc_count': 1, 'key': 'p-Pb'},
     ]
     assert aggs['facet_final_states']['buckets'] == [
         {'doc_count': 2, 'key': 'B-hadrons'},
         {'doc_count': 1, 'key': 'C-hadrons'},
-        {'doc_count': 1, 'key': 'Tracks'}
+        {'doc_count': 1, 'key': 'Tracks'},
     ]
 
 
 def test_get_deposits_with_facets_get_types_and_versions(
-        client, users, auth_headers_for_user, json_headers, create_deposit, create_schema):
+    client, users, auth_headers_for_user, json_headers, create_deposit, create_schema
+):
     user = users['cms_user']
     deposit_mapping_1 = get_default_mapping('test-analysis', "1.0.0")
-    create_schema('test-analysis', fullname="test-analysis", experiment='CMS', deposit_mapping=deposit_mapping_1)
-    create_deposit(user, 'test-analysis',
-                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"},
-                   experiment='CMS')
+    create_schema(
+        'test-analysis',
+        fullname="test-analysis",
+        experiment='CMS',
+        deposit_mapping=deposit_mapping_1,
+    )
+    create_deposit(
+        user,
+        'test-analysis',
+        {
+            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"
+        },
+        experiment='CMS',
+    )
 
     deposit_mapping_2 = get_default_mapping('test-analysis', "2.0.0")
-    create_schema('test-analysis', fullname="test-analysis", experiment='CMS', version='2.0.0', deposit_mapping=deposit_mapping_2)
-    create_deposit(user, 'test-analysis',
-                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v2.0.0.json"},
-                   experiment='CMS')
+    create_schema(
+        'test-analysis',
+        fullname="test-analysis",
+        experiment='CMS',
+        version='2.0.0',
+        deposit_mapping=deposit_mapping_2,
+    )
+    create_deposit(
+        user,
+        'test-analysis',
+        {
+            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v2.0.0.json"
+        },
+        experiment='CMS',
+    )
 
     import time
+
     time.sleep(1)
 
-    resp = client.get('/deposits/',
-                      headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+    resp = client.get(
+        '/deposits/',
+        headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')],
+    )
 
     assert resp.json['hits']['total'] == 2
-    assert resp.json['aggregations']['facet_collection']['buckets'] == [{
-        'doc_count': 2,
-        'facet_collection_version': {
-            'buckets': [{'doc_count': 1, 'key': '1.0.0'},
-                        {'doc_count': 1, 'key': '2.0.0'}],
-            'doc_count_error_upper_bound': 0,
-            'sum_other_doc_count': 0
-        },
-        '__display_name__': 'test-analysis',
-        'key': 'test-analysis'
-    }]
+    assert resp.json['aggregations']['facet_collection']['buckets'] == [
+        {
+            'doc_count': 2,
+            'facet_collection_version': {
+                'buckets': [
+                    {'doc_count': 1, 'key': '1.0.0'},
+                    {'doc_count': 1, 'key': '2.0.0'},
+                ],
+                'doc_count_error_upper_bound': 0,
+                'sum_other_doc_count': 0,
+            },
+            '__display_name__': 'test-analysis',
+            'key': 'test-analysis',
+        }
+    ]
 
 
 def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
-        client, users, auth_headers_for_user, json_headers, create_deposit, create_schema):
+    client, users, auth_headers_for_user, json_headers, create_deposit, create_schema
+):
     # make sure that the naming of schemas doesnt confuse search, e.g. test-analysis facet
     # is giving different results from test-ana facet, although they have the same prefix
     user = users['cms_user']
 
     deposit_mapping_1 = get_default_mapping('test-analysis', "1.0.0")
-    create_schema('test-analysis', fullname="test-analysis", experiment='CMS', deposit_mapping=deposit_mapping_1)
-    create_deposit(user, 'test-analysis',
-                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"},
-                   experiment='CMS')
+    create_schema(
+        'test-analysis',
+        fullname="test-analysis",
+        experiment='CMS',
+        deposit_mapping=deposit_mapping_1,
+    )
+    create_deposit(
+        user,
+        'test-analysis',
+        {
+            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"
+        },
+        experiment='CMS',
+    )
 
     deposit_mapping_2 = get_default_mapping('test-ana', "1.0.0")
-    create_schema('test-ana', fullname="test-ana", experiment='CMS', deposit_mapping=deposit_mapping_2)
-    create_deposit(user, 'test-ana',
-                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"},
-                   experiment='CMS')
-    create_deposit(user, 'test-ana',
-                   {"$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"},
-                   experiment='CMS')
+    create_schema(
+        'test-ana',
+        fullname="test-ana",
+        experiment='CMS',
+        deposit_mapping=deposit_mapping_2,
+    )
+    create_deposit(
+        user,
+        'test-ana',
+        {
+            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"
+        },
+        experiment='CMS',
+    )
+    create_deposit(
+        user,
+        'test-ana',
+        {
+            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"
+        },
+        experiment='CMS',
+    )
 
     import time
+
     time.sleep(3)
 
     # total should be 3
-    resp = client.get('/deposits/',
-                      headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+    resp = client.get(
+        '/deposits/',
+        headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')],
+    )
     assert resp.json['hits']['total'] == 3
 
     # test-ana should return 2 results
     url = '/deposits/?q=&collection=test-ana&sort=mostrecent'
-    resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+    resp = client.get(
+        url,
+        headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')],
+    )
 
     assert resp.status_code == 200
     assert resp.json['hits']['total'] == 2
 
     # test-analysis should return 1 result
     url = '/deposits/?q=&collection=test-analysis&sort=mostrecent'
-    resp = client.get(url, headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')])
+    resp = client.get(
+        url,
+        headers=auth_headers_for_user(user) + [('Accept', 'application/basic+json')],
+    )
 
     assert resp.status_code == 200
     assert resp.json['hits']['total'] == 1
 
 
-
 def test_get_deposits_with_facets_non_empty_buckets_dates(
-        client, users, auth_headers_for_user, create_deposit, create_schema):
+    client, users, auth_headers_for_user, create_deposit, create_schema
+):
     user = users['cms_user']
     deposit_mapping_1 = get_default_mapping('test-schema', "1.0.0")
-    create_schema('test-schema', experiment='CMS',
-                  deposit_schema={
-                      'title': 'deposit-test-schema', 'type': 'object',
-                      'analysis_context': {
-                          'next_deadline_date': {'type': 'string'}
-                      }},
-                  deposit_options={
-                      'title': 'ui-test-schema', 'type': 'object',
-                      'analysis_context': {
-                          'next_deadline_date': {'type': 'string'}
-                      }},
-                  deposit_mapping=deposit_mapping_1)
-    create_deposit(user, 'test-schema',
-                   {
-                       '$ana_type': 'test-schema',
-                       'analysis_context': {
-                           "next_deadline_date": '2030-01-01'
-                       }
-                   },
-                   experiment='CMS')
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        deposit_schema={
+            'title': 'deposit-test-schema',
+            'type': 'object',
+            'analysis_context': {'next_deadline_date': {'type': 'string'}},
+        },
+        deposit_options={
+            'title': 'ui-test-schema',
+            'type': 'object',
+            'analysis_context': {'next_deadline_date': {'type': 'string'}},
+        },
+        deposit_mapping=deposit_mapping_1,
+    )
+    create_deposit(
+        user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'analysis_context': {"next_deadline_date": '2030-01-01'},
+        },
+        experiment='CMS',
+    )
 
-    resp = client.get('/deposits/',
-                      headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_user(user))
+    resp = client.get(
+        '/deposits/',
+        headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
+    )
 
     assert resp.status_code == 200
 
@@ -577,86 +694,85 @@ def test_get_deposits_with_facets_non_empty_buckets_dates(
 
 
 def test_get_deposits_with_range_query(
-        client, users, auth_headers_for_user, create_deposit, create_schema):
+    client, users, auth_headers_for_user, create_deposit, create_schema
+):
     user = users['cms_user']
     headers = auth_headers_for_user(user) + [('Accept', 'application/basic+json')]
 
-    create_schema('test-schema', experiment='CMS',
-                  deposit_schema={
-                      'title': 'deposit-test-schema', 'type': 'object',
-                      'analysis_context': {
-                          'next_deadline_date': {'type': 'string'}
-                      }},
-                  deposit_mapping={
-                      "settings": {
-                          "analysis": {
-                              "analyzer": {
-                                  "lowercase_whitespace_analyzer": {
-                                      "type": "custom",
-                                      "tokenizer": "whitespace",
-                                      "filter": ["lowercase"]
-                                  }
-                              }
-                          }
-                      },
-                      'mappings': {
-                          'test-schema-v1.0.0': {
-                              'properties': {
-                                  'next_deadline_date': {
-                                      'type': 'date'
-                                  },
-                                "_collection": {
-                                        "type": "object",
-                                        "properties": {
-                                            "fullname": {
-                                                "type": "keyword"
-                                            },
-                                            "name": {
-                                                "type": "keyword"
-                                            },
-                                            "version": {
-                                                "type": "keyword"
-                                            }
-                                        }
-                                    },
-                                  "analysis_context": {
-                                      "type": "object",
-                                      "properties": {
-                                          'next_deadline_date': {
-                                              'type': 'date',
-                                              "format": "yyyy-MM-dd",
-                                              "copy_to": "next_deadline_date"
-                                          }
-                                      }
-                                  }
-                              }
-                          }
-                      }
-                  })
-    create_deposit(user, 'test-schema',
-                   {
-                       '$ana_type': 'test-schema',
-                       'analysis_context': {
-                           "next_deadline_date": '2018-01-01'
-                       }
-                   },
-                   experiment='CMS')
-    create_deposit(user, 'test-schema',
-                   {
-                       '$ana_type': 'test-schema',
-                       'analysis_context': {
-                           "next_deadline_date": '2018-02-01'
-                       }
-                   },
-                   experiment='CMS')
-    create_deposit(user, 'test-schema',
-                   {
-                       '$ana_type': 'test-schema',
-                       'analysis_context': {
-                           "next_deadline_date": '2017-01-01'
-                       }
-                   },
-                   experiment='CMS')
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        deposit_schema={
+            'title': 'deposit-test-schema',
+            'type': 'object',
+            'analysis_context': {'next_deadline_date': {'type': 'string'}},
+        },
+        deposit_mapping={
+            "settings": {
+                "analysis": {
+                    "analyzer": {
+                        "lowercase_whitespace_analyzer": {
+                            "type": "custom",
+                            "tokenizer": "whitespace",
+                            "filter": ["lowercase"],
+                        }
+                    }
+                }
+            },
+            'mappings': {
+                'test-schema-v1.0.0': {
+                    'properties': {
+                        'next_deadline_date': {'type': 'date'},
+                        "_collection": {
+                            "type": "object",
+                            "properties": {
+                                "fullname": {"type": "keyword"},
+                                "name": {"type": "keyword"},
+                                "version": {"type": "keyword"},
+                            },
+                        },
+                        "analysis_context": {
+                            "type": "object",
+                            "properties": {
+                                'next_deadline_date': {
+                                    'type': 'date',
+                                    "format": "yyyy-MM-dd",
+                                    "copy_to": "next_deadline_date",
+                                }
+                            },
+                        },
+                    }
+                }
+            },
+        },
+    )
+    create_deposit(
+        user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'analysis_context': {"next_deadline_date": '2018-01-01'},
+        },
+        experiment='CMS',
+    )
+    create_deposit(
+        user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'analysis_context': {"next_deadline_date": '2018-02-01'},
+        },
+        experiment='CMS',
+    )
+    create_deposit(
+        user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'analysis_context': {"next_deadline_date": '2017-01-01'},
+        },
+        experiment='CMS',
+    )
 
     # url encoded
     url = '/deposits/?q=next_deadline_date%3A%5B2018-01-01%20TO%202019-01-01%5D&sort=mostrecent'
@@ -675,115 +791,127 @@ def test_get_deposits_with_range_query(
 # api/deposits/{pid}  [GET]
 ###########################
 def test_get_deposit_when_superuser_returns_deposit_that_he_even_has_no_access_to(
-        client, users, auth_headers_for_superuser, create_deposit):
+    client, users, auth_headers_for_superuser, create_deposit
+):
     deposit = create_deposit(users['alice_user'], 'alice')
 
-    resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_superuser)
+    resp = client.get(
+        '/deposits/{}'.format(deposit['_deposit']['id']),
+        headers=auth_headers_for_superuser,
+    )
 
     assert resp.status_code == 200
 
 
-def test_get_deposit_when_owner_returns_deposit(client, users,
-                                                auth_headers_for_user,
-                                                create_deposit):
+def test_get_deposit_when_owner_returns_deposit(
+    client, users, auth_headers_for_user, create_deposit
+):
     user = users['alice_user']
     deposit = create_deposit(user, 'alice')
 
-    resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(user))
+    resp = client.get(
+        '/deposits/{}'.format(deposit['_deposit']['id']),
+        headers=auth_headers_for_user(user),
+    )
 
     assert resp.status_code == 200
 
 
 def test_get_deposit_when_other_member_of_collaboration_returns_403(
-        client, users, auth_headers_for_user, create_deposit):
+    client, users, auth_headers_for_user, create_deposit
+):
     user, other_user = users['alice_user'], users['alice_user2']
     deposit = create_deposit(user, 'alice')
 
-    resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(other_user))
+    resp = client.get(
+        '/deposits/{}'.format(deposit['_deposit']['id']),
+        headers=auth_headers_for_user(other_user),
+    )
 
     assert resp.status_code == 403
 
 
 @mark.parametrize("action", [("deposit-read"), ("deposit-admin")])
 def test_get_deposit_when_user_has_read_or_admin_acces_can_see_deposit(
-        action, client, users, auth_headers_for_user, create_deposit):
+    action, client, users, auth_headers_for_user, create_deposit
+):
     user, other_user = users['alice_user'], users['alice_user2']
     deposit = create_deposit(user, 'alice')
     pid = deposit['_deposit']['id']
-    permissions = [{
-        'email': other_user.email,
-        'type': 'user',
-        'op': 'add',
-        'action': action
-    }]
+    permissions = [
+        {'email': other_user.email, 'type': 'user', 'op': 'add', 'action': action}
+    ]
 
-    resp = client.get('/deposits/{}'.format(pid),
-                      headers=auth_headers_for_user(other_user))
+    resp = client.get(
+        '/deposits/{}'.format(pid), headers=auth_headers_for_user(other_user)
+    )
 
     assert resp.status_code == 403
 
     deposit.edit_permissions(permissions)
 
-    resp = client.get('/deposits/{}'.format(pid),
-                      headers=auth_headers_for_user(other_user))
+    resp = client.get(
+        '/deposits/{}'.format(pid), headers=auth_headers_for_user(other_user)
+    )
 
     assert resp.status_code == 200
 
 
 @mark.parametrize("action", [("deposit-read"), ("deposit-admin")])
 def test_get_deposit_when_user_is_member_of_egroup_with_read_or_admin_acces_can_see_deposit(
-        action, client, users, auth_headers_for_user, create_deposit):
+    action, client, users, auth_headers_for_user, create_deposit
+):
     user, other_user = users['alice_user'], users['lhcb_user']
     add_role_to_user(other_user, 'some-egroup@cern.ch')
     deposit = create_deposit(user, 'alice')
     pid = deposit['_deposit']['id']
-    permissions = [{
-        'email': 'some-egroup@cern.ch',
-        'type': 'egroup',
-        'op': 'add',
-        'action': action
-    }]
+    permissions = [
+        {
+            'email': 'some-egroup@cern.ch',
+            'type': 'egroup',
+            'op': 'add',
+            'action': action,
+        }
+    ]
 
-    resp = client.get('/deposits/{}'.format(pid),
-                      headers=auth_headers_for_user(other_user))
+    resp = client.get(
+        '/deposits/{}'.format(pid), headers=auth_headers_for_user(other_user)
+    )
 
     assert resp.status_code == 403
 
     deposit.edit_permissions(permissions)
 
-    resp = client.get('/deposits/{}'.format(pid),
-                      headers=auth_headers_for_user(other_user))
+    resp = client.get(
+        '/deposits/{}'.format(pid), headers=auth_headers_for_user(other_user)
+    )
 
     assert resp.status_code == 200
 
 
 def test_get_deposit_with_basic_json_serializer_returns_serialized_deposit_properly(
-        client, example_user, auth_headers_for_example_user, create_deposit):
+    client, example_user, auth_headers_for_example_user, create_deposit
+):
     deposit = create_deposit(
-        example_user, 'cms', {
+        example_user,
+        'cms',
+        {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json',
-            'basic_info': {
-                'analysis_number': 'dream_team',
-                'people_info': [{}]
-            }
-        })
+            'basic_info': {'analysis_number': 'dream_team', 'people_info': [{}]},
+        },
+    )
     metadata = deposit.get_record_metadata()
 
-    resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_example_user)
+    resp = client.get(
+        '/deposits/{}'.format(deposit['_deposit']['id']),
+        headers=[('Accept', 'application/basic+json')] + auth_headers_for_example_user,
+    )
 
     assert resp.status_code == 200
     assert resp.json == {
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'metadata': {
-            'basic_info': {
-                'people_info': [{}],
-                'analysis_number': 'dream_team'
-            }
+            'basic_info': {'people_info': [{}], 'analysis_number': 'dream_team'}
         },
         'pid': deposit['_deposit']['id'],
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
@@ -791,7 +919,8 @@ def test_get_deposit_with_basic_json_serializer_returns_serialized_deposit_prope
 
 
 def test_get_deposit_with_permissions_json_serializer_returns_serialized_permissions_properly(
-    client, db, example_user, auth_headers_for_example_user, deposit):
+    client, db, example_user, auth_headers_for_example_user, deposit
+):
     egroup = _datastore.find_or_create_role('my-egroup@cern.ch')
     deposit._add_egroup_permissions(
         egroup,
@@ -801,58 +930,60 @@ def test_get_deposit_with_permissions_json_serializer_returns_serialized_permiss
     deposit.commit()
     db.session.commit()
 
-    resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=[('Accept', 'application/permissions+json')] +
-                      auth_headers_for_example_user)
+    resp = client.get(
+        '/deposits/{}'.format(deposit['_deposit']['id']),
+        headers=[('Accept', 'application/permissions+json')]
+        + auth_headers_for_example_user,
+    )
 
     assert resp.status_code == 200
     assert resp.json == {
         'permissions': {
-            'admin': {
-                'roles': [],
-                'users': [example_user.email]
-            },
-            'read': {
-                'roles': [egroup.name],
-                'users': [example_user.email]
-            },
-            'update': {
-                'roles': [egroup.name],
-                'users': [example_user.email]
-            }
+            'admin': {'roles': [], 'users': [example_user.email]},
+            'read': {'roles': [egroup.name], 'users': [example_user.email]},
+            'update': {'roles': [egroup.name], 'users': [example_user.email]},
         }
     }
 
 
 def test_get_deposit_with_form_json_serializer(
-        client, db, auth_headers_for_example_user, example_user,
-        create_deposit, create_schema, file_tar, github_release_webhook):
+    client,
+    db,
+    auth_headers_for_example_user,
+    example_user,
+    create_deposit,
+    create_schema,
+    file_tar,
+    github_release_webhook,
+):
 
     # create schema
     ###############
     deposit_mapping = get_default_mapping("test-schema", "1.0.0")
-    create_schema('test-schema', experiment='CMS', fullname='Test Schema',
-                  deposit_schema={
-                      'title': 'deposit-test-schema', 'type': 'object',
-                      'properties': {
-                            'title': {'type': 'string'},
-                            'date': {'type': 'string'}
-                      }},
-                  deposit_options={
-                      'title': 'ui-test-schema', 'type': 'object',
-                      'properties': {
-                          'title': {'type': 'string'},
-                          'field': {'type': 'string'}
-                      }},
-                    deposit_mapping=deposit_mapping)
-    deposit = create_deposit(example_user, 'test-schema',
-                             {
-                                 '$ana_type': 'test-schema',
-                                 'my_field': 'mydata'
-                             },
-                             experiment='CMS',
-                             # implicit file creation here
-                             files={'readme': BytesIO(b'Hello!')})
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        fullname='Test Schema',
+        deposit_schema={
+            'title': 'deposit-test-schema',
+            'type': 'object',
+            'properties': {'title': {'type': 'string'}, 'date': {'type': 'string'}},
+        },
+        deposit_options={
+            'title': 'ui-test-schema',
+            'type': 'object',
+            'properties': {'title': {'type': 'string'}, 'field': {'type': 'string'}},
+        },
+        deposit_mapping=deposit_mapping,
+    )
+    deposit = create_deposit(
+        example_user,
+        'test-schema',
+        {'$ana_type': 'test-schema', 'my_field': 'mydata'},
+        experiment='CMS',
+        # implicit file creation here
+        files={'readme': BytesIO(b'Hello!')},
+    )
 
     # create webhook subscribers and snapshots
     #################
@@ -862,26 +993,16 @@ def test_get_deposit_with_form_json_serializer(
         'commit': None,
         'author': {'name': 'owner', 'id': 1},
         'link': 'https://github.com/owner/test/releases/tag/v1.0.0',
-        'release': {
-            'tag': 'v1.0.0',
-            'name': 'test release 1'
-        }
+        'release': {'tag': 'v1.0.0', 'name': 'test release 1'},
     }
     snapshot_payload2 = {
         'event_type': 'release',
         'branch': None,
-        'author': {
-            'name': 'owner',
-            'id': 1
-        },
+        'author': {'name': 'owner', 'id': 1},
         'link': 'https://github.com/owner/test/releases/tag/v2.0.0',
-        'release': {
-            'tag': 'v2.0.0',
-            'name': 'test release 2'
-        }
+        'release': {'tag': 'v2.0.0', 'name': 'test release 2'},
     }
-    subscriber = GitWebhookSubscriber(record_id=deposit.id,
-                                      user_id=example_user.id)
+    subscriber = GitWebhookSubscriber(record_id=deposit.id, user_id=example_user.id)
     github_release_webhook.subscribers.append(subscriber)
 
     snapshot = GitSnapshot(payload=snapshot_payload)
@@ -904,16 +1025,16 @@ def test_get_deposit_with_form_json_serializer(
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [{'email': example_user.email, 'profile': {}}]
+                'users': [{'email': example_user.email, 'profile': {}}],
             },
             'deposit-read': {
                 'roles': [],
-                'users': [{'email': example_user.email, 'profile': {}}]
+                'users': [{'email': example_user.email, 'profile': {}}],
             },
             'deposit-update': {
                 'roles': [],
-                'users': [{'email': example_user.email, 'profile': {}}]
-            }
+                'users': [{'email': example_user.email, 'profile': {}}],
+            },
         },
         'created_by': {'email': example_user.email, 'profile': {}},
         'is_owner': True,
@@ -934,11 +1055,9 @@ def test_get_deposit_with_form_json_serializer(
             'permissions': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/permissions',
             'publish': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/publish',
             'self': f'http://analysispreservation.cern.ch/api/deposits/{pid}',
-            'upload': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/upload'
+            'upload': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/upload',
         },
-        'metadata': {
-            'my_field': 'mydata'
-        },
+        'metadata': {'my_field': 'mydata'},
         'revision': 1,
         'status': 'draft',
         'type': 'deposit',
@@ -946,90 +1065,91 @@ def test_get_deposit_with_form_json_serializer(
         'schema': {
             'fullname': 'Test Schema',
             'name': 'test-schema',
-            'version': '1.0.0'
+            'version': '1.0.0',
         },
         'schemas': {
             'schema': {
                 'title': 'deposit-test-schema',
                 'type': 'object',
-                'properties': {
-                    'date': {
-                        'type': 'string'
-                    },
-                    'title': {
-                        'type': 'string'
-                    }
-                },
+                'properties': {'date': {'type': 'string'}, 'title': {'type': 'string'}},
             },
             'uiSchema': {
                 'title': 'ui-test-schema',
                 'type': 'object',
                 'properties': {
-                    'field': {
-                        'type': 'string'
-                    },
-                    'title': {
-                        'type': 'string'
-                    }
+                    'field': {'type': 'string'},
+                    'title': {'type': 'string'},
+                },
+            },
+        },
+        'files': [
+            {
+                'bucket': str(file.bucket),
+                'checksum': file.file.checksum,
+                'key': file.key,
+                'size': file.file.size,
+                'version_id': str(file.version_id),
+                'mimetype': file.mimetype,
+                'created': file.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'updated': file.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'delete_marker': False,
+                'is_head': True,
+                'tags': {},
+                'links': {
+                    'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme',
+                    'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme?uploads',
+                    'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme?versionId={str(file.version_id)}',
                 },
             }
-        },
-        'files': [{
-            'bucket': str(file.bucket),
-            'checksum': file.file.checksum,
-            'key': file.key,
-            'size': file.file.size,
-            'version_id': str(file.version_id),
-            'mimetype': file.mimetype,
-            'created': file.created.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-            'updated': file.updated.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-            'delete_marker': False,
-            'is_head': True,
-            'tags': {},
-            'links': {
-                'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme',
-                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme?uploads',
-                'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/readme?versionId={str(file.version_id)}'},
-        }],
-        'webhooks': [{
-            'id': github_release_webhook.id,
-            'branch': None,
-            'event_type': 'release',
-            'host': 'github.com',
-            'name': 'repository',
-            'owner': 'owner',
-            'snapshots': [{
-                'created': snapshot2.created.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-                'payload': snapshot_payload2
-            }, {
-                'created': snapshot.created.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-                'payload': snapshot_payload
-            }]
-        }]
+        ],
+        'webhooks': [
+            {
+                'id': github_release_webhook.id,
+                'branch': None,
+                'event_type': 'release',
+                'host': 'github.com',
+                'name': 'repository',
+                'owner': 'owner',
+                'snapshots': [
+                    {
+                        'created': snapshot2.created.strftime(
+                            '%Y-%m-%dT%H:%M:%S.%f+00:00'
+                        ),
+                        'payload': snapshot_payload2,
+                    },
+                    {
+                        'created': snapshot.created.strftime(
+                            '%Y-%m-%dT%H:%M:%S.%f+00:00'
+                        ),
+                        'payload': snapshot_payload,
+                    },
+                ],
+            }
+        ],
     }
 
 
 def test_get_deposit_with_form_json_serializer_check_other_user_can_update(
-        client, users, auth_headers_for_user, deposit):
+    client, users, auth_headers_for_user, deposit
+):
     pid = deposit['_deposit']['id']
     other_user = users['cms_user2']
     headers = auth_headers_for_user(other_user) + [('Accept', 'application/form+json')]
 
-    permissions = [{
-        'email': other_user.email,
-        'type': 'user',
-        'op': 'add',
-        'action': 'deposit-read'
-    }, {
-        'email': other_user.email,
-        'type': 'user',
-        'op': 'add',
-        'action': 'deposit-update'
-    }]
+    permissions = [
+        {
+            'email': other_user.email,
+            'type': 'user',
+            'op': 'add',
+            'action': 'deposit-read',
+        },
+        {
+            'email': other_user.email,
+            'type': 'user',
+            'op': 'add',
+            'action': 'deposit-update',
+        },
+    ]
     deposit.edit_permissions(permissions)
     resp = client.get(f'/deposits/{pid}', headers=headers)
 
@@ -1037,46 +1157,54 @@ def test_get_deposit_with_form_json_serializer_check_other_user_can_update(
     assert resp.json['can_admin'] is False
     assert resp.json['can_update'] is True
 
-    users = [user['email'] for user in
-             resp.json['access']['deposit-read']['users']]
+    users = [user['email'] for user in resp.json['access']['deposit-read']['users']]
     assert 'cms_user2@cern.ch' in users
     assert 'cms_user2@cern.ch' in users
 
 
 def test_get_deposit_with_form_json_serializer_check_other_user_can_admin(
-        client, users, auth_headers_for_user, deposit):
+    client, users, auth_headers_for_user, deposit
+):
     pid = deposit['_deposit']['id']
     other_user = users['cms_user2']
     headers = auth_headers_for_user(other_user) + [('Accept', 'application/form+json')]
 
-    permissions = [{
-        'email': other_user.email,
-        'type': 'user',
-        'op': 'add',
-        'action': 'deposit-admin'
-    }]
+    permissions = [
+        {
+            'email': other_user.email,
+            'type': 'user',
+            'op': 'add',
+            'action': 'deposit-admin',
+        }
+    ]
     deposit.edit_permissions(permissions)
     resp = client.get(f'/deposits/{pid}', headers=headers)
 
     assert resp.status_code == 200
-    assert 'cms_user2@cern.ch' in [user['email'] for user in
-                                   resp.json['access']['deposit-admin']['users']]
+    assert 'cms_user2@cern.ch' in [
+        user['email'] for user in resp.json['access']['deposit-admin']['users']
+    ]
 
 
 def test_get_deposit_when_user_has_no_access_to_schema_can_still_see_deposit_that_got_access_to(
-    client, users, auth_headers_for_user, deposit):
+    client, users, auth_headers_for_user, deposit
+):
     pid = deposit['_deposit']['id']
     other_user = users['lhcb_user2']
 
-    permissions = [{
-        'email': other_user.email,
-        'type': 'user',
-        'op': 'add',
-        'action': 'deposit-read'
-    }]
+    permissions = [
+        {
+            'email': other_user.email,
+            'type': 'user',
+            'op': 'add',
+            'action': 'deposit-read',
+        }
+    ]
     deposit.edit_permissions(permissions)
-    resp = client.get(f'/deposits/{pid}',
-                      headers=auth_headers_for_user(other_user) +
-                      [('Accept', 'application/form+json')])
+    resp = client.get(
+        f'/deposits/{pid}',
+        headers=auth_headers_for_user(other_user)
+        + [('Accept', 'application/form+json')],
+    )
 
     assert resp.status_code == 200

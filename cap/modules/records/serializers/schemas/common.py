@@ -23,35 +23,28 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Marshmallow Schemas."""
 
-from flask_login import current_user
 from flask import url_for
-from marshmallow import Schema, ValidationError, fields, validates_schema
+from flask_login import current_user
 from invenio_files_rest.models import ObjectVersion
 from invenio_files_rest.serializer import ObjectVersionSchema
+from marshmallow import Schema, ValidationError, fields, validates_schema
 
-from cap.modules.schemas.resolvers import resolve_schema_by_url
-from cap.modules.user.utils import get_role_name_by_id, get_remote_account_by_id  # noqa
 from cap.modules.records.utils import url_to_api_url
-
+from cap.modules.schemas.resolvers import resolve_schema_by_url
+from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id  # noqa
 
 LABELS = {
     'physics_objects': {
-        'path':
-        'metadata.main_measurements.signal_event_selection.physics_objects.object',  # noqa
-        'condition':
-        lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS'
+        'path': 'metadata.main_measurements.signal_event_selection.physics_objects.object',  # noqa
+        'condition': lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS',
     },
     'cadi_id': {
-        'path':
-        'metadata.basic_info.cadi_id',
-        'condition':
-        lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS'
+        'path': 'metadata.basic_info.cadi_id',
+        'condition': lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS',
     },
     'cadi_id_': {
-        'path':
-        'metadata.analysis_context.cadi_id',
-        'condition':
-        lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS'
+        'path': 'metadata.analysis_context.cadi_id',
+        'condition': lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS',
     },
     #    'cms_keywords': {
     #        'path': 'metadata.additional_resources.keywords',
@@ -96,29 +89,40 @@ class CAPObjectVersionSchema(ObjectVersionSchema):
         """Dump links."""
         params = {'versionId': o.version_id}
         data = {
-            'self': url_to_api_url(url_for(
-                'invenio_files_rest.object_api',
-                bucket_id=o.bucket_id,
-                key=o.key,
-                _external=True,
-                **(params if not o.is_head or o.deleted else {})
-            )),
-            'version': url_to_api_url(url_for(
-                'invenio_files_rest.object_api',
-                bucket_id=o.bucket_id,
-                key=o.key,
-                _external=True,
-                **params
-            ))
+            'self': url_to_api_url(
+                url_for(
+                    'invenio_files_rest.object_api',
+                    bucket_id=o.bucket_id,
+                    key=o.key,
+                    _external=True,
+                    **(params if not o.is_head or o.deleted else {})
+                )
+            ),
+            'version': url_to_api_url(
+                url_for(
+                    'invenio_files_rest.object_api',
+                    bucket_id=o.bucket_id,
+                    key=o.key,
+                    _external=True,
+                    **params
+                )
+            ),
         }
 
         if o.is_head and not o.deleted:
-            data.update({'uploads': url_to_api_url(url_for(
-                'invenio_files_rest.object_api',
-                bucket_id=o.bucket_id,
-                key=o.key,
-                _external=True
-            )) + '?uploads', })
+            data.update(
+                {
+                    'uploads': url_to_api_url(
+                        url_for(
+                            'invenio_files_rest.object_api',
+                            bucket_id=o.bucket_id,
+                            key=o.key,
+                            _external=True,
+                        )
+                    )
+                    + '?uploads',
+                }
+            )
 
         return data
 
@@ -156,8 +160,11 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     def get_files(self, obj):
         files_bucket_id = obj.get("bucket")
         if files_bucket_id:
-            files = ObjectVersion.get_by_bucket(
-                files_bucket_id, versions=False).limit(1000).all()
+            files = (
+                ObjectVersion.get_by_bucket(files_bucket_id, versions=False)
+                .limit(1000)
+                .all()
+            )
 
             res = CAPObjectVersionSchema().dump(files, many=True)
             serialized_files = res.data.get('contents', [])
@@ -175,16 +182,16 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
             result = {
                 'name': schema.name,
                 'version': schema.version,
-                'fullname': schema.fullname or ''
+                'fullname': schema.fullname or '',
             }
             return result
 
     def get_metadata(self, obj):
         result = {
             k: v
-            for k,
-            v in obj.get('metadata', {}).items()
-            if k not in [
+            for k, v in obj.get('metadata', {}).items()
+            if k
+            not in [
                 'control_number',
                 '$schema',
                 '_deposit',
@@ -194,7 +201,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                 '_review',
                 '_fetched_from',
                 '_user_edited',
-                '_collection'
+                '_collection',
             ]
         }
         return result
@@ -202,8 +209,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     def get_created_by(self, obj):
         user_id = obj.get('metadata', {})['_deposit'].get('created_by')
 
-        return get_remote_account_by_id(user_id) \
-            if user_id else None
+        return get_remote_account_by_id(user_id) if user_id else None
 
     def get_labels(self, obj):
         """Get labels."""
@@ -212,8 +218,9 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         for label in LABELS.values():
             condition = label.get('condition')
             if not condition or condition(obj):
-                labels = labels | _dot_access_helper(obj, label.get('path'),
-                                                     label.get('formatter'))
+                labels = labels | _dot_access_helper(
+                    obj, label.get('path'), label.get('formatter')
+                )
 
         return list(labels)
 
