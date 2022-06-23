@@ -39,7 +39,8 @@ class DepositSerializer(CAPJSONSerializer):
         (e.g. /actions/publish)
         """
         result = super().preprocess_record(
-            pid, record, links_factory=deposit_links_factory)
+            pid, record, links_factory=deposit_links_factory
+        )
 
         deposit = CAPDeposit.get_record(pid.object_uuid)
         result['deposit'] = deposit
