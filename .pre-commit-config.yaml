@@ -21,6 +21,7 @@ repos:
     hooks:
       - id: prettier
         stages: [commit, push]
+        files: "ui/*"
 
   - repo: https://github.com/jorisroovers/gitlint
     rev: 'v0.17.0'
