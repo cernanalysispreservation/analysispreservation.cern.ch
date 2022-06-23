@@ -29,36 +29,34 @@ from six import BytesIO
 from conftest import _datastore
 
 
-def test_get_deposit_with_default_serializer(client, users,
-                                             auth_headers_for_user,
-                                             create_deposit):
+def test_get_deposit_with_default_serializer(
+    client, users, auth_headers_for_user, create_deposit
+):
     owner = users['cms_user']
     deposit = create_deposit(
         owner,
-        'cms-analysis', {
+        'cms-analysis',
+        {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
             'basic_info': {
                 'analysis_number': 'dream_team',
-            }
+            },
         },
         files={'file_1.txt': BytesIO(b'Hello world!')},
-        experiment='CMS')
+        experiment='CMS',
+    )
     role = _datastore.find_or_create_role('some-egroup@cern.ch')
 
     depid = deposit['_deposit']['id']
     metadata = deposit.get_record_metadata()
     file = deposit.files['file_1.txt']
-    deposit.edit_permissions([{
-        'email': role.name,
-        'type': 'egroup',
-        'op': 'add',
-        'action': 'deposit-read'
-    }])
+    deposit.edit_permissions(
+        [{'email': role.name, 'type': 'egroup', 'op': 'add', 'action': 'deposit-read'}]
+    )
 
     resp = client.get(
         f'/deposits/{depid}',
-        headers=[('Accept', 'application/json')] +
-        auth_headers_for_user(owner),
+        headers=[('Accept', 'application/json')] + auth_headers_for_user(owner),
     )
 
     assert resp.status_code == 200
@@ -67,54 +65,47 @@ def test_get_deposit_with_default_serializer(client, users,
         'id': depid,
         'type': 'deposit',
         'revision': 2,
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
+        'schema': {'fullname': '', 'name': 'cms-analysis', 'version': '1.0.0'},
         'experiment': 'CMS',
         'status': 'draft',
         'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-        'metadata': {
-            'basic_info': {
-                'analysis_number': 'dream_team'
-            }
-        },
+        'metadata': {'basic_info': {'analysis_number': 'dream_team'}},
         'labels': [],
-        'files': [{
-            'bucket': str(file.bucket),
-            'checksum': file.file.checksum,
-            'key': file.key,
-            'size': file.file.size,
-            'version_id': str(file.version_id),
-            'mimetype': file.mimetype,
-            'created': file.created.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-            'updated': file.updated.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-            'delete_marker': False,
-            'is_head': True,
-            'tags': {},
-            'links': {
-                'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt',
-                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?uploads',
-                'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?versionId={str(file.version_id)}'},
-        }],
+        'files': [
+            {
+                'bucket': str(file.bucket),
+                'checksum': file.file.checksum,
+                'key': file.key,
+                'size': file.file.size,
+                'version_id': str(file.version_id),
+                'mimetype': file.mimetype,
+                'created': file.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'updated': file.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'delete_marker': False,
+                'is_head': True,
+                'tags': {},
+                'links': {
+                    'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt',
+                    'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?uploads',
+                    'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?versionId={str(file.version_id)}',
+                },
+            }
+        ],
         'access': {
             'deposit-admin': {
                 'roles': [],
-                'users': [{'email': owner.email, 'profile': {}}]
+                'users': [{'email': owner.email, 'profile': {}}],
             },
             'deposit-update': {
                 'roles': [],
-                'users': [{'email': owner.email, 'profile': {}}]
+                'users': [{'email': owner.email, 'profile': {}}],
             },
             'deposit-read': {
                 'roles': ['some-egroup@cern.ch'],
-                'users': [{'email': owner.email, 'profile': {}}]
-            }
+                'users': [{'email': owner.email, 'profile': {}}],
+            },
         },
         'is_owner': True,
         'links': {
@@ -129,12 +120,13 @@ def test_get_deposit_with_default_serializer(client, users,
             'publish': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/publish',
             'self': f'http://analysispreservation.cern.ch/api/deposits/{depid}',
             'upload': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/upload',
-        }
+        },
     }
 
 
-def test_default_record_serializer(client, users, auth_headers_for_user,
-                                   json_headers, create_deposit):
+def test_default_record_serializer(
+    client, users, auth_headers_for_user, json_headers, create_deposit
+):
     owner = users['cms_user']
     deposit = create_deposit(
         owner,
@@ -143,7 +135,7 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
             'basic_info': {
                 'analysis_number': 'dream_team',
-            }
+            },
         },
         experiment='CMS',
         files={'file_1.txt': BytesIO(b'Hello world!')},
@@ -156,8 +148,7 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
     metadata = record.get_record_metadata()
     resp = client.get(
         f'/records/{recid}',
-        headers=[('Accept', 'application/json')] +
-        auth_headers_for_user(owner),
+        headers=[('Accept', 'application/json')] + auth_headers_for_user(owner),
     )
 
     assert resp.json == {
@@ -166,11 +157,7 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         'revision': 0,
         'experiment': 'CMS',
         'status': 'published',
-        'schema': {
-            'fullname': '',
-            'name': 'cms-analysis',
-            'version': '1.0.0'
-        },
+        'schema': {'fullname': '', 'name': 'cms-analysis', 'version': '1.0.0'},
         'labels': [],
         'created_by': {'email': owner.email, 'profile': {}},
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
@@ -178,76 +165,81 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         'access': {
             'record-admin': {
                 'roles': [],
-                'users': [{'email': owner.email, 'profile': {}}]
+                'users': [{'email': owner.email, 'profile': {}}],
             },
             'record-update': {
                 'roles': [],
-                'users': [{'email': owner.email, 'profile': {}}]
+                'users': [{'email': owner.email, 'profile': {}}],
             },
             'record-read': {
                 'roles': [],
-                'users': [{'email': owner.email, 'profile': {}},
-                          {'email': users['cms_user2'].email, 'profile': {}}]
-            }
+                'users': [
+                    {'email': owner.email, 'profile': {}},
+                    {'email': users['cms_user2'].email, 'profile': {}},
+                ],
+            },
         },
-        'metadata': {
-            'basic_info': {
-                'analysis_number': 'dream_team'
+        'metadata': {'basic_info': {'analysis_number': 'dream_team'}},
+        'files': [
+            {
+                'bucket': str(record.files.bucket),
+                'checksum': file.file.checksum,
+                'key': file.key,
+                'size': file.file.size,
+                'version_id': str(file.version_id),
+                'mimetype': file.mimetype,
+                'created': file.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'updated': file.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'delete_marker': False,
+                'is_head': True,
+                'tags': {},
+                'links': {
+                    'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt',
+                    'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?uploads',
+                    'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?versionId={str(file.version_id)}',
+                },
             }
-        },
-        'files': [{
-            'bucket': str(record.files.bucket),
-            'checksum': file.file.checksum,
-            'key': file.key,
-            'size': file.file.size,
-            'version_id': str(file.version_id),
-            'mimetype': file.mimetype,
-            'created': file.created.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-            'updated': file.updated.strftime(
-                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
-            'delete_marker': False,
-            'is_head': True,
-            'tags': {},
-            'links': {
-                'self': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt',
-                'uploads': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?uploads',
-                'version': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}/file_1.txt?versionId={str(file.version_id)}'},
-        }],
+        ],
         'is_owner': True,
         'links': {
             'bucket': f'http://analysispreservation.cern.ch/api/files/{record.files.bucket}',
             'html': f'http://analysispreservation.cern.ch/published/{recid}',
-            'self': f'http://analysispreservation.cern.ch/api/records/{recid}'
+            'self': f'http://analysispreservation.cern.ch/api/records/{recid}',
         },
-        'draft_id': deposit.pid.pid_value
+        'draft_id': deposit.pid.pid_value,
     }
 
 
-def test_webhook_serializer_on_deposits(client, example_user,
-                                        auth_headers_for_example_user, deposit,
-                                        github_push_webhook_sub):
-    headers = [('Accept', 'application/repositories+json')
-               ] + auth_headers_for_example_user
+def test_webhook_serializer_on_deposits(
+    client,
+    example_user,
+    auth_headers_for_example_user,
+    deposit,
+    github_push_webhook_sub,
+):
+    headers = [
+        ('Accept', 'application/repositories+json')
+    ] + auth_headers_for_example_user
     pid = deposit['_deposit']['id']
     resp = client.get(f'/deposits/{pid}', headers=headers)
 
     assert resp.status_code == 200
     assert resp.json == {
-        'webhooks': [{
-            'id': github_push_webhook_sub.id,
-            'branch': 'mybranch',
-            'event_type': 'push',
-            'host': 'github.com',
-            'name': 'repository',
-            'owner': 'owner',
-            'snapshots': []
-        }]
+        'webhooks': [
+            {
+                'id': github_push_webhook_sub.id,
+                'branch': 'mybranch',
+                'event_type': 'push',
+                'host': 'github.com',
+                'name': 'repository',
+                'owner': 'owner',
+                'snapshots': [],
+            }
+        ]
     }
 
 
-def test_users_with_user_profile_serializers(
-        client, users, auth_headers_for_superuser):
+def test_users_with_user_profile_serializers(client, users, auth_headers_for_superuser):
     headers = auth_headers_for_superuser + [('Accept', 'application/json')]
 
     resp = client.get('/users', headers=headers)
