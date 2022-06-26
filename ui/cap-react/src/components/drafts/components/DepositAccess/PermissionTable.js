@@ -25,20 +25,20 @@ const PermissionTable = ({
   access,
   canAdmin,
   displayAsFormField = false,
-  updateField = null
+  updateField = null,
 }) => {
   const [currentPermissionObj, setCurrentPermissionObj] = useState({});
   const [updated, setUpdated] = useState({});
   const [itemToDelete, setItemToDelete] = useState(null);
 
-  const getTextFromPermission = perm => {
+  const getTextFromPermission = (perm) => {
     let permission = "deposit-read";
     if (perm.includes("deposit-update")) permission = "deposit-update";
     if (perm.includes("deposit-admin")) permission = "deposit-admin";
     const choices = {
       "deposit-read": "Role: read",
       "deposit-update": "Role: write",
-      "deposit-admin": "Role: admin"
+      "deposit-admin": "Role: admin",
     };
 
     return choices[permission];
@@ -48,14 +48,11 @@ const PermissionTable = ({
     setCurrentPermissionObj(permissionsObj);
   }, []);
 
-  useEffect(
-    () => {
-      if (updated.list) {
-        setCurrentPermissionObj(permissionsObj);
-      }
-    },
-    [updated]
-  );
+  useEffect(() => {
+    if (updated.list) {
+      setCurrentPermissionObj(permissionsObj);
+    }
+  }, [updated]);
 
   return (
     <Box>
@@ -101,7 +98,7 @@ const PermissionTable = ({
                               item[0].toLowerCase()
                             )}
                             addPermissionsModal
-                            updatePermissionsModalObj={list => {
+                            updatePermissionsModalObj={(list) => {
                               permissionsObj[item[0]] = list;
                               setUpdated({ list });
                             }}
@@ -120,7 +117,7 @@ const PermissionTable = ({
                         fontSize: "14px",
                         minWidth: "64px",
                         marginLeft: "5px",
-                        textAlign: "center"
+                        textAlign: "center",
                       }}
                     >
                       Added
@@ -134,12 +131,16 @@ const PermissionTable = ({
                       onClick={() =>
                         updateField
                           ? updateField({
-                            email: item[1].email ? item[1].email : item[1],
-                            department: item[1].email ? item[1].profile.department : "egroup",
-                            name: item[1].email
-                              ? item[1].profile.display_name
-                              : item[1].email ? item[1].email.split("@cern.ch")[0] : item[1].split("@cern.ch")[0]
-                          })
+                              email: item[1].email ? item[1].email : item[1],
+                              department: item[1].email
+                                ? item[1].profile.department
+                                : "egroup",
+                              name: item[1].email
+                                ? item[1].profile.display_name
+                                : item[1].email
+                                ? item[1].email.split("@cern.ch")[0]
+                                : item[1].split("@cern.ch")[0],
+                            })
                           : handlePermissions(
                               draft_id,
                               target,
@@ -233,26 +234,23 @@ PermissionTable.propTypes = {
   target: PropTypes.string,
   access: PropTypes.object,
   permissions: PropTypes.object,
-  canAdmin: PropTypes.bool
+  canAdmin: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   draft_id: state.draftItem.get("id"),
   created_by: state.draftItem.get("created_by"),
   draft: state.draftItem.get("data"),
   loading: state.draftItem.get("loading"),
   canAdmin: state.draftItem.get("can_admin"),
-  permissions: state.draftItem.get("access")
+  permissions: state.draftItem.get("access"),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     handlePermissions: (draft_id, type, email, action, operation) =>
-      dispatch(handlePermissions(draft_id, type, email, action, operation))
+      dispatch(handlePermissions(draft_id, type, email, action, operation)),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PermissionTable);
+export default connect(mapStateToProps, mapDispatchToProps)(PermissionTable);

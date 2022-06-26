@@ -663,7 +663,7 @@ def test_deposit_validation_on_schema_field_user_cannot_edit_post(client, users,
                       data=json.dumps({'$ana_type': 'test-analysis', "obj": "test post"}))
 
     assert resp.status_code == 422
-    assert resp.json['errors'][0]['message'] == 'You cannot edit this field.'
+    assert 'You cannot edit this field.' in resp.json['message']
 
 
 def test_deposit_validation_on_schema_field_user_can_edit_post(client, location, users,

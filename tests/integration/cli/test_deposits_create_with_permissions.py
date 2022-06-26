@@ -24,6 +24,7 @@
 import re
 import json
 from tempfile import NamedTemporaryFile
+from cap.modules.deposit.cli import create_deposit_with_permissions
 
 from conftest import _datastore
 

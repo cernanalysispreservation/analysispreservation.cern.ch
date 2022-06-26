@@ -23,8 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Deposit errors."""
 
+from invenio_rest.errors import FieldError, RESTException, RESTValidationError
 from jsonschema.exceptions import ValidationError
-from invenio_rest.errors import RESTException, RESTValidationError, FieldError
 
 
 class DepositDoesNotExist(Exception):
@@ -39,6 +39,14 @@ class UniqueRequiredValidationError(ValidationError):
     def __init__(self, message, uuids=[], **kwargs):
         """Initialize exception."""
         self.uuids = uuids
+        return super().__init__(message=message, **kwargs)
+
+
+class XCAPPermissionValidationError(ValidationError):
+    """Unique required validation error exception."""
+
+    def __init__(self, message, **kwargs):
+        """Initialize exception."""
         return super().__init__(message=message, **kwargs)
 
 
