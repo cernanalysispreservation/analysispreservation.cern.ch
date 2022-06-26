@@ -16,7 +16,7 @@ const DepositAccessModal = ({
   onClose,
   access,
   displayAsFormField = false,
-  updateField = null
+  updateField = null,
 }) => {
   const [target, setTarget] = useState("user");
   const [permissionsObj, setPermissionsObj] = useState({});
@@ -24,13 +24,13 @@ const DepositAccessModal = ({
   const [loading, setLoading] = useState(false);
   const [userInput, setUserInput] = useState(undefined);
 
-  const fetchLdapData = _debounce(url => {
+  const fetchLdapData = _debounce((url) => {
     setPermissionsObj({});
     setLoading(true);
     axios.get(url).then(({ data }) => {
       let perm = {};
-      let c_perm= {};
-      data.map(item => {
+      let c_perm = {};
+      data.map((item) => {
         let objTarget = target === "user" ? item.email : item;
         perm[objTarget] = ["deposit-read"];
         c_perm[objTarget] = item;
@@ -41,15 +41,12 @@ const DepositAccessModal = ({
     });
   }, 500);
 
-  useEffect(
-    () => {
-      setPermissionsObj({});
-      if (userInput && userInput != "") {
-        fetchLdapData(`/api/services/ldap/${target}/mail?query=${userInput}`);
-      }
-    },
-    [userInput, target]
-  );
+  useEffect(() => {
+    setPermissionsObj({});
+    if (userInput && userInput != "") {
+      fetchLdapData(`/api/services/ldap/${target}/mail?query=${userInput}`);
+    }
+  }, [userInput, target]);
 
   return (
     open && (
@@ -160,7 +157,7 @@ DepositAccessModal.propTypes = {
   open: PropTypes.bool,
   displayAsFormField: PropTypes.bool,
   onClose: PropTypes.func,
-  access: PropTypes.object
+  access: PropTypes.object,
 };
 
 export default DepositAccessModal;

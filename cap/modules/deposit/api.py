@@ -34,23 +34,27 @@ from invenio_db import db
 from invenio_deposit.api import Deposit, has_status, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
-from invenio_files_rest.models import (Bucket, FileInstance, ObjectVersion,
-                                       ObjectVersionTag)
+from invenio_files_rest.models import (
+    Bucket,
+    FileInstance,
+    ObjectVersion,
+    ObjectVersionTag,
+)
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_records.api import Record
-
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_records_rest.errors import InvalidDataRESTError
 from invenio_rest.errors import FieldError
+from jsonpatch import apply_patch
 from jsonschema.exceptions import RefResolutionError, ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
-from .errors import UniqueRequiredValidationError
 
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
+from cap.modules.deposit.loaders import get_val_from_path, get_validator
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
@@ -58,23 +62,32 @@ from cap.modules.records.errors import get_error_path
 from cap.modules.repos.errors import GitError
 from cap.modules.repos.factory import create_git_api
 from cap.modules.repos.tasks import download_repo, download_repo_file
-from cap.modules.repos.utils import (create_webhook, disconnect_subscriber,
-                                     parse_git_url)
-from cap.modules.schemas.resolvers import (resolve_schema_by_url,
-                                           schema_name_to_url)
+from cap.modules.repos.utils import create_webhook, disconnect_subscriber, parse_git_url
+from cap.modules.schemas.resolvers import resolve_schema_by_url, schema_name_to_url
 from cap.modules.user.errors import DoesNotExistInLDAP
-from cap.modules.user.utils import (get_existing_or_register_role,
-                                    get_existing_or_register_user)
+from cap.modules.user.utils import (
+    get_existing_or_register_role,
+    get_existing_or_register_user,
+)
 
-from .errors import (DepositValidationError, UpdateDepositPermissionsError,
-                     ReviewError)
+from .errors import (
+    DepositValidationError,
+    ReviewError,
+    UniqueRequiredValidationError,
+    UpdateDepositPermissionsError,
+    XCAPPermissionValidationError,
+)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
-from .permissions import (AdminDepositPermission, CloneDepositPermission,
-                          DepositAdminActionNeed, DepositReadActionNeed,
-                          DepositUpdateActionNeed, ReviewDepositPermission,
-                          UpdateDepositPermission)
-
+from .permissions import (
+    AdminDepositPermission,
+    CloneDepositPermission,
+    DepositAdminActionNeed,
+    DepositReadActionNeed,
+    DepositUpdateActionNeed,
+    ReviewDepositPermission,
+    UpdateDepositPermission,
+)
 from .review import Reviewable
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
@@ -105,17 +118,11 @@ def DEPOSIT_ACTIONS_NEEDS(id):
     return {
         'deposit-read': DepositReadActionNeed(str(id)),
         'deposit-update': DepositUpdateActionNeed(str(id)),
-        'deposit-admin': DepositAdminActionNeed(str(id))
+        'deposit-admin': DepositAdminActionNeed(str(id)),
     }
 
 
-EMPTY_ACCESS_OBJECT = {
-    action: {
-        'users': [],
-        'roles': []
-    }
-    for action in DEPOSIT_ACTIONS
-}
+EMPTY_ACCESS_OBJECT = {action: {'users': [], 'roles': []} for action in DEPOSIT_ACTIONS}
 
 
 class CAPDeposit(Deposit, Reviewable):
@@ -265,13 +272,13 @@ class CAPDeposit(Deposit, Reviewable):
 
                 try:
                     host, owner, repo, branch, filepath = parse_git_url(url)
-                    api = create_git_api(host, owner, repo, branch,
-                                         current_user.id)
+                    api = create_git_api(host, owner, repo, branch, current_user.id)
 
                     if filepath:
                         if webhook:
                             raise FileUploadError(
-                                'You cannot create a webhook on a file')
+                                'You cannot create a webhook on a file'
+                            )
 
                         download_repo_file(
                             record_uuid,
@@ -284,13 +291,14 @@ class CAPDeposit(Deposit, Reviewable):
                             if branch:
                                 raise FileUploadError(
                                     'You cannot create a release webhook'
-                                    ' for a specific branch or sha.')
+                                    ' for a specific branch or sha.'
+                                )
 
-                        if event_type == 'push' and \
-                                api.branch is None and api.sha:
+                        if event_type == 'push' and api.branch is None and api.sha:
                             raise FileUploadError(
                                 'You cannot create a push webhook'
-                                ' for a specific sha.')
+                                ' for a specific sha.'
+                            )
 
                         create_webhook(record_uuid, api, event_type)
                     else:
@@ -298,7 +306,8 @@ class CAPDeposit(Deposit, Reviewable):
                             record_uuid,
                             f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
                             api.get_repo_download(),
-                            api.auth_headers)
+                            api.auth_headers,
+                        )
 
                 except GitError as e:
                     raise FileUploadError(str(e))
@@ -322,7 +331,8 @@ class CAPDeposit(Deposit, Reviewable):
                 disconnect_subscriber(sub_id)
             except NoResultFound:
                 raise DisconnectWebhookError(
-                    'This webhook was not registered with analysis.')
+                    'This webhook was not registered with analysis.'
+                )
 
             return self
 
@@ -409,12 +419,27 @@ class CAPDeposit(Deposit, Reviewable):
     def update(self, *args, **kwargs):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):
+            schema = {'$ref': self["$schema"]}
+            self.validate_field_permissions(
+                schema=schema,
+                current_data=self.model.json,
+                submitted_data=request.get_json(),
+            )
             super(CAPDeposit, self).update(*args, **kwargs)
 
     @pop_from_data_patch
     def patch(self, *args, **kwargs):
         """Patch deposit."""
         with UpdateDepositPermission(self).require(403):
+            schema = {'$ref': self["$schema"]}
+
+            patch = copy.deepcopy(request.get_json(force=True))
+
+            patched_data = apply_patch(self.model.json, patch)
+
+            self.validate_field_permissions(
+                schema=schema, current_data=self.model.json, submitted_data=patched_data
+            )
             return super(CAPDeposit, self).patch(*args, **kwargs)
 
     def edit_permissions(self, data):
@@ -436,45 +461,55 @@ class CAPDeposit(Deposit, Reviewable):
                         user = get_existing_or_register_user(obj['email'])
                     except DoesNotExistInLDAP:
                         raise UpdateDepositPermissionsError(
-                            'User with this mail does not exist in LDAP.')
+                            'User with this mail does not exist in LDAP.'
+                        )
 
                     if obj['op'] == 'add':
                         try:
-                            self._add_user_permissions(user, [obj['action']],
-                                                       db.session)
+                            self._add_user_permissions(
+                                user, [obj['action']], db.session
+                            )
                         except IntegrityError:
                             raise UpdateDepositPermissionsError(
-                                'Permission already exist.')
+                                'Permission already exist.'
+                            )
 
                     elif obj['op'] == 'remove':
                         try:
                             self._remove_user_permissions(
-                                user, [obj['action']], db.session)
+                                user, [obj['action']], db.session
+                            )
                         except NoResultFound:
                             raise UpdateDepositPermissionsError(
-                                'Permission does not exist.')
+                                'Permission does not exist.'
+                            )
 
                 elif obj['type'] == 'egroup':
                     try:
                         role = get_existing_or_register_role(obj['email'])
                     except DoesNotExistInLDAP:
                         raise UpdateDepositPermissionsError(
-                            'Egroup with this mail does not exist in LDAP.')
+                            'Egroup with this mail does not exist in LDAP.'
+                        )
 
                     if obj['op'] == 'add':
                         try:
                             self._add_egroup_permissions(
-                                role, [obj['action']], db.session)
+                                role, [obj['action']], db.session
+                            )
                         except IntegrityError:
                             raise UpdateDepositPermissionsError(
-                                'Permission already exist.')
+                                'Permission already exist.'
+                            )
                     elif obj['op'] == 'remove':
                         try:
                             self._remove_egroup_permissions(
-                                role, [obj['action']], db.session)
+                                role, [obj['action']], db.session
+                            )
                         except NoResultFound:
                             raise UpdateDepositPermissionsError(
-                                'Permission does not exist.')
+                                'Permission does not exist.'
+                            )
 
         self.commit()
 
@@ -507,8 +542,8 @@ class CAPDeposit(Deposit, Reviewable):
         """Adds permissions for user for this deposit."""
         for permission in permissions:
             session.add(
-                ActionUsers.allow(DEPOSIT_ACTIONS_NEEDS(self.id)[permission],
-                                  user=user))
+                ActionUsers.allow(DEPOSIT_ACTIONS_NEEDS(self.id)[permission], user=user)
+            )
 
             session.flush()
 
@@ -518,9 +553,12 @@ class CAPDeposit(Deposit, Reviewable):
         """Remove permissions for user for this deposit."""
         for permission in permissions:
             session.delete(
-                ActionUsers.query.filter(ActionUsers.action == permission,
-                                         ActionUsers.argument == str(self.id),
-                                         ActionUsers.user_id == user.id).one())
+                ActionUsers.query.filter(
+                    ActionUsers.action == permission,
+                    ActionUsers.argument == str(self.id),
+                    ActionUsers.user_id == user.id,
+                ).one()
+            )
             session.flush()
 
             self['_access'][permission]['users'].remove(user.id)
@@ -528,8 +566,10 @@ class CAPDeposit(Deposit, Reviewable):
     def _add_egroup_permissions(self, egroup, permissions, session):
         for permission in permissions:
             session.add(
-                ActionRoles.allow(DEPOSIT_ACTIONS_NEEDS(self.id)[permission],
-                                  role=egroup))
+                ActionRoles.allow(
+                    DEPOSIT_ACTIONS_NEEDS(self.id)[permission], role=egroup
+                )
+            )
             session.flush()
 
             if egroup.id not in self['_access'][permission]['roles']:
@@ -541,7 +581,9 @@ class CAPDeposit(Deposit, Reviewable):
                 ActionRoles.query.filter(
                     ActionRoles.action == permission,
                     ActionRoles.argument == str(self.id),
-                    ActionRoles.role_id == egroup.id).one())
+                    ActionRoles.role_id == egroup.id,
+                ).one()
+            )
             session.flush()
 
             self['_access'][permission]['roles'].remove(egroup.id)
@@ -573,14 +615,17 @@ class CAPDeposit(Deposit, Reviewable):
                 if not isinstance(schema, dict):
                     schema = {'$ref': schema}
                 resolver = current_app.extensions[
-                    'invenio-records'].ref_resolver_cls.from_schema(schema)
+                    'invenio-records'
+                ].ref_resolver_cls.from_schema(schema)
 
                 validator = NoRequiredValidator(schema, resolver=resolver)
 
                 errors = []
                 for err in validator.iter_errors(self):
-                    if err.__class__ is UniqueRequiredValidationError and \
-                       self["_deposit"]["id"] in err.uuids:
+                    if (
+                        err.__class__ is UniqueRequiredValidationError
+                        and self["_deposit"]["id"] in err.uuids
+                    ):
                         pass
                     else:
                         errors.append(FieldError(get_error_path(err), str(err.message)))
@@ -588,8 +633,9 @@ class CAPDeposit(Deposit, Reviewable):
                 if errors:
                     raise DepositValidationError(None, errors=errors)
             except RefResolutionError:
-                raise DepositValidationError('Schema {} not found.'.format(
-                    self['$schema']))
+                raise DepositValidationError(
+                    'Schema {} not found.'.format(self['$schema'])
+                )
         else:
             raise DepositValidationError('You need to provide a valid schema.')
 
@@ -610,15 +656,12 @@ class CAPDeposit(Deposit, Reviewable):
 
         if not failed:
             self.files[filename].file.set_contents(
-                content,
-                default_location=self.files.bucket.location.uri,
-                size=size)
+                content, default_location=self.files.bucket.location.uri, size=size
+            )
 
             print('File {} saved ({}b).\n'.format(filename, size))
         else:
-            ObjectVersionTag.create(object_version=obj,
-                                    key='status',
-                                    value='failed')
+            ObjectVersionTag.create(object_version=obj, key='status', value='failed')
             print('File {} not saved.\n'.format(filename))
 
         self.files.flush()
@@ -629,8 +672,7 @@ class CAPDeposit(Deposit, Reviewable):
     @classmethod
     def get_record(cls, id_, with_deleted=False):
         """Get record instance."""
-        deposit = super(CAPDeposit, cls).get_record(id_=id_,
-                                                    with_deleted=with_deleted)
+        deposit = super(CAPDeposit, cls).get_record(id_=id_, with_deleted=with_deleted)
         deposit['_files'] = deposit.files.dumps()
         return deposit
 
@@ -691,9 +733,7 @@ class CAPDeposit(Deposit, Reviewable):
             data = cls._preprocess_create_data(data, uuid_, owner)
 
             # create RecordMetadata instance
-            deposit = Record.create(data,
-                                    id_=uuid_,
-                                    validator=NoRequiredValidator)
+            deposit = Record.create(data, id_=uuid_, validator=NoRequiredValidator)
             deposit.__class__ = cls
 
             # create files bucket
@@ -704,7 +744,9 @@ class CAPDeposit(Deposit, Reviewable):
                 for permission in DEPOSIT_ACTIONS:
                     db.session.add(
                         ActionUsers.allow(
-                            DEPOSIT_ACTIONS_NEEDS(deposit.id)[permission], user=owner))
+                            DEPOSIT_ACTIONS_NEEDS(deposit.id)[permission], user=owner
+                        )
+                    )
 
                     db.session.flush()
 
@@ -734,7 +776,8 @@ class CAPDeposit(Deposit, Reviewable):
                 data['$schema'] = schema_name_to_url(ana_type)
             except JSONSchemaNotFound:
                 raise DepositValidationError(
-                    f'Schema {ana_type} is not a valid deposit schema.')
+                    f'Schema {ana_type} is not a valid deposit schema.'
+                )
         elif '$schema' not in data:
             raise DepositValidationError('Schema not specified.')
 
@@ -743,8 +786,12 @@ class CAPDeposit(Deposit, Reviewable):
             data['_experiment'] = schema.experiment
         except JSONSchemaNotFound:
             raise DepositValidationError(
-                f'Schema {data["$schema"]} is not a valid deposit schema.')
+                f'Schema {data["$schema"]} is not a valid deposit schema.'
+            )
 
+        # Check if schema has 'x-cap-permission'
+        _schema = {'$ref': data['$schema']}
+        cls.validate_field_permissions(schema=_schema, submitted_data=data)
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
         if '_deposit' not in data:
@@ -754,10 +801,7 @@ class CAPDeposit(Deposit, Reviewable):
             data['_deposit']['owners'] = [owner.id]
             data['_deposit']['created_by'] = owner.id
             data['_access'] = {
-                permission: {
-                    'users': [owner.id],
-                    'roles': []
-                }
+                permission: {'users': [owner.id], 'roles': []}
                 for permission in DEPOSIT_ACTIONS
             }
         else:
@@ -765,3 +809,24 @@ class CAPDeposit(Deposit, Reviewable):
             data['_access'] = copy.deepcopy(EMPTY_ACCESS_OBJECT)
 
         return data
+
+    @classmethod
+    def validate_field_permissions(
+        cls, schema=None, current_data=None, submitted_data=None
+    ):
+        if not any([schema, submitted_data]):
+            return
+
+        validator = get_validator(schema)
+        errors = []
+        for err in validator.iter_errors(submitted_data):
+            if type(err) is XCAPPermissionValidationError:
+                error_path = get_error_path(err)
+                current_version = get_val_from_path(current_data, error_path)
+                incoming_version = get_val_from_path(submitted_data, error_path)
+
+                if current_version != incoming_version:
+                    errors.append(FieldError(error_path, str(err.message)))
+
+        if errors:
+            raise DepositValidationError("You cannot edit this field.", errors=errors)
