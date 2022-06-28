@@ -87,10 +87,8 @@ let FieldTemplate = function(props) {
           flex={false}
           pad={{ horizontal: "small" }}
         >
-          {props.rawErrors.map((error, index) => [
-            <span key={index}>
-              {index + 1}. {error}
-            </span>
+          {[...new Set(props.rawErrors)].map((error, index) => [
+            <span key={index}>{error}</span>
           ])}
         </Box>
       ) : null}
