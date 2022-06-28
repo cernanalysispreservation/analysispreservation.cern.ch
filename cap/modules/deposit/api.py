@@ -122,7 +122,9 @@ def DEPOSIT_ACTIONS_NEEDS(id):
     }
 
 
-EMPTY_ACCESS_OBJECT = {action: {'users': [], 'roles': []} for action in DEPOSIT_ACTIONS}
+EMPTY_ACCESS_OBJECT = {
+    action: {'users': [], 'roles': []} for action in DEPOSIT_ACTIONS
+}
 
 
 class CAPDeposit(Deposit, Reviewable):
@@ -272,7 +274,9 @@ class CAPDeposit(Deposit, Reviewable):
 
                 try:
                     host, owner, repo, branch, filepath = parse_git_url(url)
-                    api = create_git_api(host, owner, repo, branch, current_user.id)
+                    api = create_git_api(
+                        host, owner, repo, branch, current_user.id
+                    )
 
                     if filepath:
                         if webhook:
@@ -294,7 +298,11 @@ class CAPDeposit(Deposit, Reviewable):
                                     ' for a specific branch or sha.'
                                 )
 
-                        if event_type == 'push' and api.branch is None and api.sha:
+                        if (
+                            event_type == 'push'
+                            and api.branch is None
+                            and api.sha
+                        ):
                             raise FileUploadError(
                                 'You cannot create a push webhook'
                                 ' for a specific sha.'
@@ -438,7 +446,9 @@ class CAPDeposit(Deposit, Reviewable):
             patched_data = apply_patch(self.model.json, patch)
 
             self.validate_field_permissions(
-                schema=schema, current_data=self.model.json, submitted_data=patched_data
+                schema=schema,
+                current_data=self.model.json,
+                submitted_data=patched_data,
             )
             return super(CAPDeposit, self).patch(*args, **kwargs)
 
@@ -542,7 +552,9 @@ class CAPDeposit(Deposit, Reviewable):
         """Adds permissions for user for this deposit."""
         for permission in permissions:
             session.add(
-                ActionUsers.allow(DEPOSIT_ACTIONS_NEEDS(self.id)[permission], user=user)
+                ActionUsers.allow(
+                    DEPOSIT_ACTIONS_NEEDS(self.id)[permission], user=user
+                )
             )
 
             session.flush()
@@ -628,7 +640,9 @@ class CAPDeposit(Deposit, Reviewable):
                     ):
                         pass
                     else:
-                        errors.append(FieldError(get_error_path(err), str(err.message)))
+                        errors.append(
+                            FieldError(get_error_path(err), str(err.message))
+                        )
 
                 if errors:
                     raise DepositValidationError(None, errors=errors)
@@ -656,12 +670,16 @@ class CAPDeposit(Deposit, Reviewable):
 
         if not failed:
             self.files[filename].file.set_contents(
-                content, default_location=self.files.bucket.location.uri, size=size
+                content,
+                default_location=self.files.bucket.location.uri,
+                size=size,
             )
 
             print('File {} saved ({}b).\n'.format(filename, size))
         else:
-            ObjectVersionTag.create(object_version=obj, key='status', value='failed')
+            ObjectVersionTag.create(
+                object_version=obj, key='status', value='failed'
+            )
             print('File {} not saved.\n'.format(filename))
 
         self.files.flush()
@@ -672,7 +690,9 @@ class CAPDeposit(Deposit, Reviewable):
     @classmethod
     def get_record(cls, id_, with_deleted=False):
         """Get record instance."""
-        deposit = super(CAPDeposit, cls).get_record(id_=id_, with_deleted=with_deleted)
+        deposit = super(CAPDeposit, cls).get_record(
+            id_=id_, with_deleted=with_deleted
+        )
         deposit['_files'] = deposit.files.dumps()
         return deposit
 
@@ -733,7 +753,9 @@ class CAPDeposit(Deposit, Reviewable):
             data = cls._preprocess_create_data(data, uuid_, owner)
 
             # create RecordMetadata instance
-            deposit = Record.create(data, id_=uuid_, validator=NoRequiredValidator)
+            deposit = Record.create(
+                data, id_=uuid_, validator=NoRequiredValidator
+            )
             deposit.__class__ = cls
 
             # create files bucket
@@ -744,7 +766,8 @@ class CAPDeposit(Deposit, Reviewable):
                 for permission in DEPOSIT_ACTIONS:
                     db.session.add(
                         ActionUsers.allow(
-                            DEPOSIT_ACTIONS_NEEDS(deposit.id)[permission], user=owner
+                            DEPOSIT_ACTIONS_NEEDS(deposit.id)[permission],
+                            user=owner,
                         )
                     )
 
@@ -820,7 +843,9 @@ class CAPDeposit(Deposit, Reviewable):
         validator = get_validator(schema)
         errors = []
         for err in validator.iter_errors(submitted_data):
-            if type(err) is XCAPPermissionValidationError:
+            if (
+                type(err) is XCAPPermissionValidationError
+            ) or check_error_context(err):
                 error_path = get_error_path(err)
                 current_version = get_val_from_path(current_data, error_path)
                 incoming_version = get_val_from_path(submitted_data, error_path)
@@ -829,4 +854,10 @@ class CAPDeposit(Deposit, Reviewable):
                     errors.append(FieldError(error_path, str(err.message)))
 
         if errors:
-            raise DepositValidationError("You cannot edit this field.", errors=errors)
+            raise DepositValidationError(
+                "You cannot edit this field.", errors=errors
+            )
+
+
+def check_error_context(err):
+    return any(type(e) is XCAPPermissionValidationError for e in err.context)
