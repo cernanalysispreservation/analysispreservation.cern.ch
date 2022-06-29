@@ -47,7 +47,6 @@ def test_deposit_publish_when_owner_can_publish_his_deposit(
     assert resp.status_code == 202
 
 
-@mark.skip
 def test_deposit_publish_when_auto_incremental_pid_enabled(
     client, location, create_schema, auth_headers_for_superuser,json_headers):
     schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-'})

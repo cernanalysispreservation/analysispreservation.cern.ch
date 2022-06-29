@@ -110,7 +110,6 @@ def test_create_deposit_when_superuser_can_create_deposit(
     assert resp.status_code == 201
 
 
-@mark.skip
 def test_create_deposit_with_incremental_pid_with_ana_type(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
     schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-ANA-'})
@@ -123,7 +122,6 @@ def test_create_deposit_with_incremental_pid_with_ana_type(client, location,
     assert resp.json['id'] == 'FASER-ANA-1'
 
 
-@mark.skip
 def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
     schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-'})
@@ -136,7 +134,6 @@ def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
     assert resp.json['id'] == 'FASER-2022-1'
 
 
-@mark.skip
 def test_create_deposit_with_incremental_pid_with_unsupported_keyword(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
     schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-{$id}-'})
@@ -149,7 +146,6 @@ def test_create_deposit_with_incremental_pid_with_unsupported_keyword(client, lo
     assert resp.json['message'] == "Keyword {$id} is not supported yet."
 
 
-@mark.skip
 def test_create_deposit_with_incremental_pid_with_schema_url(
         client, users, location, json_headers, auth_headers_for_user,
         create_schema):
