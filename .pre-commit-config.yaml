@@ -3,6 +3,7 @@ repos:
     rev: 22.3.0
     hooks:
       - id: black
+        stages: [commit]
         args: ['--skip-string-normalization']
         exclude: ^tests/
 
@@ -10,12 +11,14 @@ repos:
     rev: '3.9.2'
     hooks:
       - id: flake8
+        stages: [commit]
         args: ['--config=.flake8']
 
   - repo: https://github.com/pycqa/isort
     rev: '5.10.1'
     hooks:
       - id: isort
+        stages: [commit]
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: 'v2.7.1'

@@ -52,7 +52,12 @@ class CAPJSONSerializer(JSONSerializer):
             current_app.logger.info('PIDDoesNotExistError on search. Record:.')
 
     def serialize_search(
-        self, pid_fetcher, search_result, links=None, item_links_factory=None, **kwargs
+        self,
+        pid_fetcher,
+        search_result,
+        links=None,
+        item_links_factory=None,
+        **kwargs
     ):
         """Serialize a search result.
 
@@ -60,7 +65,9 @@ class CAPJSONSerializer(JSONSerializer):
         :param search_result: Elasticsearch search result.
         :param links: Dictionary of links to add to response.
         """
-        links = {k: url_to_api_url(v) for k, v in links.items()} if links else {}
+        links = (
+            {k: url_to_api_url(v) for k, v in links.items()} if links else {}
+        )
 
         # Get display title for "_collection" field
         collection_buckets = (
@@ -79,9 +86,9 @@ class CAPJSONSerializer(JSONSerializer):
         for cb in collection_buckets:
             if "__display_name__" in cb:
                 try:
-                    display_name = cb["__display_name__"]["hits"]["hits"][0]["_source"][
-                        "_collection"
-                    ]["fullname"]
+                    display_name = cb["__display_name__"]["hits"]["hits"][0][
+                        "_source"
+                    ]["_collection"]["fullname"]
                     cb["__display_name__"] = display_name
                 except Exception:
                     del cb["__display_name__"]
@@ -103,7 +110,9 @@ class RecordSerializer(CAPJSONSerializer):
         Preprocess record serializing for to add bucket for fetching
         files later
         """
-        result = super().preprocess_record(pid, record, links_factory=links_factory)
+        result = super().preprocess_record(
+            pid, record, links_factory=links_factory
+        )
 
         # add bucket id for fetching files later
         record.__class__ = CAPRecord

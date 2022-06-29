@@ -23,7 +23,8 @@ COMMIT_SUBJECTS = [
     "search",
     "services",
     "tests",
-    "workflows"
+    "workflows",
+    "format",
 ]
 
 
@@ -31,6 +32,7 @@ class SignedOffBy(CommitRule):
     """
     This rule will enforce that each commit contains a "Signed-off-by" line.
     """
+
     name = "body-requires-signed-off-by"
     id = "CAP1"
 
@@ -48,6 +50,7 @@ class ApprovedSubject(CommitRule):
     This rule will enforce that each commit starts with one of the approved
     subjects, as presented in the list above.
     """
+
     name = "approved-subject-in-title"
     id = "CAP2"
 
@@ -56,6 +59,8 @@ class ApprovedSubject(CommitRule):
             if commit.message.title.startswith(f'{subject}: '):
                 return
 
-        msg = f"Subject not approved, please start with one of: " \
-              f"{COMMIT_SUBJECTS}"
+        msg = (
+            f"Subject not approved, please start with one of: "
+            f"{COMMIT_SUBJECTS}"
+        )
         return [RuleViolation(self.id, msg, line_nr=1)]
