@@ -31,8 +31,10 @@ import uuid
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
 from cap.modules.schemas.resolvers import (
+    resolve_schema_by_name_and_version,
     resolve_schema_by_url,
-    resolve_schema_by_name_and_version)
+)
+
 from .utils import generate_auto_incremental_pid
 
 
@@ -59,7 +61,7 @@ def cap_deposit_minter(record_uuid, data):
         pid_value,
         object_type='rec',
         object_uuid=record_uuid,
-        status=PIDStatus.REGISTERED
+        status=PIDStatus.REGISTERED,
     )
 
     data['_deposit'] = {

@@ -38,6 +38,7 @@ def cap_record_minter(record_uuid, data):
         pid_type='recid',
         pid_value=pid_value,
         object_type='rec',
-        object_uuid=record_uuid)
+        object_uuid=record_uuid,
+    )
     data['control_number'] = provider.pid.pid_value
     return provider.pid

@@ -27,12 +27,11 @@ import random
 import string
 
 from flask import current_app, url_for
+from invenio_pidstore.errors import PIDDoesNotExistError
+from invenio_pidstore.models import PersistentIdentifier
 from six.moves.urllib import parse
 
 from cap.modules.schemas.resolvers import resolve_schema_by_url
-
-from invenio_pidstore.errors import PIDDoesNotExistError
-from invenio_pidstore.models import PersistentIdentifier
 
 
 def generate_recid(data):
@@ -52,14 +51,17 @@ def generate_recid(data):
 
 def random_pid(experiment):
     """Generate a random pid value for experiments."""
+
     def _generate_random_string(length):
         """Random string generator."""
         chars = string.ascii_lowercase + string.digits
         return ''.join((random.choice(chars)) for x in range(length))
 
-    return 'CAP.{}.{}.{}'.format(experiment,
-                                 _generate_random_string(4).upper(),
-                                 _generate_random_string(4).upper())
+    return 'CAP.{}.{}.{}'.format(
+        experiment,
+        _generate_random_string(4).upper(),
+        _generate_random_string(4).upper(),
+    )
 
 
 def url_to_api_url(url):
@@ -69,26 +71,36 @@ def url_to_api_url(url):
 
     parts = parse.urlsplit(url)
     api_url = parse.urlunsplit(
-        (parts.scheme, parts.netloc, '/api' + parts.path, parts.query,
-         parts.fragment))
+        (
+            parts.scheme,
+            parts.netloc,
+            '/api' + parts.path,
+            parts.query,
+            parts.fragment,
+        )
+    )
     return api_url
 
 
 def api_url_for(endpoint, pid, **kwargs):
     """API URL builder."""
-    url = url_for('.{0}'.format(endpoint),
-                  pid_value=pid.pid_value,
-                  _external=True,
-                  **kwargs)
+    url = url_for(
+        '.{0}'.format(endpoint),
+        pid_value=pid.pid_value,
+        _external=True,
+        **kwargs
+    )
 
     return url_to_api_url(url)
 
 
 def clean_api_url_for(endpoint, pid, **kwargs):
     """API URL builder."""
-    url = url_for('{0}'.format(endpoint),
-                  pid_value=pid.pid_value,
-                  _external=True,
-                  **kwargs)
+    url = url_for(
+        '{0}'.format(endpoint),
+        pid_value=pid.pid_value,
+        _external=True,
+        **kwargs
+    )
 
     return url_to_api_url(url)

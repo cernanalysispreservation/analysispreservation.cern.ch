@@ -72,7 +72,9 @@ def validate_field_schema_editing(validator, value, instance, schema):
             error = False
 
     if allowed_roles and error:
-        user_allowed = any(Permission(RoleNeed(_role)).can() for _role in allowed_roles)
+        user_allowed = any(
+            Permission(RoleNeed(_role)).can() for _role in allowed_roles
+        )
         error = False if user_allowed else True
 
     if error:
@@ -82,13 +84,17 @@ def validate_field_schema_editing(validator, value, instance, schema):
 def get_validator(schema):
     """Validator for checking field level validation."""
     field_schema_editing_validator = dict()
-    field_schema_editing_validator['x-cap-permission'] = validate_field_schema_editing
+    field_schema_editing_validator[
+        'x-cap-permission'
+    ] = validate_field_schema_editing
     field_schema_validator = extend(
-        Draft4Validator, validators=field_schema_editing_validator, type_checker=None
+        Draft4Validator,
+        validators=field_schema_editing_validator,
+        type_checker=None,
     )
-    resolver = current_app.extensions['invenio-records'].ref_resolver_cls.from_schema(
-        schema
-    )
+    resolver = current_app.extensions[
+        'invenio-records'
+    ].ref_resolver_cls.from_schema(schema)
     validator = extend(field_schema_validator, {'required': None})
     validator = validator(schema, resolver=resolver)
 

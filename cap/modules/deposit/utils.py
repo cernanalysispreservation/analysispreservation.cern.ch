@@ -22,11 +22,11 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Deposit utils."""
+import re
 from copy import deepcopy
 from datetime import date
-import re
-from flask import abort
 
+from flask import abort
 from invenio_access.models import Role
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
@@ -44,7 +44,8 @@ def clean_empty_values(data):
         return [v for v in (clean_empty_values(v) for v in data) if v]
     return {
         k: v
-        for k, v in ((k, clean_empty_values(v)) for k, v in data.items()) if v
+        for k, v in ((k, clean_empty_values(v)) for k, v in data.items())
+        if v
     }
 
 
@@ -66,10 +67,9 @@ def add_read_permission_for_egroup(deposit, egroup):
 
 def fix_bucket_links(response):
     """Add /api/ to the bucket and object links."""
+
     def add_api_to_links(links):
-        return {k: url_to_api_url(v)
-                for k, v in links.items()} \
-            if links else {}
+        return {k: url_to_api_url(v) for k, v in links.items()} if links else {}
 
     # bucket links
     response['links'] = add_api_to_links(response.get('links'))
@@ -82,8 +82,15 @@ def fix_bucket_links(response):
     return response
 
 
-def prepare_record(sender, json=None, record=None,
-                   index=None, doc_type=None, arguments=None, **kwargs):
+def prepare_record(
+    sender,
+    json=None,
+    record=None,
+    index=None,
+    doc_type=None,
+    arguments=None,
+    **kwargs
+):
 
     try:
         schema = resolve_schema_by_url(json.get("$schema"))
@@ -99,9 +106,7 @@ def prepare_record(sender, json=None, record=None,
 
 
 def get_auto_incremental_pid_pattern(auto_increment_id):
-    ALLOWED_KEYWORDS = {
-        '{$year}': str(date.today().year)
-    }
+    ALLOWED_KEYWORDS = {'{$year}': str(date.today().year)}
 
     pid_pattern = deepcopy(auto_increment_id)
 
@@ -125,12 +130,16 @@ def generate_auto_incremental_pid(auto_increment_id):
     pid_pattern = get_auto_incremental_pid_pattern(auto_increment_id)
     regexp_pattern = r'^{}\d$'.format(pid_pattern)
 
-    previous_deposit = PersistentIdentifier.query.filter(
-        PersistentIdentifier.pid_value.op('~')(regexp_pattern),
-        PersistentIdentifier.pid_type == 'depid'
-    ).order_by(PersistentIdentifier.id.desc()).first()
+    previous_deposit = (
+        PersistentIdentifier.query.filter(
+            PersistentIdentifier.pid_value.op('~')(regexp_pattern),
+            PersistentIdentifier.pid_type == 'depid',
+        )
+        .order_by(PersistentIdentifier.id.desc())
+        .first()
+    )
 
     if previous_deposit:
         previous_deposit_id = int(previous_deposit.pid_value.split('-')[-1])
 
-    return '{}{}'.format(pid_pattern, previous_deposit_id+1)
+    return '{}{}'.format(pid_pattern, previous_deposit_id + 1)

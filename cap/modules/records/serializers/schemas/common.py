@@ -31,20 +31,23 @@ from marshmallow import Schema, ValidationError, fields, validates_schema
 
 from cap.modules.records.utils import url_to_api_url
 from cap.modules.schemas.resolvers import resolve_schema_by_url
-from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id  # noqa
+from cap.modules.user.utils import get_remote_account_by_id
 
 LABELS = {
     'physics_objects': {
         'path': 'metadata.main_measurements.signal_event_selection.physics_objects.object',  # noqa
-        'condition': lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS',
+        'condition': lambda obj: obj.get('metadata', {}).get('_experiment')
+        == 'CMS',
     },
     'cadi_id': {
         'path': 'metadata.basic_info.cadi_id',
-        'condition': lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS',
+        'condition': lambda obj: obj.get('metadata', {}).get('_experiment')
+        == 'CMS',
     },
     'cadi_id_': {
         'path': 'metadata.analysis_context.cadi_id',
-        'condition': lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS',
+        'condition': lambda obj: obj.get('metadata', {}).get('_experiment')
+        == 'CMS',
     },
     #    'cms_keywords': {
     #        'path': 'metadata.additional_resources.keywords',
