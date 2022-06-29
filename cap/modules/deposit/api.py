@@ -818,7 +818,7 @@ class CAPDeposit(Deposit, Reviewable):
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
         if '_deposit' not in data:
-            cls.deposit_minter(uuid_, data)
+            cls.deposit_minter(uuid_, data, schema=schema)
 
         if owner:
             data['_deposit']['owners'] = [owner.id]

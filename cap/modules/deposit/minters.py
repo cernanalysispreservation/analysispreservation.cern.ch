@@ -38,16 +38,19 @@ from cap.modules.schemas.resolvers import (
 from .utils import generate_auto_incremental_pid
 
 
-def cap_deposit_minter(record_uuid, data):
+def cap_deposit_minter(record_uuid, data, schema=None):
     """Mint deposit's identifier."""
     try:
         pid_value = data['_deposit']['id']
     except KeyError:
         pid_value, schema = None, None
-        if data.get('$ana_type'):
-            schema = resolve_schema_by_name_and_version(data.get('$ana_type'))
-        elif data.get('$schema'):
-            schema = resolve_schema_by_url(data.get('$schema'))
+        if not schema:
+            if data.get('$ana_type'):
+                schema = resolve_schema_by_name_and_version(
+                    data.get('$ana_type')
+                )
+            elif data.get('$schema'):
+                schema = resolve_schema_by_url(data.get('$schema'))
 
         if schema:
             auto_increment_id = schema.config.get('auto_increment_id')
