@@ -55,11 +55,11 @@ const RJSFForm = ({
 
   const canUserEditField = (obj, user) => {
     // get the list with the users
-    const users = obj["x-cap-permissions"]["users"];
+    const users = obj["x-cap-permission"]["users"];
 
     // if the user is in the list, it means he can edit
     if (users) {
-      return users.includes(user);
+      return users.map(i => i.toLowerCase()).includes(usertoLowerCase());
     }
     return false;
   };
@@ -71,7 +71,7 @@ const RJSFForm = ({
       : null;
 
     // check if this block has this field for permission checks
-    schema["x-cap-permissions"] &&
+    schema["x-cap-permission"] &&
       !canUserEditField(schema, userEmail) &&
       (schema["readOnly"] = "true");
 
@@ -87,7 +87,7 @@ const RJSFForm = ({
 
         if (next) checkSchemaForPermissions(schema[nextSteps]);
         else {
-          schema[nextSteps]["x-cap-permissions"] &&
+          schema[nextSteps]["x-cap-permission"] &&
             !canUserEditField(schema[nextSteps], userEmail) &&
             (schema[nextSteps]["readOnly"] = "true");
         }
@@ -96,7 +96,7 @@ const RJSFForm = ({
         // then we shoyld start iterating for nested cases
         schema[nextSteps] &&
           Object.values(schema[nextSteps]).map((val) => {
-            schema["x-cap-permissions"] &&
+            schema["x-cap-permission"] &&
               !canUserEditField(schema, userEmail) &&
               (schema["readOnly"] = "true");
 
