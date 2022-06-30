@@ -20,7 +20,7 @@ const Contact = () => {
     <Col span={24}>
       <Row
         justify="center"
-        style={{ marginTop: "2rem", background: "#001529", padding: "1rem" }}
+        style={{ marginTop: "2rem", background: "#fff", padding: "1rem" }}
       >
         <Col xs={22} lg={12}>
           <Row
@@ -33,7 +33,6 @@ const Contact = () => {
                 href="mailto:analysis-preservation-support@cern.ch"
                 icon={<MailOutlined />}
                 size="large"
-                style={{ color: "#fff" }}
               >
                 analysis-preservation-support@cern.ch
               </Button>
@@ -43,13 +42,11 @@ const Contact = () => {
                 target="_blank"
                 icon={<TwitterOutlined />}
                 size="large"
-                style={{ color: "#fff" }}
               >
                 @analysispreserv
               </Button>
               <Button
                 type="link"
-                style={{ color: "#fff" }}
                 href="https://github.com/cernanalysispreservation/analysispreservation.cern.ch"
                 target="_blank"
                 icon={<GithubOutlined />}
@@ -61,7 +58,7 @@ const Contact = () => {
             <Space direction="vertical">
               <Typography.Title
                 level={5}
-                style={{ fontSize: "1.1rem", color: "#fff" }}
+                style={{ fontSize: "1.1rem" }}
               >
                 Supported by:
               </Typography.Title>
