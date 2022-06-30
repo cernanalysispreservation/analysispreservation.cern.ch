@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
+  Alert,
   Card,
   Col,
   Empty,
@@ -11,7 +12,8 @@ import {
   notification,
   Collapse,
   Tag,
-  Table
+  Table,
+  Button
 } from "antd";
 import RepoActions from "./RepoActions";
 import { CheckCircleTwoTone } from "@ant-design/icons";
@@ -143,6 +145,20 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
             mind that you cannot connect to public repositories (owner has to
             give you a specific access to do that).
           </Typography.Paragraph>
+        </Card>
+        <Card
+          title="Create a repository"
+          extra={
+            <Button type="primary" onClick={() => {}}>
+              Create
+            </Button>
+          }
+        >
+          <Typography.Paragraph>
+            You can create a new repository, and add ......
+          </Typography.Paragraph>
+          <Alert message="You will be able to see the added repositories in the 'Connected
+            Repositories' section" type="info" showIcon />
         </Card>
         {canUpdate && (
           <Card title="Add new repository">
