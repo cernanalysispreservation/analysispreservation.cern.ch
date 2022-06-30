@@ -12,6 +12,7 @@ COMMIT_SUBJECTS = [
     "devops",
     "docker",
     "docs",
+    "faser",
     "files",
     "fixtures",
     "global",
