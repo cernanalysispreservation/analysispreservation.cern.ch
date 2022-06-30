@@ -38,6 +38,7 @@ cap roles create alice-member@cern.ch
 cap roles create atlas-active-members-all@cern.ch
 cap roles create lhcb-general@cern.ch
 cap roles create analysis-preservation-support@cern.ch
+cap roles create faser-all@cern.ch
 
 cap roles add info@inveniosoftware.org analysis-preservation-support@cern.ch
 

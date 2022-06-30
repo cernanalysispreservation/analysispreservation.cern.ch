@@ -133,6 +133,8 @@ setup(
             'cap.modules.experiments.permissions:alice_access_action',
             'atlas_access = '
             'cap.modules.experiments.permissions:atlas_access_action',
+            'faser_access = '
+            'cap.modules.experiments.permissions:faser_access_action',
         ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
