@@ -35,7 +35,8 @@ experiment_groups = {
     'cms': 'cms-members',
     'atlas': 'atlas-active-members-all',
     'alice': 'alice-member',
-    'lhcb': 'lhcb-general'
+    'lhcb': 'lhcb-general',
+    'faser': 'faser-all'
 }
 
 

@@ -222,6 +222,10 @@ def users(db):
                                              'lhcb-access'),
         'lhcb_user2': create_user_with_access(db.session, 'lhcb_user2@cern.ch',
                                               'lhcb-access'),
+        'faser_user': create_user_with_access(db.session, 'faser_user@cern.ch',
+                                              'faser-access'),
+        'faser_user2': create_user_with_access(db.session, 'faser_user2@cern.ch',
+                                              'faser-access'),
         'superuser': create_user_with_access(db.session, 'superuser@cern.ch',
                                              'superuser-access'),
         'random': create_user_with_access(db.session, 'random@cern0.ch'),
@@ -241,6 +245,7 @@ def remote_accounts(db, users):
             RemoteAccount.create(2, 'dev', dict(groups=['cms-members'])),
             RemoteAccount.create(3, 'dev', dict(groups=['alice-member'])),
             RemoteAccount.create(5, 'dev', dict(groups=['atlas-active-members-all'])),
+            RemoteAccount.create(5, 'dev', dict(groups=['faser-all'])),
             RemoteAccount.create(7, 'dev', dict(groups=['lhcb-general']))
         ]
 

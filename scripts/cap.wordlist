@@ -18,6 +18,7 @@ docker
 docs
 docstrings
 formBuilder
+faser
 GNU
 GPL
 gunicorn
