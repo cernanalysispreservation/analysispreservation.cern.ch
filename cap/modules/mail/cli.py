@@ -68,7 +68,7 @@ def mail():
 @click.option(
     '--users-from-experiment',
     'experiment',
-    type=click.Choice(['cms', 'atlas', 'alice', 'lhcb']),
+    type=click.Choice(['cms', 'atlas', 'alice', 'lhcb', 'faser']),
     cls=MutuallyExclusiveOption,
     mutually_exclusive=["all_users", "depid"],
     help='Recipients are the users of a specific experiment',

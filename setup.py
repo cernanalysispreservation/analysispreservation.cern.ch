@@ -169,6 +169,8 @@ setup(
             'cap.modules.schemas.permissions:schema_read_action_all',
             'schema_object_admin = '
             'cap.modules.schemas.permissions:schema_admin_action_all',
+            'faser_access = '
+            'cap.modules.experiments.permissions:faser_access_action',
         ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',

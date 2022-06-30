@@ -42,6 +42,7 @@ cms_access_action = exp_need_factory('CMS')
 lhcb_access_action = exp_need_factory('LHCb')
 alice_access_action = exp_need_factory('ALICE')
 atlas_access_action = exp_need_factory('ATLAS')
+faser_access_action = exp_need_factory('FASER')
 
 cms_permission = exp_permission_factory('CMS')
 lhcb_permission = exp_permission_factory('LHCb')
@@ -53,3 +54,4 @@ cms_pag_convener_action = action_factory(
     'cap-cms-pag-conveners', parameter=True
 )
 cms_pag_convener_action_all = cms_pag_convener_action(None)
+faser_permission = exp_permission_factory('FASER')
