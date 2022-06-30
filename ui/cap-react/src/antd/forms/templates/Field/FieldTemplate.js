@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
 import WrapIfAdditional from "./WrapIfAdditional";
-import { Space, Typography } from "antd";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -13,7 +12,7 @@ const VERTICAL_WRAPPER_COL = { span: 24 };
 const FieldTemplate = ({
   children,
   classNames,
-  description,
+  // description,
   disabled,
   displayLabel,
   // errors,
