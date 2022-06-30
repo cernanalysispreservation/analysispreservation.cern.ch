@@ -10,14 +10,14 @@ const Integrations = () => {
       xs={24}
       style={{
         margin: "2rem 0",
-        background: "rgb(40,104,146)",
+        background: "#fff",
         padding: "1rem"
       }}
       id="integrations"
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Typography.Title
-          style={{ textAlign: "center", fontSize: "3rem", color: "#fff" }}
+          style={{ textAlign: "center", fontSize: "3rem" }}
           italic
         >
           Integrations
@@ -27,11 +27,11 @@ const Integrations = () => {
             <Row align="space-between">
               <Col xs={24} md={12}>
                 <Space direction="vertical">
-                  <Typography.Title italic level={3} style={{ color: "#fff" }}>
+                  <Typography.Title italic level={3} >
                     Source Code
                   </Typography.Title>
                   <Typography.Paragraph
-                    style={{ fontSize: "1.1rem", color: "#fff" }}
+                    style={{ fontSize: "1.1rem" }}
                   >
                     Attach code to your workspace. Connect your Github and CERN
                     Gitlab accounts, follow repository changes and automatically
@@ -61,11 +61,11 @@ const Integrations = () => {
               <PIDFair />
               <Col xs={24} md={12}>
                 <Space direction="vertical">
-                  <Typography.Title italic level={3} style={{ color: "#fff" }}>
+                  <Typography.Title italic level={3} >
                     Persistent Identifiers/FAIR data
                   </Typography.Title>
                   <Typography.Paragraph
-                    style={{ fontSize: "1.1rem", color: "#fff" }}
+                    style={{ fontSize: "1.1rem" }}
                   >
                     Preserve your analysis in a FAIR manner (Findable Accesible
                     Interoperable Reusable). Use persistent identifiers (PIDs)
@@ -81,11 +81,11 @@ const Integrations = () => {
             <Row align="space-between">
               <Col xs={24} md={12}>
                 <Space direction="vertical">
-                  <Typography.Title italic level={3} style={{ color: "#fff" }}>
+                  <Typography.Title italic level={3} >
                     Workflows
                   </Typography.Title>
                   <Typography.Paragraph
-                    style={{ fontSize: "1.1rem", color: "#fff" }}
+                    style={{ fontSize: "1.1rem"  }}
                   >
                     Make your research reusable and reproducible. Create your
                     containerized workflows, rerun whenever you want and save
