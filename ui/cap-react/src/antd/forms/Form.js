@@ -59,7 +59,7 @@ const RJSFForm = ({
 
     // if the user is in the list, it means he can edit
     if (users) {
-      return users.map(i => i.toLowerCase()).includes(usertoLowerCase());
+      return users.map(i => i.toLowerCase()).includes(user.toLowerCase());
     }
     return false;
   };
@@ -73,7 +73,7 @@ const RJSFForm = ({
     // check if this block has this field for permission checks
     schema["x-cap-permission"] &&
       !canUserEditField(schema, userEmail) &&
-      (schema["readOnly"] = "true");
+      (schema["readOnly"] = true);
 
     // if the current block is either an object or an array
     // then we should examine the nested fields
@@ -89,7 +89,7 @@ const RJSFForm = ({
         else {
           schema[nextSteps]["x-cap-permission"] &&
             !canUserEditField(schema[nextSteps], userEmail) &&
-            (schema[nextSteps]["readOnly"] = "true");
+            (schema[nextSteps]["readOnly"] = true);
         }
       } else {
         // in case that we enter in a block that does not have any of the type
@@ -98,7 +98,7 @@ const RJSFForm = ({
           Object.values(schema[nextSteps]).map((val) => {
             schema["x-cap-permission"] &&
               !canUserEditField(schema, userEmail) &&
-              (schema["readOnly"] = "true");
+              (schema["readOnly"] = true);
 
             checkSchemaForPermissions(val);
           });
@@ -108,7 +108,7 @@ const RJSFForm = ({
 
   // call to update the schema fields
   checkSchemaForPermissions(schema);
-
+  
   return (
     <Form
       className={["__Form__", ...className].join(" ")}
