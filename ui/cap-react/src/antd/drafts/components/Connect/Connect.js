@@ -11,7 +11,8 @@ import {
   notification,
   Collapse,
   Tag,
-  Table
+  Table,
+  Button
 } from "antd";
 import RepoActions from "./RepoActions";
 import { CheckCircleTwoTone } from "@ant-design/icons";
@@ -142,6 +143,22 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
             way your analysis will be always up to date with your code. Keep in
             mind that you cannot connect to public repositories (owner has to
             give you a specific access to do that).
+          </Typography.Paragraph>
+        </Card>
+        <Card
+          title="Create a repository"
+          extra={
+            <Button type="primary" onClick={() => {}}>
+              Create
+            </Button>
+          }
+        >
+          <Typography.Paragraph>
+            You can create a new repository, and add ......
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            The added repositories you will be able to see them in the Connected
+            Repositories section
           </Typography.Paragraph>
         </Card>
         {canUpdate && (
