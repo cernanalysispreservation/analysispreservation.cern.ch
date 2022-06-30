@@ -7,14 +7,14 @@ const Discover = () => {
       xs={24}
       style={{
         minHeight: "20vh",
-        background: "rgb(40,104,146)",
+        background: "#fff",
         padding: "1rem",
         margin: "2rem 0"
       }}
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Typography.Title
-          style={{ textAlign: "center", fontSize: "3rem", color: "#fff" }}
+          style={{ textAlign: "center", fontSize: "3rem" }}
           italic
         >
           Discover
@@ -33,7 +33,7 @@ const Discover = () => {
             style={{ fontSize: "1.2rem", lineHeight: 1.5 }}
           >
             <Space direction="vertical" size="large">
-              <Typography.Paragraph italic style={{ color: "#fff" }}>
+              <Typography.Paragraph italic>
                 CERN Analysis Preservation (CAP) is a service for researchers to
                 preserve and document the various components of their physics
                 analyses, e.g. datasets, software, documentation, so that they
@@ -42,7 +42,7 @@ const Discover = () => {
                 and accessible by their collaborators for the long-term.
               </Typography.Paragraph>
 
-              <Typography.Paragraph italic style={{ color: "#fff" }}>
+              <Typography.Paragraph italic>
                 CAP uses existing collaboration tools and a flexible data model,
                 and it is designed to be easily integrated into researchers'
                 workflows. CAP provides standard collaboration access
