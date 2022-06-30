@@ -67,6 +67,7 @@ def generate_tokens():
         "atlas@inveniosoftware.org",
         "alice@inveniosoftware.org",
         "lhcb@inveniosoftware.org",
+        "faser@inveniosoftware.org",
         "random@inveniosoftware.org",
     ]
     for user_email in user_list:
