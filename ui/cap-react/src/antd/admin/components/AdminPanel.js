@@ -7,7 +7,7 @@ import DocumentTitle from "../../partials/DocumentTitle";
 import { Route, Switch } from "react-router-dom";
 import SchemaWizard from "../containers/SchemaWizard";
 
-const AdminPanel = ({ match, replacePath, schema, schemaInit, getSchema }) => {
+const AdminPanel = ({location,  match, replacePath, schema, schemaInit, getSchema }) => {
   useEffect(() => {
     let { schema_name, schema_version } = match.params;
     const { pathname } = location;
@@ -38,8 +38,7 @@ const AdminPanel = ({ match, replacePath, schema, schemaInit, getSchema }) => {
     location.pathname.includes("notifications")
       ? "Notifications"
       : "Form Builder";
-
-  return (
+        return (
     <DocumentTitle title={getPageTitle()}>
       <Layout style={{ height: "100%", padding: 0 }}>
         <Layout.Header style={{ padding: "0 10px" }}>
@@ -58,6 +57,7 @@ const AdminPanel = ({ match, replacePath, schema, schemaInit, getSchema }) => {
 
 AdminPanel.propTypes = {
   match: PropTypes.object,
+  location: PropTypes.object,
   replacePath: PropTypes.func,
   schema: PropTypes.object,
   schemaInit: PropTypes.func,
