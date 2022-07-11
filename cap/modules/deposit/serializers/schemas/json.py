@@ -24,21 +24,19 @@
 """CAP Basic Schemas."""
 
 import copy
-from marshmallow import fields, post_dump
-from invenio_jsonschemas import current_jsonschemas
 
-from cap.modules.deposit.review import ReviewSchema
+from invenio_jsonschemas import current_jsonschemas
+from marshmallow import fields, post_dump
+
 from cap.modules.deposit.permissions import (
     AdminDepositPermission,
     ReviewDepositPermission,
     UpdateDepositPermission,
 )
+from cap.modules.deposit.review import ReviewSchema
 from cap.modules.records.serializers.schemas import common
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
-from cap.modules.user.utils import (
-    get_role_name_by_id,
-    get_remote_account_by_id
-)
+from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
 
 
 class DepositSearchSchema(common.CommonRecordSchema):
@@ -46,11 +44,13 @@ class DepositSearchSchema(common.CommonRecordSchema):
 
     type = fields.Str(default='deposit')
 
-    recid = fields.Str(attribute='metadata._deposit.pid.value',
-                       dump_only=True)  # only for published ones
+    recid = fields.Str(
+        attribute='metadata._deposit.pid.value', dump_only=True
+    )  # only for published ones
 
-    cloned_from = fields.Dict(attribute='metadata._deposit.cloned_from.value',
-                              dump_only=True)
+    cloned_from = fields.Dict(
+        attribute='metadata._deposit.cloned_from.value', dump_only=True
+    )
 
 
 class DepositSchema(DepositSearchSchema):
@@ -65,7 +65,9 @@ class DepositSchema(DepositSearchSchema):
         for permission in access.values():
             if permission['users']:
                 for index, user_id in enumerate(permission['users']):
-                    permission['users'][index] = get_remote_account_by_id(user_id)  # noqa
+                    permission['users'][index] = get_remote_account_by_id(
+                        user_id
+                    )  # noqa
             if permission['roles']:
                 for index, role_id in enumerate(permission['roles']):
                     permission['roles'][index] = get_role_name_by_id(role_id)
@@ -109,12 +111,15 @@ class DepositFormSchema(DepositSchema):
     def get_deposit_schemas(self, obj):
         ui_schema = obj['deposit'].schema.deposit_options
         schema = current_jsonschemas.get_schema(
-            obj['deposit'].schema.deposit_path, with_refs=True, resolved=True)
+            obj['deposit'].schema.deposit_path, with_refs=True, resolved=True
+        )
         return dict(schema=copy.deepcopy(schema), uiSchema=ui_schema)
 
     def get_review(self, obj):
-        if (obj['deposit'].schema_is_reviewable() and
-                ReviewDepositPermission(obj['deposit']).can()):
+        if (
+            obj['deposit'].schema_is_reviewable()
+            and ReviewDepositPermission(obj['deposit']).can()
+        ):
             _reviews = obj.get("metadata", {}).get("_review", [])
             return ReviewSchema(many=True).dump(_reviews).data
         else:
