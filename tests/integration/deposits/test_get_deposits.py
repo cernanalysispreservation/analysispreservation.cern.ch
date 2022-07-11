@@ -1353,6 +1353,8 @@ def test_get_deposit_with_form_json_serializer(
             'upload': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/upload',
         },
         'metadata': {'my_field': 'mydata'},
+        'x_cap_permissions': {},
+        'user_schema_permissions': {},
         'revision': 1,
         'status': 'draft',
         'type': 'deposit',
@@ -1503,3 +1505,48 @@ def test_get_deposit_when_user_has_no_access_to_schema_can_still_see_deposit_tha
     )
 
     assert resp.status_code == 200
+
+
+def test_get_deposit_with_form_json_serializer_x_cap_field(
+    client,
+    db,
+    auth_headers_for_example_user,
+    example_user,
+    create_deposit,
+    create_schema,
+):
+    deposit_mapping = get_default_mapping("test-schema", "1.0.0")
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        fullname='Test Schema',
+        config={'x-cap-permission': True},
+        deposit_schema={
+            'title': 'deposit-test-schema',
+            'type': 'object',
+            'properties': {
+                'title': {'type': 'string', 'x-cap-permission': {"users": [example_user.email]}},
+                'date': {'type': 'string', 'x-cap-permission': {"users": ['test_user@cern.ch']}}},
+        },
+        deposit_options={
+            'title': 'ui-test-schema',
+            'type': 'object',
+            'properties': {'title': {'type': 'string'}, 'field': {'type': 'string'}},
+        },
+        deposit_mapping=deposit_mapping,
+    )
+    deposit = create_deposit(
+        example_user,
+        'test-schema',
+        {'$ana_type': 'test-schema', 'my_field': 'mydata'},
+        experiment='CMS'
+    )
+
+    pid = deposit['_deposit']['id']
+    headers = auth_headers_for_example_user + [('Accept', 'application/form+json')]
+    resp = client.get(f'/deposits/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+
+    assert resp.json['x_cap_permissions'] == {'date': {'users': ['test_user@cern.ch']}, 'title': {'users': ['cms_user@cern.ch']}}
+    assert resp.json['user_schema_permissions'] == {'date': {'users': False}, 'title': {'users': True}}

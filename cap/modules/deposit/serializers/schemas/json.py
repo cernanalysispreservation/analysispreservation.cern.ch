@@ -25,6 +25,11 @@
 
 import copy
 
+from cachetools import LRUCache, cached
+from cachetools.keys import hashkey
+from flask_login import current_user
+from flask_principal import RoleNeed
+from invenio_access.permissions import Permission
 from invenio_jsonschemas import current_jsonschemas
 from marshmallow import fields, post_dump
 
@@ -36,6 +41,7 @@ from cap.modules.deposit.permissions import (
 from cap.modules.deposit.review import ReviewSchema
 from cap.modules.records.serializers.schemas import common
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
+from cap.modules.schemas.models import Schema
 from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
 
 
@@ -99,6 +105,12 @@ class DepositFormSchema(DepositSchema):
     can_review = fields.Method('can_user_review', dump_only=True)
     review = fields.Method('get_review', dump_only=True)
     links = fields.Method('get_links_with_review', dump_only=True)
+    x_cap_permissions = fields.Method(
+        'get_schema_permission_info', dump_only=True
+    )
+    user_schema_permissions = fields.Method(
+        'get_user_schema_permission_info', dump_only=True
+    )
 
     def get_webhooks(self, obj):
         webhooks = obj['deposit'].model.webhooks
@@ -144,3 +156,65 @@ class DepositFormSchema(DepositSchema):
             can_review = ReviewDepositPermission(obj['deposit']).can()
             if can_review:
                 return True
+
+    def get_schema_permission_info(self, obj):
+        schema_meta = self.get_schema(obj)
+        name, version = schema_meta.get('name'), schema_meta.get('version')
+        schema_obj = Schema.get(name, version)
+        if schema_obj:
+            permission_field = schema_obj.config.get('x-cap-permission')
+
+        x_cap_fields = dict()
+        if permission_field:
+            schema = current_jsonschemas.get_schema(
+                obj['deposit'].schema.deposit_path,
+                with_refs=True,
+                resolved=True,
+            )
+            schema_properties = schema.get('properties')
+            x_cap_fields = self.parse_schema_permission_info(
+                name, version, schema_properties
+            )
+
+        return x_cap_fields
+
+    def get_user_schema_permission_info(self, obj):
+        x_cap = copy.deepcopy(self.get_schema_permission_info(obj))
+        for perm in x_cap.values():
+            if perm.get('users'):
+                user_email = current_user.email
+                perm['users'] = (
+                    True if user_email in perm.get('users') else False
+                )
+            if perm.get('roles'):
+                user_allowed = any(
+                    Permission(RoleNeed(_role)).can()
+                    for _role in perm.get('roles')
+                )
+                perm['roles'] = True if user_allowed else False
+        return x_cap
+
+    def get_hash_key(self, name, version, schema):
+        return hashkey(name, version)
+
+    @classmethod
+    @cached(LRUCache(maxsize=1024), key=get_hash_key)
+    def parse_schema_permission_info(self, name, version, schema):
+        x_cap_fields = {}
+
+        def extract_permission_field(field, parent_field):
+            for field, value in field.items():
+                if field == 'x-cap-permission':
+                    x_cap_fields.update({parent_field: value})
+                if isinstance(value, dict):
+                    key = parent_field + '.' + field
+                    if value.get('x-cap-permission'):
+                        x_cap_fields.update(
+                            {key: value.get('x-cap-permission')}
+                        )
+                    extract_permission_field(value, key)
+
+        for field in schema:
+            extract_permission_field(schema.get(field), field)
+
+        return x_cap_fields
