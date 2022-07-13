@@ -1354,7 +1354,6 @@ def test_get_deposit_with_form_json_serializer(
         },
         'metadata': {'my_field': 'mydata'},
         'x_cap_permissions': {},
-        'user_schema_permissions': {},
         'revision': 1,
         'status': 'draft',
         'type': 'deposit',
@@ -1528,11 +1527,6 @@ def test_get_deposit_with_form_json_serializer_x_cap_field(
                 'title': {'type': 'string', 'x-cap-permission': {"users": [example_user.email]}},
                 'date': {'type': 'string', 'x-cap-permission': {"users": ['test_user@cern.ch']}}},
         },
-        deposit_options={
-            'title': 'ui-test-schema',
-            'type': 'object',
-            'properties': {'title': {'type': 'string'}, 'field': {'type': 'string'}},
-        },
         deposit_mapping=deposit_mapping,
     )
     deposit = create_deposit(
@@ -1548,5 +1542,9 @@ def test_get_deposit_with_form_json_serializer_x_cap_field(
 
     assert resp.status_code == 200
 
-    assert resp.json['x_cap_permissions'] == {'date': {'users': ['test_user@cern.ch']}, 'title': {'users': ['cms_user@cern.ch']}}
-    assert resp.json['user_schema_permissions'] == {'date': {'users': False}, 'title': {'users': True}}
+    assert resp.json['x_cap_permissions'] == [
+        {"path": ["properties", "title"], "value": {"users": [example_user.email]}},
+        {"path": ["properties", "date"], "value": {"users": ["test_user@cern.ch"]}},
+    ]
+    assert resp.json['schemas']['schema']['properties']['date']['readOnly'] == True
+    assert resp.json['schemas']['schema']['properties']['title'].get('readOnly') == None

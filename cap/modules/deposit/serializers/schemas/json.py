@@ -25,8 +25,6 @@
 
 import copy
 
-from cachetools import LRUCache, cached
-from cachetools.keys import hashkey
 from flask_login import current_user
 from flask_principal import RoleNeed
 from invenio_access.permissions import Permission
@@ -39,9 +37,9 @@ from cap.modules.deposit.permissions import (
     UpdateDepositPermission,
 )
 from cap.modules.deposit.review import ReviewSchema
+from cap.modules.deposit.utils import parse_schema_permission_info
 from cap.modules.records.serializers.schemas import common
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
-from cap.modules.schemas.models import Schema
 from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
 
 
@@ -108,9 +106,6 @@ class DepositFormSchema(DepositSchema):
     x_cap_permissions = fields.Method(
         'get_schema_permission_info', dump_only=True
     )
-    user_schema_permissions = fields.Method(
-        'get_user_schema_permission_info', dump_only=True
-    )
 
     def get_webhooks(self, obj):
         webhooks = obj['deposit'].model.webhooks
@@ -125,7 +120,27 @@ class DepositFormSchema(DepositSchema):
         schema = current_jsonschemas.get_schema(
             obj['deposit'].schema.deposit_path, with_refs=True, resolved=True
         )
+
+        # Adds readonly status for not allowed x-cap field
+        permission_info = copy.deepcopy(self.get_schema_permission_info(obj))
+        if permission_info:
+            schema = self.get_read_only_status(permission_info, schema)
+
         return dict(schema=copy.deepcopy(schema), uiSchema=ui_schema)
+
+    def get_read_only_status(self, permission_info, schema):
+        for x_cap_field in permission_info:
+            if self.can_user_edit_field(x_cap_field.get('value')):
+                schema_field = schema
+                nested_fields = x_cap_field.get('path')
+                if nested_fields:
+                    for field in nested_fields:
+                        schema_field = self.iterate_schema(schema_field, field)
+                schema_field['readOnly'] = True
+        return schema
+
+    def iterate_schema(self, schema_field, field):
+        return schema_field[field]
 
     def get_review(self, obj):
         if (
@@ -158,11 +173,11 @@ class DepositFormSchema(DepositSchema):
                 return True
 
     def get_schema_permission_info(self, obj):
-        schema_meta = self.get_schema(obj)
-        name, version = schema_meta.get('name'), schema_meta.get('version')
-        schema_obj = Schema.get(name, version)
-        if schema_obj:
-            permission_field = schema_obj.config.get('x-cap-permission')
+        name, version = (
+            obj['deposit'].schema.name,
+            obj['deposit'].schema.version,
+        )
+        permission_field = obj['deposit'].schema.config.get('x-cap-permission')
 
         x_cap_fields = dict()
         if permission_field:
@@ -171,50 +186,24 @@ class DepositFormSchema(DepositSchema):
                 with_refs=True,
                 resolved=True,
             )
-            schema_properties = schema.get('properties')
-            x_cap_fields = self.parse_schema_permission_info(
-                name, version, schema_properties
+            x_cap_fields = parse_schema_permission_info(name, version, schema)
+
+        return x_cap_fields
+
+    def can_user_edit_field(self, perm_obj):
+        allowed_users = perm_obj.get('users')
+        allowed_roles = perm_obj.get('roles')
+
+        error = True
+        if allowed_users:
+            current_user_email = current_user.email
+            if current_user_email in allowed_users:
+                error = False
+
+        if allowed_roles and error:
+            user_allowed = any(
+                Permission(RoleNeed(_role)).can() for _role in allowed_roles
             )
+            error = False if user_allowed else True
 
-        return x_cap_fields
-
-    def get_user_schema_permission_info(self, obj):
-        x_cap = copy.deepcopy(self.get_schema_permission_info(obj))
-        for perm in x_cap.values():
-            if perm.get('users'):
-                user_email = current_user.email
-                perm['users'] = (
-                    True if user_email in perm.get('users') else False
-                )
-            if perm.get('roles'):
-                user_allowed = any(
-                    Permission(RoleNeed(_role)).can()
-                    for _role in perm.get('roles')
-                )
-                perm['roles'] = True if user_allowed else False
-        return x_cap
-
-    def get_hash_key(self, name, version, schema):
-        return hashkey(name, version)
-
-    @classmethod
-    @cached(LRUCache(maxsize=1024), key=get_hash_key)
-    def parse_schema_permission_info(self, name, version, schema):
-        x_cap_fields = {}
-
-        def extract_permission_field(field, parent_field):
-            for field, value in field.items():
-                if field == 'x-cap-permission':
-                    x_cap_fields.update({parent_field: value})
-                if isinstance(value, dict):
-                    key = parent_field + '.' + field
-                    if value.get('x-cap-permission'):
-                        x_cap_fields.update(
-                            {key: value.get('x-cap-permission')}
-                        )
-                    extract_permission_field(value, key)
-
-        for field in schema:
-            extract_permission_field(schema.get(field), field)
-
-        return x_cap_fields
+        return error
