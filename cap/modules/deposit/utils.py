@@ -26,6 +26,8 @@ import re
 from copy import deepcopy
 from datetime import date
 
+from cachetools import LRUCache, cached
+from cachetools.keys import hashkey
 from flask import abort
 from invenio_access.models import Role
 from invenio_db import db
@@ -156,3 +158,29 @@ def set_copy_to_attr(pid_value, copy_to_attr):
         nested[leaf] = pid_value
 
     return copy_to_attr_dict
+
+
+def get_hash_key(name, version, schema):
+    return hashkey(name, version)
+
+
+@cached(LRUCache(maxsize=1024), key=get_hash_key)
+def parse_schema_permission_info(name, version, schema):
+    x_cap_fields = []
+
+    def extract_permission_field(node, parent_field):
+        for field, value in node.items():
+            if field == "x-cap-permission":
+                x_cap_fields.append({"path": parent_field, "value": value})
+            if isinstance(value, dict):
+                extract_permission_field(value, parent_field + [field])
+            if isinstance(value, list):
+                for index, v in enumerate(value):
+                    if isinstance(v, dict):
+                        extract_permission_field(
+                            v, parent_field + [field] + [index]
+                        )
+
+    extract_permission_field(schema, [])
+
+    return x_cap_fields

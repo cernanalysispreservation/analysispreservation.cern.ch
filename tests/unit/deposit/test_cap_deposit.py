@@ -28,11 +28,13 @@ from uuid import uuid4
 
 from flask_security import login_user
 from invenio_access.models import ActionRoles, ActionUsers
-from pytest import raises
+from mock import patch
+from pytest import mark, raises
 from sqlalchemy.exc import IntegrityError
 
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.deposit.errors import DepositValidationError
+from cap.modules.deposit.serializers.schemas.json import DepositFormSchema
 from conftest import _datastore
 
 
@@ -246,3 +248,417 @@ def test_create_deposit_check_if_reviewable(users, create_schema, create_deposit
 
     assert deposit_reviewable.schema_is_reviewable()
     assert not deposit_not_reviewable.schema_is_reviewable()
+
+
+@mark.parametrize(
+    "permission_info, schema, expected",
+    [
+        (
+            [
+                {"path": ["properties", "title"], "value": {"users": ["test@test.com"]}},
+                {"path": ["properties", "date"], "value": {"users": ["test_user@test.com"]}},
+                {
+                    "path": ["properties", "test", "items", "properties", "title"],
+                    "value": {"users": ["test@test.com"]},
+                },
+                {
+                    "path": ["properties", "test", "items", "properties", "date"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+            ],
+            {
+                "title": "deposit-test-schema",
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "x-cap-permission": {"users": ["test@test.com"]},
+                    },
+                    "date": {
+                        "type": "string",
+                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                    },
+                    "test": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "x-cap-permission": {"users": ["test@test.com"]},
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "x-cap-permission": {
+                                        "users": ["test_user@test.com"]
+                                    },
+                                },
+                            },
+                            "type": "object",
+                        },
+                    },
+                },
+            },
+            {
+                "title": "deposit-test-schema",
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "x-cap-permission": {"users": ["test@test.com"]},
+                        "readOnly": True,
+                    },
+                    "date": {
+                        "type": "string",
+                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                        "readOnly": True,
+                    },
+                    "test": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "x-cap-permission": {"users": ["test@test.com"]},
+                                    "readOnly": True,
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "x-cap-permission": {
+                                        "users": ["test_user@test.com"]
+                                    },
+                                    "readOnly": True,
+                                },
+                            },
+                            "type": "object",
+                        },
+                    },
+                },
+            },
+        ),
+        (
+            [{'path': [], 'value': {'users': ['test@test.com']}}],
+            {
+                "title": "deposit-test-schema",
+                "type": "object",
+                "x-cap-permission": {"users": ["test@test.com"]},
+            },
+            {
+                "title": "deposit-test-schema",
+                "type": "object",
+                "x-cap-permission": {"users": ["test@test.com"]},
+                "readOnly": True,
+            },
+        ),
+        (
+            [
+                {"path": ["items", "properties", "title"], "value": {"users": ["test@test.com"]}},
+                {
+                    "path": ["items", "properties", "date"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+            ],
+            {
+                "title": "deposit-test-schema-one",
+                "type": "array",
+                "items": {
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "x-cap-permission": {"users": ["test@test.com"]},
+                        },
+                        "date": {
+                            "type": "string",
+                            "x-cap-permission": {"users": ["test_user@test.com"]},
+                        },
+                    },
+                    "type": "object",
+                },
+            },
+            {
+                "title": "deposit-test-schema-one",
+                "type": "array",
+                "items": {
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "x-cap-permission": {"users": ["test@test.com"]},
+                            "readOnly": True,
+                        },
+                        "date": {
+                            "type": "string",
+                            "x-cap-permission": {"users": ["test_user@test.com"]},
+                            "readOnly": True,
+                        },
+                    },
+                    "type": "object",
+                },
+            },
+        ),
+        (
+            [{'path': ['items'], 'value': {'users': ['test@test.com']}}],
+            {
+                "title": "deposit-test-schema-one",
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "x-cap-permission": {"users": ["test@test.com"]},
+                },
+            },
+            {
+                "title": "deposit-test-schema-one",
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "x-cap-permission": {"users": ["test@test.com"]},
+                    "readOnly": True,
+                },
+            },
+        ),
+        (
+            [{'path': [], 'value': {'users': ['test_user@test.com']}}],
+            {
+                "title": "deposit-test-schema-two",
+                "type": "string",
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+            },
+            {
+                "title": "deposit-test-schema-two",
+                "type": "string",
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+                "readOnly": True,
+            },
+        ),
+        (
+            [
+                {
+                    "path": [
+                        "properties",
+                        "basic_info",
+                        "properties",
+                        "status",
+                        "properties",
+                        "main_status",
+                    ],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["properties", "basic_info", "properties", "analysis_people"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {"path": [], "value": {"users": ["test_user@test.com"]}},
+            ],
+            {
+                "title": "deposit-test-schema-two",
+                "type": "object",
+                "properties": {
+                    "basic_info": {
+                        "properties": {
+                            "status": {
+                                "properties": {
+                                    "main_status": {
+                                        "type": "string",
+                                        "x-cap-permission": {
+                                            "users": ["test_user@test.com"]
+                                        },
+                                    }
+                                }
+                            },
+                            "analysis_people": {
+                                "x-cap-permission": {"users": ["test_user@test.com"]},
+                                "items": {"type": "string"},
+                            },
+                        }
+                    }
+                },
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+            },
+            {
+                "title": "deposit-test-schema-two",
+                "type": "object",
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+                "properties": {
+                    "basic_info": {
+                        "properties": {
+                            "status": {
+                                "properties": {
+                                    "main_status": {
+                                        "type": "string",
+                                        "x-cap-permission": {
+                                            "users": ["test_user@test.com"]
+                                        },
+                                        "readOnly": True,
+                                    }
+                                }
+                            },
+                            "analysis_people": {
+                                "x-cap-permission": {"users": ["test_user@test.com"]},
+                                "items": {"type": "string"},
+                                "readOnly": True,
+                            },
+                        }
+                    }
+                },
+                "readOnly": True,
+            },
+        ),
+        (
+            [
+                {
+                    "path": ["dependencies", "object", "oneOf", 0, "properties", "object"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["dependencies", "object", "oneOf", 0, "properties", "electron_type"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["dependencies", "object", "oneOf", 1, "properties", "muon_type"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": [
+                        "properties",
+                        "basic_info",
+                        "properties",
+                        "status",
+                        "properties",
+                        "main_status",
+                    ],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["properties", "basic_info", "properties", "analysis_people"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {"path": [], "value": {"users": ["test_user@test.com"]}},
+            ],
+            {
+                "title": "deposit-test-schema-fs",
+                "additionalProperties": True,
+                "type": "object",
+                "dependencies": {
+                    "object": {
+                        "oneOf": [
+                            {
+                                "properties": {
+                                    "object": {
+                                        "enum": ["electron"],
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    },
+                                    "electron_type": {
+                                        "enum": ["GsfElectron"],
+                                        "type": "string",
+                                        "title": "Electron type",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    },
+                                }
+                            },
+                            {
+                                "properties": {
+                                    "object": {"enum": ["muon"]},
+                                    "muon_type": {
+                                        "enum": ["PFMuon", "GlobalMuon", "TrackerMuon"],
+                                        "type": "string",
+                                        "title": "Muon type",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    },
+                                }
+                            },
+                        ]
+                    }
+                },
+                "properties": {
+                    "basic_info": {
+                        "properties": {
+                            "status": {
+                                "properties": {
+                                    "main_status": {
+                                        "type": "string",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    }
+                                }
+                            },
+                            "analysis_people": {
+                                "x-cap-permission": {"users": ["test_user@test.com"]},
+                                "items": {"type": "string"},
+                            },
+                        }
+                    }
+                },
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+            },
+            {
+                "title": "deposit-test-schema-fs",
+                "additionalProperties": True,
+                "type": "object",
+                "dependencies": {
+                    "object": {
+                        "oneOf": [
+                            {
+                                "properties": {
+                                    "object": {
+                                        "enum": ["electron"],
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                        "readOnly": True,
+                                    },
+                                    "electron_type": {
+                                        "enum": ["GsfElectron"],
+                                        "type": "string",
+                                        "title": "Electron type",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                        "readOnly": True,
+                                    },
+                                }
+                            },
+                            {
+                                "properties": {
+                                    "object": {"enum": ["muon"]},
+                                    "muon_type": {
+                                        "enum": ["PFMuon", "GlobalMuon", "TrackerMuon"],
+                                        "type": "string",
+                                        "title": "Muon type",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                        "readOnly": True,
+                                    },
+                                }
+                            },
+                        ]
+                    }
+                },
+                "properties": {
+                    "basic_info": {
+                        "properties": {
+                            "status": {
+                                "properties": {
+                                    "main_status": {
+                                        "type": "string",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                        "readOnly": True,
+                                    }
+                                }
+                            },
+                            "analysis_people": {
+                                "x-cap-permission": {"users": ["test_user@test.com"]},
+                                "items": {"type": "string"},
+                                "readOnly": True,
+                            },
+                        }
+                    }
+                },
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+                "readOnly": True,
+            }
+
+        )
+    ],
+)
+@patch(
+    "cap.modules.deposit.serializers.schemas.json.DepositFormSchema.can_user_edit_field",
+    return_value=True,
+)
+def test_get_read_only_status(
+    mock_can_user_edit_field, permission_info, schema, expected
+):
+    test_class = DepositFormSchema()
+    result = test_class.get_read_only_status(permission_info, schema)
+    assert result == expected

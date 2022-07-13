@@ -26,8 +26,12 @@
 """Unit tests Cap Deposit utils."""
 
 from __future__ import absolute_import, print_function
+from pytest import mark
 
-from cap.modules.deposit.utils import clean_empty_values
+from cap.modules.deposit.utils import (
+    clean_empty_values,
+    parse_schema_permission_info,
+)
 
 
 def test_cleaning_of_empty_values():
@@ -89,3 +93,306 @@ def test_cleaning_of_empty_values():
     assert "cms_questionnaire" not in result
     assert "the_best_dream_team" in result
     assert "testing" in result
+
+
+@mark.parametrize(
+    "name, version, schema, expected",
+    [
+        (
+            "obj_with_properties",
+            "1",
+            {
+                "title": "deposit-test-schema",
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "x-cap-permission": {"users": ["test@test.com"]},
+                    },
+                    "date": {
+                        "type": "string",
+                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                    },
+                    "test": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "x-cap-permission": {"users": ["test@test.com"]},
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "x-cap-permission": {
+                                        "users": ["test_user@test.com"]
+                                    },
+                                },
+                            },
+                            "type": "object",
+                        },
+                    },
+                },
+            },
+            [
+                {"path": ["properties", "title"], "value": {"users": ["test@test.com"]}},
+                {"path": ["properties", "date"], "value": {"users": ["test_user@test.com"]}},
+                {
+                    "path": ["properties", "test", "items", "properties", "title"],
+                    "value": {"users": ["test@test.com"]},
+                },
+                {
+                    "path": ["properties", "test", "items", "properties", "date"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+            ],
+        ),
+        (
+            "obj_without_properties",
+            "1",
+            {
+                "title": "deposit-test-schema",
+                "type": "object",
+                "x-cap-permission": {"users": ["test@test.com"]},
+            },
+            [{'path': [], 'value': {'users': ['test@test.com']}}],
+        ),
+        (
+            "array_with_properties",
+            "1",
+            {
+                "title": "deposit-test-schema-one",
+                "type": "array",
+                "items": {
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "x-cap-permission": {"users": ["test@test.com"]},
+                        },
+                        "date": {
+                            "type": "string",
+                            "x-cap-permission": {"users": ["test_user@test.com"]},
+                        },
+                    },
+                    "type": "object",
+                },
+            },
+            [
+                {"path": ["items", "properties", "title"], "value": {"users": ["test@test.com"]}},
+                {
+                    "path": ["items", "properties", "date"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+            ],
+        ),
+        (
+            "array_without_properties",
+            "1",
+            {
+                "title": "deposit-test-schema-one",
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "x-cap-permission": {"users": ["test@test.com"]},
+                },
+            },
+            [{'path': ['items'], 'value': {'users': ['test@test.com']}}],
+        ),
+        (
+            "string",
+            "1",
+            {
+                "title": "deposit-test-schema-two",
+                "type": "string",
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+            },
+            [{'path': [], 'value': {'users': ['test_user@test.com']}}],
+        ),
+        (
+            "obj_with_string_and_obj",
+            "1",
+            {
+                "title": "deposit-test-schema-two",
+                "type": "object",
+                "properties": {
+                    "basic_info": {
+                        "properties": {
+                            "status": {
+                                "properties": {
+                                    "main_status": {
+                                        "type": "string",
+                                        "x-cap-permission": {
+                                            "users": ["test_user@test.com"]
+                                        },
+                                    }
+                                }
+                            },
+                            "analysis_people": {
+                                "x-cap-permission": {"users": ["test_user@test.com"]},
+                                "items": {"type": "string"},
+                            },
+                        }
+                    }
+                },
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+            },
+            [
+                {
+                    "path": [
+                        "properties",
+                        "basic_info",
+                        "properties",
+                        "status",
+                        "properties",
+                        "main_status",
+                    ],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["properties", "basic_info", "properties", "analysis_people"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {"path": [], "value": {"users": ["test_user@test.com"]}},
+            ],
+        ),
+        (
+            "obj_with_bool",
+            "1",
+            {
+                "title": "deposit-test-schema-fs",
+                "additionalProperties": True, 
+                "type": "object",
+                "properties": {
+                    "basic_info": {
+                        "properties": {
+                            "status": {
+                                "properties": {
+                                    "main_status": {
+                                        "type": "string",
+                                        "x-cap-permission": {
+                                            "users": ["test_user@test.com"]
+                                        },
+                                    }
+                                }
+                            },
+                            "analysis_people": {
+                                "x-cap-permission": {"users": ["test_user@test.com"]},
+                                "items": {"type": "string"},
+                            },
+                        }
+                    }
+                },
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+            },
+            [
+                {
+                    "path": [
+                        "properties",
+                        "basic_info",
+                        "properties",
+                        "status",
+                        "properties",
+                        "main_status",
+                    ],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["properties", "basic_info", "properties", "analysis_people"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {"path": [], "value": {"users": ["test_user@test.com"]}},
+            ],
+        ),
+        (
+            "obj_with_array",
+            "1",
+            {
+                "title": "deposit-test-schema-fs",
+                "additionalProperties": True,
+                "type": "object",
+                "dependencies": {
+                    "object": {
+                        "oneOf": [
+                            {
+                                "properties": {
+                                    "object": {
+                                        "enum": ["electron"],
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    },
+                                    "electron_type": {
+                                        "enum": ["GsfElectron"],
+                                        "type": "string",
+                                        "title": "Electron type",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    },
+                                }
+                            },
+                            {
+                                "properties": {
+                                    "object": {"enum": ["muon"]},
+                                    "muon_type": {
+                                        "enum": ["PFMuon", "GlobalMuon", "TrackerMuon"],
+                                        "type": "string",
+                                        "title": "Muon type",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    },
+                                }
+                            },
+                        ]
+                    }
+                },
+                "properties": {
+                    "basic_info": {
+                        "properties": {
+                            "status": {
+                                "properties": {
+                                    "main_status": {
+                                        "type": "string",
+                                        "x-cap-permission": {"users": ["test_user@test.com"]},
+                                    }
+                                }
+                            },
+                            "analysis_people": {
+                                "x-cap-permission": {"users": ["test_user@test.com"]},
+                                "items": {"type": "string"},
+                            },
+                        }
+                    }
+                },
+                "x-cap-permission": {"users": ["test_user@test.com"]},
+            },
+            [
+                {
+                    "path": ["dependencies", "object", "oneOf", 0, "properties", "object"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["dependencies", "object", "oneOf", 0, "properties", "electron_type"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["dependencies", "object", "oneOf", 1, "properties", "muon_type"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": [
+                        "properties",
+                        "basic_info",
+                        "properties",
+                        "status",
+                        "properties",
+                        "main_status",
+                    ],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {
+                    "path": ["properties", "basic_info", "properties", "analysis_people"],
+                    "value": {"users": ["test_user@test.com"]},
+                },
+                {"path": [], "value": {"users": ["test_user@test.com"]}},
+            ]
+        )
+    ],
+)
+def test_parse_schema_permission_info(name, version, schema, expected):
+    result = parse_schema_permission_info(name, version, schema)
+    assert result == expected
