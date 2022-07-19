@@ -46,7 +46,7 @@ services:
     environment:
       - "FLASK_DEBUG=True"
       - "DEBUG_MODE=True"
-      - "DEV_HOST=web-api"
+      - "DEV_HOST=nginx"
     links:
       - cache
       - es

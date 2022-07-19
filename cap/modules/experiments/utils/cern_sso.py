@@ -27,16 +27,18 @@
 # https://gitlab.cern.ch/authzsvc/tools/auth-get-sso-cookie
 
 import logging
-import requests
 import time
-from requests_gssapi import HTTPSPNEGOAuth, OPTIONAL
+
+import requests
 from bs4 import BeautifulSoup
+from requests_gssapi import OPTIONAL, HTTPSPNEGOAuth
+
 from . import old_cern_sso
 
 try:
-    from http.cookiejar import MozillaCookieJar, Cookie
+    from http.cookiejar import Cookie, MozillaCookieJar
 except ImportError:  # python 2.7 compatibility
-    from cookielib import MozillaCookieJar, Cookie
+    from cookielib import Cookie, MozillaCookieJar
 
 
 def save_cookies_lwp(cookiejar):
@@ -76,10 +78,13 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
         logging.info("Fetching target URL and its redirects")
     r_login_page = session.get(login_page, verify=verify_cert)
     if "login.cern.ch" in r_login_page.url:
-        # Compatibility with the old SSO, to be deleted after we retire it.
-        # Library features such as 'silent mode' are not supported for this case.
+        """
+        Compatibility with the old SSO, to be deleted after we retire it.
+        Library features such as 'silent mode' are not supported for this case.
+        """
         logging.info(
-            "Landing page is in the old SSO, re-running in compatibility mode.")
+            "Landing page is in the old SSO, re-running in compatibility mode."
+        )
         return old_cern_sso.krb_sign_on(login_page, session.cookies)
     if not silent:
         logging.debug("Landing page: {}".format(r_login_page.url))
@@ -92,7 +97,9 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
             raise Exception("Login failed: {}".format(error_message))
         else:
             raise Exception(
-                "Login failed: Landing page not recognized as the CERN SSO login page.")
+                "Login failed: Landing page not \
+                recognized as the CERN SSO login page."
+            )
     kerberos_path = kerberos_button.get("href")
     if not silent:
         logging.info("Fetching Kerberos login URL")
@@ -107,8 +114,8 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
         allow_redirects=False,
     )
     while (
-        r_kerberos_auth.status_code == 302 and
-        auth_hostname in r_kerberos_auth.headers["Location"]
+        r_kerberos_auth.status_code == 302
+        and auth_hostname in r_kerberos_auth.headers["Location"]
     ):
         r_kerberos_auth = session.get(
             r_kerberos_auth.headers["Location"], allow_redirects=False
@@ -117,11 +124,13 @@ def login_with_kerberos(login_page, verify_cert, auth_hostname, silent):
         if "login-actions/consent" in r_kerberos_auth.text:
             raise Exception(
                 "Login failed: This application requires consent. "
-                "Please accept it manually before using this tool.")
+                "Please accept it manually before using this tool."
+            )
         error_message = get_error_message(r_kerberos_auth.text)
         if not error_message:
             logging.debug(
-                "Not automatically redirected: trying SAML authentication")
+                "Not automatically redirected: trying SAML authentication"
+            )
             post_session_saml(session, r_kerberos_auth)
         else:
             raise Exception("Login failed: {}".format(error_message))
@@ -145,17 +154,18 @@ def save_sso_cookie(url, verify_cert, auth_hostname, silent=True):
     """
     try:
         session, response = login_with_kerberos(
-            url, verify_cert, auth_hostname, silent=silent)
+            url, verify_cert, auth_hostname, silent=silent
+        )
         if response.status_code == 302:
             redirect_uri = response.headers["Location"]
             if not silent:
-                logging.info(
-                    "Logged in. Fetching redirect URL to get cookies")
+                logging.info("Logged in. Fetching redirect URL to get cookies")
             session.get(redirect_uri, verify=verify_cert)
 
         return save_cookies_lwp(session.cookies)
 
     except Exception as e:
         logging.error(
-            "An error occurred while trying to log in and save cookies.")
+            "An error occurred while trying to log in and save cookies."
+        )
         raise e

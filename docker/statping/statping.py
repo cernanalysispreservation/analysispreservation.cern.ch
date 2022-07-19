@@ -16,12 +16,14 @@ from jinja2 import Template
 def populate_services_yaml(
     file_path_src, file_path_dest, host_url, headers, token
 ):
-    """Return Statping compatible yml. # noqa
+    """Return Statping compatible yml.
 
-    Example: python statping.py app/template-services.yml app/services.yml https://nginx/api -h 'Host=web-api' -t 'test'
+    Example: python statping.py app/template-services.yml app/services.yml
+             https://nginx/api -h 'Host=nginx' -t 'test'
     param: file_path_src: File containing services metadata
     param: file_path_dest: File with updated base url and headers
-    param: host_url: Host name of the instance [default:https://analysispreservation.cern.ch/api]
+    param: host_url: Host name of the instance
+           [default:https://analysispreservation.cern.ch/api]
     param: headers: Comma delimited list of HTTP Headers 'KEY=VALUE,KEY=VALUE'
     param: token: Token required for authorization header in HTTP requests
     """

@@ -66,7 +66,10 @@ from cap.modules.repos.integrator import (
     create_schema_default_repo_and_attach,
 )
 from cap.modules.repos.utils import disconnect_subscriber
-from cap.modules.schemas.resolvers import resolve_schema_by_url, schema_name_to_url
+from cap.modules.schemas.resolvers import (
+    resolve_schema_by_url,
+    schema_name_to_url,
+)
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (
     get_existing_or_register_role,

@@ -43,8 +43,11 @@ from werkzeug.utils import import_string
 from cap.types import json_type
 
 from .permissions import SchemaAdminAction, SchemaReadAction
-from .serializers import (resolved_schemas_serializer, schema_serializer,
-                          config_resolved_schemas_serializer)
+from .serializers import (
+    config_resolved_schemas_serializer,
+    resolved_schemas_serializer,
+    schema_serializer,
+)
 
 ES_FORBIDDEN = r' ,"\<*>|?'
 
@@ -52,7 +55,7 @@ ES_FORBIDDEN = r' ,"\<*>|?'
 SERVE_DEPOSIT_AS_RECORD_MAP = {
     'record_schema': 'deposit_schema',
     'record_mapping': 'deposit_mapping',
-    'record_options': 'deposit_options'
+    'record_options': 'deposit_options',
 }
 
 
@@ -72,44 +75,38 @@ class Schema(db.Model):
     experiment = db.Column(db.String(128), unique=False, nullable=True)
     config = db.Column(json_type, default=lambda: dict(), nullable=False)
 
-    deposit_schema = db.Column(json_type,
-                               default=lambda: dict(),
-                               nullable=True)
+    deposit_schema = db.Column(json_type, default=lambda: dict(), nullable=True)
 
-    deposit_options = db.Column(json_type,
-                                default=lambda: dict(),
-                                nullable=True)
+    deposit_options = db.Column(
+        json_type, default=lambda: dict(), nullable=True
+    )
 
-    deposit_mapping = db.Column(json_type,
-                                default=lambda: dict(),
-                                nullable=True)
+    deposit_mapping = db.Column(
+        json_type, default=lambda: dict(), nullable=True
+    )
 
     record_schema = db.Column(json_type, default=lambda: dict(), nullable=True)
 
-    record_options = db.Column(json_type,
-                               default=lambda: dict(),
-                               nullable=True)
+    record_options = db.Column(json_type, default=lambda: dict(), nullable=True)
 
-    record_mapping = db.Column(json_type,
-                               default=lambda: dict(),
-                               nullable=True)
+    record_mapping = db.Column(json_type, default=lambda: dict(), nullable=True)
 
-    use_deposit_as_record = db.Column(db.Boolean(create_constraint=False),
-                                      unique=False,
-                                      default=False)
-    is_indexed = db.Column(db.Boolean(create_constraint=False),
-                           unique=False,
-                           default=False)
+    use_deposit_as_record = db.Column(
+        db.Boolean(create_constraint=False), unique=False, default=False
+    )
+    is_indexed = db.Column(
+        db.Boolean(create_constraint=False), unique=False, default=False
+    )
 
     created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
     updated = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 
     __tablename__ = 'schema'
-    __table_args__ = (UniqueConstraint('name',
-                                       'major',
-                                       'minor',
-                                       'patch',
-                                       name='unique_schema_version'), )
+    __table_args__ = (
+        UniqueConstraint(
+            'name', 'major', 'minor', 'patch', name='unique_schema_version'
+        ),
+    )
 
     def __init__(self, *args, **kwargs):
         """Possible to set version from string."""
@@ -120,9 +117,11 @@ class Schema(db.Model):
         super(Schema, self).__init__(*args, **kwargs)
 
     def __getattribute__(self, attr):
-        """Map record attribute to deposit one, if use_deposit_as_record is True."""
-        if attr in SERVE_DEPOSIT_AS_RECORD_MAP.keys(
-        ) and self.use_deposit_as_record:
+        """Map record attribute to deposit one, if use_deposit_as_record is True."""  # noqa
+        if (
+            attr in SERVE_DEPOSIT_AS_RECORD_MAP.keys()
+            and self.use_deposit_as_record
+        ):
             attr = SERVE_DEPOSIT_AS_RECORD_MAP.get(attr)
 
         return object.__getattribute__(self, attr)
@@ -142,7 +141,8 @@ class Schema(db.Model):
         matched = re.match(r"(\d+)\.(\d+)\.(\d+)", string)
         if matched is None:
             raise ValueError(
-                'Version has to be passed as string <major>.<minor>.<patch>')
+                'Version has to be passed as string <major>.<minor>.<patch>'
+            )
 
         self.major, self.minor, self.patch = matched.groups()
 
@@ -188,13 +188,17 @@ class Schema(db.Model):
     def validate_name(self, key, name):
         """Validate if name is ES compatible."""
         if any(x in ES_FORBIDDEN for x in name):
-            raise ValueError('Name cannot contain the following characters'
-                             '[, ", *, \\, <, | , , , > , ?]')
+            raise ValueError(
+                'Name cannot contain the following characters'
+                '[, ", *, \\, <, | , , , > , ?]'
+            )
         return name
 
     def serialize(self, resolve=False):
         """Serialize schema model."""
-        serializer = resolved_schemas_serializer if resolve else schema_serializer  # noqa
+        serializer = (
+            resolved_schemas_serializer if resolve else schema_serializer
+        )  # noqa
         return serializer.dump(self).data
 
     def config_serialize(self):
@@ -213,27 +217,27 @@ class Schema(db.Model):
         assert self.id
 
         db.session.add(
-            ActionSystemRoles.allow(SchemaReadAction(self.id),
-                                    role=authenticated_user))
+            ActionSystemRoles.allow(
+                SchemaReadAction(self.id), role=authenticated_user
+            )
+        )
         db.session.flush()
 
     def give_admin_access_for_user(self, user):
         """Give admin access for users."""
         assert self.id
 
-        db.session.add(ActionUsers.allow(SchemaAdminAction(self.id),
-                                         user=user))
+        db.session.add(ActionUsers.allow(SchemaAdminAction(self.id), user=user))
         db.session.flush()
 
     @classmethod
     def get_latest(cls, name):
         """Get the latest version of schema with given name."""
-        latest = cls.query \
-            .filter_by(name=name) \
-            .order_by(cls.major.desc(),
-                      cls.minor.desc(),
-                      cls.patch.desc()) \
+        latest = (
+            cls.query.filter_by(name=name)
+            .order_by(cls.major.desc(), cls.minor.desc(), cls.patch.desc())
             .first()
+        )
 
         if latest:
             return latest
@@ -243,11 +247,11 @@ class Schema(db.Model):
     @classmethod
     def get_all_versions(cls, name):
         """Get all versions of schema with given name."""
-        schemas = cls.query \
-            .filter_by(name=name) \
-            .order_by(cls.major.desc(),
-                      cls.minor.desc(),
-                      cls.patch.desc()).all()
+        schemas = (
+            cls.query.filter_by(name=name)
+            .order_by(cls.major.desc(), cls.minor.desc(), cls.patch.desc())
+            .all()
+        )
         if schemas:
             return schemas
         else:
@@ -255,9 +259,7 @@ class Schema(db.Model):
 
     def get_versions(self):
         """Get the latest version of schema with given name."""
-        schemas = self.query \
-            .filter_by(name=self.name) \
-            .all()
+        schemas = self.query.filter_by(name=self.name).all()
         if schemas:
             return [s.version for s in schemas]
         else:
@@ -269,14 +271,15 @@ class Schema(db.Model):
         matched = re.match(r"(\d+).(\d+).(\d+)", version)
         if matched is None:
             raise ValueError(
-                'Version has to be passed as string <major>.<minor>.<patch>')
+                'Version has to be passed as string <major>.<minor>.<patch>'
+            )
 
         major, minor, patch = matched.groups()
 
         try:
-            schema = cls.query \
-                .filter_by(name=name, major=major, minor=minor, patch=patch) \
-                .one()
+            schema = cls.query.filter_by(
+                name=name, major=major, minor=minor, patch=patch
+            ).one()
 
         except NoResultFound:
             raise JSONSchemaNotFound("{}-v{}".format(name, version))
@@ -291,8 +294,10 @@ def name_to_es_name(name):
     [, ", *, \\, <, | , , , > , ?] are forbidden.
     """
     if any(x in ES_FORBIDDEN for x in name):
-        raise AssertionError('Name cannot contain the following characters'
-                             '[, ", *, \\, <, | , , , > , ?]')
+        raise AssertionError(
+            'Name cannot contain the following characters'
+            '[, ", *, \\, <, | , , , > , ?]'
+        )
 
     return name.replace('/', '-')
 
@@ -306,22 +311,20 @@ def create_index(index_name, mapping_body, aliases):
 
         for alias in aliases:
             es.indices.update_aliases(
-                {'actions': [{
-                    'add': {
-                        'index': index_name,
-                        'alias': alias
-                    }
-                }]})
+                {'actions': [{'add': {'index': index_name, 'alias': alias}}]}
+            )
 
 
 @event.listens_for(Schema, 'after_insert')
 def after_insert_schema(target, value, schema):
     """On schema insert, create corresponding indexes and aliases in ES."""
     if schema.is_indexed:
-        create_index(schema.deposit_index, schema.deposit_mapping,
-                     schema.deposit_aliases)
-        create_index(schema.record_index, schema.record_mapping,
-                     schema.record_aliases)
+        create_index(
+            schema.deposit_index, schema.deposit_mapping, schema.deposit_aliases
+        )
+        create_index(
+            schema.record_index, schema.record_mapping, schema.record_aliases
+        )
 
         # invenio search needs it
         mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')

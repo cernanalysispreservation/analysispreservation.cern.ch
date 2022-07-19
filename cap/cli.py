@@ -25,6 +25,7 @@
 """CAP base Invenio configuration."""
 
 from __future__ import absolute_import, print_function
+
 from click import Option, UsageError
 from invenio_base.app import create_cli
 
@@ -32,7 +33,7 @@ from cap.factory import create_api
 
 
 class MutuallyExclusiveOption(Option):
-    """Class that allows the use of mutually exclusive arguments in cli commands."""
+    """Class that allows use of mutually exclusive arguments in cli commands."""  # noqa
 
     def __init__(self, *args, **kwargs):
         """Mutually Exclusive Option initialization."""
@@ -41,19 +42,24 @@ class MutuallyExclusiveOption(Option):
 
         if self.mutually_exclusive:
             self.exclusives = ', '.join(self.mutually_exclusive)
-            kwargs['help'] = f'{self.help} NOTE: This argument is mutually ' \
-                             f'exclusive with arguments: [{self.exclusives}].'
+            kwargs['help'] = (
+                f'{self.help} NOTE: This argument is mutually '
+                f'exclusive with arguments: [{self.exclusives}].'
+            )
 
         super(MutuallyExclusiveOption, self).__init__(*args, **kwargs)
 
     def handle_parse_result(self, ctx, opts, args):
-        """Return handle_parse_result method with Mutually Exclusive Option class."""
+        """Return handle_parse_result method with MutuallyExclusiveOption class."""  # noqa
         if self.mutually_exclusive.intersection(opts) and self.name in opts:
-            raise UsageError(f'Illegal usage: `{self.name}` is mutually '
-                             f'exclusive with arguments [{self.exclusives}].')
+            raise UsageError(
+                f'Illegal usage: `{self.name}` is mutually '
+                f'exclusive with arguments [{self.exclusives}].'
+            )
 
-        return super(MutuallyExclusiveOption, self).\
-            handle_parse_result(ctx, opts, args)
+        return super(MutuallyExclusiveOption, self).handle_parse_result(
+            ctx, opts, args
+        )
 
 
 cli = create_cli(create_app=create_api)
