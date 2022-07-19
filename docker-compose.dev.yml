@@ -46,6 +46,7 @@ services:
     environment:
       - "FLASK_DEBUG=True"
       - "DEBUG_MODE=True"
+      - "DEV_HOST=web-api"
     links:
       - cache
       - es
@@ -110,6 +111,10 @@ services:
     extends:
       file: docker-services.yml
       service: es
+  statping:
+    extends:
+      file: docker-services.yml
+      service: statping
 volumes:
   static_data:
   uploaded_data:

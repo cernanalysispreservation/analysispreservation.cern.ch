@@ -100,3 +100,7 @@ celerybeat-schedule.db
 
 # VS Code specific
 .vscode
+
+# Ignore statping logs and db
+docker/statping/app/logs/
+docker/statping/app/*.db

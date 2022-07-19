@@ -1,0 +1,208 @@
+services:
+  - name: ROR Organization API Service
+    domain: {{host_url}}/services/ror/05a28rw58
+    expected: external_ids
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: ROR Query API Service
+    domain: {{host_url}}/services/ror?query=05a28rw58
+    expected: ETH Zurich
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: Zenodo API Service
+    domain: {{host_url}}/services/zenodo/record/3243963
+    expected: conceptdoi
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: Indico API Service
+    domain: {{host_url}}/services/indico/1161274
+    expected: Open Science
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: LDAP User Mail API Service
+    domain: {{host_url}}/services/ldap/user/mail?query=parth.shandilya@cern.ch
+    expected: profile
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: LDAP E-group Mail API Service
+    domain: {{host_url}}/services/ldap/egroup/mail?query=sis-group-documentation
+    expected: sis-group-documentation@cern.ch
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: CMS CADI API Service
+    domain: {{host_url}}/cms/cadi/EXO-17-023
+    expected: Search for Black Holes and Sphalerons
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: ORC ID API Service
+    domain: {{host_url}}/services/orcid?name=Ilias Koutsakis
+    expected: \"0000-0003-0710-0576\"
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: ORC ID Query API Service
+    domain: {{host_url}}/services/orcid/0000-0003-0710-0576
+    expected: person
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: CAP API Service
+    domain: {{host_url}}/ping
+    expected: Pong!
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: CAP Files API
+    domain: {{host_url}}/ping/files
+    expected: OK!
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: CAP Search API Service
+    domain: {{host_url}}/ping/search
+    expected: OK!
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: CAP DB API Service
+    domain: {{host_url}}/ping/db
+    expected: OK!
+    type: http
+    method: GET
+    headers: {{other_headers}},Authorization=Bearer {{token}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true

@@ -211,7 +211,7 @@ Running services
 
 To run CAP locally, you will need to have some services running on your
 machine.
-At minimum you must have PostgreSQL, Elasticsearch 2.x, Redis and RabbitMQ.
+At minimum you must have PostgreSQL, Elasticsearch 5.x, Redis and RabbitMQ.
 You can either install all of those from your system package manager and run
 them directly or better - use the provided docker image as before.
 
@@ -231,7 +231,12 @@ To run only the essential services using docker, execute the following:
     $ docker-compose up -d
 
 This should bring up four docker nodes with PostgreSQL (db), Elasticsearch (es),
-RabbitMQ (mq), and Redis (cache). Keep this shell session alive.
+RabbitMQ (mq) and Redis (cache). Keep this shell session alive.
+
+.. note::
+
+   For monitoring CAP locally, make sure to run the command for setting up statping where you run the server
+   $ export "DEV_HOST=host.docker.internal"
 
 Initialization
 ~~~~~~~~~~~~~~
@@ -345,6 +350,45 @@ Existing recipes list:
     create-demo-users.sh  // Creates demo users for Admin, ALICE, ATLAS, CMS, LHCb
     init.sh // Init DB, ES, data location, redis
     init-db.sh // clean-and-init.sh + create-demo-users.sh
+
+Setup Statping Dashboard
+------------------------
+
+Setup using default services template. The script requires following arguments:
+
+.. code-block:: python
+    """
+    Example: python statping.py app/template-services.yml app/services.yml https://nginx/api -h 'Host=web-api' -t 'test'
+    param: file_path_src: File containing services metadata
+    param: file_path_dest: File with updated base url and headers
+    param: host_url: Host name of the instance [default:https://analysispreservation.cern.ch/api]
+    param: headers: Comma delimited list of HTTP Headers 'KEY=VALUE,KEY=VALUE'
+    param: token: Token required for authorization header in HTTP requests
+    """
+
+.. code-block:: shell
+    // Populate the template-service.yml
+    cd docker/statping
+    python statping.py app/template-services.yml app/services.yml <host_url> -h <headers[key=value]> -t <api_token>
+
+To add a new service to the template:
+
+.. code-block:: yaml
+      - name: <Service Name>
+        domain: {{host_url}}/<Service Endpoint>
+        expected: <Expected Result> # You can use plain text or insert Regex to validate the response
+        type: <Service Type>
+        method: <Method>
+        headers: {{other_headers}},Authorization=Bearer {{token}}
+        port: <Service Port>
+        check_interval: 60
+        timeout: 15
+        expected_status: 200
+        allow_notifications: true
+        notify_after: 2
+        notify_all_changes: true
+        public: true
+        redirect: true
 
 More documentation about CLI recipes exist `here <docs/cli.md>`_
 

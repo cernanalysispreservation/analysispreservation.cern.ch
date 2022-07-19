@@ -109,3 +109,11 @@ services:
       - REDIS_HOSTS=local:cache:6379
     ports:
       - "8081:8081"
+  statping:
+    image: statping/statping:v0.90.74
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./docker/statping/app/config.yml:/app/config.yml
+      - ./docker/statping/app/services.yml:/app/services.yml

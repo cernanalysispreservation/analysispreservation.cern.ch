@@ -1,0 +1,18 @@
+connection: sqlite3
+user: statping
+password: password123
+database: statping
+api_secret: statpingtoken
+language: en
+allow_reports: true
+location: /app
+sqlfile: /app/statping.db
+disable_http: false
+demo_mode: false
+disable_logs: false
+use_assets: false
+sample_data: false
+use_cdn: false
+disable_colors: false
+NAME: CERN Analysis Preservation
+DESCRIPTION: Monitoring Dashboard

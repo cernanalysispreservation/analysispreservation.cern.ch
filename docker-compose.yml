@@ -27,7 +27,14 @@ services:
     extends:
       file: docker-services.yml
       service: kibana
-  redis-commander:
-    extends:
-      file: docker-services.yml
-      service: redis-commander
+
+#  redis-commander:
+#    extends:
+#      file: docker-services.yml
+#      service: redis-commander
+
+#  Monitoring dashboard for services. Read INSTALL.rst to setup.
+#  statping:
+#    extends:
+#     file: docker-services.yml
+#      service: statping
