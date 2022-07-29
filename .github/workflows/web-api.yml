@@ -6,7 +6,7 @@ on:
     paths-ignore:
     - 'ui/**'
   pull_request:
-    branches: [ master, ant ]
+    branches: [ master, ant, faser ]
     paths-ignore:
     - 'ui/**'
 
