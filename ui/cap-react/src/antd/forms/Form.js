@@ -74,7 +74,7 @@ const RJSFForm = ({
       onBlur={() => {}}
       validate={validate}
       extraErrors={extraErrors}
-      onChange={_debounce(onChange, 500)}
+      onChange={onChange}
       readonly={readonly}
       transformErrors={draftEditor && transformErrors}
       formContext={{

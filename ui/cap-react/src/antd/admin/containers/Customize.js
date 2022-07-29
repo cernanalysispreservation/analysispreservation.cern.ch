@@ -8,11 +8,13 @@ import {
 function mapStateToProps(state) {
   const _path = state.schemaWizard.getIn(["field", "path"]);
   const _uiPath = state.schemaWizard.getIn(["field", "uiPath"]);
+
   if (_path)
     return {
       schema: state.schemaWizard.getIn(["current", "schema", ..._path]),
       uiSchema: state.schemaWizard.getIn(["current", "uiSchema", ..._uiPath]),
-      __path: state.schemaWizard.getIn(["field", "path"])
+      _path: _path,
+      _uiPath: _uiPath
     };
   return {};
 }
