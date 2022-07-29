@@ -2,7 +2,7 @@ name: Build CAP UI image
 
 on:
   push:
-    branches: [master, ant]
+    branches: [master, ant, faser]
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"
