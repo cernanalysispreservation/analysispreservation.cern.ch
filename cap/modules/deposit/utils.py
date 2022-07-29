@@ -128,7 +128,7 @@ def generate_auto_incremental_pid(auto_increment_id):
     previous_deposit_id = 0
     # create a regexp pattern and then match to find the last draft id
     pid_pattern = get_auto_incremental_pid_pattern(auto_increment_id)
-    regexp_pattern = r'^{}\d$'.format(pid_pattern)
+    regexp_pattern = r'^{}\d+$'.format(pid_pattern)
 
     previous_deposit = (
         PersistentIdentifier.query.filter(

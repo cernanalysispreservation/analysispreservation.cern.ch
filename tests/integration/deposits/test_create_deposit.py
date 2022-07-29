@@ -479,3 +479,16 @@ def test_create_deposit_with_required_fields_not_filled_validates_succesfully(
                        ))
 
     assert resp.status_code == 201
+
+
+def test_create_deposit_multiple_with_autoincrement_pid(client, location,
+        create_schema, auth_headers_for_superuser,json_headers):
+    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-ANA-'})
+    metadata = {'$ana_type': 'faser'}
+    number_of_recs_to_create = 300
+    for i in range(number_of_recs_to_create):
+        resp = client.post('/deposits/',
+                        headers=auth_headers_for_superuser + json_headers,
+                        data=json.dumps(metadata))
+        assert resp.status_code == 201
+        assert resp.json['id'] == f'FASER-ANA-{i+1}'
