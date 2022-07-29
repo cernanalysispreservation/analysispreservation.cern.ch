@@ -244,7 +244,7 @@ def test_users_with_user_profile_serializers(client, users, auth_headers_for_sup
 
     resp = client.get('/users', headers=headers)
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 9
+    assert resp.json['hits']['total'] == 11
 
     resp = client.get('/users/1', headers=headers)
     assert resp.status_code == 200

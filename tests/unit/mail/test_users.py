@@ -30,7 +30,7 @@ from cap.modules.mail.users import get_all_users, get_users_by_record, \
 def test_get_all_user_mails(users):
     users = get_all_users()
 
-    assert len(users) == 9
+    assert len(users) == 11
 
 
 def test_get_users_by_record(app, db, users, create_deposit):
