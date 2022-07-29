@@ -9,6 +9,7 @@ on:
     branches:
       - qa
       - production
+      - faser
 jobs:
   Cypress:
     name: Cypress
