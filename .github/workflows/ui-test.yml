@@ -6,7 +6,7 @@ on:
       - "ui/**"
       - ".github/workflows/ui-test.yml"
   pull_request:
-    branches: [master, ant]
+    branches: [master, ant, faser]
     paths:
       - "ui/**"
       - ".github/workflows/ui-test.yml"

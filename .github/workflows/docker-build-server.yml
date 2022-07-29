@@ -2,9 +2,9 @@ name: Build CAP server image
 
 on:
   push:
-    branches: [master, ant]
+    branches: [master, ant, faser]
     paths-ignore:
-      - 'ui/**'
+      - "ui/**"
 
 jobs:
   registry:
