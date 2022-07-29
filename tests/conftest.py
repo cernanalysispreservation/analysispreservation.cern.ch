@@ -245,7 +245,7 @@ def remote_accounts(db, users):
             RemoteAccount.create(2, 'dev', dict(groups=['cms-members'])),
             RemoteAccount.create(3, 'dev', dict(groups=['alice-member'])),
             RemoteAccount.create(5, 'dev', dict(groups=['atlas-active-members-all'])),
-            RemoteAccount.create(5, 'dev', dict(groups=['faser-all'])),
+            RemoteAccount.create(8, 'dev', dict(groups=['faser-all'])),
             RemoteAccount.create(7, 'dev', dict(groups=['lhcb-general']))
         ]
 
