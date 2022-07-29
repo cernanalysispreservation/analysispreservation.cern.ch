@@ -1,19 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import PropertyKeyEditorForm from "./PropKeyEditorForm";
-import _debounce from "lodash/debounce";
+
 import { Card, Space, Tag, Typography } from "antd";
 
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
 const ALIGN_OPTIONS = ["center", "start", "end"];
 
 const Customize = props => {
-  const _onSchemaChange = data => {
-    props.onSchemaChange(props.path.get("path").toJS(), data.formData);
-  };
+  const [myPath, setMyPath] = useState([...props._path]);
+  const [updateUi, setUpdateUi] = useState(null);
+  const [updateSchema, setUpdateSchema] = useState(
+    props.schema ? props.schema.toJS() : {}
+  );
 
+  //the update for the uiSchema changes
+  useEffect(
+    () => {
+      if (updateUi) {
+        props.onUiSchemaChange([...props._uiPath], updateUi);
+      }
+    },
+    [updateUi]
+  );
+
+  useEffect(
+    () => {
+      if (props._path.join(".") != myPath.join(".")) {
+        setUpdateSchema(JSON.parse(JSON.stringify(props.schema.toJS())));
+        setMyPath([...props._path]);
+      }
+    },
+    [props._path]
+  );
+
+  const _onSchemaChange = data => {
+    props.onSchemaChange([...props._path], data.formData);
+  };
   const _onUiSchemaChange = data => {
-    props.onUiSchemaChange(props.path.get("uiPath").toJS(), data.formData);
+    setUpdateUi(data.formData);
   };
   const sizeChange = newSize => {
     if (SIZE_OPTIONS.indexOf(newSize) < 0) return;
@@ -56,24 +81,24 @@ const Customize = props => {
       <PropertyKeyEditorForm
         schema={props.schema && props.schema.toJS()}
         uiSchema={props.uiSchema && props.uiSchema.toJS()}
-        formData={props.schema && props.schema.toJS()}
-        onChange={_debounce(_onSchemaChange, 500)}
+        formData={updateSchema}
+        onChange={_onSchemaChange}
         optionsSchemaObject="optionsSchema"
         optionsUiSchemaObject="optionsSchemaUiSchema"
         title="Schema Settings"
       />
-      {props.path.get("path").size > 0 && (
-        <PropertyKeyEditorForm
-          schema={props.schema && props.schema.toJS()}
-          uiSchema={props.uiSchema && props.uiSchema.toJS()}
-          formData={props.uiSchema && props.uiSchema.toJS()}
-          onChange={_debounce(_onUiSchemaChange, 500)}
-          optionsSchemaObject="optionsUiSchema"
-          optionsUiSchemaObject="optionsUiSchemaUiSchema"
-          title="UI Schema Settings"
-        />
-      )}
-      {props.path.get("path").size == 0 && (
+
+      <PropertyKeyEditorForm
+        schema={props.schema && props.schema.toJS()}
+        uiSchema={props.uiSchema && props.uiSchema.toJS()}
+        formData={props.uiSchema && props.uiSchema.toJS()}
+        onChange={_onUiSchemaChange}
+        optionsSchemaObject="optionsUiSchema"
+        optionsUiSchemaObject="optionsUiSchemaUiSchema"
+        title="UI Schema Settings"
+      />
+
+      {props._path.size == 0 && (
         <Card title="UI Options">
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <Space>
@@ -123,7 +148,8 @@ Customize.propTypes = {
   uiSchema: PropTypes.object,
   path: PropTypes.object,
   onSchemaChange: PropTypes.func,
-  onUiSchemaChange: PropTypes.func
+  onUiSchemaChange: PropTypes.func,
+  _path: PropTypes.object
 };
 
 export default Customize;

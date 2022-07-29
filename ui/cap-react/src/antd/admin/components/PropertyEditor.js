@@ -98,7 +98,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
       />
       <Space direction="vertical" style={{ width: "100%" }}>
         <Card title={"Selected Field"}>{renderPath(path, renameId)}</Card>
-        <Customize path={path} key="customize" />
+        <Customize path={path} />
       </Space>
     </div>
   );
