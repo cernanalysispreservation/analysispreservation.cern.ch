@@ -9,7 +9,7 @@ import {
 
 function mapStateToProps(state) {
   return {
-    path: state.schemaWizard.getIn(["field"]),
+    path: state.schemaWizard.get("field"),
     propKeyEditor: state.schemaWizard.get("propKeyEditor")
   };
 }
