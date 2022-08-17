@@ -464,27 +464,33 @@ Do the following commands in the exact order
     docker-compose -f docker-compose.dev.yml run web-api  cap fixtures cms index-triggers --file /opt/cap/demo/cms-triggers.json
 
 
+Statping User and Token Creation
+--------------------------------
 
+Follow the below recipe for creating a user and generate a token
 
+- Bash into `cap-web` pod of our `prod`, `qa`, `dev` or `test`.
 
+.. code-block:: shell
 
+    kubectl exec -it cap-web-<pod> -- bash
 
+- Create a user
 
+.. code-block:: shell
 
+    cap users create statping-qa@cern.ch -a -password <>
+    cap access allow cms-access user statping-qa@cern.ch
 
+- Create a token for the created user
 
+.. code-block:: shell
 
+    from invenio_accounts.models import User
+    from invenio_oauth2server.models import Token
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    user = User.query.filter_by(email="statping-qa@cern.ch").first()
+    token_ = Token.create_personal(<token_name>, user.id, scopes=['deposit:write'])
+    db.session.add(token_)
+    db.session.commit()
+    token_.access_token
