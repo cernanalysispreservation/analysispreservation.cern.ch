@@ -41,6 +41,14 @@ check_flake8 () {
     flake8 .
 }
 
+check_isort () {
+    isort . -c -v
+}
+
+check_black () {
+    black . --check
+}
+
 check_manifest () {
     check-manifest
 }
@@ -64,6 +72,8 @@ do
         --check-shellscript) check_script;;
         --check-pydocstyle) check_pydocstyle;;
         --check-flake8) check_flake8;;
+        --check-black) check_black;;
+        --check-isort) check_isort;;
         --check-manifest) check_manifest;;
         --check-pytest) check_pytest;;
         *)

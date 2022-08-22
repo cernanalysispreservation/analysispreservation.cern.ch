@@ -1,0 +1,129 @@
+name: Lint Source
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  lint-shellcheck:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Runs shell script static analysis
+        run: |
+          sudo apt-get install shellcheck
+          ./run-tests.sh --check-shellscript
+
+  lint-pydocstyle:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Check compliance with Python docstring conventions
+        run: |
+          pip install pydocstyle
+          ./run-tests.sh --check-pydocstyle
+
+  lint-flake8:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Check compliance with pep8, pyflakes and circular complexity
+        run: |
+          pip install flake8
+          ./run-tests.sh --check-flake8
+
+  lint-black:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Run black linter for python
+        run: |
+          pip install black
+          ./run-tests.sh --check-black
+
+  lint-isort:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: isort your imports, so you don't have to.
+        run: |
+          pip install isort
+          ./run-tests.sh --check-isort
+
+  lint-prettier:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: "10"
+
+      - name: Run prettier
+        run: |
+          npm i -g prettier
+          prettier --check "ui/**/*.js"
+
+  lint-check-manifest:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Check Python manifest completeness
+        run: |
+          pip install check-manifest
+          ./run-tests.sh --check-manifest
+
+  lint-commit-quality:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # fetch-depth is needed to get the full list of commits
+          # necessary for commit msg linting when a PR has 2 commits or more
+          # to avoid getting ALL the commits, we get current commits + origin
+          fetch-depth: ${{ github.event.pull_request.commits }} + 1
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.9
+
+      - name: Checking commit quality (messages, signatures, spelling checks, etc)
+        env:
+          GIT_HEAD: ${{ github.event.after }}
+          GIT_ORIGIN: ${{ github.event.pull_request.base.sha }}
+        run: sh ./scripts/ci/prebuild.sh
