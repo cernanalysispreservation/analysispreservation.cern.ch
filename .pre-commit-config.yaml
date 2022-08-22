@@ -1,4 +1,5 @@
 repos:
+  # Python
   - repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
@@ -17,6 +18,12 @@ repos:
     hooks:
       - id: isort
 
+  - repo: https://gitlab.com/pycqa/pydocstyle
+    rev: '6.1.1'
+    hooks:
+      - id: pydocstyle
+
+  # JS
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: 'v2.7.1'
     hooks:
@@ -24,6 +31,7 @@ repos:
         stages: [commit, push]
         files: "ui/*"
 
+  # Project Wide
   - repo: https://github.com/jorisroovers/gitlint
     rev: 'v0.17.0'
     hooks:
