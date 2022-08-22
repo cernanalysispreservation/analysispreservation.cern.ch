@@ -55,7 +55,6 @@ install_requires = [
     'Flask-Cli>=0.4.0',
     'Flask-Cache>=0.13.1',
     'Flask-Debugtoolbar>=0.10.1',
-
     # CAP specific libraries
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
@@ -66,7 +65,6 @@ install_requires = [
     'cryptography<=3.3.2',
     'paramiko==2.7.1',
     'cachetools==3.1.0',
-
     # Pinned libraries
     'urllib3[secure]==1.22',
     'sqlalchemy==1.3.0',
@@ -78,7 +76,8 @@ install_requires = [
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0',
     'invenio[{db},{es},base,auth,metadata]~={version}'.format(
-        db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION),
+        db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION
+    ),
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
@@ -87,7 +86,7 @@ install_requires = [
     # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
     # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
     # 'invenio-logging[sentry, sentry-sdk]<=1.2.0',
-    'uWSGI==2.0.17',
+    'uWSGI==2.0.17.1',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
     # needed version for future use of arguments
@@ -95,7 +94,7 @@ install_requires = [
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
     'requests-gssapi',
-    'beautifulsoup4'
+    'beautifulsoup4',
 ]
 
 packages = find_packages()
@@ -115,7 +114,7 @@ setup(
     license='MIT',
     author='CERN',
     author_email='analysis-preservation-support@cern.ch',
-    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',
+    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
     packages=packages,
     zip_safe=False,
     include_package_data=True,
@@ -190,7 +189,7 @@ setup(
             'repos_model = cap.modules.repos.models',
         ],
         'invenio_db.alembic': ['cap = cap:alembic'],
-        'invenio_config.module': ['cap = cap.config']
+        'invenio_config.module': ['cap = cap.config'],
     },
     extras_require=extras_require,
     install_requires=install_requires,

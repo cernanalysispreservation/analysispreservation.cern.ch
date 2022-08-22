@@ -43,6 +43,7 @@ serializer
 serializers
 ui
 url
+uwsgi
 wordlist
 zenodo
 adl

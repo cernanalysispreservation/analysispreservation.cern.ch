@@ -168,7 +168,7 @@ ua-parser==0.8.0          # via invenio-accounts
 uritools==2.2.0           # via invenio-oauthclient
 urllib3[secure]==1.22
 uwsgi-tools==1.1.1
-uwsgi==2.0.17
+uwsgi==2.0.17.1
 uwsgitop==0.10
 validators==0.12.2        # via wtforms-components
 wcwidth==0.1.7            # via ftfy, prompt-toolkit
