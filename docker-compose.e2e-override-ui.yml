@@ -16,8 +16,8 @@ services:
     depends_on:
       - web-api
     volumes:
-     - ./docker/nginx/conf.d:/etc/nginx/conf.d
-     - ./docker/nginx/ssl:/etc/ssl
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/ssl
   cypress:
     image: "cypress/included:6.3.0"
     # entrypoint: cypress run --headless --browser chrome
@@ -66,10 +66,10 @@ services:
     tty: true
   # API Files Application
   cap-client:
-    build:
-      context: https://github.com/cernanalysispreservation/cap-client.git
-      dockerfile: Dockerfile
-    image: cap-client
+    # build:
+    #   context: https://github.com/cernanalysispreservation/cap-client.git
+    #   dockerfile: Dockerfile
+    image: gitlab-registry.cern.ch/analysispreservation/cap-client:latest
     environment:
       - "CAP_SERVER_URL=https://nginx"
     links:
