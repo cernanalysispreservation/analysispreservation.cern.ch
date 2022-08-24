@@ -134,6 +134,36 @@ def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
     assert resp.json['id'] == 'FASER-2022-1'
 
 
+def test_create_deposit_with_copy_to_config(client, location,
+        create_schema, auth_headers_for_superuser,json_headers):
+    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-', "copy_to": [["initial", "short_title"], ["general_title"], ["later", "datasets", "item_okmiwt"]]})
+    metadata = {'$ana_type': 'faser'}
+
+    resp = client.post('/deposits/',
+                       headers=auth_headers_for_superuser + json_headers,
+                       data=json.dumps(metadata))
+    assert resp.status_code == 201
+    assert resp.json['id'] == 'FASER-2022-1'
+    assert resp.json['metadata'] == {'general_title': 'FASER-2022-1', 'initial': {'short_title': 'FASER-2022-1'}, 'later': {'datasets': {'item_okmiwt': 'FASER-2022-1'}}}
+
+
+def test_create_deposit_with_copy_to_config_only(
+        client, users, location, json_headers, auth_headers_for_user,
+        create_schema):
+    user = users['superuser']
+    schema = create_schema('cms', experiment='CMS', config={"copy_to": [["initial", "short_title"], ["general_title"]]})
+    metadata = {
+        '$schema': 'http://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json'
+    }
+
+    resp = client.post('/deposits/',
+                       data=json.dumps(metadata),
+                       headers=auth_headers_for_user(user) + json_headers)
+
+    assert resp.status_code == 201
+    assert resp.json['metadata'] == {'general_title': resp.json['id'], 'initial': {'short_title': resp.json['id']}}
+
+
 def test_create_deposit_with_incremental_pid_with_unsupported_keyword(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
     schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-{$id}-'})

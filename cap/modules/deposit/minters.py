@@ -35,7 +35,7 @@ from cap.modules.schemas.resolvers import (
     resolve_schema_by_url,
 )
 
-from .utils import generate_auto_incremental_pid
+from .utils import generate_auto_incremental_pid, set_copy_to_attr
 
 
 def cap_deposit_minter(record_uuid, data, schema=None):
@@ -58,6 +58,12 @@ def cap_deposit_minter(record_uuid, data, schema=None):
                 pid_value = generate_auto_incremental_pid(auto_increment_id)
         if not pid_value:
             pid_value = uuid.uuid4().hex
+
+        if schema:
+            copy_to_attr = schema.config.get('copy_to')
+            if copy_to_attr:
+                copy_to_attr_dict = set_copy_to_attr(pid_value, copy_to_attr)
+                data.update(copy_to_attr_dict)
 
     pid = PersistentIdentifier.create(
         'depid',
