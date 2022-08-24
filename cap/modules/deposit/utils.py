@@ -143,3 +143,16 @@ def generate_auto_incremental_pid(auto_increment_id):
         previous_deposit_id = int(previous_deposit.pid_value.split('-')[-1])
 
     return '{}{}'.format(pid_pattern, previous_deposit_id + 1)
+
+
+def set_copy_to_attr(pid_value, copy_to_attr):
+    """Method to copy pid to copy_to config options."""
+    copy_to_attr_dict = {}
+
+    for *values, leaf in copy_to_attr:
+        nested = copy_to_attr_dict
+        for v in values:
+            nested[v] = nested = {}
+        nested[leaf] = pid_value
+
+    return copy_to_attr_dict
