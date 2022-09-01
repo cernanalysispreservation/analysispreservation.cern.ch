@@ -27,7 +27,7 @@ import copy
 import uuid
 from functools import wraps
 
-from flask import current_app, request, jsonify
+from flask import current_app, request
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_db import db
@@ -59,7 +59,8 @@ from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.records.errors import get_error_path
-from cap.modules.repos.integrator import (create_repo_as_collaborator_and_attach,
+from cap.modules.repos.errors import GitError, GitHostNotSupported
+from cap.modules.repos.integrator import (create_repo_from_schema_config_and_attach,
                                           create_repo_as_user_and_attach,
                                           attach_repo_to_deposit)
 from cap.modules.repos.utils import disconnect_subscriber
@@ -260,23 +261,23 @@ class CAPDeposit(Deposit, Reviewable):
             try:
                 _, rec = request.view_args.get('pid_value').data
                 data = request.get_json()
-                # if data is None:
-                #     raise InvalidDataRESTError()
+                if data is None:
+                    raise InvalidDataRESTError()
 
-                # record_uuid = str(rec.id)
+                record_uuid = str(rec.id)
                 # webhook = data.get('webhook', False)
                 # event_type = data.get('event_type', 'release')
                 action_type = data.get('type')
             except Exception:
-                return jsonify({
-                    'message':
-                    'Invalid arguments. Please try again.'
-                }), 400
+                raise FileUploadError(
+                    "Invalid arguments. Please try again."
+                )
 
             actions = {
-                'create': create_repo_as_user_and_attach,
-                'attach': attach_repo_to_deposit,
-                'collab': create_repo_as_collaborator_and_attach
+                'repo_create': create_repo_as_user_and_attach,
+                'repo_download_attach': attach_repo_to_deposit,
+                'repo_create_default':
+                    create_repo_from_schema_config_and_attach
             }
 
             try:
@@ -285,6 +286,10 @@ class CAPDeposit(Deposit, Reviewable):
                 raise FileUploadError(
                     'Unsupported repository action. '
                     'Try create, attach or collab.')
+            except GitHostNotSupported:
+                raise FileUploadError("Host isn't provided or not supported")
+            except GitError as err:
+                raise FileUploadError(err.message)
 
         return self
 

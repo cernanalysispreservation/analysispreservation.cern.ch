@@ -132,8 +132,8 @@ def default_config():
                 CONVENERS_ML_MAIL='ml-conveners-test@cern0.ch',
                 CONVENERS_ML_JIRA_MAIL='ml-conveners-jira-test@cern0.ch',
                 CMS_HYPERNEWS_EMAIL_FORMAT='hn-cms-{}@cern0.ch',
-                ADMIN_GITHUB='testtokengithub',
-                ADMIN_GITLAB='testtokengitlab')
+                GITHUB_CAP_TOKEN="testtokengithub",
+                GITLAB_CAP_TOKEN="testtokengitlab")
 
 
 @pytest.fixture(scope='session')

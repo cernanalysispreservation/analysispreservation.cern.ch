@@ -24,9 +24,9 @@
 """Gitlab interface class."""
 
 import requests
+
 from flask import request
-from flask_login import current_user
-from gitlab import Gitlab, DEVELOPER_ACCESS
+from gitlab import Gitlab
 from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError,\
     GitlabCreateError
 
@@ -37,18 +37,19 @@ from .errors import (GitIntegrationError, GitObjectNotFound,
                      GitRequestWithInvalidSignature, GitUnauthorizedRequest,
                      GitURLParsingError)
 from .interface import GitAPI
-from .utils import generate_secret, get_webhook_url, validate_gitlab_host
+from .utils import generate_secret, get_webhook_url
 
 
 class GitlabAPI(GitAPI):
     """GitLab API class."""
 
-    def __init__(self, host, owner, repo, branch_or_sha=None, user_id=None):
+    def __init__(self, host, owner, repo, branch_or_sha=None,
+                 user_id=None, token=None):
         """Initialize a GitLab API instance."""
         self.host = host
         self.owner = owner
         self.repo = repo
-        self.token = self._get_token(user_id)
+        self.token = token if token else self._get_token(user_id)
         self.api = Gitlab(f'https://{self.host}', oauth_token=self.token)
         self.api_url = f'https://{host}/api/v4/projects'
 
@@ -140,8 +141,11 @@ class GitlabAPI(GitAPI):
                 raise GitObjectNotFound('Your repository is empty. '
                                         'Make your initial commit first.')
 
-            branch = self.project.branches.get(default_branch)
-            branch, sha = branch.name, branch.commit['id']
+            try:
+                branch = self.project.branches.get(default_branch)
+                branch, sha = branch.name, branch.commit['id']
+            except GitlabGetError:
+                return None, None
         else:
             try:
                 # check if branch exists
@@ -177,7 +181,8 @@ class GitlabAPI(GitAPI):
                 GitlabAuthenticationError,
                 GitlabGetError,
                 GitURLParsingError) as ex:
-            raise FileUploadError(description=ex.error_message)
+
+            raise FileUploadError(description=str(ex.error_message) )
 
     @classmethod
     def create_repo_as_user(cls, user_id, repo_name, description='',
@@ -208,20 +213,21 @@ class GitlabAPI(GitAPI):
             create_token, repo_name, description,
             private, license, org_name, host)
 
-        try:
-            collab_token = cls._get_token(current_user.id)
-            gitlab = Gitlab(f'https://{host}', oauth_token=collab_token)
-            gitlab.auth()
+        return repo, None
+        # try:
+        #     collab_token = cls._get_token(current_user.id)
+        #     gitlab = Gitlab(f'https://{host}', oauth_token=collab_token)
+        #     gitlab.auth()
 
-            collaborator = gitlab.user.id
-            member = repo.members.create({
-                'user_id': collaborator,
-                'access_level': DEVELOPER_ACCESS
-            })
+        #     collaborator = gitlab.user.id
+        #     member = repo.members.create({
+        #         'user_id': collaborator,
+        #         'access_level': DEVELOPER_ACCESS
+        #     })
 
-            return repo, member
-        except GitlabCreateError as ex:
-            raise FileUploadError(description=ex.error_message)
+        #     return repo, member
+        # except GitlabCreateError as ex:
+        #     raise FileUploadError(description=ex.error_message)
 
     @classmethod
     def _get_token(cls, user_id):
@@ -229,3 +235,11 @@ class GitlabAPI(GitAPI):
         if not token_obj:
             return None
         return token_obj.get('access_token')
+
+
+def validate_gitlab_host(host):
+    """Validate the Gitlab host."""
+    if host in ["gitlab.cern.ch", "gitlab.com"]:
+        return True
+    else:
+        raise GitURLParsingError

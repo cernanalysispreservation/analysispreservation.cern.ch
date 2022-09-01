@@ -44,7 +44,7 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_example_user,
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'http://gitlab.cern.ch/verywrongurl'
                        }))
 
@@ -132,7 +132,7 @@ def test_upload_when_repo(m_gitlab, client, deposit,
         f'/deposits/{pid}/actions/upload',
         headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
-            'type': 'attach',
+            'type': 'repo_download_attach',
             'url': 'http://gitlab.cern.ch/owner/repository/mybranch',
             'download': True
         }))
@@ -211,7 +211,7 @@ def test_upload_when_repo_and_creating_push_webhook(
         f'/deposits/{pid}/actions/upload',
         headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
-            'type': 'attach',
+            'type': 'repo_download_attach',
             'url': 'http://gitlab.cern.ch/owner/repository/mybranch',
             'webhook': 'push'
         }))
@@ -279,7 +279,7 @@ def test_upload_when_repo_and_creating_release_webhook(
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'http://gitlab.cern.ch/owner/repository',
                            'webhook': 'release'
                        }))
@@ -326,7 +326,7 @@ def test_upload_when_repo_file(m_gitlab, client, deposit,
         f'/deposits/{pid}/actions/upload',
         headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
-            'type': 'attach',
+            'type': 'repo_download_attach',
             'url': 'http://gitlab.cern.ch/owner/repository/blob/mybranch/README.md'
         }))
 
@@ -353,7 +353,7 @@ def test_create_repo_as_user_and_attach(m_create_api, m_api, client, deposit,
 
     class MockAPI(object):
         branch = None
-        repo_id = 'id'
+        repo_id = 321
         host = 'gitlab.cern.ch'
         owner = 'attach-deposit'
         repo = 'repository-create-test'
@@ -372,7 +372,7 @@ def test_create_repo_as_user_and_attach(m_create_api, m_api, client, deposit,
     resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'create',
+                           'type': 'repo_create',
                            'name': 'repository-create-test',
                            'host': 'gitlab.cern.ch',
                            'org_name': 'attach-deposit'
@@ -394,13 +394,13 @@ def test_attach_repo_to_deposit(m_create_api, client, deposit,
 
     class MockAPI(object):
         branch = 'master'
-        repo_id = 'id'
+        repo_id = 123
         host = 'gitlab.cern.ch'
         owner = 'attach-deposit'
         repo = 'repository-attach-test'
 
         def create_webhook(record_uuid, api, type_=None):
-            return 'id', 'secret'
+            return 123, 'secret'
 
     m_create_api.return_value = MockAPI()
     mock_pid = deposit['_deposit']['id']
@@ -408,7 +408,7 @@ def test_attach_repo_to_deposit(m_create_api, client, deposit,
     resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'https://gitlab.cern.ch/attach-deposit/repository-attach-test',
                            'download': False,
                            'webhook': 'push'
@@ -432,14 +432,16 @@ def test_attach_repo_to_deposit(m_create_api, client, deposit,
 @patch('cap.modules.repos.integrator.populate_template_from_ctx')
 @patch('cap.modules.repos.integrator.host_to_git_api')
 @patch('cap.modules.repos.integrator.create_git_api')
-def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate, client, deposit,
+def test_create_repo_from_schema_config_and_attach(m_create_api, m_api, m_populate, client, deposit,
                                                 app, users, create_deposit, create_schema,
                                                 auth_headers_for_superuser, json_headers):
     # Use the config
     SAMPLE_CONFIG = {
         "repositories": {
-            "gitlab": {
-                "admin": "ADMIN_GITLAB",
+            "gitlab_test": {
+                "host": "gitlab.cern.ch",
+                "authentication": {"type": "cap"},
+                "host": "gitlab.cern.ch",
                 "org_name": "attach-deposit",
                 "repo_name": {
                     "template": "test_info.html",
@@ -470,7 +472,7 @@ def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate,
 
     class MockAPI(object):
         branch = 'master'
-        repo_id = 'id'
+        repo_id = 123
         host = 'gitlab.cern.ch'
         owner = 'attach-deposit'
         repo = 'test-collab'
@@ -498,9 +500,9 @@ def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate,
 
     resp = resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
                        headers=auth_headers_for_superuser + json_headers,
-                       data=json.dumps({
-                           'type': 'collab',
-                           'host': 'gitlab.cern.ch'
+                       data=json.dumps({ 
+                           'type': 'repo_create_default',
+                           'name': 'gitlab_test'
                        }))
 
     assert resp.status_code == 201

@@ -26,9 +26,9 @@ def test_ping_webhooks_when_webhook_exist_status_stays_active(
     ping_webhooks.delay()
 
     m_github.assert_called_with('github.com', 'owner', 'repository',
-                                'mybranch', example_user.id)
+                                'mybranch', example_user.id, None)
     m_gitlab.assert_called_with('gitlab.cern.ch', 'owner_name', 'myrepository',
-                                'mybranch', example_user.id)
+                                'mybranch', example_user.id, None)
     m_github_ping.assert_called_with(
         github_push_webhook_sub.webhook.external_id)
     m_gitlab_ping.assert_called_with(
@@ -56,9 +56,9 @@ def test_ping_webhooks_when_webhook_doesnt_exists_change_subscriber_status_to_de
     ping_webhooks.delay()
 
     m_github.assert_called_with('github.com', 'owner', 'repository',
-                                'mybranch', example_user.id)
+                                'mybranch', example_user.id, None)
     m_gitlab.assert_called_with('gitlab.cern.ch', 'owner_name', 'myrepository',
-                                'mybranch', example_user.id)
+                                'mybranch', example_user.id, None )
 
     assert GitWebhookSubscriber.query.get(
         github_push_webhook_sub.id).status == 'deleted'

@@ -33,7 +33,7 @@ from .tasks import download_repo, download_repo_file
 from .utils import populate_template_from_ctx, parse_git_url, create_webhook
 
 
-def create_repo_as_collaborator_and_attach(record_uuid, data):
+def create_repo_from_schema_config_and_attach(record_uuid, data):
     from cap.modules.deposit.api import CAPDeposit
     record = CAPDeposit.get_record(record_uuid)
     config = record.schema.config.get('repositories', {})
@@ -41,26 +41,40 @@ def create_repo_as_collaborator_and_attach(record_uuid, data):
         raise FileUploadError(
             'No config found. Cannot create a repo for this analysis.')
 
-    host = data.get('host')
-    git_service = host.split('.')[0]
-    repos = config.get(git_service)
+    config_name = data.get('name')
+    repo_config = config.get(config_name)
 
-    token = current_app.config.get(repos['admin'])
+    if not repo_config:
+        raise FileUploadError(f'Wrong config "name". Select from: {list(config.keys())}')
+    host = repo_config.get('host')
+    api = host_to_git_api(host)
+    
+    token = None
+    authentication = repo_config.get("authentication", {})
+    authentication_type = authentication.get("type")
+    # if "authentication" is "cap" => use CAP github token
+    if authentication_type == "cap":
+        if host == "gitlab.cern.ch":
+            token = current_app.config.get('GITLAB_CAP_TOKEN')
+        elif host == "github.com":
+            token = current_app.config.get('GITHUB_CAP_TOKEN')
+    # else if "authentication" is "user" => use current user token
+    elif authentication_type == "user":
+        token = api._get_token(current_user.id)
+
     if not token:
         raise FileUploadError(f'Admin API key for {host} is not provided.')
 
-    name = populate_template_from_ctx(record, repos.get('repo_name'))
-    desc = populate_template_from_ctx(record, repos.get('description'),
+    name = populate_template_from_ctx(record, repo_config.get('repo_name'))
+    desc = populate_template_from_ctx(record, repo_config.get('description'),
                                       module='custom')
-    organization = repos.get('org_name')
-
-    api = host_to_git_api(host)
+    organization = repo_config.get('org_name')
 
     repo, invite = api.create_repo_as_collaborator(
         token, organization, name,
         description=desc,
-        private=repos.get('private'),
-        license=repos.get('license'),
+        private=repo_config.get('private'),
+        license=repo_config.get('license'),
         host=host
     )
 
@@ -69,12 +83,13 @@ def create_repo_as_collaborator_and_attach(record_uuid, data):
         else repo.attributes['web_url']
 
     # after the repo creation, attach it to the deposit
-    host, owner, repo, branch, filepath = parse_git_url(url)
+    host, owner, repo_name, branch, filepath = parse_git_url(url)
     api = create_git_api(
-        host, owner, repo, branch,
-        user_id=current_user.id
+        host, owner, repo_name, branch,
+        token=token
     )
 
+    # Link repository to deposit/record
     create_webhook(record_uuid, api)
 
 

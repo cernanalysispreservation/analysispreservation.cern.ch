@@ -27,10 +27,11 @@ import hashlib
 import hmac
 
 from flask import request
-from flask_login import current_user
+# from flask_login import current_user
 from github import Github, GithubException, GithubObject,\
     UnknownObjectException, BadCredentialsException
 
+from invenio_rest.errors import FieldError
 from cap.modules.auth.ext import _fetch_token
 from cap.modules.deposit.errors import FileUploadError
 
@@ -43,12 +44,13 @@ from .utils import generate_secret, get_webhook_url
 class GithubAPI(GitAPI):
     """GitHub-specific API class."""
 
-    def __init__(self, host, owner, repo, branch_or_sha=None, user_id=None):
+    def __init__(self, host, owner, repo, branch_or_sha=None,
+                 user_id=None, token=None):
         """Initialize a GitHub API instance."""
         self.host = host
         self.owner = owner
         self.repo = repo
-        self.token = self._get_token(user_id)
+        self.token = token if token else self._get_token(user_id)
         self.api = Github(self.token)
 
         try:
@@ -186,7 +188,17 @@ class GithubAPI(GitAPI):
         except (BadCredentialsException,
                 UnknownObjectException,
                 GithubException) as ex:
-            raise FileUploadError(description=ex.data.get('message'))
+
+            if hasattr(ex, 'data'):
+                raise FileUploadError(
+                    description=ex.data.get('message'),
+                    errors=[
+                        FieldError(e.get('field'), e.get('message') ) 
+                        for e in ex.data.get('errors', []) ]
+            )
+
+            raise FileUploadError('Error with creating repository')
+
 
     @classmethod
     def create_repo_as_user(cls, user_id, repo_name, description='',
@@ -217,14 +229,17 @@ class GithubAPI(GitAPI):
             create_token, repo_name, description,
             private, license, org_name)
 
-        try:
-            collab_token = cls._get_token(current_user.id)
-            collaborator = Github(collab_token).get_user().login
-            invitation = repo.add_to_collaborators(collaborator)
+        return repo, None
+        # # Add collaborators
+        # try:
+        #     # Get Github username of submitter if exists
+        #     collab_token = cls._get_token(current_user.id)
+        #     collaborator = Github(collab_token).get_user().login
+        #     invitation = repo.add_to_collaborators(collaborator)
 
-            return repo, invitation
-        except UnknownObjectException as ex:
-            raise FileUploadError(description=ex.data.get('message'))
+        #     return repo, invitation
+        # except UnknownObjectException as ex:
+        #     raise FileUploadError(description=ex.data.get('message'))
 
     @classmethod
     def _get_token(cls, user_id):

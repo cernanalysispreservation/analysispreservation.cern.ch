@@ -57,7 +57,7 @@ def test_upload_when_missing_params_returns_400(client, deposit,
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach'
+                           'type': 'repo_download_attach'
                        }))
 
     assert resp.status_code == 400
@@ -72,7 +72,7 @@ def test_upload_when_host_not_gitlab_nor_github_returns_400(
         f'/deposits/{pid}/actions/upload',
         headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
-            'type': 'attach',
+            'type': 'repo_download_attach',
             'url': 'http://notsupported.com/owner/repository/mybranch',
             'webhook': 'push'
         })
@@ -111,7 +111,7 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_example_user,
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'http://github.com/verywrongurl'
                        }))
 
@@ -121,7 +121,7 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_example_user,
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'http://unknownhost.com/verywrongurl'
                        }))
 
@@ -136,7 +136,7 @@ def test_upload_when_wrong_url_2(client, deposit,
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'http://github.com/verywrongurl'
                        }))
 
@@ -150,7 +150,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_release_webhoo
     m_get_repo, client, deposit, auth_headers_for_example_user, json_headers,
     git_repo_tar):
     class MockProject(object):
-        id = 'id'
+        id = 123
         def get_branch(self, name):
             raise GithubException(404, data={'message': 'Branch not found'})
 
@@ -166,7 +166,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_release_webhoo
         f'/deposits/{pid}/actions/upload',
         headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
-            'type': 'attach',
+            'type': 'repo_download_attach',
             'url': 'http://github.com/owner/repository/mycommitsha',
             'webhook': 'release'
         }))
@@ -184,7 +184,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
     m_get_repo, client, deposit, auth_headers_for_example_user, json_headers,
     git_repo_tar):
     class MockProject(object):
-        id = 'id'
+        id = 123
         def get_branch(self, name):
             raise GithubException(404, data={'message': 'Branch not found'})
 
@@ -200,7 +200,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
         f'/deposits/{pid}/actions/upload',
         headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
-            'type': 'attach',
+            'type': 'repo_download_attach',
             'url': 'http://github.com/owner/repository/mycommitsha',
             'webhook': 'push'
         }))
@@ -218,7 +218,7 @@ def test_upload_when_repo(m_get_repo, client, deposit,
                           auth_headers_for_example_user, json_headers,
                           git_repo_tar):
     class MockProject(object):
-        id = 'id'
+        id = 123
         def get_branch(self, name):
             mock = Mock()
             mock.name = name
@@ -248,7 +248,7 @@ def test_upload_when_repo(m_get_repo, client, deposit,
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'http://github.com/owner/repository/mybranch',
                            'download': True
                        }))
@@ -337,7 +337,7 @@ def test_upload_when_repo_and_creating_release_webhook(
     resp = client.post(f'/deposits/{pid}/actions/upload',
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'http://github.com/owner/repository',
                            'webhook': 'release'
                        }))
@@ -404,7 +404,7 @@ def test_upload_when_repo_and_creating_push_webhook(
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
                            'url': 'http://github.com/owner/repository',
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'webhook': 'push',
                        }))
 
@@ -462,7 +462,7 @@ def test_upload_when_repo_file(m_get_repo, client, deposit,
         f'/deposits/{pid}/actions/upload',
         headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
-            'type': 'attach',
+            'type': 'repo_download_attach',
             'url': 'http://github.com/owner/repository/blob/mybranch/README.md'
         }))
 
@@ -487,7 +487,7 @@ def test_create_repo_as_user_and_attach(m_create_api, m_api, client, deposit,
 
     class MockAPI(object):
         branch = None
-        repo_id = 'id'
+        repo_id = 321
         host = 'github.com'
         owner = 'attach-deposit'
         repo = 'repository-create-test'
@@ -506,7 +506,7 @@ def test_create_repo_as_user_and_attach(m_create_api, m_api, client, deposit,
     resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'create',
+                           'type': 'repo_create',
                            'name': 'repository-create-test',
                            'host': 'github.com',
                            'org_name': 'attach-deposit'
@@ -528,13 +528,13 @@ def test_attach_repo_to_deposit(m_create_api, client, deposit,
 
     class MockAPI(object):
         branch = 'master'
-        repo_id = 'id'
+        repo_id = 321
         host = 'github.com'
         owner = 'cernanalysispreservation'
         repo = 'analysispreservation.cern.ch'
 
         def create_webhook(record_uuid, api, type_=None):
-            return 'id', 'secret'
+            return 321, 'secret'
 
     m_create_api.return_value = MockAPI()
     mock_pid = deposit['_deposit']['id']
@@ -542,7 +542,7 @@ def test_attach_repo_to_deposit(m_create_api, client, deposit,
     resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
                        headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
-                           'type': 'attach',
+                           'type': 'repo_download_attach',
                            'url': 'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',
                            'download': False,
                            'webhook': 'push'
@@ -566,7 +566,7 @@ def test_attach_repo_to_deposit(m_create_api, client, deposit,
 @patch('cap.modules.repos.integrator.populate_template_from_ctx')
 @patch('cap.modules.repos.integrator.host_to_git_api')
 @patch('cap.modules.repos.integrator.create_git_api')
-def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate, client, deposit,
+def test_create_repo_from_schema_config_and_attach(m_create_api, m_api, m_populate, client, deposit,
                                                 app, users, create_deposit, create_schema,
                                                 auth_headers_for_superuser, json_headers):
     # Use the config
@@ -575,6 +575,8 @@ def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate,
             "github": {
                 "admin": "ADMIN_GITHUB",
                 "org_name": "attach-deposit",
+                "authentication": {"type": "cap"},
+                "host": "github.com",
                 "repo_name": {
                     "template": "test_info.html",
                     "ctx": {
@@ -602,7 +604,7 @@ def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate,
 
     class MockAPI(object):
         branch = 'master'
-        repo_id = 'id'
+        repo_id = 321
         host = 'github.com'
         owner = 'attach-deposit'
         repo = 'test-collab'
@@ -631,8 +633,8 @@ def test_create_repo_as_collaborator_and_attach(m_create_api, m_api, m_populate,
     resp = resp = client.post(f'/deposits/{mock_pid}/actions/upload'.format(mock_pid),
                        headers=auth_headers_for_superuser + json_headers,
                        data=json.dumps({
-                           'type': 'collab',
-                           'host': 'github.com'
+                           'type': 'repo_create_default',
+                           'name': 'github'
                        }))
 
     assert resp.status_code == 201

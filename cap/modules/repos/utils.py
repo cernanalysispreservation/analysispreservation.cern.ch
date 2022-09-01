@@ -72,18 +72,6 @@ def parse_git_url(url):
     return host, owner, repo, branch, filepath
 
 
-def validate_gitlab_host(host):
-    """Validate the Gitlab host."""
-    host_pattern = re.compile(
-        '''
-        (?P<host>(?:gitlab\.cern\.ch|gitlab\.com))
-        '''
-    )
-    if not host_pattern.match(host):
-        raise GitURLParsingError
-    return True
-
-
 def ensure_content_length(resp):
     """
     Add Content-Length when it is not present.
@@ -214,6 +202,7 @@ def populate_template_from_ctx(record, config, module=None):
             custom_func = getattr(module, attrs['method'])
             val = custom_func(record, config)
 
-        ctx.update({key: val})
+        if val:
+            ctx.update({key: val})
 
     return render_template(template, **ctx)
