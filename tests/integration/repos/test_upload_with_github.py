@@ -566,7 +566,7 @@ def test_attach_repo_to_deposit(m_create_api, client, deposit,
 @patch('cap.modules.repos.integrator.populate_template_from_ctx')
 @patch('cap.modules.repos.integrator.host_to_git_api')
 @patch('cap.modules.repos.integrator.create_git_api')
-def test_create_repo_from_schema_config_and_attach(m_create_api, m_api, m_populate, client, deposit,
+def test_create_schema_default_repo_and_attach(m_create_api, m_api, m_populate, client, deposit,
                                                 app, users, create_deposit, create_schema,
                                                 auth_headers_for_superuser, json_headers):
     # Use the config

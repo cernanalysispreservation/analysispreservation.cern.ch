@@ -27,28 +27,33 @@ from flask import current_app
 from flask_login import current_user
 
 from cap.modules.deposit.errors import FileUploadError
+
 from .errors import GitError
-from .factory import host_to_git_api, create_git_api
+from .factory import create_git_api, host_to_git_api
 from .tasks import download_repo, download_repo_file
-from .utils import populate_template_from_ctx, parse_git_url, create_webhook
+from .utils import create_webhook, parse_git_url, populate_template_from_ctx
 
 
-def create_repo_from_schema_config_and_attach(record_uuid, data):
+def create_schema_default_repo_and_attach(record_uuid, data):
     from cap.modules.deposit.api import CAPDeposit
+
     record = CAPDeposit.get_record(record_uuid)
     config = record.schema.config.get('repositories', {})
     if not config:
         raise FileUploadError(
-            'No config found. Cannot create a repo for this analysis.')
+            'No config found. Cannot create a repo for this analysis.'
+        )
 
     config_name = data.get('name')
     repo_config = config.get(config_name)
 
     if not repo_config:
-        raise FileUploadError(f'Wrong config "name". Select from: {list(config.keys())}')
+        raise FileUploadError(
+            f'Wrong config "name". Select from: {list(config.keys())}'
+        )
     host = repo_config.get('host')
     api = host_to_git_api(host)
-    
+
     token = None
     authentication = repo_config.get("authentication", {})
     authentication_type = authentication.get("type")
@@ -66,28 +71,27 @@ def create_repo_from_schema_config_and_attach(record_uuid, data):
         raise FileUploadError(f'Admin API key for {host} is not provided.')
 
     name = populate_template_from_ctx(record, repo_config.get('repo_name'))
-    desc = populate_template_from_ctx(record, repo_config.get('description'),
-                                      module='custom')
+    desc = populate_template_from_ctx(
+        record, repo_config.get('description'), module='custom'
+    )
     organization = repo_config.get('org_name')
 
     repo, invite = api.create_repo_as_collaborator(
-        token, organization, name,
+        token,
+        organization,
+        name,
         description=desc,
         private=repo_config.get('private'),
         license=repo_config.get('license'),
-        host=host
+        host=host,
     )
 
     # get the url from the repo according to host
-    url = repo.html_url if host == 'github.com' \
-        else repo.attributes['web_url']
+    url = repo.html_url if host == 'github.com' else repo.attributes['web_url']
 
     # after the repo creation, attach it to the deposit
     host, owner, repo_name, branch, filepath = parse_git_url(url)
-    api = create_git_api(
-        host, owner, repo_name, branch,
-        token=token
-    )
+    api = create_git_api(host, owner, repo_name, branch, token=token)
 
     # Link repository to deposit/record
     create_webhook(record_uuid, api)
@@ -118,26 +122,22 @@ def create_repo_as_user_and_attach(record_uuid, data):
         private=data.get('private', False),
         license=data.get('license'),
         org_name=data.get('org_name'),
-        host=host
+        host=host,
     )
 
     # get the url from the repo according to host
-    url = repo.html_url if host == 'github.com' \
-        else repo.attributes['web_url']
+    url = repo.html_url if host == 'github.com' else repo.attributes['web_url']
 
     # after the repo creation, attach it to the deposit
     host, owner, repo, branch, filepath = parse_git_url(url)
-    api = create_git_api(
-        host, owner, repo, branch,
-        user_id=current_user.id
-    )
+    api = create_git_api(host, owner, repo, branch, user_id=current_user.id)
 
     create_webhook(record_uuid, api)
 
 
 def attach_repo_to_deposit(record_uuid, data):
     """Attach a repo to a deposit.
-    
+
     Download the attached repo, and create webhooks
     according to the parameters.
 
@@ -155,21 +155,20 @@ def attach_repo_to_deposit(record_uuid, data):
         webhook = data.get('webhook')
         download = data.get('download')
         host, owner, repo, branch, filepath = parse_git_url(url)
-        api = create_git_api(
-            host, owner, repo, branch,
-            user_id=current_user.id
-        )
+        api = create_git_api(host, owner, repo, branch, user_id=current_user.id)
 
         # if filepath, download the file
         if filepath:
             if webhook:
-                raise FileUploadError('You cannot create a webhook on a file')  # noqa
+                raise FileUploadError(
+                    'You cannot create a webhook on a file'
+                )  # noqa
 
             download_repo_file(
                 record_uuid,
                 f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
                 *api.get_file_download(filepath),
-                api.auth_headers
+                api.auth_headers,
             )
 
         # if repo, we need to check the options, which work separately
@@ -185,23 +184,27 @@ def attach_repo_to_deposit(record_uuid, data):
                     record_uuid,
                     f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
                     api.get_repo_download(),
-                    api.auth_headers)
+                    api.auth_headers,
+                )
 
             # if webhook, create webhook connection
             if webhook:
                 if webhook == 'release' and branch:
                     raise FileUploadError(
                         'You cannot create a release webhook'
-                        ' for a specific branch or sha.')
+                        ' for a specific branch or sha.'
+                    )
 
                 if webhook == 'push' and not api.branch and api.sha:
                     raise FileUploadError(
                         'You cannot create a push webhook'
-                        ' for a specific sha.')
+                        ' for a specific sha.'
+                    )
 
                 if webhook not in ['push', 'release']:
                     raise FileUploadError(
-                        'Supported webhooks are push, release.')
+                        'Supported webhooks are push, release.'
+                    )
 
                 create_webhook(record_uuid, api, webhook)
 

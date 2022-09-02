@@ -109,7 +109,6 @@ def env_config(instance_path):
 @pytest.fixture(scope='session')
 def default_config():
     """Default configuration."""
-
     APP_DEFAULT_SECURE_HEADERS['force_https'] = False
     APP_DEFAULT_SECURE_HEADERS['session_cookie_secure'] = False
 
@@ -229,7 +228,7 @@ def remote_accounts(db, users):
 
 @pytest.fixture()
 def superuser(db, clear_caches):
-    "Create superuser."
+    """Create superuser."""
     superuser = create_user_with_access(db.session, 'superuser@cern.ch',
                                         'superuser-access')
 
@@ -269,9 +268,7 @@ def create_schema(db, clear_caches):
                     version="1.0.0",
                     config=None,
                     **kwargs):
-        """
-        Add new schema into db
-        """
+        """Add new schema into db."""
         default_json = {'title': {'type': 'string'}}
 
         try:

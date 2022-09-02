@@ -27,16 +27,27 @@ import hashlib
 import hmac
 
 from flask import request
-# from flask_login import current_user
-from github import Github, GithubException, GithubObject,\
-    UnknownObjectException, BadCredentialsException
 
+# from flask_login import current_user
+from github import (
+    BadCredentialsException,
+    Github,
+    GithubException,
+    GithubObject,
+    UnknownObjectException,
+)
 from invenio_rest.errors import FieldError
+
 from cap.modules.auth.ext import _fetch_token
 from cap.modules.deposit.errors import FileUploadError
 
-from .errors import (GitError, GitIntegrationError, GitObjectNotFound,
-                     GitRequestWithInvalidSignature, GitUnauthorizedRequest)
+from .errors import (
+    GitError,
+    GitIntegrationError,
+    GitObjectNotFound,
+    GitRequestWithInvalidSignature,
+    GitUnauthorizedRequest,
+)
 from .interface import GitAPI
 from .utils import generate_secret, get_webhook_url
 
@@ -44,8 +55,9 @@ from .utils import generate_secret, get_webhook_url
 class GithubAPI(GitAPI):
     """GitHub-specific API class."""
 
-    def __init__(self, host, owner, repo, branch_or_sha=None,
-                 user_id=None, token=None):
+    def __init__(
+        self, host, owner, repo, branch_or_sha=None, user_id=None, token=None
+    ):
         """Initialize a GitHub API instance."""
         self.host = host
         self.owner = owner
@@ -54,11 +66,13 @@ class GithubAPI(GitAPI):
         self.api = Github(self.token)
 
         try:
-            self.project = self.api.get_repo(f'{self.owner}/{self.repo}',
-                                             lazy=False)
+            self.project = self.api.get_repo(
+                f'{self.owner}/{self.repo}', lazy=False
+            )
         except UnknownObjectException:
             raise GitObjectNotFound(
-                'This repository does not exist or you don\'t have access.')
+                'This repository does not exist or you don\'t have access.'
+            )
 
         self.branch, self.sha = self._get_branch_and_sha(branch_or_sha)
 
@@ -87,7 +101,9 @@ class GithubAPI(GitAPI):
             raise GitObjectNotFound(f'File {filepath} does not exist')
 
         if isinstance(file_desc, list):
-            raise GitError('Downloading directories is currently not supported.')
+            raise GitError(
+                'Downloading directories is currently not supported.'
+            )
 
         return file_desc.download_url.split('?token=')[0], file_desc.size
 
@@ -117,10 +133,12 @@ class GithubAPI(GitAPI):
             )
         except UnknownObjectException:
             raise GitIntegrationError(
-                'No permission to create webhook for this repository.')
+                'No permission to create webhook for this repository.'
+            )
         except GithubException:
             raise GitIntegrationError(
-                'Push webhook for this repository already exist')
+                'Push webhook for this repository already exist'
+            )
 
         return hook.id, secret
 
@@ -130,7 +148,8 @@ class GithubAPI(GitAPI):
             self.project.get_hook(hook_id)
         except UnknownObjectException:
             raise GitObjectNotFound(
-                'Webhook not found or you don\'t have access.')
+                'Webhook not found or you don\'t have access.'
+            )
 
     def delete_webhook(self, hook_id):
         """Delete webhook with given github id."""
@@ -139,7 +158,8 @@ class GithubAPI(GitAPI):
             hook.delete()
         except UnknownObjectException:
             raise GitObjectNotFound(
-                'Webhook not found or you don\'t have access.')
+                'Webhook not found or you don\'t have access.'
+            )
 
     def _get_branch_and_sha(self, branch_or_sha):
         if not branch_or_sha:
@@ -148,8 +168,10 @@ class GithubAPI(GitAPI):
                 branch = self.project.get_branch(self.project.default_branch)
                 branch, sha = branch.name, branch.commit.sha
             except GithubException:
-                raise GitObjectNotFound('Your repository is empty. '
-                                        'Make your initial commit first.')
+                raise GitObjectNotFound(
+                    'Your repository is empty. '
+                    'Make your initial commit first.'
+                )
         else:
             try:
                 # check if branch exists
@@ -162,13 +184,15 @@ class GithubAPI(GitAPI):
                     branch = None
                 except GithubException:
                     raise GitObjectNotFound(
-                        f'{branch_or_sha} does not match any branch or sha.')
+                        f'{branch_or_sha} does not match any branch or sha.'
+                    )
 
         return branch, sha
 
     @classmethod
-    def create_repo(cls, token, repo_name, description,
-                    private, license, org_name):
+    def create_repo(
+        cls, token, repo_name, description, private, license, org_name
+    ):
         """
         Create a github repo as user/organization.
 
@@ -181,53 +205,73 @@ class GithubAPI(GitAPI):
 
         try:
             return api.create_repo(
-                repo_name, description=description,
-                private=private, auto_init=True,
-                license_template=license)
+                repo_name,
+                description=description,
+                private=private,
+                auto_init=True,
+                license_template=license,
+            )
 
-        except (BadCredentialsException,
-                UnknownObjectException,
-                GithubException) as ex:
+        except (
+            BadCredentialsException,
+            UnknownObjectException,
+            GithubException,
+        ) as ex:
 
             if hasattr(ex, 'data'):
                 raise FileUploadError(
                     description=ex.data.get('message'),
                     errors=[
-                        FieldError(e.get('field'), e.get('message') ) 
-                        for e in ex.data.get('errors', []) ]
-            )
+                        FieldError(e.get('field'), e.get('message'))
+                        for e in ex.data.get('errors', [])
+                    ],
+                )
 
             raise FileUploadError('Error with creating repository')
 
-
     @classmethod
-    def create_repo_as_user(cls, user_id, repo_name, description='',
-                            private=False, license=None, org_name=None,
-                            host=None):
+    def create_repo_as_user(
+        cls,
+        user_id,
+        repo_name,
+        description='',
+        private=False,
+        license=None,
+        org_name=None,
+        host=None,
+    ):
         """Create repo a user, using the current user's token."""
         token = cls._get_token(user_id)
         if not token:
             raise GitUnauthorizedRequest(
                 'Github requires authorization - '
-                'connect your CERN account: Settings -> Integrations.')
+                'connect your CERN account: Settings -> Integrations.'
+            )
 
         repo = cls.create_repo(
-            token, repo_name, description,
-            private, license, org_name)
+            token, repo_name, description, private, license, org_name
+        )
         return repo
 
     @classmethod
-    def create_repo_as_collaborator(cls, create_token, org_name, repo_name,
-                                    description='', private=False,
-                                    license=None, host=None):
+    def create_repo_as_collaborator(
+        cls,
+        create_token,
+        org_name,
+        repo_name,
+        description='',
+        private=False,
+        license=None,
+        host=None,
+    ):
         """Return the created repository.
 
         Create repo through an organization admin,
         adding the current user as a member/collaborator.
         """
         repo = cls.create_repo(
-            create_token, repo_name, description,
-            private, license, org_name)
+            create_token, repo_name, description, private, license, org_name
+        )
 
         return repo, None
         # # Add collaborators

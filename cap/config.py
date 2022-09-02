@@ -8,8 +8,8 @@
 """Default configuration for CERN Analysis Preservation."""
 
 import copy
-import os
 import json
+import os
 from datetime import timedelta
 from os.path import dirname, join
 
@@ -22,22 +22,28 @@ from invenio_deposit.scopes import write_scope
 from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
 from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
-from invenio_records_rest.facets import terms_filter, range_filter
+from invenio_records_rest.facets import range_filter, terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
 
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
+from cap.modules.deposit.permissions import (
+    AdminDepositPermission,
+    CreateDepositPermission,
+    ReadDepositPermission,
+)
 from cap.modules.oauthclient.contrib.cern import disconnect_handler
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
+from cap.modules.oauthclient.rest_handlers import (
+    authorized_signup_handler,
+    signup_handler,
+)
 from cap.modules.oauthclient.serializers import oauth_extra_data_serializer
 from cap.modules.records.permissions import ReadRecordPermission
 from cap.modules.search.facets import nested_filter, prefix_filter
-from cap.modules.user.serializers import (user_account_serializer,
-                                          user_account_list_serializer)
+from cap.modules.user.serializers import (
+    user_account_list_serializer,
+    user_account_serializer,
+)
 
 
 def _(x):
@@ -65,7 +71,8 @@ CACHE_REDIS_HOST = os.environ.get("CACHE_REDIS_HOST", "localhost")
 CACHE_REDIS_PORT = os.environ.get("CACHE_REDIS_PORT", 6379)
 #: Redis Cache base url
 CACHE_REDIS_BASE_URL = "redis://{0}:{1}".format(
-    CACHE_REDIS_HOST, CACHE_REDIS_PORT)
+    CACHE_REDIS_HOST, CACHE_REDIS_PORT
+)
 
 #: URL of Redis db.
 CACHE_REDIS_URL = "{0}/0".format(CACHE_REDIS_BASE_URL)
@@ -151,7 +158,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'cms_keywords': {
         'task': 'cap.modules.experiments.tasks.cms.'
-                'retrieve_cms_keywords_from_spreadsheet',
+        'retrieve_cms_keywords_from_spreadsheet',
         'schedule': timedelta(minutes=60),
     },
 }
@@ -163,8 +170,8 @@ CELERY_BEAT_SCHEDULE = {
 # ========
 #: Database URI including user and password
 SQLALCHEMY_DATABASE_URI = os.environ.get(
-    'APP_SQLALCHEMY_DATABASE_URI',
-    'postgresql+psycopg2://cap:cap@localhost/cap')
+    'APP_SQLALCHEMY_DATABASE_URI', 'postgresql+psycopg2://cap:cap@localhost/cap'
+)
 
 # JSONSchemas
 # ===========
@@ -201,7 +208,7 @@ APP_ALLOWED_HOSTS = [
     'analysispreservation-dev.web.cern.ch',
     'analysispreservation-dev.cern.ch',
     'analysispreservation-qa.web.cern.ch',
-    'analysispreservation-qa.cern.ch'
+    'analysispreservation-qa.cern.ch',
 ]
 
 if os.environ.get('DEV_HOST', False):
@@ -248,8 +255,9 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 #: Default cache type.
 CACHE_TYPE = "redis"
 #: Default cache URL for sessions.
-ACCESS_SESSION_REDIS_HOST = os.environ.get('APP_ACCESS_SESSION_REDIS_HOST',
-                                           'localhost')
+ACCESS_SESSION_REDIS_HOST = os.environ.get(
+    'APP_ACCESS_SESSION_REDIS_HOST', 'localhost'
+)
 
 #: Cache for storing access restrictions
 ACCESS_CACHE = 'cap.modules.cache:current_cache'
@@ -274,19 +282,21 @@ if os.environ.get('CAP_SUPERUSER_EGROUPS', False):
 # Records
 # =======
 #: Records sort/facets options
-RECORDS_REST_SORT_OPTIONS = dict(records=dict(
-    bestmatch=dict(
-        title=_('Best match'),
-        fields=['_score'],
-        order=1,
-    ),
-    mostrecent=dict(
-        title=_('Most recent'),
-        fields=['_updated'],
-        default_order='desc',
-        order=2,
-    ),
-))
+RECORDS_REST_SORT_OPTIONS = dict(
+    records=dict(
+        bestmatch=dict(
+            title=_('Best match'),
+            fields=['_score'],
+            order=1,
+        ),
+        mostrecent=dict(
+            title=_('Most recent'),
+            fields=['_updated'],
+            default_order='desc',
+            order=2,
+        ),
+    )
+)
 
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
@@ -295,43 +305,25 @@ RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 CAP_FACETS = {
     'aggs': {
         'facet_collection': {
-            'terms': {
-                'field': '_collection.name'
-            },
+            'terms': {'field': '_collection.name'},
             'aggs': {
                 'facet_collection_version': {
-                    'terms': {
-                        'field': '_collection.version'
-                    }
+                    'terms': {'field': '_collection.version'}
                 },
                 "__display_name__": {
-                    "top_hits": {
-                        "size": 1,
-                        "_source": [
-                            "_collection.fullname"
-                        ]
-                    }
-                }
+                    "top_hits": {"size": 1, "_source": ["_collection.fullname"]}
+                },
             },
-            'meta': {
-                'order': 1
-            }
+            'meta': {'order': 1},
         },
         'facet_cms_working_group': {
             'terms': {
                 'size': 30,
-                'script': 'doc.containsKey("basic_info.cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
+                'script': 'doc.containsKey("basic_info.cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null',  # noqa
             },
-            'meta': {
-                'title': 'CMS Working Group'
-            }
+            'meta': {'title': 'CMS Working Group'},
         },
-        'facet_cadi_status': {
-            'terms': {
-                'field': 'cadi_info.status'
-            }
-        },
-
+        'facet_cadi_status': {'terms': {'field': 'cadi_info.status'}},
         # keywords
         'facet_collision_system': {
             'terms': {
@@ -351,51 +343,42 @@ CAP_FACETS = {
         'facet_final_states': {
             'terms': {
                 'size': 30,
-                'field': 'basic_info.analysis_keywords.final_states.keyword'
+                'field': 'basic_info.analysis_keywords.final_states.keyword',
             }
         },
         'facet_sm_analysis_characteristics': {
             'terms': {
                 'field': 'basic_info.analysis_keywords.sm_analysis_characteristics.keyword'  # noqa
             },
-            'meta': {
-                'title': 'SM Analysis Characteristics'
-            }
+            'meta': {'title': 'SM Analysis Characteristics'},
         },
         'facet_interpretation': {
             'terms': {
                 'size': 30,
-                'field': 'basic_info.analysis_keywords.interpretation.keyword'
+                'field': 'basic_info.analysis_keywords.interpretation.keyword',
             }
         },
         'facet_further_search_categorisation': {
             'terms': {
                 'size': 30,
-                'field': 'basic_info.analysis_keywords.further_search_categorisation.keyword'  # noqa
+                'field': 'basic_info.analysis_keywords.further_search_categorisation.keyword',  # noqa
             },
-            'meta': {
-                'title': 'Further Search Categorization'
-            }
+            'meta': {'title': 'Further Search Categorization'},
         },
         'facet_further_search_categorisation_heavy_ion': {
             'terms': {
                 'field': 'basic_info.analysis_keywords.further_search_categorisation_heavy_ion.keyword'  # noqa
             },
-            'meta': {
-                'title': 'Further Search Categorization Heavy Ion'
-            }
+            'meta': {'title': 'Further Search Categorization Heavy Ion'},
         },
         "facet_next_deadline_date": {
             "date_histogram": {
                 "field": "analysis_context.next_deadline_date",
                 "interval": "year",
                 "format": "yyyy",
-                "min_doc_count": 1
+                "min_doc_count": 1,
             },
-            'meta': {
-                'title': 'Next Deadline Date',
-                'type': 'range'
-            }
+            'meta': {'title': 'Next Deadline Date', 'type': 'range'},
         },
         'particles': {
             'nested': {
@@ -409,9 +392,7 @@ CAP_FACETS = {
                         'exclude': '',
                     },
                     'aggs': {
-                        'doc_count': {
-                            'reverse_nested': {}
-                        },
+                        'doc_count': {'reverse_nested': {}},
                         'facet_physics_objects_type': {
                             'terms': {
                                 'field': 'main_measurements'
@@ -419,11 +400,7 @@ CAP_FACETS = {
                                 '.physics_objects'
                                 '.object_type'
                             },
-                            'aggs': {
-                                'doc_count': {
-                                    'reverse_nested': {}
-                                }
-                            },
+                            'aggs': {'doc_count': {'reverse_nested': {}}},
                         },
                     },
                 },
@@ -438,26 +415,32 @@ CAP_FACETS = {
         'next_deadline_date': range_filter(
             'analysis_context.next_deadline_date',
             format='yyyy',
-            end_date_math='/y'
+            end_date_math='/y',
         ),
-
         'collision_system': terms_filter(
-            'basic_info.analysis_keywords.collision_system.keyword'),
+            'basic_info.analysis_keywords.collision_system.keyword'
+        ),
         'accelerator_parameters': terms_filter(
-            'basic_info.analysis_keywords.accelerator_parameters.keyword'),
+            'basic_info.analysis_keywords.accelerator_parameters.keyword'
+        ),
         'physics_theme': terms_filter(
-            'basic_info.analysis_keywords.physics_theme.keyword'),
+            'basic_info.analysis_keywords.physics_theme.keyword'
+        ),
         'final_states': terms_filter(
-            'basic_info.analysis_keywords.final_states.keyword'),
+            'basic_info.analysis_keywords.final_states.keyword'
+        ),
         'sm_analysis_characteristics': terms_filter(
-            'basic_info.analysis_keywords.sm_analysis_characteristics.keyword'),  # noqa
+            'basic_info.analysis_keywords.sm_analysis_characteristics.keyword'
+        ),  # noqa
         'interpretation': terms_filter(
-            'basic_info.analysis_keywords.interpretation.keyword'),
+            'basic_info.analysis_keywords.interpretation.keyword'
+        ),
         'further_search_categorisation': terms_filter(
-            'basic_info.analysis_keywords.further_search_categorisation.keyword'),  # noqa
+            'basic_info.analysis_keywords.further_search_categorisation.keyword'
+        ),  # noqa
         'further_search_categorisation_heavy_ion': terms_filter(
-            'basic_info.analysis_keywords.further_search_categorisation_heavy_ion.keyword'),  # noqa
-
+            'basic_info.analysis_keywords.further_search_categorisation_heavy_ion.keyword'  # noqa
+        ),
         'physics_objects': nested_filter(
             'main_measurements.signal_event_selection.physics_objects',
             'main_measurements.signal_event_selection.physics_objects.object',
@@ -475,29 +458,38 @@ RECORDS_REST_FACETS = {'deposits': CAP_FACETS, 'records': CAP_FACETS}
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
 
-RECORDS_REST_ENDPOINTS['recid'].update({
-    'record_class': 'cap.modules.records.api:CAPRecord',
-    'pid_fetcher': 'cap_record_fetcher',
-    'search_class': 'cap.modules.records.search:CAPRecordSearch',
-    'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
-    'record_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':record_json_v1_response'),
-        'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_response'),
-        'application/form+json': ('cap.modules.records.serializers'
-                                  ':record_form_json_v1_response')
-    },
-    'search_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':record_json_v1_search'),
-        'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_search'),
-    },
-    'read_permission_factory_imp': check_oauth2_scope(
-        lambda record: ReadRecordPermission(record).can(), write_scope.id),
-    'links_factory_imp': 'cap.modules.records.links:links_factory',
-})
+RECORDS_REST_ENDPOINTS['recid'].update(
+    {
+        'record_class': 'cap.modules.records.api:CAPRecord',
+        'pid_fetcher': 'cap_record_fetcher',
+        'search_class': 'cap.modules.records.search:CAPRecordSearch',
+        'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
+        'record_serializers': {
+            'application/json': (
+                'cap.modules.records.serializers' ':record_json_v1_response'
+            ),
+            'application/basic+json': (
+                'cap.modules.records.serializers' ':basic_json_v1_response'
+            ),
+            'application/form+json': (
+                'cap.modules.records.serializers'
+                ':record_form_json_v1_response'
+            ),
+        },
+        'search_serializers': {
+            'application/json': (
+                'cap.modules.records.serializers' ':record_json_v1_search'
+            ),
+            'application/basic+json': (
+                'cap.modules.records.serializers' ':basic_json_v1_search'
+            ),
+        },
+        'read_permission_factory_imp': check_oauth2_scope(
+            lambda record: ReadRecordPermission(record).can(), write_scope.id
+        ),
+        'links_factory_imp': 'cap.modules.records.links:links_factory',
+    }
+)
 
 #: Default api endpoint for LHCb db
 GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
@@ -538,15 +530,11 @@ ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 
 
 ACCOUNTS_REST_ACCOUNT_SERIALIZERS = {
-    'GET': {
-        'application/json': user_account_serializer
-    }
+    'GET': {'application/json': user_account_serializer}
 }
 
 ACCOUNTS_REST_ACCOUNTS_LIST_SERIALIZERS = {
-    'GET': {
-        'application/json': user_account_list_serializer
-    }
+    'GET': {'application/json': user_account_list_serializer}
 }
 
 # Search
@@ -561,32 +549,35 @@ if es_user and es_password:
     es_params = dict(
         http_auth=(es_user, es_password),
         use_ssl=str(os.environ.get('ELASTICSEARCH_USE_SSL')).lower() == 'true',
-        verify_certs=str(
-            os.environ.get('ELASTICSEARCH_VERIFY_CERTS')).lower() == 'true',
+        verify_certs=str(os.environ.get('ELASTICSEARCH_VERIFY_CERTS')).lower()
+        == 'true',
         url_prefix=os.environ.get('ELASTICSEARCH_URL_PREFIX', ''),
     )
 else:
     es_params = {}
 
 SEARCH_ELASTIC_HOSTS = [
-    dict(host=os.environ.get('ELASTICSEARCH_HOST', 'localhost'),
-         port=int(os.environ.get('ELASTICSEARCH_PORT', '9200')),
-         **es_params)
+    dict(
+        host=os.environ.get('ELASTICSEARCH_HOST', 'localhost'),
+        port=int(os.environ.get('ELASTICSEARCH_PORT', '9200')),
+        **es_params,
+    )
 ]
 
 SEARCH_GET_MAPPINGS_IMP = 'cap.modules.schemas.imp.get_mappings'
 
 # Admin
 # ========
-ADMIN_PERMISSION_FACTORY =  \
+ADMIN_PERMISSION_FACTORY = (
     'cap.modules.access.permissions.admin_permission_factory'
+)
 
 # Logging
 # =======
 #: CERN OAuth configuration
 CERN_APP_CREDENTIALS = {
     'consumer_key': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_KEY'),
-    'consumer_secret': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_SECRET')
+    'consumer_secret': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_SECRET'),
 }
 
 # Update CERN OAuth handlers - due to REST - mostly only redirect urls
@@ -595,20 +586,24 @@ CERN_REMOTE_APP.update(
     dict(
         authorized_handler=authorized_signup_handler,
         disconnect_handler=disconnect_handler,
-    ))
+    )
+)
 
 CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
 #: Defintion of OAuth client applications.
-OAUTHCLIENT_REMOTE_APPS = dict(cern=CERN_REMOTE_APP, )
+OAUTHCLIENT_REMOTE_APPS = dict(
+    cern=CERN_REMOTE_APP,
+)
 #: Serializer for extracting `extra_data` from invenio-oauthclient
 OAUTHCLIENT_CERN_EXTRA_DATA_SERIALIZER = oauth_extra_data_serializer
 OAUTHCLIENT_CERN_REFRESH_TIMEDELTA = timedelta(minutes=-10)
 
 #: Defintion of OAuth/Auth client template.
 AUTHENTICATION_POPUP_TEMPLATE = 'auth/authentication_popup.html'
-AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE = \
+AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE = (
     'auth/authentication_popup_no_redirect.html'
+)
 
 # JSON Schemas
 # ============
@@ -619,9 +614,13 @@ JSONSCHEMAS_ENDPOINT = '/schemas'
 JSONSCHEMAS_RESOLVE_SCHEMA = True
 
 JSONSCHEMAS_LOADER_CLS = json_loader_factory(
-    JSONResolver(plugins=[
-        'cap.modules.schemas.resolvers', 'cap.modules.schemas.resolvers_api'
-    ], ))
+    JSONResolver(
+        plugins=[
+            'cap.modules.schemas.resolvers',
+            'cap.modules.schemas.resolvers_api',
+        ],
+    )
+)
 
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.
@@ -645,13 +644,19 @@ CMS_COORDINATORS_EGROUP = 'cms-physics-coordinator@cern.ch'
 CMS_CONVENERS_EGROUP = 'cms-phys-conveners-{wg}@cern.ch'
 
 #: CADI database
-CADI_AUTH_URL = 'https://icms.cern.ch/tools-api/restplus/' + \
-                'relay/piggyback/cadi/history/capInfo/BPH-13-009'
+CADI_AUTH_URL = (
+    'https://icms.cern.ch/tools-api/restplus/'
+    + 'relay/piggyback/cadi/history/capInfo/BPH-13-009'
+)
 CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools-api/api/updatedCadiLines/'
-CADI_GET_ALL_URL = 'https://icms.cern.ch/tools-api/restplus/' + \
-                   'relay/piggyback/cadi/history/capInfo'
-CADI_GET_RECORD_URL = 'https://icms.cern.ch/tools-api/restplus' + \
-                      '/relay/piggyback/cadi/history/capInfo/{id}'
+CADI_GET_ALL_URL = (
+    'https://icms.cern.ch/tools-api/restplus/'
+    + 'relay/piggyback/cadi/history/capInfo'
+)
+CADI_GET_RECORD_URL = (
+    'https://icms.cern.ch/tools-api/restplus'
+    + '/relay/piggyback/cadi/history/capInfo/{id}'
+)
 CADI_REGEX = "^[A-Z]{3}-[0-9]{2}-[0-9]{3}$"
 
 # ATLAS
@@ -660,12 +665,11 @@ CADI_REGEX = "^[A-Z]{3}-[0-9]{2}-[0-9]{3}$"
 GLANCE_CLIENT_ID = os.environ.get('APP_GLANCE_CLIENT_ID')
 GLANCE_CLIENT_PASSWORD = os.environ.get('APP_GLANCE_CLIENT_PASSWORD')
 #: Glance API URLs
-GLANCE_GET_TOKEN_URL = \
+GLANCE_GET_TOKEN_URL = (
     'https://oraweb.cern.ch/ords/atlr/atlas_authdb/oauth/token'
-GLANCE_GET_ALL_URL = \
-    'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap'  # noqa
-GLANCE_GET_BY_ID_URL = \
-    'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap&id={id}'  # noqa
+)
+GLANCE_GET_ALL_URL = 'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap'  # noqa
+GLANCE_GET_BY_ID_URL = 'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap&id={id}'  # noqa
 
 # Deposit
 # ============
@@ -686,51 +690,69 @@ _PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
 DEPOSIT_UI_SEARCH_INDEX = '*'
 
 # DEPOSIT_PID_MINTER is used on publish method in deposit class
-DEPOSIT_REST_ENDPOINTS['depid'].update({
-    'pid_type': 'depid',
-    'pid_minter': 'cap_deposit_minter',
-    'pid_fetcher': 'cap_deposit_fetcher',
-    'record_class': 'cap.modules.deposit.api:CAPDeposit',
-    'record_loaders': {
-        'application/json': 'cap.modules.deposit.loaders:json_v1_loader',
-        'application/json-patch+json': lambda: request.get_json(force=True),
-    },
-    'record_serializers': {
-        'application/json': ('cap.modules.deposit.serializers'
-                             ':deposit_json_v1_response'),
-        'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_response'),
-        'application/permissions+json': ('cap.modules.records.serializers'
-                                         ':permissions_json_v1_response'),
-        'application/form+json': ('cap.modules.deposit.serializers'
-                                  ':deposit_form_json_v1_response'),
-        'application/repositories+json': ('cap.modules.records.serializers'
-                                          ':repositories_json_v1_response')
-    },
-    'search_serializers': {
-        'application/json': ('cap.modules.deposit.serializers'
-                             ':deposit_json_v1_search'),
-        'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_search')
-    },
-    'files_serializers': {
-        'application/json': ('cap.modules.deposit.serializers:files_response'),
-    },
-    'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
-    'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
-    'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
-    'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
-    'file_item_route':
-        '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
-    'create_permission_factory_imp': check_oauth2_scope(
-        lambda record: CreateDepositPermission(record).can(), write_scope.id),
-    'read_permission_factory_imp': check_oauth2_scope(
-        lambda record: ReadDepositPermission(record).can(), write_scope.id),
-    'update_permission_factory_imp': allow_all,
-    'delete_permission_factory_imp': check_oauth2_scope(
-        lambda record: AdminDepositPermission(record).can(), write_scope.id),
-    'links_factory_imp': 'cap.modules.deposit.links:links_factory',
-})
+DEPOSIT_REST_ENDPOINTS['depid'].update(
+    {
+        'pid_type': 'depid',
+        'pid_minter': 'cap_deposit_minter',
+        'pid_fetcher': 'cap_deposit_fetcher',
+        'record_class': 'cap.modules.deposit.api:CAPDeposit',
+        'record_loaders': {
+            'application/json': 'cap.modules.deposit.loaders:json_v1_loader',
+            'application/json-patch+json': lambda: request.get_json(force=True),
+        },
+        'record_serializers': {
+            'application/json': (
+                'cap.modules.deposit.serializers' ':deposit_json_v1_response'
+            ),
+            'application/basic+json': (
+                'cap.modules.records.serializers' ':basic_json_v1_response'
+            ),
+            'application/permissions+json': (
+                'cap.modules.records.serializers'
+                ':permissions_json_v1_response'
+            ),
+            'application/form+json': (
+                'cap.modules.deposit.serializers'
+                ':deposit_form_json_v1_response'
+            ),
+            'application/repositories+json': (
+                'cap.modules.records.serializers'
+                ':repositories_json_v1_response'
+            ),
+        },
+        'search_serializers': {
+            'application/json': (
+                'cap.modules.deposit.serializers' ':deposit_json_v1_search'
+            ),
+            'application/basic+json': (
+                'cap.modules.records.serializers' ':basic_json_v1_search'
+            ),
+        },
+        'files_serializers': {
+            'application/json': (
+                'cap.modules.deposit.serializers:files_response'
+            ),
+        },
+        'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
+        'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
+        'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
+        'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
+        'file_item_route': '/deposits/<{0}:pid_value>/files/<path:key>'.format(
+            _PID
+        ),
+        'create_permission_factory_imp': check_oauth2_scope(
+            lambda record: CreateDepositPermission(record).can(), write_scope.id
+        ),
+        'read_permission_factory_imp': check_oauth2_scope(
+            lambda record: ReadDepositPermission(record).can(), write_scope.id
+        ),
+        'update_permission_factory_imp': allow_all,
+        'delete_permission_factory_imp': check_oauth2_scope(
+            lambda record: AdminDepositPermission(record).can(), write_scope.id
+        ),
+        'links_factory_imp': 'cap.modules.deposit.links:links_factory',
+    }
+)
 
 # Datadir
 # =======
@@ -738,8 +760,9 @@ DATADIR = join(dirname(__file__), 'data')
 
 # Files
 # ===========
-FILES_REST_PERMISSION_FACTORY = \
+FILES_REST_PERMISSION_FACTORY = (
     'cap.modules.deposit.permissions:files_permission_factory'
+)
 
 # Grab files max size
 FILES_URL_MAX_SIZE = (2**20) * 5000
@@ -756,11 +779,13 @@ INDEXER_REPLACE_REFS = False
 # ======================
 LHCB_DB_FILES_LOCATION = os.environ.get(
     'APP_LHCB_FILES_LOCATION',
-    os.path.join(APP_ROOT, 'modules/experiments/static/example_lhcb/'))
+    os.path.join(APP_ROOT, 'modules/experiments/static/example_lhcb/'),
+)
 
 EXPERIMENTS_RESOURCES_LOCATION = os.environ.get(
     'APP_EXPERIMENTS_RESOURCES_LOCATION',
-    os.path.join(APP_ROOT, 'modules/experiments/static'))
+    os.path.join(APP_ROOT, 'modules/experiments/static'),
+)
 
 # Disable JWT token
 ACCOUNTS_JWT_ENABLE = False
@@ -776,7 +801,7 @@ REANA_ACCESS_TOKEN = {
     'ATLAS': os.environ.get('APP_REANA_ATLAS_ACCESS_TOKEN'),
     'ALICE': os.environ.get('APP_REANA_ALICE_ACCESS_TOKEN'),
     'CMS': os.environ.get('APP_REANA_CMS_ACCESS_TOKEN'),
-    'LHCb': os.environ.get('APP_REANA_LHCb_ACCESS_TOKEN')
+    'LHCb': os.environ.get('APP_REANA_LHCb_ACCESS_TOKEN'),
 }
 
 # Keytabs
@@ -788,8 +813,9 @@ CERN_CERTS_PEM = os.environ.get('APP_CERN_CERTS_PEM')
 
 # Zenodo
 # ======
-ZENODO_SERVER_URL = os.environ.get('APP_ZENODO_SERVER_URL',
-                                   'https://zenodo.org/api')
+ZENODO_SERVER_URL = os.environ.get(
+    'APP_ZENODO_SERVER_URL', 'https://zenodo.org/api'
+)
 
 ZENODO_ACCESS_TOKEN = os.environ.get('APP_ZENODO_ACCESS_TOKEN', 'CHANGE_ME')
 
@@ -806,16 +832,20 @@ RECORDS_UI_ENDPOINT = '{scheme}://{host}/published/{pid_value}'
 TEST_WITH_NGROK = os.environ.get('CAP_TEST_WITH_NGROK', 'False')
 if DEBUG and TEST_WITH_NGROK == 'True':
     try:
-        resp = requests.get('http://localhost:4040/api/tunnels',
-                            headers={'Content-Type': 'application/json'})
+        resp = requests.get(
+            'http://localhost:4040/api/tunnels',
+            headers={'Content-Type': 'application/json'},
+        )
         NGROK_HOST = resp.json()['tunnels'][0]['public_url']
         APP_ALLOWED_HOSTS.append(NGROK_HOST.split('//')[-1])
         WEBHOOK_NGROK_URL = '{}/repos/event'.format(NGROK_HOST)
         print(' * Webhook url at {}'.format(WEBHOOK_NGROK_URL))
     except Exception as e:
-        print('Cannot fetch ngrok host.\n'
-              'Use CAP_TEST_WITH_NGROK=False if dont want to use it.\n'
-              f'Exception: {str(e)}.')
+        print(
+            'Cannot fetch ngrok host.\n'
+            'Use CAP_TEST_WITH_NGROK=False if dont want to use it.\n'
+            f'Exception: {str(e)}.'
+        )
 
 WEBHOOK_ENDPOINT = 'cap_repos.get_webhook_event'
 
@@ -866,7 +896,7 @@ APP_DEFAULT_SECURE_HEADERS = {
             'data:',
             "'unsafe-inline'",  # for inline scripts and styles
             "'unsafe-eval'",  # for webpack build
-        ]
+        ],
     },
     'content_security_policy_report_only': False,
     'content_security_policy_report_uri': None,

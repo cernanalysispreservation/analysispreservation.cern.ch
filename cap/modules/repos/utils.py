@@ -30,15 +30,15 @@ import shutil
 import string
 from tempfile import SpooledTemporaryFile
 
-from flask import current_app, url_for, render_template
+from flask import current_app, render_template, url_for
 from flask_login import current_user
 from invenio_db import db
 from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.records.utils import url_to_api_url
 
-from .custom import custom # noqa
-from .errors import GitIntegrationError, GitURLParsingError, GitPRParsingError
+from .custom import custom  # noqa
+from .errors import GitIntegrationError, GitPRParsingError, GitURLParsingError
 from .models import GitRepository, GitWebhook, GitWebhookSubscriber
 
 
@@ -54,16 +54,22 @@ def parse_git_url(url):
         (?:\.git|/tree/|/-/tree/|/blob/|/-/blob/|/releases/tag/|/-/tags/)?/?
         (?P<branch>[\w.-]+)?/?
         (?P<filepath>.+)?
-    ''', re.VERBOSE | re.MULTILINE | re.IGNORECASE)
+    ''',
+        re.VERBOSE | re.MULTILINE | re.IGNORECASE,
+    )
 
     try:
         host, owner, repo, branch, filepath = re.match(git_regex, url).groups()
 
         # need to avoid PRs, but if blob/ is there
         # it can be a path inside the repo
-        if any(path in url for path in [f'{repo}/pull',
-                                        f'{repo}/-/merge_requests']) \
-                and f'blob/{branch}' not in url:
+        if (
+            any(
+                path in url
+                for path in [f'{repo}/pull', f'{repo}/-/merge_requests']
+            )
+            and f'blob/{branch}' not in url
+        ):
             raise GitPRParsingError
 
     except (ValueError, TypeError, AttributeError):
@@ -101,18 +107,24 @@ def create_webhook(record_id, api, type_=None):
         # release event cannot be on branch
         branch = None if type_ == 'release' else api.branch
         repo = GitRepository.create_or_get(
-            api.repo_id, api.host, api.owner, api.repo)
+            api.repo_id, api.host, api.owner, api.repo
+        )
 
         try:
             webhook = GitWebhook.query.filter_by(
-                event_type=type_, repo_id=repo.id, branch=branch).one()
+                event_type=type_, repo_id=repo.id, branch=branch
+            ).one()
 
         except NoResultFound:
             if type_:
                 hook_id, hook_secret = api.create_webhook(type_)
                 webhook = GitWebhook(
-                    event_type=type_, repo_id=repo.id, branch=branch,
-                    external_id=hook_id, secret=hook_secret)
+                    event_type=type_,
+                    repo_id=repo.id,
+                    branch=branch,
+                    external_id=hook_id,
+                    secret=hook_secret,
+                )
             else:
                 webhook = GitWebhook(repo_id=repo.id, branch=branch)
 
@@ -122,17 +134,18 @@ def create_webhook(record_id, api, type_=None):
             GitWebhookSubscriber.query.filter_by(
                 record_id=record_id,
                 user_id=current_user.id,
-                webhook_id=webhook.id
+                webhook_id=webhook.id,
             ).one()
 
             if type_:
                 raise GitIntegrationError(
-                    f'Analysis already connected with {type_} webhook.')
+                    f'Analysis already connected with {type_} webhook.'
+                )
 
         except NoResultFound:
             subscriber = GitWebhookSubscriber(
-                record_id=record_id,
-                user_id=current_user.id)
+                record_id=record_id, user_id=current_user.id
+            )
             webhook.subscribers.append(subscriber)
 
     db.session.commit()
@@ -145,7 +158,8 @@ def get_webhook_url():
         return current_app.config['WEBHOOK_NGROK_URL']
     else:
         return url_to_api_url(
-            url_for(current_app.config['WEBHOOK_ENDPOINT'], _external=True))
+            url_for(current_app.config['WEBHOOK_ENDPOINT'], _external=True)
+        )
 
 
 def generate_secret():

@@ -38,8 +38,7 @@ def host_to_git_api(host):
         raise GitHostNotSupported
 
 
-
-def create_git_api(host, owner, repo, branch='master', user_id=None, token=None):
-    return host_to_git_api(host)(
-        host, owner, repo, branch, user_id, token
-    )
+def create_git_api(
+    host, owner, repo, branch='master', user_id=None, token=None
+):
+    return host_to_git_api(host)(host, owner, repo, branch, user_id, token)

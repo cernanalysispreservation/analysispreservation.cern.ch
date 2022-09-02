@@ -60,12 +60,13 @@ from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.records.errors import get_error_path
 from cap.modules.repos.errors import GitError, GitHostNotSupported
-from cap.modules.repos.integrator import (create_repo_from_schema_config_and_attach,
-                                          create_repo_as_user_and_attach,
-                                          attach_repo_to_deposit)
+from cap.modules.repos.integrator import (
+    attach_repo_to_deposit,
+    create_repo_as_user_and_attach,
+    create_schema_default_repo_and_attach,
+)
 from cap.modules.repos.utils import disconnect_subscriber
-from cap.modules.schemas.resolvers import (resolve_schema_by_url,
-                                           schema_name_to_url)
+from cap.modules.schemas.resolvers import resolve_schema_by_url, schema_name_to_url
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (
     get_existing_or_register_role,
@@ -269,15 +270,12 @@ class CAPDeposit(Deposit, Reviewable):
                 # event_type = data.get('event_type', 'release')
                 action_type = data.get('type')
             except Exception:
-                raise FileUploadError(
-                    "Invalid arguments. Please try again."
-                )
+                raise FileUploadError("Invalid arguments. Please try again.")
 
             actions = {
                 'repo_create': create_repo_as_user_and_attach,
                 'repo_download_attach': attach_repo_to_deposit,
-                'repo_create_default':
-                    create_repo_from_schema_config_and_attach
+                'repo_create_default': create_schema_default_repo_and_attach,
             }
 
             try:
@@ -285,7 +283,8 @@ class CAPDeposit(Deposit, Reviewable):
             except KeyError:
                 raise FileUploadError(
                     'Unsupported repository action. '
-                    'Try create, attach or collab.')
+                    'Try create, attach or collab.'
+                )
             except GitHostNotSupported:
                 raise FileUploadError("Host isn't provided or not supported")
             except GitError as err:

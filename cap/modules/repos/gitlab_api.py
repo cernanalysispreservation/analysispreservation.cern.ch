@@ -24,18 +24,24 @@
 """Gitlab interface class."""
 
 import requests
-
 from flask import request
 from gitlab import Gitlab
-from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError,\
-    GitlabCreateError
+from gitlab.exceptions import (
+    GitlabAuthenticationError,
+    GitlabCreateError,
+    GitlabGetError,
+)
 
 from cap.modules.auth.ext import _fetch_token
 from cap.modules.deposit.errors import FileUploadError
 
-from .errors import (GitIntegrationError, GitObjectNotFound,
-                     GitRequestWithInvalidSignature, GitUnauthorizedRequest,
-                     GitURLParsingError)
+from .errors import (
+    GitIntegrationError,
+    GitObjectNotFound,
+    GitRequestWithInvalidSignature,
+    GitUnauthorizedRequest,
+    GitURLParsingError,
+)
 from .interface import GitAPI
 from .utils import generate_secret, get_webhook_url
 
@@ -43,8 +49,9 @@ from .utils import generate_secret, get_webhook_url
 class GitlabAPI(GitAPI):
     """GitLab API class."""
 
-    def __init__(self, host, owner, repo, branch_or_sha=None,
-                 user_id=None, token=None):
+    def __init__(
+        self, host, owner, repo, branch_or_sha=None, user_id=None, token=None
+    ):
         """Initialize a GitLab API instance."""
         self.host = host
         self.owner = owner
@@ -58,11 +65,13 @@ class GitlabAPI(GitAPI):
         except GitlabAuthenticationError:
             raise GitUnauthorizedRequest(
                 'Gitlab requires authorization - '
-                'connect your CERN account: Settings -> Integrations.')
+                'connect your CERN account: Settings -> Integrations.'
+            )
 
         except GitlabGetError:
             raise GitObjectNotFound(
-                'This repository does not exist or you don\'t have access.')
+                'This repository does not exist or you don\'t have access.'
+            )
 
         self.branch, self.sha = self._get_branch_and_sha(branch_or_sha)
 
@@ -84,8 +93,7 @@ class GitlabAPI(GitAPI):
 
     def get_file_download(self, filepath):
         """Get file download url and size."""
-        download_url = \
-                f'{self.api_url}/{self.repo_id}/repository/files/{filepath}/raw?ref={self.sha}'  # noqa
+        download_url = f'{self.api_url}/{self.repo_id}/repository/files/{filepath}/raw?ref={self.sha}'  # noqa
 
         response = requests.head(download_url, headers=self.auth_headers)
         if response.status_code != 200:
@@ -103,15 +111,18 @@ class GitlabAPI(GitAPI):
         url = get_webhook_url()
         secret = generate_secret()
         try:
-            hook = self.project.hooks.create({
-                'url': url,
-                'push_events': True if _type == 'push' else False,
-                'tag_push_events': True if _type == 'release' else False,
-                'token': secret,
-            })
+            hook = self.project.hooks.create(
+                {
+                    'url': url,
+                    'push_events': True if _type == 'push' else False,
+                    'tag_push_events': True if _type == 'release' else False,
+                    'token': secret,
+                }
+            )
         except GitlabAuthenticationError:
             raise GitIntegrationError(
-                'No permission to create webhook for this repository.')
+                'No permission to create webhook for this repository.'
+            )
 
         return hook.id, secret
 
@@ -138,8 +149,10 @@ class GitlabAPI(GitAPI):
             # try default branch
             default_branch = self.project.default_branch
             if not default_branch:
-                raise GitObjectNotFound('Your repository is empty. '
-                                        'Make your initial commit first.')
+                raise GitObjectNotFound(
+                    'Your repository is empty. '
+                    'Make your initial commit first.'
+                )
 
             try:
                 branch = self.project.branches.get(default_branch)
@@ -158,60 +171,87 @@ class GitlabAPI(GitAPI):
                     branch = None
                 except GitlabGetError:
                     raise GitObjectNotFound(
-                        f'{branch_or_sha} does not match any branch or sha.')
+                        f'{branch_or_sha} does not match any branch or sha.'
+                    )
 
         return branch, sha
 
     @classmethod
-    def create_repo(cls, token, repo_name, description,
-                    private, license, org_name, host):
+    def create_repo(
+        cls, token, repo_name, description, private, license, org_name, host
+    ):
         """Create a gitlab repo as user/organization."""
         try:
             validate_gitlab_host(host)
             gitlab = Gitlab(f'https://{host}', oauth_token=token)
-            return gitlab.projects.create({
-                'name': repo_name,
-                'description': description,
-                'namespace_id': org_name,
-                'visibility': 'private' if private else 'public',
-                'initialize_with_readme': True
-            })
+            return gitlab.projects.create(
+                {
+                    'name': repo_name,
+                    'description': description,
+                    'namespace_id': org_name,
+                    'visibility': 'private' if private else 'public',
+                    'initialize_with_readme': True,
+                }
+            )
 
-        except (GitlabCreateError,
-                GitlabAuthenticationError,
-                GitlabGetError,
-                GitURLParsingError) as ex:
+        except (
+            GitlabCreateError,
+            GitlabAuthenticationError,
+            GitlabGetError,
+            GitURLParsingError,
+        ) as ex:
 
-            raise FileUploadError(description=str(ex.error_message) )
+            raise FileUploadError(description=str(ex.error_message))
 
     @classmethod
-    def create_repo_as_user(cls, user_id, repo_name, description='',
-                            private=False, license=None, org_name=None,
-                            host=None):
+    def create_repo_as_user(
+        cls,
+        user_id,
+        repo_name,
+        description='',
+        private=False,
+        license=None,
+        org_name=None,
+        host=None,
+    ):
         """Create repo a user, using the current user's token."""
         token = cls._get_token(user_id)
         if not token:
             raise GitUnauthorizedRequest(
                 'Gitlab requires authorization - '
-                'connect your CERN account: Settings -> Integrations.')
+                'connect your CERN account: Settings -> Integrations.'
+            )
 
         repo = cls.create_repo(
-            token, repo_name, description, private,
-            license, org_name, host)
+            token, repo_name, description, private, license, org_name, host
+        )
         return repo
 
     @classmethod
-    def create_repo_as_collaborator(cls, create_token, org_name, repo_name,
-                                    description='', private=False,
-                                    license=None, host=None):
+    def create_repo_as_collaborator(
+        cls,
+        create_token,
+        org_name,
+        repo_name,
+        description='',
+        private=False,
+        license=None,
+        host=None,
+    ):
         """Return the created repository.
 
         Create repo through an organization admin,
         adding the current user as a member/collaborator.
         """
         repo = cls.create_repo(
-            create_token, repo_name, description,
-            private, license, org_name, host)
+            create_token,
+            repo_name,
+            description,
+            private,
+            license,
+            org_name,
+            host,
+        )
 
         return repo, None
         # try:

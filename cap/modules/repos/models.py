@@ -48,8 +48,11 @@ class GitRepository(db.Model):
     name = db.Column(db.String(255), nullable=False)
 
     __tablename__ = 'git_repository'
-    __table_args__ = db.UniqueConstraint(
-        'host', 'owner', 'name', name='uq_git_repository_unique_constraint'),
+    __table_args__ = (
+        db.UniqueConstraint(
+            'host', 'owner', 'name', name='uq_git_repository_unique_constraint'
+        ),
+    )
 
     @classmethod
     def create_or_get(cls, external_id, host, owner, name):
@@ -57,10 +60,9 @@ class GitRepository(db.Model):
         try:
             repo = cls.query.filter_by(host=host, owner=owner, name=name).one()
         except NoResultFound:
-            repo = cls(external_id=external_id,
-                       host=host,
-                       owner=owner,
-                       name=name)
+            repo = cls(
+                external_id=external_id, host=host, owner=owner, name=name
+            )
             db.session.add(repo)
         return repo
 
@@ -69,8 +71,11 @@ class GitWebhook(db.Model):
     """Webook for a Git repository."""
 
     __tablename__ = 'git_webhook'
-    __table_args__ = db.UniqueConstraint(
-        'event_type', 'repo_id', name='uq_git_webhook_unique_constraint'),
+    __table_args__ = (
+        db.UniqueConstraint(
+            'event_type', 'repo_id', name='uq_git_webhook_unique_constraint'
+        ),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     branch = db.Column(db.String(255), nullable=True)
@@ -80,9 +85,10 @@ class GitWebhook(db.Model):
     secret = db.Column(db.String(32), nullable=True)
 
     repo_id = db.Column(db.Integer, db.ForeignKey(GitRepository.id))
-    repo = db.relationship(GitRepository,
-                           backref=db.backref("webhooks",
-                                              cascade="all, delete-orphan"))
+    repo = db.relationship(
+        GitRepository,
+        backref=db.backref("webhooks", cascade="all, delete-orphan"),
+    )
 
 
 class GitSnapshot(db.Model):
@@ -95,12 +101,13 @@ class GitSnapshot(db.Model):
     # webhook payload / event
     payload = db.Column(json_type, default={}, nullable=True)
 
-    webhook_id = db.Column(db.Integer,
-                           db.ForeignKey(GitWebhook.id),
-                           nullable=False)
-    webhook = db.relationship(GitWebhook,
-                              backref=db.backref("snapshots",
-                                                 cascade="all, delete-orphan"))
+    webhook_id = db.Column(
+        db.Integer, db.ForeignKey(GitWebhook.id), nullable=False
+    )
+    webhook = db.relationship(
+        GitWebhook,
+        backref=db.backref("snapshots", cascade="all, delete-orphan"),
+    )
 
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -110,57 +117,65 @@ class GitSubscriberSnapshots(db.Model):
 
     __tablename__ = 'git_subscriber_snapshots'
 
-    snapshot_id = db.Column(db.Integer,
-                            db.ForeignKey('git_snapshot.id'),
-                            primary_key=True)
-    subscriber_id = db.Column(db.Integer,
-                              db.ForeignKey('git_subscriber.id'),
-                              primary_key=True)
+    snapshot_id = db.Column(
+        db.Integer, db.ForeignKey('git_snapshot.id'), primary_key=True
+    )
+    subscriber_id = db.Column(
+        db.Integer, db.ForeignKey('git_subscriber.id'), primary_key=True
+    )
 
 
 class GitWebhookSubscriber(db.Model):
     """Records subscribed to the git repository events."""
 
     __tablename__ = 'git_subscriber'
-    __table_args__ = db.UniqueConstraint(
-        'record_id',
-        'webhook_id',
-        name='uq_git_webhook_subscriber_unique_constraint'),
+    __table_args__ = (
+        db.UniqueConstraint(
+            'record_id',
+            'webhook_id',
+            name='uq_git_webhook_subscriber_unique_constraint',
+        ),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
 
-    status = db.Column(db.Enum('active', 'deleted',
-                               name='git_webhook_status'),
-                       nullable=False,
-                       default='active')
+    status = db.Column(
+        db.Enum('active', 'deleted', name='git_webhook_status'),
+        nullable=False,
+        default='active',
+    )
 
-    record_id = db.Column(UUIDType,
-                          db.ForeignKey(RecordMetadata.id),
-                          nullable=False)
-    record = db.relationship(RecordMetadata,
-                             backref=db.backref("webhooks",
-                                                cascade="all, delete-orphan"))
+    record_id = db.Column(
+        UUIDType, db.ForeignKey(RecordMetadata.id), nullable=False
+    )
+    record = db.relationship(
+        RecordMetadata,
+        backref=db.backref("webhooks", cascade="all, delete-orphan"),
+    )
 
-    webhook_id = db.Column(db.Integer,
-                           db.ForeignKey(GitWebhook.id),
-                           nullable=False)
-    webhook = db.relationship(GitWebhook,
-                              backref=db.backref("subscribers",
-                                                 cascade="all, delete-orphan"))
+    webhook_id = db.Column(
+        db.Integer, db.ForeignKey(GitWebhook.id), nullable=False
+    )
+    webhook = db.relationship(
+        GitWebhook,
+        backref=db.backref("subscribers", cascade="all, delete-orphan"),
+    )
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     user = db.relationship(User)
 
-    snapshots = db.relationship(GitSnapshot,
-                                order_by="desc(GitSnapshot.created)",
-                                secondary='git_subscriber_snapshots')
+    snapshots = db.relationship(
+        GitSnapshot,
+        order_by="desc(GitSnapshot.created)",
+        secondary='git_subscriber_snapshots',
+    )
 
     @property
     def repo(self):
         return self.webhook.repo
 
 
-ObjectVersion.snapshot_id = db.Column(db.Integer,
-                                      db.ForeignKey(GitSnapshot.id),
-                                      nullable=True)
+ObjectVersion.snapshot_id = db.Column(
+    db.Integer, db.ForeignKey(GitSnapshot.id), nullable=True
+)
 ObjectVersion.snapshot = db.relationship(GitSnapshot, backref='files')
