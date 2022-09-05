@@ -105,13 +105,13 @@ def prepare_record(
     json["_collection"] = collection
 
 
-def get_auto_incremental_pid_pattern(auto_increment_id):
+def get_auto_incremental_pid_pattern(pid_format):
     ALLOWED_KEYWORDS = {'{$year}': str(date.today().year)}
 
-    pid_pattern = deepcopy(auto_increment_id)
+    pid_pattern = deepcopy(pid_format)
 
-    # Find the {$keyword} from the auto_increment_id
-    keywords = re.findall(r'\{\$\w+\}', auto_increment_id)
+    # Find the {$keyword} from the pid_format
+    keywords = re.findall(r'\{\$\w+\}', pid_format)
     for _k in keywords:
         if _k in ALLOWED_KEYWORDS:
             # replace the dynamic variable with the dynamic value
@@ -123,11 +123,11 @@ def get_auto_incremental_pid_pattern(auto_increment_id):
     return pid_pattern
 
 
-def generate_auto_incremental_pid(auto_increment_id):
+def generate_auto_incremental_pid(pid_format):
     """Method to generate auto-increment PID for records/deposits."""
     previous_deposit_id = 0
     # create a regexp pattern and then match to find the last draft id
-    pid_pattern = get_auto_incremental_pid_pattern(auto_increment_id)
+    pid_pattern = get_auto_incremental_pid_pattern(pid_format)
     regexp_pattern = r'^{}\d+$'.format(pid_pattern)
 
     previous_deposit = (

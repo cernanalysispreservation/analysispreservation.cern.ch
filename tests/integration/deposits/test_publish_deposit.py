@@ -49,7 +49,7 @@ def test_deposit_publish_when_owner_can_publish_his_deposit(
 
 def test_deposit_publish_when_auto_incremental_pid_enabled(
     client, location, create_schema, auth_headers_for_superuser,json_headers):
-    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-'})
+    schema = create_schema('faser', experiment='FASER', config={'pid': {'format': 'FASER-'}})
     metadata = {'$ana_type': 'faser'}
 
     resp_create = client.post('/deposits/',

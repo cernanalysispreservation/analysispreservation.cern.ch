@@ -112,7 +112,7 @@ def test_create_deposit_when_superuser_can_create_deposit(
 
 def test_create_deposit_with_incremental_pid_with_ana_type(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
-    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-ANA-'})
+    schema = create_schema('faser', experiment='FASER', config={'pid': {'format': 'FASER-ANA-'}})
     metadata = {'$ana_type': 'faser'}
 
     resp = client.post('/deposits/',
@@ -124,7 +124,7 @@ def test_create_deposit_with_incremental_pid_with_ana_type(client, location,
 
 def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
-    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-'})
+    schema = create_schema('faser', experiment='FASER', config={'pid': {'format': 'FASER-{$year}-'}})
     metadata = {'$ana_type': 'faser'}
 
     resp = client.post('/deposits/',
@@ -136,7 +136,7 @@ def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
 
 def test_create_deposit_with_copy_to_config(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
-    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-', "copy_to": [["initial", "short_title"], ["general_title"], ["later", "datasets", "item_okmiwt"]]})
+    schema = create_schema('faser', experiment='FASER', config={'pid': {'format': 'FASER-{$year}-', "copy_to": [["initial", "short_title"], ["general_title"], ["later", "datasets", "item_okmiwt"]]}})
     metadata = {'$ana_type': 'faser'}
 
     resp = client.post('/deposits/',
@@ -151,7 +151,7 @@ def test_create_deposit_with_copy_to_config_only(
         client, users, location, json_headers, auth_headers_for_user,
         create_schema):
     user = users['superuser']
-    schema = create_schema('cms', experiment='CMS', config={"copy_to": [["initial", "short_title"], ["general_title"]]})
+    schema = create_schema('cms', experiment='CMS', config={'pid': {"copy_to": [["initial", "short_title"], ["general_title"]]}})
     metadata = {
         '$schema': 'http://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json'
     }
@@ -166,7 +166,7 @@ def test_create_deposit_with_copy_to_config_only(
 
 def test_create_deposit_with_incremental_pid_with_unsupported_keyword(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
-    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-{$year}-{$id}-'})
+    schema = create_schema('faser', experiment='FASER', config={'pid': {'format': 'FASER-{$year}-{$id}-'}})
     metadata = {'$ana_type': 'faser'}
 
     resp = client.post('/deposits/',
@@ -180,7 +180,7 @@ def test_create_deposit_with_incremental_pid_with_schema_url(
         client, users, location, json_headers, auth_headers_for_user,
         create_schema):
     user = users['superuser']
-    schema = create_schema('cms', experiment='CMS', config={'auto_increment_id': 'CMS-ANA-'})
+    schema = create_schema('cms', experiment='CMS', config={'pid': {'format': 'CMS-ANA-'}})
     metadata = {
         '$schema': 'http://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json'
     }
@@ -483,7 +483,7 @@ def test_create_deposit_with_required_fields_not_filled_validates_succesfully(
 
 def test_create_deposit_multiple_with_autoincrement_pid(client, location,
         create_schema, auth_headers_for_superuser,json_headers):
-    schema = create_schema('faser', experiment='FASER', config={'auto_increment_id': 'FASER-ANA-'})
+    schema = create_schema('faser', experiment='FASER', config={'pid': {'format': 'FASER-ANA-'}})
     metadata = {'$ana_type': 'faser'}
     number_of_recs_to_create = 300
     for i in range(number_of_recs_to_create):

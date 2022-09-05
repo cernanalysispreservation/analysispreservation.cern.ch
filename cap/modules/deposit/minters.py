@@ -53,14 +53,15 @@ def cap_deposit_minter(record_uuid, data, schema=None):
                 schema = resolve_schema_by_url(data.get('$schema'))
 
         if schema:
-            auto_increment_id = schema.config.get('auto_increment_id')
-            if auto_increment_id:
-                pid_value = generate_auto_incremental_pid(auto_increment_id)
+            pid_config = schema.config.get("pid", {})
+            pid_format = pid_config.get('format')
+            if pid_format:
+                pid_value = generate_auto_incremental_pid(pid_format)
         if not pid_value:
             pid_value = uuid.uuid4().hex
 
         if schema:
-            copy_to_attr = schema.config.get('copy_to')
+            copy_to_attr = pid_config.get('copy_to')
             if copy_to_attr:
                 copy_to_attr_dict = set_copy_to_attr(pid_value, copy_to_attr)
                 data.update(copy_to_attr_dict)
