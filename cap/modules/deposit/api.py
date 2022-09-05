@@ -266,9 +266,10 @@ class CAPDeposit(Deposit, Reviewable):
                     raise InvalidDataRESTError()
 
                 record_uuid = str(rec.id)
-                # webhook = data.get('webhook', False)
-                # event_type = data.get('event_type', 'release')
-                action_type = data.get('type')
+
+                # For backward compatibility
+                # if no 'type' passed, pass 'repo_download_attach' as default
+                action_type = data.get('type', 'repo_download_attach')
             except Exception:
                 raise FileUploadError("Invalid arguments. Please try again.")
 

@@ -27,8 +27,6 @@ import hashlib
 import hmac
 
 from flask import request
-
-# from flask_login import current_user
 from github import (
     BadCredentialsException,
     Github,

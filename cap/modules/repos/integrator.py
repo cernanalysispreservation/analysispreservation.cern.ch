@@ -153,9 +153,20 @@ def attach_repo_to_deposit(record_uuid, data):
 
     try:
         webhook = data.get('webhook')
-        download = data.get('download')
+        event_type = data.get('event_type', 'release')
+        # webhook = data.get('webhook', False)
+        # event_type = data.get('event_type', 'release')
         host, owner, repo, branch, filepath = parse_git_url(url)
         api = create_git_api(host, owner, repo, branch, user_id=current_user.id)
+
+        # For backward compatibility
+        # 1. if no 'filepath' or 'webhook' passed, then download repo as before
+        download = data.get(
+            'download', False if (filepath or webhook) else True
+        )
+        # 2. Update data for legacy {webhook: True, event_type: <>}
+        if webhook is True:
+            webhook = event_type
 
         # if filepath, download the file
         if filepath:
