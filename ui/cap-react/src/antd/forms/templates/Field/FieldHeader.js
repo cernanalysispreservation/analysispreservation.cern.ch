@@ -10,7 +10,7 @@ const FieldHeader = ({ label, description, uiSchema }) => {
         <Markdown
           text={label}
           style={{
-            color: "#000"
+            color: "#000",
           }}
           renderAsHtml={
             uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
@@ -22,7 +22,7 @@ const FieldHeader = ({ label, description, uiSchema }) => {
           <Markdown
             text={description}
             style={{
-              color: "#000"
+              color: "#000",
             }}
             renderAsHtml={
               uiSchema["ui:options"] &&
@@ -39,7 +39,7 @@ FieldHeader.propTypes = {
   displayLabel: PropTypes.bool,
   label: PropTypes.string,
   uiSchema: PropTypes.object,
-  description: PropTypes.node
+  description: PropTypes.node,
 };
 
 export default FieldHeader;
