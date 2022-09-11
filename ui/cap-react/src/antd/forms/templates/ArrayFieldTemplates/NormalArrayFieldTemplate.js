@@ -19,7 +19,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { CheckOutlined } from "@ant-design/icons";
 
 const DESCRIPTION_COL_STYLE = {
-  paddingBottom: "8px"
+  paddingBottom: "8px",
 };
 
 const NormalArrayFieldTemplate = ({
@@ -40,7 +40,7 @@ const NormalArrayFieldTemplate = ({
   title,
   TitleField,
   uiSchema,
-  formData
+  formData,
 }) => {
   const { labelAlign = "right", rowGutter = 24 } = formContext;
   const [latexData, setLatexData] = useState(null);
@@ -48,7 +48,7 @@ const NormalArrayFieldTemplate = ({
   const [emailModal, setEmailModal] = useState(false);
   const [selectedEmailList, setSelectedEmailList] = useState(
     uiSchema["ui:options"] && uiSchema["ui:options"].email
-      ? formData.map(user => user[uiSchema["ui:options"].email])
+      ? formData.map((user) => user[uiSchema["ui:options"].email])
       : []
   );
   const [copy, setCopy] = useState(false);
@@ -79,7 +79,7 @@ const NormalArrayFieldTemplate = ({
     typeOfArrayToDisplay = "LayerArrayField";
   }
 
-  const getArrayContent = type => {
+  const getArrayContent = (type) => {
     const choices = {
       LayerArrayField: (
         <LayerArrayFieldTemplate
@@ -101,7 +101,7 @@ const NormalArrayFieldTemplate = ({
           {...itemProps}
           formContext={formContext}
         />
-      ))
+      )),
     };
 
     return choices[type] || choices["default"];
@@ -112,13 +112,13 @@ const NormalArrayFieldTemplate = ({
     let { to } = uiImport;
     let data = formData;
 
-    if (type == "object" && to) data = formData.map(item => item[to] || "");
+    if (type == "object" && to) data = formData.map((item) => item[to] || "");
 
     if (!latexData) {
       axios
         .post("/api/services/latex", {
           title: title || "Title goes here",
-          paths: data
+          paths: data,
         })
         .then(({ data }) => {
           setLatexData(data.latex);
@@ -132,32 +132,33 @@ const NormalArrayFieldTemplate = ({
     }
   };
 
-  const updateEmailSelectedList = email => {
+  const updateEmailSelectedList = (email) => {
     selectedEmailList.includes(email)
-      ? setSelectedEmailList(selectedEmailList =>
-          selectedEmailList.filter(item => item != email)
+      ? setSelectedEmailList((selectedEmailList) =>
+          selectedEmailList.filter((item) => item != email)
         )
-      : setSelectedEmailList(selectedEmailList => [
+      : setSelectedEmailList((selectedEmailList) => [
           ...selectedEmailList,
-          email
+          email,
         ]);
   };
   const updateEmailSelectedListAll = () => {
     formData.length === selectedEmailList.length
       ? setSelectedEmailList([])
-      : setSelectedEmailList(formData.map(user => user.email));
+      : setSelectedEmailList(formData.map((user) => user.email));
   };
 
-  useEffect(
-    () => {
-      if (emailModal && formData.length != selectedEmailList.length)
-        setSelectedEmailList(formData.map(user => user.email));
-    },
-    [emailModal]
-  );
+  useEffect(() => {
+    if (emailModal && formData.length != selectedEmailList.length)
+      setSelectedEmailList(formData.map((user) => user.email));
+  }, [emailModal]);
 
   return (
-    <fieldset style={{ marginLeft: "12px", marginRight: "12px" }} className={className} id={idSchema.$id}>
+    <fieldset
+      style={{ marginLeft: "12px", marginRight: "12px" }}
+      className={className}
+      id={idSchema.$id}
+    >
       {uiLatex && (
         <Modal
           destroyOnClose
@@ -211,61 +212,60 @@ const NormalArrayFieldTemplate = ({
           onCancel={() => setImportModal(false)}
         />
       )}
-      {uiEmail &&
-        formData && (
-          <Modal
-            visible={emailModal}
-            onCancel={() => setEmailModal(false)}
-            title="Select user & egroups emails to send"
-            okText="Send Email"
-            okType="link"
-            okButtonProps={{
-              href: `mailto:${selectedEmailList.join(",")}`
-            }}
-            width={900}
-          >
-            <Space direction="vertical" style={{ width: "100%" }} size="large">
-              <Checkbox
-                onChange={() => updateEmailSelectedListAll()}
-                checked={formData.length === selectedEmailList.length}
-              >
-                Select all
-              </Checkbox>
-              <Table
-                dataSource={formData}
-                columns={[
-                  {
-                    title: "Email User",
-                    key: "action",
-                    render: (_, user) => (
-                      <Checkbox
-                        checked={selectedEmailList.includes(user.email)}
-                        onChange={() => updateEmailSelectedList(user.email)}
-                      />
-                    )
-                  },
-                  {
-                    title: "Name",
-                    dataIndex: "name",
-                    key: "name"
-                  },
-                  {
-                    title: "Email",
-                    dataIndex: "email",
-                    key: "email",
-                    render: txt => <Tag color="geekblue">{txt}</Tag>
-                  },
-                  {
-                    title: "Department",
-                    dataIndex: "department",
-                    key: "department",
-                    render: txt => <Tag color="blue">{txt}</Tag>
-                  }
-                ]}
-              />
-            </Space>
-          </Modal>
-        )}
+      {uiEmail && formData && (
+        <Modal
+          visible={emailModal}
+          onCancel={() => setEmailModal(false)}
+          title="Select user & egroups emails to send"
+          okText="Send Email"
+          okType="link"
+          okButtonProps={{
+            href: `mailto:${selectedEmailList.join(",")}`,
+          }}
+          width={900}
+        >
+          <Space direction="vertical" style={{ width: "100%" }} size="large">
+            <Checkbox
+              onChange={() => updateEmailSelectedListAll()}
+              checked={formData.length === selectedEmailList.length}
+            >
+              Select all
+            </Checkbox>
+            <Table
+              dataSource={formData}
+              columns={[
+                {
+                  title: "Email User",
+                  key: "action",
+                  render: (_, user) => (
+                    <Checkbox
+                      checked={selectedEmailList.includes(user.email)}
+                      onChange={() => updateEmailSelectedList(user.email)}
+                    />
+                  ),
+                },
+                {
+                  title: "Name",
+                  dataIndex: "name",
+                  key: "name",
+                },
+                {
+                  title: "Email",
+                  dataIndex: "email",
+                  key: "email",
+                  render: (txt) => <Tag color="geekblue">{txt}</Tag>,
+                },
+                {
+                  title: "Department",
+                  dataIndex: "department",
+                  key: "department",
+                  render: (txt) => <Tag color="blue">{txt}</Tag>,
+                },
+              ]}
+            />
+          </Space>
+        </Modal>
+      )}
       <Row gutter={rowGutter}>
         {title && (
           <Col className={labelColClassName} span={24} style={{ padding: "0" }}>
@@ -286,7 +286,7 @@ const NormalArrayFieldTemplate = ({
         )}
 
         {(uiSchema["ui:description"] || schema.description) && (
-          <Col span={24} style={ { ...DESCRIPTION_COL_STYLE, padding: "0" }}>
+          <Col span={24} style={{ ...DESCRIPTION_COL_STYLE, padding: "0" }}>
             <DescriptionField
               description={uiSchema["ui:description"] || schema.description}
               id={`${idSchema.$id}__description`}
@@ -294,7 +294,7 @@ const NormalArrayFieldTemplate = ({
             />
           </Col>
         )}
-        <Col span={24} style={{marginTop: "5px"}} className="nestedObject">
+        <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>
             {items && (
               <Col classdName="row array-item-list" span={24}>
@@ -312,26 +312,23 @@ const NormalArrayFieldTemplate = ({
             )}
           </Row>
         </Col>
-        {items &&
-          items.length > 0 &&
-          canAdd &&
-          !readonly && (
-            <Col span={24} style={{ marginTop: "10px" }}>
-              <Row gutter={rowGutter} justify="end">
-                <Col flex="192px">
-                  <Button
-                    block
-                    className="array-item-add"
-                    disabled={disabled || readonly}
-                    onClick={onAddClick}
-                    type="primary"
-                  >
-                    <PlusCircleOutlined /> Add Item
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          )}
+        {items && items.length > 0 && canAdd && !readonly && (
+          <Col span={24} style={{ marginTop: "10px" }}>
+            <Row gutter={rowGutter} justify="end">
+              <Col flex="192px">
+                <Button
+                  block
+                  className="array-item-add"
+                  disabled={disabled || readonly}
+                  onClick={onAddClick}
+                  type="primary"
+                >
+                  <PlusCircleOutlined /> Add Item
+                </Button>
+              </Col>
+            </Row>
+          </Col>
+        )}
       </Row>
     </fieldset>
   );
@@ -353,7 +350,7 @@ NormalArrayFieldTemplate.propTypes = {
   title: PropTypes.string,
   TitleField: PropTypes.node,
   uiSchema: PropTypes.object,
-  formData: PropTypes.object
+  formData: PropTypes.object,
 };
 
 export default withConfigConsumer({ prefixCls: "form" })(
