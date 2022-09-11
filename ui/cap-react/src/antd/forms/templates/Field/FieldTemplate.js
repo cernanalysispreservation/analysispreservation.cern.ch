@@ -31,13 +31,13 @@ const FieldTemplate = ({
   required,
   schema,
   uiSchema,
-  rawDescription
+  rawDescription,
 }) => {
   const {
     colon,
     labelCol = VERTICAL_LABEL_COL,
     wrapperCol = VERTICAL_WRAPPER_COL,
-    wrapperStyle
+    wrapperStyle,
   } = formContext;
 
   if (hidden) {
@@ -45,7 +45,7 @@ const FieldTemplate = ({
   }
 
   const renderFieldErrors = () =>
-    [...new Set(rawErrors)].map(error => (
+    [...new Set(rawErrors)].map((error) => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
     ));
   let gridColumns = null;
@@ -62,63 +62,62 @@ const FieldTemplate = ({
   const getJustify = () => {
     if (uiOptions.justify in ["start", "center", "end"]) {
       return uiOptions.justify;
-    }
-    else return "center"
-  }
+    } else return "center";
+  };
   let content = (
-      <WrapIfAdditional
-        classNames={classNames}
-        disabled={disabled}
-        formContext={formContext}
-        id={id}
-        label={label}
-        onDropPropertyClick={onDropPropertyClick}
-        onKeyChange={onKeyChange}
-        readonly={readonly}
-        required={required}
-        schema={schema}
-        isTabView={uiSchema["ui:object"] == "tabView"}
-      >
-        {id === "root" ? (
-          children
-        ) : (
-          <Form.Item
-            colon={colon}
-            hasFeedback={schema.type !== "array" && schema.type !== "object"}
-            help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
-            htmlFor={id}
-            label={
-              (displayLabel || uiSchema["ui:field"]) &&
-              label && (
-                <FieldHeader
-                  label={label}
-                  description={rawDescription}
-                  uiSchema={uiSchema}
-                />
-              )
-            }
-            labelCol={labelCol}
-            required={required}
-            style={wrapperStyle}
-            validateStatus={rawErrors ? "error" : undefined}
-            wrapperCol={wrapperCol}
-          >
-            {children}
-          </Form.Item>
-        )}
-      </WrapIfAdditional>
+    <WrapIfAdditional
+      classNames={classNames}
+      disabled={disabled}
+      formContext={formContext}
+      id={id}
+      label={label}
+      onDropPropertyClick={onDropPropertyClick}
+      onKeyChange={onKeyChange}
+      readonly={readonly}
+      required={required}
+      schema={schema}
+      isTabView={uiSchema["ui:object"] == "tabView"}
+    >
+      {id === "root" ? (
+        children
+      ) : (
+        <Form.Item
+          colon={colon}
+          hasFeedback={schema.type !== "array" && schema.type !== "object"}
+          help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
+          htmlFor={id}
+          label={
+            (displayLabel || uiSchema["ui:field"]) &&
+            label && (
+              <FieldHeader
+                label={label}
+                description={rawDescription}
+                uiSchema={uiSchema}
+              />
+            )
+          }
+          labelCol={labelCol}
+          required={required}
+          style={wrapperStyle}
+          validateStatus={rawErrors ? "error" : undefined}
+          wrapperCol={wrapperCol}
+        >
+          {children}
+        </Form.Item>
+      )}
+    </WrapIfAdditional>
   );
 
   if (id != "root" || uiSchema["ui:object"] == "tabView") return content;
   else {
     return (
       <Row justify={getJustify()}>
-        <Col xs={22} sm={18} md={16} lg={16} xl={16} >
+        <Col xs={22} sm={18} md={16} lg={16} xl={16}>
           {content}
         </Col>
       </Row>
-    )
-  } 
+    );
+  }
 };
 
 FieldTemplate.propTypes = {
@@ -139,7 +138,7 @@ FieldTemplate.propTypes = {
   rawHelp: PropTypes.string,
   id: PropTypes.string,
   children: PropTypes.node,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
 };
 
 export default FieldTemplate;

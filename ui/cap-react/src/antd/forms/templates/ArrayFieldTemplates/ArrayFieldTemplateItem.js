@@ -14,7 +14,7 @@ const ArrayFieldTemplateItem = ({
   index,
   onDropIndexClick,
   onReorderClick,
-  readonly
+  readonly,
 }) => {
   const { rowGutter = 24, toolbarAlign = "top" } = formContext;
 
@@ -55,11 +55,11 @@ ArrayFieldTemplateItem.propTypes = {
   index: PropTypes.string,
   onDropIndexClick: PropTypes.func,
   onReorderClick: PropTypes.func,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
 };
 
 ArrayFieldTemplateItem.defaultProps = {
-  formContext: {}
+  formContext: {},
 };
 
 export default ArrayFieldTemplateItem;
