@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
 import WrapIfAdditional from "./WrapIfAdditional";
+import { Col, Row } from "antd";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -49,6 +50,7 @@ const FieldTemplate = ({
     ));
   let gridColumns = null;
 
+  const { ["ui:options"]: uiOptions = {} } = uiSchema;
   // if the grid options exists in uiSchema pass it as prop
   // else set it full width
   if (uiSchema["ui:options"] && uiSchema["ui:options"].grid) {
@@ -57,17 +59,13 @@ const FieldTemplate = ({
       : "1/5";
   }
 
-  return (
-    <div
-      style={{
-        gridColumn: gridColumns ? gridColumns : "1 / 5",
-        height: id == "root" && uiSchema["ui:object"] == "tabView" && "100%"
-        // padding:
-        //   id == "root"
-        //     ? null
-        //     : schema.type !== "array" && schema.type !== "object" && "10px 24px"
-      }}
-    >
+  const getJustify = () => {
+    if (uiOptions.justify in ["start", "center", "end"]) {
+      return uiOptions.justify;
+    }
+    else return "center"
+  }
+  let content = (
       <WrapIfAdditional
         classNames={classNames}
         disabled={disabled}
@@ -109,8 +107,18 @@ const FieldTemplate = ({
           </Form.Item>
         )}
       </WrapIfAdditional>
-    </div>
   );
+
+  if (id != "root" || uiSchema["ui:object"] == "tabView") return content;
+  else {
+    return (
+      <Row justify={getJustify()}>
+        <Col xs={22} sm={18} md={16} lg={16} xl={16} >
+          {content}
+        </Col>
+      </Row>
+    )
+  } 
 };
 
 FieldTemplate.propTypes = {
