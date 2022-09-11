@@ -19,7 +19,7 @@ const TitleField = ({
   enableEmail,
   enableImport,
   enableLatex,
-  readonly
+  readonly,
 }) => {
   const { colon = true } = formContext;
 
@@ -30,7 +30,7 @@ const TitleField = ({
 
   const labelClassName = classNames({
     [`${prefixCls}-item-required`]: required,
-    [`${prefixCls}-item-no-colon`]: !colon
+    [`${prefixCls}-item-no-colon`]: !colon,
   });
 
   const handleLabelClick = () => {
@@ -79,7 +79,9 @@ const TitleField = ({
                 size="small"
                 title="LaTeX"
                 onClick={enableLatex}
-              >LaTeX</Button>
+              >
+                LaTeX
+              </Button>
             </Tooltip>
           )}
           {uiEmail && (

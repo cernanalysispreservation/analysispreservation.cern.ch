@@ -6,11 +6,11 @@ import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import PropTypes from "prop-types";
 
 const BTN_GRP_STYLE = {
-  width: "100%"
+  width: "100%",
 };
 
 const BTN_STYLE = {
-  width: "calc(100% / 3)"
+  width: "calc(100% / 3)",
 };
 
 const ArrayUtils = ({
@@ -21,11 +21,11 @@ const ArrayUtils = ({
   onReorderClick,
   onDropIndexClick,
   index,
-  hasRemove
+  hasRemove,
 }) => {
   return !readonly ? (
-    <Col flex="100px" style={{padding: 0}}>
-      <Button.Group style={{...BTN_GRP_STYLE, justifyContent: "end"}}>
+    <Col flex="100px" style={{ padding: 0 }}>
+      <Button.Group style={{ ...BTN_GRP_STYLE, justifyContent: "end" }}>
         {(hasMoveUp || hasMoveDown) && (
           <Button
             disabled={disabled || !hasMoveUp}
@@ -69,7 +69,7 @@ ArrayUtils.propTypes = {
   hasRemove: PropTypes.bool,
   onReorderClick: PropTypes.func,
   onDropIndexClick: PropTypes.func,
-  index: PropTypes.string
+  index: PropTypes.string,
 };
 
 export default ArrayUtils;

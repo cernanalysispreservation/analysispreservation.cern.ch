@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
 
 const DESCRIPTION_COL_STYLE = {
-  paddingBottom: "8px"
+  paddingBottom: "8px",
 };
 
 const FixedArrayFieldTemplate = ({
@@ -28,7 +28,7 @@ const FixedArrayFieldTemplate = ({
   schema,
   title,
   TitleField,
-  uiSchema
+  uiSchema,
 }) => {
   const { labelAlign = "right", rowGutter = 24 } = formContext;
 
@@ -41,7 +41,7 @@ const FixedArrayFieldTemplate = ({
 
   return (
     <fieldset className={className} id={idSchema.$id}>
-      <Row gutter={rowGutter} >
+      <Row gutter={rowGutter}>
         {title && (
           <Col className={labelColClassName} span={24} style={{ padding: "0" }}>
             <TitleField
@@ -63,7 +63,7 @@ const FixedArrayFieldTemplate = ({
           </Col>
         )}
 
-        <Col span={24} style={{marginTop: "5px"}} className="nestedObject">
+        <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>
             <Col className="row array-item-list" span={24}>
               {items &&
@@ -78,24 +78,23 @@ const FixedArrayFieldTemplate = ({
           </Row>
         </Col>
 
-        {canAdd &&
-          !readonly && (
-            <Col span={24}>
-              <Row gutter={rowGutter} justify="end">
-                <Col flex="192px">
-                  <Button
-                    block
-                    className="array-item-add"
-                    disabled={disabled}
-                    onClick={onAddClick}
-                    type="primary"
-                  >
-                    <PlusCircleOutlined /> Add Item
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          )}
+        {canAdd && !readonly && (
+          <Col span={24}>
+            <Row gutter={rowGutter} justify="end">
+              <Col flex="192px">
+                <Button
+                  block
+                  className="array-item-add"
+                  disabled={disabled}
+                  onClick={onAddClick}
+                  type="primary"
+                >
+                  <PlusCircleOutlined /> Add Item
+                </Button>
+              </Col>
+            </Row>
+          </Col>
+        )}
       </Row>
     </fieldset>
   );
@@ -116,7 +115,7 @@ FixedArrayFieldTemplate.propTypes = {
   schema: PropTypes.object,
   title: PropTypes.string,
   TitleField: PropTypes.node,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
 };
 
 export default withConfigConsumer({ prefixCls: "form" })(
