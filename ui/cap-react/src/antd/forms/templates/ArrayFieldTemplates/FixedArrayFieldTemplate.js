@@ -41,9 +41,9 @@ const FixedArrayFieldTemplate = ({
 
   return (
     <fieldset className={className} id={idSchema.$id}>
-      <Row gutter={rowGutter}>
+      <Row gutter={rowGutter} >
         {title && (
-          <Col className={labelColClassName} span={24}>
+          <Col className={labelColClassName} span={24} style={{ padding: "0" }}>
             <TitleField
               id={`${idSchema.$id}__title`}
               key={`array-field-title-${idSchema.$id}`}
@@ -63,15 +63,19 @@ const FixedArrayFieldTemplate = ({
           </Col>
         )}
 
-        <Col className="row array-item-list" span={24}>
-          {items &&
-            items.map((itemProps, index) => (
-              <ArrayFieldTemplateItem
-                key={idSchema.$id + index}
-                {...itemProps}
-                formContext={formContext}
-              />
-            ))}
+        <Col span={24} style={{marginTop: "5px"}} className="nestedObject">
+          <Row>
+            <Col className="row array-item-list" span={24}>
+              {items &&
+                items.map((itemProps, index) => (
+                  <ArrayFieldTemplateItem
+                    key={idSchema.$id + index}
+                    {...itemProps}
+                    formContext={formContext}
+                  />
+                ))}
+            </Col>
+          </Row>
         </Col>
 
         {canAdd &&

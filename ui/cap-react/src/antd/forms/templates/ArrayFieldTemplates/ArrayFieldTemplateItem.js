@@ -23,7 +23,7 @@ const ArrayFieldTemplateItem = ({
       align={toolbarAlign}
       key={`array-item-${index}`}
       gutter={rowGutter}
-      style={{ marginTop: "24px" }}
+      style={{ marginTop: "24px", width: "100%" }}
     >
       <Col flex="1" style={{ borderBottom: "1px solid #f0f0f0" }}>
         {children}
