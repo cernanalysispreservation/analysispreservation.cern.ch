@@ -2,7 +2,10 @@ import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
-import { Button, Row, Space } from "antd";
+import { Button, Col, Row, Space, Tooltip } from "antd";
+import Title from "antd/lib/typography/Title";
+import Text from "antd/lib/typography/Text";
+import { ImportOutlined, MailOutlined } from "@ant-design/icons";
 
 const TitleField = ({
   formContext,
@@ -43,46 +46,67 @@ const TitleField = ({
 
   if (!title) return null;
 
-  if (((uiImport && !readonly) || uiLatex || uiEmail) ) {
+  if ((uiImport && !readonly) || uiLatex || uiEmail) {
     return (
       <Row justify="space-between">
-        <label
+        <Text
+          strong
           className={labelClassName}
           htmlFor={id}
           onClick={handleLabelClick}
           title={typeof title === "string" ? title : ""}
         >
           {labelChildren}
-        </label>
+        </Text>
         <Space style={{ flexWrap: "wrap" }}>
           {uiImport && (
-            <Button type="link" onClick={enableImport}>
-              Import from a list
-            </Button>
+            <Tooltip title="Import from a list">
+              <Button
+                icon={<ImportOutlined />}
+                block
+                shape="round"
+                size="small"
+                onClick={enableImport}
+              />
+            </Tooltip>
           )}
           {uiLatex && (
-            <Button type="link" onClick={enableLatex}>
-              Export LaTeX
-            </Button>
+            <Tooltip title="Export LaTeX">
+              <Button
+                icosn={<MailOutlined />}
+                block
+                shape="round"
+                size="small"
+                title="LaTeX"
+                onClick={enableLatex}
+              >LaTeX</Button>
+            </Tooltip>
           )}
           {uiEmail && (
-            <Button type="link" onClick={enableEmail}>
-              Send Email
-            </Button>
+            <Tooltip title="Send email">
+              <Button
+                icon={<MailOutlined />}
+                block
+                shape="round"
+                size="small"
+                onClick={enableEmail}
+              />
+            </Tooltip>
           )}
         </Space>
       </Row>
     );
   }
   return (
-    <label
+    <Text
+      strong
       className={labelClassName}
       htmlFor={id}
       onClick={handleLabelClick}
       title={typeof title === "string" ? title : ""}
     >
       {labelChildren}
-    </label>
+    </Text>
   );
 };
 
@@ -95,11 +119,11 @@ TitleField.propTypes = {
   uiImport: PropTypes.bool,
   uiLatex: PropTypes.bool,
   enableLatex: PropTypes.func,
-  enableImport: PropTypes.func
+  enableImport: PropTypes.func,
 };
 
 TitleField.defaultProps = {
-  formContext: {}
+  formContext: {},
 };
 
 export default withConfigConsumer({ prefixCls: "form" })(TitleField);

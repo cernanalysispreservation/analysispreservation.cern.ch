@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 
 import Button from "antd/lib/button";
-import { Row, Col, Modal, Space, Tag, Checkbox, Table } from "antd";
+import { Row, Col, Modal, Space, Tag, Checkbox, Table, Divider } from "antd";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
@@ -157,7 +157,7 @@ const NormalArrayFieldTemplate = ({
   );
 
   return (
-    <fieldset className={className} id={idSchema.$id}>
+    <fieldset style={{ marginLeft: "12px", marginRight: "12px" }} className={className} id={idSchema.$id}>
       {uiLatex && (
         <Modal
           destroyOnClose
@@ -266,9 +266,9 @@ const NormalArrayFieldTemplate = ({
             </Space>
           </Modal>
         )}
-      <Row gutter={rowGutter} style={{ background: "#fff", padding: "10px" }}>
+      <Row gutter={rowGutter}>
         {title && (
-          <Col className={labelColClassName} span={24}>
+          <Col className={labelColClassName} span={24} style={{ padding: "0" }}>
             <TitleField
               id={`${idSchema.$id}__title`}
               key={`array-field-title-${idSchema.$id}`}
@@ -286,7 +286,7 @@ const NormalArrayFieldTemplate = ({
         )}
 
         {(uiSchema["ui:description"] || schema.description) && (
-          <Col span={24} style={DESCRIPTION_COL_STYLE}>
+          <Col span={24} style={ { ...DESCRIPTION_COL_STYLE, padding: "0" }}>
             <DescriptionField
               description={uiSchema["ui:description"] || schema.description}
               id={`${idSchema.$id}__description`}
@@ -294,21 +294,24 @@ const NormalArrayFieldTemplate = ({
             />
           </Col>
         )}
-        {items && (
-          <Col className="row array-item-list" span={24}>
-            {items.length > 0 ? (
-              getArrayContent(typeOfArrayToDisplay)
-            ) : (
-              <EmptyArrayField
-                canAdd={canAdd}
-                disabled={disabled}
-                readonly={readonly}
-                onAddClick={onAddClick}
-              />
+        <Col span={24} style={{marginTop: "5px"}} className="nestedObject">
+          <Row>
+            {items && (
+              <Col classdName="row array-item-list" span={24}>
+                {items.length > 0 ? (
+                  getArrayContent(typeOfArrayToDisplay)
+                ) : (
+                  <EmptyArrayField
+                    canAdd={canAdd}
+                    disabled={disabled}
+                    readonly={readonly}
+                    onAddClick={onAddClick}
+                  />
+                )}
+              </Col>
             )}
-          </Col>
-        )}
-
+          </Row>
+        </Col>
         {items &&
           items.length > 0 &&
           canAdd &&
