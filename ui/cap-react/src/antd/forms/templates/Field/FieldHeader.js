@@ -6,7 +6,7 @@ import Markdown from "../../../partials/Markdown";
 const FieldHeader = ({ label, description, uiSchema }) => {
   return (
     <Space direction="vertical" size={0}>
-      <Typography.Text>
+      <Typography.Text strong>
         <Markdown
           text={label}
           style={{
