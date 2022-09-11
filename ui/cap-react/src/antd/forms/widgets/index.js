@@ -6,7 +6,7 @@ const widgets = {
   text: TextWidget,
   latex: RichEditor,
   select: SelectWidget,
-  richeditor: RichEditor
+  richeditor: RichEditor,
 };
 
 export default widgets;

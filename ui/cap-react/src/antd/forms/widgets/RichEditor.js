@@ -10,23 +10,24 @@ import "katex/dist/katex.min.css";
 import "markdown-it-texmath/css/texmath.css";
 import "./styles/RichEditor.css";
 
-const RichEditor = props => {
+const RichEditor = (props) => {
   const mdParser = new MarkdownIt();
-  mdParser.use(tm, { engine: require('katex'),
-    delimiters: 'dollars',
-    katexOptions: { macros: {"\\RR": "\\mathbb{R}"} } 
-    });
+  mdParser.use(tm, {
+    engine: require("katex"),
+    delimiters: "dollars",
+    katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },
+  });
   let myEditor = useRef(null);
 
   const renderHTML = (text) => {
     return mdParser.render(text);
-  }
-  const handleEditorChange = values => {
+  };
+  const handleEditorChange = (values) => {
     props.onChange(values.text);
   };
 
   MdEditor.use(Toggler, {
-    isEditView: { html: false, md: true }
+    isEditView: { html: false, md: true },
   });
 
   return (
@@ -38,15 +39,31 @@ const RichEditor = props => {
           md: false,
           html: false,
           ...props.canViewProps,
-          ...((props.readonly || props.disabled) ? {md: false, html: true, fullScreen: true, menu: false, hideMenu: false} : {})
+          ...(props.readonly || props.disabled
+            ? {
+                md: false,
+                html: true,
+                fullScreen: true,
+                menu: false,
+                hideMenu: false,
+              }
+            : {}),
         },
         view: {
           fullScreen: false,
           md: true,
           html: false,
           ...props.viewProps,
-          ...((props.readonly || props.disabled) ? {md: false, html: true, fullScreen: true, menu: false, hideMenu: false} : {})
-         }
+          ...(props.readonly || props.disabled
+            ? {
+                md: false,
+                html: true,
+                fullScreen: true,
+                menu: false,
+                hideMenu: false,
+              }
+            : {}),
+        },
       }}
       readOnly={props.readonly}
       renderHTML={renderHTML}
@@ -63,7 +80,7 @@ RichEditor.propTypes = {
   readonly: PropTypes.bool,
   displayedFromModal: PropTypes.bool,
   canViewProps: PropTypes.object,
-  viewProps: PropTypes.object
+  viewProps: PropTypes.object,
 };
 
 export default RichEditor;
