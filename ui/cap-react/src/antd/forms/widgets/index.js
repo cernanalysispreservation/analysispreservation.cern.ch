@@ -4,6 +4,7 @@ import RichEditor from "./RichEditor";
 
 const widgets = {
   text: TextWidget,
+  latex: RichEditor,
   select: SelectWidget,
   richeditor: RichEditor
 };
