@@ -8,14 +8,18 @@
   }
   .ant-form-item-label
     > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+    content: unset;
+  }
+  .ant-form-item-label
+    > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
     display: inline-block;
     margin-right: 4px;
-    color: #ff4d4f;
+    color: #477bd3;
     font-size: 14px;
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: "*";
-    margin-bottom: 15px;
+    // margin-bottom: 15px;
   }
 
   .nestedObject {
