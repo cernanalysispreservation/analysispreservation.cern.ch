@@ -24,15 +24,15 @@ const ArrayUtils = ({
   hasRemove
 }) => {
   return !readonly ? (
-    <Col flex="192px">
-      <Button.Group style={BTN_GRP_STYLE}>
+    <Col flex="100px" style={{padding: 0}}>
+      <Button.Group style={{...BTN_GRP_STYLE, justifyContent: "end"}}>
         {(hasMoveUp || hasMoveDown) && (
           <Button
             disabled={disabled || !hasMoveUp}
             icon={<ArrowUpOutlined />}
             onClick={onReorderClick(index, index - 1)}
-            style={BTN_STYLE}
-            type="default"
+            // style={BTN_STYLE}
+            type="link"
           />
         )}
 
@@ -41,8 +41,8 @@ const ArrayUtils = ({
             disabled={disabled || !hasMoveDown}
             icon={<ArrowDownOutlined />}
             onClick={onReorderClick(index, index + 1)}
-            style={BTN_STYLE}
-            type="default"
+            // style={BTN_STYLE}
+            type="link"
           />
         )}
 
@@ -52,8 +52,8 @@ const ArrayUtils = ({
             disabled={disabled}
             icon={<DeleteOutlined />}
             onClick={onDropIndexClick(index)}
-            style={BTN_STYLE}
-            type="primary"
+            // style={BTN_STYLE}
+            type="link"
           />
         )}
       </Button.Group>
