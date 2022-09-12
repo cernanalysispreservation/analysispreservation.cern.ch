@@ -48,7 +48,7 @@ const NormalArrayFieldTemplate = ({
   const [emailModal, setEmailModal] = useState(false);
   const [selectedEmailList, setSelectedEmailList] = useState(
     uiSchema["ui:options"] && uiSchema["ui:options"].email
-      ? formData.map((user) => user[uiSchema["ui:options"].email])
+      ? formData.map((user) => user.profile.email)
       : []
   );
   const [copy, setCopy] = useState(false);
@@ -62,11 +62,13 @@ const NormalArrayFieldTemplate = ({
   let uiImport = null;
   let uiLatex = null;
   let uiEmail = null;
+  let uiEmailDefaults = [];
 
   if (uiSchema["ui:options"]) {
     uiImport = uiSchema["ui:options"].import;
     uiLatex = uiSchema["ui:options"].latex;
     uiEmail = uiSchema["ui:options"].email;
+    uiEmailDefaults = uiSchema["ui:options"].emailDefaults || [];
   }
 
   let typeOfArrayToDisplay = "default";
@@ -145,12 +147,12 @@ const NormalArrayFieldTemplate = ({
   const updateEmailSelectedListAll = () => {
     formData.length === selectedEmailList.length
       ? setSelectedEmailList([])
-      : setSelectedEmailList(formData.map((user) => user.email));
+      : setSelectedEmailList(formData.map((user) => user.profile.email));
   };
 
   useEffect(() => {
     if (emailModal && formData.length != selectedEmailList.length)
-      setSelectedEmailList(formData.map((user) => user.email));
+      setSelectedEmailList(formData.map((user) => user.profile.email));
   }, [emailModal]);
 
   return (
@@ -220,7 +222,9 @@ const NormalArrayFieldTemplate = ({
           okText="Send Email"
           okType="link"
           okButtonProps={{
-            href: `mailto:${selectedEmailList.join(",")}`,
+            href: `mailto:${uiEmailDefaults
+              .concat(selectedEmailList)
+              .join(",")}`,
           }}
           width={900}
         >
@@ -231,8 +235,18 @@ const NormalArrayFieldTemplate = ({
             >
               Select all
             </Checkbox>
+            {uiEmailDefaults.length > 0 ? (
+              <Col>
+                Default email recepients:{" "}
+                <Space>
+                  {uiEmailDefaults.map((i) => (
+                    <Tag>{i}</Tag>
+                  ))}
+                </Space>
+              </Col>
+            ) : null}
             <Table
-              dataSource={formData}
+              dataSource={formData.map((i) => i.profile || i)}
               columns={[
                 {
                   title: "Email User",
