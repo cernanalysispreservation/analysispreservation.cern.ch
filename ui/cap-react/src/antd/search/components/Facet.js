@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import { Space, Typography } from "antd";
 import FacetItem from "./FacetItem";
 import RangeSlider from "./Slider";
-
+import RangeDate from "./RangeDate";
 
 const Facet = ({ category, facets, isAggSelected, selectedAggs, onChange }) => {
   const getContentByType = type => {
     const choices = {
-      true: <RangeSlider items={facets[category]} category={category} />,
-      false: (
+      "range": <RangeSlider items={facets[category]} category={category} />,
+      "daterange": <RangeDate category={category} />,
+      "default": (
         <FacetItem
           limit={11}
           items={facets[category].buckets}
@@ -21,7 +22,9 @@ const Facet = ({ category, facets, isAggSelected, selectedAggs, onChange }) => {
       )
     };
 
-    return choices[type == "range"];
+    if (Object.keys(choices).indexOf(type) < 0) type = "default";
+
+    return choices[type];
   };
 
   const getFacetTitle = title =>

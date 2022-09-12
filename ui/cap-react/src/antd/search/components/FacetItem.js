@@ -28,7 +28,7 @@ const FacetItem = ({
                   <EllipsisText tooltip length={30} suffixCount={10} type="secondary">
                     {"__display_name__" in item
                       ? item["__display_name__"]
-                      : item.key}
+                      : String(item.key)}
                   </EllipsisText>
                 </Checkbox>
                 <Tag>
@@ -55,7 +55,7 @@ const FacetItem = ({
                               )}
                             >
                               <EllipsisText tooltip length={30} suffixCount={10} type="secondary">
-                                {nested.key}
+                                {String(nested.key)}
                               </EllipsisText>
                             </Checkbox>
                             <Tag>
