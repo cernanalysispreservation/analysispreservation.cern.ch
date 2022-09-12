@@ -389,6 +389,24 @@ CAP_FACETS = {
             },
             'meta': {'title': 'Next Deadline Date', 'type': 'range'},
         },
+        "facet_target_date": {
+            "date_histogram": {
+                "field": "initial.target_date",
+                "interval": "1d",
+                "format": "yyyy-MM-dd",
+                "min_doc_count": 1,
+            },
+            'meta': {'title': 'Target Date', 'type': 'daterange'},
+        },
+        'facet_stage': {
+            'terms': {'field': 'initial.status.main_status'},
+            'aggs': {
+                'facet_sub_status': {
+                    'terms': {'field': 'initial.status.sub_status'}
+                }
+            },
+            'meta': {'order': 2},
+        },
         'particles': {
             'nested': {
                 'path': 'main_measurements.signal_event_selection.physics_objects'  # noqa
@@ -426,6 +444,11 @@ CAP_FACETS = {
             format='yyyy',
             end_date_math='/y',
         ),
+        "target_date": range_filter(
+            'initial.target_date',
+            format='yyyy-MM-dd',
+            end_date_math='/d',
+        ),
         'collision_system': terms_filter(
             'basic_info.analysis_keywords.collision_system.keyword'
         ),
@@ -459,6 +482,8 @@ CAP_FACETS = {
             'main_measurements.signal_event_selection.physics_objects'
             '.object_type',
         ),
+        'stage': terms_filter('initial.status.main_status'),
+        'sub_status': terms_filter('initial.status.sub_status'),
     },
 }
 
