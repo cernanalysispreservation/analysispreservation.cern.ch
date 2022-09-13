@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 
 import Button from "antd/lib/button";
-import { Row, Col, Modal, Space, Tag, Checkbox, Table, Divider } from "antd";
+import { Row, Col, Modal, Space, Tag, Checkbox, Table } from "antd";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
