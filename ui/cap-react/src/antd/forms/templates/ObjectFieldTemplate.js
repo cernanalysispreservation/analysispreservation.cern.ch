@@ -14,7 +14,6 @@ const DESCRIPTION_COL_STYLE = {
 
 const ObjectFieldTemplate = ({
   DescriptionField,
-  TitleField,
   description,
   disabled,
   formContext,
@@ -24,7 +23,7 @@ const ObjectFieldTemplate = ({
   prefixCls,
   properties,
   readonly,
-  required,
+  // required,
   schema,
   title,
   uiSchema,
