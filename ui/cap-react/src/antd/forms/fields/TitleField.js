@@ -2,8 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
-import { Button, Col, Row, Space, Tooltip } from "antd";
-import Title from "antd/lib/typography/Title";
+import { Button, Row, Space, Tooltip } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ImportOutlined, MailOutlined } from "@ant-design/icons";
 
