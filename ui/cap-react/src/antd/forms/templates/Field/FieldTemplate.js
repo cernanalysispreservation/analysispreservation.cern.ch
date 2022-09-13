@@ -48,16 +48,16 @@ const FieldTemplate = ({
     [...new Set(rawErrors)].map((error) => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
     ));
-  let gridColumns = null;
+  // let gridColumns = null;
 
   const { ["ui:options"]: uiOptions = {} } = uiSchema;
   // if the grid options exists in uiSchema pass it as prop
   // else set it full width
-  if (uiSchema["ui:options"] && uiSchema["ui:options"].grid) {
-    gridColumns = uiSchema["ui:options"].grid.gridColumns
-      ? uiSchema["ui:options"].grid.gridColumns
-      : "1/5";
-  }
+  // if (uiSchema["ui:options"] && uiSchema["ui:options"].grid) {
+  //   gridColumns = uiSchema["ui:options"].grid.gridColumns
+  //     ? uiSchema["ui:options"].grid.gridColumns
+  //     : "1/5";
+  // }
 
   const getJustify = () => {
     if (uiOptions.justify in ["start", "center", "end"]) {
