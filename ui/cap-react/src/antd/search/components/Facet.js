@@ -1,15 +1,43 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Space, Typography } from "antd";
+import { Space, Typography, DatePicker } from "antd";
 import FacetItem from "./FacetItem";
 import RangeSlider from "./Slider";
-import RangeDate from "./RangeDate";
+// import RangeDate from "./RangeDate";
+const { RangePicker } = DatePicker;
 
-const Facet = ({ category, facets, isAggSelected, selectedAggs, onChange }) => {
+import queryString from "query-string";
+
+import { withRouter } from "react-router-dom";
+
+const Facet = ({
+  category,
+  facets,
+  isAggSelected,
+  selectedAggs,
+  onChange,
+  history,
+}) => {
   const getContentByType = (type) => {
     const choices = {
       range: <RangeSlider items={facets[category]} category={category} />,
-      daterange: <RangeDate category={category} />,
+      daterange: (
+        <RangePicker
+          onChange={(d, ds) => {
+            if (ds) {
+              let params = queryString.parse(history.location.search);
+              const location = {
+                search: `${queryString.stringify(
+                  Object.assign(params, {
+                    [category]: `${ds[0]}--${ds[1]}`,
+                  })
+                )}`,
+              };
+              history.push(location);
+            }
+          }}
+        />
+      ),
       default: (
         <FacetItem
           limit={11}
@@ -50,4 +78,4 @@ Facet.propTypes = {
   isAggSelected: PropTypes.func,
 };
 
-export default Facet;
+export default withRouter(Facet);
