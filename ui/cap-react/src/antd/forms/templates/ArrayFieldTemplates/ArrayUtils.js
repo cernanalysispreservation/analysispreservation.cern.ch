@@ -9,9 +9,9 @@ const BTN_GRP_STYLE = {
   width: "100%",
 };
 
-const BTN_STYLE = {
-  width: "calc(100% / 3)",
-};
+// const BTN_STYLE = {
+//   width: "calc(100% / 3)",
+// };
 
 const ArrayUtils = ({
   hasMoveUp,
