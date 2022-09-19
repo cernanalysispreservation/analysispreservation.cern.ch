@@ -300,6 +300,19 @@ RECORDS_REST_SORT_OPTIONS = dict(
 
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
+
+# Sort options config
+CAP_SORT_OPTIONS = {
+    'stage': {
+        'sort_key': "initial.status.main_status",
+        'sort_params': {
+            'Analysis': 0,
+            'Preliminary results': 1,
+            'Final results': 2,
+        },
+    }
+}
+
 #: Record search facets.
 # for aggregations, only ones starting with facet_ will be displayed on a page
 CAP_FACETS = {

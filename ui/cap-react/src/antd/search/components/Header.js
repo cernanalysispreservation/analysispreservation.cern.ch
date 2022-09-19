@@ -7,14 +7,16 @@ import { FilterOutlined } from "@ant-design/icons";
 const SORT_OPTIONS = [
   { value: "mostrecent", label: "Newest First" },
   { value: "-mostrecent", label: "Oldest First" },
-  { value: "bestmatch", label: "Best Match" }
+  { value: "bestmatch", label: "Best Match" },
+  { value: "stage", label: "Stage" },
 ];
 
 const getValueFromLocation = (value = "mostrecent") => {
   const choices = {
     mostrecent: "Newest First",
     "-mostrecent": "Oldest First",
-    bestmatch: "Best Match"
+    bestmatch: "Best Match",
+    stage: "Stage",
   };
 
   return choices[value];
@@ -25,7 +27,7 @@ const Header = ({
   results,
   onChange,
   shouldDisplayFacetButton,
-  updateDisplayFacet
+  updateDisplayFacet,
 }) => {
   const total = results.getIn(["hits", "total"]) || 0;
 
@@ -73,7 +75,7 @@ const Header = ({
             onChange={onChange}
             data-cy="sortSelectMenu"
           >
-            {SORT_OPTIONS.map(item => (
+            {SORT_OPTIONS.map((item) => (
               <Select.Option
                 value={item.value}
                 key={item.value}
@@ -118,7 +120,7 @@ Header.propTypes = {
   results: PropTypes.object,
   onChange: PropTypes.func,
   shouldDisplayFacetButton: PropTypes.bool,
-  updateDisplayFacet: PropTypes.func
+  updateDisplayFacet: PropTypes.func,
 };
 
 export default Header;
