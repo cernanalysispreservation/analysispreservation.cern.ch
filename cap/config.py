@@ -40,6 +40,7 @@ from cap.modules.oauthclient.rest_handlers import (
 from cap.modules.oauthclient.serializers import oauth_extra_data_serializer
 from cap.modules.records.permissions import ReadRecordPermission
 from cap.modules.search.facets import nested_filter, prefix_filter
+from cap.modules.search.sorter import analysis_stage_sort
 from cap.modules.user.serializers import (
     user_account_list_serializer,
     user_account_serializer,
@@ -298,6 +299,12 @@ RECORDS_REST_SORT_OPTIONS = dict(
     )
 )
 
+DEPOSIT_REST_SORT_OPTIONS['deposits']['analysis_stage'] = {
+    'title': _('Analysis Stage (desc)'),
+    'fields': [analysis_stage_sort('analysis_stage', 'analysis_sub_stage')],
+    'default_order': 'desc',
+    'order': 3,
+}
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
 #: Record search facets.

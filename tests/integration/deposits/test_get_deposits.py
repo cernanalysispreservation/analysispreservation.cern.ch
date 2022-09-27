@@ -570,6 +570,301 @@ def test_get_deposits_with_facets_get_types_and_versions(
     ]
 
 
+def test_get_sorted_results_by_stage_strings(
+    client, users, auth_headers_for_user, json_headers, create_deposit, create_schema
+):
+    owner = users['superuser']
+    headers = auth_headers_for_user(owner)
+
+    deposit_mapping_1 = {
+        "mappings" : {
+            "test-analysis-v1.0.0": {
+                "properties": {
+                    "_collection": {
+                        "type": "object",
+                        "properties": {
+                            "fullname": {
+                                "type": "keyword"
+                            },
+                            "name": {
+                                "type": "keyword"
+                            },
+                            "version": {
+                                "type": "keyword"
+                            }
+                        }
+                    },
+                    "analysis_stage": {
+						"type": "keyword",
+						"store": True
+					},
+					"analysis_sub_stage": {
+						"type": "keyword",
+						"store": True
+					},
+                    "initial": {
+                        "type": "object",
+                        "properties": {
+                            "status": {
+                                "type": "object",
+                                "properties": {
+									"main_status": {
+										"type": "keyword",
+										"copy_to": "analysis_stage"
+									},
+									"sub_status": {
+										"type": "keyword",
+										"copy_to": "analysis_sub_stage"
+									}		
+								}
+                            }
+                        }
+                    },
+                }
+            }
+        }
+    }
+
+    deposit_mapping_2 = {
+        "mappings" : {
+            "test-ana-v1.0.0": {
+                "properties": {
+                    "_collection": {
+                        "type": "object",
+                        "properties": {
+                            "fullname": {
+                                "type": "keyword"
+                            },
+                            "name": {
+                                "type": "keyword"
+                            },
+                            "version": {
+                                "type": "keyword"
+                            }
+                        }
+                    },
+                    "analysis_stage": {
+						"type": "keyword",
+						"store": True
+					},
+					"analysis_sub_stage": {
+						"type": "keyword",
+						"store": True
+					},
+                    "stat": {
+                        "type": "object",
+                        "properties": {
+                            "main_status": {
+                                "type": "keyword",
+                                "copy_to": "analysis_stage"
+                            },
+                            "sub_status": {
+                                "type": "keyword",
+                                "copy_to": "analysis_sub_stage"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    create_schema(
+        'test-analysis',
+        experiment='CMS',
+        deposit_mapping=deposit_mapping_1,
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                "initial": {
+                    "properties": {
+                        "status": {
+                            "type": "object",
+                            "properties": {
+                                "main_status": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Analysis",
+                                        "Preliminary results",
+                                        "Final results"
+                                    ]
+                                },
+                                "sub_status": {
+                                    "type": "string",
+                                    "title": "Sub stage",
+                                    "enum": [
+                                        "Planned",
+                                        "Approved",
+                                        "Paper published"
+                                    ]
+							    }
+                            },
+                        }
+                    }
+                }
+            }
+        },
+    )
+
+    deposit_pid_1 = create_deposit(owner, 'test-analysis')['_deposit']['id']
+    deposit_pid_2 = create_deposit(owner, 'test-analysis')['_deposit']['id']
+    deposit_pid_3 = create_deposit(owner, 'test-analysis')['_deposit']['id']
+
+    # total should be 3
+    resp = client.get(
+        '/deposits/',
+        headers=auth_headers_for_user(owner) + [('Accept', 'application/basic+json')],
+    )
+    assert resp.json['hits']['total'] == 3
+
+    client.put('/deposits/{}'.format(deposit_pid_1),
+        headers=headers + json_headers,
+        data=json.dumps({
+        "initial": {
+            "status": {
+                "main_status": "Analysis",
+                "sub_status": "Planned"
+            }
+    }}))
+    client.put('/deposits/{}'.format(deposit_pid_2),
+        headers=headers + json_headers,
+        data=json.dumps({
+        "initial": {
+            "status": {
+                "main_status": "Preliminary results",
+                "sub_status": "Approved"
+            }
+    }}))
+    client.put('/deposits/{}'.format(deposit_pid_3),
+        headers=headers + json_headers,
+        data=json.dumps({
+        "initial": {
+            "status": {
+                "main_status": "Final results",
+                "sub_status": "Paper published"
+            }
+    }}))
+
+    import time
+    time.sleep(5)
+
+    # Test asc order
+    resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
+    assert resp.status_code == 200
+    assert resp.json['hits']['hits'][0]['id'] == deposit_pid_1
+    assert resp.json['hits']['hits'][1]['id'] == deposit_pid_2
+    assert resp.json['hits']['hits'][2]['id'] == deposit_pid_3
+
+    # Test desc order
+    resp = client.get('/deposits?q=&sort=-analysis_stage',headers=headers+json_headers)
+    assert resp.status_code == 200
+    assert resp.json['hits']['hits'][0]['id'] == deposit_pid_3
+    assert resp.json['hits']['hits'][1]['id'] == deposit_pid_2
+    assert resp.json['hits']['hits'][2]['id'] == deposit_pid_1
+
+    # Test with other records and different schema
+    create_schema(
+        'test-ana',
+        experiment='ATLAS',
+        deposit_mapping=deposit_mapping_2,
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                "stat": {
+                    "type": "object",
+                    "properties": {
+                        "main_status": {
+                            "type": "string",
+                            "enum": [
+                                "Preliminary results",
+                                "Final results"
+                            ]
+                        },
+                        "sub_status": {
+                            "type": "string",
+                            "title": "Sub stage",
+                            "enum": [
+                                "Planned",
+                                "Conference note under review",
+                                "Paper published"
+                            ]
+                        }
+                    },
+                }
+            }
+        },
+    )
+    deposit_pid_4 = create_deposit(owner, 'test-ana')['_deposit']['id']
+
+    # total should be 4
+    resp = client.get(
+        '/deposits/',
+        headers=auth_headers_for_user(owner) + [('Accept', 'application/basic+json')],
+    )
+    assert resp.json['hits']['total'] == 4
+
+    client.put('/deposits/{}'.format(deposit_pid_4),
+        headers=headers + json_headers,
+        data=json.dumps({
+            "stat": {
+                "main_status": "Preliminary results",
+                "sub_status": "Conference note under review"
+        }}))
+    time.sleep(5)
+
+    # Test asc order
+    resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
+
+    assert resp.status_code == 200
+    assert resp.json['hits']['hits'][0]['id'] == deposit_pid_1
+    assert resp.json['hits']['hits'][1]['id'] == deposit_pid_2
+    assert resp.json['hits']['hits'][2]['id'] == deposit_pid_4
+    assert resp.json['hits']['hits'][3]['id'] == deposit_pid_3
+
+    # Test without sub_status
+    deposit_pid_5 = create_deposit(owner, 'test-ana')['_deposit']['id']
+
+    # total should be 5
+    resp = client.get(
+        '/deposits/',
+        headers=auth_headers_for_user(owner) + [('Accept', 'application/basic+json')],
+    )
+    assert resp.json['hits']['total'] == 5
+
+    client.put('/deposits/{}'.format(deposit_pid_5),
+        headers=headers + json_headers,
+        data=json.dumps({
+            "stat": {
+                "main_status": "Preliminary results"
+        }}))
+    time.sleep(5)
+
+    resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
+    assert resp.status_code == 200
+    assert resp.json['hits']['total'] == 4
+
+    # Test with schema having no status
+    deposit_mapping_6 = get_default_mapping('test-status', "1.0.0")
+    create_schema(
+        'test-status',
+        fullname="test-status",
+        experiment='CMS',
+        deposit_mapping=deposit_mapping_6,
+    )
+    create_deposit(owner, 'test-status')['_deposit']['id']
+
+    # total should be 6
+    resp = client.get(
+        '/deposits/',
+        headers=auth_headers_for_user(owner) + [('Accept', 'application/basic+json')],
+    )
+    assert resp.json['hits']['total'] == 6
+
+    resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
+    assert resp.status_code == 200
+    assert resp.json['hits']['total'] == 4
+
+
 def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
     client, users, auth_headers_for_user, json_headers, create_deposit, create_schema
 ):
