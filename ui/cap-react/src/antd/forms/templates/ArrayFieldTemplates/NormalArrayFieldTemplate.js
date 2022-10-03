@@ -31,6 +31,7 @@ const NormalArrayFieldTemplate = ({
   // formData,
   idSchema,
   items,
+  options,
   onAddClick,
   prefixCls,
   readonly,
@@ -320,6 +321,7 @@ const NormalArrayFieldTemplate = ({
                     disabled={disabled}
                     readonly={readonly}
                     onAddClick={onAddClick}
+                    options={options}
                   />
                 )}
               </Col>
@@ -337,7 +339,7 @@ const NormalArrayFieldTemplate = ({
                   onClick={onAddClick}
                   type="primary"
                 >
-                  <PlusCircleOutlined /> Add Item
+                  <PlusCircleOutlined /> Add { options && options.addLabel ? options.addLabel : `Item`}
                 </Button>
               </Col>
             </Row>
