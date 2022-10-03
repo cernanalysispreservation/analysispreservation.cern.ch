@@ -114,7 +114,8 @@
     "reselect": "^3.0.1",
     "sanitize-html": "2.4.0",
     "searchkit": "2.3.0",
-    "styled-components": "4.4.1"
+    "styled-components": "4.4.1",
+    "squirrelly": "8.0.8"
   },
   "devDependencies": {
     "@sambego/storybook-state": "2.0.1",
