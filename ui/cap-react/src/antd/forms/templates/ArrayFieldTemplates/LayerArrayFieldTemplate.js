@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, List, Modal, Typography } from "antd";
 
-import * as Sqrl from 'squirrelly'
+import * as Sqrl from "squirrelly";
 
 import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
 import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";
@@ -15,12 +15,13 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
 
   const stringifyItem = (options, item) => {
     let stringifyTmpl = options ? options.stringifyTmpl : null;
-    if (stringifyTmpl){
+    if (stringifyTmpl) {
       try {
         let str = Sqrl.render(stringifyTmpl, item);
         return str;
+      } catch (_err) {
+        return null;
       }
-      catch(_err) { return null; }
     }
 
     const stringify = options ? options.stringify : [],
@@ -28,18 +29,15 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
 
     return stringify ? stringify.reduce(reducer, "") : null;
   };
-  useEffect(
-    () => {
-      if (items && itemToDisplay)
-        setItemToDisplay({
-          index: itemToDisplay.index,
-          children: items[itemToDisplay.index].children
-        });
-    },
-    [items]
-  );
+  useEffect(() => {
+    if (items && itemToDisplay)
+      setItemToDisplay({
+        index: itemToDisplay.index,
+        children: items[itemToDisplay.index].children,
+      });
+  }, [items]);
 
-  const getActionsButtons = item => {
+  const getActionsButtons = (item) => {
     if (!item.hasToolbar) return [];
     let toolbar = [];
     if (item.hasMoveUp || item.hasMoveDown)
@@ -98,27 +96,25 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
 
       <List
         className="LayerArrayFieldList"
-        style={{overflow: "auto"}}
+        style={{ overflow: "auto" }}
         dataSource={items}
-        renderItem={item => (
+        renderItem={(item) => (
           <ErrorFieldIndicator id={item.children.props.idSchema.$id}>
             <List.Item actions={getActionsButtons(item)}>
               <List.Item.Meta
                 title={
-                  <Typography.Text ellipsis={{rows: 1}}>
-                    {
-                      stringifyItem(
-                        item.children.props.uiSchema["ui:options"],
-                        item.children.props.formData
-                      ) || `Item #${item.index + 1}`
-                    }
+                  <Typography.Text ellipsis={{ rows: 1 }}>
+                    {stringifyItem(
+                      item.children.props.uiSchema["ui:options"],
+                      item.children.props.formData
+                    ) || `Item #${item.index + 1}`}
                   </Typography.Text>
                 }
                 onClick={() => {
                   setVisible(true);
                   setItemToDisplay({
                     index: item.index,
-                    children: item.children
+                    children: item.children,
                   });
                 }}
               />
@@ -131,7 +127,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
 };
 
 LayerArrayFieldTemplate.propTypes = {
-  items: PropTypes.array
+  items: PropTypes.array,
 };
 
 export default LayerArrayFieldTemplate;
