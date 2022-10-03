@@ -493,6 +493,7 @@ export function putUpdateDraft(data, draft_id) {
           errorHeading = "Validation Error while updating";
           errorDescription = "Please fix the errors before saving again";
           errorThrow = errorTree;
+          throw errorThrow;
         } else if (
           error.response.status == 403 &&
           error.response.data &&
@@ -517,7 +518,7 @@ export function putUpdateDraft(data, draft_id) {
           message: errorHeading,
           description: errorDescription
         });
-        throw errorThrow;
+        throw null;
       });
   };
 }
