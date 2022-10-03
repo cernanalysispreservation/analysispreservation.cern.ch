@@ -10,15 +10,16 @@ import {
   Space,
   Table,
   Tag,
-  Typography
+  Typography,
 } from "antd";
 import axios from "axios";
 import _debounce from "lodash/debounce";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import { SearchOutlined } from "@ant-design/icons";
 
 // Example 'cernUsers' field uiSchema
-// 
-// 
+//
+//
 // "analysis_contacts": {
 //   "ui:array": "StringArrayField",
 //   "ui:options": {
@@ -65,23 +66,23 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
     {
       title: "Name",
       dataIndex: "name",
-      key: "name"
+      key: "name",
     },
     {
       title: "Email",
       dataIndex: "email",
-      key: "email"
+      key: "email",
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
-      render: tag => <Tag color="geekblue">{tag}</Tag>
+      render: (tag) => <Tag color="geekblue">{tag}</Tag>,
     },
     {
       title: "Action",
       key: "action",
-      render: item => (
+      render: (item) => (
         <Button
           type="primary"
           onClick={() => {
@@ -91,14 +92,14 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
             onChange({
               name: item.name,
               email: item.email,
-              department: item.department
+              department: item.department,
             });
           }}
         >
           Add
         </Button>
-      )
-    }
+      ),
+    },
   ];
 
   const fetchLDAPdata = _debounce(
@@ -109,14 +110,14 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
       );
 
       setLdapData(
-        response.data.map(item => ({
+        response.data.map((item) => ({
           target: searchFor,
           key: item.email ? item.email : item,
           email: item.email ? item.email : item,
           department: item.email ? item.profile.department : "egroup",
           name: item.email
             ? item.profile.display_name
-            : item.split("@cern.ch")[0]
+            : item.split("@cern.ch")[0],
         }))
       );
       setTableLoading(false);
@@ -148,7 +149,7 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
           {searchType.length > 1 && (
             <Form.Item label="Search For" name="searchFor">
               <Radio.Group buttonStyle="solid">
-                {searchType.map(type => (
+                {searchType.map((type) => (
                   <Radio.Button key={type} value={type}>
                     {type}
                   </Radio.Button>
@@ -178,32 +179,40 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
       {formData && Object.keys(formData).length > 0 ? (
         <Row
           justify="space-between"
-          style={!autoOpenModal && { background: "#fff", padding: "10px" }}
+          style={{
+            padding: "5px",
+            background: "#f5f5f5",
+            ...(!autoOpenModal && { background: "#ccc", padding: "10px" }),
+          }}
         >
-          <Space>
+          <Space size={"small"} direction={"horizontal"}>
             <Typography.Text>{formData.name}</Typography.Text>
             <a href={`mailto:${formData.email}`}>
               <Tag color="geekblue">{formData.email}</Tag>
             </a>
             <Tag color="blue">{formData.department}</Tag>
           </Space>
-          {!autoOpenModal &&
-            !readonly && (
-              <Button
-                type="danger"
-                icon={<DeleteOutlined />}
-                onClick={() => onChange(undefined)}
-              />
-            )}
+          {!autoOpenModal && !readonly && (
+            <Button
+              type="danger"
+              icon={<DeleteOutlined />}
+              onClick={() => onChange(undefined)}
+            />
+          )}
         </Row>
       ) : (
         <Row
-          justify="center"
-          style={!autoOpenModal && { background: "#fff", padding: "10px" }}
+          justify="end"
+          style={{
+            background: "#f5f5f5",
+            ...(!autoOpenModal && { background: "#ccc", padding: "10px" }),
+          }}
         >
-          <Button type="primary" onClick={() => setShowModal(true)}>
-            Search Contacts
-          </Button>
+          <Button
+            type="primary"
+            onClick={() => setShowModal(true)}
+            icon={<SearchOutlined />}
+          />
         </Row>
       )}
     </React.Fragment>
@@ -213,7 +222,7 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
 CernUsers.propTypes = {
   formData: PropTypes.object,
   uiSchema: PropTypes.object,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };
 
 export default CernUsers;
