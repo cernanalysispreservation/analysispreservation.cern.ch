@@ -113,7 +113,9 @@ const ArrayFieldTemplate = ({
     );
   }
 
+
   if (isFixedItems(schema)) {
+    const { ...options } = getUiOptions(uiSchema);
     return (
       <FixedArrayFieldTemplate
         canAdd={canAdd}
@@ -125,6 +127,7 @@ const ArrayFieldTemplate = ({
         idSchema={idSchema}
         items={items}
         onAddClick={onAddClick}
+        options={options}
         readonly={readonly}
         registry={registry}
         required={required}
@@ -142,6 +145,8 @@ const ArrayFieldTemplate = ({
     return renderMultiSelect();
   }
 
+  const { ...options } = getUiOptions(uiSchema);
+
   return (
     <NormalArrayFieldTemplate
       canAdd={canAdd}
@@ -152,6 +157,7 @@ const ArrayFieldTemplate = ({
       formData={formData}
       idSchema={idSchema}
       items={items}
+      options={options}
       onAddClick={onAddClick}
       readonly={readonly}
       registry={registry}

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Empty } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
-const EmptyArrayField = ({ canAdd, onAddClick, disabled, readonly }) => {
+const EmptyArrayField = ({ canAdd, onAddClick, disabled, readonly, options}) => {
   return (
     <Empty
       imageStyle={{
@@ -20,7 +20,7 @@ const EmptyArrayField = ({ canAdd, onAddClick, disabled, readonly }) => {
             type="primary"
             icon={<PlusCircleOutlined />}
           >
-            Add Item
+            Add { options && options.addLabel ? options.addLabel : `Item`}
           </Button>
         )}
     </Empty>
