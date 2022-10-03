@@ -20,6 +20,7 @@ const FixedArrayFieldTemplate = ({
   // formData,
   idSchema,
   items,
+  options,
   onAddClick,
   prefixCls,
   readonly,
@@ -89,7 +90,7 @@ const FixedArrayFieldTemplate = ({
                   onClick={onAddClick}
                   type="primary"
                 >
-                  <PlusCircleOutlined /> Add Item
+                  <PlusCircleOutlined /> Add {options && options.addLabel ? options.addLabel : `Item`}
                 </Button>
               </Col>
             </Row>
