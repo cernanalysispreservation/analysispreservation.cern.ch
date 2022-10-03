@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, List, Modal } from "antd";
+import { Button, List, Modal, Typography } from "antd";
+
+import * as Sqrl from 'squirrelly'
 
 import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
 import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";
@@ -12,6 +14,15 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
   const [visible, setVisible] = useState(false);
 
   const stringifyItem = (options, item) => {
+    let stringifyTmpl = options ? options.stringifyTmpl : null;
+    if (stringifyTmpl){
+      try {
+        let str = Sqrl.render(stringifyTmpl, item);
+        return str;
+      }
+      catch(_err) { return null; }
+    }
+
     const stringify = options ? options.stringify : [],
       reducer = (acc, val) => (item[val] ? `${acc} ${item[val]}` : acc);
 
@@ -87,16 +98,21 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
 
       <List
         className="LayerArrayFieldList"
+        style={{overflow: "auto"}}
         dataSource={items}
         renderItem={item => (
           <ErrorFieldIndicator id={item.children.props.idSchema.$id}>
             <List.Item actions={getActionsButtons(item)}>
               <List.Item.Meta
                 title={
-                  stringifyItem(
-                    item.children.props.uiSchema["ui:options"],
-                    item.children.props.formData
-                  ) || `Item #${item.index + 1}`
+                  <Typography.Text ellipsis={{rows: 1}}>
+                    {
+                      stringifyItem(
+                        item.children.props.uiSchema["ui:options"],
+                        item.children.props.formData
+                      ) || `Item #${item.index + 1}`
+                    }
+                  </Typography.Text>
                 }
                 onClick={() => {
                   setVisible(true);
