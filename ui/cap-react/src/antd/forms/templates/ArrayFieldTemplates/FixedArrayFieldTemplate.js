@@ -90,7 +90,8 @@ const FixedArrayFieldTemplate = ({
                   onClick={onAddClick}
                   type="primary"
                 >
-                  <PlusCircleOutlined /> Add {options && options.addLabel ? options.addLabel : `Item`}
+                  <PlusCircleOutlined /> Add{" "}
+                  {options && options.addLabel ? options.addLabel : `Item`}
                 </Button>
               </Col>
             </Row>
