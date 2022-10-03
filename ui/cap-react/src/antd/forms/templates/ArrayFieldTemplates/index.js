@@ -13,7 +13,7 @@ const {
   isFixedItems,
   isMultiSelect,
   optionsList,
-  retrieveSchema
+  retrieveSchema,
 } = utils;
 
 const ArrayFieldTemplate = ({
@@ -40,7 +40,7 @@ const ArrayFieldTemplate = ({
   required,
   schema,
   title,
-  uiSchema
+  uiSchema,
 }) => {
   const { fields, rootSchema, widgets } = registry;
   const { UnsupportedField } = fields;
@@ -75,7 +75,7 @@ const ArrayFieldTemplate = ({
     const enumOptions = optionsList(itemsSchema);
     const { widget = "select", ...options } = {
       ...getUiOptions(uiSchema),
-      enumOptions
+      enumOptions,
     };
 
     const Widget = getWidget(schema, widget, widgets);
@@ -112,7 +112,6 @@ const ArrayFieldTemplate = ({
       />
     );
   }
-
 
   if (isFixedItems(schema)) {
     const { ...options } = getUiOptions(uiSchema);
@@ -193,6 +192,6 @@ ArrayFieldTemplate.propTypes = {
   required: PropTypes.bool,
   schema: PropTypes.object,
   title: PropTypes.string,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
 };
 export default ArrayFieldTemplate;
