@@ -32,7 +32,10 @@ from invenio_access.permissions import Permission
 from jsonschema import Draft4Validator
 from jsonschema.validators import extend
 
-from cap.modules.deposit.errors import XCAPPermissionValidationError
+from cap.modules.deposit.errors import (
+    XCAPCopyValidationFlag,
+    XCAPPermissionValidationError,
+)
 from cap.modules.deposit.utils import clean_empty_values
 
 
@@ -99,3 +102,25 @@ def get_validator(schema):
     validator = validator(schema, resolver=resolver)
 
     return validator
+
+
+def find_field_copy(validator, value, instance, schema):
+    yield XCAPCopyValidationFlag(value)
+
+
+def get_finder(schema):
+    """Finder for checking field level flags."""
+    field_schema_editing = dict()
+    field_schema_editing['x-cap-copy'] = find_field_copy
+    field_schema_validator = extend(
+        Draft4Validator,
+        validators=field_schema_editing,
+        type_checker=None,
+    )
+    resolver = current_app.extensions[
+        'invenio-records'
+    ].ref_resolver_cls.from_schema(schema)
+    finder = extend(field_schema_validator, {'required': None})
+    finder = finder(schema, resolver=resolver)
+
+    return finder

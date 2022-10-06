@@ -54,7 +54,12 @@ from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
-from cap.modules.deposit.loaders import get_val_from_path, get_validator
+from cap.modules.deposit.loaders import (
+    get_finder,
+    get_val_from_path,
+    get_validator,
+)
+from cap.modules.deposit.utils import set_copy_to_attr
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
@@ -81,6 +86,7 @@ from .errors import (
     ReviewError,
     UniqueRequiredValidationError,
     UpdateDepositPermissionsError,
+    XCAPCopyValidationFlag,
     XCAPPermissionValidationError,
 )
 from .fetchers import cap_deposit_fetcher
@@ -402,12 +408,23 @@ class CAPDeposit(Deposit, Reviewable):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):
             schema = {'$ref': self["$schema"]}
+            submitted_data = self.find_field_config(
+                schema=schema,
+                submitted_data=request.get_json(),
+            )
+
             self.validate_field_permissions(
                 schema=schema,
                 current_data=self.model.json,
-                submitted_data=request.get_json(),
+                submitted_data=submitted_data
+                if submitted_data
+                else request.get_json(),
             )
-            super(CAPDeposit, self).update(*args, **kwargs)
+
+            if submitted_data:
+                super(CAPDeposit, self).update(submitted_data, **kwargs)
+            else:
+                super(CAPDeposit, self).update(*args, **kwargs)
 
     @pop_from_data_patch
     def patch(self, *args, **kwargs):
@@ -808,6 +825,25 @@ class CAPDeposit(Deposit, Reviewable):
         return data
 
     @classmethod
+    def find_field_config(cls, schema=None, submitted_data=None):
+        if not any([schema, submitted_data]):
+            return
+
+        finder = get_finder(schema)
+        for field in finder.iter_errors(submitted_data):
+            if (type(field) is XCAPCopyValidationFlag) or any(
+                type(f) is XCAPCopyValidationFlag for f in field.context
+            ):
+                error_path = get_error_path(field)
+                incoming_version = get_val_from_path(submitted_data, error_path)
+                copied_data = set_copy_to_attr(incoming_version, field.message)
+                submitted_data = perform_copying_fields(
+                    submitted_data, copied_data
+                )
+
+        return submitted_data
+
+    @classmethod
     def validate_field_permissions(
         cls, schema=None, current_data=None, submitted_data=None
     ):
@@ -835,3 +871,15 @@ class CAPDeposit(Deposit, Reviewable):
 
 def check_error_context(err):
     return any(type(e) is XCAPPermissionValidationError for e in err.context)
+
+
+def perform_copying_fields(submitted_data, to_copy_data):
+    def iterate(y, z):
+        for k in z:
+            if k in y:
+                iterate(y[k], z[k])
+            else:
+                y.update({k: z[k]})
+
+    iterate(submitted_data, to_copy_data)
+    return submitted_data
