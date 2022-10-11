@@ -29,8 +29,8 @@ from flask import current_app, request
 from flask_login import current_user
 from flask_principal import RoleNeed
 from invenio_access.permissions import Permission
-from jsonschema import Draft4Validator
-from jsonschema.validators import extend
+from jsonschema import Draft4Validator, _utils
+from jsonschema.validators import create, extend
 
 from cap.modules.deposit.errors import (
     XCAPCopyValidationFlag,
@@ -112,15 +112,16 @@ def get_finder(schema):
     """Finder for checking field level flags."""
     field_schema_editing = dict()
     field_schema_editing['x-cap-copy'] = find_field_copy
-    field_schema_validator = extend(
-        Draft4Validator,
+
+    field_schema_validator = create(
+        _utils.load_schema('draft4'),
         validators=field_schema_editing,
         type_checker=None,
     )
     resolver = current_app.extensions[
         'invenio-records'
     ].ref_resolver_cls.from_schema(schema)
-    finder = extend(field_schema_validator, {'required': None})
-    finder = finder(schema, resolver=resolver)
+
+    finder = field_schema_validator(schema, resolver=resolver)
 
     return finder

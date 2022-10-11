@@ -27,7 +27,8 @@
 
 from __future__ import absolute_import, print_function
 
-from cap.modules.deposit.utils import clean_empty_values
+from pytest import mark
+from cap.modules.deposit.utils import clean_empty_values, set_copy_to_attr, perform_copying_fields
 
 
 def test_cleaning_of_empty_values():
@@ -45,7 +46,7 @@ def test_cleaning_of_empty_values():
         "_files": [
 
         ],
-        "dream_team": '',
+        "dream_team": "",
         "the_best_dream_team": "thor_team",
         "testing": {
             "test_inner": "hello"
@@ -89,3 +90,116 @@ def test_cleaning_of_empty_values():
     assert "cms_questionnaire" not in result
     assert "the_best_dream_team" in result
     assert "testing" in result
+
+
+@mark.parametrize(
+    "copy_info, path, expected",
+    [
+        (
+            "test",
+            [
+                ["testf", "date"]
+            ],
+            {
+                "testf": {
+                    "date": "test",
+                }
+            }
+        ),
+        (
+            ["test", "test1"],
+            [
+                ["title"],
+                ["date"],
+                ["testf", "title"],
+                ["testf", "date"],
+            ],
+            {
+                "title": ["test", "test1"],
+                "date": ["test", "test1"],
+                "testf": {
+                    "title": ["test", "test1"],
+                    "date": ["test", "test1"],
+                }
+            }
+        ),
+        (
+            [1, "test1"],
+            [
+                ["title"],
+                ["test", "title"],
+                ["test", "date"],
+            ],
+            {
+                "title": [1, "test1"],
+                "test": {
+                    "title": [1, "test1"],
+                    "date": [1, "test1"],
+                }
+            }
+        ),
+        (
+            [1, "test1"],
+            [
+                ["title"],
+                ["test", "title"],
+                ["test", "date", "an"],
+            ],
+            {"title": [1, "test1"], "test": {"title": [1, "test1"], "date": {"an": [1, "test1"]}}}
+        )
+    ]
+)
+def test_set_copy_to_attr(copy_info, path, expected):
+    result = set_copy_to_attr(copy_info, path)
+    assert result == expected
+
+
+@mark.parametrize(
+    "main_data, to_copy_data, expected",
+    [
+        (
+            {
+                "testf": {
+                    "date": "test",
+                }
+            },
+            {
+                "testf": {
+                    "titile": "test",
+                }
+            },
+            {
+                "testf": {
+                    "date": "test",
+                    "titile": "test",
+                }
+            }
+        ),
+        (   
+            {
+                "title": ["testmain", "testmain1"],
+                "date": ["test", "test1"],
+                "testf": {
+                    "title": ["test", "test1"],
+                }
+            },
+            {
+                "title": ["test", "test1"],
+                "testf": {
+                    "date": ["test", "test1"],
+                }
+            },
+            {
+                "title": ["test", "test1"],
+                "date": ["test", "test1"],
+                "testf": {
+                    "title": ["test", "test1"],
+                    "date": ["test", "test1"],
+                }
+            }
+        )
+    ]
+)
+def test_perform_copying_fields(main_data, to_copy_data, expected):
+    result = perform_copying_fields(main_data, to_copy_data)
+    assert result == expected
