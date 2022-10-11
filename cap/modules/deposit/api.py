@@ -436,6 +436,18 @@ class CAPDeposit(Deposit, Reviewable):
 
             patched_data = apply_patch(self.model.json, patch)
 
+            copy_data = self.find_field_config(
+                schema=schema,
+                submitted_data=patched_data,
+            )
+            if copy_data:
+                self.validate_field_permissions(
+                    schema=schema,
+                    current_data=self.model.json,
+                    submitted_data=copy_data,
+                )
+                super(CAPDeposit, self).update(copy_data)
+
             self.validate_field_permissions(
                 schema=schema,
                 current_data=self.model.json,
