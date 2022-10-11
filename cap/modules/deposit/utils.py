@@ -154,7 +154,7 @@ def set_copy_to_attr(pid_value, copy_to_attr):
     for *values, leaf in copy_to_attr:
         nested = copy_to_attr_dict
         for v in values:
-            nested[v] = nested = {}
+            nested[v] = nested = {} if not nested.get(v) else nested[v]
         nested[leaf] = pid_value
 
     return copy_to_attr_dict
@@ -184,3 +184,16 @@ def parse_schema_permission_info(name, version, schema):
     extract_permission_field(schema, [])
 
     return x_cap_fields
+def perform_copying_fields(submitted_data, to_copy_data):
+    def iterate(y, z):
+        for k in z:
+            if k in y:
+                if isinstance(y[k], dict):
+                    iterate(y[k], z[k])
+                else:
+                    y[k] = z[k]
+            else:
+                y.update({k: z[k]})
+
+    iterate(submitted_data, to_copy_data)
+    return submitted_data

@@ -59,7 +59,7 @@ from cap.modules.deposit.loaders import (
     get_val_from_path,
     get_validator,
 )
-from cap.modules.deposit.utils import set_copy_to_attr
+from cap.modules.deposit.utils import perform_copying_fields, set_copy_to_attr
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
@@ -836,7 +836,9 @@ class CAPDeposit(Deposit, Reviewable):
             ):
                 error_path = get_error_path(field)
                 incoming_version = get_val_from_path(submitted_data, error_path)
-                copied_data = set_copy_to_attr(incoming_version, field.message)
+                copied_data = set_copy_to_attr(
+                    incoming_version, field.message.get('path')
+                )
                 submitted_data = perform_copying_fields(
                     submitted_data, copied_data
                 )
@@ -871,15 +873,3 @@ class CAPDeposit(Deposit, Reviewable):
 
 def check_error_context(err):
     return any(type(e) is XCAPPermissionValidationError for e in err.context)
-
-
-def perform_copying_fields(submitted_data, to_copy_data):
-    def iterate(y, z):
-        for k in z:
-            if k in y:
-                iterate(y[k], z[k])
-            else:
-                y.update({k: z[k]})
-
-    iterate(submitted_data, to_copy_data)
-    return submitted_data
