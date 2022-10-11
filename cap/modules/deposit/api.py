@@ -817,7 +817,10 @@ class CAPDeposit(Deposit, Reviewable):
 
         # Check if schema has 'x-cap-permission'
         _schema = {'$ref': data['$schema']}
-        cls.validate_field_permissions(schema=_schema, submitted_data=data)
+        copy_data = cls.find_field_config(schema=_schema, submitted_data=data)
+        cls.validate_field_permissions(
+            schema=_schema, submitted_data=copy_data if copy_data else data
+        )
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
         if '_deposit' not in data:
