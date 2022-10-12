@@ -171,3 +171,16 @@ def perform_copying_fields(submitted_data, to_copy_data):
 
     iterate(submitted_data, to_copy_data)
     return submitted_data
+
+
+def set_patch_data(value, paths):
+    patch_data = []
+    for path in paths:
+        patch_data.append(
+            {
+                "op": "replace",
+                "path": "/" + "/".join(p for p in path),
+                "value": value,
+            }
+        )
+    return patch_data
