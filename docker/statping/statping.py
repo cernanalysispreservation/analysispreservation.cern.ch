@@ -12,25 +12,19 @@ from jinja2 import Template
     type=click.STRING,
 )
 @click.option('--headers', '-h', 'headers', type=click.STRING)
-@click.option('--token', '-t', 'token', type=click.STRING, required=True)
-def populate_services_yaml(
-    file_path_src, file_path_dest, host_url, headers, token
-):
+def populate_services_yaml(file_path_src, file_path_dest, host_url, headers):
     """Return Statping compatible yml.
 
     Example: python statping.py app/template-services.yml app/services.yml
-             https://nginx/api -h 'Host=nginx' -t 'test'
+             https://nginx/api -h 'Host=nginx'
     param: file_path_src: File containing services metadata
     param: file_path_dest: File with updated base url and headers
     param: host_url: Host name of the instance
            [default:https://analysispreservation.cern.ch/api]
     param: headers: Comma delimited list of HTTP Headers 'KEY=VALUE,KEY=VALUE'
-    param: token: Token required for authorization header in HTTP requests
     """
     template = Template(file_path_src.read())
-    rendered_template = template.render(
-        token=token, host_url=host_url, other_headers=headers
-    )
+    rendered_template = template.render(host_url=host_url, headers=headers)
 
     yaml_content = yaml.safe_load(rendered_template)
     yaml.dump(yaml_content, file_path_dest)

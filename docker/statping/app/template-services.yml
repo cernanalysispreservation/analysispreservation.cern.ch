@@ -1,10 +1,10 @@
 services:
   - name: ROR Organization API Service
-    domain: {{host_url}}/services/ror/05a28rw58
-    expected: external_ids
+    domain: {{host_url}}/services/healthcheck/ror/org
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -16,11 +16,11 @@ services:
     redirect: true
 
   - name: ROR Query API Service
-    domain: {{host_url}}/services/ror?query=05a28rw58
-    expected: ETH Zurich
+    domain: {{host_url}}/services/healthcheck/ror/query
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -32,11 +32,11 @@ services:
     redirect: true
 
   - name: Zenodo API Service
-    domain: {{host_url}}/services/zenodo/record/3243963
-    expected: conceptdoi
+    domain: {{host_url}}/services/healthcheck/zenodo
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -48,11 +48,11 @@ services:
     redirect: true
 
   - name: Indico API Service
-    domain: {{host_url}}/services/indico/1161274
-    expected: Open Science
+    domain: {{host_url}}/services/healthcheck/indico
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -64,11 +64,11 @@ services:
     redirect: true
 
   - name: LDAP User Mail API Service
-    domain: {{host_url}}/services/ldap/user/mail?query=parth.shandilya@cern.ch
-    expected: profile
+    domain: {{host_url}}/services/healthcheck/ldap/mail_api
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -80,11 +80,11 @@ services:
     redirect: true
 
   - name: LDAP E-group Mail API Service
-    domain: {{host_url}}/services/ldap/egroup/mail?query=sis-group-documentation
-    expected: sis-group-documentation@cern.ch
+    domain: {{host_url}}/services/healthcheck/ldap/egroup_api
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -96,11 +96,27 @@ services:
     redirect: true
 
   - name: CMS CADI API Service
-    domain: {{host_url}}/cms/cadi/EXO-17-023
-    expected: Search for Black Holes and Sphalerons
+    domain: {{host_url}}/services/healthcheck/cms/cadi
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
+    port: 80
+    check_interval: 60
+    timeout: 15
+    expected_status: 200
+    allow_notifications: true
+    notify_after: 2
+    notify_all_changes: true
+    public: true
+    redirect: true
+
+  - name: CMS DAS API Service
+    domain: {{host_url}}/services/healthcheck/cms/das
+    expected: Ok!
+    type: http
+    method: GET
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -112,11 +128,11 @@ services:
     redirect: true
 
   - name: ORC ID API Service
-    domain: {{host_url}}/services/orcid?name=Ilias Koutsakis
-    expected: \"0000-0003-0710-0576\"
+    domain: {{host_url}}/services/healthcheck/orcid/name_api
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -128,11 +144,11 @@ services:
     redirect: true
 
   - name: ORC ID Query API Service
-    domain: {{host_url}}/services/orcid/0000-0003-0710-0576
-    expected: person
+    domain: {{host_url}}/services/healthcheck/orcid/query_api
+    expected: Ok!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -148,7 +164,7 @@ services:
     expected: Pong!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -164,7 +180,7 @@ services:
     expected: OK!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -180,7 +196,7 @@ services:
     expected: OK!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
@@ -196,7 +212,7 @@ services:
     expected: OK!
     type: http
     method: GET
-    headers: {{other_headers}},Authorization=Bearer {{token}}
+    headers: {{headers}}
     port: 80
     check_interval: 60
     timeout: 15
