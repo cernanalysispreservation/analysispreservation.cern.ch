@@ -492,3 +492,112 @@ def test_create_deposit_multiple_with_autoincrement_pid(client, location,
                         data=json.dumps(metadata))
         assert resp.status_code == 201
         assert resp.json['id'] == f'FASER-ANA-{i+1}'
+
+
+def test_create_deposit_with_x_cap_copy_simple_path(
+        client, location, users, create_schema, auth_headers_for_user, json_headers):
+    headers = auth_headers_for_user(users['cms_user']) + json_headers
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'abstract': {
+                              'type': 'string',
+                              'x-cap-copy': {
+                                    'path': [
+                                        ['title']
+                                    ]
+                                }
+                          }
+                      }
+                  })
+
+    resp = client.post('/deposits/', headers=headers,
+                       data=json.dumps(
+                           {
+                               '$ana_type': 'test-analysis',
+                               'abstract': 'test'
+                           }
+                       ))
+
+    assert resp.status_code == 201
+    assert resp.json['metadata']['title'] == 'test'
+
+
+def test_create_deposit_with_x_cap_copy_multiple_path(
+        client, location, users, create_schema, auth_headers_for_user, json_headers):
+    headers = auth_headers_for_user(users['cms_user']) + json_headers
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'properties': {
+                        "general_title": {
+                            "type": "string",
+                            "x-cap-copy": {
+                                "path": [
+                                    ["initial", "status", "sub_status"]
+                                ]
+                            }
+                        },
+                        "initial": {
+                            "properties": {
+                                "status": {
+                                    "type": "object",
+                                    "properties": {
+                                        "sub_status": {
+                                            "type": "string",
+                                        }
+                                    }
+                                },
+                                "short_title": {
+                                    "type": "string",
+                                    "maxLength": 70
+                                },
+                                "short_test_title": {
+                                    "type": "string",
+                                    "maxLength": 70
+                                },
+                                "new_title": {
+                                    "type": "string",
+                                    "x-cap-copy": {
+                                        "path": [
+                                            ["initial", "short_title"]
+                                        ]
+                                    }
+                                },
+                                "new_test_title": {
+                                    "type": "string",
+                                    "x-cap-copy": {
+                                        "path": [
+                                            ["initial", "short_test_title"]
+                                        ]
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                      } 
+                  })
+
+    resp = client.post('/deposits/', headers=headers,
+                       data=json.dumps(
+                           {
+                               '$ana_type': 'test-analysis',
+                               'general_title': 'test',
+                               'initial': {
+                                'new_title': 'new',
+                                'new_test_title': 'new_test'
+                               }
+                           }
+                       ))
+
+    assert resp.status_code == 201
+
+    assert resp.json['metadata']['initial']['status']['sub_status'] == 'test'
+    assert resp.json['metadata']['initial']['short_title'] == 'new'
+    assert resp.json['metadata']['initial']['short_test_title'] == 'new_test'
