@@ -1,5 +1,5 @@
 import axios from "axios";
-import { notification } from "antd";
+import { notification, message } from "antd";
 
 export const TOGGLE_FILEMANAGER_LAYER = "TOGGLE_FILEMANAGER_LAYER";
 
@@ -169,6 +169,42 @@ export function uploadFile(bucket_link, file, filename, tags) {
     oReq.send(file);
   };
 }
+
+export function uploadDefaultRepo(draft_id, type_name, config) {
+  return dispatch => {
+    let uri = `/api/deposits/${draft_id}/actions/upload`;
+    let data = {
+        'type': 'repo_create_default',
+        'name': type_name
+    };
+    console.log(config)
+
+    message.loading({ content: 'Creating repository...', type_name });
+    return axios
+      .post(uri, data)
+      .then(() => {
+        message.success({ content: 'Repository created and linked!', type_name, duration: 2 });
+
+        try {
+          return dispatch(
+            createWebhookSuccess({
+              event_type: null,
+              host: config.host,
+              owner: config.org_name,
+              name: config.default_name,
+              snapshots: []
+            })
+          );
+        } catch (err) {
+          // eslint-disable-next-line no-empty
+        }
+      })
+      .catch(error => {
+        message.error({ content: error.response.data.message, type_name, duration: 2 });
+      });
+  }
+};
+
 
 export function uploadViaUrl(draft_id, urlToGrab, type, download, webhook) {
   return dispatch => {
