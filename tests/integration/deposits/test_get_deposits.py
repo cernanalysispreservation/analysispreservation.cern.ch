@@ -838,7 +838,7 @@ def test_get_sorted_results_by_stage_strings(
 
     resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 4
+    assert resp.json['hits']['total'] == 5
 
     # Test with schema having no status
     deposit_mapping_6 = get_default_mapping('test-status', "1.0.0")
@@ -859,7 +859,7 @@ def test_get_sorted_results_by_stage_strings(
 
     resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 4
+    assert resp.json['hits']['total'] == 6
 
 
 def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(

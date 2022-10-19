@@ -28,8 +28,6 @@ coolname==1.1.0
 cryptography==3.3.2       # via invenio-accounts, pyopenssl, sqlalchemy-utils, urllib3
 decorator==4.3.0          # via ipython, traitlets, validators
 dojson==1.4.0             # via invenio-oaiserver
-elasticsearch-dsl>=7.0.0,<8.0.0  # via invenio-search
-elasticsearch>=7.0.0,<7.14      # via elasticsearch-dsl, invenio-search
 flask-admin==1.5.1        # via invenio-accounts, invenio-admin
 flask-alembic==2.0.1      # via invenio-db
 flask-assets==0.12        # via invenio-assets
@@ -62,6 +60,7 @@ html5lib==1.0.1           # via bleach, ftfy
 idna==2.6                 # via cryptography, requests, urllib3
 infinity==1.4             # via intervals
 intervals==0.8.1          # via wtforms-components
+invenio[auth,base,metadata,postgresql]==3.0.0
 invenio-access==1.0.1     # via invenio, invenio-accounts-rest
 invenio-accounts-rest==1.0.0a4
 invenio-accounts==1.0.1   # via invenio, invenio-access, invenio-accounts-rest, invenio-oauth2server, invenio-oauthclient, invenio-userprofiles
@@ -70,15 +69,15 @@ invenio-app==1.0.0        # via invenio
 invenio-assets==1.0.0     # via invenio, invenio-search-ui, invenio-theme
 invenio-base==1.0.1       # via invenio, invenio-app
 invenio-cache==1.0.0      # via invenio-app
-invenio-celery==1.1.0     # via invenio
+invenio-celery==1.0.0     # via invenio
 invenio-config==1.0.0     # via invenio, invenio-app
-git+https://github.com/cernanalysispreservation/invenio-deposit.git#egg=invenio-deposit
+git+https://github.com/parths007/invenio-deposit.git@e49ad18750afce2ac1aef55d80e9c772e3eb96c7#egg=invenio_deposit
 reana-client==0.6.0
 reana-commons==0.6.0
 invenio-db[postgresql,versioning]==1.0.1  # via invenio, invenio-accounts-rest, invenio-admin
 invenio-formatter==1.0.1  # via invenio
 invenio-i18n==1.0.0       # via invenio, invenio-accounts, invenio-theme
-invenio-indexer==1.0.1    # via invenio, invenio-records-rest
+git+https://github.com/parths007/invenio-indexer.git@5263670f39b6a380cc632f46eb937b02766cefff#egg=invenio_indexer    # via invenio, invenio-records-rest
 invenio-jsonschemas==1.0.0  # via invenio
 # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
 # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
@@ -89,19 +88,18 @@ invenio-oaiserver==1.0.0  # via invenio
 invenio-oauth2server==1.0.1  # via invenio, invenio-accounts-rest
 git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@master#egg=invenio-oauthclient
 invenio-pidstore==1.0.0   # via invenio, invenio-indexer, invenio-oaiserver, invenio-records-rest, invenio-records-ui
-invenio-query-parser==0.6.0
-invenio-records-rest==1.1.0  # via invenio
+git+https://github.com/parths007/invenio-query-parser.git@f860057e5b92a9fe48be451826db388ba38c2520#egg=invenio_query_parser
+git+https://github.com/parths007/invenio-records-rest.git@a0e77df4044b93b8450d68d238822726f6d325be#egg=invenio_records_rest
 invenio-records-ui==1.0.1  # via invenio
 invenio-records==1.0.0    # via invenio, invenio-indexer, invenio-oaiserver, invenio-records-rest, invenio-records-ui
 invenio-rest==1.0.0
 invenio-files-rest==1.0.0
 # invenio-rest==1.0.0       # via invenio, invenio-accounts-rest, invenio-records-rest
 invenio-search-ui==1.0.1  # via invenio
-invenio-search[elasticsearch7]==1.1.1
+git+https://github.com/parths007/invenio-search.git@fd7dc52e945057030f024febd099d95b4388a17e#egg=invenio-search
 invenio-records-files==1.0.0a11
 invenio-theme==1.0.0      # via invenio
-invenio-userprofiles==1.0.1
-invenio[auth,base,metadata,postgresql]==3.0.0
+git+https://github.com/cernanalysispreservation/invenio-userprofiles.git@4a4862cbde55d22234bb9d0c792cda7d5bf66768#egg=invenio_userprofiles
 ipaddr==2.2.0             # via invenio-accounts
 ipaddress==1.0.22         # via cryptography, maxminddb, uritools, urllib3
 ipython-genutils==0.2.0   # via traitlets
@@ -126,6 +124,8 @@ maxminddb==1.4.1          # via maxminddb-geolite2
 msgpack-python==0.5.6     # via invenio-celery
 node-semver==0.1.1        # via invenio-assets
 oauthlib==2.1.0           # via flask-oauthlib, invenio-oauth2server, requests-oauthlib
+opensearch-dsl==2.0.1
+opensearch-py==2.0.0
 ordereddict==1.1          # via invenio-query-parser
 pandas==1.0.1
 passlib==1.7.1            # via flask-security, invenio-accounts

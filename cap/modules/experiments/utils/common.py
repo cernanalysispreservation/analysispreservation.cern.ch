@@ -29,11 +29,12 @@ from os.path import join
 from subprocess import CalledProcessError, check_output
 
 import cern_sso as cern_sso_old
-import cap.modules.experiments.utils.cern_sso as cern_sso_current
 from cachetools.func import ttl_cache
-from opensearchpy import helpers
 from flask import current_app
 from invenio_search.proxies import current_search_client as es
+from opensearchpy import helpers
+
+import cap.modules.experiments.utils.cern_sso as cern_sso_current
 
 
 def kinit(principal, keytab):
@@ -49,17 +50,21 @@ def kinit(principal, keytab):
     :param str principal: Kerberos principal, e.g. user@CERN.CH
     :param str keytab: Keytab filename, e.g. user.keytab
     """
+
     def decorator(func):
         @wraps(func)
         def wrapped_function(*args, **kwargs):
             if not (principal and keytab):
-                raise AssertionError('Kerberos principal and/or keytab are '
-                                     'empty. Please check.')
+                raise AssertionError(
+                    'Kerberos principal and/or keytab are '
+                    'empty. Please check.'
+                )
 
             kt = join(current_app.config.get('KEYTABS_LOCATION'), keytab)
             try:
-                check_output('kinit -kt {} {}'.format(kt, principal),
-                             shell=True)
+                check_output(
+                    'kinit -kt {} {}'.format(kt, principal), shell=True
+                )
                 ret_val = func(*args, **kwargs)
                 return ret_val
             except CalledProcessError as err:
@@ -84,6 +89,7 @@ def generate_krb_cookie_cern_sso_old(principal, kt, url):
     :returns: Generated HTTP Cookie
     :rtype `requests.cookies.RequestsCookieJar`
     """
+
     @kinit(principal, kt)
     def generate(url):
         cookie = cern_sso_old.krb_sign_on(url)
@@ -104,6 +110,7 @@ def generate_krb_cookie(principal, kt, url):
     :returns: Generated HTTP Cookie
     :rtype `requests.cookies.RequestsCookieJar`
     """
+
     @kinit(principal, kt)
     def generate(url):
         cookie = cern_sso_current.save_sso_cookie(url, False, "auth.cern.ch")
@@ -113,11 +120,9 @@ def generate_krb_cookie(principal, kt, url):
     return generate(url)
 
 
-def recreate_es_index_from_source(alias,
-                                  source,
-                                  mapping=None,
-                                  settings=None,
-                                  id_getter=None):
+def recreate_es_index_from_source(
+    alias, source, mapping=None, settings=None, id_getter=None
+):
     """
     Recreate index in ES, with documents passed in source.
 
@@ -131,6 +136,7 @@ def recreate_es_index_from_source(alias,
     :param dict mapping: ES Mapping object
     :param dict settings: ES Settings object
     """
+
     def _batches(iterable, chunk_size=10):
         c = count()
         for _, g in groupby(iterable, lambda _: next(c) // chunk_size):
@@ -144,22 +150,22 @@ def recreate_es_index_from_source(alias,
     # recreate new index
     if es.indices.exists(new_index):
         es.indices.delete(index=new_index)
-    es.indices.create(index=new_index,
-                      body=dict(mappings=mapping, settings=settings or {}))
+    es.indices.create(
+        index=new_index, body=dict(mappings=mapping, settings=settings or {})
+    )
 
     print("Indexing...", end='', flush=True)
 
     for batch in _batches(source, chunk_size=50000):
         try:
-            actions = [{
-                '_id': id_getter(obj) if id_getter else None,
-                '_source': obj
-            } for obj in batch]
-            helpers.bulk(es, actions, index=new_index, doc_type='_doc')
+            actions = [
+                {'_id': id_getter(obj) if id_getter else None, '_source': obj}
+                for obj in batch
+            ]
+            helpers.bulk(es, actions, index=new_index)
             print('.', end='', flush=True)
         except Exception as e:
-            es.indices.delete(
-                index=old_index)  # delete index if sth went wrong
+            es.indices.delete(index=old_index)  # delete index if sth went wrong
             raise e
 
     print('')

@@ -17,14 +17,14 @@ from __future__ import absolute_import, print_function
 import json
 from os.path import join
 
-from opensearchpy import ConnectionError
-from opensearchpy.exceptions import NotFoundError
-from flask import Blueprint, jsonify, abort
+from flask import Blueprint, abort, jsonify
 from invenio_files_rest.models import Location
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
-from sqlalchemy.exc import OperationalError
 from jsonref import JsonRefError
+from opensearchpy import ConnectionError
+from opensearchpy.exceptions import NotFoundError
+from sqlalchemy.exc import OperationalError
 
 from cap.modules.access.utils import login_required
 from cap.modules.deposit.fetchers import cap_deposit_fetcher
@@ -33,10 +33,10 @@ from cap.modules.deposit.serializers import deposit_json_v1
 from cap.modules.records.fetchers import cap_record_fetcher
 from cap.modules.records.search import CAPRecordSearch
 from cap.modules.records.serializers import record_json_v1
-from cap.modules.workflows.utils import get_user_workflows
 from cap.modules.schemas.models import Schema
-from cap.modules.schemas.serializers import collection_serializer
 from cap.modules.schemas.permissions import ReadSchemaPermission
+from cap.modules.schemas.serializers import collection_serializer
+from cap.modules.workflows.utils import get_user_workflows
 
 blueprint = Blueprint(
     'cap',
@@ -71,17 +71,24 @@ def ping(service=None):
 @login_required
 def dashboard():
     """Dashboard view."""
+
     def _serialize_records(records):
         return json.loads(
             record_json_v1.serialize_search(
-                cap_record_fetcher,
-                records.to_dict()))['hits']['hits']    # noqa
+                cap_record_fetcher, records.to_dict()
+            )
+        )['hits'][
+            'hits'
+        ]  # noqa
 
     def _serialize_deposits(deposits):
         return json.loads(
             deposit_json_v1.serialize_search(
-                cap_deposit_fetcher,
-                deposits.to_dict()))['hits']['hits']    # noqa
+                cap_deposit_fetcher, deposits.to_dict()
+            )
+        )['hits'][
+            'hits'
+        ]  # noqa
 
     rs = CAPRecordSearch().extra(version=True).sort_by_latest()
     ds = CAPDepositSearch().extra(version=True).sort_by_latest()
@@ -94,26 +101,24 @@ def dashboard():
     user_drafts_count = ds.get_user_deposits().count()
     user_workflows = get_user_workflows()
 
-    return jsonify({
-        'published': {
-            'data': published, 'more': '/search?q='
-        },
-        'drafts': {
-            'data': drafts, 'more': '/drafts?q='
-        },
-        'user_published': {
-            'data': user_published, 'more': '/search?q=&by_me=True'
-        },
-        'user_drafts': {
-            'data': user_drafts, 'more': '/drafts?q=&by_me=True'
-        },
-        'user_workflows': {
-            'data': user_workflows, 'more': '#'
-        },
-        'user_drafts_count': user_drafts_count,
-        'user_published_count': user_published_count,
-        'user_count': user_drafts_count + user_published_count
-    })
+    return jsonify(
+        {
+            'published': {'data': published, 'more': '/search?q='},
+            'drafts': {'data': drafts, 'more': '/drafts?q='},
+            'user_published': {
+                'data': user_published,
+                'more': '/search?q=&by_me=True',
+            },
+            'user_drafts': {
+                'data': user_drafts,
+                'more': '/drafts?q=&by_me=True',
+            },
+            'user_workflows': {'data': user_workflows, 'more': '#'},
+            'user_drafts_count': user_drafts_count,
+            'user_published_count': user_published_count,
+            'user_count': user_drafts_count + user_published_count,
+        }
+    )
 
 
 @blueprint.route('/collection/<string:collection_name>')
@@ -121,17 +126,24 @@ def dashboard():
 @login_required
 def collection(collection_name, version=None):
     """Collection view."""
+
     def _serialize_records(records):
         return json.loads(
             record_json_v1.serialize_search(
-                cap_record_fetcher,
-                records.to_dict()))['hits']['hits']    # noqa
+                cap_record_fetcher, records.to_dict()
+            )
+        )['hits'][
+            'hits'
+        ]  # noqa
 
     def _serialize_deposits(deposits):
         return json.loads(
             deposit_json_v1.serialize_search(
-                cap_deposit_fetcher,
-                deposits.to_dict()))['hits']['hits']    # noqa
+                cap_deposit_fetcher, deposits.to_dict()
+            )
+        )['hits'][
+            'hits'
+        ]  # noqa
 
     if not collection_name:
         return abort(404)
@@ -150,8 +162,7 @@ def collection(collection_name, version=None):
         abort(403)
 
     try:
-        schema_data = collection_serializer.dump(
-            collection_schema).data
+        schema_data = collection_serializer.dump(collection_schema).data
     except JsonRefError:
         abort(404)
 
@@ -160,22 +171,26 @@ def collection(collection_name, version=None):
 
     try:
         published = _serialize_records(
-            rs.get_collection_records(collection_schema.name,
-                                      collection_version=version
-                                      )[:5].execute()
+            rs.get_collection_records(
+                collection_schema.name, collection_version=version
+            )[:5].execute()
         )
         drafts = _serialize_deposits(
-            ds.get_collection_deposits(collection_schema.name,
-                                       collection_version=version
-                                       )[:5].execute()
+            ds.get_collection_deposits(
+                collection_schema.name, collection_version=version
+            )[:5].execute()
         )
-        user_drafts = _serialize_deposits(ds.get_collection_deposits(
-            collection_schema.name, by_me=True, collection_version=version
-        )[:5].execute())
+        user_drafts = _serialize_deposits(
+            ds.get_collection_deposits(
+                collection_schema.name, by_me=True, collection_version=version
+            )[:5].execute()
+        )
 
-        user_published = _serialize_records(rs.get_collection_records(
-            collection_schema.name, by_me=True, collection_version=version
-        )[:5].execute())
+        user_published = _serialize_records(
+            rs.get_collection_records(
+                collection_schema.name, by_me=True, collection_version=version
+            )[:5].execute()
+        )
 
     except NotFoundError:
         published = []
@@ -187,20 +202,21 @@ def collection(collection_name, version=None):
     if version:
         collection_args += f'&collection_version={version}'
 
-    return jsonify({
-        'published': {
-            'data': published, 'more': f'/search?{collection_args}&q='
-        },
-        'drafts': {
-            'data': drafts, 'more': f'/drafts?{collection_args}&q='
-        },
-        'user_published': {
-            'data': user_published,
-            'more': f'/search?{collection_args}&q=&by_me=True'
-        },
-        'user_drafts': {
-            'data': user_drafts,
-            'more': f'/drafts?{collection_args}&q=&by_me=True'
-        },
-        'schema_data': schema_data
-    })
+    return jsonify(
+        {
+            'published': {
+                'data': published,
+                'more': f'/search?{collection_args}&q=',
+            },
+            'drafts': {'data': drafts, 'more': f'/drafts?{collection_args}&q='},
+            'user_published': {
+                'data': user_published,
+                'more': f'/search?{collection_args}&q=&by_me=True',
+            },
+            'user_drafts': {
+                'data': user_drafts,
+                'more': f'/drafts?{collection_args}&q=&by_me=True',
+            },
+            'schema_data': schema_data,
+        }
+    )

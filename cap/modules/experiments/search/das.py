@@ -23,17 +23,14 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Search classes and methods for DAS querying."""
 
-from opensearch_dsl import Search
 from invenio_search.proxies import current_search_client as es
+from opensearch_dsl import Search
 
 DAS_DATASETS_ES_CONFIG = {
     'alias': 'das-datasets',
     "mappings": {
         "properties": {
-            "name": {
-                "type": "keyword",
-                "normalizer": "lowercase_normalizer"
-            }
+            "name": {"type": "keyword", "normalizer": "lowercase_normalizer"}
         }
     },
     "settings": {
@@ -41,11 +38,11 @@ DAS_DATASETS_ES_CONFIG = {
             "normalizer": {
                 "lowercase_normalizer": {
                     "type": "custom",
-                    "filter": "lowercase"
+                    "filter": "lowercase",
                 }
             }
         }
-    }
+    },
 }
 
 
@@ -56,7 +53,7 @@ class DASSearch(Search):
         """Meta class."""
 
         index = DAS_DATASETS_ES_CONFIG['alias']
-        fields = ('name', )
+        fields = ('name',)
 
     def __init__(self, **kwargs):
         """Use Meta to set kwargs defaults."""

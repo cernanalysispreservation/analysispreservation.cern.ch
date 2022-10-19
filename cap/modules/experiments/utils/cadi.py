@@ -26,18 +26,22 @@
 from itertools import islice
 
 import requests
-from opensearch_dsl import Q
-from flask import current_app, abort
+from flask import abort, current_app
 from invenio_db import db
 from invenio_search import RecordsSearch
+from opensearch_dsl import Q
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.errors import (DepositDoesNotExist,
-                                        DepositValidationError)
+from cap.modules.deposit.errors import (
+    DepositDoesNotExist,
+    DepositValidationError,
+)
 from cap.modules.user.errors import DoesNotExistInLDAP
-from cap.modules.user.utils import (get_existing_or_register_role,
-                                    get_existing_or_register_user,
-                                    get_user_mail_from_ldap)
+from cap.modules.user.utils import (
+    get_existing_or_register_role,
+    get_existing_or_register_user,
+    get_user_mail_from_ldap,
+)
 
 from ..errors import ExternalAPIException
 from ..serializers import cadi_serializer
@@ -62,6 +66,7 @@ def synchronize_cadi_entries(limit=None):
 
     :params int limit: number of entries to update
     """
+
     def _cadi_deposit(cadi_id, cadi_info):
         return {
             '$ana_type': 'cms-analysis',
@@ -69,9 +74,7 @@ def synchronize_cadi_entries(limit=None):
             'general_title': cadi_info.get('name') or cadi_id,
             '_fetched_from': 'cadi',
             '_user_edited': False,
-            'basic_info': {
-                'cadi_id': cadi_id
-            }
+            'basic_info': {'cadi_id': cadi_id},
         }
 
     entries = get_all_from_cadi()
@@ -92,7 +95,8 @@ def synchronize_cadi_entries(limit=None):
                     deposit.commit()
                 except DepositValidationError:
                     current_app.logger.exception(
-                        f'Error during updating cadi info in {cadi_id}.')
+                        f'Error during updating cadi info in {cadi_id}.'
+                    )
                     continue
                 db.session.commit()
 
@@ -101,7 +105,8 @@ def synchronize_cadi_entries(limit=None):
             try:
                 with db.session.begin_nested():
                     deposit = CAPDeposit.create(
-                        data=_cadi_deposit(cadi_id, cadi_info))
+                        data=_cadi_deposit(cadi_id, cadi_info)
+                    )
 
                     # give read access to members of CMS experiment
                     deposit._add_experiment_permissions(
@@ -161,9 +166,9 @@ def _get_owner_account(contact):
 def _get_admin_egroups(wg):
     roles = []
     for egroup in (
-            current_app.config['CMS_COORDINATORS_EGROUP'],
-            current_app.config['CMS_ADMIN_EGROUP'],
-            current_app.config['CMS_CONVENERS_EGROUP'].format(wg=wg),
+        current_app.config['CMS_COORDINATORS_EGROUP'],
+        current_app.config['CMS_ADMIN_EGROUP'],
+        current_app.config['CMS_CONVENERS_EGROUP'].format(wg=wg),
     ):
         try:
             roles.append(get_existing_or_register_role(egroup))
@@ -181,7 +186,8 @@ def get_from_cadi_by_id(cadi_id, from_validator=False):
     :rtype dict
     """
     url = current_app.config.get('CADI_GET_RECORD_URL').format(
-        id=cadi_id.upper())
+        id=cadi_id.upper()
+    )
 
     cookie = get_sso_cookie_for_cadi()
     response = requests.get(url, cookies=cookie, verify=False)
@@ -220,8 +226,11 @@ def get_all_from_cadi():
     all_entries = all_entries.get("cadiLineCapInfoList", [])
 
     # filter out inactive or superseded entries
-    entries = (entry for entry in all_entries
-               if entry['status'] not in ['Inactive', 'SUPERSEDED', 'Free'])
+    entries = (
+        entry
+        for entry in all_entries
+        if entry['status'] not in ['Inactive', 'SUPERSEDED', 'Free']
+    )
 
     return entries
 
@@ -235,8 +244,7 @@ def get_deposit_by_cadi_id(cadi_id):
     """
     rs = RecordsSearch(index='deposits-cms-analysis')
 
-    res = rs.query(Q('match', basic_info__cadi_id=cadi_id)) \
-        .execute().hits.hits
+    res = rs.query(Q('match', basic_info__cadi_id=cadi_id)).execute().hits.hits
 
     if not res:
         raise DepositDoesNotExist
@@ -254,20 +262,17 @@ def get_uuids_with_same_cadi_id(cadi_id):
     """
     rs = RecordsSearch(index='deposits-cms-analysis')
 
-    res = rs.query(Q('match', basic_info__cadi_id=cadi_id)) \
-        .execute().hits.hits
+    res = rs.query(Q('match', basic_info__cadi_id=cadi_id)).execute().hits.hits
 
     if not res:
         raise DepositDoesNotExist
     else:
         # From es-dsl>=7.0.0, opensearch_dsl.response.hit.Hit
         # returns Attrdict(https://github.com/elastic/elasticsearch-dsl-py/issues/1284) # noqa
-        uuids = [
-            r._source._deposit.id
-            for r in res
-        ]
+        uuids = [r._source._deposit.id for r in res]
 
     return uuids
+
 
 # KEEP IN MIND: DUE TO API PROBLEMS, CALL TO CADI SERVER SOMETIMES FAIL
 #

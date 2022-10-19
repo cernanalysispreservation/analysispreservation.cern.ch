@@ -26,11 +26,13 @@
 from __future__ import absolute_import, print_function
 
 from flask import current_app
-from werkzeug.datastructures import MultiDict
-
+from invenio_records_rest.facets import (
+    _create_filter_dsl,
+    _post_filter,
+    _query_filter,
+)
 from opensearch_dsl import Q
-from invenio_records_rest.facets import (_create_filter_dsl, _post_filter,
-                                         _query_filter)
+from werkzeug.datastructures import MultiDict
 
 
 def nested_filter(path, field):
@@ -40,11 +42,14 @@ def nested_filter(path, field):
     :param field: Field name.
     :returns: Function that returns Nested query.
     """
+
     def inner(values):
-        return Q('nested',
-                 path=path,
-                 ignore_unmapped=True,
-                 query=Q('terms', **{field: values}))
+        return Q(
+            'nested',
+            path=path,
+            ignore_unmapped=True,
+            query=Q('terms', **{field: values}),
+        )
 
     return inner
 
@@ -55,9 +60,11 @@ def prefix_filter(field):
     :param field: Field name.
     :returns: Function that returns the Prefix query.
     """
+
     def inner(values):
-        return Q('bool',
-                 should=[Q('prefix', **{field: value}) for value in values])
+        return Q(
+            'bool', should=[Q('prefix', **{field: value}) for value in values]
+        )
 
     return inner
 
@@ -71,13 +78,16 @@ def regex_filter(field):
     :param field: Field name.
     :returns: Function that returns the Regexp query.
     """
+
     def inner(values):
         return Q('regexp', **{field: f'{values[0]}-v<0-9>*\.<0-9>*\.<0-9>*'})
+
     return inner
 
 
 def _aggregations(search, definitions, urlkwargs, filters):
     """Add aggregations to query."""
+
     def without(d, keys):
         """Remove keys from dict."""
         new_d = d.copy()
@@ -108,18 +118,15 @@ def _aggregations(search, definitions, urlkwargs, filters):
             facets = get_facets_names(name, definitions)
 
             # collect filters except for aggs or nested aggs ones
-            _filters, _ = _create_filter_dsl(urlkwargs,
-                                             without(filters, facets))
+            _filters, _ = _create_filter_dsl(
+                urlkwargs, without(filters, facets)
+            )
             if _filters:
                 agg = {
                     'filter': {
-                        'bool': {
-                            'must': [x.to_dict() for x in _filters]
-                        }
+                        'bool': {'must': [x.to_dict() for x in _filters]}
                     },
-                    'aggs': {
-                        'filtered': agg
-                    }
+                    'aggs': {'filtered': agg},
                 }
             search.aggs[name] = agg
     return search
@@ -139,15 +146,21 @@ def cap_facets_factory(search, index):
 
     if facets is not None:
         # Aggregations.
-        search = _aggregations(search, facets.get("aggs", {}), urlkwargs,
-                               facets.get("post_filters", {}))
+        search = _aggregations(
+            search,
+            facets.get("aggs", {}),
+            urlkwargs,
+            facets.get("post_filters", {}),
+        )
 
         # Query filter
-        search, urlkwargs = _query_filter(search, urlkwargs,
-                                          facets.get("filters", {}))
+        search, urlkwargs = _query_filter(
+            search, urlkwargs, facets.get("filters", {})
+        )
 
         # Post filter
-        search, urlkwargs = _post_filter(search, urlkwargs,
-                                         facets.get("post_filters", {}))
+        search, urlkwargs = _post_filter(
+            search, urlkwargs, facets.get("post_filters", {})
+        )
 
     return (search, urlkwargs)

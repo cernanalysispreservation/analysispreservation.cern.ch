@@ -50,7 +50,7 @@ install_requires = [
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
     'python-cern-sso-krb==1.3.3',
-    'gssapi',
+    'gssapi>=1.7.2',
     # FIX cryptography <=3.3.2 is needed for installation not to crash
     # https://github.com/Azure/azure-cli/issues/16858
     'cryptography<=3.3.2',
@@ -66,6 +66,7 @@ install_requires = [
     'invenio-oauthclient>=1.0.0',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0',
+    'invenio[auth,base,metadata,postgresql]==3.0.0',
     'invenio-db[postgresql,versioning]==1.0.1',
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
@@ -82,8 +83,8 @@ install_requires = [
     'webargs==3.0.1',
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
-    'requests_kerberos',
-    'beautifulsoup4',
+    'requests-gssapi==1.2.3',
+    'beautifulsoup4==4.10.0',
     # reana_client => bravado core dependency pin due to py3.6 drop
     'swagger-spec-validator==2.7.6',
     'prometheus-flask-exporter==0.20.3',

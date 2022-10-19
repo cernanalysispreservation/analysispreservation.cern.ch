@@ -1,12 +1,12 @@
 """Configuration for record search."""
 
-from opensearch_dsl import Q
 from flask import g
 from flask_login import current_user
 from flask_principal import RoleNeed
 from invenio_access.models import Role
 from invenio_search import RecordsSearch
 from invenio_search.api import DefaultFilter
+from opensearch_dsl import Q
 
 from cap.modules.access.permissions import admin_permission_factory
 from cap.modules.access.utils import login_required
@@ -18,18 +18,21 @@ def records_filter():
     if admin_permission_factory(None).can():
         return Q()
 
-    roles = [role.id for role in Role.query.all()
-             if RoleNeed(role) in g.identity.provides]
+    roles = [
+        role.id
+        for role in Role.query.all()
+        if RoleNeed(role) in g.identity.provides
+    ]
 
-    q = Q('multi_match', query=g.identity.id,
-          fields=[
-              '_access.record-read.users',
-              '_access.record-admin.users'
-          ]) | \
-        Q('terms',
-          **{'_access.record-read.roles': roles}) | \
-        Q('terms',
-          **{'_access.record-admin.roles': roles})
+    q = (
+        Q(
+            'multi_match',
+            query=g.identity.id,
+            fields=['_access.record-read.users', '_access.record-admin.users'],
+        )
+        | Q('terms', **{'_access.record-read.roles': roles})
+        | Q('terms', **{'_access.record-admin.roles': roles})
+    )
 
     return q
 
@@ -52,14 +55,16 @@ class CAPRecordSearch(RecordsSearch):
             Q('multi_match', query=current_user.id, fields=['_deposit.owners'])
         )
 
-    def get_collection_records(self, collection_name,
-                               collection_version=None, by_me=False):
+    def get_collection_records(
+        self, collection_name, collection_version=None, by_me=False
+    ):
         """Get records by collection name and version."""
         q = Q('term', **{'_collection.name': collection_name})
 
         if by_me:
-            q = q & Q('multi_match', query=current_user.id,
-                      fields=['_deposit.owners'])
+            q = q & Q(
+                'multi_match', query=current_user.id, fields=['_deposit.owners']
+            )
         if collection_version:
             q = q & Q('term', **{'_collection.version': collection_version})
 

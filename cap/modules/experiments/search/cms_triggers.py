@@ -25,8 +25,8 @@
 
 import re
 
-from opensearch_dsl import Q, Search
 from invenio_search.proxies import current_search_client as es
+from opensearch_dsl import Q, Search
 
 CMS_TRIGGERS_ES_CONFIG = {
     'alias': 'cms-triggers',
@@ -35,31 +35,21 @@ CMS_TRIGGERS_ES_CONFIG = {
             "trigger": {
                 "type": "keyword",
                 "normalizer": "my_normalizer",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword"
-                    }
-                }
+                "fields": {"keyword": {"type": "keyword"}},
             },
             "year": {
                 "type": "keyword",
             },
-            "dataset": {
-                "type": "keyword",
-                "normalizer": "my_normalizer"
-            }
+            "dataset": {"type": "keyword", "normalizer": "my_normalizer"},
         }
     },
     "settings": {
         "analysis": {
             "normalizer": {
-                "my_normalizer": {
-                    "type": "custom",
-                    "filter": "lowercase"
-                }
+                "my_normalizer": {"type": "custom", "filter": "lowercase"}
             }
         }
-    }
+    },
 }
 
 
@@ -70,7 +60,7 @@ class CMSTriggerSearch(Search):
         """Meta class."""
 
         index = CMS_TRIGGERS_ES_CONFIG['alias']
-        fields = ('trigger', )
+        fields = ('trigger',)
 
     def __init__(self, **kwargs):
         """Use Meta to set kwargs defaults."""
