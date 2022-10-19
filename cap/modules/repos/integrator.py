@@ -25,6 +25,7 @@
 
 from flask import current_app
 from flask_login import current_user
+from github import GithubException
 
 from cap.modules.deposit.errors import FileUploadError
 
@@ -67,24 +68,35 @@ def create_schema_default_repo_and_attach(record_uuid, data):
     elif authentication_type == "user":
         token = api._get_token(current_user.id)
 
+    if host == "gitlab.cern.ch":
+        organization = repo_config.get('org_id')
+    elif host == "github.com":
+        organization = repo_config.get('org_name')
+
     if not token:
         raise FileUploadError(f'Admin API key for {host} is not provided.')
 
-    name = populate_template_from_ctx(record, repo_config.get('repo_name'))
-    desc = populate_template_from_ctx(
-        record, repo_config.get('description'), module='custom'
-    )
-    organization = repo_config.get('org_name')
+    try:
+        name = populate_template_from_ctx(record, repo_config.get('repo_name'))
+        desc = populate_template_from_ctx(
+            record, repo_config.get('description'), module='custom'
+        )
+    except AssertionError:
+        raise FileUploadError(str(e))
 
-    repo, invite = api.create_repo_as_collaborator(
-        token,
-        organization,
-        name,
-        description=desc,
-        private=repo_config.get('private'),
-        license=repo_config.get('license'),
-        host=host,
-    )
+    try:
+        repo, invite = api.create_repo_as_collaborator(
+            token,
+            organization,
+            name,
+            description=desc,
+            private=repo_config.get('private'),
+            license=repo_config.get('license'),
+            host=host,
+        )
+    except GithubException as e:
+
+        raise FileUploadError(str(e))
 
     # get the url from the repo according to host
     url = repo.html_url if host == 'github.com' else repo.attributes['web_url']
