@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
-  Alert,
   Card,
   Col,
   Empty,
@@ -13,18 +12,36 @@ import {
   Collapse,
   Tag,
   Table,
-  Button
 } from "antd";
 import RepoActions from "./RepoActions";
 import { CheckCircleTwoTone } from "@ant-design/icons";
 import ReactTimeago from "react-timeago";
 import { getIcon } from "./utils";
+import DefaultRepositories from "./DefaultRepositories";
 
-const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
+const Connect = ({
+  repos = [],
+  repoConfig = {},
+  canUpdate,
+  uploadViaRepoUrl,
+  uploadDefaultRepo,
+  id,
+}) => {
   const [form] = Form.useForm();
 
   const [myRepo, setMyRepo] = useState(null);
   const [error, setError] = useState(null);
+
+  const getEvenTypeLabel = (type) => {
+    switch(type) {
+      case 'release':
+        return 'on Tag/Release';
+      case 'push':
+        return 'on Tag/Release';
+      default:
+        return null;
+    }
+  }
 
   const columns = [
     {
@@ -40,7 +57,7 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
       },
       width: "60%",
       key: "ref",
-      ellipsis: true
+      ellipsis: true,
     },
     {
       title: "Created",
@@ -50,7 +67,7 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
         );
       },
       width: "20%",
-      key: "created"
+      key: "created",
     },
     {
       title: "Link",
@@ -60,8 +77,8 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
         </Typography.Link>
       ),
       width: "20%",
-      key: "link"
-    }
+      key: "link",
+    },
   ];
 
   const uploadRepo = (
@@ -83,14 +100,14 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
       owner,
       name,
       ref,
-      filepath
+      filepath,
     })
       .then(() => {
         notification.open({
           message: "Success",
           description: "Your task was successfuly created",
           duration: 4,
-          icon: <CheckCircleTwoTone twoToneColor="#52c41a" />
+          icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
         });
         setMyRepo(null);
         form.resetFields();
@@ -98,7 +115,7 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
       .catch(e =>
         setError({
           ...e.error.response.data,
-          type: event_type ? event_type : "upload"
+          type: event_type ? event_type : "upload",
         })
       );
   };
@@ -110,13 +127,13 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
       setError(null);
       return;
     }
-    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/; //eslint-disable-line
+    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w\.-]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/; //eslint-disable-line
     let repo = value.match(regex);
     let [href, scheme, resource, owner, name, type, ref, filepath] = repo;
     const acceptedResources = [
       "github.com",
       "gitlab.cern.ch",
-      "gitlab-test.cern.ch"
+      "gitlab-test.cern.ch",
     ];
     if (acceptedResources.includes(resource) && (owner && name)) {
       setMyRepo({ href, scheme, resource, owner, name, type, ref, filepath });
@@ -146,20 +163,9 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
             give you a specific access to do that).
           </Typography.Paragraph>
         </Card>
-        <Card
-          title="Create a repository"
-          extra={
-            <Button type="primary" onClick={() => {}}>
-              Create
-            </Button>
-          }
-        >
-          <Typography.Paragraph>
-            You can create a new repository, and add ......
-          </Typography.Paragraph>
-          <Alert message="You will be able to see the added repositories in the 'Connected
-            Repositories' section" type="info" showIcon />
-        </Card>
+
+        <DefaultRepositories draftID={id} repos={repos} repoConfig={repoConfig} upload={uploadDefaultRepo} />
+
         {canUpdate && (
           <Card title="Add new repository">
             <Form
@@ -182,8 +188,8 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
                       /(http:\/\/|https:\/\/|root:\/\/)(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)?(\/.*)?$/
                     ),
                     message:
-                      "Please provide a Github or CERN Gitlab URL. URL is not correct"
-                  }
+                      "Please provide a Github or CERN Gitlab URL. URL is not correct",
+                  },
                 ]}
               >
                 <Input placeholder="Please provide a valid Github/Gitlab repository or file URL" />
@@ -206,9 +212,7 @@ const Connect = ({ repos = [], canUpdate, uploadViaRepoUrl, id }) => {
                   extra={
                     <Space size="middle">
                       <Typography.Text>
-                        {repo.event_type == "release"
-                          ? "on Release/Tag"
-                          : "on Push"}
+                        {getEvenTypeLabel(repo.event_type)}
                       </Typography.Text>
                       {repo.branch}
                       {getIcon(repo.host)}
@@ -233,7 +237,7 @@ Connect.propTypes = {
   repo: PropTypes.object,
   canUpdate: PropTypes.bool,
   uploadViaRepoUrl: PropTypes.func,
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default Connect;
