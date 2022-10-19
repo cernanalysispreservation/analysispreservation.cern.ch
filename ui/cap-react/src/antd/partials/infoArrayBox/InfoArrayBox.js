@@ -3,13 +3,16 @@ import PropTypes from "prop-types";
 import { Divider, Row, Space, Tag } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 
-const renderResourceIcon = resource => {
-  const collection = {
-    "github.com": <GithubOutlined />,
-    "gitlab.com": <GitlabOutlined />
-  };
-
-  return collection[resource];
+const renderResourceIcon = host => {
+  switch(host) {
+    case 'github.com':
+      return <GithubOutlined />;
+    case 'gitlab.cern.ch':
+    case 'gitlab.com':
+      return <GitlabOutlined />;
+    default:
+      return null;
+  }
 };
 
 const InfoArrayBox = ({ items }) => {

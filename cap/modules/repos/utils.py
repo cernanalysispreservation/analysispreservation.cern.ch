@@ -30,7 +30,7 @@ import shutil
 import string
 from tempfile import SpooledTemporaryFile
 
-from flask import current_app, render_template, url_for
+from flask import current_app, render_template, render_template_string, url_for
 from flask_login import current_user
 from invenio_db import db
 from sqlalchemy.orm.exc import NoResultFound
@@ -177,6 +177,8 @@ def disconnect_subscriber(sub_id):
 def path_value_equals(element, JSON):
     """Given a string path, retrieve the JSON item."""
     paths = element.split(".")
+    if paths[0] == '':
+        del paths[0]
     data = JSON
     try:
         for i in range(0, len(paths)):
@@ -201,8 +203,9 @@ def populate_template_from_ctx(record, config, module=None):
 
     config_ctx = config.get('ctx', {})
     template = config.get('template')
+    template_file = config.get('template_file')
 
-    if not template:
+    if not (template or template_file):
         raise GitIntegrationError('No template provided for repo creation.')
 
     ctx = {}
@@ -210,13 +213,16 @@ def populate_template_from_ctx(record, config, module=None):
         key = key_attrs[0]
         attrs = key_attrs[1]
 
+
         if attrs.get('type') == 'path':
             val = path_value_equals(attrs['path'], record)
         else:
-            custom_func = getattr(module, attrs['method'])
-            val = custom_func(record, config)
+            custom_func = getattr(custom, attrs['method'])
+            val = custom_func(record, config=config)
 
         if val:
             ctx.update({key: val})
 
-    return render_template(template, **ctx)
+    if template:
+        return render_template_string(template, **ctx)
+    return render_template(template_file, **ctx)
