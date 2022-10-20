@@ -919,3 +919,6 @@ TESTS_E2E_TOKEN_FILE = '/test_data/test_tokens'
 
 GITHUB_CAP_TOKEN = "CHANGE_ME"
 GITLAB_CAP_TOKEN = "CHANGE_ME"
+
+#: Enable Prometheus flask exporter
+PROMETHEUS_ENABLE_EXPORTER_FLASK = False

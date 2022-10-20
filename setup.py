@@ -142,6 +142,7 @@ setup(
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
             'cap_auth = cap.modules.auth.ext:CAPOAuth',
             'cap_mail = cap.modules.mail.ext:CAPMail',
+            'cap_logging = cap.modules.logging.ext:CAPLogging',
         ],
         'invenio_base.api_blueprints': [
             'cap = cap.views:blueprint',
