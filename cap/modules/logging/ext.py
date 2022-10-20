@@ -35,6 +35,16 @@ from prometheus_flask_exporter.multiprocess import (
 LOGGER = logging.getLogger(__name__)
 
 
+def url_rule(request):
+    if not request.url_rule:
+        return "NOT_FOUND"
+    # Pretty-printing adapted from werkzeug.routing.Route._repr_
+    return "".join(
+        f"<{data}>" if is_dynamic else data
+        for (is_dynamic, data) in request.url_rule._trace
+    ).lstrip("|")
+
+
 class CAPLogging(object):
     """CAP logging extension."""
 

@@ -97,6 +97,7 @@ install_requires = [
     'beautifulsoup4',
     # reana_client => bravado core dependency pin due to py3.6 drop
     'swagger-spec-validator==2.7.6',
+    'prometheus-flask-exporter==0.20.3',
 ]
 
 packages = find_packages()

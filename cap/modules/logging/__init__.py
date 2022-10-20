@@ -28,4 +28,4 @@ from __future__ import absolute_import, print_function
 
 from .ext import CAPLogging
 
-__all__ = ('CAPLogging', )
+__all__ = ('CAPLogging',)
