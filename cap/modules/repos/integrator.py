@@ -82,7 +82,7 @@ def create_schema_default_repo_and_attach(record_uuid, data):
             record, repo_config.get('description'), module='custom'
         )
     except AssertionError:
-        raise FileUploadError(str(e))
+        raise FileUploadError("Couldn't generate template")
 
     try:
         repo, invite = api.create_repo_as_collaborator(
