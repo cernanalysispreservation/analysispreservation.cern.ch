@@ -33,20 +33,20 @@ const Connect = ({
   const [error, setError] = useState(null);
 
   const getEvenTypeLabel = (type) => {
-    switch(type) {
-      case 'release':
-        return 'on Tag/Release';
-      case 'push':
-        return 'on Tag/Release';
+    switch (type) {
+      case "release":
+        return "on Tag/Release";
+      case "push":
+        return "on Tag/Release";
       default:
         return null;
     }
-  }
+  };
 
   const columns = [
     {
       title: "Ref",
-      render: snap => {
+      render: (snap) => {
         return snap.payload.event_type == "release" ? (
           <Tag>{snap.payload.release.tag}</Tag>
         ) : (
@@ -61,7 +61,7 @@ const Connect = ({
     },
     {
       title: "Created",
-      render: snap => {
+      render: (snap) => {
         return (
           snap.created && <ReactTimeago date={snap.created} minPeriod="60" />
         );
@@ -71,7 +71,7 @@ const Connect = ({
     },
     {
       title: "Link",
-      render: snap => (
+      render: (snap) => (
         <Typography.Link href={snap.payload.link} target="_blank">
           link
         </Typography.Link>
@@ -112,7 +112,7 @@ const Connect = ({
         setMyRepo(null);
         form.resetFields();
       })
-      .catch(e =>
+      .catch((e) =>
         setError({
           ...e.error.response.data,
           type: event_type ? event_type : "upload",
@@ -127,7 +127,8 @@ const Connect = ({
       setError(null);
       return;
     }
-    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w\.-]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/; //eslint-disable-line
+    let regex =
+      /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w\.-]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/; //eslint-disable-line
     let repo = value.match(regex);
     let [href, scheme, resource, owner, name, type, ref, filepath] = repo;
     const acceptedResources = [
@@ -135,7 +136,7 @@ const Connect = ({
       "gitlab.cern.ch",
       "gitlab-test.cern.ch",
     ];
-    if (acceptedResources.includes(resource) && (owner && name)) {
+    if (acceptedResources.includes(resource) && owner && name) {
       setMyRepo({ href, scheme, resource, owner, name, type, ref, filepath });
       setError(null);
     }
@@ -164,7 +165,12 @@ const Connect = ({
           </Typography.Paragraph>
         </Card>
 
-        <DefaultRepositories draftID={id} repos={repos} repoConfig={repoConfig} upload={uploadDefaultRepo} />
+        <DefaultRepositories
+          draftID={id}
+          repos={repos}
+          repoConfig={repoConfig}
+          upload={uploadDefaultRepo}
+        />
 
         {canUpdate && (
           <Card title="Add new repository">
@@ -205,7 +211,7 @@ const Connect = ({
         <Card title="Connected Repositories">
           {repos && repos.length > 0 ? (
             <Collapse>
-              {repos.map(repo => (
+              {repos.map((repo) => (
                 <Collapse.Panel
                   header={`${repo.owner}/${repo.name}`}
                   key={repo.id}

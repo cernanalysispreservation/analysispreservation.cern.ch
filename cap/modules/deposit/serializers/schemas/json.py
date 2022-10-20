@@ -43,6 +43,9 @@ from cap.modules.repos.serializers import GitWebhookSubscriberSchema
 from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
 
 from cap.modules.repos.utils import populate_template_from_ctx
+from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
+
+
 class DepositSearchSchema(common.CommonRecordSchema):
     """Schema for deposit v1 in JSON, used in search."""
 
@@ -138,13 +141,19 @@ class DepositFormSchema(DepositSchema):
 
         for rc, rc_data in repo_config.items():
             try:
-                name = populate_template_from_ctx(obj['deposit'], rc_data.get('repo_name'))
+                name = populate_template_from_ctx(
+                    obj['deposit'], rc_data.get('repo_name')
+                )
                 rc_data["default_name"] = name
             except:
                 rc_data["default_name"] = 'no_name'
                 pass
 
-        return dict(schema=copy.deepcopy(schema), uiSchema=ui_schema, config=schema_config)
+        return dict(
+            schema=copy.deepcopy(schema),
+            uiSchema=ui_schema,
+            config=schema_config,
+        )
 
     def get_read_only_status(self, permission_info, schema):
         for x_cap_field in permission_info:
