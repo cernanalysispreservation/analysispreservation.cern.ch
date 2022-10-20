@@ -129,6 +129,7 @@ FieldTemplate.propTypes = {
   onDropPropertyClick: PropTypes.func,
   onKeyChange: PropTypes.func,
   description: PropTypes.string,
+  rawDescription: PropTypes.string,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
   hidden: PropTypes.bool,
