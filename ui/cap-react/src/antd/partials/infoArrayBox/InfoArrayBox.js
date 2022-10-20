@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { Divider, Row, Space, Tag } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 
-const renderResourceIcon = host => {
-  switch(host) {
-    case 'github.com':
+const renderResourceIcon = (host) => {
+  switch (host) {
+    case "github.com":
       return <GithubOutlined />;
-    case 'gitlab.cern.ch':
-    case 'gitlab.com':
+    case "gitlab.cern.ch":
+    case "gitlab.com":
       return <GitlabOutlined />;
     default:
       return null;
@@ -50,7 +50,7 @@ const InfoArrayBox = ({ items }) => {
 };
 
 InfoArrayBox.propTypes = {
-  items: PropTypes.object
+  items: PropTypes.object,
 };
 
 export default InfoArrayBox;
