@@ -7,7 +7,7 @@ const Applications = ({
   tokens,
   createToken,
   revokeToken,
-  getUsersAPIKeys
+  getUsersAPIKeys,
 }) => {
   const [displayTokenModal, setDisplayTokenModal] = useState(false);
   const [form] = Form.useForm();
@@ -29,10 +29,10 @@ const Applications = ({
           layout="vertical"
           form={form}
           initialValues={{ tokenAccessName: "" }}
-          onFinish={values => {
+          onFinish={(values) => {
             createToken({
               name: values.tokenAccessName,
-              scopes: ["deposit:write"]
+              scopes: ["deposit:write"],
             });
             form.resetFields();
             setDisplayTokenModal(false);
@@ -71,7 +71,7 @@ const Applications = ({
                 key: idx,
                 id: token.t_id,
                 name: token.name,
-                access_token: token.access_token
+                access_token: token.access_token,
               }))
               .toJS()
               .sort((a, b) => a.id - b.id)}
@@ -85,17 +85,20 @@ const Applications = ({
                 ellipsis: true,
                 render: (txt, r) => {
                   return (
-                    <EllipsisMiddle suffixCount={5} copyable={{text: r.access_token}}>
+                    <EllipsisMiddle
+                      suffixCount={5}
+                      copyable={{ text: r.access_token }}
+                    >
                       {txt}
                     </EllipsisMiddle>
                   );
-                }
+                },
               },
               {
                 title: "Action",
                 width: "20%",
                 key: "action",
-                render: token => (
+                render: (token) => (
                   <Button
                     data-cy={token.name}
                     type="link"
@@ -103,8 +106,8 @@ const Applications = ({
                   >
                     Revoke
                   </Button>
-                )
-              }
+                ),
+              },
             ]}
           />
         ) : (
@@ -127,7 +130,7 @@ Applications.propTypes = {
   createToken: PropTypes.func,
   revokeToken: PropTypes.func,
   getUsersAPIKeys: PropTypes.func,
-  tokens: PropTypes.object
+  tokens: PropTypes.object,
 };
 
 export default Applications;
