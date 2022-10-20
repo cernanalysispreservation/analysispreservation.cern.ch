@@ -83,9 +83,9 @@ const Applications = ({
                 dataIndex: "access_token",
                 key: "access_token",
                 ellipsis: true,
-                render: txt => {
+                render: (txt, r) => {
                   return (
-                    <EllipsisMiddle suffixCount={5} copyable>
+                    <EllipsisMiddle suffixCount={5} copyable={{text: r.access_token}}>
                       {txt}
                     </EllipsisMiddle>
                   );
