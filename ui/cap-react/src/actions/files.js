@@ -36,21 +36,21 @@ export function toggleFilemanagerLayer(
     selectable,
     action,
     active,
-    message
+    message,
   };
 }
 
 export const fileVersionsRequest = () => ({
-  type: FILE_VERSIONS_REQUEST
+  type: FILE_VERSIONS_REQUEST,
 });
 
-export const fileVersionsSuccess = files => ({
+export const fileVersionsSuccess = (files) => ({
   type: FILE_VERSIONS_SUCCESS,
-  payload: files
+  payload: files,
 });
 
 export const fileVersionsError = () => ({
-  type: FILE_VERSIONS_ERROR
+  type: FILE_VERSIONS_ERROR,
 });
 
 // Bucket
@@ -65,31 +65,31 @@ export function bucketItemError(error) {
 }
 export function getBucketById(bucket_id = null) {
   if (!bucket_id) return;
-  return dispatch => {
+  return (dispatch) => {
     dispatch(bucketItemRequest());
 
     let uri = `/api/files/${bucket_id}`;
     axios
       .get(uri)
-      .then(response => {
+      .then((response) => {
         dispatch(bucketItemSuccess(response.data));
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch(bucketItemError(error.response));
       });
   };
 }
 export function getBucketByUri(uri = null) {
   if (!uri) return;
-  return dispatch => {
+  return (dispatch) => {
     dispatch(bucketItemRequest());
 
     axios
       .get(uri)
-      .then(response => {
+      .then((response) => {
         dispatch(bucketItemSuccess(response.data));
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch(bucketItemError(error.response));
       });
   };
@@ -121,7 +121,7 @@ export function createWebhookSuccess(repo) {
 
 // Semi - working file upload
 export function uploadFile(bucket_link, file, filename, tags) {
-  return dispatch => {
+  return (dispatch) => {
     let _filename = filename ? filename : file.name;
     dispatch(uploadFileRequest(_filename));
     let bucket_id = bucket_link.split("/files/")[1];
@@ -130,13 +130,13 @@ export function uploadFile(bucket_link, file, filename, tags) {
 
     let oReq = new XMLHttpRequest();
     oReq.open("PUT", uri, true);
-    oReq.setRequestHeader('Content-Type', 'application/octet-stream');
+    oReq.setRequestHeader("Content-Type", "application/octet-stream");
 
     if (tags) oReq.setRequestHeader("X-CAP-File-Tags", tags);
 
     oReq.upload.addEventListener(
       "progress",
-      function(evt) {
+      function (evt) {
         if (evt.lengthComputable) {
           let percentComplete = evt.loaded / evt.total;
           dispatch(uploadFileProgress(_filename, percentComplete));
@@ -145,7 +145,7 @@ export function uploadFile(bucket_link, file, filename, tags) {
       false
     );
 
-    oReq.onload = function(oEvent) {
+    oReq.onload = function (oEvent) {
       try {
         let data = oEvent.target.response;
         data = JSON.parse(data);
@@ -155,14 +155,14 @@ export function uploadFile(bucket_link, file, filename, tags) {
       }
     };
 
-    oReq.onreadystatechange = function() {
+    oReq.onreadystatechange = function () {
       //Call a function when the state changes.
       if (oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
         // Request finished. Do processing here.
       }
     };
 
-    oReq.addEventListener("error", function() {
+    oReq.addEventListener("error", function () {
       dispatch(uploadFileError(_filename, { message: "Error in uploading" }));
     });
 
@@ -171,19 +171,23 @@ export function uploadFile(bucket_link, file, filename, tags) {
 }
 
 export function uploadDefaultRepo(draft_id, type_name, config) {
-  return dispatch => {
+  return (dispatch) => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
     let data = {
-        'type': 'repo_create_default',
-        'name': type_name
+      type: "repo_create_default",
+      name: type_name,
     };
-    console.log(config)
+    console.log(config);
 
-    message.loading({ content: 'Creating repository...', type_name });
+    message.loading({ content: "Creating repository...", type_name });
     return axios
       .post(uri, data)
       .then(() => {
-        message.success({ content: 'Repository created and linked!', type_name, duration: 2 });
+        message.success({
+          content: "Repository created and linked!",
+          type_name,
+          duration: 2,
+        });
 
         try {
           return dispatch(
@@ -192,34 +196,37 @@ export function uploadDefaultRepo(draft_id, type_name, config) {
               host: config.host,
               owner: config.org_name,
               name: config.default_name,
-              snapshots: []
+              snapshots: [],
             })
           );
         } catch (err) {
           // eslint-disable-next-line no-empty
         }
       })
-      .catch(error => {
-        message.error({ content: error.response.data.message, type_name, duration: 2 });
+      .catch((error) => {
+        message.error({
+          content: error.response.data.message,
+          type_name,
+          duration: 2,
+        });
       });
-  }
-};
-
+  };
+}
 
 export function uploadViaUrl(draft_id, urlToGrab, type, download, webhook) {
-  return dispatch => {
+  return (dispatch) => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
-    let data = urlToGrab.map(url => {
+    let data = urlToGrab.map((url) => {
       return {
         url: url,
         type: type,
         download: download,
-        webhook: webhook
+        webhook: webhook,
       };
     });
 
     // TOFIX !!!WARNING!!! Change this so as to send the data in one request.
-    data.map(d => {
+    data.map((d) => {
       let filename = d.url.split("/").pop();
       d.type == "repo" ? (filename = `${filename}.tar.gz`) : filename;
       dispatch(uploadFileRequest(filename));
@@ -228,7 +235,7 @@ export function uploadViaUrl(draft_id, urlToGrab, type, download, webhook) {
         .then(() => {
           return dispatch(uploadActionSuccess(filename));
         })
-        .catch(error => {
+        .catch((error) => {
           return dispatch(uploadFileError(d.url, error));
         });
     });
@@ -242,12 +249,12 @@ export function uploadViaRepoUrl(
   event_type,
   repo_info = null
 ) {
-  return dispatch => {
+  return (dispatch) => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
     let data = {
       url: urlToGrab,
       webhook,
-      event_type
+      event_type,
     };
 
     let filename = data.url.split("/").pop();
@@ -255,7 +262,7 @@ export function uploadViaRepoUrl(
 
     return axios
       .post(uri, data)
-      .then(resp => {
+      .then((resp) => {
         if (["push", "release"].indexOf(event_type) > -1) {
           try {
             dispatch(
@@ -265,7 +272,7 @@ export function uploadViaRepoUrl(
                 owner: repo_info.owner,
                 name: repo_info.name,
                 ref: repo_info.ref,
-                snapshots: []
+                snapshots: [],
               })
             );
           } catch (err) {
@@ -274,7 +281,7 @@ export function uploadViaRepoUrl(
         }
         return { filename, data: resp.data };
       })
-      .catch(error => {
+      .catch((error) => {
         throw { error };
       });
   };
@@ -291,28 +298,28 @@ export function deleteFileError(filename, error) {
 }
 export function deleteFileByUri(file_uri = null, key = null) {
   if (!file_uri) return;
-  return dispatch => {
+  return (dispatch) => {
     dispatch(deleteFileRequest(key));
 
     axios
       .delete(file_uri)
       .then(dispatch(deleteFileSuccess(key)))
-      .catch(error => {
+      .catch((error) => {
         notification.error({
-          description: error.response.data.message
+          description: error.response.data.message,
         });
         dispatch(deleteFileError(key, error));
       });
   };
 }
 export function deleteFile(bucket, key) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(deleteFileRequest(key));
     let uri = `/api/files/${bucket}/${key}`;
     axios
       .delete(uri)
       .then(dispatch(deleteFileSuccess(key)))
-      .catch(error => {
+      .catch((error) => {
         dispatch(deleteFileError(key, error));
       });
   };
@@ -361,9 +368,9 @@ export function getFileVersions() {
 
     axios
       .get(versions_link)
-      .then(response => {
+      .then((response) => {
         dispatch(fileVersionsSuccess(response.data.contents));
       })
-      .catch(error => dispatch(fileVersionsError(error)));
+      .catch((error) => dispatch(fileVersionsError(error)));
   };
 }

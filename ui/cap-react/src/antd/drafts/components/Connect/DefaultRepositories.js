@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   Alert,
-	Button,
+  Button,
   Card,
   Space,
   Typography,
@@ -17,25 +17,27 @@ import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
   let { config: { repositories = {} } = {} } = repoConfig || {};
 
-	const createDefaultRepo = (type_name, config) => {
-		upload(draftID, type_name, config);
-	}
-  const genExtra = (key, connected = false, config={}) => (
+  const createDefaultRepo = (type_name, config) => {
+    upload(draftID, type_name, config);
+  };
+  const genExtra = (key, connected = false, config = {}) => (
     <Space>
-			{
-				connected ? 
-				<Tag color="green">Connected</Tag> :
-				<Button
-					icon={<UploadOutlined />}
-					size="small"
-					type="primary"
-					onClick={event => {
-						// If you don't want click extra trigger collapse, you can prevent this:
-						event.stopPropagation();
-						createDefaultRepo(key, config)
-
-					}}>Create & Connect</Button>
-			}
+      {connected ? (
+        <Tag color="green">Connected</Tag>
+      ) : (
+        <Button
+          icon={<UploadOutlined />}
+          size="small"
+          type="primary"
+          onClick={(event) => {
+            // If you don't want click extra trigger collapse, you can prevent this:
+            event.stopPropagation();
+            createDefaultRepo(key, config);
+          }}
+        >
+          Create & Connect
+        </Button>
+      )}
     </Space>
   );
 
@@ -72,16 +74,23 @@ const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
                     <GitlabOutlined />
                   )}{" "}
                   <Typography.Text strong>
-										{value.display_name || key}
-									</Typography.Text>
+                    {value.display_name || key}
+                  </Typography.Text>
                 </Space>
               }
-              extra={
-                genExtra(
-                  key,
-                  repos.filter(r => (r.host == value.host && r.name == value.default_name && r.owner == value.org_name) ? true : false).length > 0 ? true : false,
-                  value
-                )}
+              extra={genExtra(
+                key,
+                repos.filter((r) =>
+                  r.host == value.host &&
+                  r.name == value.default_name &&
+                  r.owner == value.org_name
+                    ? true
+                    : false
+                ).length > 0
+                  ? true
+                  : false,
+                value
+              )}
             >
               <Typography.Paragraph>
                 {value.display_description}
@@ -101,7 +110,7 @@ const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
                       : "Personal"
                     : null}
                 </Descriptions.Item>
-                <Descriptions.Item label="Repository name">                  
+                <Descriptions.Item label="Repository name">
                   {value.repo_name ? (
                     value.repo_name.template_file ? (
                       <Space>
@@ -117,7 +126,6 @@ const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
                 <Descriptions.Item>
                   {value.org_name}/{value.default_name}
                 </Descriptions.Item>
-                  
               </Descriptions>
             </CollapsePanel>
           ))}
