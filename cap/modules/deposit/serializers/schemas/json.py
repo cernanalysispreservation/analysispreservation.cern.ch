@@ -145,7 +145,7 @@ class DepositFormSchema(DepositSchema):
                     obj['deposit'], rc_data.get('repo_name')
                 )
                 rc_data["default_name"] = name
-            except:
+            except Exception:
                 rc_data["default_name"] = 'no_name'
                 pass
 
