@@ -95,6 +95,8 @@ install_requires = [
     'gspread==3.7.0',
     'requests-gssapi',
     'beautifulsoup4',
+    # reana_client => bravado core dependency pin due to py3.6 drop
+    'swagger-spec-validator==2.7.6',
 ]
 
 packages = find_packages()
