@@ -39,6 +39,7 @@ services:
       - "INVENIO_CERN_CLIENT_SECRET=CHANGE_ME"
       - "CACHE_REDIS_HOST=cache"
       - "INVENIO_CACHE_REDIS_HOST=cache"
+      - "INVENIO_ACCESS_SESSION_REDIS_HOST=cache"
   lb:
     build: ./docker/haproxy/
     image: cap-lb
