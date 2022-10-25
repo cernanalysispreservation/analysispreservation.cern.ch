@@ -49,7 +49,7 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
+    command: gunicorn -b 0.0.0.0:5000 --access-logfile "-" --reload --log-level debug cap.wsgi:application
     ports:
       - "5000"
     volumes:
@@ -86,7 +86,7 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
+    command: gunicorn -b 0.0.0.0:5000 --access-logfile "-" --reload --log-level debug cap.wsgi:application
     ports:
       - "5000"
     environment:
