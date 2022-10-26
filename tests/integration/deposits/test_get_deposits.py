@@ -1353,7 +1353,6 @@ def test_get_deposit_with_form_json_serializer(
             'upload': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/upload',
         },
         'metadata': {'my_field': 'mydata'},
-        'x_cap_permissions': {},
         'revision': 1,
         'status': 'draft',
         'type': 'deposit',
@@ -1542,7 +1541,7 @@ def test_get_deposit_with_form_json_serializer_x_cap_field(
 
     assert resp.status_code == 200
 
-    assert resp.json['x_cap_permissions'] == [
+    assert resp.json['x_cap_permission'] == [
         {"path": ["properties", "title"], "value": {"users": [example_user.email]}},
         {"path": ["properties", "date"], "value": {"users": ["test_user@cern.ch"]}},
     ]

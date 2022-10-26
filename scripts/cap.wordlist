@@ -18,6 +18,7 @@ docs
 formBuilder
 GNU
 GPL
+gunicorn
 init
 invenio
 JIRA

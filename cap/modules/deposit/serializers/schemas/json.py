@@ -46,35 +46,35 @@ from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
 class DepositSearchSchema(common.CommonRecordSchema):
     """Schema for deposit v1 in JSON, used in search."""
 
-    type = fields.Str(default='deposit')
+    type = fields.Str(default="deposit")
 
     recid = fields.Str(
-        attribute='metadata._deposit.pid.value', dump_only=True
+        attribute="metadata._deposit.pid.value", dump_only=True
     )  # only for published ones
 
     cloned_from = fields.Dict(
-        attribute='metadata._deposit.cloned_from.value', dump_only=True
+        attribute="metadata._deposit.cloned_from.value", dump_only=True
     )
 
 
 class DepositSchema(DepositSearchSchema):
     """Schema for deposit v1 in JSON. Used in deposits, includes `access`."""
 
-    access = fields.Method('get_access', dump_only=True)
+    access = fields.Method("get_access", dump_only=True)
 
     def get_access(self, obj):
         """Return access object."""
-        access = obj.get('metadata', {})['_access']
+        access = obj.get("metadata", {})["_access"]
 
         for permission in access.values():
-            if permission['users']:
-                for index, user_id in enumerate(permission['users']):
-                    permission['users'][index] = get_remote_account_by_id(
+            if permission["users"]:
+                for index, user_id in enumerate(permission["users"]):
+                    permission["users"][index] = get_remote_account_by_id(
                         user_id
                     )  # noqa
-            if permission['roles']:
-                for index, role_id in enumerate(permission['roles']):
-                    permission['roles'][index] = get_role_name_by_id(role_id)
+            if permission["roles"]:
+                for index, role_id in enumerate(permission["roles"]):
+                    permission["roles"][index] = get_role_name_by_id(role_id)
 
         return access
 
@@ -86,41 +86,40 @@ class DepositFormSchema(DepositSchema):
 
     @pre_dump
     def pre_process(self, data):
-        _schema = data['deposit'].schema
+        _schema = data["deposit"].schema
 
-        data['deposit_schema'] = _schema
-        data['deposit_schema_resolved'] = current_jsonschemas.get_schema(
+        data["deposit_schema"] = _schema
+        data["deposit_schema_resolved"] = current_jsonschemas.get_schema(
             _schema.deposit_path, with_refs=True, resolved=True
         )
 
+        data["x-cap-permission"] = self.get_schema_permission_info(data)
         return data
 
     @post_dump
     def remove_skip_values(self, data):
         # maybe we should add 'x_cap_permissions' and 'user_schema_permissions'
-        keys = ["can_review", "review"]
+        keys = ["can_review", "review", "x_cap_permission"]
 
         for key in keys:
-            if data.get(key, '') is None:
+            if data.get(key, "") is None:
                 del data[key]
 
         return data
 
-    schemas = fields.Method('get_deposit_schemas', dump_only=True)
-    webhooks = fields.Method('get_webhooks', dump_only=True)
+    schemas = fields.Method("get_deposit_schemas", dump_only=True)
+    webhooks = fields.Method("get_webhooks", dump_only=True)
     # workflows = fields.Method('get_workflows', dump_only=True)
 
-    can_update = fields.Method('can_user_update', dump_only=True)
-    can_admin = fields.Method('can_user_admin', dump_only=True)
-    can_review = fields.Method('can_user_review', dump_only=True)
-    review = fields.Method('get_review', dump_only=True)
-    links = fields.Method('get_links_with_review', dump_only=True)
-    x_cap_permissions = fields.Method(
-        'get_schema_permission_info', dump_only=True
-    )
+    can_update = fields.Method("can_user_update", dump_only=True)
+    can_admin = fields.Method("can_user_admin", dump_only=True)
+    can_review = fields.Method("can_user_review", dump_only=True)
+    review = fields.Method("get_review", dump_only=True)
+    links = fields.Method("get_links_with_review", dump_only=True)
+    x_cap_permission = fields.Dict(attribute="x-cap-permission", dump_only=True)
 
     def get_webhooks(self, obj):
-        webhooks = obj['deposit'].model.webhooks
+        webhooks = obj["deposit"].model.webhooks
         return GitWebhookSubscriberSchema(many=True).dump(webhooks).data
 
     # def get_workflows(self, obj):
@@ -128,30 +127,23 @@ class DepositFormSchema(DepositSchema):
     #     return ReanaWorkflowSchema(many=True).dump(workflows).data
 
     def get_deposit_schemas(self, obj):
-        ui_schema = obj['deposit_schema'].deposit_options
-        _schema = obj['deposit_schema']
-        schema = obj['deposit_schema_resolved']
+        ui_schema = obj["deposit_schema"].deposit_options
+        schema = obj["deposit_schema_resolved"]
 
-        permission_field = _schema.config.get('x-cap-permission')
-        if permission_field:
-            # Adds readonly status for not allowed x-cap field
-            permission_info = copy.deepcopy(
-                self.get_schema_permission_info(obj)
-            )
-            if permission_info:
-                schema = self.get_read_only_status(permission_info, schema)
+        if obj["x-cap-permission"]:
+            schema = self.get_read_only_status(obj["x-cap-permission"], schema)
 
         return dict(schema=copy.deepcopy(schema), uiSchema=ui_schema)
 
     def get_read_only_status(self, permission_info, schema):
         for x_cap_field in permission_info:
-            if self.can_user_edit_field(x_cap_field.get('value')):
+            if self.can_user_edit_field(x_cap_field.get("value")):
                 schema_field = schema
-                nested_fields = x_cap_field.get('path')
+                nested_fields = x_cap_field.get("path")
                 if nested_fields:
                     for field in nested_fields:
                         schema_field = self.iterate_schema(schema_field, field)
-                schema_field['readOnly'] = True
+                schema_field["readOnly"] = True
         return schema
 
     def iterate_schema(self, schema_field, field):
@@ -159,8 +151,8 @@ class DepositFormSchema(DepositSchema):
 
     def get_review(self, obj):
         if (
-            obj['deposit'].schema_is_reviewable()
-            and ReviewDepositPermission(obj['deposit']).can()
+            obj["deposit"].schema_is_reviewable()
+            and ReviewDepositPermission(obj["deposit"]).can()
         ):
             _reviews = obj.get("metadata", {}).get("_review", [])
             return ReviewSchema(many=True).dump(_reviews).data
@@ -168,42 +160,41 @@ class DepositFormSchema(DepositSchema):
             return None
 
     def get_links_with_review(self, obj):
-        links = obj['links']
+        links = obj["links"]
 
-        if obj['deposit'].schema_is_reviewable():
+        if obj["deposit"].schema_is_reviewable():
             links["review"] = links["publish"].replace("publish", "review")
 
         return links
 
     def can_user_update(self, obj):
-        return UpdateDepositPermission(obj['deposit']).can()
+        return UpdateDepositPermission(obj["deposit"]).can()
 
     def can_user_admin(self, obj):
-        return AdminDepositPermission(obj['deposit']).can()
+        return AdminDepositPermission(obj["deposit"]).can()
 
     def can_user_review(self, obj):
-        if obj['deposit'].schema_is_reviewable():
-            can_review = ReviewDepositPermission(obj['deposit']).can()
+        if obj["deposit"].schema_is_reviewable():
+            can_review = ReviewDepositPermission(obj["deposit"]).can()
             if can_review:
                 return True
 
     def get_schema_permission_info(self, obj):
         name, version = (
-            obj['deposit_schema'].name,
-            obj['deposit_schema'].version,
+            obj["deposit_schema"].name,
+            obj["deposit_schema"].version,
         )
-        permission_field = obj['deposit_schema'].config.get('x-cap-permission')
+        permission_field = obj["deposit_schema"].config.get("x-cap-permission")
 
-        x_cap_fields = dict()
         if permission_field:
-            schema = obj['deposit_schema_resolved']
+            schema = obj["deposit_schema_resolved"]
             x_cap_fields = parse_schema_permission_info(name, version, schema)
-
-        return x_cap_fields
+            return x_cap_fields
+        return None
 
     def can_user_edit_field(self, perm_obj):
-        allowed_users = perm_obj.get('users')
-        allowed_roles = perm_obj.get('roles')
+        allowed_users = perm_obj.get("users")
+        allowed_roles = perm_obj.get("roles")
 
         error = True
         if allowed_users:
