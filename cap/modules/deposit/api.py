@@ -102,40 +102,40 @@ from .permissions import (
 )
 from .review import Reviewable
 
-_datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
+_datastore = LocalProxy(lambda: current_app.extensions["security"].datastore)
 
 PRESERVE_FIELDS = (
-    '_deposit',
-    '_buckets',
-    '_files',
-    '_review',
-    '_experiment',
-    '_access',
-    '_user_edited',
-    '_fetched_from',
-    'control_number',
-    'general_title',
-    '$schema',
+    "_deposit",
+    "_buckets",
+    "_files",
+    "_review",
+    "_experiment",
+    "_access",
+    "_user_edited",
+    "_fetched_from",
+    "control_number",
+    "general_title",
+    "$schema",
 )
 
 DEPOSIT_ACTIONS = (
-    'deposit-read',
-    'deposit-update',
-    'deposit-admin',
+    "deposit-read",
+    "deposit-update",
+    "deposit-admin",
 )
 
 
 def DEPOSIT_ACTIONS_NEEDS(id):
     """Method to construct action needs."""
     return {
-        'deposit-read': DepositReadActionNeed(str(id)),
-        'deposit-update': DepositUpdateActionNeed(str(id)),
-        'deposit-admin': DepositAdminActionNeed(str(id)),
+        "deposit-read": DepositReadActionNeed(str(id)),
+        "deposit-update": DepositUpdateActionNeed(str(id)),
+        "deposit-admin": DepositAdminActionNeed(str(id)),
     }
 
 
 EMPTY_ACCESS_OBJECT = {
-    action: {'users': [], 'roles': []} for action in DEPOSIT_ACTIONS
+    action: {"users": [], "roles": []} for action in DEPOSIT_ACTIONS
 }
 
 
@@ -151,7 +151,7 @@ class CAPDeposit(Deposit, Reviewable):
     @property
     def schema(self):
         """Schema property."""
-        return resolve_schema_by_url(self['$schema'])
+        return resolve_schema_by_url(self["$schema"])
 
     @property
     def record_schema(self):
@@ -168,13 +168,13 @@ class CAPDeposit(Deposit, Reviewable):
         :param fields: List of fields to remove (default: ``('_deposit',)``).
         """
         fields = fields or (
-            '_deposit',
-            '_access',
-            '_experiment',
-            '_fetched_from',
-            '_user_edited',
-            'general_title',
-            '$schema',
+            "_deposit",
+            "_access",
+            "_experiment",
+            "_fetched_from",
+            "_user_edited",
+            "general_title",
+            "$schema",
         )
 
         @wraps(method)
@@ -194,13 +194,13 @@ class CAPDeposit(Deposit, Reviewable):
         :param fields: List of fields to remove (default: ``('_deposit',)``).
         """
         fields = fields or (
-            '/_deposit',
-            '/_access',
-            '/_files',
-            '/_experiment',
-            '/_fetched_from',
-            '/_user_edited',
-            '/$schema',
+            "/_deposit",
+            "/_access",
+            "/_files",
+            "/_experiment",
+            "/_fetched_from",
+            "/_user_edited",
+            "/$schema",
         )
 
         @wraps(method)
@@ -238,7 +238,7 @@ class CAPDeposit(Deposit, Reviewable):
         record = super(CAPDeposit, self)._publish_edited()
         record._add_deposit_permissions(record, record.id)
 
-        if record['_experiment']:
+        if record["_experiment"]:
             record._add_experiment_permissions(record, record.id)
 
         return record
@@ -249,7 +249,7 @@ class CAPDeposit(Deposit, Reviewable):
         with AdminDepositPermission(self).require(403):
             # check if all deposit files has been uploaded
             for file_ in self.files:
-                if file_.data['checksum'] is None:
+                if file_.data["checksum"] is None:
                     raise MultipartMissingParts()
 
             try:
@@ -269,7 +269,7 @@ class CAPDeposit(Deposit, Reviewable):
         """
         with UpdateDepositPermission(self).require(403):
             try:
-                _, rec = request.view_args.get('pid_value').data
+                _, rec = request.view_args.get("pid_value").data
                 data = request.get_json()
                 if data is None:
                     raise InvalidDataRESTError()
@@ -278,22 +278,22 @@ class CAPDeposit(Deposit, Reviewable):
 
                 # For backward compatibility
                 # if no 'type' passed, pass 'repo_download_attach' as default
-                action_type = data.get('type', 'repo_download_attach')
+                action_type = data.get("type", "repo_download_attach")
             except Exception:
                 raise FileUploadError("Invalid arguments. Please try again.")
 
             actions = {
-                'repo_create': create_repo_as_user_and_attach,
-                'repo_download_attach': attach_repo_to_deposit,
-                'repo_create_default': create_schema_default_repo_and_attach,
+                "repo_create": create_repo_as_user_and_attach,
+                "repo_download_attach": attach_repo_to_deposit,
+                "repo_create_default": create_schema_default_repo_and_attach,
             }
 
             try:
                 actions[action_type](record_uuid, data)
             except KeyError:
                 raise FileUploadError(
-                    'Unsupported repository action. '
-                    'Try create, attach or collab.'
+                    "Unsupported repository action. "
+                    "Try create, attach or collab."
                 )
             except GitHostNotSupported:
                 raise FileUploadError("Host isn't provided or not supported")
@@ -311,15 +311,15 @@ class CAPDeposit(Deposit, Reviewable):
         """
         with UpdateDepositPermission(self).require(403):
             data = request.get_json()
-            sub_id = data.get('subscriber_id')
+            sub_id = data.get("subscriber_id")
             if sub_id is None:
-                raise DisconnectWebhookError('Missing subscriber_id parameter')
+                raise DisconnectWebhookError("Missing subscriber_id parameter")
 
             try:
                 disconnect_subscriber(sub_id)
             except NoResultFound:
                 raise DisconnectWebhookError(
-                    'This webhook was not registered with analysis.'
+                    "This webhook was not registered with analysis."
                 )
 
             return self
@@ -335,13 +335,13 @@ class CAPDeposit(Deposit, Reviewable):
             data = copy.deepcopy(self.dumps())
             # control number exist only in case of a published draft(record)
             if data:
-                data.pop('_deposit', None)
-                data.pop('control_number', None)
+                data.pop("_deposit", None)
+                data.pop("control_number", None)
             deposit = super(CAPDeposit, self).create(data, id_=id_)
-            deposit['_deposit']['cloned_from'] = {
-                'type': pid.pid_type,
-                'value': pid.pid_value,
-                'revision_id': self.revision_id,
+            deposit["_deposit"]["cloned_from"] = {
+                "type": pid.pid_type,
+                "value": pid.pid_value,
+                "revision_id": self.revision_id,
             }
             bucket = self.files.bucket.snapshot()
             RecordsBuckets.create(record=deposit.model, bucket=bucket)
@@ -362,7 +362,7 @@ class CAPDeposit(Deposit, Reviewable):
                 if data is None:
                     raise InvalidDataRESTError()
 
-                if data.get('id'):
+                if data.get("id"):
                     self.update_review(data)
                 else:
                     self.create_review(data)
@@ -384,8 +384,8 @@ class CAPDeposit(Deposit, Reviewable):
         data = self.dumps()
 
         # Keep current record revision for merging.
-        data['_deposit']['pid']['revision_id'] = record.revision_id
-        data['_deposit']['status'] = 'draft'
+        data["_deposit"]["pid"]["revision_id"] = record.revision_id
+        data["_deposit"]["status"] = "draft"
 
         return data
 
@@ -407,7 +407,7 @@ class CAPDeposit(Deposit, Reviewable):
     def update(self, data, *args, **kwargs):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):
-            schema = {'$ref': self["$schema"]}
+            schema = {"$ref": self["$schema"]}
             copy_data = None
 
             # 1. Maybe check if should continue with action
@@ -429,7 +429,7 @@ class CAPDeposit(Deposit, Reviewable):
     def patch(self, *args, **kwargs):
         """Patch deposit."""
         with UpdateDepositPermission(self).require(403):
-            schema = {'$ref': self["$schema"]}
+            schema = {"$ref": self["$schema"]}
 
             patch = copy.deepcopy(request.get_json(force=True))
 
@@ -460,59 +460,59 @@ class CAPDeposit(Deposit, Reviewable):
         """
         with db.session.begin_nested():
             for obj in data:
-                if obj['type'] == 'user':
+                if obj["type"] == "user":
                     try:
-                        user = get_existing_or_register_user(obj['email'])
+                        user = get_existing_or_register_user(obj["email"])
                     except DoesNotExistInLDAP:
                         raise UpdateDepositPermissionsError(
-                            'User with this mail does not exist in LDAP.'
+                            "User with this mail does not exist in LDAP."
                         )
 
-                    if obj['op'] == 'add':
+                    if obj["op"] == "add":
                         try:
                             self._add_user_permissions(
-                                user, [obj['action']], db.session
+                                user, [obj["action"]], db.session
                             )
                         except IntegrityError:
                             raise UpdateDepositPermissionsError(
-                                'Permission already exist.'
+                                "Permission already exist."
                             )
 
-                    elif obj['op'] == 'remove':
+                    elif obj["op"] == "remove":
                         try:
                             self._remove_user_permissions(
-                                user, [obj['action']], db.session
+                                user, [obj["action"]], db.session
                             )
                         except NoResultFound:
                             raise UpdateDepositPermissionsError(
-                                'Permission does not exist.'
+                                "Permission does not exist."
                             )
 
-                elif obj['type'] == 'egroup':
+                elif obj["type"] == "egroup":
                     try:
-                        role = get_existing_or_register_role(obj['email'])
+                        role = get_existing_or_register_role(obj["email"])
                     except DoesNotExistInLDAP:
                         raise UpdateDepositPermissionsError(
-                            'Egroup with this mail does not exist in LDAP.'
+                            "Egroup with this mail does not exist in LDAP."
                         )
 
-                    if obj['op'] == 'add':
+                    if obj["op"] == "add":
                         try:
                             self._add_egroup_permissions(
-                                role, [obj['action']], db.session
+                                role, [obj["action"]], db.session
                             )
                         except IntegrityError:
                             raise UpdateDepositPermissionsError(
-                                'Permission already exist.'
+                                "Permission already exist."
                             )
-                    elif obj['op'] == 'remove':
+                    elif obj["op"] == "remove":
                         try:
                             self._remove_egroup_permissions(
-                                role, [obj['action']], db.session
+                                role, [obj["action"]], db.session
                             )
                         except NoResultFound:
                             raise UpdateDepositPermissionsError(
-                                'Permission does not exist.'
+                                "Permission does not exist."
                             )
 
         self.commit()
@@ -526,7 +526,7 @@ class CAPDeposit(Deposit, Reviewable):
 
     def is_published(self):
         """Check if deposit is published."""
-        return self['_deposit'].get('pid') is not None
+        return self["_deposit"].get("pid") is not None
 
     def get_record_metadata(self):
         """Get Record Metadata instance for deposit."""
@@ -538,7 +538,7 @@ class CAPDeposit(Deposit, Reviewable):
 
         # mark as manually edited
         if current_user:
-            self['_user_edited'] = True
+            self["_user_edited"] = True
 
         return super(CAPDeposit, self).commit(*args, **kwargs)
 
@@ -553,7 +553,7 @@ class CAPDeposit(Deposit, Reviewable):
 
             session.flush()
 
-            self['_access'][permission]['users'].append(user.id)
+            self["_access"][permission]["users"].append(user.id)
 
     def _remove_user_permissions(self, user, permissions, session):
         """Remove permissions for user for this deposit."""
@@ -567,7 +567,7 @@ class CAPDeposit(Deposit, Reviewable):
             )
             session.flush()
 
-            self['_access'][permission]['users'].remove(user.id)
+            self["_access"][permission]["users"].remove(user.id)
 
     def _add_egroup_permissions(self, egroup, permissions, session):
         for permission in permissions:
@@ -578,8 +578,8 @@ class CAPDeposit(Deposit, Reviewable):
             )
             session.flush()
 
-            if egroup.id not in self['_access'][permission]['roles']:
-                self['_access'][permission]['roles'].append(egroup.id)
+            if egroup.id not in self["_access"][permission]["roles"]:
+                self["_access"][permission]["roles"].append(egroup.id)
 
     def _remove_egroup_permissions(self, egroup, permissions, session):
         for permission in permissions:
@@ -592,7 +592,7 @@ class CAPDeposit(Deposit, Reviewable):
             )
             session.flush()
 
-            self['_access'][permission]['roles'].remove(egroup.id)
+            self["_access"][permission]["roles"].remove(egroup.id)
 
     def _add_experiment_permissions(self, experiment, permissions):
         """Add read permissions to everybody assigned to experiment."""
@@ -606,8 +606,8 @@ class CAPDeposit(Deposit, Reviewable):
                 self._add_egroup_permissions(ar.role, permissions, db.session)
 
     def _set_experiment(self):
-        schema = resolve_schema_by_url(self['$schema'])
-        self['_experiment'] = schema.experiment
+        schema = resolve_schema_by_url(self["$schema"])
+        self["_experiment"] = schema.experiment
 
     def _create_buckets(self):
         bucket = Bucket.create()
@@ -615,13 +615,13 @@ class CAPDeposit(Deposit, Reviewable):
 
     def validate(self, **kwargs):
         """Validate data using schema with ``JSONResolver``."""
-        if '$schema' in self and self['$schema']:
+        if "$schema" in self and self["$schema"]:
             try:
-                schema = self['$schema']
+                schema = self["$schema"]
                 if not isinstance(schema, dict):
-                    schema = {'$ref': schema}
+                    schema = {"$ref": schema}
                 resolver = current_app.extensions[
-                    'invenio-records'
+                    "invenio-records"
                 ].ref_resolver_cls.from_schema(schema)
 
                 validator = NoRequiredValidator(schema, resolver=resolver)
@@ -642,10 +642,10 @@ class CAPDeposit(Deposit, Reviewable):
                     raise DepositValidationError(None, errors=errors)
             except RefResolutionError:
                 raise DepositValidationError(
-                    'Schema {} not found.'.format(self['$schema'])
+                    "Schema {} not found.".format(self["$schema"])
                 )
         else:
-            raise DepositValidationError('You need to provide a valid schema.')
+            raise DepositValidationError("You need to provide a valid schema.")
 
     def save_file(self, content, filename, size, failed=False):
         """Save file with given content in deposit bucket.
@@ -669,12 +669,12 @@ class CAPDeposit(Deposit, Reviewable):
                 size=size,
             )
 
-            print('File {} saved ({}b).\n'.format(filename, size))
+            print("File {} saved ({}b).\n".format(filename, size))
         else:
             ObjectVersionTag.create(
-                object_version=obj, key='status', value='failed'
+                object_version=obj, key="status", value="failed"
             )
-            print('File {} not saved.\n'.format(filename))
+            print("File {} not saved.\n".format(filename))
 
         self.files.flush()
         db.session.commit()
@@ -687,7 +687,7 @@ class CAPDeposit(Deposit, Reviewable):
         deposit = super(CAPDeposit, cls).get_record(
             id_=id_, with_deleted=with_deleted
         )
-        deposit['_files'] = deposit.files.dumps()
+        deposit["_files"] = deposit.files.dumps()
         return deposit
 
     @classmethod
@@ -785,46 +785,46 @@ class CAPDeposit(Deposit, Reviewable):
         :rtype: dict
         """
         if not isinstance(data, dict) or data == {}:
-            raise DepositValidationError('Empty deposit data.')
+            raise DepositValidationError("Empty deposit data.")
 
-        if '$ana_type' in data:
+        if "$ana_type" in data:
             try:
-                ana_type = data.pop('$ana_type')
-                data['$schema'] = schema_name_to_url(ana_type)
+                ana_type = data.pop("$ana_type")
+                data["$schema"] = schema_name_to_url(ana_type)
             except JSONSchemaNotFound:
                 raise DepositValidationError(
-                    f'Schema {ana_type} is not a valid deposit schema.'
+                    f"Schema {ana_type} is not a valid deposit schema."
                 )
-        elif '$schema' not in data:
-            raise DepositValidationError('Schema not specified.')
+        elif "$schema" not in data:
+            raise DepositValidationError("Schema not specified.")
 
         try:
-            schema = resolve_schema_by_url(data['$schema'])
-            data['_experiment'] = schema.experiment
+            schema = resolve_schema_by_url(data["$schema"])
+            data["_experiment"] = schema.experiment
         except JSONSchemaNotFound:
             raise DepositValidationError(
                 f'Schema {data["$schema"]} is not a valid deposit schema.'
             )
 
         # Check if schema has 'x-cap-permission'
-        _schema = {'$ref': data['$schema']}
+        _schema = {"$ref": data["$schema"]}
         data = cls.find_field_config(schema=_schema, submitted_data=data)
         cls.validate_field_permissions(schema=_schema, submitted_data=data)
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
-        if '_deposit' not in data:
+        if "_deposit" not in data:
             cls.deposit_minter(uuid_, data, schema=schema)
 
         if owner:
-            data['_deposit']['owners'] = [owner.id]
-            data['_deposit']['created_by'] = owner.id
-            data['_access'] = {
-                permission: {'users': [owner.id], 'roles': []}
+            data["_deposit"]["owners"] = [owner.id]
+            data["_deposit"]["created_by"] = owner.id
+            data["_access"] = {
+                permission: {"users": [owner.id], "roles": []}
                 for permission in DEPOSIT_ACTIONS
             }
         else:
-            data['_deposit']['owners'] = []
-            data['_access'] = copy.deepcopy(EMPTY_ACCESS_OBJECT)
+            data["_deposit"]["owners"] = []
+            data["_access"] = copy.deepcopy(EMPTY_ACCESS_OBJECT)
 
         return data
 
@@ -842,7 +842,9 @@ class CAPDeposit(Deposit, Reviewable):
                 copied_data.append((field.instance, field.message.get("path")))
 
         for cd in copied_data:
-            submitted_data = perform_copying_fields(submitted_data, cd[0], cd[1])
+            submitted_data = perform_copying_fields(
+                submitted_data, cd[0], cd[1]
+            )
 
         return submitted_data
 

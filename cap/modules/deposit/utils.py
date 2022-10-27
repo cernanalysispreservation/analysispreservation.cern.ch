@@ -37,10 +37,11 @@ from invenio_pidstore.models import PersistentIdentifier
 from cap.modules.records.utils import url_to_api_url
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 
-import collections
 
 def dict_merge(dct, merge_dct):
-    """ Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
+    """Recursive dict merge.
+
+    Inspired by :meth:``dict.update()``, instead of
     updating only top-level keys, dict_merge recurses down into dicts nested
     to an arbitrary depth, updating keys. The ``merge_dct`` is merged into
     ``dct``.
@@ -49,7 +50,11 @@ def dict_merge(dct, merge_dct):
     :return: None
     """
     for k, v in merge_dct.items():
-        if (k in dct and isinstance(dct[k], dict) and isinstance(merge_dct[k], dict)):  #noqa
+        if (
+            k in dct
+            and isinstance(dct[k], dict)
+            and isinstance(merge_dct[k], dict)
+        ):  # noqa
             dict_merge(dct[k], merge_dct[k])
         else:
             dct[k] = merge_dct[k]
@@ -202,6 +207,7 @@ def parse_schema_permission_info(name, version, schema):
 
     return x_cap_fields
 
+
 def perform_copying_fields(data, copy_data, copy_paths):
     for copy_path in copy_paths:
         data_ref = deepcopy(data)
@@ -210,13 +216,20 @@ def perform_copying_fields(data, copy_data, copy_paths):
                 data_ref[cp] = {}
             data_ref = data_ref[cp]
 
-
         if isinstance(data_ref, list):
-            data_ref = [dict(t) for t in {tuple(d.items()) for d in data_ref+copy_data}]
+            data_ref = [
+                dict(t)
+                for t in {tuple(d.items()) for d in data_ref + copy_data}
+            ]
         elif isinstance(data_ref, dict):
             dict_merge(data_ref, copy_data)
         else:
             data_ref = copy_data
-        _data = set_copy_to_attr(data_ref, [copy_path,])
+        _data = set_copy_to_attr(
+            data_ref,
+            [
+                copy_path,
+            ],
+        )
 
     return dict_merge(data, _data)
