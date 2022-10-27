@@ -863,6 +863,8 @@ class CAPDeposit(Deposit, Reviewable):
                 current_version = get_val_from_path(current_data, error_path)
                 incoming_version = get_val_from_path(submitted_data, error_path)
 
+                if not incoming_version:
+                    incoming_version = current_version
                 if current_version != incoming_version:
                     errors.append(FieldError(error_path, str(err.message)))
 
