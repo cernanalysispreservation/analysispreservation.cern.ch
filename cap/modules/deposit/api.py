@@ -59,11 +59,7 @@ from cap.modules.deposit.loaders import (
     get_val_from_path,
     get_validator,
 )
-from cap.modules.deposit.utils import (
-    perform_copying_fields,
-    set_copy_to_attr,
-    set_patch_data,
-)
+from cap.modules.deposit.utils import perform_copying_fields
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
@@ -408,30 +404,26 @@ class CAPDeposit(Deposit, Reviewable):
             return self
 
     @pop_from_data
-    def update(self, *args, **kwargs):
+    def update(self, data, *args, **kwargs):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):
             schema = {'$ref': self["$schema"]}
             copy_data = None
 
-            # Check first if the args are updated from pop_from_data()
-            if bool(args[0]):
-                copy_data = self.find_field_config(
-                    schema=schema,
-                    submitted_data=request.get_json(),
-                )
+            # 1. Maybe check if should continue with action
+            # 2. Maybe merge for more customized
+            copy_data = self.find_field_config(
+                schema=schema,
+                submitted_data=data,
+            )
 
             self.validate_field_permissions(
                 schema=schema,
                 current_data=self.model.json,
-                submitted_data=copy_data if copy_data else request.get_json(),
+                submitted_data=copy_data if copy_data else data,
             )
 
-            if copy_data:
-                args[0].clear()
-                args[0].update(copy_data)
-
-            super(CAPDeposit, self).update(*args, **kwargs)
+            super(CAPDeposit, self).update(data, *args, **kwargs)
 
     @pop_from_data_patch
     def patch(self, *args, **kwargs):
@@ -443,23 +435,14 @@ class CAPDeposit(Deposit, Reviewable):
 
             patched_data = apply_patch(self.model.json, patch)
 
-            copy_data, patch_copy_data = self.find_field_config(
-                schema=schema, submitted_data=patched_data, patch=True
+            copy_data = self.find_field_config(
+                schema=schema, submitted_data=patched_data
             )
-            if copy_data and patch_copy_data:
-                patched_data = apply_patch(patched_data, patch_copy_data)
-                self.validate_field_permissions(
-                    schema=schema,
-                    current_data=self.model.json,
-                    submitted_data=patched_data,
-                )
-                args[0].extend(patch_copy_data)
-                return super(CAPDeposit, self).patch(*args, **kwargs)
 
             self.validate_field_permissions(
                 schema=schema,
                 current_data=self.model.json,
-                submitted_data=patched_data,
+                submitted_data=copy_data if copy_data else patched_data,
             )
             return super(CAPDeposit, self).patch(*args, **kwargs)
 
@@ -846,8 +829,8 @@ class CAPDeposit(Deposit, Reviewable):
         return data
 
     @classmethod
-    def find_field_config(cls, schema=None, submitted_data=None, patch=False):
-        copied_data, patch_copy_data = [], []
+    def find_field_config(cls, schema=None, submitted_data=None):
+        copied_data = []
         if not any([schema, submitted_data]):
             return
 
@@ -856,23 +839,11 @@ class CAPDeposit(Deposit, Reviewable):
             if (type(field) is XCAPCopyValidationFlag) or any(
                 type(f) is XCAPCopyValidationFlag for f in field.context
             ):
-                error_path = get_error_path(field)
-                incoming_version = get_val_from_path(submitted_data, error_path)
-                copied_data.append(
-                    set_copy_to_attr(
-                        incoming_version, field.message.get('path')
-                    )
-                )
-                if patch:
-                    patch_copy_data += set_patch_data(
-                        incoming_version, field.message.get('path')
-                    )
+                copied_data.append((field.instance, field.message.get("path")))
 
-        for copied_obj in copied_data:
-            submitted_data = perform_copying_fields(submitted_data, copied_obj)
+        for cd in copied_data:
+            submitted_data = perform_copying_fields(submitted_data, cd[0], cd[1])
 
-        if patch:
-            return submitted_data, patch_copy_data
         return submitted_data
 
     @classmethod
