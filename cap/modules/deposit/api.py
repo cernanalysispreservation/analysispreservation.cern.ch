@@ -805,13 +805,14 @@ class CAPDeposit(Deposit, Reviewable):
             raise DepositValidationError(
                 f'Schema {data["$schema"]} is not a valid deposit schema.'
             )
-
         # Check if schema has 'x-cap-permission'
         _schema = {"$ref": data["$schema"]}
-        data = cls.find_field_config(schema=_schema, submitted_data=data)
+
+        cls.find_field_config(schema=_schema, submitted_data=data)
         cls.validate_field_permissions(schema=_schema, submitted_data=data)
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
+
         if "_deposit" not in data:
             cls.deposit_minter(uuid_, data, schema=schema)
 
@@ -842,9 +843,7 @@ class CAPDeposit(Deposit, Reviewable):
                 copied_data.append((field.instance, field.message.get("path")))
 
         for cd in copied_data:
-            submitted_data = perform_copying_fields(
-                submitted_data, cd[0], cd[1]
-            )
+            perform_copying_fields(submitted_data, cd[0], cd[1])
 
         return submitted_data
 

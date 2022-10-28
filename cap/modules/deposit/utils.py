@@ -216,7 +216,13 @@ def perform_copying_fields(data, copy_data, copy_paths):
                 data_ref[cp] = {}
             data_ref = data_ref[cp]
 
-        if isinstance(data_ref, list):
+        if (
+            isinstance(copy_data, str)
+            or isinstance(copy_data, int)
+            or isinstance(copy_data, float)
+        ):
+            data_ref = copy_data
+        elif isinstance(data_ref, list):
             data_ref = merge_lists(data_ref + copy_data)
         elif isinstance(data_ref, dict):
             dict_merge(data_ref, copy_data)
@@ -236,7 +242,7 @@ def merge_lists(data):
     seen = set()
     new_l = []
     for d in data:
-        t = tuple(d.items())
+        t = tuple(d.items() if hasattr(d, "items") else d)
         if t not in seen:
             seen.add(t)
             new_l.append(d)

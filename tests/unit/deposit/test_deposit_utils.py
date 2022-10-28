@@ -462,7 +462,7 @@ def test_set_copy_to_attr(copy_info, path, expected):
 
 
 @mark.parametrize(
-    "main_data, to_copy_data, expected",
+    "main_data, to_copy_data, to_copy_path, expected",
     [
         (
             {
@@ -470,11 +470,8 @@ def test_set_copy_to_attr(copy_info, path, expected):
                     "date": "test",
                 }
             },
-            {
-                "testf": {
-                    "titile": "test",
-                }
-            },
+            "test",
+            [["testf", "titile"]],
             {
                 "testf": {
                     "date": "test",
@@ -484,29 +481,24 @@ def test_set_copy_to_attr(copy_info, path, expected):
         ),
         (   
             {
-                "title": ["testmain", "testmain1"],
+                "title": ["test", "test1"],
                 "date": ["test", "test1"],
                 "testf": {
-                    "title": ["test", "test1"],
+                    "title": ["test", "test2"],
                 }
             },
-            {
-                "title": ["test", "test1"],
-                "testf": {
-                    "date": ["test", "test1"],
-                }
-            },
+            ["test", "test1"],
+            [["testf", "title"]],
             {
                 "title": ["test", "test1"],
                 "date": ["test", "test1"],
                 "testf": {
-                    "title": ["test", "test1"],
-                    "date": ["test", "test1"],
+                    "title": ["test", "test2", "test1"]
                 }
             }
         )
     ]
 )
-def test_perform_copying_fields(main_data, to_copy_data, expected):
-    result = perform_copying_fields(main_data, to_copy_data)
-    assert result == expected
+def test_perform_copying_fields(main_data, to_copy_data, to_copy_path, expected):
+    perform_copying_fields(main_data, to_copy_data, to_copy_path)
+    assert main_data == expected
