@@ -26,12 +26,14 @@
 import click
 from flask import current_app
 from flask_cli import with_appcontext
-
 from flask_mail import Message
 
 from cap.cli import MutuallyExclusiveOption
-from cap.modules.mail.users import get_all_users, get_users_by_record,\
-    get_users_by_experiment
+from cap.modules.mail.users import (
+    get_all_users,
+    get_users_by_experiment,
+    get_users_by_record,
+)
 
 
 @click.group()
@@ -127,14 +129,13 @@ def send(sender, subject, body, all_users, depid, experiment, role, test):
     # TODO: Support templates/context and find the
     #       different ways to provide the data
 
-    msg = Message(sender=sender,
-                  bcc=recipient_list,
-                  subject=subject,
-                  body=body)
+    msg = Message(sender=sender, bcc=recipient_list, subject=subject, body=body)
 
     current_app.extensions['mail'].send(msg)
-    click.secho(f"From {sender}\n"
-                f"To {recipients}\n"
-                f"Subject: {subject}\n"
-                f"Body: {body}",
-                fg='green')
+    click.secho(
+        f"From {sender}\n"
+        f"To {recipients}\n"
+        f"Subject: {subject}\n"
+        f"Body: {body}",
+        fg='green',
+    )
