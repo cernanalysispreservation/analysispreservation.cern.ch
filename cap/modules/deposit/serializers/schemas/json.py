@@ -40,8 +40,6 @@ from cap.modules.deposit.review import ReviewSchema
 from cap.modules.deposit.utils import parse_schema_permission_info
 from cap.modules.records.serializers.schemas import common
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
-from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
-
 from cap.modules.repos.utils import populate_template_from_ctx
 from cap.modules.user.utils import get_remote_account_by_id, get_role_name_by_id
 

@@ -30,10 +30,10 @@ import click
 import requests
 from flask import current_app
 from flask_cli import with_appcontext
-from invenio_db import db
 from invenio_accounts.models import User
-from invenio_oauth2server.models import Token
+from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_oauth2server.models import Token
 from invenio_search import current_search_client
 from sqlalchemy.exc import IntegrityError
 
@@ -42,8 +42,11 @@ from cap.modules.deposit.errors import DepositValidationError
 from cap.modules.fixtures.cli import fixtures
 from cap.modules.records.api import CAPRecord
 from cap.modules.schemas.models import Schema
-from cap.modules.schemas.resolvers import resolve_schema_by_url,\
-    resolve_schema_by_name_and_version, schema_name_to_url
+from cap.modules.schemas.resolvers import (
+    resolve_schema_by_name_and_version,
+    resolve_schema_by_url,
+    schema_name_to_url,
+)
 from cap.modules.schemas.utils import is_later_version
 
 DEPOSIT_REQUIRED_FIELDS = [
@@ -53,7 +56,7 @@ DEPOSIT_REQUIRED_FIELDS = [
     '_experiment',
     '_fetched_from',
     '_user_edited',
-    '_access'
+    '_access',
 ]
 
 
@@ -87,9 +90,7 @@ def _get_or_create_token(token_name, user_email):
         token_ = Token.query.filter_by(user_id=user.id).first()
         if not token_:
             token_ = Token.create_personal(
-                token_name,
-                user.id,
-                scopes=['deposit:write']
+                token_name, user.id, scopes=['deposit:write']
             )
             db.session.add(token_)
         db.session.commit()
@@ -99,33 +100,52 @@ def _get_or_create_token(token_name, user_email):
 
 
 @fixtures.command()
-@click.option('--schema-url', '-u',
-              cls=MutuallyExclusiveOption,
-              mutually_exclusive=["ana_type", "ana_version"],
-              help='The url of the schema used for validation.')
-@click.option('--ana-type', '-a',
-              cls=MutuallyExclusiveOption,
-              mutually_exclusive=["schema_url"],
-              help='The analysis type of the schema used for validation.')
-@click.option('--ana-version', '-v',
-              help='The analysis version of the records.')
-@click.option('--compare-with', '-c',
-              help='The schema version, that the '
-                   'records should be compared to.')
-@click.option('--status', '-s',
-              default='draft',
-              type=click.Choice(['draft', 'published']),
-              help='The metadata type that will be used for validation.')
-@click.option('--export', '-e',
-              type=click.Path(),
-              help='A file where, the validation errors can be saved.')
-@click.option('--export-type', '-et',
-              default=None,
-              type=click.Choice(['md']),
-              help='The export type that will be used for output.')
+@click.option(
+    '--schema-url',
+    '-u',
+    cls=MutuallyExclusiveOption,
+    mutually_exclusive=["ana_type", "ana_version"],
+    help='The url of the schema used for validation.',
+)
+@click.option(
+    '--ana-type',
+    '-a',
+    cls=MutuallyExclusiveOption,
+    mutually_exclusive=["schema_url"],
+    help='The analysis type of the schema used for validation.',
+)
+@click.option(
+    '--ana-version', '-v', help='The analysis version of the records.'
+)
+@click.option(
+    '--compare-with',
+    '-c',
+    help='The schema version, that the ' 'records should be compared to.',
+)
+@click.option(
+    '--status',
+    '-s',
+    default='draft',
+    type=click.Choice(['draft', 'published']),
+    help='The metadata type that will be used for validation.',
+)
+@click.option(
+    '--export',
+    '-e',
+    type=click.Path(),
+    help='A file where, the validation errors can be saved.',
+)
+@click.option(
+    '--export-type',
+    '-et',
+    default=None,
+    type=click.Choice(['md']),
+    help='The export type that will be used for output.',
+)
 @with_appcontext
-def validate(schema_url, ana_type, ana_version, compare_with,
-             status, export, export_type):
+def validate(
+    schema_url, ana_type, ana_version, compare_with, status, export, export_type
+):
     """Validate deposit or record metadata based on their schema.
 
     Provide the schema url OR ana-type and version, as well as the schema version
@@ -145,16 +165,18 @@ def validate(schema_url, ana_type, ana_version, compare_with,
             schema = resolve_schema_by_name_and_version(ana_type, ana_version)
         else:
             raise click.UsageError(
-                'You need to provide the ana-type or the schema-url.')
+                'You need to provide the ana-type or the schema-url.'
+            )
     except JSONSchemaNotFound:
-        raise click.UsageError(
-            'Schema not found.')
+        raise click.UsageError('Schema not found.')
     except ValueError:
         raise click.UsageError(
-            'Version has to be passed as string <major>.<minor>.<patch>.')
+            'Version has to be passed as string <major>.<minor>.<patch>.'
+        )
 
     # differentiate between drafts/published
     from cap.modules.deposit.api import CAPDeposit
+
     if status == 'draft':
         search_path = 'deposits-records'
         cap_record_class = CAPDeposit
@@ -166,13 +188,14 @@ def validate(schema_url, ana_type, ana_version, compare_with,
     records = current_search_client.search(
         search_path,
         q=f'_deposit.status: {status} AND '
-          f'$schema: "{schema_name_to_url(schema.name, schema.version)}"',
-        size=5000
+        f'$schema: "{schema_name_to_url(schema.name, schema.version)}"',
+        size=5000,
     )['hits']['hits']
     pids = [rec['_id'] for rec in records]
 
     click.secho(
-        f'{len(records)} record(s) of {schema.name} found.\n', fg='green')
+        f'{len(records)} record(s) of {schema.name} found.\n', fg='green'
+    )
 
     total_errors = []
     for pid in pids:
@@ -183,15 +206,18 @@ def validate(schema_url, ana_type, ana_version, compare_with,
         # get the url of the schema version, used for validation
         if compare_with:
             cap_record['$schema'] = schema_name_to_url(
-                schema.name, compare_with)
+                schema.name, compare_with
+            )
         try:
             cap_record.validate()
             click.secho(f'No errors found in record {pid}', fg='green')
         except DepositValidationError as exc:
             if export_type == 'md':
-                msg = '- [ ] Errors in **CADI ID:** ' + \
-                    f'{cap_record_cadi_id or "?"}' + \
-                    f' - **[link]({cap_host}/{cap_record_pid})** :\n'
+                msg = (
+                    '- [ ] Errors in **CADI ID:** '
+                    + f'{cap_record_cadi_id or "?"}'
+                    + f' - **[link]({cap_host}/{cap_record_pid})** :\n'
+                )
                 msg += "\n| Field Path | Error | \n| ---------- | ----- | \n"
                 for err in exc.errors:
                     _err = err.res
@@ -200,9 +226,11 @@ def validate(schema_url, ana_type, ana_version, compare_with,
                 msg += "----\n"
             else:
                 error_list = '\n'.join(str(err.res) for err in exc.errors)
-                msg = f'Errors in {pid} - CADI ' + \
-                      f'id: {cap_record_cadi_id or "?"}' + \
-                      f' - {cap_host}/{cap_record_pid} :\n{error_list}'
+                msg = (
+                    f'Errors in {pid} - CADI '
+                    + f'id: {cap_record_cadi_id or "?"}'
+                    + f' - {cap_host}/{cap_record_pid} :\n{error_list}'
+                )
 
             click.secho(msg, fg='red')
 
@@ -217,20 +245,33 @@ def validate(schema_url, ana_type, ana_version, compare_with,
 
 
 @fixtures.command()
-@click.option('--dir', '-d',
-              type=click.Path(exists=True),
-              help='The directory of the schemas to be added to the db.')
-@click.option('--url', '-u',
-              help='The url of the schema to be added to the db.')
-@click.option('--force', '-f',
-              is_flag=True,
-              help='Force add the schema without validation.')
-@click.option('--force-version', '-fv',
-              is_flag=True,
-              help='Force disable version checking.')
-@click.option('--replace', '-r',
-              is_flag=True,
-              help='It this schema/version exists, update it.')
+@click.option(
+    '--dir',
+    '-d',
+    type=click.Path(exists=True),
+    help='The directory of the schemas to be added to the db.',
+)
+@click.option(
+    '--url', '-u', help='The url of the schema to be added to the db.'
+)
+@click.option(
+    '--force',
+    '-f',
+    is_flag=True,
+    help='Force add the schema without validation.',
+)
+@click.option(
+    '--force-version',
+    '-fv',
+    is_flag=True,
+    help='Force disable version checking.',
+)
+@click.option(
+    '--replace',
+    '-r',
+    is_flag=True,
+    help='It this schema/version exists, update it.',
+)
 @with_appcontext
 def schemas(dir, url, force, force_version, replace):
     """Add schemas to CAP.
@@ -249,19 +290,25 @@ def schemas(dir, url, force, force_version, replace):
     if url:
         resp = requests.get(url)
         if not resp.ok:
-            click.secho(f'Please provide a public url to a json file. '
-                        f'Error {resp.status_code}.', fg='red')
+            click.secho(
+                f'Please provide a public url to a json file. '
+                f'Error {resp.status_code}.',
+                fg='red',
+            )
             return
 
         try:
             data = resp.json()
             if not has_all_required_fields(data) and not force:
-                click.secho(f'Missing required fields. Make sure that all of: '
-                            f'{DEPOSIT_REQUIRED_FIELDS} are in the json.', fg='red')  # noqa
+                click.secho(
+                    f'Missing required fields. Make sure that all of: '
+                    f'{DEPOSIT_REQUIRED_FIELDS} are in the json.',
+                    fg='red',
+                )  # noqa
                 return
-            add_schema_from_json(data,
-                                 replace=replace,
-                                 force_version=force_version)
+            add_schema_from_json(
+                data, replace=replace, force_version=force_version
+            )
         except (json.JSONDecodeError, ValueError):
             click.secho('Error in decoding the returned json.', fg='red')
 
@@ -270,24 +317,26 @@ def schemas(dir, url, force, force_version, replace):
         add_fixtures_from_path(
             current_app.config.get('SCHEMAS_DEFAULT_PATH'),
             replace=replace,
-            force_version=True)
+            force_version=True,
+        )
 
 
 def add_fixtures_from_path(dir, replace=None, force_version=None):
     """Add fixtures from a specified path to CAP."""
     for root, dirs, files in os.walk(dir):
         json_filepaths = [
-            os.path.join(root, f) for f in files
-            if f.endswith(".json")
+            os.path.join(root, f) for f in files if f.endswith(".json")
         ]
 
         for filepath in json_filepaths:
             with open(filepath, 'r') as f:
                 try:
                     json_content = json.load(f)
-                    add_schema_from_json(json_content,
-                                         replace=replace,
-                                         force_version=force_version)
+                    add_schema_from_json(
+                        json_content,
+                        replace=replace,
+                        force_version=force_version,
+                    )
                 except ValueError:
                     click.secho(f'Not valid json in {filepath} file', fg='red')
 
@@ -311,12 +360,16 @@ def add_schema_from_json(data, replace=None, force_version=None):
             except JSONSchemaNotFound:
                 try:
                     _schema = Schema.get_latest(name=name)
-                    if is_later_version(_schema.version,
-                                        version) and not force_version:
+                    if (
+                        is_later_version(_schema.version, version)
+                        and not force_version
+                    ):
                         click.secho(
                             f'A later version ({_schema.version}) of '
                             f'{name} is already in the db. Error while '
-                            f'adding {name}-{version}', fg='red')
+                            f'adding {name}-{version}',
+                            fg='red',
+                        )
                         return
                     else:
                         _schema = Schema(**data)
@@ -338,9 +391,11 @@ def add_schema_from_json(data, replace=None, force_version=None):
 def has_all_required_fields(data):
     """Check if there are any missing required fields in a json schema."""
     deposit_as_record = data.get('use_deposit_as_record')
-    schemas_to_check = [data['deposit_schema']] \
-        if deposit_as_record \
+    schemas_to_check = (
+        [data['deposit_schema']]
+        if deposit_as_record
         else [data['deposit_schema'], data['record_schema']]
+    )
 
     for _schema in schemas_to_check:
         schema_fields = _schema.get('properties', {}).keys()
