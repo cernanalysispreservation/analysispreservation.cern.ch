@@ -27,16 +27,14 @@ from invenio_accounts.models import User
 from invenio_oauthclient.models import RemoteAccount
 from invenio_pidstore.resolver import Resolver
 
-resolver = Resolver(pid_type='depid',
-                    object_type='rec',
-                    getter=lambda x: x)
+resolver = Resolver(pid_type='depid', object_type='rec', getter=lambda x: x)
 
 experiment_groups = {
     'cms': 'cms-members',
     'atlas': 'atlas-active-members-all',
     'alice': 'alice-member',
     'lhcb': 'lhcb-general',
-    'faser': 'faser-all'
+    'faser': 'faser-all',
 }
 
 
@@ -60,9 +58,12 @@ def get_users_by_experiment(experiment):
 
 def get_users_by_record(depid, role=None):
     _, uuid = resolver.resolve(depid)
-    action_users = ActionUsers.query.filter_by(argument=str(uuid)).all() \
-        if not role \
-        else ActionUsers.query.filter_by(argument=str(uuid),
-                                         action=f'deposit-{role}').all()
+    action_users = (
+        ActionUsers.query.filter_by(argument=str(uuid)).all()
+        if not role
+        else ActionUsers.query.filter_by(
+            argument=str(uuid), action=f'deposit-{role}'
+        ).all()
+    )
 
     return set(au.user.email for au in action_users)
