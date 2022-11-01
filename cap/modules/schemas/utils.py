@@ -25,6 +25,7 @@
 
 import re
 from itertools import groupby
+
 from jsonpatch import JsonPatchConflict
 
 from .models import Schema
@@ -43,13 +44,12 @@ def _filter_only_latest(schemas_list):
 
 def get_schemas_for_user(latest=True):
     """Return all schemas current user has read access to."""
-    schemas = Schema.query \
-                    .order_by(
-                        Schema.name,
-                        Schema.major.desc(),
-                        Schema.minor.desc(),
-                        Schema.patch.desc()) \
-                    .all()
+    schemas = Schema.query.order_by(
+        Schema.name,
+        Schema.major.desc(),
+        Schema.minor.desc(),
+        Schema.patch.desc(),
+    ).all()
 
     schemas = _filter_by_read_access(schemas)
 
@@ -61,14 +61,16 @@ def get_schemas_for_user(latest=True):
 
 def get_indexed_schemas_for_user(latest=True):
     """Return all indexed schemas current user has read access to."""
-    schemas = Schema.query \
-                    .filter_by(is_indexed=True) \
-                    .order_by(
-                        Schema.name,
-                        Schema.major.desc(),
-                        Schema.minor.desc(),
-                        Schema.patch.desc()) \
-                    .all()
+    schemas = (
+        Schema.query.filter_by(is_indexed=True)
+        .order_by(
+            Schema.name,
+            Schema.major.desc(),
+            Schema.minor.desc(),
+            Schema.patch.desc(),
+        )
+        .all()
+    )
 
     schemas = _filter_by_read_access(schemas)
 
@@ -84,7 +86,8 @@ def is_later_version(version1, version2):
 
     if not matched1 or not matched2:
         raise ValueError(
-            'Version has to be passed as string <major>.<minor>.<patch>')
+            'Version has to be passed as string <major>.<minor>.<patch>'
+        )
 
     major1, minor1, patch1 = matched1.groups()
     major2, minor2, patch2 = matched2.groups()
@@ -110,11 +113,17 @@ def is_later_version(version1, version2):
 def check_allowed_patch_operation(data):
     """Return patch data after filtering in allowed operations."""
     ALLOWED_OPERATIONS = ['add', 'remove', 'replace']
-    if not data:
+    if not data or not isinstance(data, list):
+        return None
+    try:
+        data = [
+            operation
+            for operation in data
+            if operation.get('op', '') in ALLOWED_OPERATIONS
+        ]
         return data
-    data = [operation for operation in data
-            if operation.get('op', '') in ALLOWED_OPERATIONS]
-    return data
+    except AttributeError:
+        return None
 
 
 def check_allowed_patch_path(data):
@@ -126,7 +135,7 @@ def check_allowed_patch_path(data):
         'record_mapping',
         'deposit_options',
         'record_options',
-        'config'
+        'config',
     ]
 
     if not data:

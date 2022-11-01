@@ -1181,6 +1181,39 @@ def test_patch_when_invalid_data_returns_400(
     assert resp.json['message'] == 'Invalid/No patch data provided.'
 
 
+def test_patch_when_invalid_data_not_array_returns_400(
+        client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(name='cms-schema', version='1.2.3', fullname='Old fullname'))
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['config'] == {}
+
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps({"wrong": "data"}),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Invalid/No patch data provided.'
+
+    resp = client.patch(
+        '/jsonschemas/cms-schema/1.2.3',
+        data=json.dumps(["123", "boom"]),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Invalid/No patch data provided.'
+
+
 def test_patch_when_invalid_operation(
         client, db, users, auth_headers_for_user, json_headers):
     owner = users['superuser']
