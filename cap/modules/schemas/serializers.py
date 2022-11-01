@@ -25,11 +25,11 @@
 import copy
 
 from flask import url_for
+from invenio_jsonschemas.proxies import current_jsonschemas
 from marshmallow import Schema, ValidationError, fields, pre_load, validate
 from six import iteritems
 
 from cap.utils import url_to_api_url
-from invenio_jsonschemas.proxies import current_jsonschemas
 
 from .validators import JSONSchemaValidator
 
@@ -40,7 +40,7 @@ EDITABLE_FIELDS = [
     'record_mapping',
     'deposit_options',
     'record_options',
-    'config'
+    'config',
 ]
 
 
@@ -48,8 +48,9 @@ class SchemaSerializer(Schema):
     """Default schema JSON serializer."""
 
     name = fields.Str(required=True)
-    version = fields.Str(required=True,
-                         validate=validate.Regexp(regex=r"(\d+).(\d+).(\d+)"))
+    version = fields.Str(
+        required=True, validate=validate.Regexp(regex=r"(\d+).(\d+).(\d+)")
+    )
     fullname = fields.Str()
     is_indexed = fields.Boolean(default=False)
     use_deposit_as_record = fields.Boolean(default=False)
@@ -73,23 +74,30 @@ class SchemaSerializer(Schema):
 
     def build_links(self, obj):
         """Construct schema links."""
-        deposit_path = url_for('invenio_jsonschemas.get_schema',
-                               schema_path=obj.deposit_path,
-                               _external=True)
-        record_path = url_for('invenio_jsonschemas.get_schema',
-                              schema_path=obj.record_path,
-                              _external=True)
+        deposit_path = url_for(
+            'invenio_jsonschemas.get_schema',
+            schema_path=obj.deposit_path,
+            _external=True,
+        )
+        record_path = url_for(
+            'invenio_jsonschemas.get_schema',
+            schema_path=obj.record_path,
+            _external=True,
+        )
 
         links = {
             'deposit': url_to_api_url(deposit_path),
-            'record': url_to_api_url(record_path)
+            'record': url_to_api_url(record_path),
         }
         links['self'] = url_to_api_url(
-            url_for('cap_schemas.schemas',
-                    name=obj.name,
-                    version=obj.version,
-                    _method='PUT',
-                    _external=True))
+            url_for(
+                'cap_schemas.schemas',
+                name=obj.name,
+                version=obj.version,
+                _method='PUT',
+                _external=True,
+            )
+        )
 
         return links
 
@@ -111,22 +119,23 @@ class PatchedSchemaSerializer(Schema):
 class ResolvedSchemaSerializer(SchemaSerializer):
     """Schema serializer with resolved jsonschemas."""
 
-    deposit_schema = fields.Method('get_resolved_deposit_schema',
-                                   dump_only=True)
+    deposit_schema = fields.Method(
+        'get_resolved_deposit_schema', dump_only=True
+    )
     record_schema = fields.Method('get_resolved_record_schema', dump_only=True)
 
     def get_resolved_deposit_schema(self, obj):
         """Resolve refs in deposit schema."""
-        schema = current_jsonschemas.get_schema(obj.deposit_path,
-                                                with_refs=True,
-                                                resolved=True)
+        schema = current_jsonschemas.get_schema(
+            obj.deposit_path, with_refs=True, resolved=True
+        )
         return copy.deepcopy(schema)  # so all the JSONRefs get resoved
 
     def get_resolved_record_schema(self, obj):
         """Resolve refs in record schema."""
-        schema = current_jsonschemas.get_schema(obj.record_path,
-                                                with_refs=True,
-                                                resolved=True)
+        schema = current_jsonschemas.get_schema(
+            obj.record_path, with_refs=True, resolved=True
+        )
         return copy.deepcopy(schema)  # so all the JSONRefs get resoved
 
 
@@ -157,8 +166,9 @@ class CollectionSerializer(Schema):
     """Serializer for the collection endpoint."""
 
     name = fields.Str(required=True)
-    version = fields.Str(required=True,
-                         validate=validate.Regexp(regex=r"(\d+).(\d+).(\d+)"))
+    version = fields.Str(
+        required=True, validate=validate.Regexp(regex=r"(\d+).(\d+).(\d+)")
+    )
     fullname = fields.Str()
     config = fields.Dict()
     versions = fields.Method("get_schema_versions", dump_only=True)
@@ -176,23 +186,30 @@ class LinkSerializer(Schema):
 
     def build_links(self, obj):
         """Construct schema links."""
-        deposit_path = url_for('invenio_jsonschemas.get_schema',
-                               schema_path=obj.deposit_path,
-                               _external=True)
-        record_path = url_for('invenio_jsonschemas.get_schema',
-                              schema_path=obj.record_path,
-                              _external=True)
+        deposit_path = url_for(
+            'invenio_jsonschemas.get_schema',
+            schema_path=obj.deposit_path,
+            _external=True,
+        )
+        record_path = url_for(
+            'invenio_jsonschemas.get_schema',
+            schema_path=obj.record_path,
+            _external=True,
+        )
 
         links = {
             'deposit': url_to_api_url(deposit_path),
-            'record': url_to_api_url(record_path)
+            'record': url_to_api_url(record_path),
         }
         links['self'] = url_to_api_url(
-            url_for('cap_schemas.schemas',
-                    name=obj.name,
-                    version=obj.version,
-                    _method='PUT',
-                    _external=True))
+            url_for(
+                'cap_schemas.schemas',
+                name=obj.name,
+                version=obj.version,
+                _method='PUT',
+                _external=True,
+            )
+        )
 
         return links
 

@@ -24,30 +24,34 @@
 """Views for schemas."""
 
 from flask import Blueprint, abort, jsonify, request
-from jsonpatch import (apply_patch,
-                       JsonPatchException,
-                       JsonPointerException,
-                       JsonPatchConflict)
 from flask.views import MethodView
 from flask_login import current_user
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from jsonpatch import (
+    JsonPatchConflict,
+    JsonPatchException,
+    JsonPointerException,
+    apply_patch,
+)
 from jsonref import JsonRefError
 from sqlalchemy.exc import IntegrityError
-from cap.modules.access.permissions import admin_permission_factory
 
+from cap.modules.access.permissions import admin_permission_factory
 from cap.modules.access.utils import login_required
 
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
-from .serializers import (create_config_payload,
-                          update_schema_serializer,
-                          link_serializer)
+from .serializers import (
+    create_config_payload,
+    link_serializer,
+    update_schema_serializer,
+)
 from .utils import (
-    get_schemas_for_user,
+    check_allowed_patch_operation,
     check_allowed_patch_path,
-    check_allowed_patch_operation)
-
+    get_schemas_for_user,
+)
 
 blueprint = Blueprint(
     'cap_schemas',
@@ -70,7 +74,7 @@ def get_all_versions(name=None):
             abort(404)
         response = {
             'versions': link_serializer.dump(schemas, many=True).data,
-            'latest': link_serializer.dump(latest).data
+            'latest': link_serializer.dump(latest).data,
         }
     return jsonify(response)
 
@@ -111,9 +115,7 @@ class SchemaAPI(MethodView):
 
         else:
             schemas = get_schemas_for_user(latest=latest)
-            response = [
-                schema.serialize(resolve=resolve) for schema in schemas
-            ]
+            response = [schema.serialize(resolve=resolve) for schema in schemas]
 
         return jsonify(response)
 
@@ -152,7 +154,8 @@ class SchemaAPI(MethodView):
         with AdminSchemaPermission(schema).require(403):
             data = request.get_json()
             serialized_data, errors = update_schema_serializer.load(
-                data, partial=True)
+                data, partial=True
+            )
 
             if errors:
                 raise abort(400, errors)
@@ -182,60 +185,99 @@ class SchemaAPI(MethodView):
             schema = Schema.get(name, version)
             serialized_schema = schema.patch_serialize()
         except JSONSchemaNotFound:
-            return jsonify({
-                'message': 'Schema not found. Please try '
-                'again with existing schemas.'
-            }), 404
+            return (
+                jsonify(
+                    {
+                        'message': 'Schema not found. Please try '
+                        'again with existing schemas.'
+                    }
+                ),
+                404,
+            )
 
         with AdminSchemaPermission(schema).require(403):
             data = request.get_json()
             data = check_allowed_patch_operation(data)
             if not data:
-                return jsonify({
-                    'message': 'Invalid/No patch data provided.'
-                }), 400
+                return (
+                    jsonify({'message': 'Invalid/No patch data provided.'}),
+                    400,
+                )
 
             try:
                 check_allowed_patch_path(data)
                 patched_schema = apply_patch(serialized_schema, data)
-            except (JsonPatchException, JsonPatchConflict, JsonPointerException):
-                return jsonify({
-                    'message': 'An error occured while '
-                    'applying the patch.'
-                }), 400
+            except (
+                JsonPatchException,
+                JsonPatchConflict,
+                JsonPointerException,
+            ):
+                return (
+                    jsonify(
+                        {
+                            'message': 'An error occured while '
+                            'applying the patch.'
+                        }
+                    ),
+                    400,
+                )
 
             serialized_data, errors = update_schema_serializer.load(
-                patched_schema, partial=True)
+                patched_schema, partial=True
+            )
             if errors:
-                return jsonify({
-                    'message': 'An error {} occured while '
-                    'serializing the patched schema.'.format(errors)
-                }), 400
+                return (
+                    jsonify(
+                        {
+                            'message': 'An error {} occured while '
+                            'serializing the patched schema.'.format(errors)
+                        }
+                    ),
+                    400,
+                )
 
             try:
                 schema.update(**serialized_data)
                 db.session.commit()
             except IntegrityError:
-                return jsonify({
-                    'message': 'Error occured during saving schema in the db.'
-                }), 500
+                return (
+                    jsonify(
+                        {
+                            'message': 'Error occured during '
+                            'saving schema in the db.'
+                        }
+                    ),
+                    500,
+                )
 
             return jsonify(schema.config_serialize())
 
 
 schema_view_func = SchemaAPI.as_view('schemas')
 
-blueprint.add_url_rule('/', view_func=schema_view_func, methods=[
-    'GET',
-])
-blueprint.add_url_rule('/', view_func=schema_view_func, methods=[
-    'POST',
-])
-blueprint.add_url_rule('/<string:name>',
-                       view_func=schema_view_func,
-                       methods=[
-                           'GET',
-                       ])
-blueprint.add_url_rule('/<string:name>/<string:version>',
-                       view_func=schema_view_func,
-                       methods=['GET', 'PUT', 'DELETE', 'PATCH'])
+blueprint.add_url_rule(
+    '/',
+    view_func=schema_view_func,
+    methods=[
+        'GET',
+    ],
+)
+blueprint.add_url_rule(
+    '/',
+    view_func=schema_view_func,
+    methods=[
+        'POST',
+    ],
+)
+blueprint.add_url_rule(
+    '/<string:name>',
+    view_func=schema_view_func,
+    methods=[
+        'GET',
+    ],
+)
+blueprint.add_url_rule(
+    '/<string:name>/<string:version>',
+    view_func=schema_view_func,
+    methods=['GET', 'PUT', 'DELETE', 'PATCH'],
+)
