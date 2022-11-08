@@ -5,6 +5,7 @@ export const ABOUT = "/about";
 export const POLICY = "/policy";
 export const SEARCH_TIPS = "/search-tips";
 export const STATUS = "/status";
+export const SCHEMAS = "/schemas/:schema_name/:schema_version?";
 
 export const CMS = "/admin";
 export const CMS_NEW = `${CMS}/new`;

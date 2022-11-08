@@ -7,6 +7,7 @@ import IndexPage from "../index/IndexPage";
 
 import AboutPage from "../about";
 import PolicyPage from "../policy";
+import SchemasPage from "../schemas";
 
 import noRequireAuth from "../auth/NoAuthorizationRequired";
 import requireAuth from "../auth/AuthorizationRequired";
@@ -18,7 +19,7 @@ import DocumentTitle from "../partials/DocumentTitle";
 import { Layout, Row, Spin } from "antd";
 
 import Loadable from "react-loadable";
-import { HOME, WELCOME, ABOUT, POLICY, CMS } from "../routes";
+import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import Loading from "../routes/Loading";
 
 const CMSIndex = Loadable({
@@ -53,6 +54,7 @@ const App = ({ initCurrentUser, loadingInit, history }) => {
             <Route path={ABOUT} component={AboutPage} />
             <Route path={POLICY} component={PolicyPage} />
             <Route path={CMS} component={CMSIndex} />
+            <Route path={SCHEMAS} component={SchemasPage} />
             <Route path={HOME} component={requireAuth(IndexPage)} />
           </Switch>
         </Layout.Content>
