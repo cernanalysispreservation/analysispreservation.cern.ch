@@ -10,7 +10,7 @@ import _debounce from "lodash/debounce";
 import objectPath from "object-path";
 
 import "./Form.less";
-import {Form, Widgets} from "@rjsf/antd";
+import { Form, Widgets } from "@rjsf/antd";
 import CmsWidgets from "../admin/formComponents/widgets";
 
 const RJSFForm = ({
@@ -31,7 +31,7 @@ const RJSFForm = ({
   widgets,
   validate,
   liveValidate = false,
-  showErrorList = false
+  showErrorList = false,
 }) => {
   let userEmail = currentUser
     ? currentUser.getIn(["profile", "email"])
@@ -68,7 +68,7 @@ const RJSFForm = ({
 
     // if the user is in the list, it means he can edit
     if (users) {
-      return users.map(i => i.toLowerCase()).includes(user.toLowerCase());
+      return users.map((i) => i.toLowerCase()).includes(user.toLowerCase());
     }
     return false;
   };
@@ -117,7 +117,7 @@ const RJSFForm = ({
 
   // call to update the schema fields
   checkSchemaForPermissions(schema);
-  
+
   return (
     <Form
       className={["__Form__", ...className].join(" ")}
@@ -127,7 +127,7 @@ const RJSFForm = ({
       tagName="div"
       fields={fields}
       formData={formData}
-      widgets={{ ...Widgets, ...CAPWidgets, ...CmsWidgets, ...widgets}}
+      widgets={{ ...Widgets, ...CAPWidgets, ...CmsWidgets, ...widgets }}
       ObjectFieldTemplate={Objects || ObjectFieldTemplate}
       ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
       FieldTemplate={Fields || FieldTemplate}
@@ -171,7 +171,7 @@ RJSFForm.propTypes = {
   showErrorList: PropTypes.bool,
   FieldTemplate: PropTypes.node,
   ObjectFieldTemplate: PropTypes.node,
-  ArrayFieldTemplate: PropTypes.node
+  ArrayFieldTemplate: PropTypes.node,
 };
 
 export default RJSFForm;

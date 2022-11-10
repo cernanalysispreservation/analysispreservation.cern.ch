@@ -138,8 +138,8 @@ import { Input } from "antd";
 
 const version = [
   {
-    regexp: "^.*$"
-  }
+    regexp: "^.*$",
+  },
 ];
 
 const defaultMask = version;
@@ -254,7 +254,7 @@ const MaskedInput = forwardRef(
     // );
 
     const renderPlaceholder = () => {
-      return mask.map(item => item.placeholder || item.fixed).join("");
+      return mask.map((item) => item.placeholder || item.fixed).join("");
     };
 
     // const status = new RegExp(schemaMask).test(value);
@@ -298,7 +298,7 @@ const MaskedInput = forwardRef(
           <div
             style={{
               marginLeft: "5px",
-              color: message.status == "success" ? "green" : "#ff4d4f"
+              color: message.status == "success" ? "green" : "#ff4d4f",
             }}
           >
             {message.message}
