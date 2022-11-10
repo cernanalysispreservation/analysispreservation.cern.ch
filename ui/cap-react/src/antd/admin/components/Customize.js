@@ -8,14 +8,14 @@ import _debounce from "lodash/debounce";
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
 const ALIGN_OPTIONS = ["center", "start", "end"];
 
-const Customize = props => {
-  const _onSchemaChange = data => {
+const Customize = (props) => {
+  const _onSchemaChange = (data) => {
     props.onSchemaChange(props.path.get("path").toJS(), data.formData);
   };
-  const _onUiSchemaChange = data => {
+  const _onUiSchemaChange = (data) => {
     props.onUiSchemaChange(props.path.get("uiPath").toJS(), data.formData);
   };
-  const sizeChange = newSize => {
+  const sizeChange = (newSize) => {
     if (SIZE_OPTIONS.indexOf(newSize) < 0) return;
 
     let { uiSchema } = props;
@@ -29,11 +29,11 @@ const Customize = props => {
 
     props.onUiSchemaChange(props.path.get("uiPath").toJS(), {
       ...rest,
-      "ui:options": _uiOptions
+      "ui:options": _uiOptions,
     });
   };
 
-  const alignChange = newAlign => {
+  const alignChange = (newAlign) => {
     if (["center", "start", "end"].indexOf(newAlign) < 0) return;
 
     let { uiSchema } = props;
@@ -47,7 +47,7 @@ const Customize = props => {
 
     props.onUiSchemaChange(props.path.get("uiPath").toJS(), {
       ...rest,
-      "ui:options": _uiOptions
+      "ui:options": _uiOptions,
     });
   };
 
@@ -78,7 +78,7 @@ const Customize = props => {
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <Space>
               <Typography.Text>Size Options</Typography.Text>
-              {SIZE_OPTIONS.map(size => (
+              {SIZE_OPTIONS.map((size) => (
                 <Tag
                   onClick={() => sizeChange(size)}
                   key={size}
@@ -96,7 +96,7 @@ const Customize = props => {
             <Space>
               <Typography.Text>Align Options</Typography.Text>
 
-              {ALIGN_OPTIONS.map(align => (
+              {ALIGN_OPTIONS.map((align) => (
                 <Tag
                   onClick={() => alignChange(align)}
                   key={align}
@@ -124,7 +124,7 @@ Customize.propTypes = {
   path: PropTypes.object,
   onSchemaChange: PropTypes.func,
   onUiSchemaChange: PropTypes.func,
-  _path: PropTypes.object
+  _path: PropTypes.object,
 };
 
 export default Customize;
