@@ -1,44 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import PropertyKeyEditorForm from "./PropKeyEditorForm";
 
 import { Card, Space, Tag, Typography } from "antd";
+import _debounce from "lodash/debounce";
 
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
 const ALIGN_OPTIONS = ["center", "start", "end"];
 
 const Customize = props => {
-  const [myPath, setMyPath] = useState([...props._path]);
-  const [updateUi, setUpdateUi] = useState(null);
-  const [updateSchema, setUpdateSchema] = useState(
-    props.schema ? props.schema.toJS() : {}
-  );
-
-  //the update for the uiSchema changes
-  useEffect(
-    () => {
-      if (updateUi) {
-        props.onUiSchemaChange([...props._uiPath], updateUi);
-      }
-    },
-    [updateUi]
-  );
-
-  useEffect(
-    () => {
-      if (props._path.join(".") != myPath.join(".")) {
-        setUpdateSchema(JSON.parse(JSON.stringify(props.schema.toJS())));
-        setMyPath([...props._path]);
-      }
-    },
-    [props._path]
-  );
-
   const _onSchemaChange = data => {
-    props.onSchemaChange([...props._path], data.formData);
+    props.onSchemaChange(props.path.get("path").toJS(), data.formData);
   };
   const _onUiSchemaChange = data => {
-    setUpdateUi(data.formData);
+    props.onUiSchemaChange(props.path.get("uiPath").toJS(), data.formData);
   };
   const sizeChange = newSize => {
     if (SIZE_OPTIONS.indexOf(newSize) < 0) return;
@@ -81,8 +56,8 @@ const Customize = props => {
       <PropertyKeyEditorForm
         schema={props.schema && props.schema.toJS()}
         uiSchema={props.uiSchema && props.uiSchema.toJS()}
-        formData={updateSchema}
-        onChange={_onSchemaChange}
+        formData={props.schema && props.schema.toJS()}
+        onChange={_debounce(_onSchemaChange, 500)}
         optionsSchemaObject="optionsSchema"
         optionsUiSchemaObject="optionsSchemaUiSchema"
         title="Schema Settings"
@@ -92,7 +67,7 @@ const Customize = props => {
         schema={props.schema && props.schema.toJS()}
         uiSchema={props.uiSchema && props.uiSchema.toJS()}
         formData={props.uiSchema && props.uiSchema.toJS()}
-        onChange={_onUiSchemaChange}
+        onChange={_debounce(_onUiSchemaChange, 500)}
         optionsSchemaObject="optionsUiSchema"
         optionsUiSchemaObject="optionsUiSchemaUiSchema"
         title="UI Schema Settings"
