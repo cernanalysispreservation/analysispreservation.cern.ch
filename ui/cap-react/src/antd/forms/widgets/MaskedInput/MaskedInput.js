@@ -147,13 +147,14 @@ const defaultMask = version;
 const MaskedInput = forwardRef(
   ({
     a11yTitle,
-    focus: focusProp,
+    focus,
+    // focus: focusProp,
     icon,
     id,
     mask = defaultMask,
     name,
     onBlur,
-    schemaMask,
+    // schemaMask,
     onChange,
     onFocus,
     onPressEnter,
