@@ -4,13 +4,13 @@ import ObjectFieldTemplate from "./templates/ObjectFieldTemplate";
 import ArrayFieldTemplate from "./templates/ArrayFieldTemplates";
 import FieldTemplate from "./templates/Field/FieldTemplate";
 import fields from "./fields";
-import widgets from "./widgets";
+import CAPWidgets from "./widgets";
 
 import _debounce from "lodash/debounce";
 import objectPath from "object-path";
 
 import "./Form.less";
-import Form from "@rjsf/antd";
+import {Form, Widgets} from "@rjsf/antd";
 import CmsWidgets from "../admin/formComponents/widgets";
 
 const RJSFForm = ({
@@ -28,7 +28,7 @@ const RJSFForm = ({
   ObjectFieldTemplate: Objects,
   ArrayFieldTemplate: Arrays,
   FieldTemplate: Fields,
-  widgets: Widgets,
+  widgets,
   validate,
   liveValidate = false,
   showErrorList = false
@@ -127,7 +127,7 @@ const RJSFForm = ({
       tagName="div"
       fields={fields}
       formData={formData}
-      widgets={{ ...widgets, ...Widgets, ...CmsWidgets }}
+      widgets={{ ...Widgets, ...CAPWidgets, ...CmsWidgets, ...widgets}}
       ObjectFieldTemplate={Objects || ObjectFieldTemplate}
       ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
       FieldTemplate={Fields || FieldTemplate}
