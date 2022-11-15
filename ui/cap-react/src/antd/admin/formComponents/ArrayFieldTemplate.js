@@ -11,10 +11,10 @@ import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
 
 const widgets = {
-  TextWidget: TextWidget
+  TextWidget: TextWidget,
 };
 
-const ArrayFieldTemplate = props => {
+const ArrayFieldTemplate = (props) => {
   const [display, setDisplay] = useState(false);
 
   let schemaPath = [];
@@ -27,12 +27,12 @@ const ArrayFieldTemplate = props => {
 
   let _path = {
     schema: [...props.formContext.schema, ...schemaPath, "items"],
-    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath, "items"]
+    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath, "items"],
   };
 
   let __path = {
     schema: [...props.formContext.schema, ...schemaPath],
-    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath]
+    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath],
   };
 
   return (
@@ -79,15 +79,15 @@ ArrayFieldTemplate.propTypes = {
   addProperty: PropTypes.func,
   schema: PropTypes.object,
   uiSchema: PropTypes.object,
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 function mapDispatchToProps(dispatch) {
   return {
-    addProperty: (path, data) => dispatch(addByPath(path, data))
+    addProperty: (path, data) => dispatch(addByPath(path, data)),
   };
 }
 
 export default connect(
-  state => state,
+  (state) => state,
   mapDispatchToProps
 )(ArrayFieldTemplate);
