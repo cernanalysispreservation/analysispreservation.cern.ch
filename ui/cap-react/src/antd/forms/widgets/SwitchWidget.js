@@ -12,11 +12,11 @@ const CheckboxWidget = ({
   onChange,
   onFocus,
   readonly,
-  value
+  value,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const handleChange = checked => onChange(checked);
+  const handleChange = (checked) => onChange(checked);
 
   const handleBlur = ({ target }) => onBlur(id, target.checked);
 
