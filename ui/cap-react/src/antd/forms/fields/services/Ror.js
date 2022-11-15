@@ -24,7 +24,7 @@ const Ror = ({ data }) => {
 };
 
 Ror.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default Ror;

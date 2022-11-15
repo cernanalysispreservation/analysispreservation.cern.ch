@@ -30,7 +30,7 @@ const Zenodo = ({ data }) => {
 };
 
 Zenodo.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default Zenodo;
