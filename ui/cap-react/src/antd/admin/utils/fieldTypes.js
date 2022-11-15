@@ -186,26 +186,26 @@ const simple = {
         title: {
           type: "string",
           title: "Date",
-          description: "Provide the date you want for this field"
+          description: "Provide the date you want for this field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your date field"
+            "Provide the description you want to be displayed to your date field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
-      }
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     optionsUiSchema: {
       type: "object",
@@ -221,36 +221,36 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
-        type: "string"
+        type: "string",
       },
       uiSchema: {
         "ui:widget": "date",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   CapFiles: {
     title: "File Upload",
