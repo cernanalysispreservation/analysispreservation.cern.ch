@@ -7,7 +7,7 @@ const fields = {
   cernUsers: CernUsers,
   CapFiles: CapFiles,
   idFetcher: ServiceGetter,
-  TitleField
+  TitleField,
 };
 
 export default fields;

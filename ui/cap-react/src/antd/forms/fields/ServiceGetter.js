@@ -10,14 +10,14 @@ import Zenodo from "./services/Zenodo";
 import Orcid from "./services/Orcid";
 const SERVICES = {
   zenodo: {
-    url: "/api/services/zenodo/record/"
+    url: "/api/services/zenodo/record/",
   },
   orcid: {
-    url: "/api/services/orcid/"
+    url: "/api/services/orcid/",
   },
   ror: {
-    url: "/api/services/ror/"
-  }
+    url: "/api/services/ror/",
+  },
 };
 
 const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
@@ -32,11 +32,11 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
     }
   }, []);
 
-  const getContentByName = name => {
+  const getContentByName = (name) => {
     const choices = {
       ror: <Ror data={formData.fetched} />,
       zenodo: <Zenodo data={formData.fetched} />,
-      orcid: <Orcid data={formData.fetched} />
+      orcid: <Orcid data={formData.fetched} />,
     };
     return choices[name];
   };
@@ -44,7 +44,7 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
   const IconFactory = {
     orcid: <ORCidIcon />,
     zenodo: <ZenodoIcon />,
-    ror: <RORIcon />
+    ror: <RORIcon />,
   };
 
   const getId = (service, id) => {
@@ -71,7 +71,7 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
 
     return id;
   };
-  const onSearch = async val => {
+  const onSearch = async (val) => {
     setErrorMessage(undefined);
     const currentServiceApi = SERVICES[service.value] || null;
     const resourceID = getId(service.value, val);
@@ -84,9 +84,9 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
           const resource_data = {
             source: {
               service: service.value,
-              externalID: resourceID
+              externalID: resourceID,
             },
-            fetched: data
+            fetched: data,
           };
           onChange(resource_data);
         } else setErrorMessage("Resource not found or unaccessible");
@@ -114,9 +114,9 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
             <Select
               value={service.value}
               placeHolder="Select service"
-              onChange={val => setService({ value: val })}
+              onChange={(val) => setService({ value: val })}
             >
-              {uiSchema["ui:servicesList"].map(service => (
+              {uiSchema["ui:servicesList"].map((service) => (
                 <Select.Option value={service.value} key={service.value}>
                   {service.value}
                 </Select.Option>
