@@ -16,7 +16,7 @@ import {
   NumberOutlined,
   SwapOutlined,
   TagOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 
 const simple = {
@@ -33,19 +33,19 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your text field"
+            "Provide the title you want to be displayed to your text field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your text field"
+            "Provide the description you want to be displayed to your text field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
+          enumNames: ["ReadOnly", "Editable"],
         },
         pattern: {
           title:
@@ -53,29 +53,29 @@ const simple = {
           description:
             "In order to be active, you have to split your regex into parts in the Field Layout info",
           type: "string",
-          pattern: "^^[w]*$$"
-        }
-      }
+          pattern: "^^[w]*$$",
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
+        "ui:widget": "select",
       },
       pattern: {
         "ui:options": {
           masked_array: [
             {
               fixed: "^",
-              placeholder: "^"
+              placeholder: "^",
             },
             {
               regexp: "^.*$",
-              placeholder: "XXXX"
+              placeholder: "XXXX",
             },
-            { fixed: "$", placeholder: "$" }
-          ]
-        }
-      }
+            { fixed: "$", placeholder: "$" },
+          ],
+        },
+      },
     },
     optionsUiSchema: {
       type: "object",
@@ -91,14 +91,14 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
+                  type: "string",
+                },
+              },
             },
             suggestions: {
               type: "string",
               title: "Add a suggestion URL endpoint",
-              description: "Provide an URL endpoint, to fetch data from there"
+              description: "Provide an URL endpoint, to fetch data from there",
             },
             masked_array: {
               type: "array",
@@ -118,9 +118,9 @@ const simple = {
                         type: "string",
                         title: "Provide the fixed input",
                         description:
-                          "This input is required only when you want to define a fixed value"
-                      }
-                    }
+                          "This input is required only when you want to define a fixed value",
+                      },
+                    },
                   },
                   {
                     title: "Regex Input",
@@ -128,49 +128,50 @@ const simple = {
                       regexp: {
                         type: "string",
                         title: "Provide the regexp of this part",
-                        pattern: "^^[w]*$$"
+                        pattern: "^^[w]*$$",
                       },
                       length: {
                         type: "integer",
                         title: "Provide the max length",
-                        description: "This is the max length of this input part"
+                        description:
+                          "This is the max length of this input part",
                       },
                       placeholder: {
                         type: "string",
                         title: "Placeholder",
-                        description: "Give a placeholder for your input "
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
+                        description: "Give a placeholder for your input ",
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
-        type: "string"
+        type: "string",
       },
       uiSchema: {
         "ui:widget": "text",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   CapFiles: {
     title: "File Upload",
@@ -185,35 +186,35 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "The title of the form field. How it will be displayed on the rendered form.",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "The title of the form field. How it will be displayed on the rendered form.",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
-      }
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     default: {
       schema: {
-        type: "string"
+        type: "string",
       },
       uiSchema: {
-        "ui:field": "CapFiles"
-      }
-    }
+        "ui:field": "CapFiles",
+      },
+    },
   },
   number: {
     title: "Float or Integer",
@@ -228,26 +229,26 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your number field"
+            "Provide the title you want to be displayed to your number field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your number field"
+            "Provide the description you want to be displayed to your number field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
-      }
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     optionsUiSchema: {
       type: "object",
@@ -263,35 +264,35 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
-        type: "number"
+        type: "number",
       },
       uiSchema: {
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   integer: {
     title: "Integer",
@@ -306,26 +307,26 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your integer field"
+            "Provide the title you want to be displayed to your integer field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your integer field"
+            "Provide the description you want to be displayed to your integer field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
-      }
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     optionsUiSchema: {
       type: "object",
@@ -341,35 +342,35 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
-        type: "integer"
+        type: "integer",
       },
       uiSchema: {
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   select: {
     title: "Select Widget",
@@ -390,22 +391,22 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
 
     optionsSchema: {
@@ -416,13 +417,13 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your select field"
+            "Provide the title you want to be displayed to your select field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your select field"
+            "Provide the description you want to be displayed to your select field",
         },
         type: {
           title: "Type",
@@ -431,15 +432,15 @@ const simple = {
           enumNames: [
             "Select one value (text)",
             "Select one value (number)",
-            "Select multiple values"
-          ]
+            "Select multiple values",
+          ],
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
+          enumNames: ["ReadOnly", "Editable"],
+        },
       },
       dependencies: {
         type: {
@@ -447,7 +448,7 @@ const simple = {
             {
               properties: {
                 type: {
-                  enum: ["string"]
+                  enum: ["string"],
                 },
                 enum: {
                   title: "Define your options",
@@ -455,15 +456,15 @@ const simple = {
                   description: "The options for the widget",
                   items: {
                     title: "Option",
-                    type: "string"
-                  }
-                }
-              }
+                    type: "string",
+                  },
+                },
+              },
             },
             {
               properties: {
                 type: {
-                  enum: ["number"]
+                  enum: ["number"],
                 },
                 enum: {
                   title: "Define your options",
@@ -471,15 +472,15 @@ const simple = {
                   description: "The options for the widget",
                   items: {
                     title: "Option",
-                    type: "number"
-                  }
-                }
-              }
+                    type: "number",
+                  },
+                },
+              },
             },
             {
               properties: {
                 type: {
-                  enum: ["array"]
+                  enum: ["array"],
                 },
                 items: {
                   type: "object",
@@ -488,20 +489,20 @@ const simple = {
                     enum: {
                       title: "Options List",
                       type: "array",
-                      items: { type: "string", title: "Option" }
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        }
-      }
+                      items: { type: "string", title: "Option" },
+                    },
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     default: {
       schema: {
@@ -510,18 +511,18 @@ const simple = {
         uniqueItems: true,
         items: {
           type: "string",
-          enum: ["Option A", "Option B", "Option C", "Option D"]
-        }
+          enum: ["Option A", "Option B", "Option C", "Option D"],
+        },
       },
       uiSchema: {
         "ui:widget": "select",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   radio: {
     title: "Radio Widget",
@@ -542,22 +543,22 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     optionsSchema: {
       type: "object",
@@ -567,19 +568,19 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your radio field"
+            "Provide the title you want to be displayed to your radio field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your radio field"
+            "Provide the description you want to be displayed to your radio field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
+          enumNames: ["ReadOnly", "Editable"],
         },
         enum: {
           title: "Define your options",
@@ -587,30 +588,30 @@ const simple = {
           description: "The options for the radio widget",
           items: {
             title: "Radio Option",
-            type: "string"
-          }
-        }
-      }
+            type: "string",
+          },
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     default: {
       schema: {
         type: "string",
-        enum: ["Option A", "Option B"]
+        enum: ["Option A", "Option B"],
       },
       uiSchema: {
         "ui:widget": "radio",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   switch: {
     title: "Switch Widget",
@@ -631,28 +632,28 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
+                  type: "string",
+                },
+              },
             },
             falseToUndefined: {
               type: "boolean",
               title: "Do you want to return undefined instead of false?",
               description:
-                "In some cases the returned value is preferred to be undefined than false"
-            }
-          }
-        }
-      }
+                "In some cases the returned value is preferred to be undefined than false",
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     optionsSchema: {
       type: "object",
@@ -662,47 +663,47 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your switch field"
+            "Provide the title you want to be displayed to your switch field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your switch field"
+            "Provide the description you want to be displayed to your switch field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
+          enumNames: ["ReadOnly", "Editable"],
         },
         type: {
           type: "string",
           title: "The type of the returned value",
           description: "Define the type of the returned value",
           enum: ["boolean", "string", "number"],
-          enumNames: ["Boolean", "String", "Number"]
-        }
-      }
+          enumNames: ["Boolean", "String", "Number"],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     default: {
       schema: {
-        type: "boolean"
+        type: "boolean",
       },
       uiSchema: {
         "ui:widget": "switch",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   checkboxes: {
     title: "Checkbox Widget",
@@ -723,22 +724,22 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     optionsSchema: {
       type: "object",
@@ -748,26 +749,26 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your checkbox field"
+            "Provide the title you want to be displayed to your checkbox field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your checkbox field"
+            "Provide the description you want to be displayed to your checkbox field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
+          enumNames: ["ReadOnly", "Editable"],
         },
         type: {
           title: "Type of the checkbox",
           enum: ["boolean", "string"],
           enumNames: ["One Option", "Multiple Options"],
-          type: "string"
-        }
+          type: "string",
+        },
       },
       dependencies: {
         type: {
@@ -775,14 +776,14 @@ const simple = {
             {
               properties: {
                 type: {
-                  enum: ["boolean"]
-                }
-              }
+                  enum: ["boolean"],
+                },
+              },
             },
             {
               properties: {
                 type: {
-                  enum: ["string"]
+                  enum: ["string"],
                 },
                 enum: {
                   title: "Define your options",
@@ -790,34 +791,34 @@ const simple = {
                   description: "The options for the widget",
                   items: {
                     title: "Option",
-                    type: "string"
-                  }
-                }
-              }
-            }
-          ]
-        }
-      }
+                    type: "string",
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     default: {
       schema: {
         type: "boolean",
-        enum: ["Option A", "Option B"]
+        enum: ["Option A", "Option B"],
       },
       uiSchema: {
         // "ui:widget": "checkboxes",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   richeditor: {
     title: "Rich Editor",
@@ -838,22 +839,22 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     optionsSchema: {
       type: "object",
@@ -863,36 +864,36 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your rich editor field"
+            "Provide the title you want to be displayed to your rich editor field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your rich editor field"
+            "Provide the description you want to be displayed to your rich editor field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
-      }
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     default: {
       schema: {
-        type: "string"
+        type: "string",
       },
       uiSchema: {
         "ui:widget": "richeditor",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   textarea: {
     title: "Text Area",
@@ -913,44 +914,44 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
+                  type: "string",
+                },
+              },
             },
             rows: {
               title: "Rows",
               description: "The number of the textarea rows",
-              type: "number"
+              type: "number",
             },
             maxLength: {
               title: "Max Length",
               description:
                 "Provide a number as the maximum limit of characters, infinity if not provided",
-              type: "number"
+              type: "number",
             },
             minLength: {
               title: "Min Length",
               description:
                 "Provide a number as the minimum limit of charactes, empty if not provded",
-              type: "number"
+              type: "number",
             },
             placeholder: {
               title: "Placeholder",
               description: "Provide a placeholder for the field",
-              type: "string"
-            }
-          }
-        }
-      }
+              type: "string",
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     optionsSchema: {
       type: "object",
@@ -960,40 +961,40 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your textarea field"
+            "Provide the title you want to be displayed to your textarea field",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your textarea field"
+            "Provide the description you want to be displayed to your textarea field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
-      }
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     default: {
       schema: {
-        type: "string"
+        type: "string",
       },
       uiSchema: {
         "ui:widget": "textarea",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   object: {
     title: "JSON Object",
@@ -1008,15 +1009,15 @@ const simple = {
           type: "string",
           title: "Title",
           description:
-            "Provide the title you want to be displayed to your object"
+            "Provide the title you want to be displayed to your object",
         },
         description: {
           type: "string",
           title: "Description",
           description:
-            "Provide the description you want to be displayed to your object"
-        }
-      }
+            "Provide the description you want to be displayed to your object",
+        },
+      },
     },
     optionsUiSchema: {
       type: "object",
@@ -1033,42 +1034,42 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
+                  type: "string",
+                },
+              },
             },
             hidden: {
               type: "boolean",
               title: "Do you want this field to be hidden?",
-              description: "If yes, this field will not be visible in the form"
-            }
-          }
-        }
-      }
+              description: "If yes, this field will not be visible in the form",
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   // reference: {
   //   title: "Reference",
@@ -1100,26 +1101,26 @@ const simple = {
           type: "string",
           title: "Provide a title for the element",
           description:
-            "Provide the title you want to be displayed to your boolean field"
+            "Provide the title you want to be displayed to your boolean field",
         },
         description: {
           type: "string",
           title: "Provide a desctiption for the element",
           description:
-            "Provide the description you want to be displayed to your boolean field"
+            "Provide the description you want to be displayed to your boolean field",
         },
         readOnly: {
           type: "boolean",
           title: "Do you want this field to be read only?",
           enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"]
-        }
-      }
+          enumNames: ["ReadOnly", "Editable"],
+        },
+      },
     },
     optionsSchemaUiSchema: {
       readOnly: {
-        "ui:widget": "select"
-      }
+        "ui:widget": "select",
+      },
     },
     optionsUiSchema: {
       type: "object",
@@ -1135,35 +1136,35 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
-        type: "boolean"
+        type: "boolean",
       },
       uiSchema: {
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   array: {
     title: "Array",
@@ -1179,15 +1180,15 @@ const simple = {
           type: "string",
           title: "Provide a title for your array",
           description:
-            "Provide the title you want to be displayed to your array"
+            "Provide the title you want to be displayed to your array",
         },
         description: {
           title: "Provide a descritpion for the element",
           type: "string",
           description:
-            "Provide the description you want to be displayed to your array"
-        }
-      }
+            "Provide the description you want to be displayed to your array",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1204,37 +1205,37 @@ const simple = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "array",
-        items: {}
+        items: {},
       },
       uiSchema: {
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
-  }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
+  },
 };
 
 const advanced = {
@@ -1250,14 +1251,14 @@ const advanced = {
         title: {
           type: "string",
           title: "Provide a title for the Accordion Field",
-          description: "This title will be used later in the form"
+          description: "This title will be used later in the form",
         },
         description: {
           type: "string",
           title: "Provide a description for the Accordrion Field",
-          description: "This description will be used later in the form"
-        }
-      }
+          description: "This description will be used later in the form",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1274,37 +1275,37 @@ const advanced = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
         "ui:object": "accordionObjectField",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   tabView: {
     title: "Tab Field",
@@ -1318,14 +1319,14 @@ const advanced = {
         title: {
           type: "string",
           title: "Provide a title for the Tab Field",
-          description: "This title will be used later in the form"
+          description: "This title will be used later in the form",
         },
         description: {
           type: "string",
           title: "Provide a description for the Tab Field",
-          description: "This description will be used later in the form"
-        }
-      }
+          description: "This description will be used later in the form",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1342,32 +1343,32 @@ const advanced = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
-        "ui:object": "tabView"
-      }
-    }
+        "ui:object": "tabView",
+      },
+    },
   },
   layerObjectField: {
     title: "Layer Field",
@@ -1381,14 +1382,14 @@ const advanced = {
         title: {
           type: "string",
           title: "Provide a title for the Layer Field",
-          description: "This title will be used later in the form"
+          description: "This title will be used later in the form",
         },
         description: {
           type: "string",
           title: "Provide a description for the Layer Field",
-          description: "This description will be used later in the form"
-        }
-      }
+          description: "This description will be used later in the form",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1405,37 +1406,37 @@ const advanced = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
         "ui:object": "layerObjectField",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   // switch: {
   //   title: "Switch",
@@ -1462,14 +1463,14 @@ const advanced = {
         title: {
           type: "string",
           title: "Provide a title for the Zenodo Field",
-          description: "This title will be used later in the form"
+          description: "This title will be used later in the form",
         },
         description: {
           type: "string",
           title: "Provide a description for the Zenodo Field",
-          description: "This description will be used later in the form"
-        }
-      }
+          description: "This description will be used later in the form",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1486,43 +1487,43 @@ const advanced = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
         "ui:servicesList": [
           {
             value: "zenodo",
-            label: "ZENODO"
-          }
+            label: "ZENODO",
+          },
         ],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   orcid: {
     title: "ORCiD Field",
@@ -1536,14 +1537,14 @@ const advanced = {
         title: {
           type: "string",
           title: "Provide a title for the Orcid Field",
-          description: "This title will be used later in the form"
+          description: "This title will be used later in the form",
         },
         description: {
           type: "string",
           title: "Provide a description for the Orcid Field",
-          description: "This description will be used later in the form"
-        }
-      }
+          description: "This description will be used later in the form",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1560,43 +1561,43 @@ const advanced = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
         "ui:servicesList": [
           {
             value: "orcid",
-            label: "ORCID"
-          }
+            label: "ORCID",
+          },
         ],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   idFetcher: {
     title: "Id Getter Field",
@@ -1610,14 +1611,14 @@ const advanced = {
         title: {
           type: "string",
           title: "Provide a title for the IdFetcher Field",
-          description: "This title will be used later in the form"
+          description: "This title will be used later in the form",
         },
         description: {
           type: "string",
           title: "Provide a description for the Accordrion Field",
-          description: "This description will be used later in the form"
-        }
-      }
+          description: "This description will be used later in the form",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1634,51 +1635,51 @@ const advanced = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
         "ui:servicesList": [
           {
             value: "orcid",
-            label: "ORCID"
+            label: "ORCID",
           },
           {
             value: "ror",
-            label: "ROR"
+            label: "ROR",
           },
           {
             value: "zenodo",
-            label: "ZENODO"
-          }
+            label: "ZENODO",
+          },
         ],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   ror: {
     title: "ROR Field",
@@ -1692,14 +1693,14 @@ const advanced = {
         title: {
           type: "string",
           title: "Provide a title for the Ror Field",
-          description: "This title will be used later in the form"
+          description: "This title will be used later in the form",
         },
         description: {
           type: "string",
           title: "Provide a description for the Ror Field",
-          description: "This description will be used later in the form"
-        }
-      }
+          description: "This description will be used later in the form",
+        },
+      },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
@@ -1716,43 +1717,43 @@ const advanced = {
               properties: {
                 gridColumns: {
                   title: "Grid Columns",
-                  type: "string"
-                }
-              }
-            }
-          }
-        }
-      }
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
         grid: {
           gridColumns: {
-            "ui:widget": "selectColumns"
-          }
-        }
-      }
+            "ui:widget": "selectColumns",
+          },
+        },
+      },
     },
     default: {
       schema: {
         type: "object",
-        properties: {}
+        properties: {},
       },
       uiSchema: {
         "ui:servicesList": [
           {
             value: "ror",
-            label: "ROR"
-          }
+            label: "ROR",
+          },
         ],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
   },
   tags: {
     title: "Tags Field",
@@ -1767,57 +1768,57 @@ const advanced = {
           type: "string",
           title: "Title",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "The title of the form field. How it will be displayed on the rendered form.",
         },
         description: {
           title: "Description",
           type: "string",
           description:
-            "The title of the form field. How it will be displayed on the rendered form."
+            "The title of the form field. How it will be displayed on the rendered form.",
         },
         pattern: {
           type: "string",
           title: "Pattern",
-          description: "Provide a regex expression for your pattern"
+          description: "Provide a regex expression for your pattern",
         },
         delimeter: {
           type: "string",
           descritpion: "Provide a delimeter for your input",
-          title: "Delimeter"
-        }
-      }
+          title: "Delimeter",
+        },
+      },
     },
     optionsUiSchema: {
       type: "object",
-      properties: {}
+      properties: {},
     },
     default: {
       schema: {
-        type: "string"
+        type: "string",
       },
       uiSchema: {
         "ui:widget": "tags",
         "ui:options": {
           grid: {
-            gridColumns: "1/5"
-          }
-        }
-      }
-    }
-  }
+            gridColumns: "1/5",
+          },
+        },
+      },
+    },
+  },
 };
 
 const fields = {
   advanced: {
     title: "Advanced Fields",
     description: "",
-    fields: advanced
+    fields: advanced,
   },
   simple: {
     title: "Simple Fields",
     description: "",
-    fields: simple
-  }
+    fields: simple,
+  },
 };
 
 export default fields;
