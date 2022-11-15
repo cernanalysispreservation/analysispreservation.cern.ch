@@ -20,7 +20,7 @@ import {
   SwapOutlined,
   TagOutlined,
   UnorderedListOutlined,
-  UpOutlined
+  UpOutlined,
 } from "@ant-design/icons";
 import { Row, Space, Tag, Typography } from "antd";
 
@@ -30,14 +30,14 @@ const SchemaTreeItem = ({
   uiSchema,
   schema,
   display,
-  updateDisplay
+  updateDisplay,
 }) => {
   // selects the item for the property editor
   const _onClick = () => {
     selectProperty(path);
   };
 
-  const shouldBoxAcceptChildren = uiSchema => {
+  const shouldBoxAcceptChildren = (uiSchema) => {
     return uiSchema["ui:field"] !== undefined;
   };
 
@@ -83,7 +83,7 @@ const SchemaTreeItem = ({
           uiSchema &&
           uiSchema["ui:options"] &&
           uiSchema["ui:options"].hidden &&
-          0.5
+          0.5,
       }}
     >
       <Row justify="space-between" align="middle">
@@ -128,18 +128,15 @@ SchemaTreeItem.propTypes = {
   colorIndex: PropTypes.string,
   display: PropTypes.bool,
   updateDisplay: PropTypes.func,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectProperty: path => dispatch(selectProperty(path))
+    selectProperty: (path) => dispatch(selectProperty(path)),
   };
 }
-export default connect(
-  state => state,
-  mapDispatchToProps
-)(SchemaTreeItem);
+export default connect((state) => state, mapDispatchToProps)(SchemaTreeItem);
 
 let mapType2Icon = {
   object: <div>&#123;&#32;&#125;</div>,
@@ -161,5 +158,5 @@ let mapType2Icon = {
   zenodo: <CloudDownloadOutlined />,
   orcid: <CloudDownloadOutlined />,
   accordionObjectField: <BorderTopOutlined />,
-  richeditor: <BookOutlined />
+  richeditor: <BookOutlined />,
 };
