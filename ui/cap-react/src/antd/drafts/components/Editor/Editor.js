@@ -17,7 +17,6 @@ const Editor = ({
   history,
   canAdmin,
   canUpdate,
-  currentUser,
 }) => {
   const [mode, setMode] = useState(
     (history.location.state && history.location.state.mode) || "edit"
@@ -29,20 +28,18 @@ const Editor = ({
   let _schema =
     schemas && schemas.schema ? transformSchema(schemas.schema) : null;
 
+  const _formDataChange = (change) => formDataChange(change.formData);
   return (
     <Col span={24} style={{ height: "100%", overflow: "auto" }}>
       <Layout style={{ height: "100%", padding: 0 }}>
         <Header formRef={formRef} mode={mode} updateMode={setMode} />
         <Layout.Content style={{ height: "100%", overflowX: "hidden" }}>
           <Form
-            currentUser={currentUser}
             formData={formData || {}}
             formRef={formRef}
             schema={_schema}
             uiSchema={schemas.uiSchema || {}}
-            onChange={(change) =>
-              _debounce(formDataChange(change.formData), 500)
-            }
+            onChange={_debounce(_formDataChange, 500)}
             extraErrors={extraErrors || {}}
             draftEditor
             readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}
