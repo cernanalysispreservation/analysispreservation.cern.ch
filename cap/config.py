@@ -186,6 +186,11 @@ SCHEMAS_OPTIONS_PREFIX = 'options/'
 #: Path of the folder that contains the default CAP schemas.
 SCHEMAS_DEFAULT_PATH = 'cap/modules/fixtures/schemas'
 
+#: Load Repository JSONSchema
+REPOSITORY_SCHEMA_CONFIG = None
+with open('cap/modules/schemas/config.json') as config_json:
+    REPOSITORY_SCHEMA_CONFIG = json.load(config_json)
+
 # Flask configuration
 # ===================
 # See details on

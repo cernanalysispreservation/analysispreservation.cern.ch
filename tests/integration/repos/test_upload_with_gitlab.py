@@ -440,8 +440,11 @@ def test_create_schema_default_repo_and_attach(m_create_api, m_api, m_populate, 
         "repositories": {
             "gitlab_test": {
                 "host": "gitlab.cern.ch",
-                "authentication": {"type": "cap"},
+                "authentication": {
+                    "type": "cap"
+                },
                 "host": "gitlab.cern.ch",
+                "org_id": "1234",
                 "org_name": "attach-deposit",
                 "repo_name": {
                     "template": "test_info.html",
@@ -453,8 +456,8 @@ def test_create_schema_default_repo_and_attach(m_create_api, m_api, m_populate, 
                     }
                 },
                 "private": False,
-                "license": None,
-                "description": {
+                "license": "",
+                "repo_description": {
                     "template": "test_info.html",
                     "ctx": {
                             "glance_id": {
