@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import ORCidIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/ORCID/ORCidIcon";
 import { Button, Input, Select, Space, Typography } from "antd";
 import ZenodoIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/Zenodo/ZenodoIcon";

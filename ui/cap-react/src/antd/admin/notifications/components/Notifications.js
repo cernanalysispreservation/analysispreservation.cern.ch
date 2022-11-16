@@ -6,13 +6,19 @@ import { CMS_NOTIFICATION } from "../../../../components/routes";
 
 import { PlusOutlined } from "@ant-design/icons";
 
-const Notifications = ({ schemaConfig, pathname, match, history, createNotificationCategory }) => {
-  const [modalVisible, setModalVisible] = useState(false)
+const Notifications = ({
+  schemaConfig,
+  pathname,
+  match,
+  history,
+  createNotificationCategory,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   useEffect(() => {
     let values = [];
-    schemaConfig && schemaConfig.mapKeys(key => values.push(key));
+    schemaConfig && schemaConfig.mapKeys((key) => values.push(key));
     if (match.path == CMS_NOTIFICATION) {
       history.push(pathname + "/" + values[0]);
     }
@@ -29,32 +35,30 @@ const Notifications = ({ schemaConfig, pathname, match, history, createNotificat
         okText="Create"
         cancelText="Cancel"
         onCancel={() => {
-            form.resetFields();
-            setModalVisible(false);
+          form.resetFields();
+          setModalVisible(false);
         }}
         onOk={() => {
-          form
-            .validateFields()
-            .then(values => {
-              form.resetFields();
-              createNotificationCategory(values.title)
-            })
+          form.validateFields().then((values) => {
+            form.resetFields();
+            createNotificationCategory(values.title);
+          });
         }}
       >
-      <Form
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
-      >
-
-        <Form.Item
-          name="title"
-          label="Title"
-          rules={[{ required: true, message: 'Please input the title of collection!' }]}
-        >
-          <Input />
-        </Form.Item>
-      </Form>
+        <Form form={form} layout="vertical" name="form_in_modal">
+          <Form.Item
+            name="title"
+            label="Title"
+            rules={[
+              {
+                required: true,
+                message: "Please input the title of collection!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Form>
       </Modal>
       <Layout.Sider>
         <Typography.Title
@@ -65,19 +69,25 @@ const Notifications = ({ schemaConfig, pathname, match, history, createNotificat
         </Typography.Title>
         <Menu selectable selectedKeys={category} theme="dark">
           {schemaConfig &&
-            schemaConfig.entrySeq().map(item => (
+            schemaConfig.entrySeq().map((item) => (
               <Menu.Item
                 key={item[0]}
                 onClick={() =>
-                  history.push(`${match.url.split('/notifications/')[0]}/notifications/${item[0]}`)
+                  history.push(
+                    `${match.url.split("/notifications/")[0]}/notifications/${
+                      item[0]
+                    }`
+                  )
                 }
               >
                 {item[0]}
               </Menu.Item>
             ))}
         </Menu>
-        <hr/>
-        <Button icon={<PlusOutlined />} onClick={() => setModalVisible(true)}>Add category</Button>
+        <hr />
+        <Button icon={<PlusOutlined />} onClick={() => setModalVisible(true)}>
+          Add category
+        </Button>
       </Layout.Sider>
       <Layout.Content>
         <NotificationList category={category} />
@@ -88,7 +98,7 @@ const Notifications = ({ schemaConfig, pathname, match, history, createNotificat
 
 Notifications.propTypes = {
   schemaConfig: PropTypes.object,
-  pathname: PropTypes.string
+  pathname: PropTypes.string,
 };
 
 export default Notifications;
