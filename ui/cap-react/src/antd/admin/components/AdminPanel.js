@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Layout } from "antd";
 import Header from "../containers/Header";
-import { CMS, CMS_EDIT, CMS_NEW } from "../../routes";
+import { CMS, CMS_EDIT, CMS_NEW, CMS_NOTIFICATION } from "../../routes";
 import DocumentTitle from "../../partials/DocumentTitle";
 import { Route, Switch } from "react-router-dom";
 import SchemaWizard from "../containers/SchemaWizard";
