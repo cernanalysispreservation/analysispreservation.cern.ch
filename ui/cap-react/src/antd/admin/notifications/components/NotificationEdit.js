@@ -9,16 +9,11 @@ const NotificationEdit = ({
   match,
   history,
   removeNotification,
-  updateNotificationData
+  updateNotificationData,
 }) => {
   const { id, category } = match.params;
 
-  const formData =
-    schemaConfig &&
-    schemaConfig
-      .get(category)
-      .get(id)
-      .toJS();
+  const formData = schemaConfig && schemaConfig.get(category).get(id).toJS();
 
   return (
     <React.Fragment>
@@ -58,7 +53,7 @@ NotificationEdit.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
   removeNotification: PropTypes.func,
-  updateNotificationData: PropTypes.func
+  updateNotificationData: PropTypes.func,
 };
 
 export default NotificationEdit;
