@@ -12,7 +12,7 @@ export const initialState = Map({
   reviewLoading: false,
   reviewError: null,
   error: null,
-  files: Map({})
+  files: Map({}),
 });
 export const loadingState = Map({
   id: null,
@@ -23,7 +23,7 @@ export const loadingState = Map({
   reviewLoading: false,
   reviewError: null,
   error: null,
-  files: Map({})
+  files: Map({}),
 });
 export const errorState = Map({
   id: null,
@@ -34,7 +34,7 @@ export const errorState = Map({
   reviewLoading: false,
   reviewError: null,
   error: ERROR,
-  files: Map({})
+  files: Map({}),
 });
 
 export const publishedSuccessState = Map({
@@ -44,7 +44,7 @@ export const publishedSuccessState = Map({
   schema: {
     fullname: "CMS Statistics Questionnaire",
     name: "cms-stats-questionnaire",
-    version: "0.0.2"
+    version: "0.0.2",
   },
   access: {
     "record-admin": {
@@ -52,38 +52,38 @@ export const publishedSuccessState = Map({
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
+          profile: {},
+        },
+      ],
     },
     "record-read": {
       roles: ["cms-member@cern.ch"],
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
+          profile: {},
+        },
+      ],
     },
     "record-update": {
       roles: [],
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
-    }
+          profile: {},
+        },
+      ],
+    },
   },
   can_review: true,
   can_update: true,
   created: "2021-08-27T07:35:35.077238+00:00",
   created_by: {
     email: "cms@inveniosoftware.org",
-    profile: {}
+    profile: {},
   },
   metadata: {
-    general_title: "Hello"
+    general_title: "Hello",
   },
   schemas: {
     config_reviewable: true,
@@ -92,80 +92,8 @@ export const publishedSuccessState = Map({
       additionalProperties: false,
       properties: {},
       title: "CMS Statistics Questionnaire",
-      type: "object"
-    }
-  },
-  review: [],
-  uiSchema: null,
-  draft_id: "1023b92bc26e4bc3904c8640667e6600",
-  status: "published",
-  loading: false,
-  reviewLoading: false,
-  error: null,
-  files: Map({}),
-  labels: [],
-  is_owner: false,
-  experiment: "CMS",
-  revision: 0,
-  updated: "2021-08-27T07:35:35.077246+00:00",
-  type: "record"
-});
-export const reviewErrorState = Map({
-  id: "CAP.CMS.6WKQ.PKY3",
-  data: null,
-  schema: {
-    fullname: "CMS Statistics Questionnaire",
-    name: "cms-stats-questionnaire",
-    version: "0.0.2"
-  },
-  access: {
-    "record-admin": {
-      roles: [],
-      users: [
-        {
-          email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
+      type: "object",
     },
-    "record-read": {
-      roles: ["cms-member@cern.ch"],
-      users: [
-        {
-          email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
-    },
-    "record-update": {
-      roles: [],
-      users: [
-        {
-          email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
-    }
-  },
-  can_review: true,
-  can_update: true,
-  created: "2021-08-27T07:35:35.077238+00:00",
-  created_by: {
-    email: "cms@inveniosoftware.org",
-    profile: {}
-  },
-  metadata: {
-    general_title: "Hello"
-  },
-  schemas: {
-    config_reviewable: true,
-    schema: {
-      $schema: "http://json-schema.org/draft-04/schema#",
-      additionalProperties: false,
-      properties: {},
-      title: "CMS Statistics Questionnaire",
-      type: "object"
-    }
   },
   review: [],
   uiSchema: null,
@@ -181,15 +109,14 @@ export const reviewErrorState = Map({
   revision: 0,
   updated: "2021-08-27T07:35:35.077246+00:00",
   type: "record",
-  reviewError: ERROR
 });
-export const reviewSuccessState = Map({
+export const reviewErrorState = Map({
   id: "CAP.CMS.6WKQ.PKY3",
   data: null,
   schema: {
     fullname: "CMS Statistics Questionnaire",
     name: "cms-stats-questionnaire",
-    version: "0.0.2"
+    version: "0.0.2",
   },
   access: {
     "record-admin": {
@@ -197,38 +124,38 @@ export const reviewSuccessState = Map({
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
+          profile: {},
+        },
+      ],
     },
     "record-read": {
       roles: ["cms-member@cern.ch"],
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
+          profile: {},
+        },
+      ],
     },
     "record-update": {
       roles: [],
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
-    }
+          profile: {},
+        },
+      ],
+    },
   },
   can_review: true,
   can_update: true,
   created: "2021-08-27T07:35:35.077238+00:00",
   created_by: {
     email: "cms@inveniosoftware.org",
-    profile: {}
+    profile: {},
   },
   metadata: {
-    general_title: "Hello"
+    general_title: "Hello",
   },
   schemas: {
     config_reviewable: true,
@@ -237,8 +164,81 @@ export const reviewSuccessState = Map({
       additionalProperties: false,
       properties: {},
       title: "CMS Statistics Questionnaire",
-      type: "object"
-    }
+      type: "object",
+    },
+  },
+  review: [],
+  uiSchema: null,
+  draft_id: "1023b92bc26e4bc3904c8640667e6600",
+  status: "published",
+  loading: false,
+  reviewLoading: false,
+  error: null,
+  files: Map({}),
+  labels: [],
+  is_owner: false,
+  experiment: "CMS",
+  revision: 0,
+  updated: "2021-08-27T07:35:35.077246+00:00",
+  type: "record",
+  reviewError: ERROR,
+});
+export const reviewSuccessState = Map({
+  id: "CAP.CMS.6WKQ.PKY3",
+  data: null,
+  schema: {
+    fullname: "CMS Statistics Questionnaire",
+    name: "cms-stats-questionnaire",
+    version: "0.0.2",
+  },
+  access: {
+    "record-admin": {
+      roles: [],
+      users: [
+        {
+          email: "cms@inveniosoftware.org",
+          profile: {},
+        },
+      ],
+    },
+    "record-read": {
+      roles: ["cms-member@cern.ch"],
+      users: [
+        {
+          email: "cms@inveniosoftware.org",
+          profile: {},
+        },
+      ],
+    },
+    "record-update": {
+      roles: [],
+      users: [
+        {
+          email: "cms@inveniosoftware.org",
+          profile: {},
+        },
+      ],
+    },
+  },
+  can_review: true,
+  can_update: true,
+  created: "2021-08-27T07:35:35.077238+00:00",
+  created_by: {
+    email: "cms@inveniosoftware.org",
+    profile: {},
+  },
+  metadata: {
+    general_title: "Hello",
+  },
+  schemas: {
+    config_reviewable: true,
+    schema: {
+      $schema: "http://json-schema.org/draft-04/schema#",
+      additionalProperties: false,
+      properties: {},
+      title: "CMS Statistics Questionnaire",
+      type: "object",
+    },
   },
   uiSchema: null,
   draft_id: "1023b92bc26e4bc3904c8640667e6600",
@@ -254,7 +254,7 @@ export const reviewSuccessState = Map({
   revision: 0,
   updated: "2021-08-27T07:35:35.077246+00:00",
   type: "record",
-  review: REVIEW
+  review: REVIEW,
 });
 
 export const publishedSuccessPayload = {
@@ -262,7 +262,7 @@ export const publishedSuccessPayload = {
   schema: {
     fullname: "CMS Statistics Questionnaire",
     name: "cms-stats-questionnaire",
-    version: "0.0.2"
+    version: "0.0.2",
   },
   access: {
     "record-admin": {
@@ -270,38 +270,38 @@ export const publishedSuccessPayload = {
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
+          profile: {},
+        },
+      ],
     },
     "record-read": {
       roles: ["cms-member@cern.ch"],
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
+          profile: {},
+        },
+      ],
     },
     "record-update": {
       roles: [],
       users: [
         {
           email: "cms@inveniosoftware.org",
-          profile: {}
-        }
-      ]
-    }
+          profile: {},
+        },
+      ],
+    },
   },
   can_review: true,
   can_update: true,
   created: "2021-08-27T07:35:35.077238+00:00",
   created_by: {
     email: "cms@inveniosoftware.org",
-    profile: {}
+    profile: {},
   },
   metadata: {
-    general_title: "Hello"
+    general_title: "Hello",
   },
   schemas: {
     config_reviewable: true,
@@ -310,8 +310,8 @@ export const publishedSuccessPayload = {
       additionalProperties: false,
       properties: {},
       title: "CMS Statistics Questionnaire",
-      type: "object"
-    }
+      type: "object",
+    },
   },
   review: [],
   draft_id: "1023b92bc26e4bc3904c8640667e6600",
@@ -323,5 +323,5 @@ export const publishedSuccessPayload = {
   revision: 0,
   updated: "2021-08-27T07:35:35.077246+00:00",
   type: "record",
-  files: Map({})
+  files: Map({}),
 };
