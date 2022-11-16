@@ -5,6 +5,8 @@ import fieldTypes from "../utils/fieldTypes";
 import { Button, Card, Row } from "antd";
 import { UpOutlined } from "@ant-design/icons";
 
+import widgets from "../formComponents/widgets";
+
 const PropertyKeyEditorForm = ({
   uiSchema = {},
   schema = {},
@@ -12,7 +14,7 @@ const PropertyKeyEditorForm = ({
   onChange = null,
   optionsSchemaObject,
   optionsUiSchemaObject,
-  title = ""
+  title = "",
 }) => {
   const [display, setDisplay] = useState(true);
 
@@ -47,7 +49,7 @@ const PropertyKeyEditorForm = ({
   if (!type) return;
   const objs = {
     ...fieldTypes.advanced.fields,
-    ...fieldTypes.simple.fields
+    ...fieldTypes.simple.fields,
   };
 
   return (
@@ -57,8 +59,9 @@ const PropertyKeyEditorForm = ({
     >
       {display ? (
         <Form
-          schema={objs[type][`${optionsSchemaObject}`]}
-          uiSchema={objs[type][`${optionsUiSchemaObject}`]}
+          schema={objs[type][`${optionsSchemaObject}`] || {}}
+          uiSchema={objs[type][`${optionsUiSchemaObject}`] || {}}
+          widgets={widgets}
           formData={formData}
           onChange={onChange}
         />
@@ -78,7 +81,7 @@ PropertyKeyEditorForm.propTypes = {
   onChange: PropTypes.func,
   optionsSchemaObject: PropTypes.object,
   optionsUiSchemaObject: PropTypes.object,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default PropertyKeyEditorForm;
