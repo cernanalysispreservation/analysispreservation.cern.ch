@@ -14,7 +14,8 @@ import {
   SCHEMA_INIT_REQUEST,
   UPDATE_NOTIFICATION_BY_INDEX,
   ADD_NEW_NOTIFICATION,
-  REMOVE_NOTIFICATION
+  REMOVE_NOTIFICATION,
+  CREATE_NOTIFICATION_GROUP
 } from "../actions/schemaWizard";
 
 const initialState = Map({
@@ -101,6 +102,8 @@ export default function schemaReducer(state = initialState, action) {
       return state.setIn(action.payload.path, action.payload.item);
     case REMOVE_NOTIFICATION:
       return state.setIn(action.payload.path, action.payload.notification);
+    case CREATE_NOTIFICATION_GROUP:
+      return state.setIn(action.path, []);
     default:
       return state;
   }

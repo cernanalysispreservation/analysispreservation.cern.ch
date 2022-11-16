@@ -26,6 +26,7 @@ export const CURRENT_UPDATE_UI_SCHEMA_PATH = "CURRENT_UPDATE_UI_SCHEMA_PATH";
 export const UPDATE_NOTIFICATION_BY_INDEX = "UPDATE_NOTIFICATION_BY_INDEX";
 export const ADD_NEW_NOTIFICATION = "ADD_NEW_NOTIFICATION";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
+export const CREATE_NOTIFICATION_GROUP = "CREATE_NOTIFICATION_GROUP";
 
 const NOTIFICATIONS = {
   notifications: {
@@ -372,6 +373,19 @@ export function renameIdByPath(item, newName) {
   };
 }
 
+export function createNotificationCategory(category) {
+  return {
+    type: CREATE_NOTIFICATION_GROUP,
+    path: [
+      "config",
+      "config",
+      "notifications",
+      "actions",
+      category
+    ]
+  }
+}
+
 export function createNewNotification(category) {
   return function(dispatch, getState) {
     const valuesPath = [
@@ -382,7 +396,7 @@ export function createNewNotification(category) {
       category
     ];
 
-    let notifications = getState().schemaWizard.getIn(valuesPath);
+    let notifications = getState().schemaWizard.getIn(valuesPath, []);
     notifications = notifications.push(fromJS({}));
 
     dispatch(
