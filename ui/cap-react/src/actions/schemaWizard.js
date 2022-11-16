@@ -32,42 +32,42 @@ const NOTIFICATIONS = {
   notifications: {
     actions: {
       review: [],
-      publish: []
-    }
-  }
+      publish: [],
+    },
+  },
 };
 
 export function updateNotification(data) {
   return {
     type: UPDATE_NOTIFICATION_BY_INDEX,
-    payload: data
+    payload: data,
   };
 }
 
 export function addNewNotification(item) {
   return {
     type: ADD_NEW_NOTIFICATION,
-    payload: item
+    payload: item,
   };
 }
 
 export function deleteNotification(notification) {
   return {
     type: REMOVE_NOTIFICATION,
-    payload: notification
+    payload: notification,
   };
 }
 
 export function schemaError(error) {
   return {
     type: SCHEMA_ERROR,
-    payload: error
+    payload: error,
   };
 }
 
 export function schemaInitRequest() {
   return {
-    type: SCHEMA_INIT_REQUEST
+    type: SCHEMA_INIT_REQUEST,
   };
 }
 
@@ -76,7 +76,7 @@ export function schemaInit(id, data, configs = {}) {
     type: SCHEMA_INIT,
     id,
     data,
-    configs
+    configs,
   };
 }
 
@@ -87,12 +87,12 @@ export function enableCreateMode() {
 export function selectProperty(path) {
   return {
     type: PROPERTY_SELECT,
-    path
+    path,
   };
 }
 
 export function initSchemaWizard(data) {
-  return function(dispatch) {
+  return function (dispatch) {
     const { id, deposit_schema, deposit_options, ...configs } = data;
 
     configs.config = merge(configs.config, NOTIFICATIONS);
@@ -113,11 +113,11 @@ export function getSchema(name, version = null) {
   if (version)
     schemaLink = `/api/jsonschemas/${name}/${version}?resolve=1&config=1`;
   else schemaLink = `/api/jsonschemas/${name}?resolve=1&config=1`;
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(schemaInitRequest());
     axios
       .get(schemaLink)
-      .then(resp => {
+      .then((resp) => {
         let schema = resp.data;
         let { id, deposit_schema, deposit_options, ...configs } = schema;
 
@@ -132,11 +132,11 @@ export function getSchema(name, version = null) {
             )
           );
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(push(CMS));
         notification.error({
           message: "Schema fetch failed",
-          description: "Make sure that schema name and version are correct "
+          description: "Make sure that schema name and version are correct ",
         });
         dispatch(schemaError(err));
       });
@@ -144,20 +144,20 @@ export function getSchema(name, version = null) {
 }
 
 export function getSchemasLocalStorage() {
-  return function() {
+  return function () {
     //let availableSchemas = localStorage.getItem("availableSchemas");
     let availableSchemas = JSON.parse(availableSchemas);
   };
 }
 
 export function createContentType(content_type) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(schemaInitRequest());
 
     let { name, description } = content_type;
     const _id = slugify(Math.random().toString() + "_" + name);
     let config = {
-      config: merge({ fullname: name }, NOTIFICATIONS)
+      config: merge({ fullname: name }, NOTIFICATIONS),
     };
 
     dispatch(schemaInit(_id, _initSchemaStructure(name, description), config));
@@ -166,18 +166,18 @@ export function createContentType(content_type) {
 }
 
 export function selectContentType(id) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(push(`${CMS}/${id}/builder`));
   };
 }
 
 export function selectFieldType(path, change) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(updateByPath(path, change));
   };
 }
 export function updateCurrentSchemaWithField(schema) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     let state = getState().schemaWizard;
     let propKey = state.getIn(["field", "propKey"]);
     let path = state.getIn(["field", "path"]).toJS();
@@ -190,7 +190,7 @@ export function updateCurrentSchemaWithField(schema) {
 export function updateSchemaConfig(config) {
   return {
     type: CURRENT_UPDATE_CONFIG,
-    config
+    config,
   };
 }
 
@@ -198,7 +198,7 @@ export function updateSchemaByPath(path, value) {
   return {
     type: CURRENT_UPDATE_SCHEMA_PATH,
     path,
-    value
+    value,
   };
 }
 
@@ -206,7 +206,7 @@ export function updateUiSchemaByPath(path, value) {
   return {
     type: CURRENT_UPDATE_UI_SCHEMA_PATH,
     path,
-    value
+    value,
   };
 }
 
@@ -214,12 +214,12 @@ export function updateByPath(path, value) {
   return {
     type: CURRENT_UPDATE_PATH,
     path,
-    value
+    value,
   };
 }
 
 export function addByPath({ schema: path, uiSchema: uiPath }, data) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     let schema = getState()
       .schemaWizard.getIn(["current", "schema", ...path])
       .toJS();
@@ -227,9 +227,7 @@ export function addByPath({ schema: path, uiSchema: uiPath }, data) {
     let _path = path;
     let _uiPath = uiPath;
 
-    let random_name = `item_${Math.random()
-      .toString(36)
-      .substring(2, 8)}`;
+    let random_name = `item_${Math.random().toString(36).substring(2, 8)}`;
 
     if (schema.type) {
       if (schema.type == "object") {
@@ -250,7 +248,7 @@ export function addByPath({ schema: path, uiSchema: uiPath }, data) {
 export function initAddProperty(path) {
   return {
     type: ADD_PROPERTY_INIT,
-    path
+    path,
   };
 }
 
@@ -258,13 +256,13 @@ export function addProperty(path, key) {
   return {
     type: ADD_PROPERTY,
     path,
-    key
+    key,
   };
 }
 
 // delete item from schema and uiSchema
 export function deleteByPath(item) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const { path, uiPath } = item;
     const uiItemToDelete = uiPath.pop();
 
@@ -289,7 +287,7 @@ export function deleteByPath(item) {
     if (uiSchema["ui:order"]) {
       // remove the itemToDelete from the ui:order
       uiSchema["ui:order"] = uiSchema["ui:order"].filter(
-        item => item !== uiItemToDelete
+        (item) => item !== uiItemToDelete
       );
     }
 
@@ -303,7 +301,7 @@ export function deleteByPath(item) {
 
 // update the id field of a property
 export function renameIdByPath(item, newName) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const path = item.path;
     const uiPath = item.uiPath;
 
@@ -316,7 +314,7 @@ export function renameIdByPath(item, newName) {
     // check if the new id is empty or exact same with the current id
     if (newName === itemToDelete || newName === "") {
       notification.warning({
-        description: "Make sure that the new id is different and not empty"
+        description: "Make sure that the new id is different and not empty",
       });
       return;
     }
@@ -334,7 +332,7 @@ export function renameIdByPath(item, newName) {
     // make sure that the new name is unique among sibling widgets
     if (keys.includes(newName)) {
       notification.error({
-        description: "The id should be unique, this name already exists"
+        description: "The id should be unique, this name already exists",
       });
       return;
     }
@@ -367,7 +365,7 @@ export function renameIdByPath(item, newName) {
     dispatch(
       selectProperty({
         schema: [...path, newName],
-        uiSchema: [...uiPath, newName]
+        uiSchema: [...uiPath, newName],
       })
     );
   };
@@ -376,24 +374,18 @@ export function renameIdByPath(item, newName) {
 export function createNotificationCategory(category) {
   return {
     type: CREATE_NOTIFICATION_GROUP,
-    path: [
-      "config",
-      "config",
-      "notifications",
-      "actions",
-      category
-    ]
-  }
+    path: ["config", "config", "notifications", "actions", category],
+  };
 }
 
 export function createNewNotification(category) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const valuesPath = [
       "config",
       "config",
       "notifications",
       "actions",
-      category
+      category,
     ];
 
     let notifications = getState().schemaWizard.getIn(valuesPath, []);
@@ -404,7 +396,7 @@ export function createNewNotification(category) {
         path: valuesPath,
         item: notifications,
         category,
-        index: notifications.size - 1
+        index: notifications.size - 1,
       })
     );
     const pathname = getState().router.location.pathname;
@@ -414,7 +406,7 @@ export function createNewNotification(category) {
 }
 
 export function removeNotification(index, category) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const path = ["config", "config", "notifications", "actions", category];
 
     let notification = getState().schemaWizard.getIn(path);
@@ -427,14 +419,14 @@ export function removeNotification(index, category) {
 }
 
 export function updateNotificationData(data, id, category) {
-  return function(dispatch) {
+  return function (dispatch) {
     const valuesPath = [
       "config",
       "config",
       "notifications",
       "actions",
       category,
-      id
+      id,
     ];
 
     dispatch(updateNotification({ path: valuesPath, value: fromJS(data) }));
@@ -442,14 +434,14 @@ export function updateNotificationData(data, id, category) {
 }
 
 export function saveSchemaChanges() {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const state = getState();
     const config = state.schemaWizard.get("config");
     const pathname = state.router.location.pathname;
     const sendData = {
       deposit_schema: state.schemaWizard.getIn(["current", "schema"]).toJS(),
       deposit_options: state.schemaWizard.getIn(["current", "uiSchema"]).toJS(),
-      ...config.toJS()
+      ...config.toJS(),
     };
 
     // check if there is no name or version
@@ -461,7 +453,7 @@ export function saveSchemaChanges() {
     ) {
       notification.warning({
         description: "schema name fullname and version are required",
-        message: "Missing information"
+        message: "Missing information",
       });
       return;
     }
@@ -477,7 +469,7 @@ export function saveSchemaChanges() {
     if (isSchemaUpdated && !isConfigVersionUpdated) {
       notification.warning({
         message: "These changes require new version",
-        description: "please make sure to update the version of the schema"
+        description: "please make sure to update the version of the schema",
       });
       return;
     }
@@ -485,7 +477,7 @@ export function saveSchemaChanges() {
     if (pathname.startsWith(CMS_NEW) || isSchemaUpdated) {
       return axios
         .post("/api/jsonschemas", sendData)
-        .then(res => {
+        .then((res) => {
           const { deposit_options, deposit_schema, ...configs } = res.data;
           configs.config = merge(configs.config, NOTIFICATIONS);
           dispatch(
@@ -497,7 +489,7 @@ export function saveSchemaChanges() {
           );
           notification.success({
             message: "New schema created",
-            description: "schema successfully created"
+            description: "schema successfully created",
           });
           dispatch(updateDepositGroups());
           dispatch(
@@ -506,7 +498,7 @@ export function saveSchemaChanges() {
             )
           );
         })
-        .catch(err => {
+        .catch((err) => {
           let errorHeading, errorMessage;
           if (typeof err.response.data.message === "object") {
             let errMsg = Object.entries(err.response.data.message);
@@ -520,7 +512,7 @@ export function saveSchemaChanges() {
           }
           notification.error({
             message: errorHeading,
-            description: errorMessage
+            description: errorMessage,
           });
         });
     }
@@ -533,13 +525,13 @@ export function saveSchemaChanges() {
       .then(() =>
         notification.success({
           message: "Schema Updated",
-          description: "changes successfully applied"
+          description: "changes successfully applied",
         })
       )
       .catch(() =>
         notification.error({
           message: "Schema Updates",
-          description: "Error while saving, please try again"
+          description: "Error while saving, please try again",
         })
       );
   };

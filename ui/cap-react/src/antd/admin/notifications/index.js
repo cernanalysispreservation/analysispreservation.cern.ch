@@ -1,9 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import {
-  CMS_NOTIFICATION,
-  CMS_NOTIFICATION_EDIT
-} from "../../routes";
+import { CMS_NOTIFICATION, CMS_NOTIFICATION_EDIT } from "../../routes";
 import Notifications from "./containers/Notifications";
 import NotificationEdit from "./containers/NotificationEdit";
 

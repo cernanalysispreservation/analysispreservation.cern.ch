@@ -12,7 +12,7 @@ import {
   FormOutlined,
   NotificationOutlined,
   SaveOutlined,
-  SettingOutlined
+  SettingOutlined,
 } from "@ant-design/icons";
 import { CMS } from "../../routes";
 import { configSchema } from "../utils/schemaSettings";
@@ -26,7 +26,7 @@ const Header = ({
   uiSchema,
   initialUiSchema,
   initialSchema,
-  updateSchemaConfig
+  updateSchemaConfig,
 }) => {
   const [diffModal, setDiffModal] = useState(false);
   const [settingsModal, setSettingsModal] = useState(false);
@@ -37,7 +37,7 @@ const Header = ({
       {
         deposit_schema: schema.toJS(),
         deposit_options: uiSchema.toJS(),
-        ...config.toJS()
+        ...config.toJS(),
       },
       null,
       4
@@ -49,7 +49,7 @@ const Header = ({
     a.download = "fileName.json";
     a.click();
   };
-  const _renderSchemaPreview = schemaPreviewDisplay => {
+  const _renderSchemaPreview = (schemaPreviewDisplay) => {
     let previews = {
       uiSchema: (
         <AceEditor
@@ -82,7 +82,7 @@ const Header = ({
           right={schema.toJS()}
           show={false}
         />
-      )
+      ),
     };
 
     return previews[schemaPreviewDisplay]; //?
@@ -114,13 +114,13 @@ const Header = ({
         visible={settingsModal}
         onCancel={() => setSettingsModal(false)}
         okButtonProps={{
-          onClick: () => setSettingsModal(false)
+          onClick: () => setSettingsModal(false),
         }}
       >
         <Form
           {...configSchema}
           formData={config.toJS()}
-          onChange={data => updateSchemaConfig(data.formData)}
+          onChange={(data) => updateSchemaConfig(data.formData)}
         />
       </Modal>
 
@@ -141,7 +141,7 @@ const Header = ({
             pathname.includes("/builder") ? ["builder"] : ["notifications"]
           }
           style={{
-            justifyContent: "flex-end"
+            justifyContent: "flex-end",
           }}
         >
           <Menu.Item
@@ -170,7 +170,7 @@ const Header = ({
           theme="dark"
           selectable={false}
           style={{
-            justifyContent: screens.md ? "flex-end" : "center"
+            justifyContent: screens.md ? "flex-end" : "center",
           }}
         >
           <Menu.Item icon={<DownloadOutlined />} onClick={() => _getSchema()}>
@@ -206,7 +206,7 @@ Header.propTypes = {
   pushPath: PropTypes.func,
   updateSchemaConfig: PropTypes.func,
   saveSchemaChanges: PropTypes.func,
-  pathname: PropTypes.string
+  pathname: PropTypes.string,
 };
 
 export default Header;
