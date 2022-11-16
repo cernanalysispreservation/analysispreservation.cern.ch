@@ -9,8 +9,7 @@ import CAPWidgets from "./widgets";
 import objectPath from "object-path";
 
 import "./Form.less";
-import { Form, Widgets } from "@rjsf/antd";
-import CmsWidgets from "../admin/formComponents/widgets";
+import { Form } from "@rjsf/antd";
 
 const RJSFForm = ({
   formRef,
@@ -28,6 +27,7 @@ const RJSFForm = ({
   FieldTemplate: Fields,
   widgets,
   validate,
+  tagName,
   liveValidate = false,
   showErrorList = false,
 }) => {
@@ -58,10 +58,10 @@ const RJSFForm = ({
       ref={formRef}
       schema={schema}
       uiSchema={uiSchema}
-      tagName="div"
+      tagName={tagName}
       fields={fields}
       formData={formData}
-      widgets={{ ...Widgets, ...CAPWidgets, ...CmsWidgets, ...widgets }}
+      widgets={{ ...CAPWidgets, ...widgets }}
       ObjectFieldTemplate={Objects || ObjectFieldTemplate}
       ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
       FieldTemplate={Fields || FieldTemplate}
