@@ -14,35 +14,29 @@ const Reviews = ({
   clearErrors,
   loading,
   error = null,
-  action = "add"
+  action = "add",
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [form] = Form.useForm();
 
-  useEffect(
-    () => {
-      // if the modal is open and then we have an error update
-      // but we do not have anything it means that the request went through
-      // so we can just close the modal
-      if (!loading && !error && showModal) {
-        setShowModal(false);
-      }
-    },
-    [loading, error]
-  );
+  useEffect(() => {
+    // if the modal is open and then we have an error update
+    // but we do not have anything it means that the request went through
+    // so we can just close the modal
+    if (!loading && !error && showModal) {
+      setShowModal(false);
+    }
+  }, [loading, error]);
 
-  useEffect(
-    () => {
-      // when there is a close modal functionality
-      // lets clear everything
-      if (!showModal) {
-        clearErrors();
-        form.resetFields();
-      }
-    },
-    [showModal]
-  );
+  useEffect(() => {
+    // when there is a close modal functionality
+    // lets clear everything
+    if (!showModal) {
+      clearErrors();
+      form.resetFields();
+    }
+  }, [showModal]);
 
   // if the draft is not reviewable then return null
   if (!review) return null;
@@ -56,7 +50,7 @@ const Reviews = ({
         okButtonProps={{
           onClick: () => form.submit(),
           "data-cy": "submitReview",
-          loading: loading
+          loading: loading,
         }}
         onCancel={() => setShowModal(false)}
       >
@@ -65,19 +59,19 @@ const Reviews = ({
           layout="vertical"
           initialValues={{
             comment: "",
-            reviewType: null
+            reviewType: null,
           }}
-          onFinish={values => {
+          onFinish={(values) => {
             isReviewingPublished
               ? reviewPublished({
                   body: values.comment,
-                  type: values.reviewType
+                  type: values.reviewType,
                 })
               : reviewDraft(
                   draft_id,
                   {
                     body: values.comment,
-                    type: values.reviewType
+                    type: values.reviewType,
                   },
                   "submitted"
                 );
@@ -190,7 +184,7 @@ Reviews.propTypes = {
   loading: PropTypes.bool,
   publishedReviewError: PropTypes.string,
   draftReviewError: PropTypes.string,
-  action: PropTypes.string
+  action: PropTypes.string,
 };
 
 export default Reviews;

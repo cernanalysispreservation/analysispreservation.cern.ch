@@ -40,7 +40,7 @@ const initialState = Map({
   status: null,
   type: null,
   updated: null,
-  fileVersions: fromJS([])
+  fileVersions: fromJS([]),
 });
 
 export default function draftsReducer(state = initialState, action) {
@@ -73,7 +73,7 @@ export default function draftsReducer(state = initialState, action) {
     case commonActions.FETCH_SCHEMA_ERROR:
       return state.set("schemaErrors", [
         ...state.get("schemaErrors"),
-        action.error
+        action.error,
       ]);
     case commonActions.FETCH_SCHEMA_SUCCESS: {
       let { schemaId, ...schemas } = action.schema;
@@ -85,7 +85,7 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set(
           "uploadFiles",
-          state.get("uploadFiles").filter(x => x.progress != 1)
+          state.get("uploadFiles").filter((x) => x.progress != 1)
         )
         .set("fileManagerActiveLayer", !state.get("fileManagerActiveLayer"))
         .set("fileManagerLayerSelectable", action.selectable)
@@ -127,7 +127,7 @@ export default function draftsReducer(state = initialState, action) {
         .set("extraErrors", {})
         .set("message", {
           status: "ok",
-          msg: "All changes saved"
+          msg: "All changes saved",
         })
         .merge(Map(action.draft));
     case draftItemActions.UPDATE_DRAFT_ERROR:
@@ -198,7 +198,7 @@ export default function draftsReducer(state = initialState, action) {
         .set(
           "bucket",
           action.bucket.contents.length > 0
-            ? Map(action.bucket.contents.map(item => [item.key, item]))
+            ? Map(action.bucket.contents.map((item) => [item.key, item]))
             : Map({})
         )
         .set("bucketFileLinks", action.bucket.links);
@@ -208,19 +208,19 @@ export default function draftsReducer(state = initialState, action) {
     case filesActions.PATH_SELECTED:
       return state.set("pathSelected", {
         type: action.path_type,
-        path: action.path
+        path: action.path,
       });
     case filesActions.UPLOAD_FILE_REQUEST:
       return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
         status: "uploading",
-        progress: 0
+        progress: 0,
       });
     case filesActions.UPLOAD_FILE_PROGRESS:
       return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
         status: "uploading",
-        progress: action.progress
+        progress: action.progress,
       });
     case filesActions.UPLOAD_FILE_SUCCESS:
       return state
@@ -229,24 +229,24 @@ export default function draftsReducer(state = initialState, action) {
           status: "done",
           progress: 1,
           mimetype: action.data.mimetype,
-          data: action.data
+          data: action.data,
         })
         .setIn(["bucket", action.filename], { ...action.data, status: "done" });
     case filesActions.UPLOAD_ACTION_SUCCESS:
       return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
-        status: "fetching"
+        status: "fetching",
       });
     case filesActions.UPLOAD_FILE_ERROR:
       return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
         status: "error",
-        error: action.error.response.data
+        error: action.error.response.data,
       });
     case filesActions.DELETE_FILE_REQUEST:
       return state.setIn(["bucket", action.filename], {
         key: action.filename,
-        status: "deleting"
+        status: "deleting",
       });
     case filesActions.DELETE_FILE_SUCCESS:
       return state.removeIn(["bucket", action.filename]);
@@ -254,7 +254,7 @@ export default function draftsReducer(state = initialState, action) {
       return state.setIn(["bucket", action.filename], {
         key: action.filename,
         status: "error",
-        error: action.error.response.data
+        error: action.error.response.data,
       });
 
     // Draft integrations

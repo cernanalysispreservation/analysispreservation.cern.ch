@@ -3,7 +3,7 @@ import { Map } from "immutable";
 import {
   FETCH_SCHEMA_REQUEST,
   FETCH_SCHEMA_SUCCESS,
-  FETCH_SCHEMA_ERROR
+  FETCH_SCHEMA_ERROR,
 } from "../actions/common";
 
 import {
@@ -14,7 +14,7 @@ import {
   REVIEW_PUBISHED_REQUEST,
   REVIEW_PUBISHED_SUCCESS,
   INIT_STATE,
-  CLEAR_REVIEW_PUBISHED_ERROR
+  CLEAR_REVIEW_PUBISHED_ERROR,
 } from "../actions/published";
 
 const initialState = Map({
@@ -26,7 +26,7 @@ const initialState = Map({
   reviewLoading: false,
   reviewError: null,
   error: null,
-  files: Map({})
+  files: Map({}),
 });
 
 export default function publishedReducer(state = initialState, action) {
@@ -51,7 +51,7 @@ export default function publishedReducer(state = initialState, action) {
         .set(
           "files",
           action.published.files.length > 0
-            ? Map(action.published.files.map(item => [item.key, item]))
+            ? Map(action.published.files.map((item) => [item.key, item]))
             : Map({})
         );
     case PUBLISHED_ITEM_ERROR:

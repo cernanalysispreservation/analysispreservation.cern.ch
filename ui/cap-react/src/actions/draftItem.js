@@ -181,7 +181,7 @@ export const reviewDraftError = (error) => ({
 });
 
 export const clearDraftReviewErrors = () => ({
-  type: CLEAR_REVIEW_DRAFT_ERROR
+  type: CLEAR_REVIEW_DRAFT_ERROR,
 });
 
 export const editPublishedRequest = () => ({ type: EDIT_PUBLISHED_REQUEST });

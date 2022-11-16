@@ -2,11 +2,11 @@ import { connect } from "react-redux";
 import Reviews from "./Reviews";
 import {
   clearDraftReviewErrors,
-  reviewDraft
+  reviewDraft,
 } from "../../../actions/draftItem";
 import {
   reviewPublished,
-  clearPublishedReviewErrors
+  clearPublishedReviewErrors,
 } from "../../../actions/published";
 
 const mapStateToProps = (state, props) => ({
@@ -22,7 +22,7 @@ const mapStateToProps = (state, props) => ({
   draft_id: state.draftItem.get("id"),
   error: props.isReviewingPublished
     ? state.published.get("reviewError")
-    : state.draftItem.get("reviewError")
+    : state.draftItem.get("reviewError"),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
@@ -32,10 +32,7 @@ const mapDispatchToProps = (dispatch, props) => ({
     dispatch(reviewPublished(review, message)),
   clearErrors: props.isReviewingPublished
     ? () => dispatch(clearPublishedReviewErrors())
-    : () => dispatch(clearDraftReviewErrors())
+    : () => dispatch(clearDraftReviewErrors()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Reviews);
+export default connect(mapStateToProps, mapDispatchToProps)(Reviews);

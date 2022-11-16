@@ -13,54 +13,54 @@ export const INIT_STATE = "INIT_STATE";
 
 export function reviewPublishedRequest() {
   return {
-    type: REVIEW_PUBISHED_REQUEST
+    type: REVIEW_PUBISHED_REQUEST,
   };
 }
 export function reviewPublishedSuccess(data) {
   return {
     type: REVIEW_PUBISHED_SUCCESS,
-    payload: data
+    payload: data,
   };
 }
 export function reviewPublishedError(error) {
   return {
     type: REVIEW_PUBISHED_ERROR,
-    error
+    error,
   };
 }
 export function clearPublishedReviewErrors() {
   return {
-    type: CLEAR_REVIEW_PUBISHED_ERROR
+    type: CLEAR_REVIEW_PUBISHED_ERROR,
   };
 }
 
 export function publishedItemRequest() {
   return {
-    type: PUBLISHED_ITEM_REQUEST
+    type: PUBLISHED_ITEM_REQUEST,
   };
 }
 
 export function publishedItemSuccess(published) {
   return {
     type: PUBLISHED_ITEM_SUCCESS,
-    published
+    published,
   };
 }
 export function clearPublishedState() {
   return {
-    type: INIT_STATE
+    type: INIT_STATE,
   };
 }
 
 export function publishedItemError(error) {
   return {
     type: PUBLISHED_ITEM_ERROR,
-    error
+    error,
   };
 }
 
 export function getPublishedItem(id) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(publishedItemRequest());
 
     let uri = `/api/records/${id}`;
@@ -68,31 +68,31 @@ export function getPublishedItem(id) {
       .get(uri, {
         headers: {
           Accept: "application/form+json",
-          "Cache-Control": "no-cache"
-        }
+          "Cache-Control": "no-cache",
+        },
       })
-      .then(response => {
+      .then((response) => {
         let {
-          links: { bucket: bucket_link = null }
+          links: { bucket: bucket_link = null },
         } = response.data;
 
         if (bucket_link) {
           axios
             .get(bucket_link)
-            .then(res => {
+            .then((res) => {
               if (res.data["contents"] && res.data["contents"].length > 0) {
                 response.data["files"] = res.data["contents"];
               }
               dispatch(publishedItemSuccess(response.data));
             })
-            .catch(error => {
+            .catch((error) => {
               dispatch(publishedItemError(error.response.data));
             });
         } else {
           dispatch(publishedItemSuccess(response.data));
         }
       })
-      .catch(error => {
+      .catch((error) => {
         return dispatch(publishedItemError(error.response.data));
       });
   };
@@ -108,16 +108,16 @@ export function reviewPublished(review, message = "submitted") {
       .post(uri, review, {
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/form+json"
-        }
+          Accept: "application/form+json",
+        },
       })
-      .then(response => {
+      .then((response) => {
         notification.success({
-          description: `Your review has been ${message}`
+          description: `Your review has been ${message}`,
         });
         return dispatch(reviewPublishedSuccess(response.data));
       })
-      .catch(error => {
+      .catch((error) => {
         return dispatch(reviewPublishedError(error.response.data));
       });
   };
