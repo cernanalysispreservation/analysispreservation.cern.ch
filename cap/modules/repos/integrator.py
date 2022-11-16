@@ -72,7 +72,7 @@ def create_schema_default_repo_and_attach(record_uuid, data):
 
     name = populate_template_from_ctx(record, repo_config.get('repo_name'))
     desc = populate_template_from_ctx(
-        record, repo_config.get('description'), module='custom'
+        record, repo_config.get('repo_description'), module='custom'
     )
     organization = repo_config.get('org_name')
 

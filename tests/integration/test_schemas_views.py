@@ -769,6 +769,204 @@ def test_post_when_validation_errors_returns_400(
     }
 
 
+def test_post_with_valid_config_validation_github(client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(
+            name='cms-schema',
+            version='1.2.3',
+            fullname='CMS Schema 1.2.3',
+            config={
+                "repositories": {
+                    "github": {
+                        "display_name": "Test Analysis Repo",
+                        "display_description": "Main Description",
+                        "host": "github.com",
+                        "authentication": {
+                            "type": "cap"
+                        },
+                        "repo_name": {
+                            "template": "test"
+                        },
+                        "org_name": "test_org",
+                        "repo_description": {
+                            "template": "this is a test repo"
+                        },
+                        "private": False,
+                        "license": "MIT"
+                    }
+                }
+            },
+            deposit_schema={'title': 'deposit_schema'},
+            deposit_options={'title': 'deposit_options'},
+            record_schema={'title': 'record_schema'},
+            record_options={'title': 'record_options'},
+            record_mapping={
+                'mappings': {
+                    'doc': {
+                        'properties': {
+                            'title': {
+                                'type': 'text'
+                            }
+                        }
+                    }
+                }
+            },
+            deposit_mapping={
+                'mappings':
+                    {
+                        'doc': {
+                            'properties': {
+                                'keyword': {
+                                    'type': 'keyword'
+                                }
+                            }
+                        }
+                    }
+            },
+            is_indexed=True,
+        ))
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 200
+
+
+def test_post_with_valid_config_validation_gitlab(client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(
+            name='cms-schema',
+            version='1.2.3',
+            fullname='CMS Schema 1.2.3',
+            config={
+                "repositories": {
+                    "gitlab": {
+                        "display_name": "Test Analysis Repo",
+                        "display_description": "Main Description",
+                        "host": "gitlab.cern.ch",
+                        "org_id": "12345",
+                        "authentication": {
+                            "type": "cap"
+                        },
+                        "repo_name": {
+                            "template": "test"
+                        },
+                        "org_name": "test_org",
+                        "repo_description": {
+                            "template": "this is a test repo"
+                        },
+                        "private": False,
+                        "license": "MIT"
+                    }
+                }
+            },
+            deposit_schema={'title': 'deposit_schema'},
+            deposit_options={'title': 'deposit_options'},
+            record_schema={'title': 'record_schema'},
+            record_options={'title': 'record_options'},
+            record_mapping={
+                'mappings': {
+                    'doc': {
+                        'properties': {
+                            'title': {
+                                'type': 'text'
+                            }
+                        }
+                    }
+                }
+            },
+            deposit_mapping={
+                'mappings':
+                    {
+                        'doc': {
+                            'properties': {
+                                'keyword': {
+                                    'type': 'keyword'
+                                }
+                            }
+                        }
+                    }
+            },
+            is_indexed=True,
+        ))
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 200
+
+
+def test_post_with_invalid_config_validation_gitlab(client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(
+            name='cms-schema',
+            version='1.2.3',
+            fullname='CMS Schema 1.2.3',
+            config={
+                "repositories": {
+                    "gitlab": {
+                        "display_name": "Test Analysis Repo",
+                        "display_description": "Main Description",
+                        "host": "gitlab.cern.ch",
+                        "authentication": {
+                            "type": "cap"
+                        },
+                        "repo_name": {
+                            "template": "test"
+                        },
+                        "org_name": "test_org",
+                        "repo_description": {
+                            "template": "this is a test repo"
+                        },
+                        "private": False,
+                        "license": "MIT"
+                    }
+                }
+            },
+            deposit_schema={'title': 'deposit_schema'},
+            deposit_options={'title': 'deposit_options'},
+            record_schema={'title': 'record_schema'},
+            record_options={'title': 'record_options'},
+            record_mapping={
+                'mappings': {
+                    'doc': {
+                        'properties': {
+                            'title': {
+                                'type': 'text'
+                            }
+                        }
+                    }
+                }
+            },
+            deposit_mapping={
+                'mappings':
+                    {
+                        'doc': {
+                            'properties': {
+                                'keyword': {
+                                    'type': 'keyword'
+                                }
+                            }
+                        }
+                    }
+            },
+            is_indexed=True,
+        ))
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Wrong Repository configuration.'
+
+
 #####################################
 # api/jsonschemas/{id}/{version}  [PUT]
 #####################################

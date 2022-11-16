@@ -32,14 +32,18 @@ from invenio_access.permissions import authenticated_user
 from invenio_cache import current_cache
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_rest.errors import FieldError
 from invenio_search import current_search
 from invenio_search import current_search_client as es
+from jsonschema import Draft4Validator
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.orm import validates
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.utils import import_string
 
+from cap.modules.deposit.errors import WrongJSONSchemaError
+from cap.modules.records.errors import get_error_path
 from cap.types import json_type
 
 from .permissions import SchemaAdminAction, SchemaReadAction
@@ -194,6 +198,28 @@ class Schema(db.Model):
                 '[, ", *, \\, <, | , , , > , ?]'
             )
         return name
+
+    @validates('config')
+    def validate_config(self, key, value):
+        """Validate the config."""
+        config_data = current_app.config.get('REPOSITORY_SCHEMA_CONFIG')
+        if not config_data:
+            raise JSONSchemaNotFound(
+                schema="Deposit/Record Schema Configuration"
+            )
+        if value:
+            validator = Draft4Validator(config_data)
+            errors = []
+            if config_data is not None:
+                for error in validator.iter_errors(value):
+                    errors.append(
+                        FieldError(get_error_path(error), str(error.message))
+                    )
+            if errors:
+                raise WrongJSONSchemaError(
+                    "Wrong Repository configuration.", errors=errors
+                )
+        return value
 
     def serialize(self, resolve=False):
         """Serialize schema model."""

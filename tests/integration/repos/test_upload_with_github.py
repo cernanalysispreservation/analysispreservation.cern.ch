@@ -980,9 +980,10 @@ def test_create_schema_default_repo_and_attach(m_create_api, m_api, m_populate, 
     SAMPLE_CONFIG = {
         "repositories": {
             "github": {
-                "admin": "ADMIN_GITHUB",
                 "org_name": "attach-deposit",
-                "authentication": {"type": "cap"},
+                "authentication": {
+                    "type": "cap"
+                },
                 "host": "github.com",
                 "repo_name": {
                     "template": "test_info.html",
@@ -994,8 +995,8 @@ def test_create_schema_default_repo_and_attach(m_create_api, m_api, m_populate, 
                     }
                 },
                 "private": False,
-                "license": None,
-                "description": {
+                "license": "",
+                "repo_description": {
                     "template": "test_info.html",
                     "ctx": {
                             "glance_id": {
