@@ -120,7 +120,7 @@ def test_get_deposits_returns_deposits_that_user_has_read_or_admin_access_to(
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.get('/deposits/', headers=auth_headers_for_user(other_user))
     hits = resp.json['hits']['hits']
@@ -155,7 +155,7 @@ def test_get_deposits_returns_deposits_that_users_egroups_have_read_or_admin_acc
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.get('/deposits/', headers=auth_headers_for_user(other_user))
     hits = resp.json['hits']['hits']

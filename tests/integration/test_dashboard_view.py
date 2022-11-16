@@ -160,7 +160,7 @@ def test_dashboard_view_returns_drafts(action, client, users,
         other_user_deposit['_deposit']['id']),
                 headers=auth_headers_for_user(other_user) + json_headers,
                 data=json.dumps(permissions))
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.get('/dashboard', headers=auth_headers_for_user(user))
     drafts = [x['id'] for x in resp.json['drafts']['data']]

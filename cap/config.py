@@ -573,6 +573,9 @@ SEARCH_ELASTIC_HOSTS = [
 
 SEARCH_GET_MAPPINGS_IMP = 'cap.modules.schemas.imp.get_mappings'
 
+#: Any index and alias will be prefixed with this string.
+SEARCH_INDEX_PREFIX = 'dev-'
+
 # Admin
 # ========
 ADMIN_PERMISSION_FACTORY = (

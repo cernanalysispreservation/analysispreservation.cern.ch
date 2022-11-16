@@ -164,26 +164,42 @@ class Schema(db.Model):
     @property
     def deposit_index(self):
         """Get deposit index name."""
-        path = urljoin(current_app.config['SCHEMAS_DEPOSIT_PREFIX'], str(self))
+        path = urljoin(
+            current_app.config.get('SEARCH_INDEX_PREFIX', '')
+            + current_app.config['SCHEMAS_DEPOSIT_PREFIX'],
+            str(self),
+        )
         return name_to_es_name(path)
 
     @property
     def record_index(self):
         """Get record index name."""
-        path = urljoin(current_app.config['SCHEMAS_RECORD_PREFIX'], str(self))
+        path = urljoin(
+            current_app.config.get('SEARCH_INDEX_PREFIX', '')
+            + current_app.config['SCHEMAS_RECORD_PREFIX'],
+            str(self),
+        )
         return name_to_es_name(path)
 
     @property
     def deposit_aliases(self):
         """Get ES deposits aliases."""
         name = name_to_es_name(self.name)
-        return ['deposits', 'deposits-records', 'deposits-{}'.format(name)]
+        aliases = ['deposits', 'deposits-records', 'deposits-{}'.format(name)]
+        index_prefix = current_app.config.get('SEARCH_INDEX_PREFIX', None)
+        if index_prefix:
+            return [index_prefix + alias for alias in aliases]
+        return aliases
 
     @property
     def record_aliases(self):
         """Get ES records aliases."""
         name = name_to_es_name(self.name)
-        return ['records', 'records-{}'.format(name)]
+        aliases = ['records', 'records-{}'.format(name)]
+        index_prefix = current_app.config.get('SEARCH_INDEX_PREFIX', None)
+        if index_prefix:
+            return [index_prefix + alias for alias in aliases]
+        return aliases
 
     @validates('name')
     def validate_name(self, key, name):
