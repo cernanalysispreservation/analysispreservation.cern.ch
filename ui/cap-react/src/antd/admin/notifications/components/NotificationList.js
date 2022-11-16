@@ -8,12 +8,12 @@ const NotificationList = ({
   category,
   schemaConfig,
   history,
-  createNewNotification
+  createNewNotification,
 }) => {
   const items = schemaConfig && schemaConfig.get(category);
   const {
     location: { pathname },
-    push
+    push,
   } = history;
 
   return (
@@ -58,7 +58,7 @@ NotificationList.propTypes = {
   category: PropTypes.string,
   schemaConfig: PropTypes.object,
   history: PropTypes.object,
-  createNewNotification: PropTypes.func
+  createNewNotification: PropTypes.func,
 };
 
 export default withRouter(NotificationList);

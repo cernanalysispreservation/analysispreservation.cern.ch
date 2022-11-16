@@ -15,17 +15,17 @@ import {
   UPDATE_NOTIFICATION_BY_INDEX,
   ADD_NEW_NOTIFICATION,
   REMOVE_NOTIFICATION,
-  CREATE_NOTIFICATION_GROUP
+  CREATE_NOTIFICATION_GROUP,
 } from "../actions/schemaWizard";
 
 const initialState = Map({
   current: fromJS({
     schema: {},
-    uiSchema: {}
+    uiSchema: {},
   }),
   initial: fromJS({
     schema: {},
-    uiSchema: {}
+    uiSchema: {},
   }),
   initialConfig: {},
   config: Map({}),
@@ -33,7 +33,7 @@ const initialState = Map({
   propKeyEditor: null,
   error: null,
   loader: false,
-  version: null
+  version: null,
 });
 
 export default function schemaReducer(state = initialState, action) {
@@ -69,7 +69,7 @@ export default function schemaReducer(state = initialState, action) {
         "field",
         fromJS({
           path: action.path.schema,
-          uiPath: action.path.uiSchema
+          uiPath: action.path.uiSchema,
         })
       );
     case CREATE_MODE_ENABLE:

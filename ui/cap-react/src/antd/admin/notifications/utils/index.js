@@ -15,15 +15,15 @@ export const schema = {
               name: {
                 type: "string",
                 title: "Variable name",
-                description: "Provide the value for the path"
+                description: "Provide the value for the path",
               },
               path: {
                 type: "string",
                 title: "Variable Path",
-                description: "Provide the path for the value"
-              }
+                description: "Provide the path for the value",
+              },
             },
-            required: ["name", "path"]
+            required: ["name", "path"],
           },
           {
             title: "Select from Method",
@@ -41,14 +41,14 @@ export const schema = {
                   "published_id",
                   "draft_id",
                   "revision",
-                  "draft_revision"
-                ]
-              }
+                  "draft_revision",
+                ],
+              },
             },
-            required: ["method"]
-          }
-        ]
-      }
+            required: ["method"],
+          },
+        ],
+      },
     },
     mails: {
       type: "object",
@@ -61,8 +61,8 @@ export const schema = {
           items: {
             type: "string",
             title: "Mail",
-            description: "Provide simple email without parameters"
-          }
+            description: "Provide simple email without parameters",
+          },
         },
         formatted: {
           type: "array",
@@ -74,15 +74,15 @@ export const schema = {
             properties: {
               template: {
                 type: "string",
-                title: "Template"
+                title: "Template",
               },
               ctx: {
-                $ref: "#/definitions/ctx"
-              }
-            }
-          }
-        }
-      }
+                $ref: "#/definitions/ctx",
+              },
+            },
+          },
+        },
+      },
     },
     method: {
       type: "array",
@@ -100,9 +100,9 @@ export const schema = {
           "working_url",
           "submitter_url",
           "reviewer_url",
-          "cms_stats_committee_by_pag"
-        ]
-      }
+          "cms_stats_committee_by_pag",
+        ],
+      },
     },
     checks: {
       title: "Checks",
@@ -111,18 +111,18 @@ export const schema = {
       properties: {
         op: {
           type: "string",
-          title: "AND/OR"
+          title: "AND/OR",
         },
         checks: {
           type: "array",
           items: {
             oneOf: [
               { $ref: "#/definitions/checks" },
-              { $ref: "#/definitions/condition" }
-            ]
-          }
-        }
-      }
+              { $ref: "#/definitions/condition" },
+            ],
+          },
+        },
+      },
     },
     condition: {
       type: "object",
@@ -131,20 +131,20 @@ export const schema = {
       properties: {
         path: {
           type: "string",
-          title: "Path"
+          title: "Path",
         },
         condition: {
           type: "string",
-          title: "Condition"
+          title: "Condition",
         },
         value: {
           type: "string",
-          title: "Value"
+          title: "Value",
         },
         params: {
-          type: "object"
-        }
-      }
+          type: "object",
+        },
+      },
     },
     params: {
       type: "array",
@@ -154,19 +154,19 @@ export const schema = {
         properties: {
           name: {
             type: "string",
-            title: "Name"
+            title: "Name",
           },
           path: {
             type: "string",
-            title: "Path"
-          }
-        }
-      }
-    }
+            title: "Path",
+          },
+        },
+      },
+    },
   },
   properties: {
     ctx: {
-      $ref: "#/definitions/ctx"
+      $ref: "#/definitions/ctx",
     },
     subject: {
       title: "Email Subject",
@@ -176,7 +176,7 @@ export const schema = {
           type: "object",
           additionalProperties: false,
           description:
-            "The default email temaplate for this action will be used"
+            "The default email temaplate for this action will be used",
         },
         {
           type: "object",
@@ -185,12 +185,12 @@ export const schema = {
           properties: {
             template: {
               type: "string",
-              title: "Template string (Jinja format)"
+              title: "Template string (Jinja format)",
             },
             ctx: {
-              $ref: "#/definitions/ctx"
-            }
-          }
+              $ref: "#/definitions/ctx",
+            },
+          },
         },
         {
           type: "object",
@@ -199,14 +199,14 @@ export const schema = {
           properties: {
             template_file: {
               type: "string",
-              title: "Template file (path)"
+              title: "Template file (path)",
             },
             ctx: {
-              $ref: "#/definitions/ctx"
-            }
-          }
-        }
-      ]
+              $ref: "#/definitions/ctx",
+            },
+          },
+        },
+      ],
     },
     body: {
       title: "Email Body",
@@ -215,7 +215,7 @@ export const schema = {
           title: "Default Body",
           type: "object",
           description:
-            "The default email temaplate for this action will be used"
+            "The default email temaplate for this action will be used",
         },
         {
           type: "object",
@@ -224,20 +224,20 @@ export const schema = {
           properties: {
             template_file: {
               type: "string",
-              title: "Template file (path)"
+              title: "Template file (path)",
             },
             ctx: {
-              $ref: "#/definitions/ctx"
+              $ref: "#/definitions/ctx",
             },
             base_template: {
               type: "string",
-              title: "Base Template"
+              title: "Base Template",
             },
             plain: {
               type: "boolean",
-              title: "Plain text or HTML"
-            }
-          }
+              title: "Plain text or HTML",
+            },
+          },
         },
         {
           type: "object",
@@ -246,22 +246,22 @@ export const schema = {
           properties: {
             template: {
               type: "string",
-              title: "Template type (string/path)"
+              title: "Template type (string/path)",
             },
             ctx: {
-              $ref: "#/definitions/ctx"
+              $ref: "#/definitions/ctx",
             },
             base_template: {
               type: "string",
-              title: "Base Template"
+              title: "Base Template",
             },
             plain: {
               type: "boolean",
-              title: "Plain text or HTML"
-            }
-          }
-        }
-      ]
+              title: "Plain text or HTML",
+            },
+          },
+        },
+      ],
     },
     recipients: {
       type: "object",
@@ -291,13 +291,13 @@ export const schema = {
               //   }
               // },
               mails: {
-                $ref: "#/definitions/mails"
+                $ref: "#/definitions/mails",
               },
               method: {
-                $ref: "#/definitions/method"
-              }
-            }
-          }
+                $ref: "#/definitions/method",
+              },
+            },
+          },
         },
         bcc: {
           type: "array",
@@ -308,13 +308,13 @@ export const schema = {
             type: "object",
             properties: {
               mails: {
-                $ref: "#/definitions/mails"
+                $ref: "#/definitions/mails",
               },
               method: {
-                $ref: "#/definitions/method"
-              }
-            }
-          }
+                $ref: "#/definitions/method",
+              },
+            },
+          },
         },
         cc: {
           type: "array",
@@ -325,17 +325,17 @@ export const schema = {
             type: "object",
             properties: {
               mails: {
-                $ref: "#/definitions/mails"
+                $ref: "#/definitions/mails",
               },
               method: {
-                $ref: "#/definitions/method"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+                $ref: "#/definitions/method",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const uiSchema = {
@@ -347,50 +347,50 @@ export const uiSchema = {
           "method",
           "path",
           // {"type": "text", "text": " -|- "},
-          "name"
-        ]
-      }
-    }
+          "name",
+        ],
+      },
+    },
   },
   subject: {
     ctx: {
-      "ui:field": "ctx"
+      "ui:field": "ctx",
     },
     template: {
-      "ui:widget": "richeditor"
+      "ui:widget": "richeditor",
     },
     template_file: {
-      "ui:widget": "richeditor"
-    }
+      "ui:widget": "richeditor",
+    },
   },
   body: {
     ctx: {
-      "ui:field": "ctx"
+      "ui:field": "ctx",
     },
     template: {
-      "ui:widget": "richeditor"
+      "ui:widget": "richeditor",
     },
     template_file: {
-      "ui:widget": "richeditor"
-    }
+      "ui:widget": "richeditor",
+    },
   },
   recipients: {
     recipients: {
       items: {
         mails: {
           default: {
-            "ui:widget": "tags"
+            "ui:widget": "tags",
           },
           formatted: {
             "ui:array": "default",
             items: {
               ctx: {
-                "ui:field": "ctx"
-              }
-            }
-          }
-        }
-      }
+                "ui:field": "ctx",
+              },
+            },
+          },
+        },
+      },
     },
     bcc: {
       items: {
@@ -399,12 +399,12 @@ export const uiSchema = {
             "ui:array": "default",
             items: {
               ctx: {
-                "ui:field": "ctx"
-              }
-            }
-          }
-        }
-      }
+                "ui:field": "ctx",
+              },
+            },
+          },
+        },
+      },
     },
     cc: {
       items: {
@@ -413,13 +413,13 @@ export const uiSchema = {
             "ui:array": "default",
             items: {
               ctx: {
-                "ui:field": "ctx"
-              }
-            }
-          }
-        }
-      }
-    }
+                "ui:field": "ctx",
+              },
+            },
+          },
+        },
+      },
+    },
   },
-  "ui:order": ["ctx", "recipients", "subject", "body"]
+  "ui:order": ["ctx", "recipients", "subject", "body"],
 };
