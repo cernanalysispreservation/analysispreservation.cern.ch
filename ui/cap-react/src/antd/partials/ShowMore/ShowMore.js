@@ -10,7 +10,7 @@ const ShowMore = ({
   item,
   more,
   updateExpandState,
-  category
+  category,
 }) => {
   const categoryIsIncluded = more.includes(category);
   const [current, setCurrent] = useState(
@@ -18,45 +18,39 @@ const ShowMore = ({
   );
   const [filter] = useState(item.size > limit);
 
-  const updateShowMore = category => {
+  const updateShowMore = (category) => {
     updateExpandState(category);
   };
 
-  useEffect(
-    () => {
-      setCurrent(categoryIsIncluded ? item : item.slice(0, limit));
-    },
-    [more]
-  );
+  useEffect(() => {
+    setCurrent(categoryIsIncluded ? item : item.slice(0, limit));
+  }, [more]);
 
   return children({
     current,
     updateShowMore,
     filter,
     countMore: item.size - limit,
-    expanded: categoryIsIncluded
+    expanded: categoryIsIncluded,
   });
 };
 
 ShowMore.propTypes = {
   children: PropTypes.func,
   item: PropTypes.array,
-  limit: PropTypes.number
+  limit: PropTypes.number,
 };
 
 function mapStateToProps(state) {
   return {
-    more: state.search.get("showMore")
+    more: state.search.get("showMore"),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateExpandState: val => dispatch(updateExpandState(val))
+    updateExpandState: (val) => dispatch(updateExpandState(val)),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ShowMore);
+export default connect(mapStateToProps, mapDispatchToProps)(ShowMore);

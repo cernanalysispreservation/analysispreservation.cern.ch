@@ -54,7 +54,7 @@ const FacetItem = ({
                 item.keySeq().map((key, index) => {
                   return key.startsWith("facet_") ? (
                     <div key={index + key} style={{ paddingLeft: "10px" }}>
-                      {item.getIn([key, "buckets"]).map(nested => (
+                      {item.getIn([key, "buckets"]).map((nested) => (
                         <Row
                           flex
                           key={nested.get("key")}
@@ -67,7 +67,7 @@ const FacetItem = ({
                         >
                           <Checkbox
                             name={String(nested.get("key"))}
-                            onChange={e =>
+                            onChange={(e) =>
                               onChange(key.replace("facet_", ""), e)
                             }
                             checked={isAggSelected(
@@ -92,7 +92,7 @@ const FacetItem = ({
                         </Row>
                       ))}
                     </div>
-                  ) : null
+                  ) : null;
                 })}
             </React.Fragment>
           ))}
