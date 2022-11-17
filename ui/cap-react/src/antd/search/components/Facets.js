@@ -10,7 +10,7 @@ import {
   Row,
   Space,
   Switch,
-  Typography
+  Typography,
 } from "antd";
 import Facet from "./Facet";
 import FacetsLoading from "../Loaders/Facets";
@@ -26,13 +26,13 @@ const Facets = ({
   loading,
   match,
   pathname,
-  results
+  results,
 }) => {
   const [showHelp, setShowHelp] = useState(false);
-  const constructFacets = aggs => {
+  const constructFacets = (aggs) => {
     let facets = Map({});
     aggs &&
-      aggs.mapEntries(item => {
+      aggs.mapEntries((item) => {
         if (!Map.isMap(item[1])) return;
         let obj = Map({});
         if (item[0].startsWith("facet_")) {
@@ -79,7 +79,7 @@ const Facets = ({
     let facet = constructFacets(aggs);
     let catType;
     if (facet[category]) {
-      let temp = Object.keys(facet[category].buckets[0]).filter(name =>
+      let temp = Object.keys(facet[category].buckets[0]).filter((name) =>
         name.startsWith("facet_")
       );
       temp.length ? (catType = temp[0].replace("facet_", "")) : null;
@@ -89,14 +89,14 @@ const Facets = ({
     let eligibleItems = [];
 
     if (facet[category] && facet[category].buckets) {
-      selectedAggs[category].map(item => {
-        facet[category].buckets.map(bucket => {
+      selectedAggs[category].map((item) => {
+        facet[category].buckets.map((bucket) => {
           if (item === bucket.key) {
-            let bucketListName = Object.keys(bucket).filter(b =>
+            let bucketListName = Object.keys(bucket).filter((b) =>
               b.startsWith("facet_")
             );
             if (bucket[bucketListName[0]]) {
-              bucket[bucketListName[0]].buckets.map(bucket_item =>
+              bucket[bucketListName[0]].buckets.map((bucket_item) =>
                 eligibleItems.push(bucket_item.key)
               );
             }
@@ -107,7 +107,7 @@ const Facets = ({
       let intersect = [];
 
       if (selectedAggs[catType]) {
-        intersect = eligibleItems.filter(item =>
+        intersect = eligibleItems.filter((item) =>
           selectedAggs[catType].includes(item)
         );
         selectedAggs[catType] = intersect;
@@ -121,7 +121,7 @@ const Facets = ({
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, selectedAggs)
-      )}`
+      )}`,
     };
 
     history.push(location);
@@ -149,7 +149,7 @@ const Facets = ({
     }
 
     history.replace({
-      search: `${queryString.stringify(currentParams)}`
+      search: `${queryString.stringify(currentParams)}`,
     });
   };
   const updateCategory = () => {
@@ -167,7 +167,7 @@ const Facets = ({
       let currentParams = queryString.parse(history.location.search);
       currentParams["collection"] = anatype;
       newLocation = {
-        search: queryString.stringify(currentParams)
+        search: queryString.stringify(currentParams),
       };
     }
 
@@ -185,19 +185,19 @@ const Facets = ({
 
     // Get and sort by order aggregations
     let categories = [];
-    facet.mapEntries(item => {
+    facet.mapEntries((item) => {
       categories.push([
         item[0],
         item[1],
         item[1].hasIn(["meta", "order"])
           ? item[1].getIn(["meta", "order"])
-          : 9999
+          : 9999,
       ]);
     });
     categories.sort((a, b) => a[2] - b[2]);
-    categories = categories.map(c => [c[0], c[1]]);
+    categories = categories.map((c) => [c[0], c[1]]);
 
-    facets_result = categories.map(item => {
+    facets_result = categories.map((item) => {
       if (item[1].get("buckets").size > 0)
         return (
           <Facet
@@ -310,7 +310,7 @@ Facets.propTypes = {
   loading: PropTypes.bool,
   match: PropTypes.object,
   pathname: PropTypes.string,
-  results: PropTypes.object
+  results: PropTypes.object,
 };
 
 export default withRouter(Facets);
