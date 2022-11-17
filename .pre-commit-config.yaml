@@ -60,3 +60,9 @@ repos:
         entry: .githooks/pre-push
         language: system
         stages: [push]
+
+      - id: add_signed_off_by
+        name: add_signed_off_by
+        entry: .githooks/prepare-commit-msg
+        language: system
+        stages: [prepare-commit-msg]

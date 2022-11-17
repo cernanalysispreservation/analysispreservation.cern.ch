@@ -1,0 +1,5 @@
+#!/bin/sh
+
+COMMIT_MSG_FILE=$1
+SOB=$(git var GIT_COMMITTER_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
+git interpret-trailers --in-place --trailer "$SOB" "$COMMIT_MSG_FILE"
