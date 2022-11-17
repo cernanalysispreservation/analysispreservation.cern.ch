@@ -150,7 +150,7 @@ Setup Instructions:
 
 1. Install pre-commit: `pip install pre-commit`
 2. Install the git hook script: `pre-commit install`
-3. Install different hook types: `pre-commit install --hook-type pre-commit --hook-type pre-push --hook-type commit-msg`
+3. Install different hook types: `pre-commit install --hook-type pre-commit --hook-type pre-push --hook-type prepare-commit-msg --hook-type commit-msg`
 
 `pre-commit` will now run on every commit. 
 
