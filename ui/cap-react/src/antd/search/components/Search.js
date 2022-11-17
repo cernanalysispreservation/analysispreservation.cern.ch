@@ -14,19 +14,19 @@ const Search = ({
   match = { params: {} },
   history,
   results,
-  selectedAggs
+  selectedAggs,
 }) => {
   useEffect(() => {
     fetchSearch(match);
   }, []);
 
-  const _changePageSize = size => {
+  const _changePageSize = (size) => {
     let currentParams = queryString.parse(history.location.search);
 
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, { size: size })
-      )}`
+      )}`,
     };
 
     history.push(location);
@@ -38,26 +38,26 @@ const Search = ({
 
     if (Array.isArray(currentParams[parent])) {
       currentParams[parent] = currentParams[parent].filter(
-        item => item != child
+        (item) => item != child
       );
     } else {
       delete currentParams[parent];
     }
 
     const location = {
-      search: queryString.stringify(currentParams)
+      search: queryString.stringify(currentParams),
     };
 
     history.push(location);
   };
 
-  const _updateSortOption = sort => {
+  const _updateSortOption = (sort) => {
     let currentParams = queryString.parse(history.location.search);
 
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, { sort: sort })
-      )}`
+      )}`,
     };
     history.push(location);
   };
@@ -68,13 +68,13 @@ const Search = ({
       currentParams["q"] = "";
     } else {
       if (Array.isArray(currentParams[param])) {
-        currentParams[param] = currentParams[param].filter(i => i != item);
+        currentParams[param] = currentParams[param].filter((i) => i != item);
       } else {
         delete currentParams[param];
       }
     }
     const location = {
-      search: queryString.stringify(currentParams)
+      search: queryString.stringify(currentParams),
     };
     history.push(location);
   };
@@ -85,14 +85,14 @@ const Search = ({
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, { page: page, size: size })
-      )}`
+      )}`,
     };
     history.push(location);
   };
 
   const clearFilters = () => {
     const location = {
-      search: null
+      search: null,
     };
     history.push(location);
   };
@@ -136,7 +136,7 @@ const Search = ({
           <ResultsHeader
             location={location}
             results={results}
-            onChange={sort => _updateSortOption(sort)}
+            onChange={(sort) => _updateSortOption(sort)}
             shouldDisplayFacetButton={!screens.lg}
             updateDisplayFacet={() => setDisplayFilters(true)}
           />
@@ -176,7 +176,7 @@ Search.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
   results: PropTypes.object,
-  selectedAggs: PropTypes.object
+  selectedAggs: PropTypes.object,
 };
 
 export default withRouter(Search);

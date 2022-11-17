@@ -25,7 +25,7 @@ import Loading from "../routes/Loading";
 const CMSIndex = Loadable({
   loader: () => import("../admin"),
   loading: Loading,
-  delay: 300
+  delay: 300,
 });
 
 const App = ({ initCurrentUser, loadingInit, history }) => {
@@ -69,7 +69,7 @@ const App = ({ initCurrentUser, loadingInit, history }) => {
 App.propTypes = {
   initCurrentUser: PropTypes.func,
   loadingInit: PropTypes.bool,
-  history: PropTypes.object
+  history: PropTypes.object,
 };
 
 export default App;
