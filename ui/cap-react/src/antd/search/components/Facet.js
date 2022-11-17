@@ -55,10 +55,10 @@ const Facet = ({
     return choices[type];
   };
 
-  const getFacetTitle = title =>
+  const getFacetTitle = (title) =>
     facet.hasIn([category, "meta", "title"])
       ? facet.getIn([category, "meta", "title"])
-      : title.replace(/_/g, " ").replace(/\w\S*/g, function(txt) {
+      : title.replace(/_/g, " ").replace(/\w\S*/g, function (txt) {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
 
