@@ -84,12 +84,15 @@ def validate_field_schema_editing(validator, value, instance, schema):
         yield XCAPPermissionValidationError(error_message)
 
 
-def get_validator(schema):
+def get_check_validator(schema, **kwargs):
     """Validator for checking field level validation."""
+    validators = kwargs.get('check_validators', [])
     field_schema_editing_validator = dict()
-    field_schema_editing_validator[
-        'x-cap-permission'
-    ] = validate_field_schema_editing
+
+    if 'x-cap-permission' in validators:
+        field_schema_editing_validator[
+            'x-cap-permission'
+        ] = validate_field_schema_editing
     field_schema_validator = extend(
         Draft4Validator,
         validators=field_schema_editing_validator,
@@ -108,11 +111,15 @@ def find_field_copy(validator, value, instance, schema):
     yield XCAPCopyValidationFlag(value, instance=instance)
 
 
-def get_finder(schema):
+def get_tranform_validator(schema, **kwargs):
     """Finder for checking field level flags."""
+    validators = kwargs.get('tranform_validators', [])
     field_schema_editing = dict()
-    field_schema_editing['x-cap-copy'] = find_field_copy
-    field_schema_editing['x-cap-copyto'] = find_field_copy
+
+    if 'x-cap-copy' in validators:
+        field_schema_editing['x-cap-copy'] = find_field_copy
+    if 'x-cap-copyto' in validators:
+        field_schema_editing['x-cap-copyto'] = find_field_copy
     field_schema_validator = extend(
         Draft4Validator,
         validators=field_schema_editing,
