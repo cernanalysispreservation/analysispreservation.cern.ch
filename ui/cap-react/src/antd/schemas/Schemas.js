@@ -11,7 +11,6 @@ import {
   notification,
   Tooltip,
 } from "antd";
-import JsonDiff from "../../components/cms/components/SchemaWizard/JSONDiff";
 import {
   DiffOutlined,
   InfoCircleOutlined,
@@ -19,6 +18,8 @@ import {
   UndoOutlined,
 } from "@ant-design/icons";
 import ErrorScreen from "../partials/Error";
+// TODO: move JSONEditor to antd or use codemirror/merge (pre-release)
+import JsonDiff from "../../components/cms/components/SchemaWizard/JSONDiff";
 import CodeEditor from "../util/CodeEditor";
 
 const Schemas = ({ match }) => {
@@ -47,19 +48,19 @@ const Schemas = ({ match }) => {
   const [jsonError, setJsonError] = useState();
   const [error, setError] = useState();
 
-  const generateOptions = data => {
+  const generateOptions = (data) => {
     const excludeRecordFields =
       "use_deposit_as_record" in data && data["use_deposit_as_record"] === true;
     let opts = Object.entries(data)
       .filter(
-        e =>
+        (e) =>
           typeof e[1] === "object" &&
           e[1] !== null &&
           !Array.isArray(e[1]) &&
           !HIDDEN_FIELDS.includes(e[0]) &&
           (!excludeRecordFields || !e[0].startsWith("record_"))
       )
-      .map(e => ({
+      .map((e) => ({
         label: e[0],
         value: e[0],
       }));
@@ -70,7 +71,7 @@ const Schemas = ({ match }) => {
   useEffect(() => {
     axios
       .get(`/api/jsonschemas/${schema_name}/${schema_version || ""}`)
-      .then(res => {
+      .then((res) => {
         setOriginalSchema(res.data);
         setSchema(res.data);
         setField(res.data);
@@ -101,7 +102,7 @@ const Schemas = ({ match }) => {
     setJsonError(false);
   };
 
-  const handleEdit = value => {
+  const handleEdit = (value) => {
     try {
       setField(JSON.parse(value));
       setJsonError(false);
@@ -213,8 +214,8 @@ const Schemas = ({ match }) => {
                         jsonError
                           ? "Please fix the syntax errors to be able to view the diff"
                           : selection === FULL_SCHEMA
-                            ? "View the full diff"
-                            : "View field diff"
+                          ? "View the full diff"
+                          : "View field diff"
                       }
                     >
                       <Button
@@ -243,10 +244,10 @@ const Schemas = ({ match }) => {
                         jsonError
                           ? "Please fix the syntax errors to be able to save changes"
                           : selection === FULL_SCHEMA
-                            ? "Save all changes"
-                            : !EDITABLE_FIELDS.includes(selection)
-                              ? "Please select an editable field to be able to edit and save the changes"
-                              : "Save changes to this field"
+                          ? "Save all changes"
+                          : !EDITABLE_FIELDS.includes(selection)
+                          ? "Please select an editable field to be able to edit and save the changes"
+                          : "Save changes to this field"
                       }
                     >
                       <Button

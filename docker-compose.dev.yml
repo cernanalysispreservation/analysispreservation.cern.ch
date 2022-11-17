@@ -33,9 +33,10 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    command: gunicorn -b 0.0.0.0:5000 --access-logfile "-" --reload --log-level debug cap.wsgi:application
+    # command: gunicorn -b 0.0.0.0:5000 --access-logfile "-" --reload --log-level debug cap.wsgi:application
+    command: cap run --host=0.0.0.0 --reload
     ports:
-      - "5000"
+      - "5000:5000"
     volumes:
       - static_data:/opt/cap/var/instance/static
       - uploaded_data:/opt/cap/var/instance/data
@@ -58,7 +59,8 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    command: gunicorn -b 0.0.0.0:5000 --access-logfile "-" --reload --log-level debug cap.wsgi:application
+    # command: gunicorn -b 0.0.0.0:5000 --access-logfile "-" --reload --log-level debug cap.wsgi:application
+    command: cap run --host=0.0.0.0 --reload
     ports:
       - "5000"
     volumes:
@@ -85,12 +87,12 @@ services:
       - mq
       - db
   # Monitoring
-  flower:
-    extends:
-      file: docker-services.yml
-      service: flower
-    links:
-      - mq
+  # flower:
+  #   extends:
+  #     file: docker-services.yml
+  #     service: flower
+  #   links:
+  #     - mq
   # Base services
   cache:
     extends:
