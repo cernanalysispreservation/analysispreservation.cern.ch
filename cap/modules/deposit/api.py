@@ -55,9 +55,9 @@ from werkzeug.local import LocalProxy
 
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.loaders import (
-    get_finder,
+    get_check_validator,
+    get_tranform_validator,
     get_val_from_path,
-    get_validator,
 )
 from cap.modules.deposit.utils import perform_copying_fields
 from cap.modules.deposit.validators import NoRequiredValidator
@@ -408,20 +408,12 @@ class CAPDeposit(Deposit, Reviewable):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):
             schema = {"$ref": self["$schema"]}
-            copy_data = None
+            validated_data = None
 
             # 1. Maybe check if should continue with action
             # 2. Maybe merge for more customized
-            copy_data = self.find_field_config(
-                schema=schema,
-                submitted_data=data,
-            )
-
-            self.validate_field_permissions(
-                schema=schema,
-                current_data=self.model.json,
-                submitted_data=copy_data if copy_data else data,
-            )
+            validated_data = self.validation(schema, data)
+            data = validated_data if validated_data else data
 
             super(CAPDeposit, self).update(data, *args, **kwargs)
 
@@ -435,16 +427,44 @@ class CAPDeposit(Deposit, Reviewable):
 
             patched_data = apply_patch(self.model.json, patch)
 
-            copy_data = self.find_field_config(
-                schema=schema, submitted_data=patched_data
+            self.validation(schema, patched_data)
+            return super(CAPDeposit, self).patch(*args, **kwargs)
+
+    def validation(self_or_cls, schema, data_to_validate, **kwargs):
+        """Validation function to validate the data.
+
+        Validates the data in order provided in schema configuration.
+        """
+        validators, val_data = None, None
+        if 'validators' in kwargs:
+            validators = kwargs.get('validators')
+        else:
+            validators = self_or_cls.schema.config.get("x-cap-apply-order")
+
+        if validators is None:
+            validators = current_app.config.get('DEFAULT_VALIDATION_ORDER')
+
+        tranform_validators = validators.get("tranform_data")
+        if tranform_validators:
+            val_data = self_or_cls.tranform_data(
+                schema=schema,
+                submitted_data=val_data if val_data else data_to_validate,
+                tranform_validators=tranform_validators,
             )
 
-            self.validate_field_permissions(
+        check_validators = validators.get("check_data")
+        if check_validators:
+            current_data = None
+            if hasattr(self_or_cls, 'model'):
+                current_data = self_or_cls.model.json
+            self_or_cls.check_data(
                 schema=schema,
-                current_data=self.model.json,
-                submitted_data=copy_data if copy_data else patched_data,
+                current_data=current_data,
+                submitted_data=val_data if val_data else data_to_validate,
+                check_validators=check_validators,
             )
-            return super(CAPDeposit, self).patch(*args, **kwargs)
+
+        return val_data if val_data else data_to_validate
 
     def edit_permissions(self, data):
         """Edit deposit permissions.
@@ -805,14 +825,14 @@ class CAPDeposit(Deposit, Reviewable):
             raise DepositValidationError(
                 f'Schema {data["$schema"]} is not a valid deposit schema.'
             )
-        # Check if schema has 'x-cap-permission'
         _schema = {"$ref": data["$schema"]}
 
-        cls.find_field_config(schema=_schema, submitted_data=data)
-        cls.validate_field_permissions(schema=_schema, submitted_data=data)
+        # Validate the data with transform and check validators
+        validators = schema.config.get("x-cap-apply-order")
+        cls.validation(cls, _schema, data, validators=validators)
+
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
-
         if "_deposit" not in data:
             cls.deposit_minter(uuid_, data, schema=schema)
 
@@ -830,12 +850,12 @@ class CAPDeposit(Deposit, Reviewable):
         return data
 
     @classmethod
-    def find_field_config(cls, schema=None, submitted_data=None):
+    def tranform_data(cls, schema=None, submitted_data=None, **kwargs):
         copied_data = []
         if not any([schema, submitted_data]):
             return
 
-        finder = get_finder(schema)
+        finder = get_tranform_validator(schema, **kwargs)
         for field in finder.iter_errors(submitted_data):
             if (type(field) is XCAPCopyValidationFlag) or any(
                 type(f) is XCAPCopyValidationFlag for f in field.context
@@ -848,13 +868,13 @@ class CAPDeposit(Deposit, Reviewable):
         return submitted_data
 
     @classmethod
-    def validate_field_permissions(
-        cls, schema=None, current_data=None, submitted_data=None
+    def check_data(
+        cls, schema=None, current_data=None, submitted_data=None, **kwargs
     ):
         if not any([schema, submitted_data]):
             return
 
-        validator = get_validator(schema)
+        validator = get_check_validator(schema, **kwargs)
         errors = []
         for err in validator.iter_errors(submitted_data):
             if (
