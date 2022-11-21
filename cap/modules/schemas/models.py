@@ -150,40 +150,56 @@ class Schema(db.Model):
     @property
     def deposit_path(self):
         """Return deposit schema path."""
-        prefix = current_app.config['SCHEMAS_DEPOSIT_PREFIX']
+        prefix = get_path_prefix(current_app.config['SCHEMAS_DEPOSIT_PREFIX'])
         path = urljoin(prefix, "{0}.json".format(self))
         return path
 
     @property
     def record_path(self):
         """Return record schema path."""
-        prefix = current_app.config['SCHEMAS_RECORD_PREFIX']
+        prefix = get_path_prefix(current_app.config['SCHEMAS_RECORD_PREFIX'])
         path = urljoin(prefix, "{0}.json".format(self))
         return path
 
     @property
     def deposit_index(self):
         """Get deposit index name."""
-        path = urljoin(current_app.config['SCHEMAS_DEPOSIT_PREFIX'], str(self))
+        path = urljoin(
+            current_app.config.get('CAP_SEARCH_INDEX_PREFIX', '')
+            + current_app.config['SCHEMAS_DEPOSIT_PREFIX'],
+            str(self),
+        )
         return name_to_es_name(path)
 
     @property
     def record_index(self):
         """Get record index name."""
-        path = urljoin(current_app.config['SCHEMAS_RECORD_PREFIX'], str(self))
+        path = urljoin(
+            current_app.config.get('CAP_SEARCH_INDEX_PREFIX', '')
+            + current_app.config['SCHEMAS_RECORD_PREFIX'],
+            str(self),
+        )
         return name_to_es_name(path)
 
     @property
     def deposit_aliases(self):
         """Get ES deposits aliases."""
         name = name_to_es_name(self.name)
-        return ['deposits', 'deposits-records', 'deposits-{}'.format(name)]
+        aliases = ['deposits', 'deposits-records', 'deposits-{}'.format(name)]
+        index_prefix = current_app.config.get('CAP_SEARCH_INDEX_PREFIX', None)
+        if index_prefix:
+            return [index_prefix + alias for alias in aliases]
+        return aliases
 
     @property
     def record_aliases(self):
         """Get ES records aliases."""
         name = name_to_es_name(self.name)
-        return ['records', 'records-{}'.format(name)]
+        aliases = ['records', 'records-{}'.format(name)]
+        index_prefix = current_app.config.get('CAP_SEARCH_INDEX_PREFIX', None)
+        if index_prefix:
+            return [index_prefix + alias for alias in aliases]
+        return aliases
 
     @validates('name')
     def validate_name(self, key, name):
@@ -290,6 +306,15 @@ class Schema(db.Model):
             raise JSONSchemaNotFound("{}-v{}".format(name, version))
 
         return schema
+
+
+def get_path_prefix(prefix):
+    """Return path prefix for deposit/record."""
+    index_prefix = current_app.config.get('CAP_SEARCH_INDEX_PREFIX', '')
+    if index_prefix:
+        index_prefix = index_prefix[:-1]
+        return f'{index_prefix}/{prefix}'
+    return prefix
 
 
 def name_to_es_name(name):

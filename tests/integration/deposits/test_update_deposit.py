@@ -110,7 +110,7 @@ def test_update_deposit_when_user_has_update_or_admin_access_can_update(
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=auth_headers_for_user(other_user) + json_headers,
@@ -135,7 +135,7 @@ def test_update_deposit_when_user_has_only_read_access_returns_403(
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=auth_headers_for_user(other_user) + json_headers,
@@ -168,7 +168,7 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_update_or_admin_a
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=auth_headers_for_user(other_user) + json_headers,
@@ -194,7 +194,7 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_only_read_access_
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=auth_headers_for_user(other_user) + json_headers,

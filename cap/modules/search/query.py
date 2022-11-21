@@ -93,8 +93,12 @@ def cap_search_factory(self, search, query_parser=None):
         raise InvalidQueryRESTError()
 
     search_index = search._index[0]
-    search, urlkwargs = cap_facets_factory(search, search_index)
-    search, sortkwargs = default_sorter_factory(search, search_index)
+    # Strip the search_index_prefix to get the cap facets configuration
+    index_prefix = current_app.config.get('CAP_SEARCH_INDEX_PREFIX', '')
+    index_name = search_index[len(index_prefix) :]  # noqa: E203
+
+    search, urlkwargs = cap_facets_factory(search, index_name)
+    search, sortkwargs = default_sorter_factory(search, index_name)
     for key, value in sortkwargs.items():
         urlkwargs.add(key, value)
 

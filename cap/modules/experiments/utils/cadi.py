@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Cern Analysis Preservation utils for CADI database."""
 
+import os
 from itertools import islice
 
 import requests
@@ -233,7 +234,10 @@ def get_deposit_by_cadi_id(cadi_id):
 
     :rtype `cap.modules.deposits.api:CAPDeposit`
     """
-    rs = RecordsSearch(index='deposits-cms-analysis')
+    rs = RecordsSearch(
+        index=os.environ.get('CAP_SEARCH_INDEX_PREFIX', '')
+        + 'deposits-cms-analysis'
+    )
 
     res = rs.query(Q('match', basic_info__cadi_id=cadi_id)) \
         .execute().hits.hits
@@ -252,7 +256,10 @@ def get_uuids_with_same_cadi_id(cadi_id):
 
     :params str cadi_id: CADI identifier
     """
-    rs = RecordsSearch(index='deposits-cms-analysis')
+    rs = RecordsSearch(
+        index=os.environ.get('CAP_SEARCH_INDEX_PREFIX', '')
+        + 'deposits-cms-analysis'
+    )
 
     res = rs.query(Q('match', basic_info__cadi_id=cadi_id)) \
         .execute().hits.hits

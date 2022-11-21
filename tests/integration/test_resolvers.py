@@ -180,23 +180,23 @@ def test_resolve_schema_returns_correct_jsonschema(client, create_schema,
         record_options={'title': 'i\'m a record options schema'},
         use_deposit_as_record=False)
 
-    resp = client.get('/schemas/deposits/records/some-schema-v1.0.0.json',
+    resp = client.get('/schemas/test/deposits/records/some-schema-v1.0.0.json',
                       headers=auth_headers_for_superuser)
 
     assert resp.json == schema.deposit_schema
 
-    resp = client.get('/schemas/records/some-schema-v1.0.0.json',
+    resp = client.get('/schemas/test/records/some-schema-v1.0.0.json',
                       headers=auth_headers_for_superuser)
 
     assert resp.json == schema.record_schema
 
     resp = client.get(
-        '/schemas/options/deposits/records/some-schema-v1.0.0.json',
+        '/schemas/options/test/deposits/records/some-schema-v1.0.0.json',
         headers=auth_headers_for_superuser)
 
     assert resp.json == schema.deposit_options
 
-    resp = client.get('/schemas/options/records/some-schema-v1.0.0.json',
+    resp = client.get('/schemas/options/test/records/some-schema-v1.0.0.json',
                       headers=auth_headers_for_superuser)
 
     assert resp.json == schema.record_options

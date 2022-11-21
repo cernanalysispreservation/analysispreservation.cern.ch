@@ -190,9 +190,9 @@ def test_get(client, db, users, auth_headers_for_user):
                     'self':
                         u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
                     'deposit':
-                        'http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-schema-v1.2.3.json',
+                        'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/cms-schema-v1.2.3.json',
                     'record':
-                        u'http://analysispreservation.cern.ch/api/schemas/records/cms-schema-v1.2.3.json',
+                        u'http://analysispreservation.cern.ch/api/schemas/test/records/cms-schema-v1.2.3.json',
                     #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
                 },
         }
@@ -251,9 +251,9 @@ def test_get(client, db, users, auth_headers_for_user):
                 'self':
                     u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
                 'deposit':
-                    'http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-schema-v1.2.3.json',
+                    'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/cms-schema-v1.2.3.json',
                 'record':
-                    u'http://analysispreservation.cern.ch/api/schemas/records/cms-schema-v1.2.3.json',
+                    u'http://analysispreservation.cern.ch/api/schemas/test/records/cms-schema-v1.2.3.json',
                 #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
             },
     }
@@ -310,9 +310,9 @@ def test_get(client, db, users, auth_headers_for_user):
                 'self':
                     u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
                 'deposit':
-                    'http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-schema-v1.2.3.json',
+                    'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/cms-schema-v1.2.3.json',
                 'record':
-                    u'http://analysispreservation.cern.ch/api/schemas/records/cms-schema-v1.2.3.json',
+                    u'http://analysispreservation.cern.ch/api/schemas/test/records/cms-schema-v1.2.3.json',
                 #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
             },
     }
@@ -342,7 +342,7 @@ def test_get_resolved_schemas(
                     'nested':
                         {
                             '$ref':
-                                'http://analysispreservation.cern.ch/api/schemas/deposits/records/nested-schema-v1.0.0.json'
+                                'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/nested-schema-v1.0.0.json'
                         }
                 },
         },
@@ -354,7 +354,7 @@ def test_get_resolved_schemas(
                     'nested':
                         {
                             '$ref':
-                                'http://analysispreservation.cern.ch/api/schemas/deposits/records/nested-schema-v1.0.0.json'
+                                'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/nested-schema-v1.0.0.json'
                         }
                 },
         },
@@ -415,9 +415,9 @@ def test_get_resolved_schemas(
                 'self':
                     'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
                 'deposit':
-                    'http://analysispreservation.cern.ch/api/schemas/deposits/records/test-analysis-v1.0.0.json',
+                    'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/test-analysis-v1.0.0.json',
                 'record':
-                    'http://analysispreservation.cern.ch/api/schemas/records/test-analysis-v1.0.0.json',
+                    'http://analysispreservation.cern.ch/api/schemas/test/records/test-analysis-v1.0.0.json',
             },
     }
 
@@ -436,8 +436,8 @@ def test_get_all_version_of_schema(
     assert resp.json ==  {
         "latest": {
             "links": {
-            "deposit": "http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.5.json",
-            "record": "http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.5.json",
+            "deposit": "http://analysispreservation.cern.ch/api/schemas/test/deposits/records/schema1-v1.2.5.json",
+            "record": "http://analysispreservation.cern.ch/api/schemas/test/records/schema1-v1.2.5.json",
             "self": "http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.5"
             },
             "version": "1.2.5"
@@ -445,16 +445,16 @@ def test_get_all_version_of_schema(
         "versions": [
             {
             "links": {
-                "deposit": "http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.5.json",
-                "record": "http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.5.json",
+                "deposit": "http://analysispreservation.cern.ch/api/schemas/test/deposits/records/schema1-v1.2.5.json",
+                "record": "http://analysispreservation.cern.ch/api/schemas/test/records/schema1-v1.2.5.json",
                 "self": "http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.5"
             },
             "version": "1.2.5"
             },
             {
             "links": {
-                "deposit": "http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json",
-                "record": "http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json",
+                "deposit": "http://analysispreservation.cern.ch/api/schemas/test/deposits/records/schema1-v1.2.3.json",
+                "record": "http://analysispreservation.cern.ch/api/schemas/test/records/schema1-v1.2.3.json",
                 "self": "http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3"
             },
             "version": "1.2.3"
@@ -500,22 +500,22 @@ def test_get_only_latest_version_of_schemas(
             'links':
                 {
                     'record':
-                        'http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json',
+                        'http://analysispreservation.cern.ch/api/schemas/test/records/schema1-v1.2.3.json',
                     'self':
                         'http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3',
                     'deposit':
-                        'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json',
+                        'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/schema1-v1.2.3.json',
                 },
         },
         {
             'links':
                 {
                     'record':
-                        'http://analysispreservation.cern.ch/api/schemas/records/schema2-v3.0.0.json',
+                        'http://analysispreservation.cern.ch/api/schemas/test/records/schema2-v3.0.0.json',
                     'self':
                         'http://analysispreservation.cern.ch/api/jsonschemas/schema2/3.0.0',
                     'deposit':
-                        'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema2-v3.0.0.json',
+                        'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/schema2-v3.0.0.json',
                 },
             'deposit_options': {},
             'record_schema': {},
@@ -544,7 +544,7 @@ def test_get_resolved_schemas_with_invalid_ref_should_404(
                     'nested':
                         {
                             '$ref':
-                                'http://analysispreservation.cern.ch/api/schemas/deposits/records/nested-schema-v1.0.0.json'
+                                'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/nested-schema-v1.0.0.json'
                         }
                 },
         },
@@ -556,7 +556,7 @@ def test_get_resolved_schemas_with_invalid_ref_should_404(
                     'nested':
                         {
                             '$ref':
-                                'http://analysispreservation.cern.ch/api/schemas/deposits/records/nested-schema-v1.0.0.json'
+                                'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/nested-schema-v1.0.0.json'
                         }
                 },
         },
@@ -723,9 +723,9 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
                 'self':
                     u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
                 'deposit':
-                    'http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-schema-v1.2.3.json',
+                    'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/cms-schema-v1.2.3.json',
                 'record':
-                    u'http://analysispreservation.cern.ch/api/schemas/records/cms-schema-v1.2.3.json',
+                    u'http://analysispreservation.cern.ch/api/schemas/test/records/cms-schema-v1.2.3.json',
                 #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
             },
     }
@@ -920,9 +920,9 @@ def test_put(client, db, auth_headers_for_user, users, json_headers):
             'self':
                 u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
             'deposit':
-                'http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-schema-v1.2.3.json',
+                'http://analysispreservation.cern.ch/api/schemas/test/deposits/records/cms-schema-v1.2.3.json',
             'record':
-                u'http://analysispreservation.cern.ch/api/schemas/records/cms-schema-v1.2.3.json',
+                u'http://analysispreservation.cern.ch/api/schemas/test/records/cms-schema-v1.2.3.json',
             #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
         },
     }

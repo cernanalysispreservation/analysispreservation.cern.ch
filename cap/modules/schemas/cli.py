@@ -154,11 +154,17 @@ def validate(schema_url, ana_type, ana_version, compare_with,
 
     # differentiate between drafts/published
     from cap.modules.deposit.api import CAPDeposit
+
     if status == 'draft':
-        search_path = 'deposits-records'
+        search_path = (
+            current_app.config.get('CAP_SEARCH_INDEX_PREFIX', '')
+            + 'deposits-records'
+        )
         cap_record_class = CAPDeposit
     else:
-        search_path = 'records'
+        search_path = (
+            current_app.config.get('CAP_SEARCH_INDEX_PREFIX', '') + 'records'
+        )
         cap_record_class = CAPRecord
 
     # get all the records for this specific schema/type combination

@@ -102,6 +102,7 @@ def env_config(instance_path):
     """Default instance path."""
     os.environ.update(APP_INSTANCE_PATH=os.environ.get('INSTANCE_PATH',
                                                        instance_path), )
+    os.environ.update(CAP_SEARCH_INDEX_PREFIX="test-")
 
     return os.environ
 
@@ -132,7 +133,8 @@ def default_config():
                 CONVENERS_ML_JIRA_MAIL='ml-conveners-jira-test@cern0.ch',
                 CMS_HYPERNEWS_EMAIL_FORMAT='hn-cms-{}@cern0.ch',
                 GITHUB_CAP_TOKEN="testtokengithub",
-                GITLAB_CAP_TOKEN="testtokengitlab")
+                GITLAB_CAP_TOKEN="testtokengitlab",
+                CAP_SEARCH_INDEX_PREFIX="test-")
 
 
 @pytest.fixture(scope='session')
@@ -249,13 +251,13 @@ def clear_caches():
 def es(base_app):
     """Provide elasticsearch access."""
     list(current_search.delete(ignore=[400, 404]))
-    current_search_client.indices.delete(index='*')
+    current_search_client.indices.delete(index='test-*')
     list(current_search.create())
     current_search_client.indices.refresh()
     try:
         yield current_search_client
     finally:
-        current_search_client.indices.delete(index='*')
+        current_search_client.indices.delete(index='test-*')
 
 
 @pytest.fixture
@@ -530,8 +532,7 @@ def das_datasets_index(es):
     ]
 
     cache_das_datasets_in_es_from_file(source)
-
-    current_search.flush_and_refresh(DAS_DATASETS_ES_CONFIG['alias'])
+    current_search.flush_and_refresh(os.environ.get('CAP_SEARCH_INDEX_PREFIX', '') + DAS_DATASETS_ES_CONFIG['alias'])
 
 
 @pytest.fixture
@@ -549,7 +550,7 @@ def das_datasets_index_main(es):
 
     cache_das_datasets_in_es_from_file(source)
 
-    current_search.flush_and_refresh(DAS_DATASETS_ES_CONFIG['alias'])
+    current_search.flush_and_refresh(os.environ.get('CAP_SEARCH_INDEX_PREFIX', '') + DAS_DATASETS_ES_CONFIG['alias'])
 
 
 @pytest.fixture
@@ -606,7 +607,7 @@ def cms_triggers_index(es):
     ]
 
     cache_cms_triggers_in_es_from_file(source)
-    current_search.flush_and_refresh(CMS_TRIGGERS_ES_CONFIG['alias'])
+    current_search.flush_and_refresh(os.environ.get('CAP_SEARCH_INDEX_PREFIX', '') + CMS_TRIGGERS_ES_CONFIG['alias'])
 
 
 @pytest.fixture

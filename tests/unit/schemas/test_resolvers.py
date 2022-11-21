@@ -38,7 +38,7 @@ def test_schema_name_to_url(db):
     db.session.commit()
 
     assert schema_name_to_url(
-        'my-schema') == 'https://analysispreservation.cern.ch/schemas/deposits/records/my-schema-v2.4.3.json'
+        'my-schema') == 'https://analysispreservation.cern.ch/schemas/test/deposits/records/my-schema-v2.4.3.json'
 
 
 def test_schema_name_to_url_when_schema_doesnt_exist_raises_JSONSchemaNotFound(db):

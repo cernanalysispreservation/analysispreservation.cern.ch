@@ -98,8 +98,8 @@ def test_deposit_path_and_index(db):
     db.session.add(schema)
     db.session.commit()
 
-    assert schema.deposit_path == 'deposits/records/cms-analysis-v1.0.2.json'
-    assert schema.deposit_index == 'deposits-records-cms-analysis-v1.0.2'
+    assert schema.deposit_path == 'test/deposits/records/cms-analysis-v1.0.2.json'
+    assert schema.deposit_index == 'test-deposits-records-cms-analysis-v1.0.2'
 
 
 def test_record_path_and_index(db):
@@ -114,8 +114,8 @@ def test_record_path_and_index(db):
     db.session.add(schema)
     db.session.commit()
 
-    assert schema.record_path == 'records/cms-analysis-v1.0.2.json'
-    assert schema.record_index == 'records-cms-analysis-v1.0.2'
+    assert schema.record_path == 'test/records/cms-analysis-v1.0.2.json'
+    assert schema.record_index == 'test-records-cms-analysis-v1.0.2'
 
 
 def test_get_when_schema_doesnt_exist_raises_JSONSchemaNotFound(db):
@@ -257,15 +257,15 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     db.session.add(schema)
     db.session.commit()
 
-    assert 'deposits-records-cms-schema-v1.0.0' in current_search.mappings.keys(
+    assert 'test-deposits-records-cms-schema-v1.0.0' in current_search.mappings.keys(
     )
-    assert 'records-cms-schema-v1.0.0' in current_search.mappings.keys()
+    assert 'test-records-cms-schema-v1.0.0' in current_search.mappings.keys()
 
-    assert es.indices.exists('deposits-records-cms-schema-v1.0.0')
-    assert es.indices.exists('records-cms-schema-v1.0.0')
+    assert es.indices.exists('test-deposits-records-cms-schema-v1.0.0')
+    assert es.indices.exists('test-records-cms-schema-v1.0.0')
 
-    assert es.indices.get_mapping('records-cms-schema-v1.0.0') == {
-        'records-cms-schema-v1.0.0':
+    assert es.indices.get_mapping('test-records-cms-schema-v1.0.0') == {
+        'test-records-cms-schema-v1.0.0':
             {
                 'mappings': {
                     'doc': {
@@ -279,8 +279,8 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
             }
     }
 
-    assert es.indices.get_mapping('deposits-records-cms-schema-v1.0.0') == {
-        'deposits-records-cms-schema-v1.0.0':
+    assert es.indices.get_mapping('test-deposits-records-cms-schema-v1.0.0') == {
+        'test-deposits-records-cms-schema-v1.0.0':
             {
                 'mappings':
                     {
@@ -298,9 +298,9 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     db.session.delete(schema)
     db.session.commit()
 
-    assert not es.indices.exists('deposits-records-cms-schema-v1.0.0')
-    assert not es.indices.exists('records-cms-schema-v1.0.0')
+    assert not es.indices.exists('test-deposits-records-cms-schema-v1.0.0')
+    assert not es.indices.exists('test-records-cms-schema-v1.0.0')
 
-    assert 'deposits-records-cms-schema-v1.0.0' not in current_search.mappings.keys(
+    assert 'test-deposits-records-cms-schema-v1.0.0' not in current_search.mappings.keys(
     )
-    assert 'records-cms-schema-v1.0.0' not in current_search.mappings.keys()
+    assert 'test-records-cms-schema-v1.0.0' not in current_search.mappings.keys()

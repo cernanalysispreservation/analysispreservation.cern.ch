@@ -133,7 +133,7 @@ def test_validate_with_different_version_records(
                   })
     create_deposit(users['cms_user'], 'test',
                    {
-                       "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-v1.0.0.json",
+                       "$schema": "https://analysispreservation.cern.ch/schemas/test/deposits/records/test-v1.0.0.json",
                        'basic': 'test1'
                    },
                    experiment='CMS')
@@ -173,7 +173,7 @@ def test_validate_with_different_version_records_and_exported_file(
                   })
     create_deposit(users['cms_user'], 'test',
                    {
-                       "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-v1.0.0.json",
+                       "$schema": "https://analysispreservation.cern.ch/schemas/test/deposits/records/test-v1.0.0.json",
                        'basic': 'test1'
                    },
                    experiment='CMS')

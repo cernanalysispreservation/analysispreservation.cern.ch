@@ -48,7 +48,7 @@ def resolve(path):
 def resolve_by_path(path):
     """Resolve CAP JSON schemas."""
     try:
-        options, type_, name, major, minor, patch = parse_path(path)
+        options, _, type_, name, major, minor, patch = parse_path(path)
         schema = Schema.query \
             .filter_by(name=name,
                        major=major,
@@ -83,12 +83,14 @@ def parse_path(string):
     pattern = re.compile(
         """
         (?P<options>{})?/?                      # check if options schema
+        (?P<index_prefix>{})?/?                 # check if index prefix
         (?P<schema_type>{}|{})/?                # check if deposit/record
         (?P<name>\S+)                           # name of the schema
         -v(?P<major>\d+).                       # version
         (?P<minor>\d+).                         # version
         (?P<patch>\d+)                          # version
         """.format(re.escape(current_app.config['SCHEMAS_OPTIONS_PREFIX']),
+                   re.escape(current_app.config['CAP_SEARCH_INDEX_PREFIX'][:-1]),
                    re.escape(current_app.config['SCHEMAS_RECORD_PREFIX']),
                    re.escape(current_app.config['SCHEMAS_DEPOSIT_PREFIX'])),
         re.VERBOSE)
@@ -117,7 +119,7 @@ def resolve_schema_by_url(url):
     path = current_jsonschemas.url_to_path(url)
 
     try:
-        _, _, name, major, minor, patch = parse_path(path)
+        _, _, _, name, major, minor, patch = parse_path(path)
         schema = Schema.query \
             .filter_by(name=name,
                        major=major,

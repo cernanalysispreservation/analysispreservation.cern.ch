@@ -23,6 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Search classes and methods for DAS querying."""
 
+import os
+
 from elasticsearch_dsl import Search
 from invenio_search.proxies import current_search_client as es
 
@@ -57,8 +59,11 @@ class DASSearch(Search):
     class Meta:
         """Meta class."""
 
-        index = DAS_DATASETS_ES_CONFIG['alias']
-        fields = ('name', )
+        index = (
+            os.environ.get('CAP_SEARCH_INDEX_PREFIX', '')
+            + DAS_DATASETS_ES_CONFIG['alias']
+        )
+        fields = ('name',)
 
     def __init__(self, **kwargs):
         """Use Meta to set kwargs defaults."""

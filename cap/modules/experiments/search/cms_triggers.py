@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Search classes and methods for CMS triggers."""
 
+import os
 import re
 
 from elasticsearch_dsl import Q, Search
@@ -71,8 +72,11 @@ class CMSTriggerSearch(Search):
     class Meta:
         """Meta class."""
 
-        index = CMS_TRIGGERS_ES_CONFIG['alias']
-        fields = ('trigger', )
+        index = (
+            os.environ.get('CAP_SEARCH_INDEX_PREFIX', '')
+            + CMS_TRIGGERS_ES_CONFIG['alias']
+        )
+        fields = ('trigger',)
 
     def __init__(self, **kwargs):
         """Use Meta to set kwargs defaults."""

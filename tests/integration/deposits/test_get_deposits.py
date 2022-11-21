@@ -120,7 +120,7 @@ def test_get_deposits_returns_deposits_that_user_has_read_or_admin_access_to(
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.get('/deposits/', headers=auth_headers_for_user(other_user))
     hits = resp.json['hits']['hits']
@@ -155,7 +155,7 @@ def test_get_deposits_returns_deposits_that_users_egroups_have_read_or_admin_acc
     deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
-    current_search.flush_and_refresh('deposits')
+    current_search.flush_and_refresh('test-deposits')
 
     resp = client.get('/deposits/', headers=auth_headers_for_user(other_user))
     hits = resp.json['hits']['hits']
@@ -171,7 +171,7 @@ def test_get_deposits_with_basic_json_serializer_returns_serialized_deposit_prop
         user,
         'cms',
         {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json',
+            '$schema': 'https://analysispreservation.cern.ch/schemas/test/deposits/records/cms-v1.0.0.json',
             'basic_info': {'analysis_number': 'dream_team', 'people_info': [{}]},
         },
     )
@@ -237,7 +237,7 @@ def test_get_deposit_with_default_serializer(
         owner,
         'cms-analysis',
         {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+            '$schema': 'https://analysispreservation.cern.ch/schemas/test/deposits/records/cms-analysis-v1.0.0.json',
             'basic_info': {
                 'analysis_number': 'dream_team',
             },
@@ -326,7 +326,7 @@ def test_get_deposits_with_correct_search_links(
             owner,
             'cms-analysis',
             {
-                '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+                '$schema': 'https://analysispreservation.cern.ch/schemas/test/deposits/records/cms-analysis-v1.0.0.json',
                 'basic_info': {
                     'analysis_number': 'dream_team',
                 },
@@ -380,6 +380,7 @@ def test_get_deposits_with_correct_search_links_in_debug_mode(
 
 def test_get_deposits_with_facets(client, users, auth_headers_for_user, create_deposit):
     user = users['cms_user']
+    create_deposit(users['cms_user'], 'cms-test', version="0.1.0")
     resp = client.get(
         '/deposits/',
         headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
@@ -412,6 +413,7 @@ def test_get_deposits_with_facets_containing_meta(
     client, users, auth_headers_for_user, create_deposit
 ):
     user = users['cms_user']
+    create_deposit(users['cms_user'], 'cms-test', version="0.1.0")
     resp = client.get(
         '/deposits/',
         headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
@@ -521,7 +523,7 @@ def test_get_deposits_with_facets_get_types_and_versions(
         user,
         'test-analysis',
         {
-            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"
+            "$schema": "https://analysispreservation.cern.ch/schemas/test/deposits/records/test-analysis-v1.0.0.json"
         },
         experiment='CMS',
     )
@@ -538,7 +540,7 @@ def test_get_deposits_with_facets_get_types_and_versions(
         user,
         'test-analysis',
         {
-            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v2.0.0.json"
+            "$schema": "https://analysispreservation.cern.ch/schemas/test/deposits/records/test-analysis-v2.0.0.json"
         },
         experiment='CMS',
     )
@@ -883,7 +885,7 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
         user,
         'test-analysis',
         {
-            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json"
+            "$schema": "https://analysispreservation.cern.ch/schemas/test/deposits/records/test-analysis-v1.0.0.json"
         },
         experiment='CMS',
     )
@@ -899,7 +901,7 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
         user,
         'test-ana',
         {
-            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"
+            "$schema": "https://analysispreservation.cern.ch/schemas/test/deposits/records/test-ana-v1.0.0.json"
         },
         experiment='CMS',
     )
@@ -907,7 +909,7 @@ def test_get_deposits_with_facets_get_types_doesnt_confuse_naming(
         user,
         'test-ana',
         {
-            "$schema": "https://analysispreservation.cern.ch/schemas/deposits/records/test-ana-v1.0.0.json"
+            "$schema": "https://analysispreservation.cern.ch/schemas/test/deposits/records/test-ana-v1.0.0.json"
         },
         experiment='CMS',
     )
@@ -1191,7 +1193,7 @@ def test_get_deposit_with_basic_json_serializer_returns_serialized_deposit_prope
         example_user,
         'cms',
         {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json',
+            '$schema': 'https://analysispreservation.cern.ch/schemas/test/deposits/records/cms-v1.0.0.json',
             'basic_info': {'analysis_number': 'dream_team', 'people_info': [{}]},
         },
     )

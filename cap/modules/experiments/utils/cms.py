@@ -25,6 +25,8 @@
 import re
 import gspread
 import json
+import os
+import re
 
 from gspread.exceptions import NoValidUrlKeyFound, SpreadsheetNotFound, \
     WorksheetNotFound, APIError
@@ -60,10 +62,13 @@ def cache_cms_triggers_in_es_from_file(source):
 
     :param source: list of dict with dataset, year and trigger
     """
-    recreate_es_index_from_source(alias=CMS_TRIGGERS_ES_CONFIG['alias'],
-                                  mapping=CMS_TRIGGERS_ES_CONFIG['mappings'],
-                                  settings=CMS_TRIGGERS_ES_CONFIG['settings'],
-                                  source=source)
+    recreate_es_index_from_source(
+        alias=os.environ.get('CAP_SEARCH_INDEX_PREFIX', '')
+        + CMS_TRIGGERS_ES_CONFIG['alias'],
+        mapping=CMS_TRIGGERS_ES_CONFIG['mappings'],
+        settings=CMS_TRIGGERS_ES_CONFIG['settings'],
+        source=source,
+    )
 
 
 def get_gspread_downloader():

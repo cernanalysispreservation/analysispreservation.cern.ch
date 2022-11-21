@@ -531,7 +531,7 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one_and_
 
     synchronize_cadi_entries()
 
-    current_search.flush_and_refresh('deposits-records')
+    current_search.flush_and_refresh('test-deposits-records')
 
     # deposit with this cadi id created
     deposit = get_deposit_by_cadi_id('EXO-00-000')
@@ -589,7 +589,7 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one_and_
             'cadi_id': 'EXO-00-000'
         },
         '$schema':
-        'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
+        'https://analysispreservation.cern.ch/schemas/test/deposits/records/cms-analysis-v0.0.1.json',
         '_deposit': {
             'id': deposit['_deposit']['id'],
             'status': 'draft',
@@ -627,7 +627,7 @@ def test_synchronize_cadi_entries_when_LDAP_error_occured_during_permissions_ass
 
     synchronize_cadi_entries()
 
-    current_search.flush_and_refresh('deposits-records')
+    current_search.flush_and_refresh('test-deposits-records')
 
     with raises(DepositDoesNotExist):
         get_deposit_by_cadi_id('EXO-00-001')
@@ -700,7 +700,7 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
             'created_by': superuser.id
         },
         '$schema':
-        'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+        'https://analysispreservation.cern.ch/schemas/test/deposits/records/cms-analysis-v1.0.0.json',
         '_experiment': None,
         '_access': {
             'deposit-read': {

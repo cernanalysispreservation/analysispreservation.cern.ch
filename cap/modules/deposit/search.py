@@ -24,6 +24,8 @@
 
 """Configuration for deposit search."""
 
+import os
+
 from elasticsearch_dsl import Q, TermsFacet
 from flask import g
 from flask_login import current_user
@@ -73,7 +75,7 @@ class CAPDepositSearch(RecordsSearch):
     class Meta:
         """Configuration for deposit search."""
 
-        index = 'deposits'
+        index = os.environ.get('CAP_SEARCH_INDEX_PREFIX', '') + 'deposits'
         doc_types = None
         fields = ('*',)
         facets = {

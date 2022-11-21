@@ -47,11 +47,11 @@ def test_me_when_superuser_returns_correct_user_data(
         "deposit_groups": [{
             "deposit_group": "cms",
             "name": "CMS analysis",
-            "schema_path": "deposits/records/cms-v1.0.0.json"
+            "schema_path": "test/deposits/records/cms-v1.0.0.json"
         }, {
             "deposit_group": "lhcb",
             "name": 'LHCb analysis',
-            "schema_path": "deposits/records/lhcb-v1.0.0.json"
+            "schema_path": "test/deposits/records/lhcb-v1.0.0.json"
         }],
         "email": superuser.email,
         "id": superuser.id,
@@ -75,7 +75,7 @@ def test_me_when_cms_user_returns_correct_user_data(client, create_schema,
         "deposit_groups": [{
             "deposit_group": "cms",
             "name": "CMS analysis",
-            "schema_path": "deposits/records/cms-v1.0.0.json"
+            "schema_path": "test/deposits/records/cms-v1.0.0.json"
         }],
         "email": user.email,
         "id": user.id,

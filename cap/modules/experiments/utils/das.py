@@ -23,6 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Cern Analysis Preservation methods for DAS database connection."""
 
+import os
+
 from ..search.das import DAS_DATASETS_ES_CONFIG
 from .common import recreate_es_index_from_source
 
@@ -41,8 +43,11 @@ def update_term_for_das_query(term, suffix=None):
 
 def cache_das_datasets_in_es_from_file(source):
     """Cache datasets names from DAS in ES."""
-    recreate_es_index_from_source(source=source,
-                                  alias=DAS_DATASETS_ES_CONFIG['alias'],
-                                  mapping=DAS_DATASETS_ES_CONFIG['mappings'],
-                                  settings=DAS_DATASETS_ES_CONFIG['settings'],
-                                  id_getter=lambda obj: obj['name'])
+    recreate_es_index_from_source(
+        source=source,
+        alias=os.environ.get('CAP_SEARCH_INDEX_PREFIX', '')
+        + DAS_DATASETS_ES_CONFIG['alias'],
+        mapping=DAS_DATASETS_ES_CONFIG['mappings'],
+        settings=DAS_DATASETS_ES_CONFIG['settings'],
+        id_getter=lambda obj: obj['name'],
+    )

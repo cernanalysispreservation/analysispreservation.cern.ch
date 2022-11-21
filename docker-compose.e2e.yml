@@ -63,6 +63,7 @@ services:
       - "FLASK_DEBUG=True"
       - "DEBUG_MODE=True"
       - "DEV_HOST=nginx"
+      - "CAP_SEARCH_INDEX_PREFIX=test-"
     links:
       - cache
       - es
