@@ -21,6 +21,7 @@ import ErrorScreen from "../partials/Error";
 // TODO: move JSONEditor to antd or use codemirror/merge (pre-release)
 import JsonDiff from "../../components/cms/components/SchemaWizard/JSONDiff";
 import CodeEditor from "../util/CodeEditor";
+import { jsonParseLinter } from "@codemirror/lang-json";
 
 const Schemas = ({ match }) => {
   const EDITABLE_FIELDS = [
@@ -273,7 +274,9 @@ const Schemas = ({ match }) => {
                       )}
                       isReadOnly={!EDITABLE_FIELDS.includes(selection)}
                       handleEdit={handleEdit}
+                      lint={jsonParseLinter}
                       schema={schema} // to render a new editor instance on schema change
+                      height="calc(100vh - 300px)"
                     />
                   </Col>
                 </Row>
