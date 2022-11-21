@@ -27,14 +27,12 @@ const NormalArrayFieldTemplate = ({
   DescriptionField,
   disabled,
   formContext,
-  // formData,
   idSchema,
   items,
   options,
   onAddClick,
   prefixCls,
   readonly,
-  // registry,
   required,
   schema,
   title,
@@ -57,7 +55,6 @@ const NormalArrayFieldTemplate = ({
   const labelColClassName = classNames(
     labelClsBasic,
     labelAlign === "left" && `${labelClsBasic}-left`
-    // labelCol.className,
   );
   let uiImport = null;
   let uiLatex = null;

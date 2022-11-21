@@ -13,11 +13,8 @@ const VERTICAL_WRAPPER_COL = { span: 24 };
 const FieldTemplate = ({
   children,
   classNames,
-  // description,
   disabled,
   displayLabel,
-  // errors,
-  // fields,
   formContext,
   help,
   hidden,
@@ -48,16 +45,8 @@ const FieldTemplate = ({
     [...new Set(rawErrors)].map((error) => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
     ));
-  // let gridColumns = null;
 
   const { ["ui:options"]: uiOptions = {} } = uiSchema;
-  // if the grid options exists in uiSchema pass it as prop
-  // else set it full width
-  // if (uiSchema["ui:options"] && uiSchema["ui:options"].grid) {
-  //   gridColumns = uiSchema["ui:options"].grid.gridColumns
-  //     ? uiSchema["ui:options"].grid.gridColumns
-  //     : "1/5";
-  // }
 
   const getJustify = () => {
     if (uiOptions.justify in ["start", "center", "end"]) {
@@ -128,7 +117,6 @@ FieldTemplate.propTypes = {
   rawErrors: PropTypes.array,
   onDropPropertyClick: PropTypes.func,
   onKeyChange: PropTypes.func,
-  description: PropTypes.string,
   rawDescription: PropTypes.string,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
