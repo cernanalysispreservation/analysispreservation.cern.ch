@@ -22,27 +22,31 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Cern Analysis Preservation CMS utils."""
-import re
-import gspread
+
 import json
 import os
 import re
 
-from gspread.exceptions import NoValidUrlKeyFound, SpreadsheetNotFound, \
-    WorksheetNotFound, APIError
-from google.auth.exceptions import RefreshError
-
+import gspread
 from flask import current_app
+from google.auth.exceptions import RefreshError
+from gspread.exceptions import (
+    APIError,
+    NoValidUrlKeyFound,
+    SpreadsheetNotFound,
+    WorksheetNotFound,
+)
 from invenio_db import db
 
-from cap.modules.deposit.errors import DepositDoesNotExist,\
-    DepositValidationError
+from cap.modules.deposit.errors import (
+    DepositDoesNotExist,
+    DepositValidationError,
+)
 
-from ..utils.cadi import get_deposit_by_cadi_id
 from ..search.cms_triggers import CMS_TRIGGERS_ES_CONFIG
+from ..utils.cadi import get_deposit_by_cadi_id
 from .common import recreate_es_index_from_source
 from .questionnaire import remove_none_keys
-
 
 NEW_COLUMN_NAMES = {
     'CADI line (e.g. HIG-12-028 for a paper, CMS-HIG-12-028 for a PAS). Add only one per entry.': 'cadi_id',  # noqa: E501
@@ -53,7 +57,7 @@ NEW_COLUMN_NAMES = {
     'Interpretation (will be ORed inside this category)': 'interpretation',
     'Final states (will be ORed inside this category)': 'final_states',
     'Further search categorisation (will be ORed inside this category)': 'further_search_categorisation',  # noqa: E501
-    'Further categorisation Heavy Ion results (will be ORed inside this category)': 'further_categorisation_heavy_ion'  # noqa: E501
+    'Further categorisation Heavy Ion results (will be ORed inside this category)': 'further_categorisation_heavy_ion',  # noqa: E501
 }
 
 
@@ -74,13 +78,16 @@ def cache_cms_triggers_in_es_from_file(source):
 def get_gspread_downloader():
     # Get Google creds to use
     google_creds_json = current_app.config.get(
-        'GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_JSON')
+        'GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_JSON'
+    )
     google_creds_file = current_app.config.get(
-        'GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_FILE')
+        'GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_FILE'
+    )
 
     if not google_creds_json and not google_creds_file:
         current_app.logger.error(
-            "Google service account credentials or cred file are not set")
+            "Google service account credentials or cred file are not set"
+        )
         return
 
     try:
@@ -97,7 +104,8 @@ def get_gspread_downloader():
         return
     except TypeError:
         current_app.logger.error(
-            "An error occured when trying to parse credentials")
+            "An error occured when trying to parse credentials"
+        )
         return
     except FileNotFoundError as e:
         current_app.logger.error(f"{e}")
@@ -125,12 +133,14 @@ def get_cms_spreadsheet():
     except (SpreadsheetNotFound, WorksheetNotFound):
         current_app.logger.error(
             "Something went wrong while accessing the workbook. "
-            "Workbook/spreadsheet error.")
+            "Workbook/spreadsheet error."
+        )
         return
     except (APIError, RefreshError):
         current_app.logger.error(
             "Accessing the Google Sheets API failed. "
-            "Make sure you have the correct credentials, and try again.")
+            "Make sure you have the correct credentials, and try again."
+        )
         return
 
     # process keywords
@@ -149,16 +159,19 @@ def get_cms_spreadsheet():
 
                 # split values in lists but NOT CADI ID
                 if new_key != 'cadi_id':
-                    record[new_key] = record[new_key].split(', ') \
-                        if record[new_key] else None
+                    record[new_key] = (
+                        record[new_key].split(', ') if record[new_key] else None
+                    )
 
             # fix cadi id if possible
             if not re.match(cadi_regex, record['cadi_id']):
-                record['cadi_id'] = record['cadi_id']\
-                    .replace('CMS-', '', 1)\
-                    .replace('PAS-', '', 1)\
-                    .replace('--', '-')\
+                record['cadi_id'] = (
+                    record['cadi_id']
+                    .replace('CMS-', '', 1)
+                    .replace('PAS-', '', 1)
+                    .replace('--', '-')
                     .replace('/', '')
+                )
         except (KeyError, ValueError):
             current_app.logger.error(f"Accessing record number {i} failed.")
 
@@ -190,11 +203,11 @@ def cms_keywords_from_spreadsheet():
 
         except DepositValidationError as e:
             errors = [err.res for err in e.errors]
-            current_app.logger.error(
-                f"Validation Error in {cadi_id}: {errors}")
+            current_app.logger.error(f"Validation Error in {cadi_id}: {errors}")
 
         except Exception:
             current_app.logger.error(
-                f"Error in {cadi_id}: Something went wrong while updating.")
+                f"Error in {cadi_id}: Something went wrong while updating."
+            )
 
     current_app.logger.info("Finishing... Keywords extracted and saved.")

@@ -37,32 +37,22 @@ CMS_TRIGGERS_ES_CONFIG = {
                 "trigger": {
                     "type": "keyword",
                     "normalizer": "my_normalizer",
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    }
+                    "fields": {"keyword": {"type": "keyword"}},
                 },
                 "year": {
                     "type": "keyword",
                 },
-                "dataset": {
-                    "type": "keyword",
-                    "normalizer": "my_normalizer"
-                }
+                "dataset": {"type": "keyword", "normalizer": "my_normalizer"},
             }
         }
     },
     "settings": {
         "analysis": {
             "normalizer": {
-                "my_normalizer": {
-                    "type": "custom",
-                    "filter": "lowercase"
-                }
+                "my_normalizer": {"type": "custom", "filter": "lowercase"}
             }
         }
-    }
+    },
 }
 
 

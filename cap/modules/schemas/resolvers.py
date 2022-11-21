@@ -38,8 +38,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from .models import Schema
 
 
-@jsonresolver.route('/schemas/<path:path>',
-                    host='analysispreservation.cern.ch')
+@jsonresolver.route('/schemas/<path:path>', host='analysispreservation.cern.ch')
 def resolve(path):
     """Resolve CAP JSON schemas."""
     return resolve_by_path(path)
@@ -49,21 +48,18 @@ def resolve_by_path(path):
     """Resolve CAP JSON schemas."""
     try:
         options, _, type_, name, major, minor, patch = parse_path(path)
-        schema = Schema.query \
-            .filter_by(name=name,
-                       major=major,
-                       minor=minor,
-                       patch=patch)\
-            .one()
+        schema = Schema.query.filter_by(
+            name=name, major=major, minor=minor, patch=patch
+        ).one()
     except (NoResultFound, AttributeError, TypeError):
         raise JSONSchemaNotFound(schema=path)
 
     if type_ == current_app.config['SCHEMAS_DEPOSIT_PREFIX']:
-        jsonschema = schema.deposit_options if options \
-            else schema.deposit_schema
+        jsonschema = (
+            schema.deposit_options if options else schema.deposit_schema
+        )
     else:
-        jsonschema = schema.record_options if options \
-            else schema.record_schema
+        jsonschema = schema.record_options if options else schema.record_schema
 
     return jsonschema
 
@@ -89,11 +85,14 @@ def parse_path(string):
         -v(?P<major>\d+).                       # version
         (?P<minor>\d+).                         # version
         (?P<patch>\d+)                          # version
-        """.format(re.escape(current_app.config['SCHEMAS_OPTIONS_PREFIX']),
-                   re.escape(current_app.config['CAP_SEARCH_INDEX_PREFIX'][:-1]),
-                   re.escape(current_app.config['SCHEMAS_RECORD_PREFIX']),
-                   re.escape(current_app.config['SCHEMAS_DEPOSIT_PREFIX'])),
-        re.VERBOSE)
+        """.format(
+            re.escape(current_app.config['SCHEMAS_OPTIONS_PREFIX']),
+            re.escape(current_app.config['CAP_SEARCH_INDEX_PREFIX'][:-1]),
+            re.escape(current_app.config['SCHEMAS_RECORD_PREFIX']),
+            re.escape(current_app.config['SCHEMAS_DEPOSIT_PREFIX']),
+        ),
+        re.VERBOSE,
+    )
 
     match = re.match(pattern, string)
 
@@ -109,8 +108,11 @@ def schema_name_to_url(schema_name, version=None):
 
 def resolve_schema_by_name_and_version(schema_name, version=None):
     """Get Schema object for given name and (optionally) version."""
-    return Schema.get(schema_name, version) if version \
+    return (
+        Schema.get(schema_name, version)
+        if version
         else Schema.get_latest(schema_name)
+    )
 
 
 @lru_cache(maxsize=1024)
@@ -120,12 +122,9 @@ def resolve_schema_by_url(url):
 
     try:
         _, _, _, name, major, minor, patch = parse_path(path)
-        schema = Schema.query \
-            .filter_by(name=name,
-                       major=major,
-                       minor=minor,
-                       patch=patch)\
-            .one()
+        schema = Schema.query.filter_by(
+            name=name, major=major, minor=minor, patch=patch
+        ).one()
     except (NoResultFound, AttributeError, TypeError):
         raise JSONSchemaNotFound(schema=url)
 

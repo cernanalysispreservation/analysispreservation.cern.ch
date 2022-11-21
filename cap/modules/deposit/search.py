@@ -54,17 +54,24 @@ def deposits_filter():
     if admin_permission_factory(None).can():
         return Q('term', **{'_deposit.status': 'draft'})
 
-    roles = [role.id for role in Role.query.all()
-             if RoleNeed(role) in g.identity.provides]
+    roles = [
+        role.id
+        for role in Role.query.all()
+        if RoleNeed(role) in g.identity.provides
+    ]
 
-    q = (Q('multi_match', query=g.identity.id,
-           fields=[
-               '_access.deposit-read.users',
-               '_access.deposit-admin.users'
-           ]) |
-         Q('terms', **{'_access.deposit-read.roles': roles}) |
-         Q('terms', **{'_access.deposit-admin.roles': roles})
-         ) & Q('term', **{'_deposit.status': 'draft'})
+    q = (
+        Q(
+            'multi_match',
+            query=g.identity.id,
+            fields=[
+                '_access.deposit-read.users',
+                '_access.deposit-admin.users',
+            ],
+        )
+        | Q('terms', **{'_access.deposit-read.roles': roles})
+        | Q('terms', **{'_access.deposit-admin.roles': roles})
+    ) & Q('term', **{'_deposit.status': 'draft'})
 
     return q
 
@@ -86,18 +93,22 @@ class CAPDepositSearch(RecordsSearch):
     def get_user_deposits(self):
         """Get draft deposits that current user owns."""
         return self.filter(
-            Q('match', **{'_deposit.status': 'draft'}) &
-            Q('multi_match', query=current_user.id, fields=['_deposit.owners'])
+            Q('match', **{'_deposit.status': 'draft'})
+            & Q(
+                'multi_match', query=current_user.id, fields=['_deposit.owners']
+            )
         )
 
-    def get_collection_deposits(self, collection_name, collection_version=None,
-                                by_me=False):
+    def get_collection_deposits(
+        self, collection_name, collection_version=None, by_me=False
+    ):
         """Get records by collection name and version."""
         q = Q('term', **{'_collection.name': collection_name})
 
         if by_me:
-            q = q & Q('multi_match', query=current_user.id,
-                      fields=['_deposit.owners'])
+            q = q & Q(
+                'multi_match', query=current_user.id, fields=['_deposit.owners']
+            )
         if collection_version:
             q = q & Q('term', **{'_collection.version': collection_version})
 
@@ -106,9 +117,10 @@ class CAPDepositSearch(RecordsSearch):
     def get_shared_with_user(self):
         """Get draft deposits shared with current user ."""
         return self.filter(
-            Q('match', **{'_deposit.status': 'draft'}) & ~
-            Q('multi_match', query=current_user.id,
-              fields=['_deposit.owners'])
+            Q('match', **{'_deposit.status': 'draft'})
+            & ~Q(
+                'multi_match', query=current_user.id, fields=['_deposit.owners']
+            )
         )
 
     def sort_by_latest(self):

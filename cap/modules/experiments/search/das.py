@@ -35,7 +35,7 @@ DAS_DATASETS_ES_CONFIG = {
             "properties": {
                 "name": {
                     "type": "keyword",
-                    "normalizer": "lowercase_normalizer"
+                    "normalizer": "lowercase_normalizer",
                 }
             }
         }
@@ -45,11 +45,11 @@ DAS_DATASETS_ES_CONFIG = {
             "normalizer": {
                 "lowercase_normalizer": {
                     "type": "custom",
-                    "filter": "lowercase"
+                    "filter": "lowercase",
                 }
             }
         }
-    }
+    },
 }
 
 
