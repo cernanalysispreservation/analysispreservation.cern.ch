@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import JsonDiff from "./JSONDiff";
-import "ace-builds/webpack-resolver";
 import Form from "../../forms/Form";
 import { Button, Col, Menu, Modal, Row, Tabs, Grid } from "antd";
 import {
@@ -55,7 +54,7 @@ const Header = ({
     a.download = "fileName.json"; //TODO: Should be a proper name
     a.click();
   };
-  const _renderSchemaPreview = (schemaPreviewDisplay) => {
+  const _renderSchemaPreview = schemaPreviewDisplay => {
     let previews = {
       uiSchema: (
         <CodeViewer
@@ -133,7 +132,7 @@ const Header = ({
         <Form
           {...configSchema}
           formData={config.toJS()}
-          onChange={(data) => updateSchemaConfig(data.formData)}
+          onChange={data => updateSchemaConfig(data.formData)}
         />
       </Modal>
 
