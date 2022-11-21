@@ -11,12 +11,11 @@ import LayerArrayFieldTemplate from "./LayerArrayFieldTemplate";
 import EmptyArrayField from "./EmptyArrayField";
 import AccordionArrayFieldTemplate from "./AccordionArrayFieldTemplate";
 import PropTypes from "prop-types";
-import AceEditor from "react-ace";
-import "ace-builds/webpack-resolver";
 import axios from "axios";
 import ImportListModal from "./ImportListModal";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { CheckOutlined } from "@ant-design/icons";
+import CodeViewer from "../../../util/CodeViewer";
 
 const DESCRIPTION_COL_STYLE = {
   paddingBottom: "8px",
@@ -193,15 +192,7 @@ const NormalArrayFieldTemplate = ({
             </Row>
           }
         >
-          <AceEditor
-            mode="latex"
-            theme="github"
-            width="100%"
-            height="200px"
-            name="UNIQUE_ID_OF_DIV"
-            value={latexData}
-            editorProps={{ $blockScrolling: true }}
-          />
+          <CodeViewer value={latexData} height="calc(100vh - 300px)" />
         </Modal>
       )}
       {uiImport && (

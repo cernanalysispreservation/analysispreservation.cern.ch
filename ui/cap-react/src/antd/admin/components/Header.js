@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import AceEditor from "react-ace";
 import JsonDiff from "./JSONDiff";
 import "ace-builds/webpack-resolver";
 import Form from "../../forms/Form";
@@ -16,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import { CMS } from "../../routes";
 import { configSchema } from "../utils/schemaSettings";
+import CodeViewer from "../../util/CodeViewer";
 const { useBreakpoint } = Grid;
 const Header = ({
   config,
@@ -32,6 +32,12 @@ const Header = ({
   const [settingsModal, setSettingsModal] = useState(false);
   const screens = useBreakpoint();
 
+  const diffModalTabStyle = {
+    overflowX: "scroll",
+    overflowY: "auto",
+    maxHeight: "calc(100vh - 300px)",
+  };
+
   const _getSchema = () => {
     const fileData = JSON.stringify(
       {
@@ -46,27 +52,21 @@ const Header = ({
     const a = document.createElement("a");
     const file = new Blob([fileData], { type: "text/json" });
     a.href = URL.createObjectURL(file);
-    a.download = "fileName.json";
+    a.download = "fileName.json"; //TODO: Should be a proper name
     a.click();
   };
   const _renderSchemaPreview = (schemaPreviewDisplay) => {
     let previews = {
       uiSchema: (
-        <AceEditor
-          value={JSON.stringify(uiSchema.toJS(), null, 4)}
-          mode="json"
-          width="100%"
-          height="100vh"
-          readonly
+        <CodeViewer
+          value={JSON.stringify(uiSchema.toJS(), null, 2)}
+          height="100%"
         />
       ),
       schema: (
-        <AceEditor
-          value={JSON.stringify(schema.toJS(), null, 4)}
-          mode="json"
-          width="100%"
-          height="100vh"
-          readonly
+        <CodeViewer
+          value={JSON.stringify(schema.toJS(), null, 2)}
+          height="100%"
         />
       ),
       uiSchemaDiff: (
@@ -93,18 +93,31 @@ const Header = ({
         visible={diffModal}
         onCancel={() => setDiffModal(false)}
         width={1000}
+        footer={null}
       >
         <Tabs defaultActiveKey="schema">
-          <Tabs.TabPane tab="Schema" key="schema">
+          <Tabs.TabPane tab="Schema" key="schema" style={diffModalTabStyle}>
             {_renderSchemaPreview("schema")}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="UI Schema" key="uiSchema">
+          <Tabs.TabPane
+            tab="UI Schema"
+            key="uiSchema"
+            style={diffModalTabStyle}
+          >
             {_renderSchemaPreview("uiSchema")}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Schema Diff" key="schemaDiff">
+          <Tabs.TabPane
+            tab="Schema Diff"
+            key="schemaDiff"
+            style={diffModalTabStyle}
+          >
             {_renderSchemaPreview("schemaDiff")}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="UI Schema Diff" key="uiSchemaDiff">
+          <Tabs.TabPane
+            tab="UI Schema Diff"
+            key="uiSchemaDiff"
+            style={diffModalTabStyle}
+          >
             {_renderSchemaPreview("uiSchemaDiff")}
           </Tabs.TabPane>
         </Tabs>
