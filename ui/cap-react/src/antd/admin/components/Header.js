@@ -15,6 +15,8 @@ import {
 import { CMS } from "../../routes";
 import { configSchema } from "../utils/schemaSettings";
 import CodeViewer from "../../util/CodeViewer";
+import { json, jsonParseLinter } from "@codemirror/lang-json";
+
 const { useBreakpoint } = Grid;
 const Header = ({
   config,
@@ -59,12 +61,16 @@ const Header = ({
       uiSchema: (
         <CodeViewer
           value={JSON.stringify(uiSchema.toJS(), null, 2)}
+          lang={json}
+          lint={jsonParseLinter}
           height="100%"
         />
       ),
       schema: (
         <CodeViewer
           value={JSON.stringify(schema.toJS(), null, 2)}
+          lang={json}
+          lint={jsonParseLinter}
           height="100%"
         />
       ),
