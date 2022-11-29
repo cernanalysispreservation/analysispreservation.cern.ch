@@ -4,7 +4,7 @@ on:
   push:
     branches: master
     paths-ignore:
-      - 'ui/**'
+      - "ui/**"
 
 jobs:
   registry:
@@ -15,5 +15,12 @@ jobs:
       - name: Trigger the Gitlab CI pipeline
         run: bash ./scripts/ci/image_build.sh -b master -i app
         env:
+          token: ${{ secrets.SERVER }}
+          trigger_uri: ${{ secrets.SERVER_TRIGGER_URI }}
+
+      - name: Trigger the Gitlab CI pipeline for E2E image update
+        run: bash ./scripts/ci/image_build.sh -b master -i master-e2e
+        env:
+          enable_e2e: ${{ secrets.ENABLE_E2E }}
           token: ${{ secrets.SERVER }}
           trigger_uri: ${{ secrets.SERVER_TRIGGER_URI }}
