@@ -402,6 +402,8 @@ def test_get_deposits_with_facets(client, users, auth_headers_for_user, create_d
             'facet_next_deadline_date',
             'facet_physics_theme',
             'facet_sm_analysis_characteristics',
+            'facet_stage',
+            'facet_target_date',
             'facet_collection',
             'particles',
         ]
@@ -1363,6 +1365,7 @@ def test_get_deposit_with_form_json_serializer(
             'version': '1.0.0',
         },
         'schemas': {
+            'config': {},
             'schema': {
                 'title': 'deposit-test-schema',
                 'type': 'object',
