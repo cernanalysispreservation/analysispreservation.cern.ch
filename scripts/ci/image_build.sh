@@ -10,7 +10,8 @@ ENVIRONMENTS='dev
 qa'
 
 IMAGES='ui
-app'
+app
+master-e2e'
 
 usage() { echo "Usage: $0 [-b <branch> | -c <commit> | -t <tag> | -p <pull-request>] [-d <env>] [-i <image-name>]" 1>&2; exit 1; }
 
