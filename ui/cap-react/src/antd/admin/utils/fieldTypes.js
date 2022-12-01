@@ -1930,6 +1930,12 @@ const advanced = {
           title: "Pattern",
           description: "Provide a regex expression for your pattern",
         },
+        tagPatternErrorMessage: {
+          type: "string",
+          title: "Pattern error message",
+          description:
+            "Provide a message to display when the input does not match the pattern",
+        },
       },
     },
     optionsUiSchema: {
