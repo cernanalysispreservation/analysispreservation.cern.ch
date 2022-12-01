@@ -9,11 +9,14 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    if (inputVisible) {
-      inputRef.current.focus();
-    }
-  }, [inputVisible]);
+  useEffect(
+    () => {
+      if (inputVisible) {
+        inputRef.current.focus();
+      }
+    },
+    [inputVisible]
+  );
 
   useEffect(() => {
     setTags(getInitialTags());
@@ -82,7 +85,9 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
                 pattern: schema.tagPattern
                   ? new RegExp(schema.tagPattern)
                   : /.*/,
-                message: `Does not match the pattern ${schema.tagPattern}`,
+                message: schema.tagPatternErrorMessage
+                  ? schema.tagPatternErrorMessage
+                  : `Does not match the pattern ${schema.tagPattern}`,
               },
             ]}
           >
@@ -99,14 +104,15 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
           </Form.Item>
         </Form>
       )}
-      {!inputVisible && !readonly && (
-        <Tag
-          onClick={() => setInputVisible(true)}
-          style={{ borderStyle: "dashed", cursor: "pointer" }}
-        >
-          <PlusOutlined /> New Tag
-        </Tag>
-      )}
+      {!inputVisible &&
+        !readonly && (
+          <Tag
+            onClick={() => setInputVisible(true)}
+            style={{ borderStyle: "dashed", cursor: "pointer" }}
+          >
+            <PlusOutlined /> New Tag
+          </Tag>
+        )}
     </div>
   );
 };
