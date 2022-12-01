@@ -2,7 +2,7 @@ import React from "react";
 
 import { Switch } from "antd";
 
-const CheckboxWidget = ({
+const SwitchWidget = ({
   autofocus,
   disabled,
   formContext,
@@ -16,7 +16,7 @@ const CheckboxWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const handleChange = (checked) => onChange(checked);
+  const handleChange = checked => onChange(checked);
 
   const handleBlur = ({ target }) => onBlur(id, target.checked);
 
@@ -38,4 +38,4 @@ const CheckboxWidget = ({
   );
 };
 
-export default CheckboxWidget;
+export default SwitchWidget;

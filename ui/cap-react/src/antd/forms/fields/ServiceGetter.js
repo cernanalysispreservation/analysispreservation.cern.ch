@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ORCidIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/ORCID/ORCidIcon";
 import { Button, Input, Select, Space, Typography } from "antd";
 import ZenodoIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/Zenodo/ZenodoIcon";
@@ -7,6 +7,7 @@ import axios from "axios";
 import Ror from "./services/Ror";
 import Zenodo from "./services/Zenodo";
 import Orcid from "./services/Orcid";
+
 const SERVICES = {
   zenodo: {
     url: "/api/services/zenodo/record/",
@@ -20,18 +21,11 @@ const SERVICES = {
 };
 
 const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
-  const [service, setService] = useState(
-    uiSchema["ui:servicesList"].length < 2 ? uiSchema["ui:servicesList"][0] : ""
-  );
+  const [service, setService] = useState();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
-  useEffect(() => {
-    if (uiSchema["ui:renderOption"]) {
-      setService({ value: uiSchema["ui:renderOption"] });
-    }
-  }, []);
 
-  const getContentByName = (name) => {
+  const getContentByName = name => {
     const choices = {
       ror: <Ror data={formData.fetched} />,
       zenodo: <Zenodo data={formData.fetched} />,
@@ -70,10 +64,10 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
 
     return id;
   };
-  const onSearch = async (val) => {
+  const onSearch = async val => {
     setErrorMessage(undefined);
-    const currentServiceApi = SERVICES[service.value] || null;
-    const resourceID = getId(service.value, val);
+    const currentServiceApi = SERVICES[service] || null;
+    const resourceID = getId(service, val);
     if (currentServiceApi && !resourceID == "") {
       setLoading(true);
       try {
@@ -82,7 +76,7 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
         if (!data.status) {
           const resource_data = {
             source: {
-              service: service.value,
+              service: service,
               externalID: resourceID,
             },
             fetched: data,
@@ -109,15 +103,15 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
         </Space>
       ) : (
         <Space direction="vertical" style={{ width: "100%" }}>
-          {uiSchema["ui:servicesList"].length > 2 && (
+          {uiSchema["ui:servicesList"].length > 1 && (
             <Select
-              value={service.value}
+              value={service}
               placeHolder="Select service"
-              onChange={(val) => setService({ value: val })}
+              onChange={val => setService(val)}
             >
-              {uiSchema["ui:servicesList"].map((service) => (
-                <Select.Option value={service.value} key={service.value}>
-                  {service.value}
+              {uiSchema["ui:servicesList"].map(service => (
+                <Select.Option value={service} key={service}>
+                  {service}
                 </Select.Option>
               ))}
             </Select>
@@ -125,8 +119,8 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
           {service && (
             <Space direction="vertical">
               <Space>
-                {IconFactory[service.value]}
-                <Typography.Text>{service.label}</Typography.Text>
+                {IconFactory[service]}
+                <Typography.Text>{service}</Typography.Text>
                 <Input.Search
                   placeholder="ID here"
                   enterButton="Fetch"

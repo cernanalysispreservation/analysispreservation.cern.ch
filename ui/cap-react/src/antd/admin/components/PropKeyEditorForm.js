@@ -35,9 +35,9 @@ const PropertyKeyEditorForm = ({
       type = uiSchema["ui:field"];
       if (
         uiSchema["ui:field"] === "idFetcher" &&
-        uiSchema["ui:servicesList"].length < 3
+        uiSchema["ui:servicesList"].length < 2
       ) {
-        type = uiSchema["ui:servicesList"][0].value;
+        type = uiSchema["ui:servicesList"][0];
       }
     }
     if (uiSchema["ui:object"]) {

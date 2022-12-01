@@ -51,7 +51,7 @@ const simple = {
         },
         pattern: {
           title:
-            "Provide a regex for your input, only when you want a strivt format",
+            "Provide a regex for your input, only when you want a strict format",
           description:
             "In order to be active, you have to split your regex into parts in the Field Layout info",
           type: "string",
@@ -1675,12 +1675,7 @@ const advanced = {
         properties: {},
       },
       uiSchema: {
-        "ui:servicesList": [
-          {
-            value: "zenodo",
-            label: "ZENODO",
-          },
-        ],
+        "ui:servicesList": ["zenodo"],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
@@ -1749,12 +1744,7 @@ const advanced = {
         properties: {},
       },
       uiSchema: {
-        "ui:servicesList": [
-          {
-            value: "orcid",
-            label: "ORCID",
-          },
-        ],
+        "ui:servicesList": ["orcid"],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
@@ -1765,7 +1755,7 @@ const advanced = {
     },
   },
   idFetcher: {
-    title: "Id Getter Field",
+    title: "Id Fetcher Field",
     icon: <CloudDownloadOutlined />,
     description: "Data in JSON format, Grouped section",
     child: {},
@@ -1788,7 +1778,7 @@ const advanced = {
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
       type: "object",
-      title: "Radio Widget UI Options",
+      title: "Id Fetcher UI Options",
       properties: {
         "ui:options": {
           type: "object",
@@ -1806,6 +1796,15 @@ const advanced = {
             },
           },
         },
+        "ui:servicesList": {
+          title: "Select the services you want to allow",
+          type: "array",
+          items: {
+            type: "string",
+            enum: ["orcid", "ror", "zenodo"],
+          },
+          uniqueItems: "true",
+        },
       },
     },
     optionsUiSchemaUiSchema: {
@@ -1816,6 +1815,9 @@ const advanced = {
           },
         },
       },
+      "ui:servicesList": {
+        "ui:widget": "checkboxes",
+      },
     },
     default: {
       schema: {
@@ -1823,20 +1825,7 @@ const advanced = {
         properties: {},
       },
       uiSchema: {
-        "ui:servicesList": [
-          {
-            value: "orcid",
-            label: "ORCID",
-          },
-          {
-            value: "ror",
-            label: "ROR",
-          },
-          {
-            value: "zenodo",
-            label: "ZENODO",
-          },
-        ],
+        "ui:servicesList": ["orcid", "ror", "zenodo"],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
@@ -1905,12 +1894,7 @@ const advanced = {
         properties: {},
       },
       uiSchema: {
-        "ui:servicesList": [
-          {
-            value: "ror",
-            label: "ROR",
-          },
-        ],
+        "ui:servicesList": ["ror"],
         "ui:field": "idFetcher",
         "ui:options": {
           grid: {
@@ -1941,15 +1925,10 @@ const advanced = {
           description:
             "The title of the form field. How it will be displayed on the rendered form.",
         },
-        pattern: {
+        tagPattern: {
           type: "string",
           title: "Pattern",
           description: "Provide a regex expression for your pattern",
-        },
-        delimeter: {
-          type: "string",
-          descritpion: "Provide a delimeter for your input",
-          title: "Delimeter",
         },
       },
     },
@@ -1959,10 +1938,13 @@ const advanced = {
     },
     default: {
       schema: {
-        type: "string",
+        type: "array",
+        items: {
+          type: "string",
+        },
       },
       uiSchema: {
-        "ui:widget": "tags",
+        "ui:field": "tags",
         "ui:options": {
           grid: {
             gridColumns: "1/5",

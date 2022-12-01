@@ -38,7 +38,7 @@ const SchemaTreeItem = ({
     selectProperty(path);
   };
 
-  const shouldBoxAcceptChildren = (uiSchema) => {
+  const shouldBoxAcceptChildren = uiSchema => {
     return uiSchema["ui:field"] !== undefined;
   };
 
@@ -63,7 +63,7 @@ const SchemaTreeItem = ({
           uiSchema["ui:field"] === "idFetcher" &&
           uiSchema["ui:servicesList"].length < 3
         ) {
-          type = uiSchema["ui:servicesList"][0].value;
+          type = uiSchema["ui:servicesList"][0];
         }
       }
       if (uiSchema["ui:object"]) {
@@ -134,10 +134,10 @@ SchemaTreeItem.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectProperty: (path) => dispatch(selectProperty(path)),
+    selectProperty: path => dispatch(selectProperty(path)),
   };
 }
-export default connect((state) => state, mapDispatchToProps)(SchemaTreeItem);
+export default connect(state => state, mapDispatchToProps)(SchemaTreeItem);
 
 let mapType2Icon = {
   object: <div>&#123;&#32;&#125;</div>,
