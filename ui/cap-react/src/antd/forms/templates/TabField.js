@@ -9,14 +9,14 @@ import {
   Switch,
   Typography,
   Grid,
-  Select
+  Select,
 } from "antd";
 import { connect } from "react-redux";
 
 import TabFieldMenu from "./TabFieldMenu";
 
 const TabField = ({ uiSchema, properties, formErrors }) => {
-  let options = uiSchema["ui:options"];
+  let options = uiSchema["ui:options"] || "";
 
   // fetch tabs either from view object or from properties
   let fetched_tabs = options && options.tabs ? options.tabs : properties;
@@ -151,14 +151,11 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
 TabField.propTypes = {
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
-  formErrors: PropTypes.object
+  formErrors: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  formErrors: state.draftItem.get("formErrors")
+  formErrors: state.draftItem.get("formErrors"),
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(TabField);
+export default connect(mapStateToProps, null)(TabField);
