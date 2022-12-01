@@ -8,9 +8,9 @@ import Toggler from "./RichEditorPreviewPlugin";
 import "react-markdown-editor-lite/lib/index.css";
 import "katex/dist/katex.min.css";
 import "markdown-it-texmath/css/texmath.css";
-import "./styles/RichEditor.css";
+import "./styles/RichEditorWidget.css";
 
-const RichEditor = (props) => {
+const RichEditorWidget = props => {
   const mdParser = new MarkdownIt();
   mdParser.use(tm, {
     engine: require("katex"),
@@ -19,10 +19,10 @@ const RichEditor = (props) => {
   });
   let myEditor = useRef(null);
 
-  const renderHTML = (text) => {
+  const renderHTML = text => {
     return mdParser.render(text);
   };
-  const handleEditorChange = (values) => {
+  const handleEditorChange = values => {
     props.onChange(values.text);
   };
 
@@ -74,7 +74,7 @@ const RichEditor = (props) => {
   );
 };
 
-RichEditor.propTypes = {
+RichEditorWidget.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
   readonly: PropTypes.bool,
@@ -83,4 +83,4 @@ RichEditor.propTypes = {
   viewProps: PropTypes.object,
 };
 
-export default RichEditor;
+export default RichEditorWidget;
