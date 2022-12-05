@@ -18,6 +18,7 @@ import {
   FontSizeOutlined,
   LinkOutlined,
   NumberOutlined,
+  QuestionOutlined,
   SwapOutlined,
   TagOutlined,
   UnorderedListOutlined,
@@ -43,7 +44,7 @@ const SchemaTreeItem = ({
   };
 
   const getIconByType = (uiSchema = {}, schema = {}) => {
-    let type;
+    let type = "unknown";
     // in case we can not define the type of the element from the uiSchema,
     // extract the type from the schema
     if (
@@ -59,12 +60,6 @@ const SchemaTreeItem = ({
       }
       if (uiSchema["ui:field"]) {
         type = uiSchema["ui:field"];
-        if (
-          uiSchema["ui:field"] === "idFetcher" &&
-          uiSchema["ui:servicesList"].length < 3
-        ) {
-          type = uiSchema["ui:servicesList"][0];
-        }
       }
       if (uiSchema["ui:object"]) {
         type = uiSchema["ui:object"];
@@ -137,7 +132,10 @@ function mapDispatchToProps(dispatch) {
     selectProperty: path => dispatch(selectProperty(path)),
   };
 }
-export default connect(state => state, mapDispatchToProps)(SchemaTreeItem);
+export default connect(
+  state => state,
+  mapDispatchToProps
+)(SchemaTreeItem);
 
 let mapType2Icon = {
   object: <div>&#123;&#32;&#125;</div>,
@@ -155,10 +153,8 @@ let mapType2Icon = {
   CapFiles: <FileOutlined />,
   tags: <TagOutlined />,
   idFetcher: <CloudDownloadOutlined />,
-  ror: <CloudDownloadOutlined />,
-  zenodo: <CloudDownloadOutlined />,
-  orcid: <CloudDownloadOutlined />,
   accordionObjectField: <BorderTopOutlined />,
   richeditor: <BookOutlined />,
   uri: <LinkOutlined />,
+  unknown: <QuestionOutlined />,
 };
