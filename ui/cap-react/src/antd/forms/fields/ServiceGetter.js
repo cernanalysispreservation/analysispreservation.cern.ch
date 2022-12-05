@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ORCidIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/ORCID/ORCidIcon";
 import { Button, Input, Select, Space, Typography } from "antd";
 import ZenodoIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/Zenodo/ZenodoIcon";
@@ -24,6 +24,15 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
   const [service, setService] = useState();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
+
+  useEffect(
+    () => {
+      if (uiSchema["ui:servicesList"].length === 1) {
+        setService(uiSchema["ui:servicesList"]);
+      }
+    },
+    [uiSchema]
+  );
 
   const getContentByName = name => {
     const choices = {
