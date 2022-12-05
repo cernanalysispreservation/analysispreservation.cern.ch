@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchRecordsResults } from "../../actions/common";
 import { Card, Col, Empty, Row, Select, Space, Tag, Typography } from "antd";
-import RichEditorWidget from "../../components/drafts/form/themes/grommet-preview/widgets/RichEditor/RichEditorWidget";
+import RichEditorWidget from "../forms/widgets/RichEditorWidget";
 import NoDocs from "../../img/noDocs.svg";
 import DashboardList from "../dashboard/components/DashoboardList";
 import { _getCollectionList } from "../dashboard/utils";
@@ -61,7 +61,7 @@ const Collection = props => {
                   {[
                     "allversions",
                     ...(props.schema_data.has("versions") &&
-                      props.schema_data.get("versions").map(item => item))
+                      props.schema_data.get("versions").map(item => item)),
                   ].map(item => (
                     <Select.Option value={item} key={item}>
                       {item === "allversions" ? "All Versions" : item}
@@ -121,7 +121,7 @@ const Collection = props => {
                   <CollectionPermissions
                     permissions={props.schema_data.getIn([
                       "config",
-                      "permissions"
+                      "permissions",
                     ])}
                   />
                 </Card>
@@ -142,7 +142,7 @@ Collection.propTypes = {
   history: PropTypes.object,
   error: PropTypes.object,
   loading: PropTypes.bool,
-  fetchRecordsResults: PropTypes.func
+  fetchRecordsResults: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -150,12 +150,12 @@ const mapStateToProps = state => ({
   depositGroups: state.auth.getIn(["currentUser", "depositGroups"]),
   schema_data: state.collection.get("schema_data"),
   loading: state.collection.get("loading"),
-  error: state.collection.get("error")
+  error: state.collection.get("error"),
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchRecordsResults: (name, version) =>
-    dispatch(fetchRecordsResults(name, version))
+    dispatch(fetchRecordsResults(name, version)),
 });
 
 export default connect(

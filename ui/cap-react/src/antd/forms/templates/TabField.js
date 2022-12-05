@@ -16,10 +16,10 @@ import { connect } from "react-redux";
 import TabFieldMenu from "./TabFieldMenu";
 
 const TabField = ({ uiSchema, properties, formErrors }) => {
-  let options = uiSchema["ui:options"] || "";
+  let options = uiSchema["ui:options"] || {};
 
   // fetch tabs either from view object or from properties
-  let fetched_tabs = options && options.tabs ? options.tabs : properties;
+  let fetched_tabs = options.tabs ? options.tabs : properties;
 
   // check if there is analysis_reuse_mode
   let analysis_mode = fetched_tabs.filter(
@@ -158,4 +158,7 @@ const mapStateToProps = state => ({
   formErrors: state.draftItem.get("formErrors"),
 });
 
-export default connect(mapStateToProps, null)(TabField);
+export default connect(
+  mapStateToProps,
+  null
+)(TabField);
