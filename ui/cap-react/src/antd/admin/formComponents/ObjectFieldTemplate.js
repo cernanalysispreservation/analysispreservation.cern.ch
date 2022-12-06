@@ -21,7 +21,7 @@ const ObjectFieldTemplate = function(props) {
           let item = {
             id: index + 1,
             name: prop.name,
-            prop: prop
+            prop: prop,
           };
 
           temp.push(item);
@@ -59,7 +59,7 @@ const ObjectFieldTemplate = function(props) {
           let item = {
             id: diffIndex + 1,
             name: differentItem,
-            prop: propss
+            prop: propss,
           };
           cards[diffIndex] = item;
           setCards(cards);
@@ -88,7 +88,7 @@ const ObjectFieldTemplate = function(props) {
         props.formContext.uiSchema.length > 0 ? props.formContext.uiSchema : [],
         {
           ...rest,
-          "ui:order": [...uiCards, "*"]
+          "ui:order": [...uiCards, "*"],
         }
       );
     },
@@ -104,7 +104,7 @@ const ObjectFieldTemplate = function(props) {
     let item = {
       id: index + 1,
       name: prop.name,
-      prop: prop
+      prop: prop,
     };
 
     setCards([...cards, item]);
@@ -116,7 +116,7 @@ const ObjectFieldTemplate = function(props) {
       if (dragCard) {
         setCards(
           update(cards, {
-            $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]]
+            $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
           })
         );
       }
@@ -139,13 +139,13 @@ ObjectFieldTemplate.propTypes = {
   properties: PropTypes.array,
   formContext: PropTypes.object,
   onUiSchemaChange: PropTypes.func,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     onUiSchemaChange: (path, schema) =>
-      dispatch(updateUiSchemaByPath(path, schema))
+      dispatch(updateUiSchemaByPath(path, schema)),
   };
 }
 

@@ -3,16 +3,11 @@ import PropTypes from "prop-types";
 import HoverBox from "./HoverBox";
 import SchemaTreeItem from "./SchemaTreeItem";
 import Form from "../../forms/Form";
-import TextWidget from "./TextWidget";
 import ArrayFieldTemplate from "./ArrayFieldTemplate";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import { connect } from "react-redux";
 import { addByPath } from "../../../actions/schemaWizard";
-import { _validate } from "../utils/index";
-
-const widgets = {
-  TextWidget: TextWidget
-};
+import { isItTheArrayField, _validate } from "../utils/index";
 
 const FieldTemplate = props => {
   const { schema, uiSchema, rawErrors = [], children, formContext } = props;
@@ -20,14 +15,14 @@ const FieldTemplate = props => {
   const [display, setDisplay] = useState(false);
   let path = {
     schema: [...formContext.schema, ...(rawErrors[0].schema || [])],
-    uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])]
+    uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])],
   };
 
   const shouldBoxHideChildren = uiSchema => {
     return uiSchema["ui:field"] !== undefined;
   };
 
-  if (props.id == "root") {
+  if (props.id == "root" && !formContext.nestedForm) {
     return (
       <HoverBox
         addProperty={props.addProperty}
@@ -37,7 +32,7 @@ const FieldTemplate = props => {
       >
         <div
           style={{
-            padding: formContext.schema.length == 0 ? "10px" : "none"
+            padding: formContext.schema.length == 0 ? "10px" : "none",
           }}
         >
           {children}
@@ -48,7 +43,7 @@ const FieldTemplate = props => {
 
   let _renderObjectArray = undefined;
 
-  if (["array"].indexOf(schema.type) > -1) {
+  if (isItTheArrayField(schema, uiSchema)) {
     _renderObjectArray = <div>{children}</div>;
   } else if (["object"].indexOf(schema.type) > -1) {
     _renderObjectArray = (
@@ -66,7 +61,6 @@ const FieldTemplate = props => {
               schema={schema}
               uiSchema={uiSchema}
               formData={{}}
-              widgets={widgets}
               FieldTemplate={_FieldTemplate}
               ObjectFieldTemplate={ObjectFieldTemplate}
               ArrayFieldTemplate={ArrayFieldTemplate}
@@ -106,12 +100,12 @@ FieldTemplate.propTypes = {
   rawErrors: PropTypes.array,
   uiSchema: PropTypes.object,
   schema: PropTypes.object,
-  addProperty: PropTypes.func
+  addProperty: PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    addProperty: (path, data) => dispatch(addByPath(path, data))
+    addProperty: (path, data) => dispatch(addByPath(path, data)),
   };
 }
 

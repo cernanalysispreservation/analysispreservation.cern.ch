@@ -1,7 +1,7 @@
 import Select from "./SelectWidget";
 
 const widgets = {
-  selectColumns: Select
+  selectColumns: Select,
 };
 
 export default widgets;
