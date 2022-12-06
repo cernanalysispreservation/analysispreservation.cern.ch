@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ObjectFieldTemplate from "./templates/ObjectFieldTemplate";
 import ArrayFieldTemplate from "./templates/ArrayFieldTemplates";
 import FieldTemplate from "./templates/Field/FieldTemplate";
-import fields from "./fields";
+import CAPFields from "./fields";
 import CAPWidgets from "./widgets";
 
 import objectPath from "object-path";
@@ -34,9 +34,8 @@ const RJSFForm = ({
   // mainly this is used for the drafts forms
   // we want to allow forms to be saved even without required fields
   // if these fields are not filled in when publishing then an error will be shown
-  const transformErrors = (errors) => {
-    errors = errors.filter((item) => item.name != "required");
-    errors.map((error) => {
+  const transformErrors = errors => {
+    errors = errors.filter(item => item.name != "required").map(error => {
       if (error.name == "required") return null;
 
       // Update messages for undefined fields when required,
@@ -59,7 +58,7 @@ const RJSFForm = ({
       schema={schema}
       uiSchema={uiSchema}
       tagName={tagName}
-      fields={fields}
+      fields={CAPFields}
       formData={formData}
       widgets={{ ...CAPWidgets, ...widgets }}
       ObjectFieldTemplate={Objects || ObjectFieldTemplate}

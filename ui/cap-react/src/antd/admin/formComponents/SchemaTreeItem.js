@@ -25,6 +25,7 @@ import {
   UpOutlined,
 } from "@ant-design/icons";
 import { Row, Space, Tag, Typography } from "antd";
+import { isItTheArrayField } from "../utils";
 
 const SchemaTreeItem = ({
   selectProperty,
@@ -99,7 +100,7 @@ const SchemaTreeItem = ({
                 <DownOutlined onClick={updateDisplay} />
               )
             ) : null}
-            {schema.type == "array" ? (
+            {isItTheArrayField(schema, uiSchema) ? (
               display ? (
                 <UpOutlined onClick={updateDisplay} />
               ) : (

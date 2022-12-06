@@ -14,15 +14,15 @@ export const _initSchemaStructure = (name, description) => ({
     title: name,
     description: description,
     type: "object",
-    properties: {}
+    properties: {},
   },
-  uiSchema: {}
+  uiSchema: {},
 });
 
 export const _addSchemaToLocalStorage = (_id, name, description) => {
   let availableSchemas = localStorage.getItem("availableSchemas") || "{}";
   let newAvailableSchemas = Object.assign(availableSchemas, {
-    [_id]: _initSchemaStructure(name, description)
+    [_id]: _initSchemaStructure(name, description),
   });
 
   localStorage.setItem("availableSchemas", JSON.stringify(newAvailableSchemas));
@@ -37,7 +37,7 @@ let _addErrors = (errors, path) => {
     if (error != "__errors" && error != "addError") {
       _addErrors(errors[error], {
         schema: [...path, "properties", error],
-        uiSchema: [...path, error]
+        uiSchema: [...path, error],
       });
     }
   });
@@ -49,4 +49,10 @@ export const _validate = function(formData, errors) {
 
 export const shoudDisplayGuideLinePopUp = schema => {
   return schema.get("properties") && schema.get("properties").size === 0;
+};
+
+export const isItTheArrayField = (schema, uiSchema) => {
+  return (
+    schema.type === "array" && !uiSchema["ui:field"] && !uiSchema["ui:widget"]
+  );
 };
