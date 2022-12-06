@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import SchemaTreeItem from "./SchemaTreeItem";
 import HoverBox from "./HoverBox";
 import Form from "../../forms/Form";
-import TextWidget from "./TextWidget";
 import { connect } from "react-redux";
 import { addByPath } from "../../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
@@ -11,17 +10,14 @@ import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
 import { Empty, Tag } from "antd";
 
-const widgets = {
-  TextWidget: TextWidget,
-};
-
-const ArrayFieldTemplate = (props) => {
+const ArrayFieldTemplate = props => {
   const [display, setDisplay] = useState(false);
 
   let schemaPath = [];
   let uiSchemaPath = [];
   if (props.rawErrors) {
-    let { schema, uiSchema } = props.rawErrors[0];
+    let _rawErrors = props.rawErrors.filter(i => (i.schema ? i : false));
+    let { schema, uiSchema } = _rawErrors[0];
     schemaPath = schema;
     uiSchemaPath = uiSchema;
   }
@@ -64,7 +60,6 @@ const ArrayFieldTemplate = (props) => {
               uiSchema={props.uiSchema.items}
               formData={{}}
               tagName="div"
-              widgets={widgets}
               showErrorList={false}
               FieldTemplate={FieldTemplate}
               ObjectFieldTemplate={ObjectFieldTemplate}
@@ -73,7 +68,7 @@ const ArrayFieldTemplate = (props) => {
               validate={_validate}
               noHtml5Validate={true}
               onChange={() => {}}
-              formContext={_path}
+              formContext={{ ..._path, nestedForm: true }}
             >
               <span />
             </Form>
@@ -99,6 +94,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  (state) => state,
+  state => state,
   mapDispatchToProps
 )(ArrayFieldTemplate);

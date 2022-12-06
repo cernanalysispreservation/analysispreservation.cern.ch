@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { Form, Input, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import _ from "lodash";
 
 const TagsField = ({ schema, onChange, readonly, formData }) => {
   const [tags, setTags] = useState([]);
@@ -23,7 +24,7 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
   }, []);
 
   const getInitialTags = () => {
-    if (!formData) {
+    if (!formData || _.isEmpty(formData)) {
       return [];
     } else if (schema.type === "array") {
       return formData;
