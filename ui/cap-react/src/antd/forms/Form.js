@@ -25,6 +25,7 @@ const RJSFForm = ({
   ObjectFieldTemplate: Objects,
   ArrayFieldTemplate: Arrays,
   FieldTemplate: Fields,
+  fields,
   widgets,
   validate,
   tagName,
@@ -58,8 +59,8 @@ const RJSFForm = ({
       schema={schema}
       uiSchema={uiSchema}
       tagName={tagName}
-      fields={CAPFields}
       formData={formData}
+      fields={{ ...CAPFields, ...fields }}
       widgets={{ ...CAPWidgets, ...widgets }}
       ObjectFieldTemplate={Objects || ObjectFieldTemplate}
       ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
