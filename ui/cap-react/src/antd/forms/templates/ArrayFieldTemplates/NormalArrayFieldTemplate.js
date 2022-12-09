@@ -313,7 +313,7 @@ const NormalArrayFieldTemplate = ({
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>
             {items && (
-              <Col classdName="row array-item-list" span={24}>
+              <Col className="row array-item-list" span={24}>
                 {items.length > 0 ? (
                   getArrayContent(typeOfArrayToDisplay)
                 ) : (
