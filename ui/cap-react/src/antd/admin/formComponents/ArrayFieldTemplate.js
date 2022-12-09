@@ -8,7 +8,7 @@ import { addByPath } from "../../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
-import { Empty, Tag } from "antd";
+import { Empty } from "antd";
 
 const ArrayFieldTemplate = props => {
   const [display, setDisplay] = useState(false);
@@ -43,7 +43,7 @@ const ArrayFieldTemplate = props => {
       />
 
       {display && (
-        <div style={{ marginLeft: "10px", padding: "10px" }}>
+        <div style={{ marginLeft: "10px" }}>
           <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>
             {Object.keys(props.schema.items).length == 0 ? (
               <Empty
@@ -51,27 +51,24 @@ const ArrayFieldTemplate = props => {
                 style={{ color: "#000" }}
               />
             ) : (
-              <Tag style={{ padding: "2px 5px", width: "100%" }}>
-                drop new items here
-              </Tag>
+              <Form
+                schema={props.schema.items}
+                uiSchema={props.uiSchema.items}
+                formData={{}}
+                tagName="div"
+                showErrorList={false}
+                FieldTemplate={FieldTemplate}
+                ObjectFieldTemplate={ObjectFieldTemplate}
+                ArrayFieldTemplate={ArrayFieldTemplate}
+                liveValidate={true}
+                validate={_validate}
+                noHtml5Validate={true}
+                onChange={() => {}}
+                formContext={{ ..._path, nestedForm: true }}
+              >
+                <span />
+              </Form>
             )}
-            <Form
-              schema={props.schema.items}
-              uiSchema={props.uiSchema.items}
-              formData={{}}
-              tagName="div"
-              showErrorList={false}
-              FieldTemplate={FieldTemplate}
-              ObjectFieldTemplate={ObjectFieldTemplate}
-              ArrayFieldTemplate={ArrayFieldTemplate}
-              liveValidate={true}
-              validate={_validate}
-              noHtml5Validate={true}
-              onChange={() => {}}
-              formContext={{ ..._path, nestedForm: true }}
-            >
-              <span />
-            </Form>
           </HoverBox>
         </div>
       )}

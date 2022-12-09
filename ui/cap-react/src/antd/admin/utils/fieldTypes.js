@@ -1,16 +1,15 @@
 import React from "react";
 
 import {
+  AimOutlined,
   AppstoreOutlined,
   BookOutlined,
   BorderHorizontalOutlined,
-  BorderOutlined,
   BorderTopOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
   CloudDownloadOutlined,
   ContainerOutlined,
-  FieldBinaryOutlined,
   FileOutlined,
   FontSizeOutlined,
   LayoutOutlined,
@@ -691,7 +690,7 @@ const simple = {
   },
   radio: {
     title: "Radio Widget",
-    icon: <BorderOutlined />,
+    icon: <AimOutlined />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
@@ -870,7 +869,7 @@ const simple = {
       },
     },
   },
-  checkboxes: {
+  checkbox: {
     title: "Checkbox Widget",
     icon: <CheckSquareOutlined />,
     description: "IDs, order number, rating, quantity",
@@ -929,8 +928,8 @@ const simple = {
           enumNames: ["ReadOnly", "Editable"],
         },
         type: {
-          title: "Type of the checkbox",
-          enum: ["boolean", "string"],
+          title: "Type",
+          enum: ["boolean", "array"],
           enumNames: ["One Option", "Multiple Options"],
           type: "string",
         },
@@ -943,20 +942,36 @@ const simple = {
                 type: {
                   enum: ["boolean"],
                 },
+                checkedValue: {
+                  title: "Returned value when checked",
+                  description: "Default: true",
+                  type: "string",
+                },
+                uncheckedValue: {
+                  title: "Returned value when unchecked",
+                  description: "Default: false",
+                  type: "string",
+                },
               },
             },
             {
               properties: {
                 type: {
-                  enum: ["string"],
+                  enum: ["array"],
                 },
-                enum: {
+                items: {
                   title: "Define your options",
-                  type: "array",
+                  type: "object",
                   description: "The options for the widget",
-                  items: {
-                    title: "Option",
-                    type: "string",
+                  properties: {
+                    enum: {
+                      title: "Options List",
+                      type: "array",
+                      items: {
+                        title: "Option",
+                        type: "string",
+                      },
+                    },
                   },
                 },
               },
@@ -973,10 +988,14 @@ const simple = {
     default: {
       schema: {
         type: "boolean",
-        enum: ["Option A", "Option B"],
+        items: {
+          type: "string",
+          enum: ["Option A", "Option B"],
+        },
+        uniqueItems: true,
       },
       uiSchema: {
-        // "ui:widget": "checkboxes",
+        "ui:widget": "checkbox",
         "ui:options": {
           grid: {
             gridColumns: "1/5",
@@ -1253,84 +1272,6 @@ const simple = {
   //     }
   //   }
   // },
-  boolean: {
-    title: "Boolean",
-    icon: <FieldBinaryOutlined />,
-    description: "Yes or no, 1 or 0, true or false",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Boolean Schema ",
-      properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the element",
-          description:
-            "Provide the title you want to be displayed to your boolean field",
-        },
-        description: {
-          type: "string",
-          title: "Provide a desctiption for the element",
-          description:
-            "Provide the description you want to be displayed to your boolean field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
-    },
-    optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    optionsUiSchemaUiSchema: {
-      "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
-        },
-      },
-    },
-    default: {
-      schema: {
-        type: "boolean",
-      },
-      uiSchema: {
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
-      },
-    },
-  },
   array: {
     title: "Array",
     icon: <UnorderedListOutlined />,
@@ -1603,19 +1544,6 @@ const advanced = {
       },
     },
   },
-  // switch: {
-  //   title: "Switch",
-  //   description: "Yes or no, 1 or 0, true or false",
-  //   child: {},
-  //   default: {
-  //     schema: {
-  //       type: "boolean"
-  //     },
-  //     uiSchema: {
-  //       "ui:widget": "switch"
-  //     }
-  //   }
-  // },
   zenodo: {
     title: "Zenodo Field",
     icon: <CloudDownloadOutlined />,
