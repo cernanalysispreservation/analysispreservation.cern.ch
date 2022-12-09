@@ -13,10 +13,19 @@ const SwitchWidget = ({
   onFocus,
   readonly,
   value,
+  schema,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const handleChange = checked => onChange(checked);
+  const handleChange = checked => {
+    if (schema.type === "string") {
+      onChange(String(checked));
+    } else if (schema.type === "number") {
+      onChange(checked ? 1 : 0);
+    } else {
+      onChange(checked);
+    }
+  };
 
   const handleBlur = ({ target }) => onBlur(id, target.checked);
 
@@ -25,7 +34,7 @@ const SwitchWidget = ({
   return (
     <Switch
       autoFocus={autofocus}
-      checked={typeof value === "undefined" ? false : value}
+      checked={schema.type === "string" ? value === "true" : value}
       disabled={disabled || (readonlyAsDisabled && readonly)}
       id={id}
       name={id}
