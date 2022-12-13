@@ -313,7 +313,7 @@ const NormalArrayFieldTemplate = ({
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>
             {items && (
-              <Col className="row array-item-list" span={24}>
+              <Col span={24}>
                 {items.length > 0 ? (
                   getArrayContent(typeOfArrayToDisplay)
                 ) : (
@@ -338,7 +338,6 @@ const NormalArrayFieldTemplate = ({
                 <Col flex="192px">
                   <Button
                     block
-                    className="array-item-add"
                     disabled={disabled || readonly}
                     onClick={onAddClick}
                     type="primary"
