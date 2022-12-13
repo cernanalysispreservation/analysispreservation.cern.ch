@@ -49,6 +49,7 @@ const ArrayFieldTemplate = props => {
               <Empty
                 description="Please add items you want"
                 style={{ color: "#000" }}
+                imageStyle={{ height: "70px" }}
               />
             ) : (
               <Form
