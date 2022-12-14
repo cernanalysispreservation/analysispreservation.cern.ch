@@ -211,6 +211,8 @@ def parse_schema_permission_info(name, version, schema):
 def perform_copying_fields(data, copy_data, copy_paths):
     for copy_path in copy_paths:
         data_ref = deepcopy(data)
+        if not data_ref:
+            data_ref = {}
         for cp in copy_path:
             if cp not in data_ref:
                 data_ref[cp] = {}
@@ -224,7 +226,7 @@ def perform_copying_fields(data, copy_data, copy_paths):
             data_ref = copy_data
         elif isinstance(data_ref, list):
             data_ref = merge_lists(data_ref + copy_data)
-        elif isinstance(data_ref, dict):
+        elif data_ref is not None and isinstance(data_ref, dict):
             dict_merge(data_ref, copy_data)
         else:
             data_ref = copy_data
@@ -235,7 +237,7 @@ def perform_copying_fields(data, copy_data, copy_paths):
             ],
         )
 
-    return dict_merge(data, _data)
+    return _data if data is None else dict_merge(data, _data)
 
 
 def merge_lists(data):

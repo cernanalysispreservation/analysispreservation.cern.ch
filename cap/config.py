@@ -929,9 +929,3 @@ GITLAB_CAP_TOKEN = "CHANGE_ME"
 
 #: Enable Prometheus flask exporter
 PROMETHEUS_ENABLE_EXPORTER_FLASK = False
-
-#: Default validation order for deposits
-DEFAULT_VALIDATION_ORDER = {
-    "tranform_data": ["x-cap-copyto", "x-cap-copy"],
-    "check_data": ["x-cap-permission"],
-}

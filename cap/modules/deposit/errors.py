@@ -42,22 +42,6 @@ class UniqueRequiredValidationError(ValidationError):
         return super().__init__(message=message, **kwargs)
 
 
-class XCAPPermissionValidationError(ValidationError):
-    """Unique required validation error exception."""
-
-    def __init__(self, message, **kwargs):
-        """Initialize exception."""
-        return super().__init__(message=message, **kwargs)
-
-
-class XCAPCopyValidationFlag(ValidationError):
-    """X cap copy field found flag."""
-
-    def __init__(self, message, **kwargs):
-        """Initialize exception."""
-        return super().__init__(message=message, **kwargs)
-
-
 class WrongJSONSchemaError(RESTValidationError):
     """Wrong JSONSchema error exception."""
 

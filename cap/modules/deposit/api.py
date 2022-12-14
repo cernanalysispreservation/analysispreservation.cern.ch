@@ -54,11 +54,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
-from cap.modules.deposit.loaders import (
-    get_check_validator,
-    get_tranform_validator,
-    get_val_from_path,
-)
+from cap.modules.deposit.loaders import get_val_from_path
 from cap.modules.deposit.utils import perform_copying_fields
 from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
@@ -86,8 +82,6 @@ from .errors import (
     ReviewError,
     UniqueRequiredValidationError,
     UpdateDepositPermissionsError,
-    XCAPCopyValidationFlag,
-    XCAPPermissionValidationError,
 )
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
@@ -101,6 +95,7 @@ from .permissions import (
     UpdateDepositPermission,
 )
 from .review import Reviewable
+from .validators import get_custom_validator
 
 _datastore = LocalProxy(lambda: current_app.extensions["security"].datastore)
 
@@ -435,36 +430,16 @@ class CAPDeposit(Deposit, Reviewable):
 
         Validates the data in order provided in schema configuration.
         """
-        validators, val_data = None, None
-        if 'validators' in kwargs:
-            validators = kwargs.get('validators')
-        else:
-            validators = self_or_cls.schema.config.get("x-cap-apply-order")
+        current_data = None
+        if hasattr(self_or_cls, 'model'):
+            current_data = self_or_cls.model.json
+        data_to_validate = self_or_cls.check_data(
+            schema=schema,
+            current_data=current_data,
+            submitted_data=data_to_validate,
+        )
 
-        if validators is None:
-            validators = current_app.config.get('DEFAULT_VALIDATION_ORDER')
-
-        tranform_validators = validators.get("tranform_data")
-        if tranform_validators:
-            val_data = self_or_cls.tranform_data(
-                schema=schema,
-                submitted_data=val_data if val_data else data_to_validate,
-                tranform_validators=tranform_validators,
-            )
-
-        check_validators = validators.get("check_data")
-        if check_validators:
-            current_data = None
-            if hasattr(self_or_cls, 'model'):
-                current_data = self_or_cls.model.json
-            self_or_cls.check_data(
-                schema=schema,
-                current_data=current_data,
-                submitted_data=val_data if val_data else data_to_validate,
-                check_validators=check_validators,
-            )
-
-        return val_data if val_data else data_to_validate
+        return data_to_validate
 
     def edit_permissions(self, data):
         """Edit deposit permissions.
@@ -850,50 +825,68 @@ class CAPDeposit(Deposit, Reviewable):
         return data
 
     @classmethod
-    def tranform_data(cls, schema=None, submitted_data=None, **kwargs):
-        copied_data = []
-        if not any([schema, submitted_data]):
-            return
-
-        finder = get_tranform_validator(schema, **kwargs)
-        for field in finder.iter_errors(submitted_data):
-            if (type(field) is XCAPCopyValidationFlag) or any(
-                type(f) is XCAPCopyValidationFlag for f in field.context
-            ):
-                copied_data.append((field.instance, field.message.get("path")))
-
-        for cd in copied_data:
-            perform_copying_fields(submitted_data, cd[0], cd[1])
-
-        return submitted_data
-
-    @classmethod
     def check_data(
         cls, schema=None, current_data=None, submitted_data=None, **kwargs
     ):
         if not any([schema, submitted_data]):
             return
 
-        validator = get_check_validator(schema, **kwargs)
+        validator = get_custom_validator(schema, **kwargs)
         errors = []
-        for err in validator.iter_errors(submitted_data):
-            if (
-                type(err) is XCAPPermissionValidationError
-            ) or check_error_context(err):
-                error_path = get_error_path(err)
-                current_version = get_val_from_path(current_data, error_path)
-                incoming_version = get_val_from_path(submitted_data, error_path)
+        data = submitted_data
+        ordered_list = []
 
-                if not incoming_version:
-                    incoming_version = current_version
-                if current_version != incoming_version:
-                    errors.append(FieldError(error_path, str(err.message)))
+        error_list = [e for e in validator.iter_errors(submitted_data)]
+        for err in error_list:
+            _validator = err.validator
+            if _validator in CUSTOM_POST_VALIDATORS:
+                _validator_value = err.validator_value
+                _order = (
+                    _validator_value["x-cap-order"]
+                    if "x-cap-order" in _validator_value
+                    else 9999
+                )
+                ordered_list.append((_order, err))
+
+        ordered_list.sort(key=lambda x: x[0])
+        for field in ordered_list:
+            err = field[1]
+            _method = CUSTOM_POST_VALIDATORS[err.validator]
+            _error, data = _method(err, current_data, data)
+            if _error:
+                errors.append(FieldError(get_error_path(err), str(err.message)))
 
         if errors:
             raise DepositValidationError(
                 "You cannot edit this field.", errors=errors
             )
 
+        return data
 
-def check_error_context(err):
-    return any(type(e) is XCAPPermissionValidationError for e in err.context)
+
+def has_changed(error, current, new):
+    error_path = get_error_path(error)
+    current_version = get_val_from_path(current, error_path) or None
+    new_version = get_val_from_path(new, error_path)
+
+    if not new_version:
+        new_version = current_version
+    if current_version != new_version:
+
+        return True, current
+    else:
+        return False, new
+
+
+def copy_to_fields(error, current, new):
+    data = error.instance
+    paths = error.validator_value.get("path")
+    perform_copying_fields(new, data, paths)
+    return False, new
+
+
+CUSTOM_POST_VALIDATORS = {
+    "x-cap-copy": copy_to_fields,
+    "x-cap-copyto": copy_to_fields,
+    "x-cap-permission": has_changed,
+}

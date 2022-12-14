@@ -1510,6 +1510,7 @@ def test_get_deposit_with_form_json_serializer_x_cap_field(
     db,
     auth_headers_for_example_user,
     example_user,
+    users,
     create_deposit,
     create_schema,
 ):
@@ -1547,3 +1548,141 @@ def test_get_deposit_with_form_json_serializer_x_cap_field(
     ]
     assert resp.json['schemas']['schema']['properties']['date']['readOnly'] == True
     assert resp.json['schemas']['schema']['properties']['title'].get('readOnly') == None
+
+
+def test_x_cap_field_validation(
+    client,
+    db,
+    auth_headers_for_example_user,
+    auth_headers_for_user,
+    example_user,
+    users,
+    create_deposit,
+    create_schema,
+    json_headers
+):
+    cms_user_2 = users['cms_user2']
+    cms_user_2_headers = auth_headers_for_user(cms_user_2) + [('Accept', 'application/form+json')]
+
+    deposit_mapping = get_default_mapping("test-schema", "1.0.0")
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        fullname='Test Schema',
+        deposit_schema={
+            'title': 'deposit-test-schema',
+            'type': 'object',
+            'properties': {
+                'title': {'type': 'string', 'x-cap-permission': {"users": [example_user.email]}},
+                'date': {'type': 'string', 'x-cap-permission': {"users": [cms_user_2.email]}},
+                "basic": {
+                    "properties": {
+                        "copied_title": {"type": "string"},
+                        "nested": {
+                            "properties": {
+                                "nested_title": {
+                                    "type": "string",
+                                    "x-cap-copy": {
+                                        "path": [["basic", "copied_title"]]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+        },
+        deposit_mapping=deposit_mapping,
+    )
+    deposit = create_deposit(
+        example_user,
+        'test-schema',
+        {'$ana_type': 'test-schema', 'my_field': 'mydata'},
+        experiment='CMS'
+    )
+
+    pid = deposit['_deposit']['id']
+    headers = auth_headers_for_example_user + [('Accept', 'application/form+json')]
+
+    resp = client.get(f'/deposits/{pid}', headers=headers)
+    assert resp.status_code == 200
+
+    deposit_2 = create_deposit(
+        example_user,
+        'test-schema',
+        {
+            '$ana_type': 'test-schema',
+            'my_field': 'mydata', 
+            'basic': {
+                'nested': {
+                    'nested_title': "my title blabla"
+                }
+            }
+        },
+        experiment='CMS'
+    )
+
+    pid_2 = deposit_2['_deposit']['id']
+    resp = client.get(f'/deposits/{pid_2}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json['metadata']['basic']['copied_title'] == "my title blabla"
+
+    wrong_data_1 = {
+        '$ana_type': 'test-schema',
+        'my_field': 'mydata',
+        'date': {},
+        'basic': {
+            'nested': {
+                'nested_title': "my title blabla"
+            }
+        }
+    }
+
+    resp = client.post(f'/deposits/', data=json.dumps(wrong_data_1), headers=headers+json_headers)
+
+    assert resp.status_code == 201
+
+    wrong_data = {
+            '$ana_type': 'test-schema',
+            'my_field': 'mydata',
+            'date': "boom",
+            'basic': {
+                'nested': {
+                    'nested_title': "my title blabla"
+                }
+            }
+        }
+    resp = client.post(f'/deposits/', data=json.dumps(wrong_data), headers=headers+json_headers)
+    assert resp.status_code == 422
+
+    resp = client.put(f'/deposits/{pid_2}', data=json.dumps(wrong_data), headers=headers+json_headers)
+    assert resp.status_code == 422
+
+
+    permissions = [{
+        'email': cms_user_2.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-admin'
+    }]
+
+    client.post(f'/deposits/{pid_2}/actions/permissions',
+                headers=headers + json_headers,
+                data=json.dumps(permissions))
+
+    resp = client.put(f'/deposits/{pid_2}', data=json.dumps(wrong_data), headers=cms_user_2_headers+json_headers)
+    assert resp.status_code == 200
+
+    wrong_data = {
+        'my_field': 'mydata',
+        'basic': {
+            'nested': {
+                'nested_title': "my title blabla"
+            }
+        },
+        'title': "my title"
+    }
+    resp = client.put(f'/deposits/{pid_2}', data=json.dumps(wrong_data), headers=headers+json_headers)
+
+    assert resp.status_code == 200

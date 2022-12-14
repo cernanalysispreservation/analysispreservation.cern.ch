@@ -30,7 +30,7 @@ from jsonschema.exceptions import ValidationError
 
 
 # Validate for schema field permissions
-def validate_editing_field(validator, value, instance, schema):
+def validate_field_schema_editing(validator, value, instance, schema):
     allowed_users = value.get('users')
     allowed_roles = value.get('roles')
     error_message = value.get('error_message', 'You cannot edit this field.')
@@ -43,9 +43,13 @@ def validate_editing_field(validator, value, instance, schema):
 
     if allowed_roles and error:
         user_allowed = any(
-            Permission(RoleNeed(_role)).can()
-            for _role in allowed_roles)
+            Permission(RoleNeed(_role)).can() for _role in allowed_roles
+        )
         error = False if user_allowed else True
 
     if error:
         yield ValidationError(error_message)
+
+
+def find_field_copy(validator, value, instance, schema, **kwargs):
+    yield ValidationError("x-cap-copy")

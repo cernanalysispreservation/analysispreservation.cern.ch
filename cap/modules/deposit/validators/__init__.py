@@ -26,9 +26,15 @@
 
 import os
 
-from jsonschema import Draft4Validator
-from jsonschema.validators import extend
+from flask import current_app
+from jsonschema._types import draft4_type_checker
+from jsonschema._utils import load_schema
+from jsonschema.validators import Draft4Validator, create, extend
 
+from cap.modules.deposit.validators.users import (
+    find_field_copy,
+    validate_field_schema_editing,
+)
 from cap.modules.experiments.validators import (
     validate_cms_trigger,
     validate_das_path,
@@ -45,3 +51,47 @@ deposit_validators['x-validate-unique-cadi'] = validate_unique_cadi
 
 DepositValidator = extend(Draft4Validator, validators=deposit_validators)
 NoRequiredValidator = extend(DepositValidator, {'required': None})
+
+
+# Minimal Validator to be used for extending with custom schema validation
+# mainly used to traverse the schema
+INCLUDE_VALIDATORS = [
+    '$ref',
+    'allOf',
+    'anyOf',
+    'dependencies',
+    'items',
+    'not',
+    'oneOf',
+    'patternProperties',
+    'properties',
+]
+minimal_validators = {
+    i: v
+    for i, v in Draft4Validator.VALIDATORS.items()
+    if i in INCLUDE_VALIDATORS
+}
+
+MinimalValidator = create(
+    load_schema('draft4'),
+    validators=minimal_validators,
+    type_checker=draft4_type_checker,
+    version="draft4-clean",
+    id_of=lambda schema: schema.get("id", ""),
+)
+
+
+CUSTOM_VALIDATORS = {
+    "x-cap-permission": validate_field_schema_editing,
+    "x-cap-copy": find_field_copy,
+    "x-cap-copyto": find_field_copy,
+}
+
+
+def get_custom_validator(schema):
+    resolver = current_app.extensions[
+        'invenio-records'
+    ].ref_resolver_cls.from_schema(schema)
+    validator = extend(MinimalValidator, validators=CUSTOM_VALIDATORS)
+    validator = validator(schema, resolver=resolver)
+    return validator
