@@ -46,6 +46,7 @@ from cap.modules.deposit.errors import WrongJSONSchemaError
 from cap.modules.records.errors import get_error_path
 from cap.types import json_type
 
+from .jsonschemas import SCHEMA_CONFIG_JSONSCHEMA_V1
 from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import (
     config_resolved_schemas_serializer,
@@ -202,22 +203,17 @@ class Schema(db.Model):
     @validates('config')
     def validate_config(self, key, value):
         """Validate the config."""
-        config_data = current_app.config.get('REPOSITORY_SCHEMA_CONFIG')
-        if not config_data:
-            raise JSONSchemaNotFound(
-                schema="Deposit/Record Schema Configuration"
-            )
         if value:
-            validator = Draft4Validator(config_data)
+            validator = Draft4Validator(SCHEMA_CONFIG_JSONSCHEMA_V1)
             errors = []
-            if config_data is not None:
-                for error in validator.iter_errors(value):
-                    errors.append(
-                        FieldError(get_error_path(error), str(error.message))
-                    )
+
+            for error in validator.iter_errors(value):
+                errors.append(
+                    FieldError(get_error_path(error), str(error.message))
+                )
             if errors:
                 raise WrongJSONSchemaError(
-                    "Wrong Repository configuration.", errors=errors
+                    "ERROR: Invalid 'config' object.", errors=errors
                 )
         return value
 

@@ -769,6 +769,64 @@ def test_post_when_validation_errors_returns_400(
     }
 
 
+def test_post_when_validation_errors_returns_400_2(
+        client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(
+            version='1.2.3',
+            name="cms-s",
+            fullname='CMS Schema 1.2.3',
+            deposit_schema={
+                'properties': {},
+            },
+            config={"bananes": "dfs"},
+            deposit_options={'title': 'deposit_options'},
+            is_indexed=True,
+        ))
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+
+    assert resp.json['message'] ==  'ERROR: Invalid \'config\' object.'
+
+def test_post_when_validation_errors_returns_400_3(
+        client, db, users, auth_headers_for_user, json_headers):
+    owner = users['superuser']
+    schema = json.dumps(
+        dict(
+            version='1.2.3',
+            name="cms-s",
+            fullname='CMS Schema 1.2.3',
+            deposit_schema={
+                'properties': {},
+            },
+            config={"repositories": {
+                "boom": {},
+                "baaam": ""
+            }},
+            deposit_options={'title': 'deposit_options'},
+            is_indexed=True,
+        ))
+
+    resp = client.post(
+        '/jsonschemas/',
+        data=schema,
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 400
+
+    assert resp.json['message'] ==  'ERROR: Invalid \'config\' object.'
+    assert len(resp.json['errors']) == 8
+    assert {'field': ['repositories', 'baaam'], 'message': "'' is not of type 'object'"} in resp.json['errors']
+
+
 def test_post_with_valid_config_validation_github(client, db, users, auth_headers_for_user, json_headers):
     owner = users['superuser']
     schema = json.dumps(
@@ -964,7 +1022,7 @@ def test_post_with_invalid_config_validation_gitlab(client, db, users, auth_head
     )
 
     assert resp.status_code == 400
-    assert resp.json['message'] == 'Wrong Repository configuration.'
+    assert resp.json['message'] == 'ERROR: Invalid \'config\' object.'
 
 
 #####################################
