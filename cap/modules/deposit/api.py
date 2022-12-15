@@ -802,9 +802,7 @@ class CAPDeposit(Deposit, Reviewable):
             )
         _schema = {"$ref": data["$schema"]}
 
-        # Validate the data with transform and check validators
-        validators = schema.config.get("x-cap-apply-order")
-        cls.validation(cls, _schema, data, validators=validators)
+        cls.validation(cls, _schema, data)
 
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
