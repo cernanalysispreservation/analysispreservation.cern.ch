@@ -42,17 +42,12 @@ const FieldTemplate = ({
   }
 
   const renderFieldErrors = () =>
-    [...new Set(rawErrors)].map((error) => (
+    [...new Set(rawErrors)].map(error => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
     ));
 
   const { ["ui:options"]: uiOptions = {} } = uiSchema;
 
-  const getJustify = () => {
-    if (uiOptions.justify in ["start", "center", "end"]) {
-      return uiOptions.justify;
-    } else return "center";
-  };
   let content = (
     <WrapIfAdditional
       classNames={classNames}
@@ -100,8 +95,8 @@ const FieldTemplate = ({
   if (id != "root" || uiSchema["ui:object"] == "tabView") return content;
   else {
     return (
-      <Row justify={getJustify()}>
-        <Col xs={22} sm={18} md={16} lg={16} xl={16}>
+      <Row justify={uiOptions.justify || "center"}>
+        <Col xs={22} sm={18}>
           {content}
         </Col>
       </Row>

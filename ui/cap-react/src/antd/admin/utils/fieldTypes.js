@@ -86,15 +86,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
             suggestions: {
               type: "string",
@@ -153,10 +147,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -166,11 +158,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "text",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -216,15 +203,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
             suggestions: {
               type: "string",
@@ -237,10 +218,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -251,11 +230,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "text",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -300,15 +274,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -316,10 +284,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -329,11 +295,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "date",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -422,15 +383,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -438,10 +393,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -449,13 +402,7 @@ const simple = {
       schema: {
         type: "number",
       },
-      uiSchema: {
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
-      },
+      uiSchema: {},
     },
   },
   integer: {
@@ -500,15 +447,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -516,10 +457,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -527,13 +466,7 @@ const simple = {
       schema: {
         type: "integer",
       },
-      uiSchema: {
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
-      },
+      uiSchema: {},
     },
   },
   select: {
@@ -549,15 +482,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -565,10 +492,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -680,11 +605,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "select",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -701,15 +621,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -717,10 +631,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -769,11 +681,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "radio",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -790,15 +697,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
             falseToUndefined: {
               type: "boolean",
@@ -812,10 +713,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -861,11 +760,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "switch",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -882,15 +776,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -898,10 +786,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -996,11 +882,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "checkbox",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1017,15 +898,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1033,10 +908,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1071,11 +944,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "richeditor",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1092,15 +960,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
             rows: {
               title: "Rows",
@@ -1130,10 +992,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1172,11 +1032,6 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "textarea",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1211,16 +1066,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              description: "Select the inline position of the field",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
             hidden: {
               type: "boolean",
@@ -1233,10 +1081,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1246,32 +1092,9 @@ const simple = {
         type: "object",
         properties: {},
       },
-      uiSchema: {
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
-      },
+      uiSchema: {},
     },
   },
-  // reference: {
-  //   title: "Reference",
-  //   description: "For example, an analysis can reference its author(s)",
-  //   child: {},
-  //   default: {
-  //     schema: {
-  //       type: "string"
-  //     },
-  //     uiSchema: {
-  //       "ui:options": {
-  //         grid: {
-  //           gridColumns: "1/5"
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
   array: {
     title: "Array",
     icon: <UnorderedListOutlined />,
@@ -1305,15 +1128,9 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1321,10 +1138,8 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1333,13 +1148,7 @@ const simple = {
         type: "array",
         items: {},
       },
-      uiSchema: {
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
-      },
+      uiSchema: {},
     },
   },
 };
@@ -1375,15 +1184,9 @@ const advanced = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1391,10 +1194,8 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1405,11 +1206,6 @@ const advanced = {
       },
       uiSchema: {
         "ui:object": "accordionObjectField",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1443,15 +1239,9 @@ const advanced = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1459,10 +1249,8 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1506,15 +1294,9 @@ const advanced = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1522,10 +1304,8 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1536,11 +1316,6 @@ const advanced = {
       },
       uiSchema: {
         "ui:object": "layerObjectField",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1574,15 +1349,9 @@ const advanced = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1590,10 +1359,8 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1605,11 +1372,6 @@ const advanced = {
       uiSchema: {
         "ui:servicesList": ["zenodo"],
         "ui:field": "idFetcher",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1643,15 +1405,9 @@ const advanced = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1659,10 +1415,8 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1674,11 +1428,6 @@ const advanced = {
       uiSchema: {
         "ui:servicesList": ["orcid"],
         "ui:field": "idFetcher",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1712,15 +1461,9 @@ const advanced = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1737,10 +1480,8 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
       "ui:servicesList": {
@@ -1755,11 +1496,6 @@ const advanced = {
       uiSchema: {
         "ui:servicesList": ["orcid", "ror", "zenodo"],
         "ui:field": "idFetcher",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1793,15 +1529,9 @@ const advanced = {
           type: "object",
           title: "UI Options",
           properties: {
-            grid: {
-              type: "object",
-              title: "Grid Options",
-              properties: {
-                gridColumns: {
-                  title: "Grid Columns",
-                  type: "string",
-                },
-              },
+            span: {
+              type: "string",
+              title: "Field Width",
             },
           },
         },
@@ -1809,10 +1539,8 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       "ui:options": {
-        grid: {
-          gridColumns: {
-            "ui:widget": "selectColumns",
-          },
+        span: {
+          "ui:widget": "selectColumns",
         },
       },
     },
@@ -1824,11 +1552,6 @@ const advanced = {
       uiSchema: {
         "ui:servicesList": ["ror"],
         "ui:field": "idFetcher",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },
@@ -1868,7 +1591,26 @@ const advanced = {
     },
     optionsUiSchema: {
       type: "object",
-      properties: {},
+      title: "Tags UI Options",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            span: {
+              type: "string",
+              title: "Field Width",
+            },
+          },
+        },
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        span: {
+          "ui:widget": "selectColumns",
+        },
+      },
     },
     default: {
       schema: {
@@ -1879,11 +1621,6 @@ const advanced = {
       },
       uiSchema: {
         "ui:field": "tags",
-        "ui:options": {
-          grid: {
-            gridColumns: "1/5",
-          },
-        },
       },
     },
   },

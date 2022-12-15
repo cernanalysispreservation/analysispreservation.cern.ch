@@ -14,7 +14,7 @@ const FormPreview = ({ schema, uiSchema }) => {
             <Space direction="vertical">
               <Typography.Title level={5}>Your form is empty</Typography.Title>
               <Typography.Text type="secondary">
-                add fields to drop area to init your form
+                Add fields to the drop area to initialize your form
               </Typography.Text>
             </Space>
           }
@@ -33,7 +33,7 @@ const FormPreview = ({ schema, uiSchema }) => {
 
 FormPreview.propTypes = {
   schema: PropTypes.object,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
 };
 
 export default FormPreview;
