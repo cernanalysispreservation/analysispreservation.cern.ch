@@ -58,7 +58,7 @@ const CheckboxWidget = ({
   } else {
     return (
       <Checkbox.Group
-        options={options.enumOptions}
+        options={options.enumOptions.map(option => option.label)}
         autoFocus={autofocus}
         value={value || []}
         disabled={disabled || (readonlyAsDisabled && readonly)}
