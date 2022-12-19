@@ -20,6 +20,66 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 
+// COMMON / EXTRA PROPERTIES:
+
+const common = {
+  optionsSchema: {
+    title: {
+      type: "string",
+      title: "Title",
+      description:
+        "Provide the title that you want to be displayed for your field",
+    },
+    description: {
+      title: "Description",
+      type: "string",
+      description:
+        "Provide the description that you want to be displayed for your field",
+    },
+  },
+  optionsUiSchema: {
+    type: "object",
+    title: "UI Schema",
+    properties: {
+      "ui:options": {
+        type: "object",
+        title: "UI Options",
+        properties: {
+          span: {
+            type: "string",
+            title: "Field Width",
+          },
+        },
+      },
+    },
+  },
+  optionsUiSchemaUiSchema: {
+    "ui:options": {
+      span: {
+        "ui:widget": "selectColumns",
+      },
+    },
+  },
+};
+
+const extra = {
+  optionsSchema: {
+    readOnly: {
+      type: "boolean",
+      title: "Do you want this field to be read only?",
+      enum: [true, false],
+      enumNames: ["ReadOnly", "Editable"],
+    },
+  },
+  optionsSchemaUiSchema: {
+    readOnly: {
+      "ui:widget": "select",
+    },
+  },
+};
+
+// FIELDS:
+
 const simple = {
   text: {
     title: "Text",
@@ -30,24 +90,7 @@ const simple = {
       type: "object",
       title: "Text Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your text field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your text field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
         pattern: {
           title:
             "Provide a regex for your input, only when you want a strict format",
@@ -56,12 +99,11 @@ const simple = {
           type: "string",
           pattern: "^^[w]*$$",
         },
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
       pattern: {
         "ui:options": {
           masked_array: [
@@ -86,10 +128,7 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
+            ...common.optionsUiSchema.properties["ui:options"].properties,
             suggestions: {
               type: "string",
               title: "Add a suggestion URL endpoint",
@@ -146,11 +185,7 @@ const simple = {
       },
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -170,30 +205,12 @@ const simple = {
       type: "object",
       title: "Uri Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your uri field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your uri field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     optionsUiSchema: {
       type: "object",
@@ -203,10 +220,7 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
+            ...common.optionsUiSchema.properties["ui:options"].properties,
             suggestions: {
               type: "string",
               title: "Add a suggestion URL endpoint",
@@ -217,11 +231,7 @@ const simple = {
       },
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -242,52 +252,18 @@ const simple = {
       type: "object",
       title: "Date Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Date",
-          description: "Provide the date you want for this field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your date field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     optionsUiSchema: {
-      type: "object",
-      title: "Date Widget UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -307,30 +283,12 @@ const simple = {
       type: "object",
       title: "File upload widget",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "The title of the form field. How it will be displayed on the rendered form.",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "The title of the form field. How it will be displayed on the rendered form.",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     default: {
       schema: {
@@ -350,53 +308,18 @@ const simple = {
       type: "object",
       title: "Number Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your number field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your number field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -414,53 +337,18 @@ const simple = {
       type: "object",
       title: "Integer Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your integer field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your integer field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -475,45 +363,17 @@ const simple = {
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
 
     optionsSchema: {
       type: "object",
       title: "Select Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your select field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your select field",
-        },
+        ...common.optionsSchema,
         type: {
           title: "Type",
           type: "string",
@@ -524,12 +384,7 @@ const simple = {
             "Select multiple values",
           ],
         },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        readOnly: extra.optionsSchema.readOnly,
       },
       dependencies: {
         type: {
@@ -589,9 +444,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     default: {
       schema: {
@@ -614,50 +467,16 @@ const simple = {
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     optionsSchema: {
       type: "object",
       title: "Radio Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your radio field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your radio field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
         enum: {
           title: "Define your options",
           type: "array",
@@ -667,12 +486,11 @@ const simple = {
             type: "string",
           },
         },
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     default: {
       schema: {
@@ -697,10 +515,7 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
+            ...common.optionsUiSchema.properties["ui:options"].properties,
             falseToUndefined: {
               type: "boolean",
               title: "Do you want to return undefined instead of false?",
@@ -712,34 +527,13 @@ const simple = {
       },
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     optionsSchema: {
       type: "object",
       title: "Switch Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your switch field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your switch field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
         type: {
           type: "string",
           title: "The type of the returned value",
@@ -747,12 +541,11 @@ const simple = {
           enum: ["boolean", "string", "number"],
           enumNames: ["Boolean", "String", "Number"],
         },
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     default: {
       schema: {
@@ -769,56 +562,23 @@ const simple = {
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     optionsSchema: {
       type: "object",
       title: "Checkbox Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your checkbox field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your checkbox field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
         type: {
           title: "Type",
           enum: ["boolean", "array"],
           enumNames: ["One Option", "Multiple Options"],
           type: "string",
         },
+        readOnly: extra.optionsSchema.readOnly,
       },
       dependencies: {
         type: {
@@ -867,9 +627,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     default: {
       schema: {
@@ -891,50 +649,17 @@ const simple = {
     description: "Rich Editor Field",
     child: {},
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     optionsSchema: {
       type: "object",
       title: "Rich Editor Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your rich editor field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your rich editor field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {},
@@ -960,10 +685,7 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
+            ...common.optionsUiSchema.properties["ui:options"].properties,
             rows: {
               title: "Rows",
               description: "The number of the textarea rows",
@@ -991,40 +713,18 @@ const simple = {
       },
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     optionsSchema: {
       type: "object",
       title: "TextArea Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your textarea field",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your textarea field",
-        },
-        readOnly: {
-          type: "boolean",
-          title: "Do you want this field to be read only?",
-          enum: [true, false],
-          enumNames: ["ReadOnly", "Editable"],
-        },
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
-      readOnly: {
-        "ui:widget": "select",
-      },
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     default: {
       schema: {
@@ -1044,18 +744,7 @@ const simple = {
       type: "object",
       title: "Object Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "Provide the title you want to be displayed to your object",
-        },
-        description: {
-          type: "string",
-          title: "Description",
-          description:
-            "Provide the description you want to be displayed to your object",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsUiSchema: {
@@ -1066,10 +755,7 @@ const simple = {
           type: "object",
           title: "UI Options",
           properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
+            ...common.optionsUiSchema.properties["ui:options"].properties,
             hidden: {
               type: "boolean",
               title: "Do you want this field to be hidden?",
@@ -1080,11 +766,7 @@ const simple = {
       },
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     optionsSchemaUiSchema: {},
     default: {
@@ -1105,43 +787,15 @@ const simple = {
       type: "object",
       title: "Array Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for your array",
-          description:
-            "Provide the title you want to be displayed to your array",
-        },
-        description: {
-          title: "Provide a descritpion for the element",
-          type: "string",
-          description:
-            "Provide the description you want to be displayed to your array",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -1163,41 +817,15 @@ const advanced = {
       type: "object",
       title: "Accordion Field Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the Accordion Field",
-          description: "This title will be used later in the form",
-        },
-        description: {
-          type: "string",
-          title: "Provide a description for the Accordrion Field",
-          description: "This description will be used later in the form",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "Radio Widget UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -1218,41 +846,15 @@ const advanced = {
       type: "object",
       title: "Tab Field Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the Tab Field",
-          description: "This title will be used later in the form",
-        },
-        description: {
-          type: "string",
-          title: "Provide a description for the Tab Field",
-          description: "This description will be used later in the form",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "Radio Widget UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -1273,41 +875,15 @@ const advanced = {
       type: "object",
       title: "Layer Field Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the Layer Field",
-          description: "This title will be used later in the form",
-        },
-        description: {
-          type: "string",
-          title: "Provide a description for the Layer Field",
-          description: "This description will be used later in the form",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "Radio Widget UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -1328,41 +904,15 @@ const advanced = {
       type: "object",
       title: "Zenodo Field Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the Zenodo Field",
-          description: "This title will be used later in the form",
-        },
-        description: {
-          type: "string",
-          title: "Provide a description for the Zenodo Field",
-          description: "This description will be used later in the form",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "Zenodo UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -1384,41 +934,15 @@ const advanced = {
       type: "object",
       title: "Orcid Field Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the Orcid Field",
-          description: "This title will be used later in the form",
-        },
-        description: {
-          type: "string",
-          title: "Provide a description for the Orcid Field",
-          description: "This description will be used later in the form",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "Orcid UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -1440,16 +964,7 @@ const advanced = {
       type: "object",
       title: "ID Fetcher Field Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the IdFetcher Field",
-          description: "This title will be used later in the form",
-        },
-        description: {
-          type: "string",
-          title: "Provide a description for the Accordrion Field",
-          description: "This description will be used later in the form",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
@@ -1457,16 +972,7 @@ const advanced = {
       type: "object",
       title: "Id Fetcher UI Options",
       properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
+        ...common.optionsUiSchema.properties,
         "ui:servicesList": {
           title: "Select the services you want to allow",
           type: "array",
@@ -1479,11 +985,7 @@ const advanced = {
       },
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
       "ui:servicesList": {
         "ui:widget": "checkboxes",
       },
@@ -1508,41 +1010,15 @@ const advanced = {
       type: "object",
       title: "Ror Field Schema",
       properties: {
-        title: {
-          type: "string",
-          title: "Provide a title for the Ror Field",
-          description: "This title will be used later in the form",
-        },
-        description: {
-          type: "string",
-          title: "Provide a description for the Ror Field",
-          description: "This description will be used later in the form",
-        },
+        ...common.optionsSchema,
       },
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "Ror UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
@@ -1564,18 +1040,7 @@ const advanced = {
       title: "Tags Schema",
       type: "object",
       properties: {
-        title: {
-          type: "string",
-          title: "Title",
-          description:
-            "The title of the form field. How it will be displayed on the rendered form.",
-        },
-        description: {
-          title: "Description",
-          type: "string",
-          description:
-            "The title of the form field. How it will be displayed on the rendered form.",
-        },
+        ...common.optionsSchema,
         tagPattern: {
           type: "string",
           title: "Pattern",
@@ -1590,27 +1055,10 @@ const advanced = {
       },
     },
     optionsUiSchema: {
-      type: "object",
-      title: "Tags UI Options",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            span: {
-              type: "string",
-              title: "Field Width",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
-      "ui:options": {
-        span: {
-          "ui:widget": "selectColumns",
-        },
-      },
+      ...common.optionsUiSchemaUiSchema,
     },
     default: {
       schema: {
