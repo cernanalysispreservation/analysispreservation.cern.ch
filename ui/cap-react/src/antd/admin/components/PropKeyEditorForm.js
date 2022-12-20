@@ -5,8 +5,6 @@ import fieldTypes from "../utils/fieldTypes";
 import { Button, Card, Row } from "antd";
 import { UpOutlined } from "@ant-design/icons";
 
-import widgets from "../formComponents/widgets";
-
 const PropertyKeyEditorForm = ({
   uiSchema = {},
   schema = {},
@@ -61,7 +59,6 @@ const PropertyKeyEditorForm = ({
         <Form
           schema={objs[type][`${optionsSchemaObject}`] || {}}
           uiSchema={objs[type][`${optionsUiSchemaObject}`] || {}}
-          widgets={widgets}
           formData={formData}
           onChange={onChange}
         />

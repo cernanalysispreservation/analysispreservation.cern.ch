@@ -48,18 +48,14 @@ const common = {
           span: {
             type: "string",
             title: "Field Width",
+            enum: [6, 8, 12, 16, 18, 24],
+            enumNames: ["25%", "33%", "50%", "66%", "75%", "100%"],
           },
         },
       },
     },
   },
-  optionsUiSchemaUiSchema: {
-    "ui:options": {
-      span: {
-        "ui:widget": "selectColumns",
-      },
-    },
-  },
+  optionsUiSchemaUiSchema: {},
 };
 
 const extra = {
