@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SchemaTreeItem from "./SchemaTreeItem";
-import HoverBox from "./HoverBox";
 import Form from "../../forms/Form";
 import { connect } from "react-redux";
 import { addByPath } from "../../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
-import { Empty } from "antd";
+import DropArea from "./DropArea";
 
 const ArrayFieldTemplate = props => {
   const [display, setDisplay] = useState(false);
@@ -44,33 +43,27 @@ const ArrayFieldTemplate = props => {
 
       {display && (
         <div style={{ marginLeft: "10px" }}>
-          <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>
-            {Object.keys(props.schema.items).length == 0 ? (
-              <Empty
-                description="Please add items you want"
-                style={{ color: "#000" }}
-                imageStyle={{ height: "70px" }}
-              />
-            ) : (
-              <Form
-                schema={props.schema.items}
-                uiSchema={props.uiSchema.items}
-                formData={{}}
-                tagName="div"
-                showErrorList={false}
-                FieldTemplate={FieldTemplate}
-                ObjectFieldTemplate={ObjectFieldTemplate}
-                ArrayFieldTemplate={ArrayFieldTemplate}
-                liveValidate={true}
-                validate={_validate}
-                noHtml5Validate={true}
-                onChange={() => {}}
-                formContext={{ ..._path, nestedForm: true }}
-              >
-                <span />
-              </Form>
-            )}
-          </HoverBox>
+          {Object.keys(props.schema.items).length == 0 ? (
+            <DropArea />
+          ) : (
+            <Form
+              schema={props.schema.items}
+              uiSchema={props.uiSchema.items}
+              formData={{}}
+              tagName="div"
+              showErrorList={false}
+              FieldTemplate={FieldTemplate}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              ArrayFieldTemplate={ArrayFieldTemplate}
+              liveValidate={true}
+              validate={_validate}
+              noHtml5Validate={true}
+              onChange={() => {}}
+              formContext={{ ..._path, nestedForm: true }}
+            >
+              <span />
+            </Form>
+          )}
         </div>
       )}
     </div>

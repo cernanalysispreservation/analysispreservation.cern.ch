@@ -8,6 +8,7 @@ import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import { connect } from "react-redux";
 import { addByPath } from "../../../actions/schemaWizard";
 import { isItTheArrayField, _validate } from "../utils/index";
+import DropArea from "./DropArea";
 
 const FieldTemplate = props => {
   const { schema, uiSchema, rawErrors = [], children, formContext } = props;
@@ -22,23 +23,32 @@ const FieldTemplate = props => {
     return uiSchema["ui:field"] !== undefined;
   };
 
+  // The content of a JSON Object field is also considered a 'root'
   if (props.id == "root" && !formContext.nestedForm) {
-    return (
-      <HoverBox
-        addProperty={props.addProperty}
-        key={props.id}
-        path={path}
-        shouldHideChildren={shouldBoxHideChildren(uiSchema)}
+    const inside = (
+      <div
+        style={{
+          padding: formContext.schema.length == 0 ? "10px" : "none",
+        }}
       >
-        <div
-          style={{
-            padding: formContext.schema.length == 0 ? "10px" : "none",
-          }}
-        >
-          {children}
-        </div>
-      </HoverBox>
+        {children}
+        <DropArea />
+      </div>
     );
+    if (formContext.schema.length == 0) {
+      return (
+        <HoverBox
+          allowsChildren
+          addProperty={props.addProperty}
+          key={props.id}
+          path={path}
+          shouldHideChildren={shouldBoxHideChildren(uiSchema)}
+        >
+          {inside}
+        </HoverBox>
+      );
+    }
+    return inside;
   }
 
   let _renderObjectArray = undefined;
@@ -79,6 +89,8 @@ const FieldTemplate = props => {
 
   if (_renderObjectArray) {
     return (
+      // The HoverBox wrapper here is needed to allow dropping items into objects
+      // or arrays directly without having to expand them first
       <HoverBox
         addProperty={props.addProperty}
         key={props.id}

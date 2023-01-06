@@ -6,10 +6,9 @@ function getStyle(opacity) {
   return {
     color: "white",
     textAlign: "center",
-    fontSize: "1rem",
     height: "100%",
     opacity: opacity,
-    cursor: "move"
+    cursor: "move",
   };
 }
 
@@ -55,18 +54,18 @@ function SortableBox({ parent, children, id, index, moveCard }) {
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
       item.index = hoverIndex;
-    }
+    },
   });
 
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: `RE-${parent}`,
       index,
-      id
+      id,
     },
     collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
+      isDragging: monitor.isDragging(),
+    }),
   });
 
   const opacity = isDragging ? 0 : 1;
@@ -83,7 +82,7 @@ SortableBox.propTypes = {
   children: PropTypes.node,
   id: PropTypes.number,
   index: PropTypes.number,
-  moveCard: PropTypes.func
+  moveCard: PropTypes.func,
 };
 
 export default SortableBox;
