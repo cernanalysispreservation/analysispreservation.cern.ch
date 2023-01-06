@@ -3,16 +3,19 @@ import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { shoudDisplayGuideLinePopUp } from "../utils";
-import { Space, Typography } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
-
 function getStyle(isOverCurrent) {
-  return {
+  const style = {
     textAlign: "center",
     height: "100%",
-    border: isOverCurrent ? "1px dotted black " : null
   };
+
+  return isOverCurrent
+    ? {
+        outline: "1px solid #006996",
+        outlineOffset: "-1px",
+        ...style,
+      }
+    : style;
 }
 
 function HoverBox({
@@ -22,7 +25,6 @@ function HoverBox({
   children,
   index,
   shouldHideChildren,
-  schema
 }) {
   const [{ isOverCurrent }, drop] = useDrop({
     accept: "FIELD_TYPE",
@@ -36,31 +38,12 @@ function HoverBox({
     },
     collect: monitor => ({
       isOver: monitor.isOver(),
-      isOverCurrent: monitor.isOver({ shallow: true })
-    })
+      isOverCurrent: monitor.isOver({ shallow: true }),
+    }),
   });
 
   return (
-    <div
-      ref={drop}
-      style={getStyle(isOverCurrent && !shouldHideChildren)}
-      index={index}
-    >
-      {shoudDisplayGuideLinePopUp(schema) && (
-        <Space
-          style={{
-            border: "1px dotted black",
-            color: "#000",
-            width: "100%",
-            height: "100%",
-            padding: "40px"
-          }}
-          direction="vertical"
-        >
-          <Typography.Text>Drop Area</Typography.Text>
-          <DownloadOutlined />
-        </Space>
-      )}
+    <div ref={drop} style={getStyle(isOverCurrent)} index={index}>
       {children}
     </div>
   );
@@ -73,11 +56,11 @@ HoverBox.propTypes = {
   propKey: PropTypes.string,
   index: PropTypes.number,
   shouldHideChildren: PropTypes.bool,
-  schema: PropTypes.object
+  schema: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  schema: state.schemaWizard.getIn(["current", "schema"])
+  schema: state.schemaWizard.getIn(["current", "schema"]),
 });
 
 export default connect(
