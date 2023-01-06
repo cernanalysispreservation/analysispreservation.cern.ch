@@ -73,7 +73,8 @@ const SchemaTreeItem = ({
     <Tag
       style={{
         width: "100%",
-        marginBottom: "2px",
+        marginTop: "1px",
+        marginBottom: "1px",
         padding: "5px 10px",
         opacity:
           uiSchema &&
