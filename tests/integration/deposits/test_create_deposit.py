@@ -131,7 +131,7 @@ def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
                        headers=auth_headers_for_superuser + json_headers,
                        data=json.dumps(metadata))
     assert resp.status_code == 201
-    assert resp.json['id'] == 'FASER-2022-1'
+    assert resp.json['id'] == 'FASER-2023-1'
 
 
 def test_create_deposit_with_copy_to_config(client, location,
@@ -143,8 +143,8 @@ def test_create_deposit_with_copy_to_config(client, location,
                        headers=auth_headers_for_superuser + json_headers,
                        data=json.dumps(metadata))
     assert resp.status_code == 201
-    assert resp.json['id'] == 'FASER-2022-1'
-    assert resp.json['metadata'] == {'general_title': 'FASER-2022-1', 'initial': {'short_title': 'FASER-2022-1'}, 'later': {'datasets': {'item_okmiwt': 'FASER-2022-1'}}}
+    assert resp.json['id'] == 'FASER-2023-1'
+    assert resp.json['metadata'] == {'general_title': 'FASER-2023-1', 'initial': {'short_title': 'FASER-2023-1'}, 'later': {'datasets': {'item_okmiwt': 'FASER-2023-1'}}}
 
 
 def test_create_deposit_with_copy_to_config_only(
