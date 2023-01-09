@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Divider, Row, Space, Tag, Typography } from "antd";
+import { Col, Divider, Row, Space, Typography } from "antd";
 import fields from "../utils/fieldTypes";
 import Draggable from "./Draggable";
 
@@ -15,15 +15,14 @@ const SelectFieldType = () => {
             {Object.entries(type.fields).map(([key, type], index) => (
               <Col xs={22} xl={12} key={key} style={{ width: "100%" }}>
                 <Draggable key={index} data={type}>
-                  <Tag
+                  <div
                     style={{ width: "100%", padding: "2px 5px" }}
-                    size="large"
                   >
                     <Space>
                       {type.icon}
                       {type.title}
                     </Space>
-                  </Tag>
+                  </div>
                 </Draggable>
               </Col>
             ))}
