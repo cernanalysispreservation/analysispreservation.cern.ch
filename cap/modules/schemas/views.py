@@ -39,6 +39,9 @@ from sqlalchemy.exc import IntegrityError
 
 from cap.modules.access.permissions import admin_permission_factory
 from cap.modules.access.utils import login_required
+from cap.modules.deposit.validators import DepositValidator
+from cap.modules.records.errors import get_error_path
+from cap.modules.records.validators import RecordValidator
 
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
@@ -77,6 +80,48 @@ def get_all_versions(name=None):
             'latest': link_serializer.dump(latest).data,
         }
     return jsonify(response)
+
+
+@blueprint.route('/<string:name>/<string:version>/validate', methods=['POST'])
+@login_required
+def schema_validate(name=None, version=None):
+    """Validate the schema."""
+    data = request.get_json()
+    status = request.values.get('published', False)
+
+    if not data or not isinstance(data, list):
+        return jsonify({'message': 'No data to validate.'})
+
+    if name and version:
+        try:
+            schema = Schema.get(name, version)
+        except (JSONSchemaNotFound, IndexError):
+            abort(404)
+
+    if not ReadSchemaPermission(schema).can():
+        abort(403)
+
+    schema_to_validate_against = schema.record_schema
+    base_validator = RecordValidator
+    if not status:
+        schema_to_validate_against = schema.deposit_schema
+        base_validator = DepositValidator
+
+    errors = []
+    for i, schema_data in enumerate(data):
+        _errors = []
+        validator = base_validator(schema_to_validate_against)
+        for error in validator.iter_errors(schema_data):
+            _errors.append(
+                {'field': get_error_path(error), 'message': f'{error.message}'}
+            )
+        if _errors:
+            errors.append({'index': i, 'errors': _errors})
+
+    if errors:
+        return jsonify(errors), 400
+
+    return jsonify({'message': 'Schema(s) validated.'})
 
 
 class SchemaAPI(MethodView):
