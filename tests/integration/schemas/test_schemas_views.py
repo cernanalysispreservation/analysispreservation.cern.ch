@@ -1072,6 +1072,169 @@ def test_post_with_invalid_config_validation_gitlab(client, db, users, auth_head
     assert resp.json['message'] == 'Schema configuration validation error'
 
 
+def test_schema_validate_with_invalid_schema(client, db, users, auth_headers_for_user, json_headers):
+    cms_user = users['cms_user']
+    schema = Schema(
+        name='cms-schema',
+        version='1.2.3',
+        fullname='CMS Schema 1.2.3',
+        experiment='CMS',
+        deposit_schema={
+            "additionalProperties": False,
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            'type': 'object',
+            'properties': {
+                'title': {
+                    'type': 'string'
+                },
+                'attr': {
+                    'type': 'string'
+                }
+            }
+        },
+        deposit_options={'title': 'deposit_options'},
+        record_schema={
+            "additionalProperties": False,
+            'type': 'object',
+            'required': ['title'],
+            'properties': {
+                'title': {'type': 'string'},
+                'attr': {'type': 'string'}
+            }
+        },
+        record_options={'title': 'record_options'},
+        record_mapping={
+            'mappings': {
+                'doc': {
+                    'properties': {
+                        'title': {
+                            'type': 'text'
+                        }
+                    }
+                }
+            }
+        },
+        deposit_mapping={
+            'mappings':
+                {
+                    'doc': {
+                        'properties': {
+                            'keyword': {
+                                'type': 'keyword'
+                            }
+                        }
+                    }
+                }
+        },
+        is_indexed=True,
+    )
+    db.session.add(schema)
+    db.session.commit()
+
+    # Additional Properties Ingestion
+    data = [{
+        'new': 'test'
+    }]
+    resp = client.post(
+        '/jsonschemas/cms-schema/1.2.3/validate',
+        data=json.dumps(data),
+        headers=json_headers + auth_headers_for_user(cms_user),
+    )
+
+    assert resp.status_code == 400
+    assert resp.json == [{'errors': [{'field': [], 'message': "Additional properties are not allowed ('new' was unexpected)"}], 'index': 0}]
+
+    # Wrong type Ingestion
+    data = [{
+        'attr': 8
+    }]
+    resp = client.post(
+        '/jsonschemas/cms-schema/1.2.3/validate',
+        data=json.dumps(data),
+        headers=json_headers + auth_headers_for_user(cms_user),
+    )
+    assert resp.status_code == 400
+    assert resp.json == [{'errors': [{'field': ['attr'], 'message': "8 is not of type 'string'"}], 'index': 0}]
+
+    # Required fields validation
+    data = [{
+        'attr': 'test'
+    }]
+    resp = client.post(
+        '/jsonschemas/cms-schema/1.2.3/validate?published=True',
+        data=json.dumps(data),
+        headers=json_headers + auth_headers_for_user(cms_user),
+    )
+    assert resp.status_code == 400
+    assert resp.json == [{'errors': [{'field': ['title'], 'message': "'title' is a required property"}], 'index': 0}]
+
+
+def test_schema_validate_with_valid_schema(client, db, users, auth_headers_for_user, json_headers):
+    cms_user = users['cms_user']
+    schema = Schema(
+        name='cms-schema',
+        version='1.2.3',
+        fullname='CMS Schema 1.2.3',
+        experiment='CMS',
+        deposit_schema={
+            "additionalProperties": True,
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            'type': 'object',
+            'properties': {
+                'attr': {
+                    'type': 'string'
+                }
+            }
+        },
+        deposit_options={'title': 'deposit_options'},
+        record_schema={'title': 'record_schema'},
+        record_options={'title': 'record_options'},
+        record_mapping={
+            'mappings': {
+                'doc': {
+                    'properties': {
+                        'title': {
+                            'type': 'text'
+                        }
+                    }
+                }
+            }
+        },
+        deposit_mapping={
+            'mappings':
+                {
+                    'doc': {
+                        'properties': {
+                            'keyword': {
+                                'type': 'keyword'
+                            }
+                        }
+                    }
+                }
+        },
+        is_indexed=True,
+    )
+    db.session.add(schema)
+    db.session.commit()
+
+    test_schemas = [
+        {
+            'new': 'test'
+        },
+        {
+            'new2': 'test2'
+        },
+    ]
+    resp = client.post(
+        '/jsonschemas/cms-schema/1.2.3/validate',
+        data=json.dumps(test_schemas),
+        headers=json_headers + auth_headers_for_user(cms_user),
+    )
+
+    assert resp.status_code == 200
+    assert resp.json['message'] == 'Schema(s) validated.'
+
+
 #####################################
 # api/jsonschemas/{id}/{version}  [PUT]
 #####################################
