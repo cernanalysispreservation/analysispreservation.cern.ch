@@ -27,7 +27,7 @@
 from __future__ import absolute_import, print_function
 
 import json
-
+from datetime import date
 from invenio_records.api import RecordMetadata
 
 from cap.modules.deposit.api import CAPDeposit
@@ -131,7 +131,7 @@ def test_create_deposit_with_incremental_pid_with_dynamic_year(client, location,
                        headers=auth_headers_for_superuser + json_headers,
                        data=json.dumps(metadata))
     assert resp.status_code == 201
-    assert resp.json['id'] == 'FASER-2022-1'
+    assert resp.json['id'] == f'FASER-{date.today().year}-1'
 
 
 def test_create_deposit_with_copy_to_config(client, location,
@@ -142,9 +142,10 @@ def test_create_deposit_with_copy_to_config(client, location,
     resp = client.post('/deposits/',
                        headers=auth_headers_for_superuser + json_headers,
                        data=json.dumps(metadata))
+    current_year = date.today().year
     assert resp.status_code == 201
-    assert resp.json['id'] == 'FASER-2022-1'
-    assert resp.json['metadata'] == {'general_title': 'FASER-2022-1', 'initial': {'short_title': 'FASER-2022-1'}, 'later': {'datasets': {'item_okmiwt': 'FASER-2022-1'}}}
+    assert resp.json['id'] == f'FASER-{current_year}-1'
+    assert resp.json['metadata'] == {'general_title': f'FASER-{current_year}-1', 'initial': {'short_title': f'FASER-{current_year}-1'}, 'later': {'datasets': {'item_okmiwt': f'FASER-{current_year}-1'}}}
 
 
 def test_create_deposit_with_copy_to_config_only(
