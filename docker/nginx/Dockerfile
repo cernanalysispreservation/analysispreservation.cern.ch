@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2023 CERN.
 #
 # CERN Analysis Preservation is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
 FROM nginx:1.24
 
-
-RUN apt-get update
-RUN apt-get install -y curl bash
-
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    curl dirmngr bash apt-transport-https lsb-release git gcc g++ make python3 ca-certificates build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x  | bash -
 RUN apt-get install -y nodejs
-
-RUN apt-get update && apt-get -y install  git python g++ make
 RUN npm install --global yarn
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
@@ -59,7 +57,6 @@ WORKDIR $WORKING_DIR/ui/
 
 RUN yarn config set cache ~/.my-yarn-cache-dir
 RUN yarn install
-RUN yarn upgrade
 RUN yarn build
 
 RUN cp -rfp ./dist/* $NGINX_HTML_DIR
