@@ -5,6 +5,8 @@ on:
       - master
       - qa
       - production
+      - 'upgrade-3'
+      - 'cap-next-cloud'
   pull_request:
     branches:
       - qa
@@ -25,7 +27,7 @@ jobs:
         run: docker-compose -f docker-compose.e2e.yml run web-api sh scripts/clean-and-init.sh
 
       - name: Update save folder
-        run: docker-compose -f docker-compose.e2e.yml run web-api  cap files location local var/data --default
+        run: docker-compose -f docker-compose.e2e.yml run web-api cap files location local var/data --default
 
       - name: Sleep for 180 seconds
         run: sleep 180s
