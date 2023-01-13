@@ -23,13 +23,10 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Record serialization."""
 
-from __future__ import absolute_import, print_function
-
-from invenio_deposit.serializers import json_file_response
 from invenio_records_rest.serializers.response import (record_responsify,
                                                        search_responsify)
 
-from .json import DepositSerializer
+from .json import DepositSerializer, json_file_response
 from .schemas.json import DepositSchema, DepositFormSchema, DepositSearchSchema
 
 # Serializers

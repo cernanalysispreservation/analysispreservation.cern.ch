@@ -30,7 +30,8 @@ import os
 import click
 import requests
 from flask import current_app
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
+from invenio_db import db
 from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
@@ -298,9 +299,23 @@ def validate(
 
     # get all the records for this specific schema/type combination
     records = current_search_client.search(
-        search_path,
-        q=f'_deposit.status: {status} AND '
-        f'$schema: "{schema_name_to_url(schema.name, schema.version)}"',
+        index=f"{search_path}-{schema.name}-v{schema.version}",
+        body={
+            "query": {
+                "bool": {
+                    "must": [
+                        {"match": {"_deposit.status": status}},
+                        {
+                            "match": {
+                                "$schema": schema_name_to_url(
+                                    schema.name, schema.version
+                                )
+                            }
+                        },
+                    ]
+                }
+            }
+        },
         size=5000,
     )['hits']['hits']
     pids = [rec['_id'] for rec in records]

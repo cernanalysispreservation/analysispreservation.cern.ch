@@ -17,8 +17,8 @@ from __future__ import absolute_import, print_function
 import json
 from os.path import join
 
-from elasticsearch import ConnectionError
-from elasticsearch.exceptions import NotFoundError
+from opensearchpy import ConnectionError
+from opensearchpy.exceptions import NotFoundError
 from flask import Blueprint, jsonify, abort
 from invenio_files_rest.models import Location
 from invenio_jsonschemas.errors import JSONSchemaNotFound
