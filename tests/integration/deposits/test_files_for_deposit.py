@@ -108,8 +108,7 @@ def test_deposit_files_when_no_files_returns_empty_list(
 
     resp = client.get('/deposits/{}/files'.format(pid),
                       headers=auth_headers_for_user(owner))
-
-    assert resp.json == []
+    assert json.loads(resp.data) == []
 
 
 def test_deposit_files_returns_list_with_files_info(client, users,
@@ -123,7 +122,7 @@ def test_deposit_files_returns_list_with_files_info(client, users,
 
     resp = client.get('/deposits/{}/files'.format(pid),
                       headers=auth_headers_for_user(owner))
-    files = resp.json
+    files = json.loads(resp.data)
 
     assert files[0]["filename"] == 'file_1.txt'
     assert files[0]["filesize"] == 12

@@ -35,10 +35,8 @@ flask-alembic==2.0.1      # via invenio-db
 flask-assets==0.12        # via invenio-assets
 flask-babelex==0.9.3      # via flask-security, invenio-access, invenio-accounts, invenio-formatter, invenio-i18n, invenio-oaiserver, invenio-oauth2server, invenio-oauthclient, invenio-pidstore, invenio-records-rest, invenio-records-ui, invenio-search-ui, invenio-theme, invenio-userprofiles
 flask-breadcrumbs==0.4.0  # via invenio-accounts, invenio-oauth2server, invenio-oauthclient, invenio-theme, invenio-userprofiles
-flask-cache==0.13.1
 flask-caching==1.4.0      # via invenio-cache
 flask-celeryext==0.3.1    # via invenio-accounts, invenio-app, invenio-celery, invenio-indexer, invenio-records
-flask-cli==0.4.0
 flask-collect==1.2.2      # via invenio-assets
 flask-cors==3.0.6         # via invenio-rest
 flask-debugtoolbar==0.10.1
@@ -54,7 +52,7 @@ flask-shell-ipython==0.3.1  # via invenio-app
 flask-sqlalchemy==2.4   # via flask-alembic, invenio-db
 flask-talisman==0.5.1     # via invenio-app
 flask-wtf==0.14.2         # via flask-security, invenio-accounts, invenio-oauth2server, invenio-userprofiles
-flask==0.12.4
+flask==1.1
 ftfy==4.4.3               # via invenio-records-rest
 future==0.16.0            # via cookiecutter, invenio-accounts, invenio-oauth2server
 fs==0.5.4
@@ -176,7 +174,7 @@ wcwidth==0.1.7            # via ftfy, prompt-toolkit
 webargs==3.0.1            # via invenio-oaiserver, invenio-records-rest
 webassets==0.12.1         # via flask-assets, invenio-assets
 webencodings==0.5.1       # via html5lib
-werkzeug==0.14.1          # via flask, flask-debugtoolbar, flask-kvsession, jsonresolver
+werkzeug==0.15          # via flask, flask-debugtoolbar, flask-kvsession, jsonresolver
 whichcraft==0.4.1         # via cookiecutter
 wtforms-alchemy==0.16.7   # via invenio-oauth2server
 wtforms-components==0.10.3  # via wtforms-alchemy
