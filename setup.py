@@ -81,6 +81,7 @@ install_requires = [
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
+    'jsonschema[format]==3.0.1',
     'coolname==1.1.0',
     'Authlib==0.15.1',
     # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
