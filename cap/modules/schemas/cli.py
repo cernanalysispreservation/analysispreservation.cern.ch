@@ -29,7 +29,8 @@ import os
 import click
 import requests
 from flask import current_app
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
+from invenio_db import db
 from invenio_accounts.models import User
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound

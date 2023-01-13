@@ -76,7 +76,7 @@ _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 @pytest.fixture()
 def cli_runner(app):
-    runner = CliRunner()
+    runner = CliRunner(env={'FLASK_APP': 'cap/wsgi.py'})
     script_info = ScriptInfo(create_app=lambda info: app)
 
     def run(command):

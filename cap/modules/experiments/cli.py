@@ -25,7 +25,7 @@
 import json
 
 import click
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
 from jsonschema.exceptions import ValidationError
 
 from invenio_db import db
