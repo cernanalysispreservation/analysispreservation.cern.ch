@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
-  Alert,
+  Breadcrumb,
   Button,
-  Card,
-  Modal,
+  Col,
   PageHeader,
-  Space,
-  Tag,
-  Typography
+  Popconfirm,
+  Row,
+  Typography,
 } from "antd";
-import EditableField from "../../partials/EditableField";
 import Customize from "../containers/Customize";
-const renderPath = (pathToUpdate, rename) => {
+import { DeleteOutlined } from "@ant-design/icons";
+const renderPath = pathToUpdate => {
   let prev;
   let content;
   let result = [];
@@ -34,72 +33,72 @@ const renderPath = (pathToUpdate, rename) => {
         } else prev = item;
       }
 
-      if (!prev) result.push(<Tag>{content}</Tag>);
+      if (!prev) result.push(<Breadcrumb.Item>{content}</Breadcrumb.Item>);
     });
 
-  if (prev)
-    result.push(
-      <Tag color="geekblue">
-        <EditableField
-          text={prev}
-          isEditable
-          emptyValue={prev}
-          onUpdate={value => rename(pathToUpdate.toJS(), value)}
-        />
-      </Tag>
-    );
+  if (prev) result.push(<Breadcrumb.Item>{prev}</Breadcrumb.Item>);
 
-  if (result.length == 0) result.push(<Tag>root</Tag>);
+  if (result.length == 0) result.push(<Breadcrumb.Item>root</Breadcrumb.Item>);
 
-  return result;
+  return <Breadcrumb>{result}</Breadcrumb>;
 };
 const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [name, setName] = useState();
+
+  useEffect(
+    () => {
+      if (path) {
+        const p = path.getIn(["path"]).toJS();
+        if (p.length) {
+          setName(p.find(item => item !== "properties" && item != "items"));
+        } else {
+          setName("root");
+        }
+      }
+    },
+    [path]
+  );
+
   return (
     <div>
-      <Modal
-        title="Delete Item"
-        visible={showModal}
-        onCancel={() => setShowModal(false)}
-        okType="danger"
-        okText="Delete"
-        okButtonProps={{
-          onClick: () => {
-            deleteByPath(path.toJS());
-            enableCreateMode();
-          }
-        }}
-      >
-        <Alert
-          message="You are about to delete the following field"
-          description={
-            <Typography.Text code>
-              {path
-                .toJS()
-                .path.filter(item => item != "properties" && item != "items")
-                .map(item => item)
-                .join(" > ")}
-            </Typography.Text>
-          }
-          type="error"
-          showIcon
-        />
-      </Modal>
       <PageHeader
         onBack={enableCreateMode}
-        title={"Show Fields"}
+        title="Show Fields"
         extra={
           path.get("path").size > 0 && (
-            <Button onClick={() => setShowModal(true)} danger>
-              Delete
-            </Button>
+            <Popconfirm
+              title="Delete field"
+              okType="danger"
+              okText="Delete"
+              cancelText="Cancel"
+              onConfirm={() => {
+                deleteByPath(path.toJS());
+                enableCreateMode();
+              }}
+            >
+              <Button danger shape="circle" icon={<DeleteOutlined />} />
+            </Popconfirm>
           )
         }
       />
-      <Space direction="vertical" style={{ width: "100%" }}>
-        <Card title={"Selected Field"}>{renderPath(path, renameId)}</Card>
-        <Customize path={path} />
-      </Space>
+      <Row justify="center">
+        <Col xs={22} style={{ paddingBottom: "20px" }}>
+          {renderPath(path)}
+        </Col>
+        <Col xs={22}>
+          <Typography.Title
+            level={5}
+            editable={{
+              text: { name },
+              onChange: value => renameId(path.toJS(), value),
+            }}
+            style={{ textAlign: "center" }}
+          >
+            {name}
+          </Typography.Title>
+        </Col>
+      </Row>
+      <Customize path={path} />
     </div>
   );
 };
@@ -108,7 +107,7 @@ PropertyEditor.propTypes = {
   path: PropTypes.object,
   renameId: PropTypes.func,
   enableCreateMode: PropTypes.func,
-  deleteByPath: PropTypes.func
+  deleteByPath: PropTypes.func,
 };
 
 export default PropertyEditor;

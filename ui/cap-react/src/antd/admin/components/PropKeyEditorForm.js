@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Form from "../../forms/Form";
 import fieldTypes from "../utils/fieldTypes";
-import { Button, Card, Row } from "antd";
-import { UpOutlined } from "@ant-design/icons";
+import widgets from "../formComponents/widgets";
 
 const PropertyKeyEditorForm = ({
   uiSchema = {},
@@ -12,10 +11,7 @@ const PropertyKeyEditorForm = ({
   onChange = null,
   optionsSchemaObject,
   optionsUiSchemaObject,
-  title = "",
 }) => {
-  const [display, setDisplay] = useState(true);
-
   let type;
 
   // in case we can not define the type of the element from the uiSchema,
@@ -51,23 +47,13 @@ const PropertyKeyEditorForm = ({
   };
 
   return (
-    <Card
-      title={title}
-      extra={display && <UpOutlined onClick={() => setDisplay(false)} />}
-    >
-      {display ? (
-        <Form
-          schema={objs[type][`${optionsSchemaObject}`] || {}}
-          uiSchema={objs[type][`${optionsUiSchemaObject}`] || {}}
-          formData={formData}
-          onChange={onChange}
-        />
-      ) : (
-        <Row justify="center">
-          <Button onClick={() => setDisplay(true)}>Show more</Button>
-        </Row>
-      )}
-    </Card>
+    <Form
+      schema={objs[type][`${optionsSchemaObject}`] || {}}
+      uiSchema={objs[type][`${optionsUiSchemaObject}`] || {}}
+      widgets={widgets}
+      formData={formData}
+      onChange={onChange}
+    />
   );
 };
 
@@ -78,7 +64,6 @@ PropertyKeyEditorForm.propTypes = {
   onChange: PropTypes.func,
   optionsSchemaObject: PropTypes.object,
   optionsUiSchemaObject: PropTypes.object,
-  title: PropTypes.string,
 };
 
 export default PropertyKeyEditorForm;

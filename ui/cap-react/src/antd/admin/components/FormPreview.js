@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Form from "../../forms/Form";
 import { transformSchema } from "../../partials/Utils/schema";
 import { shoudDisplayGuideLinePopUp } from "../utils";
-import { Row, Empty, Space, Typography } from "antd";
+import { Row, Empty, Space, Typography, Col } from "antd";
 
 const FormPreview = ({ schema, uiSchema }) => {
   if (shoudDisplayGuideLinePopUp(schema))
@@ -22,12 +22,16 @@ const FormPreview = ({ schema, uiSchema }) => {
       </Row>
     );
   return (
-    <Form
-      schema={transformSchema(schema.toJS())}
-      uiSchema={uiSchema.toJS()}
-      formData={{}}
-      onChange={() => {}}
-    />
+    <Row justify="center">
+      <Col xs={22} sm={20}>
+        <Form
+          schema={transformSchema(schema.toJS())}
+          uiSchema={uiSchema.toJS()}
+          formData={{}}
+          onChange={() => {}}
+        />
+      </Col>
+    </Row>
   );
 };
 

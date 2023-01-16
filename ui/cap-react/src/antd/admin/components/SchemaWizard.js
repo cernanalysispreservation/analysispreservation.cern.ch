@@ -18,10 +18,7 @@ const SchemaWizard = ({ field, loader }) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Row style={{ height: "100%" }} gutter={[16, 16]}>
-        <Col
-          span={5}
-          style={{ overflowX: "hidden", height: "100%", padding: "15px" }}
-        >
+        <Col span={5} style={{ overflowX: "hidden", height: "100%" }}>
           {field ? <PropertyEditor /> : <SelectFieldType />}
         </Col>
         <Col
@@ -43,7 +40,7 @@ const SchemaWizard = ({ field, loader }) => {
 
 SchemaWizard.propTypes = {
   loader: PropTypes.bool,
-  field: PropTypes.object
+  field: PropTypes.object,
 };
 
 export default SchemaWizard;

@@ -5,7 +5,7 @@ import Draggable from "./Draggable";
 
 const SelectFieldType = () => {
   return (
-    <Space direction="vertical" size="large">
+    <Space direction="vertical" size="large" style={{ padding: "0px 12px" }}>
       {Object.entries(fields).map(([key, type]) => (
         <div key={key}>
           <Divider orientation="left">
