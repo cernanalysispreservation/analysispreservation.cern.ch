@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import PropertyKeyEditorForm from "./PropKeyEditorForm";
 
-import { Card, Space, Tag, Typography } from "antd";
+import { Radio, Space, Tabs, Typography } from "antd";
 import _debounce from "lodash/debounce";
 
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
@@ -52,69 +52,52 @@ const Customize = props => {
   };
 
   return (
-    <Space direction="vertical" style={{ width: "100%" }}>
-      <PropertyKeyEditorForm
-        schema={props.schema && props.schema.toJS()}
-        uiSchema={props.uiSchema && props.uiSchema.toJS()}
-        formData={props.schema && props.schema.toJS()}
-        onChange={_debounce(_onSchemaChange, 500)}
-        optionsSchemaObject="optionsSchema"
-        optionsUiSchemaObject="optionsSchemaUiSchema"
-        title="Schema Settings"
-      />
-
-      <PropertyKeyEditorForm
-        schema={props.schema && props.schema.toJS()}
-        uiSchema={props.uiSchema && props.uiSchema.toJS()}
-        formData={props.uiSchema && props.uiSchema.toJS()}
-        onChange={_debounce(_onUiSchemaChange, 500)}
-        optionsSchemaObject="optionsUiSchema"
-        optionsUiSchemaObject="optionsUiSchemaUiSchema"
-        title="UI Schema Settings"
-      />
-
-      {props._path.size == 0 && (
-        <Card title="UI Options">
-          <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <Space>
-              <Typography.Text>Size Options</Typography.Text>
+    <Tabs centered style={{ height: "100%", overflow: "scroll" }}>
+      <Tabs.TabPane tab="Schema Settings" key="1">
+        <PropertyKeyEditorForm
+          schema={props.schema && props.schema.toJS()}
+          uiSchema={props.uiSchema && props.uiSchema.toJS()}
+          formData={props.schema && props.schema.toJS()}
+          onChange={_debounce(_onSchemaChange, 500)}
+          optionsSchemaObject="optionsSchema"
+          optionsUiSchemaObject="optionsSchemaUiSchema"
+        />
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="UI Schema Settings" key="2">
+        {props._path.size != 0 ? (
+          <PropertyKeyEditorForm
+            schema={props.schema && props.schema.toJS()}
+            uiSchema={props.uiSchema && props.uiSchema.toJS()}
+            formData={props.uiSchema && props.uiSchema.toJS()}
+            onChange={_debounce(_onUiSchemaChange, 500)}
+            optionsSchemaObject="optionsUiSchema"
+            optionsUiSchemaObject="optionsUiSchemaUiSchema"
+          />
+        ) : (
+          <Space direction="vertical" style={{ padding: "0 12px" }}>
+            <Typography.Text>Size Options</Typography.Text>
+            <Radio.Group
+              size="small"
+              onChange={e => sizeChange(e.target.value)}
+              style={{ paddingBottom: "15px" }}
+            >
               {SIZE_OPTIONS.map(size => (
-                <Tag
-                  onClick={() => sizeChange(size)}
-                  key={size}
-                  color={
-                    props.uiSchema &&
-                    props.uiSchema.toJS()["ui:options"] &&
-                    props.uiSchema.toJS()["ui:options"].size == size &&
-                    "geekblue"
-                  }
-                >
-                  {size}
-                </Tag>
+                <Radio.Button value={size}>{size}</Radio.Button>
               ))}
-            </Space>
-            <Space>
-              <Typography.Text>Align Options</Typography.Text>
-
+            </Radio.Group>
+            <Typography.Text>Align Options</Typography.Text>
+            <Radio.Group
+              size="small"
+              onChange={e => alignChange(e.target.value)}
+            >
               {ALIGN_OPTIONS.map(justify => (
-                <Tag
-                  onClick={() => alignChange(justify)}
-                  key={justify}
-                  color={
-                    props.uiSchema &&
-                    props.uiSchema.toJS()["ui:options"] &&
-                    props.uiSchema.toJS()["ui:options"].justify == justify &&
-                    "geekblue"
-                  }
-                >
-                  {justify}
-                </Tag>
+                <Radio.Button value={justify}>{justify}</Radio.Button>
               ))}
-            </Space>
+            </Radio.Group>
           </Space>
-        </Card>
-      )}
-    </Space>
+        )}
+      </Tabs.TabPane>
+    </Tabs>
   );
 };
 

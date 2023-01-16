@@ -96,9 +96,7 @@ const FieldTemplate = ({
   else {
     return (
       <Row justify={uiOptions.justify || "center"}>
-        <Col xs={22} sm={18}>
-          {content}
-        </Col>
+        <Col xs={24}>{content}</Col>
       </Row>
     );
   }

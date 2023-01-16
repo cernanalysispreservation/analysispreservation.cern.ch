@@ -46,16 +46,23 @@ const common = {
         title: "UI Options",
         properties: {
           span: {
-            type: "string",
             title: "Field Width",
-            enum: [6, 8, 12, 16, 18, 24],
-            enumNames: ["25%", "33%", "50%", "66%", "75%", "100%"],
+            type: "integer",
+            defaultValue: 24,
+            values: [6, 8, 12, 16, 18, 24],
+            labels: ["25%", "33%", "50%", "66%", "75%", "100%"],
           },
         },
       },
     },
   },
-  optionsUiSchemaUiSchema: {},
+  optionsUiSchemaUiSchema: {
+    "ui:options": {
+      span: {
+        "ui:widget": "slider",
+      },
+    },
+  },
 };
 
 const extra = {
@@ -69,7 +76,7 @@ const extra = {
   },
   optionsSchemaUiSchema: {
     readOnly: {
-      "ui:widget": "select",
+      "ui:widget": "switch",
     },
   },
 };
@@ -118,7 +125,7 @@ const simple = {
     },
     optionsUiSchema: {
       type: "object",
-      title: "Switch Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -210,7 +217,7 @@ const simple = {
     },
     optionsUiSchema: {
       type: "object",
-      title: "Switch Widget UI Options",
+      title: "UI Schema",
       properties: {
         "ui:options": {
           type: "object",
@@ -966,7 +973,7 @@ const advanced = {
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
       type: "object",
-      title: "Id Fetcher UI Options",
+      title: "UI Schema",
       properties: {
         ...common.optionsUiSchema.properties,
         "ui:servicesList": {
