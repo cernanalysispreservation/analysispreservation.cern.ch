@@ -174,8 +174,4 @@ wcwidth==0.1.7            # via ftfy, prompt-toolkit
 webargs==3.0.1            # via invenio-oaiserver, invenio-records-rest
 webassets==0.12.1         # via flask-assets, invenio-assets
 webencodings==0.5.1       # via html5lib
-werkzeug==0.15          # via flask, flask-debugtoolbar, flask-kvsession, jsonresolver
-whichcraft==0.4.1         # via cookiecutter
-wtforms-alchemy==0.16.7   # via invenio-oauth2server
-wtforms-components==0.10.3  # via wtforms-alchemy
-wtforms==2.2.1            # via flask-admin, flask-wtf, invenio-userprofiles, wtforms-alchemy, wtforms-components
+werkzeug==0.15            # via flask, flask-debugtoolbar, flask-kvsession, jsonresolver
