@@ -15,7 +15,7 @@ readme = open('README.rst').read()
 
 DATABASE = "postgresql"
 ELASTICSEARCH = "elasticsearch5"
-INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
+INVENIO_VERSION = '3.2.0'  # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
@@ -77,10 +77,10 @@ install_requires = [
     'invenio[{db},{es},base,auth,metadata]~={version}'.format(
         db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION
     ),
-    'invenio-rest==1.0.0',
-    'invenio-files-rest==1.0.0',
-    'invenio-records-files==1.0.0a11',
     'jsonschema[format]==3.0.1',
+    'invenio-rest==1.1.2',
+    'invenio-files-rest==1.0.5',
+    'invenio-records-files==1.2.1',
     'coolname==1.1.0',
     'Authlib==0.15.1',
     # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
@@ -90,7 +90,7 @@ install_requires = [
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
     # needed version for future use of arguments
-    'webargs==3.0.1',
+    'webargs==5.5.0',
     'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
     'requests-gssapi',
