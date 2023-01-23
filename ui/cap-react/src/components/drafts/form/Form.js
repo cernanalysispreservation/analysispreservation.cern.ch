@@ -15,19 +15,17 @@ import Form from "react-jsonschema-form";
 import Box from "grommet/components/Box";
 import objectPath from "object-path";
 
-import _debounce from "lodash/debounce";
-
 class DepositForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: []
+      errors: [],
     };
   }
 
-  transformErrors = errors => {
-    errors = errors.filter(item => item.name != "required");
-    errors.map(error => {
+  transformErrors = (errors) => {
+    errors = errors.filter((item) => item.name != "required");
+    errors.map((error) => {
       if (error.name == "required") return null;
 
       // Update messages for undefined fields when required,
@@ -68,10 +66,10 @@ class DepositForm extends Component {
             formData={this.props.formData}
             onBlur={() => {}}
             extraErrors={this.props.extraErrors}
-            onChange={_debounce(this.props.onChange, 500)}
+            onChange={this.props.onChange}
             formContext={{
               formRef: this.props.formRef,
-              ...this.props.formContext
+              ...this.props.formContext,
             }}
           >
             <span />
@@ -97,7 +95,7 @@ DepositForm.propTypes = {
   formRef: PropTypes.object,
   extraErrors: PropTypes.object,
   formContext: PropTypes.object,
-  validate: PropTypes.func
+  validate: PropTypes.func,
 };
 
 export default DepositForm;

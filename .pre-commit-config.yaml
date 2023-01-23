@@ -4,28 +4,28 @@ repos:
     rev: 22.3.0
     hooks:
       - id: black
-        args: ['--skip-string-normalization']
+        args: ["--skip-string-normalization"]
         exclude: ^tests/
 
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: '3.9.2'
+  - repo: https://github.com/pycqa/flake8
+    rev: "3.9.2"
     hooks:
       - id: flake8
-        args: ['--config=.flake8']
+        args: ["--config=.flake8"]
 
   - repo: https://github.com/pycqa/isort
-    rev: '5.10.1'
+    rev: "5.10.1"
     hooks:
       - id: isort
 
-  - repo: https://gitlab.com/pycqa/pydocstyle
-    rev: '6.1.1'
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: "6.1.1"
     hooks:
       - id: pydocstyle
 
   # JS
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: 'v2.7.1'
+    rev: "v2.7.1"
     hooks:
       - id: prettier
         stages: [commit, push]
@@ -33,7 +33,7 @@ repos:
 
   # Project Wide
   - repo: https://github.com/jorisroovers/gitlint
-    rev: 'v0.17.0'
+    rev: "v0.17.0"
     hooks:
       - id: gitlint
         language: python

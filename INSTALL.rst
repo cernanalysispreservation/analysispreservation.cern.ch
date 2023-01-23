@@ -118,7 +118,7 @@ by following the next steps:
 
     .. code-block:: console
 
-        $ docker-compose -f docker-compose.dev.yml run web-api sh scripts/init.sh
+        $ docker-compose -f docker-compose.dev.yml run web-api sh scripts/clean-and-init.sh
 
 Now you have a dev environment that can automatically reload changed code in the backend, and will also
 accept changes in the frontend, after rebuilding the ``index.html`` file.
