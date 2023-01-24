@@ -6,7 +6,7 @@ import { transformSchema } from "../../utils/transformSchema";
 import Header from "../../containers/EditorHeader";
 import Form from "../../../forms";
 import { canEdit } from "../../utils/permissions";
-import _debounce from "lodash/debounce";
+
 const Editor = ({
   schemaErrors,
   schemas = { schema: {}, uiSchema: {} },
@@ -28,7 +28,7 @@ const Editor = ({
   let _schema =
     schemas && schemas.schema ? transformSchema(schemas.schema) : null;
 
-  const _formDataChange = (change) => formDataChange(change.formData);
+  const _formDataChange = change => formDataChange(change.formData);
   return (
     <Col span={24} style={{ height: "100%", overflow: "auto" }}>
       <Layout style={{ height: "100%", padding: 0 }}>
@@ -39,7 +39,7 @@ const Editor = ({
             formRef={formRef}
             schema={_schema}
             uiSchema={schemas.uiSchema || {}}
-            onChange={_debounce(_formDataChange, 500)}
+            onChange={_formDataChange}
             extraErrors={extraErrors || {}}
             draftEditor
             readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}
