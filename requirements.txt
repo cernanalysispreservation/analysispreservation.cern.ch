@@ -39,7 +39,7 @@ flask-caching==1.4.0      # via invenio-cache
 flask-celeryext==0.3.1    # via invenio-accounts, invenio-app, invenio-celery, invenio-indexer, invenio-records
 flask-collect==1.2.2      # via invenio-assets
 flask-cors==3.0.6         # via invenio-rest
-flask-debugtoolbar==0.10.1
+flask-debugtoolbar==0.13.1
 flask-kvsession==0.6.2    # via invenio-accounts
 flask-limiter==1.0.1      # via invenio-app
 flask-login==0.4.1        # via flask-security, invenio-accounts, invenio-admin, invenio-oauth2server
