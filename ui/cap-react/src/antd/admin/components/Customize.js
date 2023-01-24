@@ -1,24 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import PropertyKeyEditorForm from "./PropKeyEditorForm";
 
 import { Radio, Space, Tabs, Typography } from "antd";
 import _debounce from "lodash/debounce";
+import { SIZE_OPTIONS } from "../utils";
 
-const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
-const ALIGN_OPTIONS = ["center", "start", "end"];
+const JUSTIFY_OPTIONS = ["start", "center", "end"];
 
-const Customize = props => {
+const Customize = ({
+  schema,
+  uiSchema,
+  onSchemaChange,
+  onUiSchemaChange,
+  path,
+  _path,
+}) => {
+  const [justify, setJustify] = useState(() => "start");
+  const [size, setSize] = useState("xlarge");
+
+  useEffect(
+    () => {
+      if (uiSchema.toJS().hasOwnProperty("ui:options")) {
+        setSize(uiSchema.toJS()["ui:options"].size);
+        setJustify(uiSchema.toJS()["ui:options"].justify);
+      }
+    },
+    [uiSchema]
+  );
+
   const _onSchemaChange = data => {
-    props.onSchemaChange(props.path.get("path").toJS(), data.formData);
+    onSchemaChange(path.get("path").toJS(), data.formData);
   };
   const _onUiSchemaChange = data => {
-    props.onUiSchemaChange(props.path.get("uiPath").toJS(), data.formData);
+    onUiSchemaChange(path.get("uiPath").toJS(), data.formData);
   };
   const sizeChange = newSize => {
-    if (SIZE_OPTIONS.indexOf(newSize) < 0) return;
-
-    let { uiSchema } = props;
     uiSchema = uiSchema ? uiSchema.toJS() : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
@@ -27,16 +44,13 @@ const Customize = props => {
     size = newSize;
     let _uiOptions = { size, ...restUIOptions };
 
-    props.onUiSchemaChange(props.path.get("uiPath").toJS(), {
+    onUiSchemaChange(path.get("uiPath").toJS(), {
       ...rest,
       "ui:options": _uiOptions,
     });
   };
 
   const alignChange = newAlign => {
-    if (["center", "start", "end"].indexOf(newAlign) < 0) return;
-
-    let { uiSchema } = props;
     uiSchema = uiSchema ? uiSchema.toJS() : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
@@ -45,7 +59,7 @@ const Customize = props => {
     justify = newAlign;
     let _uiOptions = { justify, ...restUIOptions };
 
-    props.onUiSchemaChange(props.path.get("uiPath").toJS(), {
+    onUiSchemaChange(path.get("uiPath").toJS(), {
       ...rest,
       "ui:options": _uiOptions,
     });
@@ -55,33 +69,37 @@ const Customize = props => {
     <Tabs centered style={{ height: "100%", overflow: "scroll" }}>
       <Tabs.TabPane tab="Schema Settings" key="1">
         <PropertyKeyEditorForm
-          schema={props.schema && props.schema.toJS()}
-          uiSchema={props.uiSchema && props.uiSchema.toJS()}
-          formData={props.schema && props.schema.toJS()}
+          schema={schema && schema.toJS()}
+          uiSchema={uiSchema && uiSchema.toJS()}
+          formData={schema && schema.toJS()}
           onChange={_debounce(_onSchemaChange, 500)}
           optionsSchemaObject="optionsSchema"
           optionsUiSchemaObject="optionsSchemaUiSchema"
         />
       </Tabs.TabPane>
       <Tabs.TabPane tab="UI Schema Settings" key="2">
-        {props._path.size != 0 ? (
+        {_path.size != 0 ? (
           <PropertyKeyEditorForm
-            schema={props.schema && props.schema.toJS()}
-            uiSchema={props.uiSchema && props.uiSchema.toJS()}
-            formData={props.uiSchema && props.uiSchema.toJS()}
+            schema={schema && schema.toJS()}
+            uiSchema={uiSchema && uiSchema.toJS()}
+            formData={uiSchema && uiSchema.toJS()}
             onChange={_debounce(_onUiSchemaChange, 500)}
             optionsSchemaObject="optionsUiSchema"
             optionsUiSchemaObject="optionsUiSchemaUiSchema"
           />
         ) : (
-          <Space direction="vertical" style={{ padding: "0 12px" }}>
+          <Space
+            direction="vertical"
+            style={{ padding: "0 12px", width: "100%" }}
+          >
             <Typography.Text>Size Options</Typography.Text>
             <Radio.Group
               size="small"
               onChange={e => sizeChange(e.target.value)}
+              value={size}
               style={{ paddingBottom: "15px" }}
             >
-              {SIZE_OPTIONS.map(size => (
+              {Object.keys(SIZE_OPTIONS).map(size => (
                 <Radio.Button value={size}>{size}</Radio.Button>
               ))}
             </Radio.Group>
@@ -89,8 +107,9 @@ const Customize = props => {
             <Radio.Group
               size="small"
               onChange={e => alignChange(e.target.value)}
+              value={justify}
             >
-              {ALIGN_OPTIONS.map(justify => (
+              {JUSTIFY_OPTIONS.map(justify => (
                 <Radio.Button value={justify}>{justify}</Radio.Button>
               ))}
             </Radio.Group>
@@ -104,9 +123,9 @@ const Customize = props => {
 Customize.propTypes = {
   schema: PropTypes.object,
   uiSchema: PropTypes.object,
-  path: PropTypes.object,
   onSchemaChange: PropTypes.func,
   onUiSchemaChange: PropTypes.func,
+  path: PropTypes.object,
   _path: PropTypes.object,
 };
 

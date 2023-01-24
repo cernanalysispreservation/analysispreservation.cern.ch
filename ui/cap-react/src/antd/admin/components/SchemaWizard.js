@@ -29,7 +29,12 @@ const SchemaWizard = ({ field, loader }) => {
         </Col>
         <Col
           span={14}
-          style={{ overflowX: "hidden", height: "100%", padding: "15px" }}
+          style={{
+            overflowX: "hidden",
+            height: "100%",
+            padding: "15px",
+            borderLeft: "1px dotted lightgray",
+          }}
         >
           <FormPreview />
         </Col>
