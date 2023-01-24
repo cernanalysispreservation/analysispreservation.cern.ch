@@ -6,6 +6,7 @@ import FieldHeader from "./FieldHeader";
 
 import WrapIfAdditional from "./WrapIfAdditional";
 import { Col, Row } from "antd";
+import { SIZE_OPTIONS } from "../../../admin/utils";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -96,7 +97,7 @@ const FieldTemplate = ({
   else {
     return (
       <Row justify={uiOptions.justify || "center"}>
-        <Col xs={24}>{content}</Col>
+        <Col xs={SIZE_OPTIONS[uiOptions.size] || 24}>{content}</Col>
       </Row>
     );
   }
