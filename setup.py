@@ -79,6 +79,7 @@ install_requires = [
     ),
     'jsonschema[format]==3.0.1',
     'invenio-rest==1.1.2',
+    'invenio-records==1.3.0',
     'invenio-files-rest==1.0.5',
     'invenio-records-files==1.2.1',
     'coolname==1.1.0',

@@ -5,8 +5,8 @@ cryptography<=3.3.2
 reana-client==0.6.0
 reana-commons==0.6.0
 -e git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@master#egg=invenio-oauthclient
--e git+https://github.com/parths007/invenio-jsonschemas.git@v1.0.1#egg=invenio-jsonschemas
--e git+https://github.com/cernanalysispreservation/invenio-search.git@master#egg=invenio-search
+# -e git+https://github.com/parths007/invenio-jsonschemas.git@v1.0.1#egg=invenio-jsonschemas
+# -e git+https://github.com/cernanalysispreservation/invenio-search.git@master#egg=invenio-search
 -e git+https://github.com/cernanalysispreservation/invenio-files-rest.git@fix-ensure-stream#egg=invenio-files-rest
 -e git+https://github.com/cernanalysispreservation/invenio-userprofiles.git#egg=invenio-userprofiles
 -e git+https://github.com/cernanalysispreservation/invenio-logging.git@v1.2.0-without-invenio-base-des#egg=invenio-logging[sentry,sentry-sdk]
@@ -15,3 +15,6 @@ reana-commons==0.6.0
 -e git+https://github.com/inveniosoftware/invenio-records.git@a5d4efb1e1466aa571aeef013d699dca1452f7cd#egg=invenio-records
 -e git+https://github.com/celery/celery.git@6ccdc7b9f8e02d21275e923dccc7ccb9185e6153#egg=celery
 
+-e git+https://github.com/parths007/invenio-search.git@new#egg=invenio-search
+-e git+https://github.com/parths007/invenio-indexer.git@new#egg=invenio-indexer
+-e git+https://github.com/parths007/invenio-jsonschemas.git@v1.0.1#egg=invenio-jsonschemas
