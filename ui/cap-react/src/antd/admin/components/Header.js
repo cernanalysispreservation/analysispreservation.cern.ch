@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import JsonDiff from "./JSONDiff";
 import Form from "../../forms/Form";
-import { Button, Col, Menu, Modal, Row, Tabs, Grid } from "antd";
+import { Col, Menu, Modal, Row, Tabs, Grid } from "antd";
 import {
   ArrowLeftOutlined,
   DiffOutlined,
@@ -16,6 +16,7 @@ import { CMS } from "../../routes";
 import { configSchema } from "../utils/schemaSettings";
 import CodeViewer from "../../util/CodeViewer";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
+import HeaderMenuItem from "./HeaderMenuItem/HeaderMenuItem";
 
 const { useBreakpoint } = Grid;
 const Header = ({
@@ -142,31 +143,28 @@ const Header = ({
         />
       </Modal>
 
-      <Col xs={8} md={4}>
-        <Button
-          icon={<ArrowLeftOutlined />}
-          onClick={() => pushPath(CMS)}
-          type="primary"
-        >
-          Admin Home Page
-        </Button>
+      <Col xs={4} lg={4} order={1}>
+        <Menu mode="horizontal" className="no-bottom-border">
+          <HeaderMenuItem
+            icon={<ArrowLeftOutlined />}
+            onClick={() => pushPath(CMS)}
+            label={screens.md && "Admin Home Page"}
+          />
+        </Menu>
       </Col>
-      <Col xs={16} md={10}>
+      <Col xs={{ span: 24, order: 3 }} sm={{ span: 11, order: 2 }} lg={7}>
         <Menu
-          theme="dark"
           mode="horizontal"
           selectedKeys={
             pathname.includes("/builder") ? ["builder"] : ["notifications"]
           }
-          style={{
-            justifyContent: "flex-end",
-          }}
+          style={{ justifyContent: screens.sm ? "flex-end" : "center" }}
         >
           <Menu.Item
             key="builder"
             icon={<FormOutlined />}
             onClick={() =>
-              pushPath(pathname.split("notifications")[0] + "builder")
+              pushPath(pathname.split(/notifications|builder/)[0] + "builder")
             }
           >
             Form Builder
@@ -175,40 +173,45 @@ const Header = ({
             key="notifications"
             icon={<NotificationOutlined />}
             onClick={() =>
-              pushPath(pathname.split("builder")[0] + "notifications")
+              pushPath(
+                pathname.split(/notifications|builder/)[0] + "notifications"
+              )
             }
           >
             Notifications
           </Menu.Item>
         </Menu>
       </Col>
-      <Col xs={24} md={10}>
+      <Col xs={{ span: 20, order: 2 }} sm={{ span: 9, order: 3 }} lg={13}>
         <Menu
           mode="horizontal"
-          theme="dark"
           selectable={false}
           style={{
-            justifyContent: screens.md ? "flex-end" : "center",
+            justifyContent: "flex-end",
           }}
+          className="no-bottom-border"
         >
-          <Menu.Item icon={<DownloadOutlined />} onClick={() => _getSchema()}>
-            Export Schema
-          </Menu.Item>
-          <Menu.Item
-            icon={<SaveOutlined />}
-            onClick={() => saveSchemaChanges()}
-          >
-            Save Updates
-          </Menu.Item>
-          <Menu.Item icon={<DiffOutlined />} onClick={() => setDiffModal(true)}>
-            Diff
-          </Menu.Item>
-          <Menu.Item
+          <HeaderMenuItem
+            icon={<DownloadOutlined />}
+            onClick={() => _getSchema()}
+            label="Export Schema"
+          />
+          <HeaderMenuItem
+            icon={<DiffOutlined />}
+            onClick={() => setDiffModal(true)}
+            label="Diff"
+          />
+          <HeaderMenuItem
             icon={<SettingOutlined />}
             onClick={() => setSettingsModal(true)}
-          >
-            Settings
-          </Menu.Item>
+            label="Settings"
+          />
+          <HeaderMenuItem
+            icon={<SaveOutlined />}
+            onClick={() => saveSchemaChanges()}
+            label="Save Updates"
+            type="primary"
+          />
         </Menu>
       </Col>
     </Row>
