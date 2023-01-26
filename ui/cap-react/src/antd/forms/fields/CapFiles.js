@@ -38,7 +38,7 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
           justify="space-between"
           style={{
             borderBottom: "1px solid rgba(0, 0, 0, 0.06)",
-            padding: "5px"
+            padding: "5px",
           }}
         >
           <Space>
@@ -61,7 +61,10 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
           />
         </Row>
       ) : (
-        <Button onClick={() => setShowModal(true)}>
+        <Button
+          onClick={() => setShowModal(true)}
+          style={{ whiteSpace: "normal", height: "auto" }}
+        >
           {(uiSchema && uiSchema.capFilesDescription) ||
             "Select a file or a repository from your list to link here"}
         </Button>
@@ -74,16 +77,16 @@ CapFiles.propTypes = {
   uiSchema: PropTypes.object,
   files: PropTypes.object,
   onChange: PropTypes.object,
-  formData: PropTypes.object
+  formData: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   files: state.draftItem.get("bucket"),
-  pathSelected: state.draftItem.get("pathSelected")
+  pathSelected: state.draftItem.get("pathSelected"),
 });
 
 const mapDispatchToProps = dispatch => ({
-  selectPath: (path, type) => dispatch(selectPath(path, type))
+  selectPath: (path, type) => dispatch(selectPath(path, type)),
 });
 
 export default connect(

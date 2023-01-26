@@ -118,7 +118,7 @@ const ObjectFieldTemplate = ({
             </Col>
           )}
         <Col span={24} className="nestedObject">
-          <Row>
+          <Row gutter={10}>
             {properties.filter(e => !e.hidden).map(element => (
               <Col key={element.name} span={calculateColSpan(element)}>
                 {element.content}
