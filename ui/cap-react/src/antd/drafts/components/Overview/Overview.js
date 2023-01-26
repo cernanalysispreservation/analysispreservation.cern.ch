@@ -9,7 +9,7 @@ import {
   Row,
   Space,
   Tag,
-  Typography
+  Typography,
 } from "antd";
 import { transformSchema } from "../../utils/transformSchema";
 import JSONSchemaPreviewer from "../../../partials/JSONSchemaPreviewer";
@@ -17,7 +17,7 @@ import {
   CodeOutlined,
   FolderOutlined,
   InfoCircleOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
 import OverviewLoading from "./OverviewLoading";
 import DepositFilesList from "../../../partials/FileList";
@@ -39,16 +39,16 @@ const Overview = ({
   mySchema,
   access,
   loading,
-  history
+  history,
 }) => {
   const { users, roles } = useMemo(() => calculateCollaborators(access), [
-    access
+    access,
   ]);
 
   const infoArray = [
     {
       text: <Typography.Text>{revision} revision</Typography.Text>,
-      icon: <InfoCircleOutlined />
+      icon: <InfoCircleOutlined />,
     },
     {
       text: (
@@ -57,7 +57,7 @@ const Overview = ({
           {users || 0} users / {roles || 0} roles
         </Typography.Text>
       ),
-      icon: <UserOutlined />
+      icon: <UserOutlined />,
     },
     {
       text: (
@@ -65,11 +65,11 @@ const Overview = ({
           {webhooks && webhooks.length} repositories
         </Typography.Text>
       ),
-      icon: <CodeOutlined />
+      icon: <CodeOutlined />,
     },
     {
       text: <Typography.Text>{files && files.size} files</Typography.Text>,
-      icon: <FolderOutlined />
+      icon: <FolderOutlined />,
     },
     {
       text: (
@@ -78,8 +78,8 @@ const Overview = ({
           {(schema && schema.version) || "-"} schema version
         </Typography.Text>
       ),
-      icon: <InfoCircleOutlined />
-    }
+      icon: <InfoCircleOutlined />,
+    },
   ];
   if (loading)
     return (
@@ -88,7 +88,7 @@ const Overview = ({
       </Col>
     );
   return (
-    <Col xxl={16} lg={18} xs={22} sm={22} style={{ padding: "0 0 15px 0 " }}>
+    <Col xxl={16} lg={18} xs={22} sm={22} style={{ paddingBottom: "15px" }}>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Row
           justify="space-around"
@@ -152,7 +152,7 @@ const Overview = ({
                 onClick={() => {
                   history.push({
                     pathname: `/drafts/${draft_id}/edit`,
-                    state: { mode: "preview" }
+                    state: { mode: "preview" },
                   });
                 }}
               >
@@ -223,7 +223,7 @@ Overview.propTypes = {
   mySchema: PropTypes.object,
   access: PropTypes.object,
   loading: PropTypes.bool,
-  history: PropTypes.object
+  history: PropTypes.object,
 };
 
 export default Overview;
