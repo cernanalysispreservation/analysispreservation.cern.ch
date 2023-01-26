@@ -182,7 +182,10 @@ const Overview = ({
           {webhooks && webhooks.length > 0 ? (
             <InfoArrayBox items={webhooks} type="repositories" />
           ) : (
-            <Empty description="No connected repositories yet" />
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="No connected repositories yet"
+            />
           )}
         </Card>
         <Card title="Uploaded Repositories">
@@ -191,7 +194,10 @@ const Overview = ({
           files.filter(item => item.key.startsWith("repositories")).size > 0 ? (
             <DepositFilesList files={files} renderList={["repositories"]} />
           ) : (
-            <Empty description="No uploaded repositories yet" />
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="No uploaded repositories yet"
+            />
           )}
         </Card>
         <Card title="Uploaded Files">
@@ -201,7 +207,10 @@ const Overview = ({
             0 ? (
             <DepositFilesList files={files} renderList={["files"]} />
           ) : (
-            <Empty description="No uploaded files yet" />
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="No uploaded files yet"
+            />
           )}
         </Card>
       </Space>

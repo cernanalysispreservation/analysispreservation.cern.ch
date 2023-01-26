@@ -11,6 +11,7 @@ const CollectionPermissionItem = ({ permissions, title }) => {
           permissions.map((item, index) => <Tag key={item + index}>{item}</Tag>)
         ) : (
           <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
             description="  There are not egroups/users email addresses provided for this
           category"
           />
@@ -22,7 +23,7 @@ const CollectionPermissionItem = ({ permissions, title }) => {
 
 CollectionPermissionItem.propTypes = {
   permissions: PropTypes.array,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default CollectionPermissionItem;

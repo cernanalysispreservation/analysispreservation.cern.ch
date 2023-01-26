@@ -29,7 +29,7 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      layerActive: false
+      layerActive: false,
     };
   }
 
@@ -49,7 +49,7 @@ class SearchPage extends React.Component {
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, { size: size })
-      )}`
+      )}`,
     };
 
     this.props.history.push(location);
@@ -68,7 +68,7 @@ class SearchPage extends React.Component {
     }
 
     const location = {
-      search: queryString.stringify(currentParams)
+      search: queryString.stringify(currentParams),
     };
 
     this.props.history.push(location);
@@ -80,7 +80,7 @@ class SearchPage extends React.Component {
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, { sort: sort })
-      )}`
+      )}`,
     };
     this.props.history.push(location);
   };
@@ -97,7 +97,7 @@ class SearchPage extends React.Component {
       }
     }
     const location = {
-      search: queryString.stringify(currentParams)
+      search: queryString.stringify(currentParams),
     };
     this.props.history.push(location);
   };
@@ -108,7 +108,7 @@ class SearchPage extends React.Component {
     const location = {
       search: `${queryString.stringify(
         Object.assign(currentParams, { page: page, size: size })
-      )}`
+      )}`,
     };
     this.props.history.push(location);
   }
@@ -146,7 +146,7 @@ class SearchPage extends React.Component {
         </Box>
       ) : this.props.error ? (
         <Box flex={false} justify="center" align="center">
-          <Empty />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           <Label style={{ textAlign: "center" }}>
             There was an error with your request <br />
             please try again
@@ -154,7 +154,7 @@ class SearchPage extends React.Component {
         </Box>
       ) : total === 0 ? (
         <Box flex={false} justify="center" align="center">
-          <Empty />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           <Label style={{ textAlign: "center" }}>
             No search results were found <br />or <br />you have no permission
             to see them
@@ -309,7 +309,7 @@ SearchPage.propTypes = {
   location: PropTypes.object.isRequired,
   selectedAggs: PropTypes.object.isRequired,
   results: PropTypes.object.isRequired,
-  error: PropTypes.bool
+  error: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -317,13 +317,13 @@ function mapStateToProps(state) {
     results: state.search.getIn(["results"]),
     loading: state.search.getIn(["loading"]),
     selectedAggs: state.search.getIn(["selectedAggs"]),
-    error: state.search.getIn(["error"])
+    error: state.search.getIn(["error"]),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: match => dispatch(fetchSearch(match))
+    fetchSearch: match => dispatch(fetchSearch(match)),
   };
 }
 
