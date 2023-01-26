@@ -29,7 +29,7 @@ const Applications = ({
           layout="vertical"
           form={form}
           initialValues={{ tokenAccessName: "" }}
-          onFinish={(values) => {
+          onFinish={values => {
             createToken({
               name: values.tokenAccessName,
               scopes: ["deposit:write"],
@@ -98,7 +98,7 @@ const Applications = ({
                 title: "Action",
                 width: "20%",
                 key: "action",
-                render: (token) => (
+                render: token => (
                   <Button
                     data-cy={token.name}
                     type="link"
@@ -111,7 +111,10 @@ const Applications = ({
             ]}
           />
         ) : (
-          <Empty description="Add a new token to grant access to CAP client and API">
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="Add a new token to grant access to CAP client and API"
+          >
             <Button
               type="primary"
               data-cy="settingsAddToken"
