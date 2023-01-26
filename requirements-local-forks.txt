@@ -18,3 +18,4 @@ reana-commons==0.6.0
 -e git+https://github.com/parths007/invenio-search.git@new#egg=invenio-search
 -e git+https://github.com/parths007/invenio-indexer.git@new#egg=invenio-indexer
 -e git+https://github.com/parths007/invenio-jsonschemas.git@v1.0.1#egg=invenio-jsonschemas
+-e git+https://github.com/parths007/invenio-records-files.git@new#egg=invenio-records-files

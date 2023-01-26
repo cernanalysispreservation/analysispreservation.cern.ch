@@ -153,7 +153,8 @@ def default_config():
                 GITHUB_CAP_TOKEN="testtokengithub",
                 GITLAB_CAP_TOKEN="testtokengitlab",
                 CMS_STATS_QUESTIONNAIRE_ADMIN_ROLES='cms-admins@cern0.ch',
-                RATELIMIT_APPLICATION='1000/minute')
+                RATELIMIT_APPLICATION='1000/minute',
+                RECORDS_FILES_REST_ENDPOINTS={})
 
 
 @pytest.fixture(scope='session')
