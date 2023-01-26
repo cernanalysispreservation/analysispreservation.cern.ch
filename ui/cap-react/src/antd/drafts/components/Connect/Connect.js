@@ -32,7 +32,7 @@ const Connect = ({
   const [myRepo, setMyRepo] = useState(null);
   const [error, setError] = useState(null);
 
-  const getEvenTypeLabel = (type) => {
+  const getEvenTypeLabel = type => {
     switch (type) {
       case "release":
         return "on Tag/Release";
@@ -46,7 +46,7 @@ const Connect = ({
   const columns = [
     {
       title: "Ref",
-      render: (snap) => {
+      render: snap => {
         return snap.payload.event_type == "release" ? (
           <Tag>{snap.payload.release.tag}</Tag>
         ) : (
@@ -61,7 +61,7 @@ const Connect = ({
     },
     {
       title: "Created",
-      render: (snap) => {
+      render: snap => {
         return (
           snap.created && <ReactTimeago date={snap.created} minPeriod="60" />
         );
@@ -71,7 +71,7 @@ const Connect = ({
     },
     {
       title: "Link",
-      render: (snap) => (
+      render: snap => (
         <Typography.Link href={snap.payload.link} target="_blank">
           link
         </Typography.Link>
@@ -112,7 +112,7 @@ const Connect = ({
         setMyRepo(null);
         form.resetFields();
       })
-      .catch((e) =>
+      .catch(e =>
         setError({
           ...e.error.response.data,
           type: event_type ? event_type : "upload",
@@ -127,8 +127,7 @@ const Connect = ({
       setError(null);
       return;
     }
-    let regex =
-      /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w\.-]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/; //eslint-disable-line
+    let regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w\.-]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/; //eslint-disable-line
     let repo = value.match(regex);
     let [href, scheme, resource, owner, name, type, ref, filepath] = repo;
     const acceptedResources = [
@@ -211,7 +210,7 @@ const Connect = ({
         <Card title="Connected Repositories">
           {repos && repos.length > 0 ? (
             <Collapse>
-              {repos.map((repo) => (
+              {repos.map(repo => (
                 <Collapse.Panel
                   header={`${repo.owner}/${repo.name}`}
                   key={repo.id}
@@ -230,7 +229,10 @@ const Connect = ({
               ))}
             </Collapse>
           ) : (
-            <Empty description="No connected repositories" />
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="No connected repositories"
+            />
           )}
         </Card>
       </Space>

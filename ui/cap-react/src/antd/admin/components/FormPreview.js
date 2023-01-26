@@ -10,6 +10,7 @@ const FormPreview = ({ schema, uiSchema }) => {
     return (
       <Row justify="center" align="middle" style={{ height: "100%" }}>
         <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={
             <Space direction="vertical">
               <Typography.Title level={5}>Your form is empty</Typography.Title>
