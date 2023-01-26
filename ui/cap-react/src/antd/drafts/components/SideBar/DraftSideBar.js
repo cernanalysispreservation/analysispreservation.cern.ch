@@ -20,7 +20,7 @@ const DraftSideBar = ({ visibleFileDrawer, onClose }) => {
       <SideBar />
     </Drawer>
   ) : (
-    <Col xxl={6}>
+    <Col xxl={6} style={{ height: "100%", overflowY: "scroll" }}>
       <SideBar />
     </Col>
   );
@@ -28,7 +28,7 @@ const DraftSideBar = ({ visibleFileDrawer, onClose }) => {
 
 DraftSideBar.propTypes = {
   visibleFileDrawer: PropTypes.bool,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
 };
 
 export default DraftSideBar;

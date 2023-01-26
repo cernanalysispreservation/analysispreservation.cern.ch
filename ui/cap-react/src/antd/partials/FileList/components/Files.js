@@ -25,10 +25,7 @@ const Files = ({
     const choices = {
       repositories: (
         <React.Fragment>
-          <Space
-            direction="vertical"
-            style={{ width: "100%", paddingBottom: "20px" }}
-          >
+          <Space direction="vertical" style={{ width: "100%" }}>
             {displayTitle && (
               <Divider style={{ fontSize: "1em", margin: "0" }}>
                 All Repositories
@@ -41,17 +38,17 @@ const Files = ({
                 showIcon={false}
               />
             ) : (
-              <Empty description="No repos uploaded yet" />
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description="No repos uploaded yet"
+              />
             )}
           </Space>
         </React.Fragment>
       ),
       files: (
         <React.Fragment>
-          <Space
-            direction="vertical"
-            style={{ width: "100%", paddingBottom: "20px" }}
-          >
+          <Space direction="vertical" style={{ width: "100%" }}>
             {displayTitle && (
               <Divider style={{ fontSize: "1em", margin: "0" }}>
                 All Files
@@ -64,7 +61,10 @@ const Files = ({
                 showIcon={false}
               />
             ) : (
-              <Empty description="No files uploaded yet" />
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description="No files uploaded yet"
+              />
             )}
           </Space>
         </React.Fragment>

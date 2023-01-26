@@ -21,7 +21,7 @@ const SideBar = ({
   canUpdate,
   files,
   links,
-  getBucketById
+  getBucketById,
 }) => {
   const contents = [
     {
@@ -30,7 +30,7 @@ const SideBar = ({
         <Typography.Text ellipsis copyable>
           {id}
         </Typography.Text>
-      )
+      ),
     },
     {
       title: <Typography.Text>Collection</Typography.Text>,
@@ -40,7 +40,7 @@ const SideBar = ({
             {schema.fullname} v{schema.version}
           </Tag>
         </Link>
-      )
+      ),
     },
     {
       title: <Typography.Text>Status</Typography.Text>,
@@ -51,11 +51,11 @@ const SideBar = ({
         >
           {status}
         </Tag>
-      )
+      ),
     },
     {
       title: <Typography.Text>Creator</Typography.Text>,
-      content: created_by && created_by.email
+      content: created_by && created_by.email,
     },
     {
       title: <Typography.Text>Published URL</Typography.Text>,
@@ -65,21 +65,21 @@ const SideBar = ({
         </Link>
       ) : (
         <Typography.Text>Not published yet</Typography.Text>
-      )
+      ),
     },
     {
       title: <Typography.Text>Created</Typography.Text>,
-      content: created && <Timeago date={created} minPeriod="60" />
+      content: created && <Timeago date={created} minPeriod="60" />,
     },
     {
       title: <Typography.Text>Last Updated</Typography.Text>,
-      content: updated && <Timeago date={updated} minPeriod="60" />
-    }
+      content: updated && <Timeago date={updated} minPeriod="60" />,
+    },
   ];
 
   const [showModal, setShowModal] = useState(false);
   return (
-    <Row style={{ backgroundColor: "#fff", height: "100%" }}>
+    <Row style={{ backgroundColor: "#fff" }}>
       <Space direction="vertical" style={{ width: "100%", padding: "10px" }}>
         <Descriptions bordered size="small">
           {contents.map((content, idx) => (
@@ -118,7 +118,7 @@ const SideBar = ({
                     </Space>
                   )}
                 />
-              )
+              ),
           ]}
         >
           <DepositFilesList files={files} />
@@ -141,7 +141,7 @@ SideBar.propTypes = {
   files: PropTypes.object,
   links: PropTypes.object,
   getBucketById: PropTypes.func,
-  toggleFilemanagerLayer: PropTypes.func
+  toggleFilemanagerLayer: PropTypes.func,
 };
 
 export default SideBar;
