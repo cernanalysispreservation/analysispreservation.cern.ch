@@ -293,6 +293,12 @@ const simple = {
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
     default: {
       schema: {
         type: "string",

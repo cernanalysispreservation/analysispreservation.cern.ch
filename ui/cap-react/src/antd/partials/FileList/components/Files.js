@@ -8,7 +8,7 @@ const Files = ({
   renderList = ["files", "repositories", "title"],
   moodaUpate,
   memoFiles = Map({}),
-  onFileClick = null
+  onFileClick = null,
 }) => {
   let data = constructTree(
     memoFiles,
@@ -17,7 +17,7 @@ const Files = ({
   );
   let repos = filter(data.children, { name: "repositories" });
   let files = {
-    children: filter(data.children, item => item.name != "repositories")
+    children: filter(data.children, item => item.name != "repositories"),
   };
   let displayTitle = renderList.includes("title");
 
@@ -25,25 +25,33 @@ const Files = ({
     const choices = {
       repositories: (
         <React.Fragment>
-          {displayTitle && (
-            <Divider style={{ fontSize: "1em", margin: "0" }}>
-              All Repositories
-            </Divider>
-          )}
-          {repos && repos.length > 0 ? (
-            <Tree.DirectoryTree
-              treeData={repos[0].children || []}
-              selectable={false}
-              showIcon={false}
-            />
-          ) : (
-            <Empty description="No repos uploaded yet" />
-          )}
+          <Space
+            direction="vertical"
+            style={{ width: "100%", paddingBottom: "20px" }}
+          >
+            {displayTitle && (
+              <Divider style={{ fontSize: "1em", margin: "0" }}>
+                All Repositories
+              </Divider>
+            )}
+            {repos && repos.length > 0 ? (
+              <Tree.DirectoryTree
+                treeData={repos[0].children || []}
+                selectable={false}
+                showIcon={false}
+              />
+            ) : (
+              <Empty description="No repos uploaded yet" />
+            )}
+          </Space>
         </React.Fragment>
       ),
       files: (
         <React.Fragment>
-          <Space direction="vertical" style={{ width: "100%" }}>
+          <Space
+            direction="vertical"
+            style={{ width: "100%", paddingBottom: "20px" }}
+          >
             {displayTitle && (
               <Divider style={{ fontSize: "1em", margin: "0" }}>
                 All Files
@@ -60,7 +68,7 @@ const Files = ({
             )}
           </Space>
         </React.Fragment>
-      )
+      ),
     };
 
     return choices[value];
@@ -72,7 +80,7 @@ const Files = ({
 Files.propTypes = {
   renderList: PropTypes.array,
   modalUpdate: PropTypes.func,
-  memoFiles: PropTypes.object
+  memoFiles: PropTypes.object,
 };
 
 export default React.memo(Files);
