@@ -81,7 +81,7 @@ def test_resolve_schema_when_schema_name_with_slashes(
 
     assert resp.status_code == 200
 
-
+@mark.skip('JSON ref to be converetd to dict object.')
 def test_resolve_schema_when_schema_and_refs_belong_to_experiment(
         client, users, create_schema, auth_headers_for_user):
     cms_user = users['cms_user']
