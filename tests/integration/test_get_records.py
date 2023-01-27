@@ -166,6 +166,7 @@ def test_get_records_default_serializer(
                 'key': file.key,
                 'size': file.file.size,
                 'version_id': str(file.version_id),
+                'file_id': str(file.file.id),
             }
         ],
         'is_owner': False,
@@ -201,8 +202,8 @@ def test_get_records_with_correct_search_links(
 
     assert resp.status_code == 200
     assert resp.json['links'] == {
-        'self': 'http://analysispreservation.cern.ch/api/records/?page=1&sort=mostrecent&size=10',
-        'next': 'http://analysispreservation.cern.ch/api/records/?page=2&sort=mostrecent&size=10',
+        'self': 'http://analysispreservation.cern.ch/api/records/?sort=mostrecent&size=10&page=1',
+        'next': 'http://analysispreservation.cern.ch/api/records/?sort=mostrecent&size=10&page=2',
     }
 
 

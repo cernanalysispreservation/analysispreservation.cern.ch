@@ -45,7 +45,7 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.route('/ping', methods=['GET'])
+@blueprint.route('/cap/ping', methods=['GET'])
 @blueprint.route('/ping/<service>', methods=['GET'])
 def ping(service=None):
     """Ping the services for status check."""

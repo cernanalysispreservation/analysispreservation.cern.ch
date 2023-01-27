@@ -148,7 +148,7 @@ def test_cds_unauthorized(app, auth_headers_for_superuser):
                           headers=auth_headers_for_superuser)
 
         assert resp.status_code == 401
-        assert resp.json['message'] == 'You are unauthorized to view this CDS record.'
+        assert resp.data == b'You are unauthorized to view this CDS record.'
 
 
 @patch('cap.modules.services.views.cds._cds', side_effect=ExternalAPIException())

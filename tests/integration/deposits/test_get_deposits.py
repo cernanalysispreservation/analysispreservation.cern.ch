@@ -276,6 +276,7 @@ def test_get_deposit_with_default_serializer(
                     'key': file.key,
                     'size': file.file.size,
                     'version_id': str(file.version_id),
+                    'file_id': str(file.file.id),
                 }
             ],
             'is_owner': True,
@@ -341,8 +342,8 @@ def test_get_deposits_with_correct_search_links(
 
     assert resp.status_code == 200
     assert resp.json['links'] == {
-        'self': 'http://analysispreservation.cern.ch/api/deposits/?page=1&size=10',
-        'next': 'http://analysispreservation.cern.ch/api/deposits/?page=2&size=10',
+        'self': 'http://analysispreservation.cern.ch/api/deposits/?size=10&page=1',
+        'next': 'http://analysispreservation.cern.ch/api/deposits/?size=10&page=2',
     }
 
 
