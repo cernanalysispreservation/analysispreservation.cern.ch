@@ -261,7 +261,7 @@ def get_uuids_with_same_cadi_id(cadi_id):
         raise DepositDoesNotExist
     else:
         uuids = [
-            r.get("_source", {}).get("_deposit", {}).get("id")
+            r._source._deposit.id
             for r in res
         ]
 

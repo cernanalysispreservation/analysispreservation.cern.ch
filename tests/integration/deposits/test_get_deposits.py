@@ -579,49 +579,47 @@ def test_get_sorted_results_by_stage_strings(
 
     deposit_mapping_1 = {
         "mappings" : {
-            "test-analysis-v1.0.0": {
-                "properties": {
-                    "_collection": {
-                        "type": "object",
-                        "properties": {
-                            "fullname": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "version": {
-                                "type": "keyword"
+            "properties": {
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                "analysis_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "analysis_sub_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "initial": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "object",
+                            "properties": {
+                                "main_status": {
+                                    "type": "keyword",
+                                    "copy_to": "analysis_stage"
+                                },
+                                "sub_status": {
+                                    "type": "keyword",
+                                    "copy_to": "analysis_sub_stage"
+                                }		
                             }
                         }
-                    },
-                    "analysis_stage": {
-						"type": "keyword",
-						"store": True
-					},
-					"analysis_sub_stage": {
-						"type": "keyword",
-						"store": True
-					},
-                    "initial": {
-                        "type": "object",
-                        "properties": {
-                            "status": {
-                                "type": "object",
-                                "properties": {
-									"main_status": {
-										"type": "keyword",
-										"copy_to": "analysis_stage"
-									},
-									"sub_status": {
-										"type": "keyword",
-										"copy_to": "analysis_sub_stage"
-									}		
-								}
-                            }
-                        }
-                    },
-                }
+                    }
+                },
             }
         }
     }
@@ -629,40 +627,38 @@ def test_get_sorted_results_by_stage_strings(
     deposit_mapping_2 = {
         "mappings" : {
             "test-ana-v1.0.0": {
-                "properties": {
-                    "_collection": {
-                        "type": "object",
-                        "properties": {
-                            "fullname": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "version": {
-                                "type": "keyword"
-                            }
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
                         }
-                    },
-                    "analysis_stage": {
-						"type": "keyword",
-						"store": True
-					},
-					"analysis_sub_stage": {
-						"type": "keyword",
-						"store": True
-					},
-                    "stat": {
-                        "type": "object",
-                        "properties": {
-                            "main_status": {
-                                "type": "keyword",
-                                "copy_to": "analysis_stage"
-                            },
-                            "sub_status": {
-                                "type": "keyword",
-                                "copy_to": "analysis_sub_stage"
-                            }
+                    }
+                },
+                "analysis_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "analysis_sub_stage": {
+                    "type": "keyword",
+                    "store": True
+                },
+                "stat": {
+                    "type": "object",
+                    "properties": {
+                        "main_status": {
+                            "type": "keyword",
+                            "copy_to": "analysis_stage"
+                        },
+                        "sub_status": {
+                            "type": "keyword",
+                            "copy_to": "analysis_sub_stage"
                         }
                     }
                 }

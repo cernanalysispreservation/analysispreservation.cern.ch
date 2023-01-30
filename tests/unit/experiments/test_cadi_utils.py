@@ -361,17 +361,15 @@ def test_get_deposit_by_cadi_id_returns_correct_deposit(
                              mapping={
                                  'mappings': {
                                      'cms-analysis-v1.0.0': {
-                                         'properties': {
-                                             "basic_info": {
-                                                 "type": "object",
-                                                 "properties": {
-                                                     "cadi_id": {
-                                                         "type": "keyword"
-                                                     }
-                                                 }
-                                             }
-                                         }
-                                     }
+                                        "basic_info": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cadi_id": {
+                                                    "type": "keyword"
+                                                }
+                                            }
+                                        }
+                                    }
                                  }
                              })
     create_deposit(superuser, 'cms-analysis', {
@@ -396,30 +394,28 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
                    mapping={
                        'mappings': {
                            'cms-analysis-v1.0.0': {
-                               'properties': {
-                                   "basic_info": {
-                                       "type": "object",
-                                       "properties": {
-                                           "cadi_id": {
-                                               "type": "keyword"
-                                           }
-                                       }
-                                   },
-                                    "_collection": {
-                                        "type": "object",
-                                        "properties": {
-                                            "fullname": {
-                                                "type": "keyword"
-                                            },
-                                            "name": {
-                                                "type": "keyword"
-                                            },
-                                            "version": {
-                                                "type": "keyword"
-                                            }
+                                "basic_info": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cadi_id": {
+                                            "type": "keyword"
                                         }
                                     }
-                               }
+                                },
+                                "_collection": {
+                                    "type": "object",
+                                    "properties": {
+                                        "fullname": {
+                                            "type": "keyword"
+                                        },
+                                        "name": {
+                                            "type": "keyword"
+                                        },
+                                        "version": {
+                                            "type": "keyword"
+                                        }
+                                    }
+                                }
                            }
                        }
                    })
