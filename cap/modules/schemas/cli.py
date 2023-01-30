@@ -291,15 +291,12 @@ def validate(
     from cap.modules.records.api import CAPRecord
 
     if status == 'draft':
-        search_path = 'deposits-records'
         cap_record_class = CAPDeposit
     else:
-        search_path = 'records'
         cap_record_class = CAPRecord
 
     # get all the records for this specific schema/type combination
     records = current_search_client.search(
-        search_path,
         q=f'_deposit.status: {status} AND '
         f'$schema: "{schema_name_to_url(schema.name, schema.version)}"',
         size=5000,

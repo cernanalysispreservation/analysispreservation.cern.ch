@@ -29,12 +29,10 @@ from invenio_search.proxies import current_search_client as es
 DAS_DATASETS_ES_CONFIG = {
     'alias': 'das-datasets',
     "mappings": {
-        "doc": {
-            "properties": {
-                "name": {
-                    "type": "keyword",
-                    "normalizer": "lowercase_normalizer"
-                }
+        "properties": {
+            "name": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
             }
         }
     },

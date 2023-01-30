@@ -28,8 +28,8 @@ coolname==1.1.0
 cryptography==3.3.2       # via invenio-accounts, pyopenssl, sqlalchemy-utils, urllib3
 decorator==4.3.0          # via ipython, traitlets, validators
 dojson==1.4.0             # via invenio-oaiserver
-elasticsearch-dsl==5.4.0  # via invenio-search
-elasticsearch==5.5.2      # via elasticsearch-dsl, invenio-search
+elasticsearch-dsl>=7.0.0,<8.0.0  # via invenio-search
+elasticsearch>=7.0.0,<7.14      # via elasticsearch-dsl, invenio-search
 flask-admin==1.5.3        # via invenio-accounts, invenio-admin
 flask-alembic==2.0.1      # via invenio-db
 flask-assets==0.12        # via invenio-assets
@@ -106,7 +106,7 @@ invenio-i18n==1.1.1       # via invenio, invenio-accounts, invenio-theme
 
 # Other Invenio packages
 invenio-accounts-rest==1.0.0a4
-git+https://github.com/cernanalysispreservation/invenio-deposit.git#egg=invenio-deposit
+git+https://github.com/parths007/invenio-deposit.git@es7#egg=invenio-deposit
 invenio-query-parser==0.6.0
 invenio[auth,base,elasticsearch5,metadata,postgresql]==3.2.0
 
