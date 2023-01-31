@@ -359,8 +359,8 @@ def test_get_deposit_by_cadi_id_returns_correct_deposit(
                                  }
                              },
                              mapping={
-                                 'mappings': {
-                                     'cms-analysis-v1.0.0': {
+                                'mappings': {
+                                    'properties': {
                                         "basic_info": {
                                             "type": "object",
                                             "properties": {
@@ -370,7 +370,7 @@ def test_get_deposit_by_cadi_id_returns_correct_deposit(
                                             }
                                         }
                                     }
-                                 }
+                                }
                              })
     create_deposit(superuser, 'cms-analysis', {
         '$ana_type': 'cms-analysis',
@@ -393,7 +393,7 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
                    },
                    mapping={
                        'mappings': {
-                           'cms-analysis-v1.0.0': {
+                            'properties': {
                                 "basic_info": {
                                     "type": "object",
                                     "properties": {
@@ -416,7 +416,7 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
                                         }
                                     }
                                 }
-                           }
+                            }
                        }
                    })
 
