@@ -14,7 +14,7 @@ from setuptools import find_packages, setup
 readme = open('README.rst').read()
 
 DATABASE = "postgresql"
-ELASTICSEARCH = "elasticsearch5"
+ELASTICSEARCH = "elasticsearch7"
 INVENIO_VERSION = '3.2.0'  # "3.0.0rc2"
 
 tests_require = [
