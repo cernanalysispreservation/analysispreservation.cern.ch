@@ -60,7 +60,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
   );
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <PageHeader
         onBack={enableCreateMode}
         title="Show Fields"
@@ -82,7 +82,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
         }
       />
       <Row justify="center">
-        <Col xs={22} style={{ paddingBottom: "20px" }}>
+        <Col xs={22} style={{ paddingBottom: "20px", textAlign: "center" }}>
           {renderPath(path)}
         </Col>
         <Col xs={22}>
