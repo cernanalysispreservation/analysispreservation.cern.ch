@@ -376,28 +376,27 @@ def auth_headers_for_user(base_app, db):
 
 
 def get_default_mapping(name, version):
-    mapping_name = f"{name}-v{version}"
-    default_mapping = { "mappings": {} }
-    collectiion_mapping = {
-        "properties": {
-            "_collection": {
-                "type": "object",
-                "properties": {
-                    "fullname": {
-                        "type": "keyword"
-                    },
-                    "name": {
-                        "type": "keyword"
-                    },
-                    "version": {
-                        "type": "keyword"
+    mapping = {
+        "mappings": {
+            "properties": {
+                "_collection": {
+                    "type": "object",
+                    "properties": {
+                        "fullname": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "keyword"
+                        },
+                        "version": {
+                            "type": "keyword"
+                        }
                     }
                 }
             }
         }
     }
-    default_mapping["mappings"][mapping_name] = collectiion_mapping
-    return default_mapping
+    return mapping
 
 
 @pytest.fixture
