@@ -626,7 +626,7 @@ def test_get_sorted_results_by_stage_strings(
 
     deposit_mapping_2 = {
         "mappings" : {
-            "test-ana-v1.0.0": {
+            "properties": {
                 "_collection": {
                     "type": "object",
                     "properties": {
@@ -838,7 +838,7 @@ def test_get_sorted_results_by_stage_strings(
 
     resp = client.get('/deposits?q=&sort=analysis_stage',headers=headers+json_headers)
     assert resp.status_code == 200
-    assert resp.json['hits']['total'] == 4
+    assert resp.json['hits']['total'] == 3
 
     # Test with schema having no status
     deposit_mapping_6 = get_default_mapping('test-status', "1.0.0")
@@ -1012,28 +1012,26 @@ def test_get_deposits_with_range_query(
                 }
             },
             'mappings': {
-                'test-schema-v1.0.0': {
-                    'properties': {
-                        'next_deadline_date': {'type': 'date'},
-                        "_collection": {
-                            "type": "object",
-                            "properties": {
-                                "fullname": {"type": "keyword"},
-                                "name": {"type": "keyword"},
-                                "version": {"type": "keyword"},
-                            },
+                'properties': {
+                    'next_deadline_date': {'type': 'date'},
+                    "_collection": {
+                        "type": "object",
+                        "properties": {
+                            "fullname": {"type": "keyword"},
+                            "name": {"type": "keyword"},
+                            "version": {"type": "keyword"},
                         },
-                        "analysis_context": {
-                            "type": "object",
-                            "properties": {
-                                'next_deadline_date': {
-                                    'type': 'date',
-                                    "format": "yyyy-MM-dd",
-                                    "copy_to": "next_deadline_date",
-                                }
-                            },
+                    },
+                    "analysis_context": {
+                        "type": "object",
+                        "properties": {
+                            'next_deadline_date': {
+                                'type': 'date',
+                                "format": "yyyy-MM-dd",
+                                "copy_to": "next_deadline_date",
+                            }
                         },
-                    }
+                    },
                 }
             },
         },
