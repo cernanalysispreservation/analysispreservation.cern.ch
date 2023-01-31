@@ -18,7 +18,14 @@ const SchemaWizard = ({ field, loader }) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Row style={{ height: "100%" }} gutter={[16, 16]}>
-        <Col span={5} style={{ overflowX: "hidden", height: "100%" }}>
+        <Col
+          span={5}
+          style={{
+            overflowX: "hidden",
+            height: "100%",
+            display: "flex",
+          }}
+        >
           {field ? <PropertyEditor /> : <SelectFieldType />}
         </Col>
         <Col

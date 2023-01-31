@@ -66,7 +66,7 @@ const Customize = ({
   };
 
   return (
-    <Tabs centered style={{ height: "100%", overflow: "scroll" }}>
+    <Tabs className="scrollableTabs" centered>
       <Tabs.TabPane tab="Schema Settings" key="1">
         <PropertyKeyEditorForm
           schema={schema && schema.toJS()}
