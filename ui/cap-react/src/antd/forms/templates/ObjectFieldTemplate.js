@@ -81,16 +81,12 @@ const ObjectFieldTemplate = ({
   if (uiSchema["ui:object"] == "tabView")
     return <TabField uiSchema={uiSchema} properties={properties} />;
   return (
-    <fieldset
-      style={{ marginLeft: "12px", marginRight: "12px" }}
-      id={idSchema.$id}
-    >
+    <fieldset style={{ margin: "0 12px" }} id={idSchema.$id}>
       <Row gutter={rowGutter}>
         {uiSchema["ui:title"] !== false &&
           (uiSchema["ui:title"] || title) && (
             <Col
               style={{
-                borderBottsom: "1px solid",
                 padding: "0",
                 marginBottom: "12px",
               }}
