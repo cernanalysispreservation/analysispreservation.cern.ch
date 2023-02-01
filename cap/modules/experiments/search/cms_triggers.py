@@ -25,7 +25,7 @@
 
 import re
 
-from elasticsearch_dsl import Q, Search
+from opensearch_dsl import Q, Search
 from invenio_search.proxies import current_search_client as es
 
 CMS_TRIGGERS_ES_CONFIG = {

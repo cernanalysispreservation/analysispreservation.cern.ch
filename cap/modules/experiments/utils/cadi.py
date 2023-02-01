@@ -26,10 +26,10 @@
 from itertools import islice
 
 import requests
-from elasticsearch_dsl import Q
 from flask import current_app, abort
 from invenio_db import db
 from invenio_search import RecordsSearch
+from opensearch_dsl import Q
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import (DepositDoesNotExist,
