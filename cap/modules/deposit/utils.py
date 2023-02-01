@@ -224,6 +224,8 @@ def perform_copying_fields(data, copy_data, copy_paths):
             or isinstance(copy_data, float)
         ):
             data_ref = copy_data
+        elif not data_ref:
+            data_ref = copy_data
         elif isinstance(data_ref, list):
             data_ref = merge_lists(data_ref + copy_data)
         elif data_ref is not None and isinstance(data_ref, dict):
