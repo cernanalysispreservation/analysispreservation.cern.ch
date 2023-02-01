@@ -93,7 +93,6 @@ class CAPDepositSearch(RecordsSearch):
         """Configuration for deposit search."""
 
         index = 'deposits'
-        doc_types = None
         fields = ('*',)
         facets = {
             'status': TermsFacet(field='_deposit.status'),

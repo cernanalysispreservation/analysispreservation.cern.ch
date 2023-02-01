@@ -2,7 +2,7 @@ name: Backend tests
 
 on:
   push:
-    branches: [ master, upgrade-3 ]
+    branches: [ master ]
     paths-ignore:
     - 'ui/**'
   pull_request:

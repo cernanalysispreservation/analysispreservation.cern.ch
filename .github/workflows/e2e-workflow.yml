@@ -5,7 +5,6 @@ on:
       - master
       - qa
       - production
-      - upgrade-3
   pull_request:
     branches:
       - qa

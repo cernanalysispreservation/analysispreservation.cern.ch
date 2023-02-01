@@ -93,7 +93,7 @@ invenio-records-files==1.2.1
 
 # Database apps
 invenio-db[postgresql,versioning]==1.0.4
-invenio-search[elasticsearch5]==1.2.3  # via invenio
+invenio-search[opensearch2]==1.2.3  # via invenio
 
 # Required
 flask==1.1
@@ -108,7 +108,7 @@ invenio-i18n==1.1.1       # via invenio, invenio-accounts, invenio-theme
 invenio-accounts-rest==1.0.0a4
 git+https://github.com/parths007/invenio-deposit.git@os-2#egg=invenio-deposit
 invenio-query-parser==0.6.0
-invenio[auth,base,elasticsearch5,metadata,postgresql]==3.2.0
+invenio[auth,base,metadata,postgresql]==3.2.0
 
 reana-client==0.6.0
 reana-commons==0.6.0
