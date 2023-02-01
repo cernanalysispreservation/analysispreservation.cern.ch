@@ -56,7 +56,7 @@ def cap_search_factory(self, search, query_parser=None):
     :returns: Tuple with search instance and URL arguments.
     """
     def _default_parser(qstr=None, **kwargs):
-        """Use of the Q() from elasticsearch_dsl."""
+        """Use of the Q() from opensearch_dsl."""
         def _escape_qstr(qstr):
             return ''.join((ESCAPE_CHAR_MAP.get(char, char) for char in qstr))
 

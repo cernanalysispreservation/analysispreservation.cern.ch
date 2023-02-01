@@ -268,7 +268,7 @@ def clear_caches():
 
 @pytest.fixture
 def es(base_app):
-    """Provide elasticsearch access."""
+    """Provide Search access."""
     list(current_search.delete(ignore=[400, 404]))
     current_search_client.indices.delete(index='*')
     list(current_search.create())

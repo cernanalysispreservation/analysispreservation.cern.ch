@@ -14,7 +14,6 @@ from setuptools import find_packages, setup
 readme = open('README.rst').read()
 
 DATABASE = "postgresql"
-ELASTICSEARCH = "elasticsearch7"
 INVENIO_VERSION = '3.2.0'  # "3.0.0rc2"
 
 tests_require = [
@@ -74,8 +73,8 @@ install_requires = [
     'invenio-oauthclient>=1.0.0',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0',
-    'invenio[{db},{es},base,auth,metadata]~={version}'.format(
-        db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION
+    'invenio[{db},base,auth,metadata]~={version}'.format(
+        db=DATABASE, version=INVENIO_VERSION
     ),
     'jsonschema[format]==3.0.1',
     'invenio-rest==1.1.2',
