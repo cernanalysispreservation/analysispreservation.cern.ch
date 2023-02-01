@@ -25,7 +25,7 @@
 
 from __future__ import absolute_import, print_function
 
-from elasticsearch_dsl.query import Q
+from opensearch_dsl.query import Q
 from flask import current_app, request
 from flask_login import current_user
 from invenio_records_rest.errors import InvalidQueryRESTError

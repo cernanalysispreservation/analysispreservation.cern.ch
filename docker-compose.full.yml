@@ -38,7 +38,7 @@ services:
       - ./var/data:/var/data
     links:
       - cache
-      - es
+      - search
       - mq
       - db
   # API Files Application
@@ -55,7 +55,7 @@ services:
       - ./var/data:/var/data
     links:
       - cache
-      - es
+      - search
       - mq
       - db
   # Worker
@@ -68,7 +68,7 @@ services:
     image: cap-worker
     links:
       - cache
-      - es
+      - search
       - mq
       - db
   # Monitoring
@@ -91,9 +91,9 @@ services:
     extends:
       file: docker-services.yml
       service: mq
-  es:
+  search:
     extends:
       file: docker-services.yml
-      service: es
+      service: search
 volumes:
   static_data:

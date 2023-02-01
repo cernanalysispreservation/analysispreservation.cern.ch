@@ -328,7 +328,7 @@ CAP_FACETS = {
         'facet_cms_working_group': {
             'terms': {
                 'size': 30,
-                'script': 'doc.containsKey("basic_info.cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null',  # noqa
+                'script': 'doc.containsKey("basic_info.cadi_id") && doc["basic_info.cadi_id"].size() != 0 ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
             },
             'meta': {'title': 'CMS Working Group'},
         },
@@ -551,25 +551,25 @@ ACCOUNTS_REST_ACCOUNTS_LIST_SERIALIZERS = {
 #: Default API endpoint for search UI.
 SEARCH_UI_SEARCH_API = '/api/deposits'
 
-#: Default ElasticSearch hosts
-es_user = os.environ.get('ELASTICSEARCH_USER')
-es_password = os.environ.get('ELASTICSEARCH_PASSWORD')
-if es_user and es_password:
-    es_params = dict(
-        http_auth=(es_user, es_password),
-        use_ssl=str(os.environ.get('ELASTICSEARCH_USE_SSL')).lower() == 'true',
-        verify_certs=str(os.environ.get('ELASTICSEARCH_VERIFY_CERTS')).lower()
+#: Default Search hosts
+search_user = os.environ.get('OPENSEARCH_USER')
+search_password = os.environ.get('OPENSEARCH_PASSWORD')
+if search_user and search_password:
+    search_params = dict(
+        http_auth=(search_user, search_password),
+        use_ssl=str(os.environ.get('OPENSEARCH_USE_SSL')).lower() == 'true',
+        verify_certs=str(os.environ.get('OPENSEARCH_VERIFY_CERTS')).lower()
         == 'true',
-        url_prefix=os.environ.get('ELASTICSEARCH_URL_PREFIX', ''),
+        url_prefix=os.environ.get('OPENSEARCH_URL_PREFIX', ''),
     )
 else:
-    es_params = {}
+    search_params = {}
 
-SEARCH_ELASTIC_HOSTS = [
+SEARCH_HOSTS = [
     dict(
-        host=os.environ.get('ELASTICSEARCH_HOST', 'localhost'),
-        port=int(os.environ.get('ELASTICSEARCH_PORT', '9200')),
-        **es_params,
+        host=os.environ.get('OPENSEARCH_HOST', 'localhost'),
+        port=int(os.environ.get('OPENSEARCH_PORT', '9200')),
+        **search_params,
     )
 ]
 
