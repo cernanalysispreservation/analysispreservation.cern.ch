@@ -13,20 +13,12 @@ from setuptools import find_packages, setup
 
 readme = open('README.rst').read()
 
-DATABASE = "postgresql"
-INVENIO_VERSION = '3.2.0'  # "3.0.0rc2"
-
 tests_require = [
     'check-manifest>=0.35',
-    'coverage>=5.2.1',
-    'isort>=4.3',
+    'coverage==4.5.4',
     'mock>=2.0.0',
-    'pydocstyle>=2.0.0',
     'pytest-cov==2.5.1',
     'pytest-invenio>=1.0.5,<=1.3.4',
-    'pytest-mock>=1.6.0',
-    'pytest-pep8>=1.0.6',
-    'pytest-random-order>=0.5.4',
     'pytest==5.3.5',
     'yapf>=0.28.0',
     'responses==0.10.6',
@@ -50,54 +42,82 @@ extras_require['xrootd'] = [
 setup_requires = ['Babel>=2.4.0', 'pytest-runner>=3.0.0,<5']
 
 install_requires = [
+    # CAP Base
     'Flask==1.1',
+    'click==8.0.4',
+    'jinja2==3.0.3',
+    'itsdangerous==2.0.1',
+    'werkzeug==0.15.0',
     'Flask-Caching==1.4.0',
-    'Flask-Debugtoolbar==0.13.1',
+    'Flask-Debugtoolbar',
+    'flask-login==0.4.1',
+
     # CAP specific libraries
+    'celery==4.2.1',
+    'jsonref==0.1',
+    'jsonresolver==0.2.1',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
+    'python-ldap==3.1.0',
     'python-cern-sso-krb==1.3.3',
-    'gssapi',
-    # FIX cryptography <=3.3.2 is needed for installation not to crash
-    # https://github.com/Azure/azure-cli/issues/16858
-    'cryptography<=3.3.2',
-    'paramiko==2.7.1',
-    'cachetools==3.1.0',
-    # Pinned libraries
-    'urllib3[secure]==1.22',
-    'sqlalchemy==1.3.0',
-    # temporary pinned since there are 'fs' conslicts between
-    # 'reana-commons' and 'invenio-files-rest'
-    'fs==0.5.4',
-    'invenio-accounts-rest>=1.0.0a4',
-    'invenio-oauthclient>=1.0.0',
-    'invenio-userprofiles>=1.0.0',
-    'invenio-query-parser>=0.3.0',
-    'invenio[{db},base,auth,metadata]~={version}'.format(
-        db=DATABASE, version=INVENIO_VERSION
-    ),
-    'jsonschema[format]==3.0.1',
-    'invenio-rest==1.1.2',
-    'invenio-records==1.3.0',
-    'invenio-files-rest==1.0.5',
-    'invenio-records-files==1.2.1',
-    'coolname==1.1.0',
+    'gssapi>=1.7.3',
     'Authlib==0.15.1',
-    # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
-    # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
-    # 'invenio-logging[sentry, sentry-sdk]<=1.2.0',
-    'uWSGI==2.0.17.1',
+    'uWSGI==2.0.21',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
-    # needed version for future use of arguments
     'webargs==5.5.0',
-    'pyOpenSSL==19.1.0',
     'gspread==3.7.0',
-    'requests-gssapi',
-    'beautifulsoup4',
-    # reana_client => bravado core dependency pin due to py3.6 drop
+    'paramiko==2.7.1',
+    'cachetools==3.1.0',
+    'urllib3==1.26',
+    'coolname==1.1.0',
+    'sqlalchemy==1.4.46',
+    'requests-gssapi>=1.2.3',
     'swagger-spec-validator==2.7.6',
     'prometheus-flask-exporter==0.20.3',
+    'wtforms==2.3.0',
+
+    # Invenio Base Deps
+    'invenio-base==1.2.1',
+    'invenio-admin==1.1.2',
+    'invenio-assets==1.1.3',
+    'invenio-formatter==1.0.2',
+    'invenio-mail==1.0.2',
+    'invenio-rest==1.1.2',
+    'invenio-theme==1.1.4',
+    'invenio-celery @ git+https://github.com/parths007/invenio-celery.git@v1.1.1#egg=invenio-celery',
+    'invenio-logging==1.2.0',
+
+    # Invenio Auth Deps
+    'invenio-access==1.3.0',
+    'invenio-accounts==1.1.1',
+    'invenio-oauth2server==1.0.4',
+    'invenio-oauthclient @ git+https://github.com/parths007/invenio-oauthclient.git@v1.1.3',
+    'invenio-userprofiles @ git+https://github.com/parths007/invenio-userprofiles.git@v1.0.1',
+
+    # Invenio Metadata Deps
+    'invenio-indexer @ git+https://github.com/parths007/invenio-indexer.git@os-2-new',
+    'invenio-jsonschemas @ git+https://github.com/parths007/invenio-jsonschemas.git@v1.0.1',
+    'invenio-oaiserver @ git+https://github.com/parths007/invenio-oaiserver.git@os-2-new',
+    'invenio-pidstore==1.1.0',
+    'invenio-records-rest @ git+https://github.com/parths007/invenio-records-rest.git@os-2-new',
+    'invenio-records-ui==1.0.1',
+    'invenio-records==1.3.0',
+    'invenio-search-ui==1.1.1',
+    'invenio-search @ git+https://github.com/parths007/invenio-search.git@v1.2.3#egg=invenio-search',
+
+    # Invenio Files deps
+    'invenio-files-rest @ git+https://github.com/parths007/invenio-files-rest.git@v1.0.5',
+    'invenio-records-files @ git+https://github.com/parths007/invenio-records-files.git@new#egg=invenio-records-files',
+
+    # Database deps
+    'invenio-db[postgresql,versioning]==1.0.4',
+
+    # Invenio required deps
+    'invenio-deposit @ git+https://github.com/parths007/invenio-deposit.git@os-2',
+    'invenio-accounts-rest==1.0.0a4',
+    'invenio-query-parser @ git+https://github.com/parths007/invenio-query-parser.git@os',
+    'invenio[auth,base,metadata,postgresql]==3.2.0',
 ]
 
 packages = find_packages()
@@ -240,7 +260,5 @@ setup(
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Development Status :: 3 - Alpha',
     ],
 )
