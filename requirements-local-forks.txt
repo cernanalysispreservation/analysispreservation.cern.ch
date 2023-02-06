@@ -11,7 +11,7 @@
 -e git+https://github.com/inveniosoftware/invenio-records.git@a5d4efb1e1466aa571aeef013d699dca1452f7cd#egg=invenio-records
 -e git+https://github.com/celery/celery.git@6ccdc7b9f8e02d21275e923dccc7ccb9185e6153#egg=celery
 
--e git+https://github.com/parths007/invenio-celery.git@v1.1.1#egg=invenio-celery
+# -e git+https://github.com/parths007/invenio-celery.git@v1.1.1#egg=invenio-celery
 -e git+https://github.com/parths007/invenio-deposit.git@os-2#egg=invenio-deposit
 -e git+https://github.com/parths007/invenio-files-rest.git@v1.0.5#egg=invenio-files-rest
 -e git+https://github.com/parths007/invenio-indexer.git@os-2-new#egg=invenio-indexer

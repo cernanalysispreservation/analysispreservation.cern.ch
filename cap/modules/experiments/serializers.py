@@ -48,32 +48,32 @@ class CADIRelatedNotes(Schema):
     id = fields.Function(
         lambda entry: entry.get('noteId', '').replace('CMS ', ''),
         dump_only=True)
-    url = CADIField(default='', dump_only=True)
+    url = CADIField(dump_default='', dump_only=True)
 
 
 class CADISchema(Schema):
     """Schema for CADI in JSON."""
 
-    name = CADIField(default='', dump_only=True)
-    description = CADIField(default='', dump_only=True)
-    pas = CADIField(attribute='pas', default='', dump_only=True)
-    paper = CADIField(attribute='paper', default='', dump_only=True)
-    paper_tar = CADIField(attribute='papertar', default='', dump_only=True)
-    created = CADIField(attribute='creationDate', default='', dump_only=True)
-    updated = CADIField(attribute='updateDate', default='', dump_only=True)
-    contact = CADIField(attribute='contact.email', default='', dump_only=True)
-    creator = CADIField(attribute='creator.email', default='', dump_only=True)
-    updater = CADIField(attribute='updater.email', default='', dump_only=True)
-    twiki = CADIField(attribute='url', default='', dump_only=True)
-    status = CADIField(default='', dump_only=True)
+    name = CADIField(dump_default='', dump_only=True)
+    description = CADIField(dump_default='', dump_only=True)
+    pas = CADIField(attribute='pas', dump_default='', dump_only=True)
+    paper = CADIField(attribute='paper', dump_default='', dump_only=True)
+    paper_tar = CADIField(attribute='papertar', dump_default='', dump_only=True)
+    created = CADIField(attribute='creationDate', dump_default='', dump_only=True)
+    updated = CADIField(attribute='updateDate', dump_default='', dump_only=True)
+    contact = CADIField(attribute='contact.email', dump_default='', dump_only=True)
+    creator = CADIField(attribute='creator.email', dump_default='', dump_only=True)
+    updater = CADIField(attribute='updater.email', dump_default='', dump_only=True)
+    twiki = CADIField(attribute='url', dump_default='', dump_only=True)
+    status = CADIField(dump_default='', dump_only=True)
     publication_status = CADIField(attribute='publicationStatus',
-                                   default='',
+                                   dump_default='',
                                    dump_only=True)
-    awg = CADIField(default='', dump_only=True)
-    conference = CADIField(default='', dump_only=True)
-    hepData = CADIField(default='', dump_only=True)
+    awg = CADIField(dump_default='', dump_only=True)
+    conference = CADIField(dump_default='', dump_only=True)
+    hepData = CADIField(dump_default='', dump_only=True)
 
-    cadi_id = CADIField(attribute='code', default='', dump_only=True)
+    cadi_id = CADIField(attribute='code', dump_default='', dump_only=True)
 
     relatedNotes = fields.Nested(CADIRelatedNotes,
                                  attribute='relatedNotesInfo',

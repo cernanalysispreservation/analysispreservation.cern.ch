@@ -47,13 +47,12 @@ install_requires = [
     'click==8.0.4',
     'jinja2==3.0.3',
     'itsdangerous==2.0.1',
-    'werkzeug==0.15.0',
+    'werkzeug==1.0.1',
     'Flask-Caching==1.4.0',
     'Flask-Debugtoolbar',
     'flask-login==0.4.1',
 
     # CAP specific libraries
-    'celery==4.2.1',
     'jsonref==0.1',
     'jsonresolver==0.2.1',
     'PyGithub>=1.35',
@@ -71,21 +70,22 @@ install_requires = [
     'cachetools==3.1.0',
     'urllib3==1.26',
     'coolname==1.1.0',
-    'sqlalchemy==1.4.46',
     'requests-gssapi>=1.2.3',
     'swagger-spec-validator==2.7.6',
     'prometheus-flask-exporter==0.20.3',
     'wtforms==2.3.0',
+    'beautifulsoup4>=4',
+    'pandas>=1.5',
 
     # Invenio Base Deps
-    'invenio-base==1.2.1',
+    'invenio-base==1.2.3',
     'invenio-admin==1.1.2',
     'invenio-assets==1.1.3',
     'invenio-formatter==1.0.2',
     'invenio-mail==1.0.2',
     'invenio-rest==1.1.2',
     'invenio-theme==1.1.4',
-    'invenio-celery @ git+https://github.com/parths007/invenio-celery.git@v1.1.1#egg=invenio-celery',
+    'invenio-celery>=1.2.5',
     'invenio-logging==1.2.0',
 
     # Invenio Auth Deps
@@ -111,7 +111,7 @@ install_requires = [
     'invenio-records-files @ git+https://github.com/parths007/invenio-records-files.git@new#egg=invenio-records-files',
 
     # Database deps
-    'invenio-db[postgresql,versioning]==1.0.4',
+    'invenio-db[postgresql,versioning]==1.0.13',
 
     # Invenio required deps
     'invenio-deposit @ git+https://github.com/parths007/invenio-deposit.git@os-2',
