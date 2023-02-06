@@ -121,10 +121,10 @@ class ClientSchema(Schema):
     """Schema class for Client."""
 
     name = fields.Str(required=True, validate=[validate.Length(min=1,)])
-    description = fields.Str(default='')
+    description = fields.Str(dump_default='')
     website = fields.Url(required=True)
     redirect_uris = fields.List(fields.Url())
-    is_confidential = fields.Str(required=True, default="True")
+    is_confidential = fields.Str(required=True, dump_default="True")
 
 #
 # Views
