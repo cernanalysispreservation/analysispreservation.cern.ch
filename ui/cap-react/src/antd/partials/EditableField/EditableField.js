@@ -7,7 +7,6 @@ const EditableField = ({
   text,
   isEditable = false,
   emptyValue = "Untitled Document",
-  hideButtons,
   onUpdate = () => {},
 }) => {
   const [editMode, setEditMode] = useState(false);
@@ -49,16 +48,12 @@ const EditableField = ({
         data-cy="editableInput"
         autoFocus={true}
       />
-      {!hideButtons && (
-        <React.Fragment>
-          <CheckOutlined onClick={handleApprove} style={{ color: "#389e0d" }} />
-          <CloseOutlined
-            style={{ color: "#cf1322" }}
-            onClick={handleReject}
-            data-cy="editableTitleClose"
-          />
-        </React.Fragment>
-      )}
+      <CheckOutlined onClick={handleApprove} style={{ color: "#389e0d" }} />
+      <CloseOutlined
+        style={{ color: "#cf1322" }}
+        onClick={handleReject}
+        data-cy="editableTitleClose"
+      />
     </Space>
   );
 };
@@ -67,7 +62,6 @@ EditableField.propTypes = {
   text: PropTypes.string,
   emptyValue: PropTypes.string,
   onUpdate: PropTypes.func,
-  hideButtons: PropTypes.bool,
   isEditable: PropTypes.bool,
 };
 
