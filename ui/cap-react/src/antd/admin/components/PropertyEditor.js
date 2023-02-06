@@ -85,7 +85,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
         <Col xs={22} style={{ paddingBottom: "20px", textAlign: "center" }}>
           {renderPath(path)}
         </Col>
-        <Col xs={22}>
+        <Col xs={18}>
           <Typography.Title
             level={5}
             editable={{
