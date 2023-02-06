@@ -50,6 +50,7 @@ install_requires = [
     'werkzeug==1.0.1',
     'Flask-Caching==1.4.0',
     'Flask-Debugtoolbar',
+    'flask-wtf==0.15.1',
     'flask-login==0.4.1',
 
     # CAP specific libraries
@@ -73,9 +74,12 @@ install_requires = [
     'requests-gssapi>=1.2.3',
     'swagger-spec-validator==2.7.6',
     'prometheus-flask-exporter==0.20.3',
-    'wtforms==2.3.0',
+    'wtforms==2.2.1',
     'beautifulsoup4>=4',
     'pandas>=1.5',
+    'marshmallow==2.17.0',
+    'reana-client==0.8.1',
+    'reana-commons[yadage,snakemake]==0.8.4',
 
     # Invenio Base Deps
     'invenio-base==1.2.3',
@@ -85,7 +89,7 @@ install_requires = [
     'invenio-mail==1.0.2',
     'invenio-rest==1.1.2',
     'invenio-theme==1.1.4',
-    'invenio-celery>=1.2.5',
+    'invenio-celery @ git+https://github.com/parths007/invenio-celery.git@mock/v1.1.1',
     'invenio-logging==1.2.0',
 
     # Invenio Auth Deps
