@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import PropertyKeyEditorForm from "./PropKeyEditorForm";
 
 import { Radio, Space, Tabs, Typography } from "antd";
-import _debounce from "lodash/debounce";
 import { SIZE_OPTIONS } from "../utils";
 
 const JUSTIFY_OPTIONS = ["start", "center", "end"];
@@ -21,7 +20,7 @@ const Customize = ({
 
   useEffect(
     () => {
-      if (uiSchema.toJS().hasOwnProperty("ui:options")) {
+      if (uiSchema && uiSchema.toJS().hasOwnProperty("ui:options")) {
         setSize(uiSchema.toJS()["ui:options"].size);
         setJustify(uiSchema.toJS()["ui:options"].justify);
       }
@@ -66,13 +65,13 @@ const Customize = ({
   };
 
   return (
-    <Tabs className="scrollableTabs" centered>
+    <Tabs className="scrollableTabs" centered style={{ flex: 1 }}>
       <Tabs.TabPane tab="Schema Settings" key="1">
         <PropertyKeyEditorForm
           schema={schema && schema.toJS()}
           uiSchema={uiSchema && uiSchema.toJS()}
           formData={schema && schema.toJS()}
-          onChange={_debounce(_onSchemaChange, 500)}
+          onChange={_onSchemaChange}
           optionsSchemaObject="optionsSchema"
           optionsUiSchemaObject="optionsSchemaUiSchema"
         />
@@ -83,7 +82,7 @@ const Customize = ({
             schema={schema && schema.toJS()}
             uiSchema={uiSchema && uiSchema.toJS()}
             formData={uiSchema && uiSchema.toJS()}
-            onChange={_debounce(_onUiSchemaChange, 500)}
+            onChange={_onUiSchemaChange}
             optionsSchemaObject="optionsUiSchema"
             optionsUiSchemaObject="optionsUiSchemaUiSchema"
           />

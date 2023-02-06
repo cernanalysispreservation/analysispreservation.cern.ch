@@ -27,7 +27,11 @@ const SideBar = ({
     {
       title: <Typography.Text>ID</Typography.Text>,
       content: (
-        <Typography.Text ellipsis copyable>
+        <Typography.Text
+          style={{ maxWidth: "99%" }}
+          ellipsis={{ tooltip: id }}
+          copyable
+        >
           {id}
         </Typography.Text>
       ),
@@ -79,7 +83,7 @@ const SideBar = ({
 
   const [showModal, setShowModal] = useState(false);
   return (
-    <Row style={{ backgroundColor: "#fff" }}>
+    <Row style={{ backgroundColor: "#fff", height: "100%" }}>
       <Space direction="vertical" style={{ width: "100%", padding: "10px" }}>
         <Descriptions bordered size="small">
           {contents.map((content, idx) => (
