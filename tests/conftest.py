@@ -117,7 +117,7 @@ def default_config():
                 APP_DEFAULT_SECURE_HEADERS=APP_DEFAULT_SECURE_HEADERS,
                 CELERY_ALWAYS_EAGER=True,
                 CELERY_CACHE_BACKEND='memory',
-                CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
+                task_eager_propagates=True,
                 CELERY_RESULT_BACKEND='cache',
                 SQLALCHEMY_DATABASE_URI='postgresql://cap:cap@localhost/cap-test',
                 JSONSCHEMAS_HOST='analysispreservation.cern.ch',
@@ -174,6 +174,43 @@ def base_app(create_app, default_config, request):
 
     with app_.app_context():
         yield app_
+
+
+@pytest.fixture()
+def client(base_app):
+    """Test client for the base application fixture.
+    Scope: function
+    If you need the database and search indexes initialized, simply use the
+    Pytest-Flask fixture ``client`` instead. This fixture is mainly useful if
+    you need a test client without needing to initialize both the database and
+    search indexes.
+    """
+    with base_app.test_client() as client:
+        yield client
+
+
+@pytest.fixture(scope='module')
+def appctx(base_app):
+    """Application context for the current base application.
+    Scope: module
+    This fixture pushes an application context on the stack, so that
+    ``current_app`` is defined and e.g ``url_for`` will also work.
+    """
+    with base_app.app_context():
+        yield base_app
+
+
+@pytest.fixture(scope='module')
+def script_info(base_app):
+    """Get ScriptInfo object for testing a CLI command.
+    Scope: module
+    .. code-block:: python
+        def test_cmd(script_info):
+            runner = CliRunner()
+            result = runner.invoke(mycmd, obj=script_info)
+            assert result.exit_code == 0
+    """
+    return ScriptInfo(create_app=lambda info: base_app)
 
 
 @pytest.fixture
@@ -260,7 +297,7 @@ def superuser(db, clear_caches):
     return superuser
 
 
-@pytest.fixture('function')
+@pytest.fixture()
 def clear_caches():
     yield
     get_user_email_by_id.cache_clear()

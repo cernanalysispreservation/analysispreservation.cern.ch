@@ -39,8 +39,7 @@ from conftest import _datastore, assign_egroup_to_experiment
 from invenio_accounts.testutils import create_test_user
 from invenio_search import current_search
 from ldap import LDAPError
-from mock import patch
-from mock.mock import MagicMock
+from unittest.mock import patch, MagicMock
 from pytest import raises
 
 
@@ -313,7 +312,7 @@ def test_parse_cadi_entry():
         }]
     }
 
-
+# Fail 3
 def test_parse_cadi_entry_when_entry_missing_some_fields():
     cadi_resp = {
         u'code': 'EXO-00-000',
@@ -628,7 +627,7 @@ def test_synchronize_cadi_entries_when_LDAP_error_occured_during_permissions_ass
     with raises(DepositDoesNotExist):
         get_deposit_by_cadi_id('EXO-00-001')
 
-
+# Fail 4
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',

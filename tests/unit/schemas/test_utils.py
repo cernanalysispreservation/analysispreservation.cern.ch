@@ -158,7 +158,8 @@ def test_get_indexed_schemas_for_user_when_latest(app, db, users):
     db.session.add(latest_schema2)
     db.session.commit()
 
-    login_user(users['cms_user'])
+    with app.test_request_context():
+        login_user(users['cms_user'])
 
     from cap.modules.schemas.imp import get_indexed_schemas_for_user
 

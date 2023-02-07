@@ -15,14 +15,9 @@ readme = open('README.rst').read()
 
 tests_require = [
     'check-manifest>=0.35',
-    'coverage==4.5.4',
-    'mock>=2.0.0',
-    'pytest-cov==2.5.1',
-    'pytest-invenio>=1.0.5,<=1.3.4',
-    'pytest==5.3.5',
-    'yapf>=0.28.0',
-    'responses==0.10.6',
-    'selenium>=3.4.3',
+    'pytest-cov>=3',
+    'pytest>=7',
+    'responses>=0.22.0',
 ]
 
 extras_require = {'docs': ['Sphinx>=1.5.1'], 'tests': tests_require}
@@ -44,11 +39,11 @@ setup_requires = ['Babel>=2.4.0', 'pytest-runner>=3.0.0,<5']
 install_requires = [
     # CAP Base
     'Flask==1.1',
-    'click==8.0.4',
+    'click==8.0.0',
     'jinja2==3.0.3',
     'itsdangerous==2.0.1',
     'werkzeug==1.0.1',
-    'Flask-Caching==1.4.0',
+    'Flask-Caching==1.5.0',
     'Flask-Debugtoolbar',
     'flask-wtf==0.15.1',
     'flask-login==0.4.1',

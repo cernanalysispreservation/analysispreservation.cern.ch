@@ -30,7 +30,6 @@ from six import BytesIO
 import json
 import responses
 from pytest import mark
-from mock import Mock, patch
 
 from invenio_search import current_search
 from invenio_files_rest.models import ObjectVersion
