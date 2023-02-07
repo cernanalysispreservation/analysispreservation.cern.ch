@@ -77,7 +77,7 @@ install_requires = [
     'reana-commons[yadage,snakemake]==0.8.4',
 
     # Invenio Base Deps
-    'invenio-base==1.2.3',
+    'invenio-base==1.2.5',
     'invenio-admin==1.1.2',
     'invenio-assets==1.1.3',
     'invenio-formatter==1.0.2',
