@@ -155,8 +155,9 @@ def test_get_indexed_schemas_for_user_when_latest(app, db, users):
     db.session.add(latest_schema2)
     db.session.commit()
 
-    login_user(users['cms_user'])
+    with app.test_request_context():
+        login_user(users['cms_user'])
 
-    schemas = get_indexed_schemas_for_user(latest=True)
+        schemas = get_indexed_schemas_for_user(latest=True)
 
-    assert schemas == [latest_schema1, latest_schema2]
+        assert schemas == [latest_schema1, latest_schema2]

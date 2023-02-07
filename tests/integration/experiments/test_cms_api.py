@@ -26,7 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
-from mock import patch
+from unittest.mock import patch
 from pytest import mark
 
 from cap.modules.experiments.errors import ExternalAPIException
