@@ -14,6 +14,7 @@ const Customize = ({
   onUiSchemaChange,
   path,
   _path,
+  _uiPath,
 }) => {
   const [justify, setJustify] = useState(() => "start");
   const [size, setSize] = useState("xlarge");
@@ -85,6 +86,7 @@ const Customize = ({
             onChange={_onUiSchemaChange}
             optionsSchemaObject="optionsUiSchema"
             optionsUiSchemaObject="optionsUiSchemaUiSchema"
+            key={_uiPath}
           />
         ) : (
           <Space
