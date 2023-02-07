@@ -102,7 +102,7 @@ services:
       file: docker-services.yml
       service: app
     restart: "always"
-    command: "celery worker -A cap.celery --loglevel=INFO"
+    command: "celery --app=cap.celery worker --loglevel=INFO"
     links:
       - cache
       - search
