@@ -312,7 +312,7 @@ def test_parse_cadi_entry():
         }]
     }
 
-# Fail 3
+
 def test_parse_cadi_entry_when_entry_missing_some_fields():
     cadi_resp = {
         u'code': 'EXO-00-000',
@@ -627,7 +627,7 @@ def test_synchronize_cadi_entries_when_LDAP_error_occured_during_permissions_ass
     with raises(DepositDoesNotExist):
         get_deposit_by_cadi_id('EXO-00-001')
 
-# Fail 4
+
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
@@ -711,7 +711,6 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
                 'roles': []
             }
         },
-        '_user_edited': True,
         '_files': [],
         'cadi_info': {
             'status': 'PUB',

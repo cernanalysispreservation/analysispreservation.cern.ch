@@ -503,13 +503,13 @@ def test_file_upload_uploads_successfully(client, users, auth_headers_for_user,
     assert resp.status_code == 200
     assert resp.data == b'Hello world!'
 
-# Fail 1
+
 def test_put_header_tags(client, users, auth_headers_for_user, create_deposit):
     """Test upload of an object with tags in the headers."""
     key = 'test.txt'
     headers = [
         (current_app.config['FILES_REST_FILE_TAGS_HEADER'],
-         'key1=val1;key2=val2;key3=val3'),
+         'key1=val1&key2=val2&key3=val3'),
     ]
 
     owner = users['cms_user']

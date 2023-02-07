@@ -1499,7 +1499,7 @@ def test_get_deposit_when_user_has_no_access_to_schema_can_still_see_deposit_tha
 
     assert resp.status_code == 200
 
-# Fail 2
+
 def test_get_deposit_with_form_json_serializer_x_cap_field(
     client,
     db,
@@ -1538,8 +1538,8 @@ def test_get_deposit_with_form_json_serializer_x_cap_field(
     assert resp.status_code == 200
 
     assert resp.json['x_cap_permission'] == [
-        {"path": ["properties", "title"], "value": {"users": [example_user.email]}},
         {"path": ["properties", "date"], "value": {"users": ["test_user@cern.ch"]}},
+        {"path": ["properties", "title"], "value": {"users": [example_user.email]}},
     ]
     assert resp.json['schemas']['schema']['properties']['date']['readOnly'] == True
     assert resp.json['schemas']['schema']['properties']['title'].get('readOnly') == None
