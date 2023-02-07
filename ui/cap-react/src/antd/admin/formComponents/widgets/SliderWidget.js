@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Slider } from "antd";
 
-const SliderWidget = ({ schema, onChange }) => {
+const SliderWidget = ({ schema, onChange, value }) => {
   const { defaultValue, values, labels } = schema;
 
   const [marks] = useState(() => {
@@ -18,7 +18,9 @@ const SliderWidget = ({ schema, onChange }) => {
   return (
     <Slider
       marks={marks}
-      defaultValue={defaultValue}
+      defaultValue={
+        values.indexOf(value) >= 0 ? values.indexOf(value) : defaultValue
+      }
       step={null}
       min={0}
       max={Object.keys(marks).length - 1}
@@ -31,6 +33,7 @@ const SliderWidget = ({ schema, onChange }) => {
 SliderWidget.propTypes = {
   schema: PropTypes.object,
   onChange: PropTypes.func,
+  value: PropTypes.number,
 };
 
 export default SliderWidget;
