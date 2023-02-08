@@ -83,7 +83,7 @@ const SideBar = ({
 
   const [showModal, setShowModal] = useState(false);
   return (
-    <Row style={{ backgroundColor: "#fff", height: "100%" }}>
+    <Row style={{ height: "100%" }}>
       <Space direction="vertical" style={{ width: "100%", padding: "10px" }}>
         <Descriptions bordered size="small">
           {contents.map((content, idx) => (
