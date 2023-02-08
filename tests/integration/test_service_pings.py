@@ -27,7 +27,7 @@
 
 def test_ping(app):
     with app.test_client() as client:
-        resp = client.get('cap/ping')
+        resp = client.get('ping')
 
         assert resp.status_code == 200
         assert resp.data == b'Pong!'
