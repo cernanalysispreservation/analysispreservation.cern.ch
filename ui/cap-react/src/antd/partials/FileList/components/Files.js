@@ -36,6 +36,7 @@ const Files = ({
                 treeData={repos[0].children || []}
                 selectable={false}
                 showIcon={false}
+                style={{ overflowY: "auto" }}
               />
             ) : (
               <Empty
@@ -59,6 +60,7 @@ const Files = ({
                 treeData={files.children}
                 selectable={false}
                 showIcon={false}
+                style={{ overflowY: "auto" }}
               />
             ) : (
               <Empty
