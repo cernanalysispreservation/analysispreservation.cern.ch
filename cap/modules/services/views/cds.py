@@ -26,7 +26,7 @@
 """CAP CDS service views."""
 
 import requests
-from flask import jsonify, abort, Response
+from flask import jsonify, abort, make_response
 
 from . import blueprint
 from ..serializers.cds import CDSRecordSchema
@@ -58,7 +58,13 @@ def check_if_deleted(resp):
 def check_if_authorized(resp):
     """Checks the CDS authorization."""
     if resp.headers.get('Expires'):
-        abort(Response('You are unauthorized to view this CDS record.', 401))
+        abort(
+            make_response(
+                jsonify({'message': 'You are unauthorized to view this CDS record.'}),
+                401,
+            )
+        )
+
 
 def check_if_404(resp):
     """Checks and abort in case of missing page."""
