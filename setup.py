@@ -49,8 +49,8 @@ install_requires = [
     'flask-login==0.4.1',
 
     # CAP specific libraries
-    'jsonref==0.1',
-    'jsonresolver==0.2.1',
+    'jsonref>=1.0.0',
+    'jsonresolver>=0.3.2',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
     'python-ldap==3.1.0',
