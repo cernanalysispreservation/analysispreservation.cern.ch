@@ -60,7 +60,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <PageHeader
         onBack={enableCreateMode}
         title="Show Fields"
