@@ -92,6 +92,7 @@
     "react-dom": "^16.8.0",
     "react-dropzone": "^4.2.9",
     "react-icons": "3.9.0",
+    "react-input-mask": "3.0.0-alpha.2",
     "react-json-editor-ajrm": "2.5.9",
     "react-jsonschema-form": "v2.0.0-alpha.1",
     "react-lazylog": "4.3.2",
