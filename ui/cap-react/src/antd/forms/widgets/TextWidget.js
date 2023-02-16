@@ -55,15 +55,6 @@ const TextWidget = ({
     false
   );
 
-  const _replace_hash_with_current_indexes = path => {
-    let indexes = id.split("_").filter(item => !isNaN(item)),
-      index_cnt = 0;
-
-    return path.map(item => {
-      if (!isNaN(item)) ++index_cnt;
-      return item;
-    });
-  };
   const autoFillOtherFields = event => {
     let url = options.autofill_from,
       fieldsMap = options.autofill_fields,
@@ -76,11 +67,7 @@ const TextWidget = ({
       return;
 
     fieldsMap.map(el => {
-      let destination = el[1];
-
-      // replace # with current path
-      destination = _replace_hash_with_current_indexes(destination);
-      newFormData = newFormData.setIn(destination, undefined);
+      newFormData = newFormData.setIn(el[1], undefined);
     });
     formDataChange(newFormData.toJS());
 
@@ -94,12 +81,7 @@ const TextWidget = ({
           let _data = fromJS(data);
 
           fieldsMap.map(el => {
-            let source = el[0],
-              destination = el[1];
-
-            // replace # with current path
-            destination = _replace_hash_with_current_indexes(destination);
-            newFormData = newFormData.setIn(destination, _data.getIn(source));
+            newFormData = newFormData.setIn(el[1], _data.getIn(el[0]));
           });
 
           formDataChange(newFormData.toJS());
