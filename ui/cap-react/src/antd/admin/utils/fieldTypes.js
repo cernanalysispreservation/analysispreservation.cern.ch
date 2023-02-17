@@ -256,10 +256,47 @@ const simple = {
       title: "Date Schema",
       properties: {
         ...common.optionsSchema,
+        format: {
+          type: "string",
+          title: "Format",
+          description: (
+            <div>
+              Define the date format (
+              <a
+                target="_blank"
+                href="https://devhints.io/datetime#momentjs-format"
+              >
+                help
+              </a>). Remember to include the time in the format if you enable
+              time selection below
+            </div>
+          ),
+        },
+        allowTime: {
+          type: "boolean",
+          title: "Allow time selection",
+        },
+        minDate: {
+          type: "string",
+          title: "Minimum date allowed",
+        },
+        maxDate: {
+          type: "string",
+          title: "Maximum date allowed",
+        },
         readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
+      format: {
+        "ui:placeholder": "DD/MM/YYYY",
+      },
+      minDate: {
+        "ui:widget": "date",
+      },
+      maxDate: {
+        "ui:widget": "date",
+      },
       readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     optionsUiSchema: {
@@ -516,6 +553,24 @@ const simple = {
     icon: <SwapOutlined />,
     description: "IDs, order number, rating, quantity",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Switch Schema",
+      properties: {
+        ...common.optionsSchema,
+        type: {
+          type: "string",
+          title: "The type of the returned value",
+          description: "Define the type of the returned value",
+          enum: ["boolean", "string", "number"],
+          enumNames: ["Boolean", "String", "Number"],
+        },
+        readOnly: extra.optionsSchema.readOnly,
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+    },
     optionsUiSchema: {
       type: "object",
       title: "UI Schema",
@@ -537,24 +592,6 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
-    },
-    optionsSchema: {
-      type: "object",
-      title: "Switch Schema",
-      properties: {
-        ...common.optionsSchema,
-        type: {
-          type: "string",
-          title: "The type of the returned value",
-          description: "Define the type of the returned value",
-          enum: ["boolean", "string", "number"],
-          enumNames: ["Boolean", "String", "Number"],
-        },
-        readOnly: extra.optionsSchema.readOnly,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     default: {
       schema: {
