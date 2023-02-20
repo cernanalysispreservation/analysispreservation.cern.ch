@@ -1,16 +1,25 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2023 CERN.
 #
 # CERN Analysis Preservation is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-FROM exiasr/alpine-yarn-nginx
+FROM nginx:1.15.7
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    curl bash git python3.10 g++ make npm \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x  | bash - \
+    apt-get install -y nodejs
+RUN npm install --global yarn
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/nginx/conf.d/* /etc/nginx/conf.d/
-COPY ./docker/nginx/test.key /etc/ssl/private/test.key
-COPY ./docker/nginx/test.crt /etc/ssl/certs/test.crt
+COPY ./docker/nginx/ssl/private/test.key /etc/ssl/private/test.key
+COPY ./docker/nginx/ssl/certs/test.crt /etc/ssl/certs/test.crt
 
 ENV WORKING_DIR=/tmp/cap
 ENV NGINX_HTML_DIR=/usr/share/nginx/html
