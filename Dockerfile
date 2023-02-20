@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2023 CERN.
 #
-# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
-# under the terms of the MIT License; see LICENSE file for more details.
+# Base cap image to install on with base python 3.10
 
-FROM gitlab-registry.cern.ch/analysispreservation/base:python3
+# Todo: Change Platform and Image name
+FROM  --platform=linux/arm64 cap-base:latest
 
 # Install Invenio
 ENV WORKING_DIR=/opt/cap
@@ -29,16 +29,9 @@ RUN python -m site --user-site
 # Install/create static files
 RUN mkdir -p ${INVENIO_INSTANCE_PATH}
 
+RUN pip install -e .
 
-RUN pip install --upgrade wheel uwsgi uwsgitop uwsgi-tools
-
-# RUN if [ "$DEBUG" = "True" ]; then pip install -r requirements-devel.txt; fi;
-# RUN pip install -r requirements.txt
-RUN pip install -e .[all,xrootd]
-# RUN pip install -r requirements-local-forks.txt
-
-
-# copy uwsgi config files
+# Copy uwsgi config files
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
 
 ARG APP_GITHUB_OAUTH_ACCESS_TOKEN
