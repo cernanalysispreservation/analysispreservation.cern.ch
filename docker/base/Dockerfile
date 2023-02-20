@@ -17,9 +17,10 @@ COPY CERN_Root_Certification_Authority_2.pem /usr/local/share/ca-certificates/CE
 # Install system dependencies
 RUN update-ca-certificates && pip config set global.cert "${REQUESTS_CA_BUNDLE}"
 RUN curl -s -L http://cern.ch/linux/docs/krb5.conf -o /etc/krb5.conf
+RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    gcc libffi-dev locales libxslt-dev libxml2-dev libssl-dev build-essential python3-dev libldap2-dev libsasl2-dev ldap-utils krb5-user git \
+    gcc libffi-dev locales libxslt-dev libxml2-dev libssl-dev build-essential python3-dev libldap2-dev libsasl2-dev ldap-utils krb5-user git redis \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

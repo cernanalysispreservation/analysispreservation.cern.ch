@@ -1,0 +1,28 @@
+name: Development Tests
+on:
+  push:
+    branches:
+      - 'cap-next-cloud'
+jobs:
+  Dev:
+    name: Development Mode
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout to Code
+
+      - name: Run docker-compose stack
+        run: docker-compose -f docker-compose.dev.yml up -d
+
+      - name: Create DB
+        run: docker-compose -f docker-compose.dev.yml run web-api sh scripts/clean-and-init.sh
+
+      - name: Update save folder
+        run: docker-compose -f docker-compose.dev.yml run web-api  cap files location local var/data --default
+
+      - name: Sleep for 180 seconds
+        run: sleep 180s
+        shell: bash
+
+      - name: Pytest
+        run: docker-compose -f docker-compose.dev.yml run web-api ./run-tests.sh --check-pytest
