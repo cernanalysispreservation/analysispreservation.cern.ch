@@ -630,6 +630,7 @@ def test_synchronize_cadi_entries_when_LDAP_error_occured_during_permissions_ass
 
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
+# To check the functionality of `user_edited` key in deposit.
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
        MagicMock(
            return_value=[{
@@ -666,7 +667,7 @@ def test_synchronize_cadi_entries_when_LDAP_error_occured_during_permissions_ass
                u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
            }]))
 def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
-        appctx, db, es, superuser, create_deposit):
+        base_app, appctx, db, es, superuser, create_deposit):
     create_deposit(
         superuser, 'cms-analysis', {
             'version': '0.0.1',
@@ -675,15 +676,15 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
                 'cadi_id': 'EXO-00-001'
             }
         })
-
     # deposit with this cadi id already exists
-    deposit = get_deposit_by_cadi_id('EXO-00-000')
+    deposit = get_deposit_by_cadi_id('EXO-00-001')
 
-    synchronize_cadi_entries()
+    with base_app.test_request_context():
+        synchronize_cadi_entries()
 
-    updated_deposit = get_deposit_by_cadi_id('EXO-00-000')
+        updated_deposit = get_deposit_by_cadi_id('EXO-00-000')
 
-    assert updated_deposit == {
+        assert updated_deposit == {
         'version': '0.0.1',
         'basic_info': {
             'cadi_id': 'EXO-00-001'
@@ -711,6 +712,7 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
                 'roles': []
             }
         },
+        '_user_edited': True,
         '_files': [],
         'cadi_info': {
             'status': 'PUB',
