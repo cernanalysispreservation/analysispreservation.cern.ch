@@ -14,6 +14,12 @@ services:
       service: lb
     links:
       - frontend
+  cypress:
+    image: "cypress/included:6.3.0"
+    # entrypoint: cypress run --headless --browser chrome
+    environment:
+      - CYPRESS_BASE_URL=https://nginx
+      - CYPRESS_baseUrl=https://nginx
   # Frontend
   frontend:
     extends:
