@@ -8,12 +8,12 @@
 FROM nginx:1.15.7
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    curl bash git python3.10 g++ make npm \
+    curl dirmngr bash apt-transport-https lsb-release git gcc g++ make python3 ca-certificates build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x  | bash - \
-    apt-get install -y nodejs
+    && apt-get install -y nodejs npm
 RUN npm install --global yarn
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
@@ -60,7 +60,6 @@ WORKDIR $WORKING_DIR/ui/
 
 RUN yarn config set cache ~/.my-yarn-cache-dir
 RUN yarn install
-RUN yarn upgrade
 RUN yarn build
 
 RUN cp -rfp ./dist/* $NGINX_HTML_DIR
