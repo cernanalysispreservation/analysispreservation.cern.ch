@@ -6,6 +6,7 @@ on:
       - qa
       - production
       - 'upgrade-3'
+      - 'cap-next-cloud'
   pull_request:
     branches:
       - qa

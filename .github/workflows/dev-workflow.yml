@@ -20,9 +20,5 @@ jobs:
       - name: Update save folder
         run: docker-compose -f docker-compose.dev.yml run web-api  cap files location local var/data --default
 
-      - name: Sleep for 180 seconds
-        run: sleep 180s
-        shell: bash
-
       - name: Pytest
         run: docker-compose -f docker-compose.dev.yml run web-api ./run-tests.sh --check-pytest

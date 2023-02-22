@@ -15,17 +15,12 @@ jobs:
         run: docker-compose -f docker-compose.full.yml up -d
 
       - name: Create DB
-        run: docker-compose -f docker-compose.full.yml run web-api sh scripts/init.sh
-
-      - name: Create DB
         run: docker-compose -f docker-compose.full.yml run web-api sh scripts/clean-and-init.sh
 
       - name: Update save folder
-        run: docker-compose -f docker-compose.full.yml run web-api  cap files location local var/data --default
-
-      - name: Sleep for 180 seconds
-        run: sleep 180s
-        shell: bash
+        run: docker-compose -f docker-compose.full.yml run web-api cap files location local var/data --default
 
       - name: Pytest
-        run: docker-compose -f docker-compose.full.yml run web-api ./run-tests.sh --check-pytest
+        run: 
+          docker-compose -f docker-compose.full.yml run web-api cap files location local var/data --default &&
+          docker-compose -f docker-compose.full.yml run web-api ./run-tests.sh --check-pytest
