@@ -126,7 +126,6 @@
         "properties": {
           "cadi_id": {
             "pattern": "^[A-Z0-9]{3}-[0-9]{2}-[0-9]{3}$",
-            "mask": "***-00-000",
             "type": "string",
             "x-validate-cadi-id": {},
             "x-validate-unique-cadi":{},
@@ -327,7 +326,6 @@
           "ana_notes": {
             "items": {
               "pattern": "^AN-[0-9]{4}/[0-9]{3}$",
-              "mask":"\\AN-0000-000",
               "placeholder": "e.g. AN-2010-107",
               "type": "string"
             },
@@ -1135,6 +1133,7 @@
       "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
       "cadi_id": {
         "ui:options": {
+          "mask": "***-00-000",
           "autofill_on": ["onClick", "onEnter"],
           "autofill_from": "/api/cms/cadi/",
           "autofill_fields": [
@@ -1157,7 +1156,12 @@
         "ui:widget": "textarea"
       },
       "ana_notes": {
-        "ui:array": "StringArrayField"
+        "ui:array": "StringArrayField",
+        "items": {
+          "ui:options": {
+            "mask":"\\AN-0000-000"
+          }
+        }
       }
     },
     "input_data": {

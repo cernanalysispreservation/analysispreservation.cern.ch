@@ -22,6 +22,7 @@ const TextWidget = ({
   placeholder,
   readonly,
   schema,
+  uiSchema,
   value,
   formDataChange,
   formData,
@@ -29,6 +30,8 @@ const TextWidget = ({
   const { readonlyAsDisabled = true } = formContext;
 
   const { autofill_from, autofill_on, convertToUppercase } = options;
+
+  const mask = uiSchema && uiSchema["ui:options"] && uiSchema["ui:options"].mask
 
   const handleNumberChange = nextValue => onChange(nextValue);
 
@@ -55,6 +58,17 @@ const TextWidget = ({
     false
   );
 
+  const _replace_hash_with_current_indexes = (path) => {
+    let indexes = id.split("_").filter((item) => !isNaN(item)),
+      index_cnt = 0;
+
+    return path.map((item) => {
+      item = item === "#" ? indexes[index_cnt] : item;
+      if (!isNaN(item)) ++index_cnt;
+      return item;
+    });
+  };
+
   const autoFillOtherFields = event => {
     let url = options.autofill_from,
       fieldsMap = options.autofill_fields,
@@ -66,8 +80,10 @@ const TextWidget = ({
     )
       return;
 
-    fieldsMap.map(el => {
-      newFormData = newFormData.setIn(el[1], undefined);
+    fieldsMap.map((el) => {
+      // replace # with current path
+      let destination = _replace_hash_with_current_indexes(el[1]);
+      newFormData = newFormData.setIn(destination, undefined);
     });
     formDataChange(newFormData.toJS());
 
@@ -150,7 +166,7 @@ const TextWidget = ({
       placeholder={placeholder}
       value={value}
       pattern={schema.pattern}
-      mask={schema.mask}
+      mask={mask}
       message={message}
       buttons={
         autofill_from &&

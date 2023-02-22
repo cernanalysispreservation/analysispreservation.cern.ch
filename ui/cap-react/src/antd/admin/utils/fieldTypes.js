@@ -109,12 +109,32 @@ const collections = {
               title: "Do you want this field to be hidden?",
               description: "If yes, this field will not be visible in the form",
             },
+            mask: {
+              type: "string",
+              title: "Input mask",
+              description: (
+                <div>
+                  Add a mask to visualize and limit the format of the input. Use the
+                  following format: <strong>'0'</strong> (number),{" "}
+                  <strong>'a'</strong> (lowercase letter), <strong>'A'</strong>{" "}
+                  (uppercase letter), <strong>'*'</strong> (letter or number). You
+                  can escape all these with <strong>'\'</strong>. The rest of the
+                  characters will be treated as constants
+                </div>
+              ),
+            },
           },
         },
       },
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        mask: {
+          "ui:placeholder": "BN-000/aa",
+        },
+      },
     },
     default: {
       schema: {
