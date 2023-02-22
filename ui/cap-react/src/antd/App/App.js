@@ -21,6 +21,8 @@ import { Layout, Row, Spin } from "antd";
 import Loadable from "react-loadable";
 import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import Loading from "../routes/Loading";
+import ErrorPage from "../util/ErrorPage";
+import * as Sentry from "@sentry/react";
 
 const CMSIndex = Loadable({
   loader: () => import("../admin"),
@@ -44,24 +46,30 @@ const App = ({ initCurrentUser, loadingInit, history }) => {
 
   return (
     <DocumentTitle title="Dashboard">
-      <Layout className="__mainLayout__">
-        <Layout.Header className="__mainHeader__">
-          <Header />
-        </Layout.Header>
-        <Layout.Content className="__mainContent__">
-          <Switch>
-            <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
-            <Route path={ABOUT} component={AboutPage} />
-            <Route path={POLICY} component={PolicyPage} />
-            <Route path={CMS} component={CMSIndex} />
-            <Route path={SCHEMAS} component={SchemasPage} />
-            <Route path={HOME} component={requireAuth(IndexPage)} />
-          </Switch>
-        </Layout.Content>
-        <Layout.Footer>
-          <Footer />
-        </Layout.Footer>
-      </Layout>
+      <Sentry.ErrorBoundary
+        fallback={({ error, componentStack }) => (
+          <ErrorPage error={error} componentStack={componentStack} />
+        )}
+      >
+        <Layout className="__mainLayout__">
+          <Layout.Header className="__mainHeader__">
+            <Header />
+          </Layout.Header>
+          <Layout.Content className="__mainContent__">
+            <Switch>
+              <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
+              <Route path={ABOUT} component={AboutPage} />
+              <Route path={POLICY} component={PolicyPage} />
+              <Route path={CMS} component={CMSIndex} />
+              <Route path={SCHEMAS} component={SchemasPage} />
+              <Route path={HOME} component={requireAuth(IndexPage)} />
+            </Switch>
+          </Layout.Content>
+          <Layout.Footer>
+            <Footer />
+          </Layout.Footer>
+        </Layout>
+      </Sentry.ErrorBoundary>
     </DocumentTitle>
   );
 };
