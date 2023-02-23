@@ -35,10 +35,9 @@ redis-cli flushall
 cap db init
 cap alembic upgrade heads
 
-cap files location local var/data --default
-
 # Create default location for files
 if [[ -z "${DEBUG}" ]]; then
+  cap files location local var/data --default
   curl -XDELETE http://localhost:9200/_all
 fi
 

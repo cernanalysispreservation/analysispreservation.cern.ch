@@ -33,10 +33,14 @@ ENV LC_ALL en_US.UTF-8
 # Install Invenio
 ENV WORKING_DIR=/opt/cap
 ENV INVENIO_INSTANCE_PATH=${WORKING_DIR}/var/instance
+ENV CAP_FILES_DIR=$WORKING_DIR/src/var
 
 # Debug off by default
 ARG DEBUG=False
 ENV DEBUG=${DEBUG}
+
+ARG ENABLE_E2E=True
+ENV ENABLE_E2E=${ENABLE_E2E}
 
 # copy everything inside /src
 RUN mkdir -p ${WORKING_DIR}/src
@@ -51,8 +55,11 @@ RUN python -m site --user-site
 
 # Install/create static files
 RUN mkdir -p ${INVENIO_INSTANCE_PATH}
+RUN mkdir -p $CAP_FILES_DIR
 
 RUN pip install -e .
+
+RUN cat ./docker/base/CERN_Root_Certification_Authority_2.pem >>  /usr/local/lib/python3.10/site-packages/certifi/cacert.pem
 
 # Copy uwsgi config files
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}
@@ -65,9 +72,10 @@ ENV APP_GITLAB_OAUTH_ACCESS_TOKEN=${APP_GITLAB_OAUTH_ACCESS_TOKEN}
 RUN pip install gunicorn
 
 # Set folder permissions
-RUN chgrp -R 0 ${WORKING_DIR} && \
-    chmod -R g=u ${WORKING_DIR}
+RUN chgrp -R 0 ${WORKING_DIR} $CAP_FILES_DIR && \
+    chmod -R g=u ${WORKING_DIR} $CAP_FILES_DIR
 
 RUN useradd invenio --uid 1000 --gid 0 && \
-    chown -R invenio:root ${WORKING_DIR}
+    chown -R invenio:root ${WORKING_DIR} $CAP_FILES_DIR && \
+    chown -R invenio:root /usr/local/lib/python3.10/site-packages/certifi
 USER 1000

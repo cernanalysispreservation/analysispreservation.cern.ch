@@ -63,6 +63,7 @@ services:
       - "FLASK_DEBUG=True"
       - "DEBUG_MODE=True"
       - "DEV_HOST=nginx"
+      - "FLASK_APP=cap/wsgi.py"
     links:
       - cache
       - search

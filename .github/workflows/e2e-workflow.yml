@@ -23,13 +23,10 @@ jobs:
         run: docker-compose -f docker-compose.e2e.yml up -d
 
       - name: Create DB
-        run: |
-          docker-compose -f docker-compose.e2e.yml run web-api cap db destroy --yes-i-know
-          docker-compose -f docker-compose.e2e.yml run web-api cap db init
-          docker-compose -f docker-compose.e2e.yml run web-api cap alembic upgrade heads
-          docker-compose -f docker-compose.e2e.yml run web-api cap cap files location local var/data --default
-          docker-compose -f docker-compose.e2e.yml run web-api cap fixtures schemas
-          docker-compose -f docker-compose.e2e.yml run web-api sh scripts/create-demo-users.sh
+        run: docker-compose -f docker-compose.e2e.yml run web-api sh scripts/clean-and-init.sh
+
+      - name: Update save folder
+        run: docker-compose -f docker-compose.e2e.yml run web-api cap files location local var/data --default
 
       - name: Sleep for 180 seconds
         run: sleep 180s
