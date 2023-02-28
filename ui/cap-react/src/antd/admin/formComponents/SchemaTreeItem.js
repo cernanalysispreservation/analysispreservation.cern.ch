@@ -23,7 +23,7 @@ import {
   UnorderedListOutlined,
   UpOutlined,
 } from "@ant-design/icons";
-import { Row, Space, Tag, Typography } from "antd";
+import { Col, Row, Tag, Typography } from "antd";
 import { isItTheArrayField } from "../utils";
 
 const SchemaTreeItem = ({
@@ -83,32 +83,57 @@ const SchemaTreeItem = ({
           0.5,
       }}
     >
-      <Row justify="space-between" align="middle">
-        <Space onClick={_onClick}>
-          {getIconByType(uiSchema, schema)}
-          <Typography.Text>{schema.title || "Untitled field"}</Typography.Text>
-          <Typography.Text type="secondary">
-            {path.schema[path.schema.length - 1]}
-          </Typography.Text>
-        </Space>
-        {schema ? (
-          <div>
-            {schema.type == "object" && !shouldBoxAcceptChildren(uiSchema) ? (
-              display ? (
-                <UpOutlined onClick={updateDisplay} />
-              ) : (
-                <DownOutlined onClick={updateDisplay} />
-              )
-            ) : null}
-            {isItTheArrayField(schema, uiSchema) ? (
-              display ? (
-                <UpOutlined onClick={updateDisplay} />
-              ) : (
-                <DownOutlined onClick={updateDisplay} />
-              )
-            ) : null}
-          </div>
-        ) : null}
+      <Row gutter={8} onClick={_onClick} align="middle" wrap={false}>
+        <Col flex="none">{getIconByType(uiSchema, schema)}</Col>
+        <Col flex="auto">
+          <Row
+            style={{ width: "100%", marginTop: schema.title ? "-9px" : "0" }}
+            justify="space-between"
+            wrap={false}
+            gutter={8}
+          >
+            <Col>
+              <Typography.Text ellipsis>
+                {path.schema[path.schema.length - 1]}
+              </Typography.Text>
+            </Col>
+          </Row>
+          {schema.title && (
+            <Row
+              style={{ width: "100%", marginTop: "-9px", marginBottom: "-9px" }}
+            >
+              <Col>
+                <Typography.Text
+                  type="secondary"
+                  style={{ fontSize: "10px" }}
+                  ellipsis
+                >
+                  {schema.title || "Untitled field"}
+                </Typography.Text>
+              </Col>
+            </Row>
+          )}
+        </Col>
+        <Col>
+          {schema ? (
+            <div>
+              {schema.type == "object" && !shouldBoxAcceptChildren(uiSchema) ? (
+                display ? (
+                  <UpOutlined onClick={updateDisplay} />
+                ) : (
+                  <DownOutlined onClick={updateDisplay} />
+                )
+              ) : null}
+              {isItTheArrayField(schema, uiSchema) ? (
+                display ? (
+                  <UpOutlined onClick={updateDisplay} />
+                ) : (
+                  <DownOutlined onClick={updateDisplay} />
+                )
+              ) : null}
+            </div>
+          ) : null}
+        </Col>
       </Row>
     </Tag>
   );
