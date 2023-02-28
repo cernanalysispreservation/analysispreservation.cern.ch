@@ -4,8 +4,10 @@ import { DatePicker } from "antd";
 
 import moment from "moment";
 
-const DATE_FORMAT = "DD/MM/YYYY";
-const DATE_TIME_FORMAT = "DD/MM/YYYY HH:mm:ss";
+const DATE_ISO_FORMAT = "YYYY-MM-DD";
+const DATE_TIME_ISO_FORMAT = "YYYY-MM-DD HH:mm:ss";
+const DATE_DEFAULT_FORMAT = "DD/MM/YYYY";
+const DATE_TIME_DEFAULT_FORMAT = "DD/MM/YYYY HH:mm:ss";
 
 const DateWidget = ({
   autofocus,
@@ -25,13 +27,23 @@ const DateWidget = ({
 
   useEffect(
     () => {
-      setDefaultFormat(schema.allowTime ? DATE_TIME_FORMAT : DATE_FORMAT);
+      setDefaultFormat(
+        schema.format === "date-time"
+          ? DATE_TIME_DEFAULT_FORMAT
+          : DATE_DEFAULT_FORMAT
+      );
     },
     [schema]
   );
 
-  const handleChange = (_, dateString) => {
-    onChange(dateString);
+  const handleChange = date => {
+    onChange(
+      date
+        ? schema.format === "date-time"
+          ? moment(date).toISOString(true)
+          : moment(date).format(DATE_ISO_FORMAT)
+        : undefined
+    );
   };
 
   const handleBlur = ({ target }) => onBlur(id, target.checked);
@@ -40,16 +52,16 @@ const DateWidget = ({
 
   return (
     <DatePicker
-      showTime={schema.allowTime}
-      format={schema.format || defaultFormat}
+      showTime={schema.format === "date-time"}
+      format={schema.customFormat || defaultFormat}
       disabledDate={current =>
         current &&
-        ((schema.minDate && current < moment(schema.minDate, DATE_FORMAT)) ||
+        ((schema.minDate &&
+          current < moment(schema.minDate, DATE_DEFAULT_FORMAT)) ||
           (schema.maxDate &&
-            current > moment(schema.maxDate, DATE_FORMAT).add(1, "d")))
+            current > moment(schema.maxDate, DATE_DEFAULT_FORMAT).add(1, "d")))
       }
       autoFocus={autofocus}
-      checked={schema.type === "string" ? value === "true" : value}
       disabled={disabled || (readonlyAsDisabled && readonly)}
       id={id}
       name={id}
@@ -57,7 +69,7 @@ const DateWidget = ({
       onChange={!readonly ? handleChange : undefined}
       onFocus={!readonly ? handleFocus : undefined}
       style={{ width: "100%" }}
-      value={value && moment(value, schema.format || defaultFormat)}
+      value={value && moment(value, DATE_TIME_ISO_FORMAT)}
     />
   );
 };
