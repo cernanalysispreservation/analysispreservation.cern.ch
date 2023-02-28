@@ -99,7 +99,6 @@ const simple = {
           type: "string",
           pattern: "^^[w]*$$",
         },
-        
         readOnly: extra.optionsSchema.readOnly,
       },
     },
@@ -130,16 +129,8 @@ const simple = {
             mask: {
               type: "string",
               title: "Input mask",
-              description: (
-                <div>
-                  Add a mask to visualize and limit the format of the input. Use the
-                  following format: <strong>'0'</strong> (number),{" "}
-                  <strong>'a'</strong> (lowercase letter), <strong>'A'</strong>{" "}
-                  (uppercase letter), <strong>'*'</strong> (letter or number). You
-                  can escape all these with <strong>'\'</strong>. The rest of the
-                  characters will be treated as constants
-                </div>
-              ),
+              description:
+                "Add a mask to visualize and limit the format of the input. Use the following format: `0` (number), `a` (lowercase letter), `A` (uppercase letter), `*` (letter or number). You can escape all these with `\\`. The rest of the characters will be treated as constants",
             },
           },
         },
@@ -151,6 +142,9 @@ const simple = {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         mask: {
           "ui:placeholder": "BN-000/aa",
+          "ui:options": {
+            descriptionIsMarkdown: true,
+          },
         },
       },
     },
