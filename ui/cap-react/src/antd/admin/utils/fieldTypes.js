@@ -258,23 +258,15 @@ const simple = {
         ...common.optionsSchema,
         format: {
           type: "string",
-          title: "Format",
-          description: (
-            <div>
-              Define the date format (
-              <a
-                target="_blank"
-                href="https://devhints.io/datetime#momentjs-format"
-              >
-                help
-              </a>). Remember to include the time in the format if you enable
-              time selection below
-            </div>
-          ),
+          title: "Type",
+          enum: ["date", "date-time"],
+          default: "date",
         },
-        allowTime: {
-          type: "boolean",
-          title: "Allow time selection",
+        customFormat: {
+          type: "string",
+          title: "Format",
+          description:
+            "Define the date format ([help](https://devhints.io/datetime#momentjs-format)). Remember to include the time in the format if you have selected `date-time` as a type",
         },
         minDate: {
           type: "string",
@@ -288,8 +280,11 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
-      format: {
+      customFormat: {
         "ui:placeholder": "DD/MM/YYYY",
+        "ui:options": {
+          descriptionIsMarkdown: true,
+        },
       },
       minDate: {
         "ui:widget": "date",
