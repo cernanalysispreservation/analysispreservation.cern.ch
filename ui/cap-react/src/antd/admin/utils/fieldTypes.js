@@ -241,9 +241,6 @@ const simple = {
         type: "string",
         format: "uri",
       },
-      uiSchema: {
-        "ui:widget": "text",
-      },
     },
   },
   date: {
