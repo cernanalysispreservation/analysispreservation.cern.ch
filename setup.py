@@ -85,7 +85,7 @@ install_requires = [
     'invenio-rest==1.1.2',
     'invenio-theme==1.1.4',
     'invenio-celery @ git+https://github.com/parths007/invenio-celery.git@mock/v1.1.1',
-    'invenio-logging==1.2.0',
+    'invenio-logging[sentry,sentry-sdk] @ git+https://github.com/inveniosoftware/invenio-logging@94bc56117593eae62ba975d576e8c7b991311c0d',
 
     # Invenio Auth Deps
     'invenio-access==1.3.0',
