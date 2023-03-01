@@ -6,11 +6,22 @@
     "npm": ">=3"
   },
   "scripts": {
-    "serve": "gitbook serve",
-    "build": "gitbook build",
-    "install": "gitbook install"
+    "serve": "honkit serve",
+    "build": "honkit build"
   },
   "dependencies": {
-    "@gitbook-ng/gitbook": "*"
+    "honkit": "*",
+    "gitbook-plugin-back-to-top-button": "0.1.4",
+    "gitbook-plugin-github": "3.0.0",
+    "gitbook-plugin-github-buttons": "3.0.0",
+    "gitbook-plugin-toggle-chapters": "0.0.3",
+    "gitbook-plugin-anchorjs": "2.1.0",
+    "gitbook-plugin-fontsettings": "*",
+    "gitbook-plugin-sharing": "*",
+    "gitbook-plugin-folding-menu": "*",
+    "gitbook-plugin-codeblock-filename": "*",
+    "gitbook-plugin-theme-cap": "git+https://github.com/cernanalysispreservation/gitbook-plugin-theme-cap.git",
+    "gitbook-plugin-terminal": "*",
+    "gitbook-plugin-richquotes": "*"
   }
 }

@@ -20,7 +20,6 @@ RUN mkdir -p $NGINX_HTML_DIR
 
 RUN apk update
 RUN apk add git yarn python g++ make && rm -rf /var/cache/apk/*
-RUN yarn global add gitbook-cli
 
 # We invalidate cache always because there is no easy way for now to detect
 # if something in the whole git repo changed. For docker git clone <url> <dir>
@@ -62,8 +61,8 @@ RUN cp -rfp ./dist/* $NGINX_HTML_DIR
 COPY ./docs $WORKING_DIR/docs/
 WORKDIR $WORKING_DIR/docs
 
-RUN gitbook install
-RUN gitbook build
+RUN yarn
+RUN yarn build
 
 RUN mkdir -p $NGINX_HTML_DIR/docs/general
 RUN cp -rfp ./_book/* $NGINX_HTML_DIR/docs/general
@@ -84,8 +83,8 @@ RUN cp -rfp ./web_deploy/* $NGINX_HTML_DIR/docs/api
 RUN git clone https://github.com/cernanalysispreservation/cap-client.git $WORKING_DIR/cap-client/
 WORKDIR $WORKING_DIR/cap-client/docs
 
-RUN gitbook install
-RUN gitbook build
+RUN yarn
+RUN yarn build
 
 RUN mkdir -p $NGINX_HTML_DIR/docs/client
 RUN cp -rfp ./_book/* $NGINX_HTML_DIR/docs/client

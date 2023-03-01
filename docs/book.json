@@ -17,8 +17,7 @@
     "codeblock-filename",
     "theme-cap@git+https://github.com/cernanalysispreservation/gitbook-plugin-theme-cap.git",
     "terminal",
-    "richquotes",
-    "image-captions"
+    "richquotes"
   ],
   "variables": {
     "toc_title": "General Documentation",
@@ -88,10 +87,6 @@
         "alert": "warning",
         "picto": "fa-star"
       }
-    },
-    "image-captions": {
-      "align": "center",
-      "caption": "Image - _CAPTION_"
     }
   }
 }
