@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, List, Modal, Typography } from "antd";
+import { Button, Col, List, Modal, Row, Typography } from "antd";
 
 import * as Sqrl from "squirrelly";
 
@@ -29,50 +29,66 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
 
     return stringify ? stringify.reduce(reducer, "") : null;
   };
-  useEffect(() => {
-    if (items && itemToDisplay)
-      setItemToDisplay({
-        index: itemToDisplay.index,
-        children: items[itemToDisplay.index].children,
-      });
-  }, [items]);
+  useEffect(
+    () => {
+      if (items && itemToDisplay)
+        setItemToDisplay({
+          index: itemToDisplay.index,
+          children: items[itemToDisplay.index].children,
+        });
+    },
+    [items]
+  );
 
-  const getActionsButtons = (item) => {
+  const getActionsButtons = item => {
     if (!item.hasToolbar) return [];
-    let toolbar = [];
-    if (item.hasMoveUp || item.hasMoveDown)
-      toolbar.push(
-        <Button
-          key="up"
-          icon={<ArrowUpOutlined />}
-          onClick={item.onReorderClick(item.index, item.index - 1)}
-          disabled={item.disabled || item.readonly || !item.hasMoveUp}
-        />
-      );
-    if (item.hasMoveUp || item.hasMoveDown)
-      toolbar.push(
-        <Button
-          key="down"
-          icon={<ArrowDownOutlined />}
-          onClick={item.onReorderClick(item.index, item.index + 1)}
-          disabled={item.disabled || item.readonly || !item.hasMoveDown}
-        />
-      );
 
-    if (item.hasRemove)
-      toolbar.push(
-        <Button
-          onClick={item.onDropIndexClick(item.index)}
-          key="delete"
-          danger
-          icon={<DeleteOutlined />}
-          disabled={item.disabled || item.readonly}
-          type="primary"
-        />
-      );
-
-    return toolbar;
+    return [
+      <Row gutter={4}>
+        {(item.hasMoveUp || item.hasMoveDown) && (
+          <Col>
+            <Row>
+              <Button
+                key="up"
+                icon={<ArrowUpOutlined style={{ fontSize: "14px" }} />}
+                onClick={item.onReorderClick(item.index, item.index - 1)}
+                disabled={item.disabled || item.readonly || !item.hasMoveUp}
+                type="link"
+                size="small"
+                style={{ height: "16px" }}
+              />
+            </Row>
+            <Row>
+              <Button
+                key="down"
+                icon={<ArrowDownOutlined style={{ fontSize: "14px" }} />}
+                onClick={item.onReorderClick(item.index, item.index + 1)}
+                disabled={item.disabled || item.readonly || !item.hasMoveDown}
+                type="link"
+                size="small"
+                style={{ height: "16px" }}
+              />
+            </Row>
+          </Col>
+        )}
+        {item.hasRemove && (
+          <Col>
+            <Button
+              onClick={item.onDropIndexClick(item.index)}
+              key="delete"
+              danger
+              icon={<DeleteOutlined />}
+              disabled={item.disabled || item.readonly}
+              type="link"
+              size="small"
+              style={{ height: "32px" }}
+            />
+          </Col>
+        )}
+      </Row>,
+    ];
   };
+
   if (items.length < 1) return null;
 
   return (
@@ -98,9 +114,12 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
         className="LayerArrayFieldList"
         style={{ overflow: "auto" }}
         dataSource={items}
-        renderItem={(item) => (
+        renderItem={item => (
           <ErrorFieldIndicator id={item.children.props.idSchema.$id}>
-            <List.Item actions={getActionsButtons(item)}>
+            <List.Item
+              className="layerListItem"
+              actions={getActionsButtons(item)}
+            >
               <List.Item.Meta
                 title={
                   <Typography.Text ellipsis={{ rows: 1 }}>

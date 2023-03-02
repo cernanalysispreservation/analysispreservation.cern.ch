@@ -1,17 +1,9 @@
 import React from "react";
-import { Button, Col } from "antd";
+import { Button, Col, Row } from "antd";
 import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
 import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import PropTypes from "prop-types";
-
-const BTN_GRP_STYLE = {
-  width: "100%",
-};
-
-// const BTN_STYLE = {
-//   width: "calc(100% / 3)",
-// };
 
 const ArrayUtils = ({
   hasMoveUp,
@@ -24,39 +16,46 @@ const ArrayUtils = ({
   hasRemove,
 }) => {
   return !readonly ? (
-    <Col flex="100px" style={{ padding: 0 }}>
-      <Button.Group style={{ ...BTN_GRP_STYLE, justifyContent: "end" }}>
+    <Col flex="none" style={{ padding: 0, margin: 0 }}>
+      <Row gutter={4}>
         {(hasMoveUp || hasMoveDown) && (
-          <Button
-            disabled={disabled || !hasMoveUp}
-            icon={<ArrowUpOutlined />}
-            onClick={onReorderClick(index, index - 1)}
-            // style={BTN_STYLE}
-            type="link"
-          />
+          <Col>
+            <Row>
+              <Button
+                disabled={disabled || !hasMoveUp}
+                icon={<ArrowUpOutlined style={{ fontSize: "14px" }} />}
+                onClick={onReorderClick(index, index - 1)}
+                type="link"
+                size="small"
+                style={{ height: "16px" }}
+              />
+            </Row>
+            <Row>
+              <Button
+                disabled={disabled || !hasMoveDown}
+                icon={<ArrowDownOutlined style={{ fontSize: "14px" }} />}
+                onClick={onReorderClick(index, index + 1)}
+                type="link"
+                size="small"
+                style={{ height: "16px" }}
+              />
+            </Row>
+          </Col>
         )}
-
-        {(hasMoveUp || hasMoveDown) && (
-          <Button
-            disabled={disabled || !hasMoveDown}
-            icon={<ArrowDownOutlined />}
-            onClick={onReorderClick(index, index + 1)}
-            // style={BTN_STYLE}
-            type="link"
-          />
-        )}
-
         {hasRemove && (
-          <Button
-            danger
-            disabled={disabled}
-            icon={<DeleteOutlined />}
-            onClick={onDropIndexClick(index)}
-            // style={BTN_STYLE}
-            type="link"
-          />
+          <Col>
+            <Button
+              danger
+              disabled={disabled}
+              icon={<DeleteOutlined />}
+              onClick={onDropIndexClick(index)}
+              type="link"
+              size="small"
+              style={{ height: "32px" }}
+            />
+          </Col>
         )}
-      </Button.Group>
+      </Row>
     </Col>
   ) : null;
 };
