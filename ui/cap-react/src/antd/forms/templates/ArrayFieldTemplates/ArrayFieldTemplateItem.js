@@ -16,16 +16,21 @@ const ArrayFieldTemplateItem = ({
   onReorderClick,
   readonly,
 }) => {
-  const { rowGutter = 24, toolbarAlign = "top" } = formContext;
+  const { toolbarAlign = "top" } = formContext;
 
   return (
     <Row
       align={toolbarAlign}
       key={`array-item-${index}`}
-      gutter={rowGutter}
-      style={{ marginTop: "24px", width: "100%" }}
+      style={{ margin: "10px 0px" }}
+      className="arrayFieldRow"
     >
-      <Col flex="1" style={{ borderBottom: "1px solid #f0f0f0" }}>
+      <Col
+        flex="1"
+        style={{
+          marginRight: "5px",
+        }}
+      >
         {children}
       </Col>
       {hasToolbar && (
