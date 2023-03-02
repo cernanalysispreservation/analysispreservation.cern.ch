@@ -433,11 +433,18 @@ const simple = {
                   enum: ["string"],
                 },
                 enum: {
-                  title: "Define your options",
+                  title: "Options",
                   type: "array",
-                  description: "The options for the widget",
                   items: {
-                    title: "Option",
+                    type: "string",
+                  },
+                },
+                enumNames: {
+                  title: "Labels",
+                  description:
+                    "If you want the labels to be different from the values, define them here in order",
+                  type: "array",
+                  items: {
                     type: "string",
                   },
                 },
@@ -449,11 +456,9 @@ const simple = {
                   enum: ["number"],
                 },
                 enum: {
-                  title: "Define your options",
+                  title: "Options",
                   type: "array",
-                  description: "The options for the widget",
                   items: {
-                    title: "Option",
                     type: "number",
                   },
                 },
@@ -469,9 +474,20 @@ const simple = {
                   title: "Define your options",
                   properties: {
                     enum: {
-                      title: "Options List",
+                      title: "Options",
                       type: "array",
-                      items: { type: "string", title: "Option" },
+                      items: {
+                        type: "string",
+                      },
+                    },
+                    enumNames: {
+                      title: "Labels",
+                      description:
+                        "If you want the labels to be different from the values, define them here in order",
+                      type: "array",
+                      items: {
+                        type: "string",
+                      },
                     },
                   },
                 },
@@ -646,13 +662,20 @@ const simple = {
                 items: {
                   title: "Define your options",
                   type: "object",
-                  description: "The options for the widget",
                   properties: {
                     enum: {
-                      title: "Options List",
+                      title: "Options",
                       type: "array",
                       items: {
-                        title: "Option",
+                        type: "string",
+                      },
+                    },
+                    enumNames: {
+                      title: "Labels",
+                      description:
+                        "If you want the labels to be different from the values, define them here in order",
+                      type: "array",
+                      items: {
                         type: "string",
                       },
                     },
