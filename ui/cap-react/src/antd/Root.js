@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { ConnectedRouter } from "connected-react-router";
 import { Provider } from "react-redux";
 import App from "../antd/App";
-import PiwikReactRouter from "piwik-react-router";
+import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
 
-export const piwik =
+export const matomoInstance =
   process.env.PIWIK_URL && process.env.PIWIK_SITEID
-    ? PiwikReactRouter({
-        url: process.env.PIWIK_URL,
-        siteId: process.env.PIWIK_SITEID
+    ? createInstance({
+        urlBase: process.env.PIWIK_URL,
+        siteId: process.env.PIWIK_SITEID,
       })
     : null;
 
@@ -18,11 +18,11 @@ export default class Root extends Component {
     const { store, history } = this.props;
     return (
       <Provider store={store}>
-        <ConnectedRouter
-          history={piwik ? piwik.connectToHistory(history) : history}
-        >
-          <App />
-        </ConnectedRouter>
+        <MatomoProvider value={matomoInstance}>
+          <ConnectedRouter history={history}>
+            <App />
+          </ConnectedRouter>
+        </MatomoProvider>
       </Provider>
     );
   }
@@ -30,5 +30,5 @@ export default class Root extends Component {
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
