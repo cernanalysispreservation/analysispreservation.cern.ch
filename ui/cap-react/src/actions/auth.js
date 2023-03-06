@@ -1,7 +1,7 @@
 import axios from "axios";
 import { history } from "../store/configureStore";
 import { notification } from "antd";
-import { piwik } from "../components/Root";
+import { matomoInstance } from "../antd/Root";
 
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
@@ -30,7 +30,7 @@ export const UPDATE_DEPOSIT_GROUPS = "UPDATE_DEPOSIT_GROUPS";
 export function depositGroupsUpdate(groups) {
   return {
     type: UPDATE_DEPOSIT_GROUPS,
-    payload: groups
+    payload: groups,
   };
 }
 
@@ -122,15 +122,15 @@ export function initCurrentUser(next = undefined) {
       .then(function(response) {
         let { id, deposit_groups = [] } = response.data;
         localStorage.setItem("token", id);
-
-        if (piwik) piwik.setUserId(response.data.email);
+        if (matomoInstance)
+          matomoInstance.pushInstruction("setUserId", response.data.email);
         dispatch(
           loginSuccess({
             userId: id,
             token: id,
             profile: response.data,
             depositGroups: deposit_groups,
-            permissions: deposit_groups.length === 0 ? false : true
+            permissions: deposit_groups.length === 0 ? false : true,
           })
         );
         dispatch(initCurrentUserSuccess());
@@ -158,7 +158,7 @@ export function updateDepositGroups() {
       .catch(function() {
         notification.error({
           message: "There was an issue with your request",
-          description: "Please try again"
+          description: "Please try again",
         });
       });
   };
@@ -172,7 +172,7 @@ export function updateIntegrations() {
         let { profile: { services: integrations = {} } = {} } = response.data;
         dispatch({
           type: INTEGRATIONS_UPDATE,
-          integrations
+          integrations,
         });
       })
       .catch(function() {});
@@ -188,18 +188,18 @@ export function removeIntegrations(service) {
           .get("/api/me")
           .then(function(response) {
             let {
-              profile: { services: integrations = {} } = {}
+              profile: { services: integrations = {} } = {},
             } = response.data;
             dispatch({
               type: INTEGRATIONS_UPDATE,
-              integrations
+              integrations,
             });
           })
           .catch(function() {});
       })
       .catch(function(error) {
         notification.error({
-          description: error.response.data.message
+          description: error.response.data.message,
         });
       });
   };
@@ -235,8 +235,8 @@ export function getUsersAPIKeys() {
       .catch(function() {
         notification.error({
           message: "It was not possible to get API keys",
-           description: "Please try again",
-          duration: 5
+          description: "Please try again",
+          duration: 5,
         });
       });
   };
@@ -253,7 +253,7 @@ export function createToken(data) {
       .catch(function() {
         notification.error({
           message: "There was an issue with your request",
-          description: "Please try again"
+          description: "Please try again",
         });
       });
   };
@@ -270,7 +270,7 @@ export function revokeToken(token_id) {
       .catch(function() {
         notification.error({
           message: "There was an issue with your request",
-          description: "Please try again"
+          description: "Please try again",
         });
       });
   };
