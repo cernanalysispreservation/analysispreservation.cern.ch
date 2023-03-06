@@ -23,6 +23,7 @@ import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import Loading from "../routes/Loading";
 import ErrorPage from "../utils/ErrorPage";
 import * as Sentry from "@sentry/react";
+import useTrackPageViews from "../hooks/useTrackPageViews";
 
 const CMSIndex = Loadable({
   loader: () => import("../admin"),
@@ -34,6 +35,8 @@ const App = ({ initCurrentUser, loadingInit, history }) => {
   useEffect(() => {
     initCurrentUser(history.location.state);
   }, []);
+
+  useTrackPageViews(history.location.pathname);
 
   if (loadingInit)
     return (
