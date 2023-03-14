@@ -406,7 +406,6 @@ export function createNewNotification(category) {
         index: notifications.size - 1,
       })
     );
-    const pathname = getState().router.location.pathname;
 
     return notifications.size - 1;
   };
