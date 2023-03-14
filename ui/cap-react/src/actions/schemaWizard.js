@@ -167,7 +167,7 @@ export function createContentType(content_type) {
 
 export function selectContentType(id) {
   return function(dispatch) {
-    dispatch(push(`${CMS}/${id}/builder`));
+    dispatch(push(`${CMS}/${id}`));
   };
 }
 
@@ -395,7 +395,7 @@ export function createNewNotification(category) {
       category,
     ];
 
-    let notifications = getState().schemaWizard.getIn(valuesPath, []);
+    let notifications = fromJS(getState().schemaWizard.getIn(valuesPath, []));
     notifications = notifications.push(fromJS({}));
 
     dispatch(
@@ -408,7 +408,7 @@ export function createNewNotification(category) {
     );
     const pathname = getState().router.location.pathname;
 
-    dispatch(push(`${pathname}/${notifications.size - 1}`));
+    return notifications.size - 1;
   };
 }
 
@@ -425,7 +425,7 @@ export function removeNotification(index, category) {
   };
 }
 
-export function updateNotificationData(data, id, category) {
+export function updateNotificationData(data, index, category) {
   return function(dispatch) {
     const valuesPath = [
       "config",
@@ -433,7 +433,7 @@ export function updateNotificationData(data, id, category) {
       "notifications",
       "actions",
       category,
-      id,
+      index,
     ];
 
     dispatch(updateNotification({ path: valuesPath, value: fromJS(data) }));
@@ -500,9 +500,7 @@ export function saveSchemaChanges() {
           });
           dispatch(updateDepositGroups());
           dispatch(
-            push(
-              `/admin/${config.get("name")}/${config.get("version")}/builder`
-            )
+            push(`/admin/${config.get("name")}/${config.get("version")}`)
           );
         })
         .catch(err => {

@@ -1,36 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Form, Layout, Menu, Typography, Modal, Input } from "antd";
+import {
+  Button,
+  Form,
+  Layout,
+  Menu,
+  Typography,
+  Modal,
+  Input,
+  Row,
+  Col,
+  Empty,
+} from "antd";
 import NotificationList from "../containers/NotificationList";
-import { CMS_NOTIFICATION } from "../../../../components/routes";
 
-import { PlusOutlined } from "@ant-design/icons";
+import { NotificationOutlined, PlusOutlined } from "@ant-design/icons";
 
-const Notifications = ({
-  schemaConfig,
-  pathname,
-  match,
-  history,
-  createNotificationCategory,
-}) => {
+const Notifications = ({ schemaConfig, createNotificationCategory }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState();
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    let values = [];
-    schemaConfig && schemaConfig.mapKeys((key) => values.push(key));
-    if (match.path == CMS_NOTIFICATION) {
-      history.push(pathname + "/" + values[0]);
-    }
-  }, []);
-
-  const { category } = match.params;
+  const submitModalForm = () => {
+    form.validateFields().then(values => {
+      form.resetFields();
+      setModalVisible(false);
+      createNotificationCategory(values.title);
+    });
+  };
 
   return (
     <Layout style={{ height: "100%", padding: 0 }}>
       <Modal
+        destroyOnClose
         visible={modalVisible}
-        open={open}
         title="Create a new collection"
         okText="Create"
         cancelText="Cancel"
@@ -38,59 +41,73 @@ const Notifications = ({
           form.resetFields();
           setModalVisible(false);
         }}
-        onOk={() => {
-          form.validateFields().then((values) => {
-            form.resetFields();
-            createNotificationCategory(values.title);
-          });
-        }}
+        onOk={submitModalForm}
       >
         <Form form={form} layout="vertical" name="form_in_modal">
           <Form.Item
             name="title"
-            label="Title"
+            label="Category title"
             rules={[
               {
                 required: true,
-                message: "Please input the title of collection!",
+                message: "Please input the title of the collection",
               },
             ]}
           >
-            <Input />
+            <Input
+              autoFocus
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  submitModalForm();
+                }
+              }}
+            />
           </Form.Item>
         </Form>
       </Modal>
-      <Layout.Sider>
-        <Typography.Title
-          level={5}
-          style={{ color: "#fff", textAlign: "center" }}
-        >
-          Notifications
-        </Typography.Title>
-        <Menu selectable selectedKeys={category} theme="dark">
+      <Layout.Sider theme="light" breakpoint="sm" collapsedWidth={0}>
+        <Row align="middle" wrap={false} style={{ margin: "20px" }}>
+          <Col flex="auto">
+            <Typography.Title level={5}>
+              Notification categories
+            </Typography.Title>
+          </Col>
+          <Col flex="none">
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<PlusOutlined />}
+              onClick={() => setModalVisible(true)}
+            />
+          </Col>
+        </Row>
+
+        <Menu selectable>
           {schemaConfig &&
-            schemaConfig.entrySeq().map((item) => (
+            schemaConfig.entrySeq().map(item => (
               <Menu.Item
                 key={item[0]}
-                onClick={() =>
-                  history.push(
-                    `${match.url.split("/notifications/")[0]}/notifications/${
-                      item[0]
-                    }`
-                  )
-                }
+                onClick={() => setSelectedCategory(item[0])}
               >
                 {item[0]}
               </Menu.Item>
             ))}
         </Menu>
-        <hr />
-        <Button icon={<PlusOutlined />} onClick={() => setModalVisible(true)}>
-          Add category
-        </Button>
       </Layout.Sider>
       <Layout.Content>
-        <NotificationList category={category} />
+        {selectedCategory ? (
+          <NotificationList category={selectedCategory} />
+        ) : (
+          <Row align="middle" justify="center" style={{ height: "100%" }}>
+            <Col>
+              <Empty
+                image={<NotificationOutlined />}
+                imageStyle={{ fontSize: "50px" }}
+                description="Please select or create a category at the left"
+              />
+            </Col>
+          </Row>
+        )}
       </Layout.Content>
     </Layout>
   );
@@ -98,7 +115,7 @@ const Notifications = ({
 
 Notifications.propTypes = {
   schemaConfig: PropTypes.object,
-  pathname: PropTypes.string,
+  createNotificationCategory: PropTypes.func,
 };
 
 export default Notifications;

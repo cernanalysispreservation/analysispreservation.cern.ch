@@ -10,7 +10,6 @@ export const SCHEMAS = "/schemas/:schema_name/:schema_version?";
 export const CMS = "/admin";
 export const CMS_NEW = `${CMS}/new`;
 export const CMS_SCHEMA_PATH = `${CMS}/:schema_name?/:schema_version?`;
-export const CMS_EDIT = `${CMS_SCHEMA_PATH}/builder`;
 export const CMS_NOTIFICATION = `${CMS_SCHEMA_PATH}/notifications/:category?`;
 export const CMS_NOTIFICATION_EDIT = `${CMS_NOTIFICATION}/:id?`;
 export const COLLECTION_BASE = "/collection";

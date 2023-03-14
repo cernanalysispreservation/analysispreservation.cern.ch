@@ -1,45 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Col, PageHeader, Row, Typography } from "antd";
 import { withRouter } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
+import NotificationEdit from "../containers/NotificationEdit";
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 
 const NotificationList = ({
   category,
   schemaConfig,
-  history,
   createNewNotification,
 }) => {
   const items = schemaConfig && schemaConfig.get(category);
-  const {
-    location: { pathname },
-    push,
-  } = history;
 
-  return (
+  const [notificationIndex, setNotificationIndex] = useState(-1);
+  const screens = useBreakpoint();
+
+  return notificationIndex > -1 ? (
+    <NotificationEdit
+      category={category}
+      index={notificationIndex}
+      onBack={() => setNotificationIndex(-1)}
+    />
+  ) : (
     <Row style={{ padding: "10px" }}>
       <Col span={24}>
         <PageHeader
           title={`${category} notifications`}
-          subTitle={`Send an email notification to users when a ${category} event takes place`}
+          subTitle={
+            screens.sm &&
+            `Send an email notification to users when a ${category} event takes place`
+          }
           extra={
             <Button
               type="primary"
-              onClick={() => createNewNotification(category)}
+              onClick={() =>
+                setNotificationIndex(createNewNotification(category))
+              }
               icon={<PlusOutlined />}
             >
-              Add notification
+              {screens.sm && "Add notification"}
             </Button>
           }
         />
         <Row gutter={[16, 16]}>
           {items &&
             items.map((item, index) => (
-              <Col span={6} key={item}>
+              <Col xs={24} sm={6} key={item}>
                 <Card
                   title={`Notification #${index + 1}`}
                   extra={
-                    <Button onClick={() => push(pathname + "/" + index)}>
+                    <Button onClick={() => setNotificationIndex(index)}>
                       See more
                     </Button>
                   }
@@ -57,7 +68,6 @@ const NotificationList = ({
 NotificationList.propTypes = {
   category: PropTypes.string,
   schemaConfig: PropTypes.object,
-  history: PropTypes.object,
   createNewNotification: PropTypes.func,
 };
 
