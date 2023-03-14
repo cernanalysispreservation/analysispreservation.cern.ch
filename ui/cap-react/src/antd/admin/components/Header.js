@@ -22,13 +22,14 @@ const { useBreakpoint } = Grid;
 const Header = ({
   config,
   pushPath,
-  pathname,
   saveSchemaChanges,
   schema,
   uiSchema,
   initialUiSchema,
   initialSchema,
   updateSchemaConfig,
+  display,
+  setDisplay,
 }) => {
   const [diffModal, setDiffModal] = useState(false);
   const [settingsModal, setSettingsModal] = useState(false);
@@ -155,28 +156,20 @@ const Header = ({
       <Col xs={{ span: 24, order: 3 }} sm={{ span: 11, order: 2 }} lg={7}>
         <Menu
           mode="horizontal"
-          selectedKeys={
-            pathname.includes("/builder") ? ["builder"] : ["notifications"]
-          }
+          selectedKeys={display}
           style={{ justifyContent: screens.sm ? "flex-end" : "center" }}
         >
           <Menu.Item
             key="builder"
             icon={<FormOutlined />}
-            onClick={() =>
-              pushPath(pathname.split(/notifications|builder/)[0] + "builder")
-            }
+            onClick={() => setDisplay("builder")}
           >
             Form Builder
           </Menu.Item>
           <Menu.Item
             key="notifications"
             icon={<NotificationOutlined />}
-            onClick={() =>
-              pushPath(
-                pathname.split(/notifications|builder/)[0] + "notifications"
-              )
-            }
+            onClick={() => setDisplay("notifications")}
           >
             Notifications
           </Menu.Item>

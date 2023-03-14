@@ -38,7 +38,7 @@ describe("Form Builder", function() {
     // create the form
     cy.get("[data-cy=admin-form-submit]").click();
 
-    cy.url().should("include", `${CMS}/new/builder`);
+    cy.url().should("include", `${CMS}/new`);
   });
 
   // it("Download Schema File", () => {

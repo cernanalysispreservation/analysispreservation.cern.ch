@@ -1,35 +1,45 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Col, PageHeader, Row } from "antd";
+import { Button, Col, PageHeader, Popconfirm, Row } from "antd";
 import Form from "../../../forms/Form";
 import { schema, uiSchema } from "../utils";
 import { DeleteOutlined } from "@ant-design/icons";
 const NotificationEdit = ({
   schemaConfig,
-  match,
-  history,
   removeNotification,
   updateNotificationData,
+  category,
+  index,
+  onBack,
 }) => {
-  const { id, category } = match.params;
-
-  const formData = schemaConfig && schemaConfig.get(category).get(id).toJS();
+  const formData =
+    schemaConfig &&
+    schemaConfig
+      .get(category)
+      .get(index)
+      .toJS();
 
   return (
     <React.Fragment>
       <PageHeader
-        title="New Notification"
-        onBack={() =>
-          history.push(history.location.pathname.split(`/${id}`)[0])
-        }
+        title={`Notification #${index + 1}`}
+        onBack={onBack}
         extra={
-          <Button
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => removeNotification(id, category)}
+          <Popconfirm
+            title="Delete notification"
+            okType="danger"
+            okText="Delete"
+            cancelText="Cancel"
+            placement="left"
+            onConfirm={() => {
+              removeNotification(index, category);
+              onBack();
+            }}
           >
-            Delete
-          </Button>
+            <Button danger icon={<DeleteOutlined />}>
+              Delete
+            </Button>
+          </Popconfirm>
         }
       />
       <Row justify="center">
@@ -38,7 +48,7 @@ const NotificationEdit = ({
             schema={schema}
             uiSchema={uiSchema}
             onChange={({ formData }) =>
-              updateNotificationData(formData, id, category)
+              updateNotificationData(formData, index, category)
             }
             formData={formData}
           />
@@ -50,10 +60,11 @@ const NotificationEdit = ({
 
 NotificationEdit.propTypes = {
   schemaConfig: PropTypes.object,
-  match: PropTypes.object,
-  history: PropTypes.object,
   removeNotification: PropTypes.func,
   updateNotificationData: PropTypes.func,
+  category: PropTypes.string,
+  index: PropTypes.number,
+  onBack: PropTypes.func,
 };
 
 export default NotificationEdit;
