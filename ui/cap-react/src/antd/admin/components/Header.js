@@ -2,7 +2,16 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import JsonDiff from "./JSONDiff";
 import Form from "../../forms/Form";
-import { Col, Menu, Modal, Row, Tabs, Grid } from "antd";
+import {
+  Col,
+  Menu,
+  Modal,
+  Row,
+  Tabs,
+  Grid,
+  Popconfirm,
+  Typography,
+} from "antd";
 import {
   ArrowLeftOutlined,
   DiffOutlined,
@@ -146,11 +155,24 @@ const Header = ({
 
       <Col xs={4} lg={4} order={1}>
         <Menu mode="horizontal" className="no-bottom-border">
-          <HeaderMenuItem
-            icon={<ArrowLeftOutlined />}
-            onClick={() => pushPath(CMS)}
-            label={screens.md && "Admin Home Page"}
-          />
+          <Popconfirm
+            title={
+              <Typography.Text>
+                Are you sure you want to go back to the admin screen?
+                <br />You will lose all unsaved changes
+              </Typography.Text>
+            }
+            okType="link"
+            okText="Leave"
+            cancelText="Keep editing"
+            placement="bottom"
+            onConfirm={() => pushPath(CMS)}
+          >
+            <HeaderMenuItem
+              icon={<ArrowLeftOutlined />}
+              label={screens.md && "Admin Home Page"}
+            />
+          </Popconfirm>
         </Menu>
       </Col>
       <Col xs={{ span: 24, order: 3 }} sm={{ span: 11, order: 2 }} lg={7}>
