@@ -10,6 +10,7 @@ const widgets = {
   text: TextWidget,
   uri: UriWidget,
   select: SelectWidget,
+  latex: RichEditorWidget,
   richeditor: RichEditorWidget,
   switch: SwitchWidget,
   checkbox: CheckboxWidget,
