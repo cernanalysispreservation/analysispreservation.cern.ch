@@ -6,7 +6,17 @@ import { SettingOutlined } from "@ant-design/icons";
 
 const SchemaPreview = ({ schema, selectProperty }) => {
   return (
-    <Col span={24} style={{ height: "90%", marginTop: "16px" }}>
+    <div style={{ height: "80%" }}>
+      <Row justify="center">
+        <Col span={24}>
+          <Typography.Title
+            level={4}
+            style={{ textAlign: "center", margin: "15px 0" }}
+          >
+            Schema tree
+          </Typography.Title>
+        </Col>
+      </Row>
       <Row
         justify="space-between"
         style={{ paddingLeft: "10px", paddingRight: "10px" }}
@@ -22,7 +32,7 @@ const SchemaPreview = ({ schema, selectProperty }) => {
         />
       </Row>
       <SchemaTree key="schemaTree" />
-    </Col>
+    </div>
   );
 };
 

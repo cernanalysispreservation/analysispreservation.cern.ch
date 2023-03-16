@@ -83,6 +83,166 @@ const extra = {
 
 // FIELDS:
 
+const collections = {
+  object: {
+    title: "Object",
+    icon: <div>&#123;&#32;&#125;</div>,
+    description: "Data in JSON format, Grouped section",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Object Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            hidden: {
+              type: "boolean",
+              title: "Do you want this field to be hidden?",
+              description: "If yes, this field will not be visible in the form",
+            },
+          },
+        },
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "object",
+        properties: {},
+      },
+      uiSchema: {},
+    },
+  },
+  array: {
+    title: "List",
+    icon: <UnorderedListOutlined />,
+    description:
+      "A list of things. List of strings, numbers, objects, references",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Array Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "array",
+        items: {},
+      },
+      uiSchema: {},
+    },
+  },
+  accordionObjectField: {
+    title: "Accordion",
+    icon: <BorderTopOutlined />,
+    description: "Data in JSON format, Grouped section",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Accordion Field Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "object",
+        properties: {},
+      },
+      uiSchema: {
+        "ui:object": "accordionObjectField",
+      },
+    },
+  },
+  tabView: {
+    title: "Tab",
+    icon: <LayoutOutlined />,
+    description: "Data in JSON format, Grouped section",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Tab Field Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "object",
+        properties: {},
+      },
+      uiSchema: {
+        "ui:object": "tabView",
+      },
+    },
+  },
+  layerObjectField: {
+    title: "Layer",
+    icon: <BorderHorizontalOutlined />,
+    description: "Data in JSON format, Grouped section",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Layer Field Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "object",
+        properties: {},
+      },
+      uiSchema: {
+        "ui:object": "layerObjectField",
+      },
+    },
+  },
+};
+
 const simple = {
   text: {
     title: "Text",
@@ -199,14 +359,14 @@ const simple = {
       },
     },
   },
-  uri: {
-    title: "Uri text",
-    icon: <LinkOutlined />,
-    description: "Add uri text",
+  textarea: {
+    title: "Text area",
+    icon: <ContainerOutlined />,
+    description: "Text Area field",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Uri Schema",
+      title: "TextArea Schema",
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
@@ -224,10 +384,27 @@ const simple = {
           title: "UI Options",
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
-            suggestions: {
+            rows: {
+              title: "Rows",
+              description: "The number of the textarea rows",
+              type: "number",
+            },
+            maxLength: {
+              title: "Max Length",
+              description:
+                "Provide a number as the maximum limit of characters, infinity if not provided",
+              type: "number",
+            },
+            minLength: {
+              title: "Min Length",
+              description:
+                "Provide a number as the minimum limit of charactes, empty if not provded",
+              type: "number",
+            },
+            placeholder: {
+              title: "Placeholder",
+              description: "Provide a placeholder for the field",
               type: "string",
-              title: "Add a suggestion URL endpoint",
-              description: "Provide an URL endpoint, to fetch data from there",
             },
           },
         },
@@ -239,106 +416,14 @@ const simple = {
     default: {
       schema: {
         type: "string",
-        format: "uri",
-      },
-    },
-  },
-  date: {
-    title: "Date",
-    icon: <CalendarOutlined />,
-    description: "Date",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Date Schema",
-      properties: {
-        ...common.optionsSchema,
-        format: {
-          type: "string",
-          title: "Type",
-          enum: ["date", "date-time"],
-          default: "date",
-        },
-        customFormat: {
-          type: "string",
-          title: "Format",
-          description:
-            "Define the date format ([help](https://devhints.io/datetime#momentjs-format)). Remember to include the time in the format if you have selected `date-time` as a type",
-        },
-        minDate: {
-          type: "string",
-          title: "Minimum date allowed",
-        },
-        maxDate: {
-          type: "string",
-          title: "Maximum date allowed",
-        },
-        readOnly: extra.optionsSchema.readOnly,
-      },
-    },
-    optionsSchemaUiSchema: {
-      customFormat: {
-        "ui:placeholder": "DD/MM/YYYY",
-        "ui:options": {
-          descriptionIsMarkdown: true,
-        },
-      },
-      minDate: {
-        "ui:widget": "date",
-      },
-      maxDate: {
-        "ui:widget": "date",
-      },
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-    },
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "string",
       },
       uiSchema: {
-        "ui:widget": "date",
-      },
-    },
-  },
-  CapFiles: {
-    title: "File Upload",
-    icon: <FileOutlined />,
-    description: "Upload Files",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "File upload widget",
-      properties: {
-        ...common.optionsSchema,
-        readOnly: extra.optionsSchema.readOnly,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-    },
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "string",
-      },
-      uiSchema: {
-        "ui:field": "CapFiles",
+        "ui:widget": "textarea",
       },
     },
   },
   number: {
-    title: "Float or Integer",
+    title: "Number",
     icon: <NumberOutlined />,
     description: "IDs, order number, rating, quantity",
     child: {},
@@ -347,6 +432,12 @@ const simple = {
       title: "Number Schema",
       properties: {
         ...common.optionsSchema,
+        type: {
+          title: "Type of the number",
+          type: "string",
+          enum: ["integer", "number"],
+          enumNames: ["Integer", "Float"],
+        },
         readOnly: extra.optionsSchema.readOnly,
       },
     },
@@ -366,61 +457,21 @@ const simple = {
       uiSchema: {},
     },
   },
-  integer: {
-    title: "Integer",
-    icon: <NumberOutlined />,
+  checkbox: {
+    title: "Checkbox",
+    icon: <CheckSquareOutlined />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Integer Schema",
-      properties: {
-        ...common.optionsSchema,
-        readOnly: extra.optionsSchema.readOnly,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-    },
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "integer",
-      },
-      uiSchema: {},
-    },
-  },
-  select: {
-    title: "Select Widget",
-    icon: <AppstoreOutlined />,
-    description: "IDs, order number, rating, quantity",
-    child: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-
-    optionsSchema: {
-      type: "object",
-      title: "Select Schema",
+      title: "Checkbox Schema",
       properties: {
         ...common.optionsSchema,
         type: {
           title: "Type",
+          enum: ["boolean", "array"],
+          enumNames: ["One Option", "Multiple Options"],
           type: "string",
-          enum: ["string", "number", "array"],
-          enumNames: [
-            "Select one value (text)",
-            "Select one value (number)",
-            "Select multiple values",
-          ],
         },
         readOnly: extra.optionsSchema.readOnly,
       },
@@ -430,37 +481,17 @@ const simple = {
             {
               properties: {
                 type: {
-                  enum: ["string"],
+                  enum: ["boolean"],
                 },
-                enum: {
-                  title: "Options",
-                  type: "array",
-                  items: {
-                    type: "string",
-                  },
+                checkedValue: {
+                  title: "Returned value when checked",
+                  description: "Default: true",
+                  type: "string",
                 },
-                enumNames: {
-                  title: "Labels",
-                  description:
-                    "If you want the labels to be different from the values, define them here in order",
-                  type: "array",
-                  items: {
-                    type: "string",
-                  },
-                },
-              },
-            },
-            {
-              properties: {
-                type: {
-                  enum: ["number"],
-                },
-                enum: {
-                  title: "Options",
-                  type: "array",
-                  items: {
-                    type: "number",
-                  },
+                uncheckedValue: {
+                  title: "Returned value when unchecked",
+                  description: "Default: false",
+                  type: "string",
                 },
               },
             },
@@ -470,22 +501,15 @@ const simple = {
                   enum: ["array"],
                 },
                 items: {
-                  type: "object",
                   title: "Define your options",
+                  type: "object",
+                  description: "The options for the widget",
                   properties: {
                     enum: {
-                      title: "Options",
+                      title: "Options List",
                       type: "array",
                       items: {
-                        type: "string",
-                      },
-                    },
-                    enumNames: {
-                      title: "Labels",
-                      description:
-                        "If you want the labels to be different from the values, define them here in order",
-                      type: "array",
-                      items: {
+                        title: "Option",
                         type: "string",
                       },
                     },
@@ -500,64 +524,28 @@ const simple = {
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
-    default: {
-      schema: {
-        enum: ["Option A", "Option B", "Option C"],
-        type: "string",
-        uniqueItems: true,
-        items: {
-          type: "string",
-          enum: ["Option A", "Option B", "Option C", "Option D"],
-        },
-      },
-      uiSchema: {
-        "ui:widget": "select",
-      },
-    },
-  },
-  radio: {
-    title: "Radio Widget",
-    icon: <AimOutlined />,
-    description: "IDs, order number, rating, quantity",
-    child: {},
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
     },
-    optionsSchema: {
-      type: "object",
-      title: "Radio Schema",
-      properties: {
-        ...common.optionsSchema,
-        enum: {
-          title: "Define your options",
-          type: "array",
-          description: "The options for the radio widget",
-          items: {
-            title: "Radio Option",
-            type: "string",
-          },
-        },
-        readOnly: extra.optionsSchema.readOnly,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-    },
     default: {
       schema: {
-        type: "string",
-        enum: ["Option A", "Option B"],
+        type: "boolean",
+        items: {
+          type: "string",
+          enum: ["Option A", "Option B"],
+        },
+        uniqueItems: true,
       },
       uiSchema: {
-        "ui:widget": "radio",
+        "ui:widget": "checkbox",
       },
     },
   },
   switch: {
-    title: "Switch Widget",
+    title: "Switch",
     icon: <SwapOutlined />,
     description: "IDs, order number, rating, quantity",
     child: {},
@@ -610,27 +598,66 @@ const simple = {
       },
     },
   },
-  checkbox: {
-    title: "Checkbox Widget",
-    icon: <CheckSquareOutlined />,
+  radio: {
+    title: "Radio",
+    icon: <AimOutlined />,
     description: "IDs, order number, rating, quantity",
     child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Radio Schema",
+      properties: {
+        ...common.optionsSchema,
+        enum: {
+          title: "Define your options",
+          type: "array",
+          description: "The options for the radio widget",
+          items: {
+            title: "Radio Option",
+            type: "string",
+          },
+        },
+        readOnly: extra.optionsSchema.readOnly,
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+    },
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
     },
+    default: {
+      schema: {
+        type: "string",
+        enum: ["Option A", "Option B"],
+      },
+      uiSchema: {
+        "ui:widget": "radio",
+      },
+    },
+  },
+  select: {
+    title: "Select",
+    icon: <AppstoreOutlined />,
+    description: "IDs, order number, rating, quantity",
+    child: {},
     optionsSchema: {
       type: "object",
-      title: "Checkbox Schema",
+      title: "Select Schema",
       properties: {
         ...common.optionsSchema,
         type: {
           title: "Type",
-          enum: ["boolean", "array"],
-          enumNames: ["One Option", "Multiple Options"],
           type: "string",
+          enum: ["string", "number", "array"],
+          enumNames: [
+            "Select one value (text)",
+            "Select one value (number)",
+            "Select multiple values",
+          ],
         },
         readOnly: extra.optionsSchema.readOnly,
       },
@@ -640,17 +667,32 @@ const simple = {
             {
               properties: {
                 type: {
-                  enum: ["boolean"],
+                  enum: ["string"],
                 },
-                checkedValue: {
-                  title: "Returned value when checked",
-                  description: "Default: true",
-                  type: "string",
+                enum: {
+                  title: "Define your options",
+                  type: "array",
+                  description: "The options for the widget",
+                  items: {
+                    title: "Option",
+                    type: "string",
+                  },
                 },
-                uncheckedValue: {
-                  title: "Returned value when unchecked",
-                  description: "Default: false",
-                  type: "string",
+              },
+            },
+            {
+              properties: {
+                type: {
+                  enum: ["number"],
+                },
+                enum: {
+                  title: "Define your options",
+                  type: "array",
+                  description: "The options for the widget",
+                  items: {
+                    title: "Option",
+                    type: "number",
+                  },
                 },
               },
             },
@@ -660,24 +702,13 @@ const simple = {
                   enum: ["array"],
                 },
                 items: {
-                  title: "Define your options",
                   type: "object",
+                  title: "Define your options",
                   properties: {
                     enum: {
-                      title: "Options",
+                      title: "Options List",
                       type: "array",
-                      items: {
-                        type: "string",
-                      },
-                    },
-                    enumNames: {
-                      title: "Labels",
-                      description:
-                        "If you want the labels to be different from the values, define them here in order",
-                      type: "array",
-                      items: {
-                        type: "string",
-                      },
+                      items: { type: "string", title: "Option" },
                     },
                   },
                 },
@@ -690,31 +721,110 @@ const simple = {
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
-    default: {
-      schema: {
-        type: "boolean",
-        items: {
-          type: "string",
-          enum: ["Option A", "Option B"],
-        },
-        uniqueItems: true,
-      },
-      uiSchema: {
-        "ui:widget": "checkbox",
-      },
-    },
-  },
-  richeditor: {
-    title: "Rich Editor",
-    icon: <BookOutlined />,
-    description: "Rich Editor Field",
-    child: {},
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
     },
+    default: {
+      schema: {
+        enum: ["Option A", "Option B", "Option C"],
+        type: "string",
+        uniqueItems: true,
+        items: {
+          type: "string",
+          enum: ["Option A", "Option B", "Option C", "Option D"],
+        },
+      },
+      uiSchema: {
+        "ui:widget": "select",
+      },
+    },
+  },
+  date: {
+    title: "Date",
+    icon: <CalendarOutlined />,
+    description: "Date",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Date Schema",
+      properties: {
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+    },
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "string",
+      },
+      uiSchema: {
+        "ui:widget": "date",
+      },
+    },
+  },
+};
+
+const advanced = {
+  uri: {
+    title: "URI",
+    icon: <LinkOutlined />,
+    description: "Add uri text",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Uri Schema",
+      properties: {
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            suggestions: {
+              type: "string",
+              title: "Add a suggestion URL endpoint",
+              description: "Provide an URL endpoint, to fetch data from there",
+            },
+          },
+        },
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "string",
+        format: "uri",
+      },
+    },
+  },
+  richeditor: {
+    title: "Rich editor",
+    icon: <BookOutlined />,
+    description: "Rich Editor Field",
+    child: {},
     optionsSchema: {
       type: "object",
       title: "Rich Editor Schema",
@@ -724,6 +834,12 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
     default: {
       schema: {
         type: "string",
@@ -733,293 +849,10 @@ const simple = {
       },
     },
   },
-  textarea: {
-    title: "Text Area",
-    icon: <ContainerOutlined />,
-    description: "Text Area field",
-    child: {},
-    optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            ...common.optionsUiSchema.properties["ui:options"].properties,
-            rows: {
-              title: "Rows",
-              description: "The number of the textarea rows",
-              type: "number",
-            },
-            maxLength: {
-              title: "Max Length",
-              description:
-                "Provide a number as the maximum limit of characters, infinity if not provided",
-              type: "number",
-            },
-            minLength: {
-              title: "Min Length",
-              description:
-                "Provide a number as the minimum limit of charactes, empty if not provded",
-              type: "number",
-            },
-            placeholder: {
-              title: "Placeholder",
-              description: "Provide a placeholder for the field",
-              type: "string",
-            },
-          },
-        },
-      },
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    optionsSchema: {
-      type: "object",
-      title: "TextArea Schema",
-      properties: {
-        ...common.optionsSchema,
-        readOnly: extra.optionsSchema.readOnly,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-    },
-    default: {
-      schema: {
-        type: "string",
-      },
-      uiSchema: {
-        "ui:widget": "textarea",
-      },
-    },
-  },
-  object: {
-    title: "JSON Object",
-    icon: <div>&#123;&#32;&#125;</div>,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Object Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          properties: {
-            ...common.optionsUiSchema.properties["ui:options"].properties,
-            hidden: {
-              type: "boolean",
-              title: "Do you want this field to be hidden?",
-              description: "If yes, this field will not be visible in the form",
-            },
-          },
-        },
-      },
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    optionsSchemaUiSchema: {},
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {},
-    },
-  },
-  array: {
-    title: "Array",
-    icon: <UnorderedListOutlined />,
-    description:
-      "A list of things. List of strings, numbers, objects, references",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Array Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "array",
-        items: {},
-      },
-      uiSchema: {},
-    },
-  },
-};
-
-const advanced = {
-  accordionObjectField: {
-    title: "Accordion Field",
-    icon: <BorderTopOutlined />,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Accordion Field Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:object": "accordionObjectField",
-      },
-    },
-  },
-  tabView: {
-    title: "Tab Field",
-    icon: <LayoutOutlined />,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Tab Field Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:object": "tabView",
-      },
-    },
-  },
-  layerObjectField: {
-    title: "Layer Field",
-    icon: <BorderHorizontalOutlined />,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Layer Field Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:object": "layerObjectField",
-      },
-    },
-  },
-  zenodo: {
-    title: "Zenodo Field",
-    icon: <CloudDownloadOutlined />,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Zenodo Field Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:servicesList": ["zenodo"],
-        "ui:field": "idFetcher",
-      },
-    },
-  },
-  orcid: {
-    title: "ORCiD Field",
-    icon: <CloudDownloadOutlined />,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Orcid Field Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:servicesList": ["orcid"],
-        "ui:field": "idFetcher",
-      },
-    },
-  },
   idFetcher: {
-    title: "Id Fetcher Field",
+    title: "ID fetcher",
     icon: <CloudDownloadOutlined />,
-    description: "Data in JSON format, Grouped section",
+    description: "Fetch data from ZENODO, ORCiD or ROR",
     child: {},
     optionsSchema: {
       type: "object",
@@ -1040,6 +873,7 @@ const advanced = {
           items: {
             type: "string",
             enum: ["orcid", "ror", "zenodo"],
+            enumNames: ["ORCiD", "ROR", "Zenodo"],
           },
           uniqueItems: "true",
         },
@@ -1062,38 +896,8 @@ const advanced = {
       },
     },
   },
-  ror: {
-    title: "ROR Field",
-    icon: <CloudDownloadOutlined />,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Ror Field Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:servicesList": ["ror"],
-        "ui:field": "idFetcher",
-      },
-    },
-  },
   tags: {
-    title: "Tags Field",
+    title: "Tags",
     icon: <TagOutlined />,
     description: "Add keywords, tags, etc",
     child: {},
@@ -1115,6 +919,7 @@ const advanced = {
         },
       },
     },
+    optionsSchemaUiSchema: {},
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
@@ -1133,18 +938,94 @@ const advanced = {
       },
     },
   },
+  CapFiles: {
+    title: "File upload",
+    icon: <FileOutlined />,
+    description: "Upload Files",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "File upload widget",
+      properties: {
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+    },
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "string",
+      },
+      uiSchema: {
+        "ui:field": "CapFiles",
+      },
+    },
+  },
+};
+
+// HIDDEN FIELDS (not directly selectable by the user):
+
+export const hiddenFields = {
+  integer: {
+    title: "Integer",
+    icon: <NumberOutlined />,
+    description: "IDs, order number, rating, quantity",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Integer Schema",
+      properties: {
+        ...common.optionsSchema,
+        type: {
+          title: "Type of the number",
+          type: "string",
+          enum: ["integer", "number"],
+          enumNames: ["Integer", "Float"],
+        },
+        readOnly: extra.optionsSchema.readOnly,
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+    },
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "integer",
+      },
+      uiSchema: {},
+    },
+  },
 };
 
 const fields = {
-  advanced: {
-    title: "Advanced Fields",
+  collections: {
+    title: "Collections",
     description: "",
-    fields: advanced,
+    fields: collections,
   },
   simple: {
-    title: "Simple Fields",
+    title: "Fields",
     description: "",
     fields: simple,
+  },
+  advanced: {
+    title: "Advanced fields",
+    description: "",
+    fields: advanced,
   },
 };
 

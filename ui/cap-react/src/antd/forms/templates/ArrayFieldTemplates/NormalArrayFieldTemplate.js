@@ -15,7 +15,7 @@ import axios from "axios";
 import ImportListModal from "./ImportListModal";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { CheckOutlined } from "@ant-design/icons";
-import CodeViewer from "../../../util/CodeViewer";
+import CodeViewer from "../../../utils/CodeViewer";
 import { stex } from "@codemirror/legacy-modes/mode/stex";
 import {
   syntaxHighlighting,

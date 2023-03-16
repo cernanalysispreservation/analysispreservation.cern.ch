@@ -20,7 +20,7 @@ import {
 import ErrorScreen from "../partials/Error";
 // TODO: move JSONEditor to antd or use codemirror/merge (pre-release)
 import JsonDiff from "../../components/cms/components/SchemaWizard/JSONDiff";
-import CodeEditor from "../util/CodeEditor";
+import CodeEditor from "../utils/CodeEditor";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 
 const Schemas = ({ match }) => {

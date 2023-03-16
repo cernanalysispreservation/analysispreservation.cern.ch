@@ -3,6 +3,9 @@ import React from "react";
 import { Button, Input, Tooltip } from "antd";
 import { CopyOutlined, LinkOutlined } from "@ant-design/icons";
 
+const URL_REGEX =
+  "https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)";
+
 const UriWidget = ({
   autofocus,
   disabled,
@@ -36,7 +39,7 @@ const UriWidget = ({
               target="_blank"
               icon={<LinkOutlined />}
               style={{ marginRight: "5px" }}
-              disabled={!value}
+              disabled={!value || !new RegExp(URL_REGEX).test(value)}
             />
           </Tooltip>
           <Tooltip title="Copy URI">
