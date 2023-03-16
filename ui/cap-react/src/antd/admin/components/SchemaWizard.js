@@ -17,9 +17,10 @@ const SchemaWizard = ({ field, loader }) => {
     );
   return (
     <DndProvider backend={HTML5Backend}>
-      <Row style={{ height: "100%" }} gutter={[16, 16]}>
+      <Row style={{ height: "100%" }}>
         <Col
-          span={5}
+          xs={10}
+          sm={5}
           style={{
             overflowX: "hidden",
             height: "100%",
@@ -29,19 +30,21 @@ const SchemaWizard = ({ field, loader }) => {
           {field ? <PropertyEditor /> : <SelectFieldType />}
         </Col>
         <Col
-          span={5}
-          style={{ overflowX: "hidden", height: "100%", padding: "15px" }}
+          xs={14}
+          sm={5}
+          style={{
+            overflowX: "hidden",
+            height: "100%",
+            padding: "0px 15px",
+            backgroundColor: "#F6F7F8",
+          }}
         >
           <SchemaPreview />
         </Col>
         <Col
-          span={14}
-          style={{
-            overflowX: "hidden",
-            height: "100%",
-            padding: "15px",
-            borderLeft: "1px dotted lightgray",
-          }}
+          xs={24}
+          sm={14}
+          style={{ overflowX: "hidden", height: "100%", padding: "0px 15px" }}
         >
           <FormPreview />
         </Col>

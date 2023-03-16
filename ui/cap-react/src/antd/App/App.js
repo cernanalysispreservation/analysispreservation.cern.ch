@@ -21,7 +21,7 @@ import { Layout, Row, Spin } from "antd";
 import Loadable from "react-loadable";
 import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import Loading from "../routes/Loading";
-import ErrorPage from "../util/ErrorPage";
+import ErrorPage from "../utils/ErrorPage";
 import * as Sentry from "@sentry/react";
 
 const CMSIndex = Loadable({

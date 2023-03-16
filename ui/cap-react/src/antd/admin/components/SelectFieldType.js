@@ -1,35 +1,36 @@
 import React from "react";
-import { Col, Divider, Row, Space, Typography } from "antd";
+import { Col, Collapse, Row, Space, Typography } from "antd";
 import fields from "../utils/fieldTypes";
 import Draggable from "./Draggable";
 
 const SelectFieldType = () => {
   return (
-    <Space direction="vertical" size="large" style={{ padding: "0px 12px" }}>
-      {Object.entries(fields).map(([key, type]) => (
-        <div key={key}>
-          <Divider orientation="left">
-            <Typography.Title level={5}>{type.title}</Typography.Title>
-          </Divider>
-          <Row gutter={[16, 8]}>
-            {Object.entries(type.fields).map(([key, type], index) => (
-              <Col xs={22} xl={12} key={key} style={{ width: "100%" }}>
-                <Draggable key={index} data={type}>
-                  <div
-                    style={{ width: "100%", padding: "2px 5px" }}
-                  >
-                    <Space>
+    <div style={{ width: "100%", padding: "0px 15px" }}>
+      <Typography.Title
+        level={4}
+        style={{ textAlign: "center", margin: "15px 0" }}
+      >
+        Field types
+      </Typography.Title>
+      <Collapse defaultActiveKey={["simple", "collections"]} ghost>
+        {Object.entries(fields).map(([key, type]) => (
+          <Collapse.Panel key={key} header={type.title}>
+            <Row gutter={[16, 8]}>
+              {Object.entries(type.fields).map(([key, type], index) => (
+                <Col xs={22} xl={12} key={key} style={{ width: "100%" }}>
+                  <Draggable key={index} data={type}>
+                    <Space style={{ padding: "2px 5px" }}>
                       {type.icon}
                       {type.title}
                     </Space>
-                  </div>
-                </Draggable>
-              </Col>
-            ))}
-          </Row>
-        </div>
-      ))}
-    </Space>
+                  </Draggable>
+                </Col>
+              ))}
+            </Row>
+          </Collapse.Panel>
+        ))}
+      </Collapse>
+    </div>
   );
 };
 
