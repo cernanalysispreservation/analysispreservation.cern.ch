@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from "react";
-import ORCidIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/ORCID/ORCidIcon";
-import { Button, Input, Select, Space, Typography } from "antd";
-import ZenodoIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/Zenodo/ZenodoIcon";
-import RORIcon from "../../../components/drafts/form/themes/grommet/fields/ServiceIdGetter/components/ROR/RORIcon";
+import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
 import axios from "axios";
 import Ror from "./services/Ror";
 import Zenodo from "./services/Zenodo";
 import Orcid from "./services/Orcid";
+import { DeleteOutlined } from "@ant-design/icons";
+import OrcidSvg from "./services/svg/OrcidSvg";
+import ZenodoSvg from "./services/svg/ZenodoSvg";
+import RorSvg from "./services/svg/RorSvg";
+import Icon from "@ant-design/icons";
 
 const SERVICES = {
-  zenodo: {
-    url: "/api/services/zenodo/record/",
-  },
   orcid: {
+    name: "ORCiD",
     url: "/api/services/orcid/",
+    svg: OrcidSvg,
   },
   ror: {
+    name: "ROR",
     url: "/api/services/ror/",
+    svg: RorSvg,
+  },
+  zenodo: {
+    name: "Zenodo",
+    url: "/api/services/zenodo/record/",
+    svg: ZenodoSvg,
   },
 };
 
@@ -41,12 +49,6 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
       orcid: <Orcid data={formData.fetched} />,
     };
     return choices[name];
-  };
-
-  const IconFactory = {
-    orcid: <ORCidIcon />,
-    zenodo: <ZenodoIcon />,
-    ror: <RORIcon />,
   };
 
   const getId = (service, id) => {
@@ -75,12 +77,12 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
   };
   const onSearch = async val => {
     setErrorMessage(undefined);
-    const currentServiceApi = SERVICES[service] || null;
+    const currentServiceApi = SERVICES[service].url || null;
     const resourceID = getId(service, val);
     if (currentServiceApi && !resourceID == "") {
       setLoading(true);
       try {
-        const results = await axios.get(currentServiceApi.url + resourceID);
+        const results = await axios.get(currentServiceApi + resourceID);
         let { data } = results;
         if (!data.status) {
           const resource_data = {
@@ -91,9 +93,9 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
             fetched: data,
           };
           onChange(resource_data);
-        } else setErrorMessage("Resource not found or unaccessible");
+        } else setErrorMessage("Resource not found or inaccessible");
       } catch (e) {
-        setErrorMessage("Resource not found or unaccessible");
+        setErrorMessage("Resource not found or inaccessible");
       }
       setLoading(false);
     } else {
@@ -104,12 +106,16 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
   return (
     <div>
       {formData.fetched ? (
-        <Space>
-          {getContentByName(formData.source.service)}
-          <Button danger onClick={() => onChange({})}>
-            Remove
-          </Button>
-        </Space>
+        <Row wrap={false} align="middle">
+          <Col flex="auto">{getContentByName(formData.source.service)}</Col>
+          <Col flex="none">
+            <Button
+              danger
+              onClick={() => onChange({})}
+              icon={<DeleteOutlined />}
+            />
+          </Col>
+        </Row>
       ) : (
         <Space direction="vertical" style={{ width: "100%" }}>
           {uiSchema["ui:servicesList"].length > 1 && (
@@ -120,18 +126,20 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
             >
               {uiSchema["ui:servicesList"].map(service => (
                 <Select.Option value={service} key={service}>
-                  {service}
+                  {SERVICES[service].name}
                 </Select.Option>
               ))}
             </Select>
           )}
           {service && (
             <Space direction="vertical">
-              <Space>
-                {IconFactory[service]}
-                <Typography.Text>{service}</Typography.Text>
+              <Space align="center">
+                <Icon
+                  component={SERVICES[service].svg}
+                  style={{ verticalAlign: "middle" }}
+                />
                 <Input.Search
-                  placeholder="ID here"
+                  placeholder={`${SERVICES[service].name} ID here`}
                   enterButton="Fetch"
                   loading={loading}
                   onSearch={onSearch}

@@ -93,7 +93,7 @@ const SchemaTreeItem = ({
             gutter={8}
           >
             <Col>
-              <Typography.Text ellipsis>
+              <Typography.Text style={{ fontSize: "14px" }} ellipsis>
                 {path.schema[path.schema.length - 1]}
               </Typography.Text>
             </Col>
@@ -105,7 +105,7 @@ const SchemaTreeItem = ({
               <Col>
                 <Typography.Text
                   type="secondary"
-                  style={{ fontSize: "10px" }}
+                  style={{ fontSize: "12px" }}
                   ellipsis
                 >
                   {schema.title || "Untitled field"}

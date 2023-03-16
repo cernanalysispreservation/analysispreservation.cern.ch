@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Form from "../../forms/Form";
-import fieldTypes from "../utils/fieldTypes";
+import fieldTypes, { hiddenFields } from "../utils/fieldTypes";
 import widgets from "../formComponents/widgets";
 
 const PropertyKeyEditorForm = ({
@@ -27,12 +27,6 @@ const PropertyKeyEditorForm = ({
     }
     if (uiSchema["ui:field"]) {
       type = uiSchema["ui:field"];
-      if (
-        uiSchema["ui:field"] === "idFetcher" &&
-        uiSchema["ui:servicesList"].length < 2
-      ) {
-        type = uiSchema["ui:servicesList"][0];
-      }
     }
     if (uiSchema["ui:object"]) {
       type = uiSchema["ui:object"];
@@ -42,8 +36,10 @@ const PropertyKeyEditorForm = ({
   // if there is no type then there is nothing to return
   if (!type) return;
   const objs = {
-    ...fieldTypes.advanced.fields,
+    ...fieldTypes.collections.fields,
     ...fieldTypes.simple.fields,
+    ...fieldTypes.advanced.fields,
+    ...hiddenFields,
   };
 
   return (

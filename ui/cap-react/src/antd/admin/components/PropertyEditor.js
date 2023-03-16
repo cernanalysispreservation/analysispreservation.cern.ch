@@ -11,6 +11,7 @@ import {
 } from "antd";
 import Customize from "../containers/Customize";
 import { DeleteOutlined } from "@ant-design/icons";
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 const renderPath = pathToUpdate => {
   let prev;
   let content;
@@ -44,6 +45,7 @@ const renderPath = pathToUpdate => {
 };
 const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
   const [name, setName] = useState();
+  const screens = useBreakpoint();
 
   useEffect(
     () => {
@@ -60,10 +62,10 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <PageHeader
         onBack={enableCreateMode}
-        title="Show Fields"
+        title={screens.xl && "Field settings"}
         extra={
           path.get("path").size > 0 && (
             <Popconfirm

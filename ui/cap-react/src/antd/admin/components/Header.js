@@ -14,7 +14,7 @@ import {
 } from "@ant-design/icons";
 import { CMS } from "../../routes";
 import { configSchema } from "../utils/schemaSettings";
-import CodeViewer from "../../util/CodeViewer";
+import CodeViewer from "../../utils/CodeViewer";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 import HeaderMenuItem from "./HeaderMenuItem/HeaderMenuItem";
 
