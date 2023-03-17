@@ -24,6 +24,7 @@ const MaskedInput = ({
   value,
   disabled,
   message,
+  convertToUppercase,
 }) => {
   const status = new RegExp(pattern).test(value);
 
@@ -34,8 +35,13 @@ const MaskedInput = ({
           mask &&
           mask
             .split(/(.*?[^\\])/)
-            .filter(i => i)
-            .map(i => (i in MAPPINGS ? MAPPINGS[i] : i.replace("\\", "")))
+            .filter(i => i) // needed to remove empty entries
+            .map(i => {
+              let mappings = convertToUppercase
+                ? { ...MAPPINGS, a: /[a-zA-Z]/, A: /[a-zA-Z]/ }
+                : MAPPINGS;
+              return i in mappings ? mappings[i] : i.replace("\\", "");
+            })
         }
         onChange={onChange}
         onFocus={onFocus}
