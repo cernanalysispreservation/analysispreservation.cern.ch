@@ -1133,7 +1133,8 @@
       "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
       "cadi_id": {
         "ui:options": {
-          "mask": "***-00-000",
+          "convertToUppercase": true,
+          "mask": "AAA-00-000",
           "autofill_on": ["onClick", "onEnter"],
           "autofill_from": "/api/cms/cadi/",
           "autofill_fields": [
