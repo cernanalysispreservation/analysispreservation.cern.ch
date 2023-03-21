@@ -14,6 +14,7 @@ const NotificationEdit = ({
 }) => {
   const formData =
     schemaConfig &&
+    schemaConfig.get(category).get(index) &&
     schemaConfig
       .get(category)
       .get(index)

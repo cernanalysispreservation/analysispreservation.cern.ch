@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Col, PageHeader, Row, Typography } from "antd";
 import { withRouter } from "react-router-dom";
@@ -14,6 +14,9 @@ const NotificationList = ({
   const items = schemaConfig && schemaConfig.get(category);
 
   const [notificationIndex, setNotificationIndex] = useState(-1);
+
+  useEffect(() => setNotificationIndex(-1), [category]);
+
   const screens = useBreakpoint();
 
   return notificationIndex > -1 ? (
