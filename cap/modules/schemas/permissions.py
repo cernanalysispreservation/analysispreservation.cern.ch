@@ -113,15 +113,15 @@ class ReadSchemaPermission(Permission):
 
 
 class AdminSchemaPermission(Permission):
-    """Schema read permission."""
+    """Schema admin permission."""
 
     def __init__(self, schema):
         """Initialize state.
 
-        Read access for:
+        Admin access for:
 
         * all members of experiment assigned to schema
-        * all users/roles assigned to schema-object-read action
+        * all users/roles assigned to schema-object-admin action
 
         """
         _needs = set()

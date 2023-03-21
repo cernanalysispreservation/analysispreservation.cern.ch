@@ -54,7 +54,8 @@ def test_me_when_superuser_returns_correct_user_data(
         }],
         "email": superuser.email,
         "id": superuser.id,
-        "profile": {}
+        "profile": {},
+        'roles':  ['superuser', 'schema-admin:cms', 'schema-admin:lhcb']
     }
 
 
@@ -83,7 +84,8 @@ def test_me_when_cms_user_returns_correct_user_data(client, create_schema,
         }],
         "email": user.email,
         "id": user.id,
-        "profile": {}
+        "profile": {},
+        'roles': [],
     }
 
     lhcb_schema.process_action_roles('allow',
@@ -104,5 +106,6 @@ def test_me_when_cms_user_returns_correct_user_data(client, create_schema,
         }],
         "email": user.email,
         "id": user.id,
-        "profile": {}
+        "profile": {},
+        'roles': [],
     }

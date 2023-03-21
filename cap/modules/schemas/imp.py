@@ -25,12 +25,13 @@
 from itertools import groupby
 
 from invenio_access.models import ActionRoles, ActionUsers
-from invenio_access.permissions import Permission
+from invenio_access.permissions import Permission, superuser_access
 from invenio_cache import current_cache
 from sqlalchemy.event import listen
 
 from .models import Schema
 from .permissions import (
+    AdminSchemaPermission,
     ReadSchemaPermission,
     deposit_schema_create_action,
     deposit_schema_read_action,
@@ -151,6 +152,41 @@ def get_indexed_schemas(latest=True):
 def _filter_by_read_access(schemas_list):
     """Return only schemas that user has read access to."""
     return [x for x in schemas_list if ReadSchemaPermission(x).can()]
+
+
+def _filter_by_admin_access(schemas_list):
+    """Return only schemas that user has admin access to."""
+    return [x for x in schemas_list if AdminSchemaPermission(x).can()]
+
+
+def is_super_user():
+    return Permission(superuser_access).can()
+
+
+def get_admin_roles_for_user(latest=True):
+    """Return list of roles in schemas, current user has admin/superuser access to."""
+    roles = []
+    schemas = get_indexed_schemas(latest=latest)
+    schemas = _filter_by_admin_access(schemas)
+    if latest:
+        schemas = _filter_only_latest(schemas)
+
+    for schema in schemas:
+        roles.append(f"{schema.name}")
+
+    return roles
+
+
+def generate_roles(mapping):
+    roles = []
+    for method_name, method in mapping.items():
+        result = method()
+        if isinstance(result, bool) and result:
+            roles.append(method_name)
+        elif isinstance(result, list):
+            for role in result:
+                roles.append(f"{method_name}:{role}")
+    return roles
 
 
 def get_schemas_for_user(latest=True):
