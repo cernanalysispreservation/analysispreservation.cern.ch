@@ -1,55 +1,67 @@
+const ctxSchema = {
+  type: "array",
+  title: "Context (ctx) Options",
+  uniqueItems: true,
+  items: {
+    anyOf: [
+      {
+        title: "Manual params",
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            title: "Variable name",
+            description: "Provide the value for the path",
+          },
+          path: {
+            type: "string",
+            title: "Variable Path",
+            description: "Provide the path for the value",
+          },
+        },
+        required: ["name", "path"],
+      },
+      {
+        title: "Select from Method",
+        properties: {
+          method: {
+            type: "string",
+            title: "Variable Method",
+            enum: [
+              "draft_url",
+              "published_url",
+              "working_url",
+              "submitter_email",
+              "reviewer_email",
+              "cms_stats_committee_by_pag",
+              "published_id",
+              "draft_id",
+              "revision",
+              "draft_revision",
+            ],
+          },
+        },
+        required: ["method"],
+      },
+    ],
+  },
+};
+
+const ctxUiSchema = {
+  items: {
+    "ui:options": {
+      stringify: ["method", "path", "name"],
+    },
+    path: {
+      "ui:field": "schemaPathSuggester",
+    },
+  },
+};
+
 export const schema = {
   type: "object",
   title: "Notification Configuration",
   definitions: {
-    ctx: {
-      type: "array",
-      title: "Context (ctx) Options",
-      uniqueItems: true,
-      items: {
-        anyOf: [
-          {
-            title: "Manually params",
-            type: "object",
-            properties: {
-              name: {
-                type: "string",
-                title: "Variable name",
-                description: "Provide the value for the path",
-              },
-              path: {
-                type: "string",
-                title: "Variable Path",
-                description: "Provide the path for the value",
-              },
-            },
-            required: ["name", "path"],
-          },
-          {
-            title: "Select from Method",
-            properties: {
-              method: {
-                type: "string",
-                title: "Variable Method",
-                enum: [
-                  "draft_url",
-                  "published_url",
-                  "working_url",
-                  "submitter_email",
-                  "reviewer_email",
-                  "cms_stats_committee_by_pag",
-                  "published_id",
-                  "draft_id",
-                  "revision",
-                  "draft_revision",
-                ],
-              },
-            },
-            required: ["method"],
-          },
-        ],
-      },
-    },
     mails: {
       type: "object",
       title: "Mails",
@@ -76,9 +88,7 @@ export const schema = {
                 type: "string",
                 title: "Template",
               },
-              ctx: {
-                $ref: "#/definitions/ctx",
-              },
+              ctx: ctxSchema,
             },
           },
         },
@@ -165,9 +175,7 @@ export const schema = {
     },
   },
   properties: {
-    ctx: {
-      $ref: "#/definitions/ctx",
-    },
+    ctx: ctxSchema,
     subject: {
       title: "Email Subject",
       anyOf: [
@@ -176,7 +184,7 @@ export const schema = {
           type: "object",
           additionalProperties: false,
           description:
-            "The default email temaplate for this action will be used",
+            "The default email template for this action will be used",
         },
         {
           type: "object",
@@ -187,9 +195,7 @@ export const schema = {
               type: "string",
               title: "Template string (Jinja format)",
             },
-            ctx: {
-              $ref: "#/definitions/ctx",
-            },
+            ctx: ctxSchema,
           },
         },
         {
@@ -201,9 +207,7 @@ export const schema = {
               type: "string",
               title: "Template file (path)",
             },
-            ctx: {
-              $ref: "#/definitions/ctx",
-            },
+            ctx: ctxSchema,
           },
         },
       ],
@@ -226,9 +230,7 @@ export const schema = {
               type: "string",
               title: "Template file (path)",
             },
-            ctx: {
-              $ref: "#/definitions/ctx",
-            },
+            ctx: ctxUiSchema,
             base_template: {
               type: "string",
               title: "Base Template",
@@ -248,9 +250,7 @@ export const schema = {
               type: "string",
               title: "Template type (string/path)",
             },
-            ctx: {
-              $ref: "#/definitions/ctx",
-            },
+            ctx: ctxSchema,
             base_template: {
               type: "string",
               title: "Base Template",
@@ -275,21 +275,6 @@ export const schema = {
             additionalProperties: false,
             type: "object",
             properties: {
-              // op: {
-              //   type: "string",
-              //   title: "AND/OR",
-              //   enum: ["and", "or"],
-              //   default: "and"
-              // },
-              // checks: {
-              //   type: "array",
-              //   items: {
-              //     oneOf: [
-              //       { $ref: "#/definitions/checks" },
-              //       { $ref: "#/definitions/condition" }
-              //     ]
-              //   }
-              // },
               mails: {
                 $ref: "#/definitions/mails",
               },
@@ -339,23 +324,9 @@ export const schema = {
 };
 
 export const uiSchema = {
-  ctx: {
-    "ui:field": "ctx",
-    items: {
-      "ui:options": {
-        stringify: [
-          "method",
-          "path",
-          // {"type": "text", "text": " -|- "},
-          "name",
-        ],
-      },
-    },
-  },
+  ctx: ctxUiSchema,
   subject: {
-    ctx: {
-      "ui:field": "ctx",
-    },
+    ctx: ctxUiSchema,
     template: {
       "ui:widget": "richeditor",
     },
@@ -364,9 +335,7 @@ export const uiSchema = {
     },
   },
   body: {
-    ctx: {
-      "ui:field": "ctx",
-    },
+    ctx: ctxUiSchema,
     template: {
       "ui:widget": "richeditor",
     },
@@ -384,9 +353,7 @@ export const uiSchema = {
           formatted: {
             "ui:array": "default",
             items: {
-              ctx: {
-                "ui:field": "ctx",
-              },
+              ctx: ctxUiSchema,
             },
           },
         },
@@ -398,9 +365,7 @@ export const uiSchema = {
           formatted: {
             "ui:array": "default",
             items: {
-              ctx: {
-                "ui:field": "ctx",
-              },
+              ctx: ctxUiSchema,
             },
           },
         },
@@ -412,9 +377,7 @@ export const uiSchema = {
           formatted: {
             "ui:array": "default",
             items: {
-              ctx: {
-                "ui:field": "ctx",
-              },
+              ctx: ctxUiSchema,
             },
           },
         },
