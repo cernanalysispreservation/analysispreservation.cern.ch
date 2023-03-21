@@ -94,7 +94,7 @@ const Notifications = ({ schemaConfig, createNotificationCategory }) => {
             ))}
         </Menu>
       </Layout.Sider>
-      <Layout.Content>
+      <Layout.Content style={{ overflowY: "scroll" }}>
         {selectedCategory ? (
           <NotificationList category={selectedCategory} />
         ) : (
