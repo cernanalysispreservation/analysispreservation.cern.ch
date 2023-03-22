@@ -17,7 +17,8 @@ import Footer from "../partials/Footer";
 import DocumentTitle from "../partials/DocumentTitle";
 import { Layout, Row, Spin } from "antd";
 
-import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
+import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMA } from "../routes";
+
 import ErrorPage from "../utils/ErrorPage";
 import * as Sentry from "@sentry/react";
 import useTrackPageViews from "../hooks/useTrackPageViews";
@@ -65,7 +66,7 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
                 <Route path={ABOUT} component={AboutPage} />
                 <Route path={POLICY} component={PolicyPage} />
                 {isAdmin && <Route path={CMS} component={AdminPage} />}
-                <Route path={SCHEMAS} component={SchemasPage} />
+                <Route path={SCHEMA} component={SchemasPage} />
                 <Route path={HOME} component={requireAuth(IndexPage)} />
               </Switch>
             </Suspense>
