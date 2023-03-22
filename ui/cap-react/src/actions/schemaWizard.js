@@ -220,7 +220,7 @@ export function createContentType(content_type) {
 
 export function selectContentType(id) {
   return function (dispatch) {
-    dispatch(push(`${CMS}/${id}`));
+    dispatch(push(`${CMS_EDITOR}/${id}`));
   };
 }
 

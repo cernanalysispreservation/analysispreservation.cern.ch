@@ -5,13 +5,12 @@ export const ABOUT = "/about";
 export const POLICY = "/policy";
 export const SEARCH_TIPS = "/search-tips";
 export const STATUS = "/status";
-export const SCHEMAS = "/schemas/:schema_name/:schema_version?";
+export const SCHEMA = "/admin/schema/:schema_name/:schema_version?";
 
 export const CMS = "/admin";
-export const CMS_NEW = `${CMS}/new`;
-export const CMS_SCHEMA_PATH = `${CMS}/:schema_name?/:schema_version?`;
-export const CMS_NOTIFICATION = `${CMS_SCHEMA_PATH}/notifications/:category?`;
-export const CMS_NOTIFICATION_EDIT = `${CMS_NOTIFICATION}/:id?`;
+export const CMS_EDITOR = `${CMS}/editor`;
+export const CMS_NEW = `${CMS_EDITOR}/new`;
+export const CMS_SCHEMA_PATH = `${CMS_EDITOR}/:schema_name?/:schema_version?`;
 export const COLLECTION_BASE = "/collection";
 export const COLLECTION = `${COLLECTION_BASE}/:collection_name/:version?`;
 
