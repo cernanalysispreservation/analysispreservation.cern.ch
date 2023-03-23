@@ -36,23 +36,12 @@ from werkzeug.local import LocalProxy
 
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-from cap.modules.schemas.imp import (
-    get_admin_roles_for_user,
-    get_cached_indexed_schemas_for_user_create,
-    generate_roles,
-    is_super_user,
-)
-from cap.modules.user.utils import get_remote_account_by_id
+from cap.modules.schemas.imp import get_cached_indexed_schemas_for_user_create
+from cap.modules.user.utils import get_remote_account_by_id, get_user_ui_roles
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 user_blueprint = Blueprint('cap_user', __name__, template_folder='templates')
-
-
-USER_UI_ROLES = {
-    'superuser': is_super_user,
-    'schema-admin': get_admin_roles_for_user,
-}
 
 
 @user_blueprint.route('/me')
@@ -73,7 +62,7 @@ def get_user():
         "email": current_user.email,
         "deposit_groups": deposit_groups,
         "profile": extra_data,
-        "roles": generate_roles(USER_UI_ROLES),
+        "roles": get_user_ui_roles(),
     }
 
     response = jsonify(_user)
