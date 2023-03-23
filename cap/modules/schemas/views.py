@@ -53,6 +53,8 @@ from .utils import (
     check_allowed_patch_operation,
     check_allowed_patch_path,
     get_default_mapping,
+    get_schema,
+    schema_admin_permission,
 )
 
 blueprint = Blueprint(
@@ -113,6 +115,62 @@ def permissions(name=None, version=None):
         return jsonify({}), 201
     elif request.method == "DELETE":
         return jsonify({}), 204
+
+
+@blueprint.route(
+    '/<string:name>/notifications', methods=['GET', 'PATCH']
+)
+@blueprint.route(
+    '/<string:name>/<string:version>/notifications',
+    methods=['GET', 'PATCH'],
+)
+@get_schema
+@schema_admin_permission
+@super_admin_permission.require(http_exception=403)
+def notifications_config(name=None, version=None, schema=None, *args, **kwargs):
+    """CRUD operations for schema configuration."""
+    serialized_config = schema.config_serialize()
+    notifications_config = serialized_config.get("config", {}).get("notifications", {})
+    if request.method == "PATCH":
+        try:
+            data = request.get_json()
+            patched_notifications_config = apply_patch(notifications_config, data)
+            patched_object = {'config': {'notifications': patched_notifications_config}}
+            schema.update(**patched_object)
+            db.session.commit()
+            return jsonify(schema.config_serialize()), 201
+        except (
+                JsonPatchException,
+                JsonPatchConflict,
+                JsonPointerException,
+                TypeError,
+            ) as err:
+                return (
+                    jsonify(
+                        {
+                            'message': 'Could not apply '
+                            'json-patch to object: {}'.format(err)
+                        }
+                    ),
+                    400,
+                )
+        except IntegrityError:
+            return (
+                jsonify(
+                    {
+                        'message': 'Error occured during '
+                        'saving schema in the db.'
+                    }
+                ),
+                500,
+            )
+        except ValidationError as err:
+            return (
+                jsonify({'message': err.description, 'errors': err.errors}),
+                400,
+            )
+
+    return jsonify(notifications_config), 200
 
 
 class SchemaAPI(MethodView):
