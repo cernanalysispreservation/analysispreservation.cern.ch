@@ -26,28 +26,68 @@
 import ldap
 from cachetools.func import lru_cache
 from flask import current_app
-from sqlalchemy.orm.exc import NoResultFound
-from werkzeug.local import LocalProxy
-
+from flask_login import current_user
+from invenio_access.permissions import Permission, superuser_access
 from invenio_accounts.models import Role, User
 from invenio_oauthclient.models import RemoteAccount
+from sqlalchemy.orm.exc import NoResultFound
+from werkzeug.local import LocalProxy
 
 from .errors import DoesNotExistInLDAP
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 
+def is_super_user():
+    return Permission(superuser_access).can()
+
+
+def get_admin_roles_for_user(latest=True):
+    """Return list of schemas user can admin."""
+    from cap.modules.schemas.imp import (
+        get_cached_indexed_schemas_for_user_admin,
+    )
+
+    roles = []
+    schemas = get_cached_indexed_schemas_for_user_admin(
+        latest=latest, user_id=current_user.id
+    )
+
+    for schema in schemas:
+        roles.append(f"{schema.name}")
+
+    return roles
+
+
+USER_UI_ROLES = {
+    'superuser': is_super_user,
+    'schema-admin': get_admin_roles_for_user,
+}
+
+
+def get_user_ui_roles():
+    roles = []
+    for method_name, method in USER_UI_ROLES.items():
+        result = method()
+        if isinstance(result, bool) and result:
+            roles.append(method_name)
+        elif isinstance(result, list):
+            for role in result:
+                roles.append(f"{method_name}:{role}")
+    return roles
+
+
 def _query_ldap(base, query, fields):
     lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search_ext(base,
-                  ldap.SCOPE_ONELEVEL,
-                  query,
-                  fields,
-                  serverctrls=[
-                      ldap.controls.SimplePagedResultsControl(True,
-                                                              size=7,
-                                                              cookie='')
-                  ])
+    lc.search_ext(
+        base,
+        ldap.SCOPE_ONELEVEL,
+        query,
+        fields,
+        serverctrls=[
+            ldap.controls.SimplePagedResultsControl(True, size=7, cookie='')
+        ],
+    )
 
     return lc.result()[1]
 
@@ -60,16 +100,20 @@ def get_user_mail_from_ldap(display_name):
     res = _query_ldap(
         base='OU=Users,OU=Organic Units,DC=cern,DC=ch',
         query='(&(cernAccountType=Primary)(displayName={}))'.format(
-            display_name),
-        fields=['mail'])
+            display_name
+        ),
+        fields=['mail'],
+    )
 
     if not res:
         parts = display_name.split(' ')
         res = _query_ldap(
             base='OU=Users,OU=Organic Units,DC=cern,DC=ch',
             query='(&(cernAccountType=Primary)(givenName={}*)(sn=*{}))'.format(
-                parts[0], parts[-1]),
-            fields=['mail'])
+                parts[0], parts[-1]
+            ),
+            fields=['mail'],
+        )
 
     if len(res) != 1:
         raise DoesNotExistInLDAP
@@ -85,16 +129,19 @@ def does_user_exist_in_ldap(mail):
     res = _query_ldap(
         base='OU=Users,OU=Organic Units,DC=cern,DC=ch',
         query='(&(cernAccountType=Primary)(mail={}))'.format(mail),
-        fields=['mail'])
+        fields=['mail'],
+    )
 
     return True if res else False
 
 
 def does_egroup_exist_in_ldap(mail):
     """Query ldap to check if user exists."""
-    res = _query_ldap(base='OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
-                      query='mail={}'.format(mail),
-                      fields=['mail'])
+    res = _query_ldap(
+        base='OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
+        query='mail={}'.format(mail),
+        fields=['mail'],
+    )
 
     return True if res else False
 
