@@ -1620,3 +1620,115 @@ def test_patch_when_operation_undefined_returns_400(
 
     assert resp.status_code == 400
     assert 'Invalid/No patch data provided.' in resp.json['message']
+
+
+########################
+# api/jsonschemas/<string:name>/notifications  [PATCH]
+# api/jsonschemas/<string:name>/<string:version>/notifications  [PATCH]
+########################
+def test_patch_notifications_config_when_user_not_logged_in_returns_401(
+        client, schema, users, json_headers):
+    resp = client.patch(
+        '/jsonschemas/{}/{}/notifications'.format(schema.name, schema.version),
+        headers=json_headers)
+
+    assert resp.status_code == 403
+
+
+def test_patch_notifications_config(
+    client, schema, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        deposit_schema={'title': 'deposit_schema'},
+        config={
+            'reviewable': True,
+            'notifications': {
+                'actions': {
+                    'review': [
+                        {
+                            "subject": {
+                            "template": "Questionnaire for {{ cadi_id }} - New Review on Analysis | CERN Analysis Preservation",
+                            "ctx": [{
+                                "name": "cadi_id",
+                                "path": "analysis_context.cadi_id"
+                            }]
+                            },
+                            "body": {
+                                "template_file": "mail/body/experiments/cms/questionnaire_message_review.html",
+                                "ctx": [{
+                                    "name": "cadi_id",
+                                    "path": "analysis_context.cadi_id"
+                                }, {
+                                    "name": "title",
+                                    "path": "general_title"
+                                },{
+                                    "method": "working_url"
+                                }, {
+                                    "method": "creator_email"
+                                }, {
+                                    "method": "submitter_email"
+                                }]
+                            },
+                            "recipients": {
+                                "bcc": [{
+                                    "method": "get_owner"
+                                }, {
+                                    "method": "get_submitter"
+                                }]
+                            }
+                        }
+                    ]
+                },
+            }
+        },
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+    client.post(
+        '/jsonschemas/',
+        data=json.dumps(schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    valid_patch = [
+        {
+            "op": "replace",
+            "path": "/actions/review/0/body/ctx/0/name",
+            "value": "cadi_identification"
+        }
+    ]
+    resp = client.patch(
+        '/jsonschemas/new-schema/notifications',
+        data=json.dumps(valid_patch),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 201
+
+    invalid_patch = [
+        {
+            "op": "remove",
+            "path": "/actions/review/0/body/ctx/0/name"
+        }
+    ]
+    resp = client.patch(
+        '/jsonschemas/new-schema/notifications',
+        data=json.dumps(invalid_patch),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Schema configuration validation error'
+
+    invalid_patch_test = {
+        "op": "remove",
+        "path": "/actions/review/0/body/ctx/0/name",
+        "value": "cadi_id",
+    }
+    resp = client.patch(
+        '/jsonschemas/new-schema/notifications',
+        data=json.dumps(invalid_patch_test),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Could not apply json-patch to object: string indices must be integers'
