@@ -56,6 +56,7 @@ from .serializers import (
 from .utils import (
     check_allowed_patch_operation,
     check_allowed_patch_path,
+    get_all_schemas,
     get_default_mapping,
     get_schema,
     schema_admin_permission,
@@ -120,18 +121,13 @@ def process_config_operations(request, config_key, schema):
 
 @blueprint.route('/<string:name>/versions', methods=['GET'])
 @login_required
-def get_all_versions(name=None):
+@get_all_schemas
+def get_all_versions(name=None, schemas=None, *args, **kwargs):
     """Get all versions of a schema that user has access to."""
-    if name:
-        try:
-            schemas = Schema.get_all_versions(name)
-            latest = schemas[0]
-        except (JSONSchemaNotFound, IndexError):
-            abort(404)
-        response = {
-            'versions': link_serializer.dump(schemas, many=True).data,
-            'latest': link_serializer.dump(latest).data,
-        }
+    response = {
+        'versions': link_serializer.dump(schemas, many=True).data,
+        'latest': link_serializer.dump(schemas[0]).data,
+    }
     return jsonify(response)
 
 
@@ -143,21 +139,11 @@ def get_all_versions(name=None):
     methods=['GET', 'POST', 'DELETE'],
 )
 # @login_required
+@get_schema
+@schema_admin_permission
 @super_admin_permission.require(http_exception=403)
-def permissions(name=None, version=None):
+def permissions(name=None, version=None, schema=None, *args, **kwargs):
     """Get all versions of a schema that user has access to."""
-    if name:
-        try:
-            if version:
-                schema = Schema.get(name, version)
-            else:
-                schema = Schema.get_latest(name)
-        except JSONSchemaNotFound:
-            abort(404)
-
-    if not AdminSchemaPermission(schema).can():
-        abort(403)
-
     if request.method == "GET":
         schema_permissions = schema.get_schema_permissions()
         return jsonify(schema_permissions)
@@ -234,21 +220,14 @@ class SchemaAPI(MethodView):
 
     decorators = [login_required]
 
-    def get(self, name=None, version=None):
+    @get_schema
+    def get(self, name=None, version=None, schema=None, *args, **kwargs):
         """Get all schemas that user has access to."""
         resolve = request.args.get('resolve', False)
         latest = request.args.get('latest', False)
         config = request.args.get('config', False)
 
         if name:
-            try:
-                if version:
-                    schema = Schema.get(name, version)
-                else:
-                    schema = Schema.get_latest(name)
-            except JSONSchemaNotFound:
-                abort(404)
-
             if not ReadSchemaPermission(schema).can():
                 abort(403)
 
@@ -333,35 +312,19 @@ class SchemaAPI(MethodView):
             return jsonify(schema.config_serialize())
 
     @super_admin_permission.require(http_exception=403)
-    def delete(self, name, version):
+    @get_schema
+    def delete(self, name, version, schema=None, *args, **kwargs):
         """Delete schema."""
-        try:
-            schema = Schema.get(name, version)
-        except JSONSchemaNotFound:
-            abort(404)
-
         with AdminSchemaPermission(schema).require(403):
             db.session.delete(schema)
             db.session.commit()
 
             return 'Schema deleted.', 204
 
+    @get_schema
     @super_admin_permission.require(http_exception=403)
-    def patch(self, name, version):
-        try:
-            schema = Schema.get(name, version)
-            serialized_schema = schema.patch_serialize()
-        except JSONSchemaNotFound:
-            return (
-                jsonify(
-                    {
-                        'message': 'Schema not found. Please try '
-                        'again with existing schemas.'
-                    }
-                ),
-                404,
-            )
-
+    def patch(self, name, version, schema=None, *args, **kwargs):
+        serialized_schema = schema.patch_serialize()
         with AdminSchemaPermission(schema).require(403):
             data = request.get_json()
             data = check_allowed_patch_operation(data)

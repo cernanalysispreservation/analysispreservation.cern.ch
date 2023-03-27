@@ -26,12 +26,12 @@
 import re
 from functools import wraps
 
-from flask import abort
+from flask import abort, jsonify
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from jsonpatch import JsonPatchConflict
 
 from .models import Schema
-from .permissions import AdminSchemaPermission
+from .permissions import AdminSchemaPermission, ReadSchemaPermission
 
 
 def is_later_version(version1, version2):
@@ -147,7 +147,9 @@ def get_schema(f):
     """Decorator to check if schema exists by name and/or version."""
 
     @wraps(f)
-    def wrapper(name=None, version=None, schema=None, *args, **kwargs):
+    def wrapper(
+        self=None, name=None, version=None, schema=None, *args, **kwargs
+    ):
         if name:
             try:
                 if version:
@@ -155,8 +157,46 @@ def get_schema(f):
                 else:
                     schema = Schema.get_latest(name)
             except JSONSchemaNotFound:
-                abort(404)
-        return f(name=name, version=version, schema=schema, *args, **kwargs)
+                return (
+                    jsonify(
+                        {
+                            'message': 'Schema not found. Please try '
+                            'again with existing schemas.'
+                        }
+                    ),
+                    404,
+                )
+        return f(
+            self=self,
+            name=name,
+            version=version,
+            schema=schema,
+            *args,
+            **kwargs,
+        )
+
+    return wrapper
+
+
+def get_all_schemas(f):
+    """Decorator to return all schema by name."""
+
+    @wraps(f)
+    def wrapper(self=None, name=None, schemas=None, *args, **kwargs):
+        if name:
+            try:
+                schemas = Schema.get_all_versions(name)
+            except (JSONSchemaNotFound, IndexError):
+                return (
+                    jsonify(
+                        {
+                            'message': 'Schema not found. Please try '
+                            'again with existing schemas.'
+                        }
+                    ),
+                    404,
+                )
+        return f(self=self, name=name, schemas=schemas, *args, **kwargs)
 
     return wrapper
 
@@ -165,9 +205,39 @@ def schema_admin_permission(f):
     """Decorator to check if user has admin permission."""
 
     @wraps(f)
-    def wrapper(name=None, version=None, schema=None, *args, **kwargs):
+    def wrapper(
+        self=None, name=None, version=None, schema=None, *args, **kwargs
+    ):
         if not AdminSchemaPermission(schema).can():
             abort(403)
-        return f(name=name, version=version, schema=schema, *args, **kwargs)
+        return f(
+            self=self,
+            name=name,
+            version=version,
+            schema=schema,
+            *args,
+            **kwargs,
+        )
+
+    return wrapper
+
+
+def schema_read_permission(f):
+    """Decorator to check if user has read permission."""
+
+    @wraps(f)
+    def wrapper(
+        self=None, name=None, version=None, schema=None, *args, **kwargs
+    ):
+        if not ReadSchemaPermission(schema).can():
+            abort(403)
+        return f(
+            self=self,
+            name=name,
+            version=version,
+            schema=schema,
+            *args,
+            **kwargs,
+        )
 
     return wrapper
