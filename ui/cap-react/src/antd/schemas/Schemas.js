@@ -18,10 +18,9 @@ import {
   UndoOutlined,
 } from "@ant-design/icons";
 import ErrorScreen from "../partials/Error";
-// TODO: move JSONEditor to antd or use codemirror/merge (pre-release)
-import JsonDiff from "../../components/cms/components/SchemaWizard/JSONDiff";
 import CodeEditor from "../utils/CodeEditor";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
+import CodeDiffViewer from "../utils/CodeDiffViewer";
 
 const Schemas = ({ match }) => {
   const EDITABLE_FIELDS = [
@@ -155,7 +154,7 @@ const Schemas = ({ match }) => {
               visible={showModal}
               onCancel={() => setShowModal(false)}
               title={`${selection} diff`}
-              width={800}
+              width={1000}
               footer={null}
               bodyStyle={{
                 overflowX: "scroll",
@@ -163,13 +162,12 @@ const Schemas = ({ match }) => {
                 maxHeight: "calc(100vh - 200px)",
               }}
             >
-              <JsonDiff
-                left={
-                  selection === FULL_SCHEMA
-                    ? originalSchema
-                    : originalSchema[selection]
+              <CodeDiffViewer
+                left={JSON.stringify(selection === FULL_SCHEMA
+                  ? originalSchema
+                  : originalSchema[selection], null, 2)
                 }
-                right={field}
+                right={JSON.stringify(field, null, 2)}
               />
             </Modal>
             <Row justify="center">

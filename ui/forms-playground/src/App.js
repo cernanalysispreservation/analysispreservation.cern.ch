@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Form from "cap-react/src/components/drafts/form/Form";
+import Form from "cap-react/src/antd/forms/Form";
 import { Selector } from "./Selector";
 import { Editor } from "./Editor";
 import { Box, Heading, CheckBox } from "grommet";
@@ -35,12 +35,12 @@ class Playground extends Component {
         validate: false,
         disable: false,
         omitExtraData: false,
-        liveOmit: false
+        liveOmit: false,
       },
       liveValidate: false,
       shareURL: null,
       themeObj: {},
-      toggle: false
+      toggle: false,
     };
   }
 
@@ -80,7 +80,7 @@ class Playground extends Component {
         ArrayFieldTemplate,
         ObjectFieldTemplate,
         uiSchema,
-        extraErrors
+        extraErrors,
       })
     );
   };
@@ -99,7 +99,7 @@ class Playground extends Component {
       theme,
       themeObj,
       stylesheet,
-      editor: editor ? editor : "default"
+      editor: editor ? editor : "default",
     });
   };
 
@@ -110,7 +110,7 @@ class Playground extends Component {
 
   toggleUpdate = () => {
     this.setState({
-      toggle: !this.state.toggle
+      toggle: !this.state.toggle,
     });
   };
 
@@ -121,7 +121,7 @@ class Playground extends Component {
       formData,
       extraErrors,
       ArrayFieldTemplate,
-      ObjectFieldTemplate
+      ObjectFieldTemplate,
     } = this.state;
 
     // const { themes } = this.props;
@@ -221,7 +221,7 @@ class Playground extends Component {
 }
 
 Playground.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
 };
 
 export default Playground;

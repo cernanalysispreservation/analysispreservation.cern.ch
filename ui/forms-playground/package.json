@@ -12,6 +12,7 @@
     "cap-react": "*",
     "react-redux": "^6.0.0",
     "react-ace": "8.0.0",
+    "react-icons": "3.9.0",
     "grommet": "1.0.0",
     "grommet-addons": "^0.6.0"
   },

@@ -5,7 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Grommet from "grommet/components/Grommet";
 
-import "cap-react/src/styles/styles.scss";
+import "./styles/styles.scss";
 import "grommet/scss/hpinc/index.scss";
 
 ReactDOM.render(
