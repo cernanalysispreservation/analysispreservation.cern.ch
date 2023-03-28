@@ -4,7 +4,7 @@ import { fromJS } from "immutable";
 import { push } from "connected-react-router";
 import { notification } from "antd";
 import { CMS, CMS_NEW } from "../antd/routes";
-import { slugify, _initSchemaStructure } from "../components/cms/utils";
+import { slugify, _initSchemaStructure } from "../antd/admin/utils";
 import { updateDepositGroups } from "./auth";
 
 export const ADD_PROPERTY = "ADD_PROPERTY";

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import JsonDiff from "./JSONDiff";
 import Form from "../../forms/Form";
 import {
   Col,
@@ -24,8 +23,9 @@ import {
 import { CMS } from "../../routes";
 import { configSchema } from "../utils/schemaSettings";
 import CodeViewer from "../../utils/CodeViewer";
-import { json, jsonParseLinter } from "@codemirror/lang-json";
+import { json } from "@codemirror/lang-json";
 import HeaderMenuItem from "./HeaderMenuItem/HeaderMenuItem";
+import CodeDiffViewer from "../../utils/CodeDiffViewer";
 
 const { useBreakpoint } = Grid;
 const Header = ({
@@ -73,7 +73,6 @@ const Header = ({
         <CodeViewer
           value={JSON.stringify(uiSchema.toJS(), null, 2)}
           lang={json}
-          lint={jsonParseLinter}
           height="100%"
         />
       ),
@@ -81,22 +80,23 @@ const Header = ({
         <CodeViewer
           value={JSON.stringify(schema.toJS(), null, 2)}
           lang={json}
-          lint={jsonParseLinter}
           height="100%"
         />
       ),
       uiSchemaDiff: (
-        <JsonDiff
-          left={initialUiSchema.toJS()}
-          right={uiSchema.toJS()}
-          show={false}
+        <CodeDiffViewer
+          left={JSON.stringify(initialUiSchema.toJS(), null, 2)}
+          right={JSON.stringify(uiSchema.toJS(), null, 2)}
+          lang={json}
+          height="100%"
         />
       ),
       schemaDiff: (
-        <JsonDiff
-          left={initialSchema.toJS()}
-          right={schema.toJS()}
-          show={false}
+        <CodeDiffViewer
+          left={JSON.stringify(initialSchema.toJS(), null, 2)}
+          right={JSON.stringify(schema.toJS(), null, 2)}
+          lang={json}
+          height="100%"
         />
       ),
     };
