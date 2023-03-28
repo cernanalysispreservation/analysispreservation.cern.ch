@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import OauthPopup from "../../../../components/settings/components/OAuthPopup";
+import OauthPopup from "../OAuthPopup";
 import { Button } from "antd";
 import { ApiOutlined } from "@ant-design/icons";
 
@@ -21,7 +21,7 @@ const IntegrationPopUp = ({ service, loginCallBack }) => {
 
 IntegrationPopUp.propTypes = {
   service: PropTypes.string,
-  loginCallBack: PropTypes.func
+  loginCallBack: PropTypes.func,
 };
 
 export default IntegrationPopUp;
