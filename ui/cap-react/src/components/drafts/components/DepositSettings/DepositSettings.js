@@ -59,8 +59,8 @@ class DepositSettings extends React.Component {
                 everything that your analysis contains - metadata, files, plots,
                 repositories - assigning to it an unique versioned identifier.{" "}
                 <br /> All members of your collaboration can search and
-                reference published content. <br />Once published analysis
-                cannot be deleted, but can be modified and published again with
+                reference published content. <br />Once published, an analysis
+                cannot be deleted, but it can be modified and published again with
                 a new version tag.
               </Paragraph>{" "}
             </Box>
