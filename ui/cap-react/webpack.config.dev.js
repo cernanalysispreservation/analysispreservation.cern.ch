@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import dotenv from "dotenv";
 import theme from "./src/antd/theme";
+import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
 const env = dotenv.config().parsed;
 
@@ -14,114 +15,72 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 export default {
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".json"]
+    extensions: ["*", ".js", ".jsx", ".json"],
   },
-  devtool: "cheap-module-eval-source-map", // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/
+  devtool: "eval-cheap-module-source-map", // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/
   entry: [
     // must be first entry to properly set public path
     "./src/webpack-public-path",
     "react-hot-loader/patch",
     "webpack-hot-middleware/client?reload=true",
-    path.resolve(__dirname, "src/index.js") // Defining path seems necessary for this to work consistently on Windows machines.
+    path.resolve(__dirname, "src/index.js"), // Defining path seems necessary for this to work consistently on Windows machines.
   ],
-  target: "web",
   mode: "development",
   output: {
-    path: path.resolve(__dirname, "dist"), // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: "/",
     filename: "bundle.js",
-    crossOriginLoading: false
+    crossOriginLoading: false,
   },
   plugins: [
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("development"), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
       __DEV__: true,
-      ...envKeys
+      ...envKeys,
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new ReactRefreshPlugin(),
     new HtmlWebpackPlugin({
       // Create HTML file that includes references to bundled CSS and JS.
       template: "src/index.ejs",
       favicon: "src/favicon.ico",
       minify: {
         removeComments: true,
-        collapseWhitespace: true
+        collapseWhitespace: true,
       },
-      inject: true
-    })
+      inject: true,
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ["babel-loader"]
+        use: ["babel-loader"],
       },
       {
-        test: /\.eot(\?v=\d+.\d+.\d+)?$/,
-        use: ["file-loader"]
+        test: /.m?js$/, // TODO: remove after React, dnd, etc are updated to the newest versions and see if it works
+        resolve: {
+          fullySpecified: false,
+        },
       },
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 10000,
-              mimetype: "application/font-woff"
-            }
-          }
-        ]
+        test: /\.(jpe?g|png|gif|ico|eot|ttf|woff2?)(\?v=\d+\.\d+\.\d+)?$/i,
+        type: "asset",
       },
-      {
-        test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 10000,
-              mimetype: "application/octet-stream"
-            }
-          }
-        ]
-      },
-      // {
-      //   test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      //   use: [
-      //     {
-      //       loader: "url-loader",
-      //       options: {
-      //         limit: 10000,
-      //         mimetype: "image/svg+xml"
-      //       }
-      //     }
-      //   ]
-      // },
       {
         test: /\.svg$/,
         use: [
           {
-            loader: "babel-loader"
+            loader: "babel-loader",
           },
           {
             loader: "react-svg-loader",
             options: {
-              jsx: true // true outputs JSX tags
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(jpe?g|png|gif|ico)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]"
-            }
-          }
-        ]
+              jsx: true, // true outputs JSX tags
+            },
+          },
+        ],
       },
       {
         test: /\.less$/,
@@ -133,10 +92,10 @@ export default {
             options: {
               // If you are using less-loader@5 please spread the lessOptions to options directly
               modifyVars: theme,
-              javascriptEnabled: true
-            }
-          }
-        ]
+              javascriptEnabled: true,
+            },
+          },
+        ],
       },
       {
         test: /(\.css|\.scss|\.sass)$/,
@@ -145,15 +104,15 @@ export default {
           {
             loader: "css-loader",
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: "postcss-loader",
             options: {
               plugins: () => [require("autoprefixer")],
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: "sass-loader",
@@ -161,13 +120,13 @@ export default {
               includePaths: [
                 "./node_modules",
                 "../node_modules",
-                path.resolve(__dirname, "src", "scss")
+                path.resolve(__dirname, "src", "scss"),
               ],
-              sourceMap: true
-            }
-          }
-        ]
-      }
-    ]
-  }
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
 };

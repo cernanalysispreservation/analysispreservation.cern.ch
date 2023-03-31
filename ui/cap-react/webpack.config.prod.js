@@ -18,21 +18,18 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 const GLOBALS = {
   "process.env.NODE_ENV": JSON.stringify("production"),
   __DEV__: false,
-  ...envKeys
+  ...envKeys,
 };
 
 export default {
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".json"]
+    extensions: ["*", ".js", ".jsx", ".json"],
   },
   devtool: "source-map", // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
-  entry: path.resolve(__dirname, "src/index"),
-  target: "web",
   mode: "production",
   output: {
-    path: path.resolve(__dirname, "dist"),
     publicPath: "/",
-    filename: "[name].[contenthash].js"
+    filename: "[name].[contenthash].js",
   },
   plugins: [
     // Tells React to build in prod mode. https://facebook.github.io/react/downloads.html
@@ -40,7 +37,7 @@ export default {
 
     // Generate an external css file with a hash in the filename
     new MiniCssExtractPlugin({
-      filename: "[name].[contenthash].css"
+      filename: "[name].[contenthash].css",
     }),
     // Generate an external css file with a hash in the filename
     // new ExtractTextPlugin('[name].[contenthash].css'),
@@ -59,13 +56,13 @@ export default {
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
-        minifyURLs: true
+        minifyURLs: true,
       },
       inject: true,
       // Note that you can add custom options here if you need to handle other custom logic in index.html
       // To track JavaScript errors via TrackJS, sign up for a free trial at TrackJS.com and enter your token below.
-      trackJSToken: ""
-    })
+      trackJSToken: "",
+    }),
 
     // Minify JS
     // new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
@@ -75,69 +72,31 @@ export default {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ["babel-loader"]
+        use: ["babel-loader"],
       },
       {
-        test: /\.eot(\?v=\d+.\d+.\d+)?$/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              name: "[name].[ext]"
-            }
-          }
-        ]
+        test: /.m?js$/, // TODO: remove after React, dnd, etc are updated to the newest versions and see if it works
+        resolve: {
+          fullySpecified: false,
+        },
       },
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 10000,
-              mimetype: "application/font-woff",
-              name: "[name].[ext]"
-            }
-          }
-        ]
-      },
-      {
-        test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 10000,
-              mimetype: "application/octet-stream",
-              name: "[name].[ext]"
-            }
-          }
-        ]
+        test: /\.(jpe?g|png|gif|ico|eot|ttf|woff2?)(\?v=\d+\.\d+\.\d+)?$/i,
+        type: "asset",
       },
       {
         test: /\.svg$/,
         use: [
           {
-            loader: "babel-loader"
+            loader: "babel-loader",
           },
           {
             loader: "react-svg-loader",
             options: {
-              jsx: true // true outputs JSX tags
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(jpe?g|png|gif|ico)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]"
-            }
-          }
-        ]
+              jsx: true, // true outputs JSX tags
+            },
+          },
+        ],
       },
       {
         test: /\.less$/,
@@ -149,10 +108,10 @@ export default {
             options: {
               // If you are using less-loader@5 please spread the lessOptions to options directly
               modifyVars: theme,
-              javascriptEnabled: true
-            }
-          }
-        ]
+              javascriptEnabled: true,
+            },
+          },
+        ],
       },
       {
         test: /(\.css|\.scss|\.sass)$/,
@@ -161,15 +120,15 @@ export default {
           {
             loader: "css-loader",
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: "postcss-loader",
             options: {
               plugins: () => [require("cssnano"), require("autoprefixer")],
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: "sass-loader",
@@ -177,13 +136,13 @@ export default {
               includePaths: [
                 "./node_modules",
                 "../node_modules",
-                path.resolve(__dirname, "src", "scss")
+                path.resolve(__dirname, "src", "scss"),
               ],
-              sourceMap: true
-            }
-          }
-        ]
-      }
-    ]
-  }
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
 };

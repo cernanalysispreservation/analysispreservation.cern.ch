@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { ConnectedRouter } from "connected-react-router";
 import { Provider } from "react-redux";
@@ -13,22 +13,21 @@ export const matomoInstance =
       })
     : null;
 
-export default class Root extends Component {
-  render() {
-    const { store, history } = this.props;
-    return (
-      <Provider store={store}>
-        <MatomoProvider value={matomoInstance}>
-          <ConnectedRouter history={history}>
-            <App />
-          </ConnectedRouter>
-        </MatomoProvider>
-      </Provider>
-    );
-  }
+const Root = ({ store, history }) => {
+  return (
+    <Provider store={store}>
+      <MatomoProvider value={matomoInstance}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </MatomoProvider>
+    </Provider>
+  );
 }
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 };
+
+export default Root;

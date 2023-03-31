@@ -28,7 +28,7 @@ repos:
     rev: "v2.7.1"
     hooks:
       - id: prettier
-        entry: prettier --config .prettierrc.json
+        entry: prettier --config .prettierrc.json --ignore-path .prettierignore
         stages: [commit, push]
         files: "ui/*"
 

@@ -3,3 +3,4 @@
 cap
 .prettierignore
 yarn.lock
+.gitignore
