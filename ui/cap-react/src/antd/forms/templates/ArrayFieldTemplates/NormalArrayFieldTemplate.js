@@ -13,8 +13,7 @@ import AccordionArrayFieldTemplate from "./AccordionArrayFieldTemplate";
 import PropTypes from "prop-types";
 import axios from "axios";
 import ImportListModal from "./ImportListModal";
-import CopyToClipboard from "react-copy-to-clipboard";
-import { CheckOutlined } from "@ant-design/icons";
+import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
 import CodeViewer from "../../../utils/CodeViewer";
 import { stex } from "@codemirror/legacy-modes/mode/stex";
 import {
@@ -179,14 +178,16 @@ const NormalArrayFieldTemplate = ({
                 >
                   Close
                 </Button>
-                <CopyToClipboard
-                  text={decodeURI(latexData)}
-                  onCopy={() => !copy && setCopy(true)}
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    navigator.clipboard.writeText(decodeURI(latexData));
+                    setCopy(true);
+                  }}
+                  icon={copy ? <CheckOutlined /> : <CopyOutlined />}
                 >
-                  <Button type="primary" icon={copy && <CheckOutlined />}>
-                    {copy ? "Copied" : "Copy to clipboard"}
-                  </Button>
-                </CopyToClipboard>
+                  {copy ? "Copied" : "Copy to clipboard"}
+                </Button>
               </Space>
             </Row>
           }

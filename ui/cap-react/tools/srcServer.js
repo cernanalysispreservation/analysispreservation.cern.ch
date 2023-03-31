@@ -20,7 +20,7 @@ let proxyMiddleware = null;
 if (process.env["ENABLE_BACKEND_PROXY"] === "true") {
   let httpProxy = require("http-proxy");
   let proxy = httpProxy.createProxyServer({
-    target: "http://localhost:5000/"
+    target: "http://localhost:5000/",
   });
 
   proxyMiddleware = function(req, res, next) {
@@ -37,7 +37,7 @@ if (process.env["ENABLE_BACKEND_PROXY"] === "true") {
 browserSync({
   port: 3000,
   ui: {
-    port: 3001
+    port: 3001,
   },
   server: {
     baseDir: "src",
@@ -56,9 +56,9 @@ browserSync({
                 from: /published\/.*\..*\..*$/,
                 to: function() {
                   return "/index.html";
-                }
-              }
-            ]
+                },
+              },
+            ],
           })
         : historyApiFallback(),
 
@@ -67,8 +67,6 @@ browserSync({
         publicPath: config.output.publicPath,
 
         // These settings suppress noisy webpack output so only errors are displayed to the console.
-        noInfo: true,
-        quiet: false,
         stats: {
           assets: false,
           colors: true,
@@ -76,8 +74,8 @@ browserSync({
           hash: false,
           timings: false,
           chunks: false,
-          chunkModules: false
-        }
+          chunkModules: false,
+        },
 
         // for other settings see
         // https://webpack.js.org/guides/development/#using-webpack-dev-middleware
@@ -91,13 +89,13 @@ browserSync({
       // *********************************************
       process.env["ENABLE_BACKEND_PROXY"] === "true"
         ? proxyMiddleware
-        : (req, res, next) => next()
+        : (req, res, next) => next(),
     ],
-    cors: true
+    cors: true,
   },
   cors: true,
 
   // no need to watch '*.js' here, webpack will take care of it for us,
   // including full page reloads if HMR won't work
-  files: ["src/*.html"]
+  files: ["src/*.html"],
 });
