@@ -3,13 +3,13 @@ import { Row, Col, Space, Typography, Button, Grid } from "antd";
 import {
   MailOutlined,
   TwitterOutlined,
-  GithubOutlined
+  GithubOutlined,
 } from "@ant-design/icons";
 
-import AliceIcon from "../img/alice.svg";
-import AtlasIcon from "../img/atlas.svg";
-import CmsIcon from "../img/cms.svg";
-import LHCbLogo from "../img/lhcb-logo.svg";
+import { ReactComponent as AliceIcon } from "../img/alice.svg";
+import { ReactComponent as AtlasIcon } from "../img/atlas.svg";
+import { ReactComponent as CmsIcon } from "../img/cms.svg";
+import { ReactComponent as LHCbLogo } from "../img/lhcb-logo.svg";
 
 const { useBreakpoint } = Grid;
 
@@ -56,10 +56,7 @@ const Contact = () => {
               </Button>
             </Space>
             <Space direction="vertical">
-              <Typography.Title
-                level={5}
-                style={{ fontSize: "1.1rem" }}
-              >
+              <Typography.Title level={5} style={{ fontSize: "1.1rem" }}>
                 Supported by:
               </Typography.Title>
               <Row justify="center" gutter={[32, 32]}>

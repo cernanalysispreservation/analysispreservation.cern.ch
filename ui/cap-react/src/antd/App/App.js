@@ -8,6 +8,7 @@ import IndexPage from "../index/IndexPage";
 import AboutPage from "../about";
 import PolicyPage from "../policy";
 import SchemasPage from "../schemas";
+import AdminPage from "../admin";
 
 import noRequireAuth from "../auth/NoAuthorizationRequired";
 import requireAuth from "../auth/AuthorizationRequired";
@@ -18,18 +19,10 @@ import Footer from "../partials/Footer";
 import DocumentTitle from "../partials/DocumentTitle";
 import { Layout, Row, Spin } from "antd";
 
-import Loadable from "react-loadable";
 import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
-import Loading from "../routes/Loading";
 import ErrorPage from "../utils/ErrorPage";
 import * as Sentry from "@sentry/react";
 import useTrackPageViews from "../hooks/useTrackPageViews";
-
-const CMSIndex = Loadable({
-  loader: () => import("../admin"),
-  loading: Loading,
-  delay: 300,
-});
 
 const App = ({ initCurrentUser, loadingInit, history }) => {
   useEffect(() => {
@@ -63,7 +56,7 @@ const App = ({ initCurrentUser, loadingInit, history }) => {
               <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
               <Route path={ABOUT} component={AboutPage} />
               <Route path={POLICY} component={PolicyPage} />
-              <Route path={CMS} component={CMSIndex} />
+              <Route path={CMS} component={AdminPage} />
               <Route path={SCHEMAS} component={SchemasPage} />
               <Route path={HOME} component={requireAuth(IndexPage)} />
             </Switch>

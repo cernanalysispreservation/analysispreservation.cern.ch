@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { fetchRecordsResults } from "../../actions/common";
 import { Card, Col, Empty, Row, Select, Space, Tag, Typography } from "antd";
 import RichEditorWidget from "../forms/widgets/RichEditorWidget";
-import NoDocs from "../../img/noDocs.svg";
+import { ReactComponent as NoDocs } from "../../img/noDocs.svg";
 import DashboardList from "../dashboard/components/DashoboardList";
 import { _getCollectionList } from "../dashboard/utils";
 import CollectionPermissions from "./CollectionPermissions";

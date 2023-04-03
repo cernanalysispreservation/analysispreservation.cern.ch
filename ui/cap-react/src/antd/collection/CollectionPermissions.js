@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import NoData from "../../img/nodata.svg";
+import { ReactComponent as NoData } from "../../img/nodata.svg";
 import CollectionPermissionItem from "./CollectionPermissionItem";
 import { Empty } from "antd";
 
@@ -37,7 +37,7 @@ const CollectionPermissions = ({ permissions }) => {
 };
 
 CollectionPermissions.propTypes = {
-  permissions: PropTypes.object
+  permissions: PropTypes.object,
 };
 
 export default CollectionPermissions;
