@@ -25,11 +25,13 @@
 
 import re
 from functools import wraps
+
 from flask import abort
-from .permissions import AdminSchemaPermission
-from .models import Schema
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from jsonpatch import JsonPatchConflict
+
+from .models import Schema
+from .permissions import AdminSchemaPermission
 
 
 def is_later_version(version1, version2):
@@ -143,6 +145,7 @@ def get_default_mapping(name, version):
 
 def get_schema(f):
     """Decorator to check if schema exists by name and/or version."""
+
     @wraps(f)
     def wrapper(name=None, version=None, schema=None, *args, **kwargs):
         if name:
@@ -154,14 +157,17 @@ def get_schema(f):
             except JSONSchemaNotFound:
                 abort(404)
         return f(name=name, version=version, schema=schema, *args, **kwargs)
+
     return wrapper
 
 
 def schema_admin_permission(f):
     """Decorator to check if user has admin permission."""
+
     @wraps(f)
     def wrapper(name=None, version=None, schema=None, *args, **kwargs):
         if not AdminSchemaPermission(schema).can():
             abort(403)
         return f(name=name, version=version, schema=schema, *args, **kwargs)
+
     return wrapper

@@ -18,6 +18,13 @@ from invenio_base.wsgi import wsgi_proxyfix
 from invenio_cache import BytecodeCache
 from jinja2 import ChoiceLoader, FileSystemLoader
 
+from .converter import SchemaVersionConverter
+
+CAP_URL_MAP_CONVERTER = {
+    # Key should match the variable name in URL
+    'schema_version': SchemaVersionConverter,
+}
+
 
 def config_loader(app, **kwargs_config):
     """Add loading templates."""
@@ -55,6 +62,7 @@ create_api = create_app_factory(
     blueprint_entry_points=['invenio_base.api_blueprints'],
     extension_entry_points=['invenio_base.api_apps'],
     converter_entry_points=['invenio_base.api_converters'],
+    converters=CAP_URL_MAP_CONVERTER,
     wsgi_factory=wsgi_proxyfix(),
     instance_path=instance_path,
     app_class=app_class(),

@@ -87,7 +87,7 @@ def get_all_versions(name=None):
     '/<string:name>/permissions', methods=['GET', 'POST', 'DELETE']
 )
 @blueprint.route(
-    '/<string:name>/<string:version>/permissions',
+    '/<string:name>/<schema_version:version>/permissions',
     methods=['GET', 'POST', 'DELETE'],
 )
 # @login_required
@@ -117,11 +117,9 @@ def permissions(name=None, version=None):
         return jsonify({}), 204
 
 
+@blueprint.route('/<string:name>/notifications', methods=['GET', 'PATCH'])
 @blueprint.route(
-    '/<string:name>/notifications', methods=['GET', 'PATCH']
-)
-@blueprint.route(
-    '/<string:name>/<string:version>/notifications',
+    '/<string:name>/<schema_version:version>/notifications',
     methods=['GET', 'PATCH'],
 )
 @get_schema
@@ -130,30 +128,36 @@ def permissions(name=None, version=None):
 def notifications_config(name=None, version=None, schema=None, *args, **kwargs):
     """CRUD operations for schema configuration."""
     serialized_config = schema.config_serialize()
-    notifications_config = serialized_config.get("config", {}).get("notifications", {})
+    notifications_config = serialized_config.get("config", {}).get(
+        "notifications", {}
+    )
     if request.method == "PATCH":
         try:
             data = request.get_json()
-            patched_notifications_config = apply_patch(notifications_config, data)
-            patched_object = {'config': {'notifications': patched_notifications_config}}
+            patched_notifications_config = apply_patch(
+                notifications_config, data
+            )
+            patched_object = {
+                'config': {'notifications': patched_notifications_config}
+            }
             schema.update(**patched_object)
             db.session.commit()
             return jsonify(schema.config_serialize()), 201
         except (
-                JsonPatchException,
-                JsonPatchConflict,
-                JsonPointerException,
-                TypeError,
-            ) as err:
-                return (
-                    jsonify(
-                        {
-                            'message': 'Could not apply '
-                            'json-patch to object: {}'.format(err)
-                        }
-                    ),
-                    400,
-                )
+            JsonPatchException,
+            JsonPatchConflict,
+            JsonPointerException,
+            TypeError,
+        ) as err:
+            return (
+                jsonify(
+                    {
+                        'message': 'Could not apply '
+                        'json-patch to object: {}'.format(err)
+                    }
+                ),
+                400,
+            )
         except IntegrityError:
             return (
                 jsonify(
@@ -401,7 +405,7 @@ blueprint.add_url_rule(
     ],
 )
 blueprint.add_url_rule(
-    '/<string:name>/<string:version>',
+    '/<string:name>/<schema_version:version>',
     view_func=schema_view_func,
     methods=['GET', 'PUT', 'DELETE', 'PATCH'],
 )
