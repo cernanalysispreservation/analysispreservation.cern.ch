@@ -4,6 +4,7 @@ import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import tm from "markdown-it-texmath";
 import Toggler from "./RichEditorPreviewPlugin";
+import katex from "katex";
 
 import "react-markdown-editor-lite/lib/index.css";
 import "katex/dist/katex.min.css";
@@ -13,7 +14,7 @@ import "./styles/RichEditorWidget.css";
 const RichEditorWidget = props => {
   const mdParser = new MarkdownIt();
   mdParser.use(tm, {
-    engine: require("katex"),
+    engine: katex,
     delimiters: "dollars",
     katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },
   });

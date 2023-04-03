@@ -10,7 +10,7 @@ export default class RichEditorPreviewPlugin extends PluginComponent {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      isEditView: this.getConfig("isEditView")
+      isEditView: this.getConfig("isEditView"),
     };
   }
 
@@ -26,9 +26,9 @@ export default class RichEditorPreviewPlugin extends PluginComponent {
 
   render() {
     return this.state.isEditView.md ? (
-      <EditOutlined onClick={this.handleClick} />
-    ) : (
       <EyeOutlined onClick={this.handleClick} />
+    ) : (
+      <EditOutlined onClick={this.handleClick} />
     );
   }
 }

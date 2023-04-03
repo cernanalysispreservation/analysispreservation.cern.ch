@@ -8,7 +8,6 @@ import IndexPage from "../index/IndexPage";
 import AboutPage from "../about";
 import PolicyPage from "../policy";
 import SchemasPage from "../schemas";
-import AdminPage from "../admin";
 
 import noRequireAuth from "../auth/NoAuthorizationRequired";
 import requireAuth from "../auth/AuthorizationRequired";
@@ -23,6 +22,9 @@ import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import ErrorPage from "../utils/ErrorPage";
 import * as Sentry from "@sentry/react";
 import useTrackPageViews from "../hooks/useTrackPageViews";
+import { lazy } from "react";
+
+const AdminPage = lazy(() => import("../admin"));
 
 const App = ({ initCurrentUser, loadingInit, history }) => {
   useEffect(() => {
