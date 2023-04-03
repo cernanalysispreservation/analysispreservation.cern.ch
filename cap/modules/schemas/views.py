@@ -36,6 +36,7 @@ from jsonpatch import (
 )
 from jsonref import JsonRefError
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.attributes import flag_modified
 
 from cap.modules.access.permissions import admin_permission_factory
 from cap.modules.access.utils import login_required
@@ -64,6 +65,54 @@ blueprint = Blueprint(
 )
 
 super_admin_permission = admin_permission_factory(None)
+
+
+def process_config_operations(request, config_key, schema):
+    serialized_config = schema.config_serialize().get('config', {})
+    if request.method == 'GET':
+        return serialized_config.get(config_key, {})
+
+    if request.method == 'DELETE':
+        key_config_schema = {'config': {config_key: {}}}
+        schema.update(**key_config_schema)
+        db.session.commit()
+        return 'Deleted.', 204
+
+    try:
+        data = request.get_json()
+        key_config = serialized_config.get(config_key, {})
+        if request.method == "POST":
+            post_obejct = {'config': {config_key: data}}
+            schema.update(**post_obejct)
+            flag_modified(schema, 'config')
+        if request.method == 'PATCH':
+            patched_key_config = apply_patch(key_config, data)
+            patched_object = {'config': {config_key: patched_key_config}}
+            schema.update(**patched_object)
+        db.session.commit()
+        return jsonify(schema.config_serialize()), 201
+    except AttributeError:
+        return jsonify({'message': 'Error occured due to invalid JSON.'}), 400
+    except ValidationError as err:
+        return (
+            jsonify({'message': err.description, 'errors': err.errors}),
+            400,
+        )
+    except (
+        JsonPatchException,
+        JsonPatchConflict,
+        JsonPointerException,
+        TypeError,
+    ) as err:
+        return (
+            jsonify(
+                {
+                    'message': 'Could not apply '
+                    'json-patch to object: {}'.format(err)
+                }
+            ),
+            400,
+        )
 
 
 @blueprint.route('/<string:name>/versions', methods=['GET'])
@@ -117,64 +166,20 @@ def permissions(name=None, version=None):
         return jsonify({}), 204
 
 
-@blueprint.route('/<string:name>/notifications', methods=['GET', 'PATCH'])
+@blueprint.route(
+    '/<string:name>/notifications', methods=['GET', 'PATCH', 'DELETE', 'POST']
+)
 @blueprint.route(
     '/<string:name>/<schema_version:version>/notifications',
-    methods=['GET', 'PATCH'],
+    methods=['GET', 'PATCH', 'DELETE', 'POST'],
 )
 @get_schema
 @schema_admin_permission
 @super_admin_permission.require(http_exception=403)
 def notifications_config(name=None, version=None, schema=None, *args, **kwargs):
-    """CRUD operations for schema configuration."""
-    serialized_config = schema.config_serialize()
-    notifications_config = serialized_config.get("config", {}).get(
-        "notifications", {}
-    )
-    if request.method == "PATCH":
-        try:
-            data = request.get_json()
-            patched_notifications_config = apply_patch(
-                notifications_config, data
-            )
-            patched_object = {
-                'config': {'notifications': patched_notifications_config}
-            }
-            schema.update(**patched_object)
-            db.session.commit()
-            return jsonify(schema.config_serialize()), 201
-        except (
-            JsonPatchException,
-            JsonPatchConflict,
-            JsonPointerException,
-            TypeError,
-        ) as err:
-            return (
-                jsonify(
-                    {
-                        'message': 'Could not apply '
-                        'json-patch to object: {}'.format(err)
-                    }
-                ),
-                400,
-            )
-        except IntegrityError:
-            return (
-                jsonify(
-                    {
-                        'message': 'Error occured during '
-                        'saving schema in the db.'
-                    }
-                ),
-                500,
-            )
-        except ValidationError as err:
-            return (
-                jsonify({'message': err.description, 'errors': err.errors}),
-                400,
-            )
-
-    return jsonify(notifications_config), 200
+    """CRUD operations for schema notification configuration."""
+    config_key = 'notifications'
+    return process_config_operations(request, config_key, schema)
 
 
 class SchemaAPI(MethodView):

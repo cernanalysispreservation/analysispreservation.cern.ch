@@ -1779,3 +1779,116 @@ def test_patch_notifications_config(
     )
     assert resp.status_code == 400
     assert resp.json['message'] == 'Could not apply json-patch to object: string indices must be integers'
+
+
+def test_post_notifications_config(
+    client, schema, auth_headers_for_user, users, json_headers):
+    owner = users['superuser']
+    schema = dict(
+        name='new-schema',
+        version='1.0.0',
+        deposit_schema={'title': 'deposit_schema'},
+        config={
+            'reviewable': True,
+            'notifications': {}
+        },
+        is_indexed=True,
+        use_deposit_as_record=True,
+    )
+    client.post(
+        '/jsonschemas/',
+        data=json.dumps(schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    valid_post_data = {
+        'actions': {
+            'review': [
+                {
+                    "subject": {
+                    "template": "Questionnaire for {{ cadi_id }} - New Review on Analysis | CERN Analysis Preservation",
+                    "ctx": [{
+                        "name": "cadi_id",
+                        "path": "analysis_context.cadi_id"
+                    }]
+                    },
+                    "body": {
+                        "template_file": "mail/body/experiments/cms/questionnaire_message_review.html",
+                        "ctx": [{
+                            "name": "cadi_id",
+                            "path": "analysis_context.cadi_id"
+                        }, {
+                            "name": "title",
+                            "path": "general_title"
+                        },{
+                            "method": "working_url"
+                        }, {
+                            "method": "creator_email"
+                        }, {
+                            "method": "submitter_email"
+                        }]
+                    },
+                    "recipients": {
+                        "bcc": [{
+                            "method": "get_owner"
+                        }, {
+                            "method": "get_submitter"
+                        }]
+                    }
+                }
+            ]
+        },
+    }
+
+    resp = client.post(
+        '/jsonschemas/new-schema/notifications',
+        data=json.dumps(valid_post_data),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 201
+
+    invalid_post_data = {
+        'actions': {
+            'review': [
+                {
+                    "subject": {
+                    "template": "Questionnaire for {{ cadi_id }} - New Review on Analysis | CERN Analysis Preservation",
+                    "ctx": [{
+                        "name": "cadi_id"
+                    }]
+                    },
+                    "body": {
+                        "template_file": "mail/body/experiments/cms/questionnaire_message_review.html",
+                        "ctx": [{
+                            "name": "cadi_id",
+                            "path": "analysis_context.cadi_id"
+                        }, {
+                            "name": "title",
+                            "path": "general_title"
+                        },{
+                            "method": "working_url"
+                        }, {
+                            "method": "creator_email"
+                        }, {
+                            "method": "submitter_email"
+                        }]
+                    },
+                    "recipients": {
+                        "bcc": [{
+                            "method": "get_owner"
+                        }, {
+                            "method": "get_submitter"
+                        }]
+                    }
+                }
+            ]
+        },
+    }
+
+    resp = client.post(
+        '/jsonschemas/new-schema/notifications',
+        data=json.dumps(invalid_post_data),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Schema configuration validation error'
