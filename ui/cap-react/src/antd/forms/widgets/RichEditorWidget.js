@@ -12,7 +12,7 @@ import "react-markdown-editor-lite/lib/index.css";
 const RichEditorWidget = props => {
   const mdParser = new MarkdownIt();
   mdParser.use(tm, {
-    engine: require("katex"),
+    engine: katex,
     delimiters: "dollars",
     katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },
   });

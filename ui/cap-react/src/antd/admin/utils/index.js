@@ -36,8 +36,8 @@ let _addErrors = (errors, path) => {
   Object.keys(errors).map(error => {
     if (error != "__errors" && error != "addError") {
       _addErrors(errors[error], {
-        schema: [...path, "properties", error],
-        uiSchema: [...path, error],
+        schema: [...path.schema, "properties", error],
+        uiSchema: [...path.uiSchema, error],
       });
     }
   });
