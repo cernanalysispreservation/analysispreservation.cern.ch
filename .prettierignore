@@ -4,3 +4,4 @@ cap
 .prettierignore
 yarn.lock
 .gitignore
+Dockerfile

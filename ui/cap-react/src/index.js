@@ -2,7 +2,6 @@
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { AppContainer } from "react-hot-loader";
 import store, { history } from "./store/configureStore";
 import Root from "./antd/Root";
 import * as Sentry from "@sentry/react";
@@ -17,7 +16,5 @@ const container = document.getElementById("app");
 const root = createRoot(container);
 
 root.render(
-  <AppContainer>
-    <Root store={store} history={history} />
-  </AppContainer>
+  <Root store={store} history={history} />
 )
