@@ -87,7 +87,7 @@ def get_all_versions(name=None):
     '/<string:name>/permissions', methods=['GET', 'POST', 'DELETE']
 )
 @blueprint.route(
-    '/<string:name>/<string:version>/permissions',
+    '/<string:name>/<schema_version:version>/permissions',
     methods=['GET', 'POST', 'DELETE'],
 )
 # @login_required
@@ -121,7 +121,7 @@ def permissions(name=None, version=None):
     '/<string:name>/notifications', methods=['GET', 'PATCH']
 )
 @blueprint.route(
-    '/<string:name>/<string:version>/notifications',
+    '/<string:name>/<schema_version:version>/notifications',
     methods=['GET', 'PATCH'],
 )
 @get_schema
@@ -401,7 +401,7 @@ blueprint.add_url_rule(
     ],
 )
 blueprint.add_url_rule(
-    '/<string:name>/<string:version>',
+    '/<string:name>/<schema_version:version>',
     view_func=schema_view_func,
     methods=['GET', 'PUT', 'DELETE', 'PATCH'],
 )

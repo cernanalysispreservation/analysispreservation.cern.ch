@@ -93,6 +93,53 @@ def test_get_when_user_outside_of_experiment_returns_403(
     assert resp.status_code == 403
 
 
+def test_get_schema_version_converter_with_wrong_version(client, db, users, auth_headers_for_user, superuser):
+    cms_user = users['cms_user']
+    schema = Schema(
+        name='cms-schema',
+        version='1.2.3',
+        fullname='CMS Schema 1.2.3',
+        experiment='CMS',
+        deposit_schema={'title': 'deposit_schema'},
+        deposit_options={'title': 'deposit_options'},
+        record_schema={'title': 'record_schema'},
+        record_options={'title': 'record_options'},
+        record_mapping={
+            'mappings': {
+                'properties': {
+                    'title': {
+                        'type': 'text'
+                    }
+                }
+            }
+        },
+        deposit_mapping={
+            'mappings':
+                {
+                    'properties': {
+                        'keyword': {
+                            'type': 'keyword'
+                        }
+                    }
+                }
+        },
+        is_indexed=True,
+    )
+
+    db.session.add(schema)
+    db.session.commit()
+
+    resp = client.get('/jsonschemas/cms-schema/1.0.0', headers=auth_headers_for_user(cms_user))
+    assert resp.status_code == 404
+
+    resp = client.get('/jsonschemas/cms-schema/noti', headers=auth_headers_for_user(cms_user))
+    assert resp.status_code == 404
+
+    resp = client.get('/jsonschemas/cms-schema/notifications', headers=auth_headers_for_user(superuser))
+    assert resp.status_code == 200
+    assert resp.json == {}
+
+
 def test_get(client, db, users, auth_headers_for_user):
     cms_user = users['cms_user']
     schema = Schema(
