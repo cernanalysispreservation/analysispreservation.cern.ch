@@ -3,12 +3,19 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import fs from "fs/promises";
 import theme from "./src/antd/theme";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
-    plugins: [react(), svgr()],
+    plugins: [
+      react(),
+      svgr(),
+      visualizer({
+        filename: "bundle-stats.html",
+      }),
+    ],
     server: {
       // Needed for Docker
       host: true,
@@ -21,6 +28,13 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, ""),
         },
+      },
+    },
+    // ESModules only allow "import" imports. However some libraries (i.e. squirrelly)
+    // still use "require" imports. This converts CommonJS modules to ESModules
+    build: {
+      commonjsOptions: {
+        transformMixedEsModules: true,
       },
     },
     // Allows writing JSX in .js files

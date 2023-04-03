@@ -22,14 +22,10 @@ import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import ErrorPage from "../utils/ErrorPage";
 import WelcomePage from "../welcome";
 import * as Sentry from "@sentry/react";
-import { Layout, Row, Spin } from "antd";
-import PropTypes from "prop-types";
+import useTrackPageViews from "../hooks/useTrackPageViews";
+import { lazy } from "react";
 
-const CMSIndex = Loadable({
-  loader: () => import("../admin"),
-  loading: Loading,
-  delay: 300,
-});
+const AdminPage = lazy(() => import("../admin"));
 
 const App = ({ initCurrentUser, loadingInit, history, roles }) => {
   useEffect(() => {
@@ -66,7 +62,7 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
               <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
               <Route path={ABOUT} component={AboutPage} />
               <Route path={POLICY} component={PolicyPage} />
-              {isAdmin && <Route path={CMS} component={CMSIndex} />}
+              {isAdmin && <Route path={CMS} component={AdminPage} />}
               <Route path={SCHEMAS} component={SchemasPage} />
               <Route path={HOME} component={requireAuth(IndexPage)} />
             </Switch>
