@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CAPLogoLight from "../../../img/cap-logo-light.svg";
+import { ReactComponent as CAPLogoLight } from "../../../img/cap-logo-light.svg";
 import { Row, Col } from "antd";
 
 import { Link } from "react-router-dom";
@@ -58,7 +58,7 @@ const Header = ({ logout, permissions, isLoggedIn }) => {
 Header.propTypes = {
   logout: PropTypes.func,
   permissions: PropTypes.object,
-  isLoggedIn: PropTypes.bool
+  isLoggedIn: PropTypes.bool,
 };
 
 export default Header;

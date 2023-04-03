@@ -1,20 +1,24 @@
 import React, { useEffect } from "react";
-import Loadable from "react-loadable";
 import { Switch, Route } from "react-router-dom";
-
+import PropTypes from "prop-types";
 import "./App.less";
-import AboutPage from "../about";
-import requireAuth from "../auth/AuthorizationRequired";
-import noRequireAuth from "../auth/NoAuthorizationRequired";
-import useTrackPageViews from "../hooks/useTrackPageViews";
+import WelcomePage from "../welcome";
 import IndexPage from "../index/IndexPage";
-import DocumentTitle from "../partials/DocumentTitle";
-import Footer from "../partials/Footer";
-import Header from "../partials/Header";
+
+import AboutPage from "../about";
 import PolicyPage from "../policy";
-import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
-import Loading from "../routes/Loading";
 import SchemasPage from "../schemas";
+
+import noRequireAuth from "../auth/NoAuthorizationRequired";
+import requireAuth from "../auth/AuthorizationRequired";
+
+import Header from "../partials/Header";
+import Footer from "../partials/Footer";
+
+import DocumentTitle from "../partials/DocumentTitle";
+import { Layout, Row, Spin } from "antd";
+
+import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import ErrorPage from "../utils/ErrorPage";
 import WelcomePage from "../welcome";
 import * as Sentry from "@sentry/react";

@@ -2,7 +2,7 @@ import { permissionsPerUser } from "../utils";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { Empty, Table } from "antd";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const CollectionPermissions = ({ permissions }) => {
   const [permissionsArray, setPermissionsArray] = useState();

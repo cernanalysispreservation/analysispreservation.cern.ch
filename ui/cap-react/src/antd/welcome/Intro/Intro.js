@@ -1,10 +1,10 @@
 import React from "react";
-import HomeImage from "../img/home-image.svg";
+import { ReactComponent as HomeImage } from "../img/home-image.svg";
 import { Row, Col, Typography, Space } from "antd";
 import {
   DatabaseOutlined,
   TeamOutlined,
-  ReloadOutlined
+  ReloadOutlined,
 } from "@ant-design/icons";
 
 const Intro = () => {
@@ -13,20 +13,20 @@ const Intro = () => {
       title: "Capture",
       icon: <DatabaseOutlined style={{ fontSize: "2em" }} />,
       description:
-        "Preserve elements needed to understand and rerun your analysis"
+        "Preserve elements needed to understand and rerun your analysis",
     },
     {
       title: "Collaborate",
       icon: <TeamOutlined style={{ fontSize: "2em" }} />,
       description:
-        "Share your analysis with other users, your collaboration or group"
+        "Share your analysis with other users, your collaboration or group",
     },
     {
       title: "Reuse",
       icon: <ReloadOutlined style={{ fontSize: "2em" }} />,
       description:
-        "Run containerized workflows and easily reuse analysis components"
-    }
+        "Run containerized workflows and easily reuse analysis components",
+    },
   ];
   return (
     <Col xs={22} lg={20} xxl={16}>
