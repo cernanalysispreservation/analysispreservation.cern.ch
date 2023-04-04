@@ -151,7 +151,7 @@ const Schemas = ({ match }) => {
         schema && (
           <React.Fragment>
             <Modal
-              visible={showModal}
+              open={showModal}
               onCancel={() => setShowModal(false)}
               title={`${selection} diff`}
               width={1000}

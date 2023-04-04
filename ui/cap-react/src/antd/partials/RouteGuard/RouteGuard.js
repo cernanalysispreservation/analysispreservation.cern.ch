@@ -48,10 +48,10 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
     <React.Fragment>
       <Prompt when={when} message={handleBlockedNavigation} />
       <Modal
-        visible={showModal}
+        open={showModal}
         onCancel={closeModal}
         okButtonProps={{
-          onClick: confirmNavigation
+          onClick: confirmNavigation,
         }}
         cancelText="Cancel"
         okText="Exit without saving"
@@ -70,7 +70,7 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
 
 RouteGuard.propTypes = {
   navigate: PropTypes.func,
-  shouldBlockNavigation: PropTypes.func
+  shouldBlockNavigation: PropTypes.func,
 };
 
 export default RouteGuard;

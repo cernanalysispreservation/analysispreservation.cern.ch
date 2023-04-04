@@ -4,20 +4,20 @@ import { Checkbox, Input, List, Modal, Tabs, Typography } from "antd";
 import axios from "axios";
 
 const ImportListModal = ({
-  visible,
+  open,
   onCancel,
   uiImport,
   schema,
   onAddClick,
   formData,
-  formItems
+  formItems,
 }) => {
   const {
     description,
     listSuggestions,
     placeholder,
     to,
-    delimiter = "\n"
+    delimiter = "\n",
   } = uiImport;
 
   const [fetchedResults, setFetchedResults] = useState(null);
@@ -46,7 +46,7 @@ const ImportListModal = ({
           updated
             .filter(item => !data.includes(item))
             .join(",")
-            .replace(/,/g, "")
+            .replace(/,/g, ""),
         ]);
       } else {
         let clips = data;
@@ -103,7 +103,7 @@ const ImportListModal = ({
           }
           setCurrentIndex({
             index: _index,
-            value
+            value,
           });
         }),
       1
@@ -118,7 +118,7 @@ const ImportListModal = ({
         setData(null);
         setFetchedResults(null);
       }}
-      visible={visible}
+      open={open}
       title="Provide a pattern to fetch available paths"
       okButtonProps={{
         disabled: !data,
@@ -126,7 +126,7 @@ const ImportListModal = ({
           _batchImport();
           setData(null);
           setFetchedResults(null);
-        }
+        },
       }}
       okText="Import"
       destroyOnClose
@@ -186,13 +186,13 @@ const ImportListModal = ({
 };
 
 ImportListModal.propTypes = {
-  visible: PropTypes.bool,
+  open: PropTypes.bool,
   onCancel: PropTypes.func,
   uiImport: PropTypes.object,
   schema: PropTypes.object,
   formItems: PropTypes.object,
   formData: PropTypes.object,
-  onAddClick: PropTypes.func
+  onAddClick: PropTypes.func,
 };
 
 export default ImportListModal;

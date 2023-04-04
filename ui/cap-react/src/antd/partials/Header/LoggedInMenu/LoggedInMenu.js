@@ -1,5 +1,4 @@
 import DraftCreate from "../../../drafts/DraftCreate";
-import { CMS, SETTINGS } from "../../../routes";
 import HowToSearchPage from "../../HowToSearch";
 import {
   SettingOutlined,
@@ -12,28 +11,25 @@ import {
   ScheduleOutlined,
   QuestionOutlined,
   PlusOutlined,
-  ToolOutlined,
 } from "@ant-design/icons";
 import { Menu, Modal } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const { Item, SubMenu, ItemGroup, Divider } = Menu;
-
-const LoggedInMenu = ({ permissions, logout, roles }) => {
+const LoggedInMenu = ({ permissions, logout }) => {
   const [displayCreate, setDisplayCreate] = useState(false);
   const [displayHowToSearch, setDisplayHowToSearch] = useState(false);
 
   return (
     <React.Fragment>
       <DraftCreate
-        visible={displayCreate}
+        open={displayCreate}
         onCancel={() => setDisplayCreate(displayCreate => !displayCreate)}
       />
 
       <Modal
-        visible={displayHowToSearch}
+        open={displayHowToSearch}
         onCancel={() => setDisplayHowToSearch(false)}
         background="#f5f5f5"
         title="How to Search"
@@ -43,81 +39,110 @@ const LoggedInMenu = ({ permissions, logout, roles }) => {
         <HowToSearchPage />
       </Modal>
 
-      <Menu title="account" theme="dark" selectable={false} mode="horizontal">
-        {permissions && (
-          <Item
-            key="createAnalysis"
-            icon={<PlusOutlined />}
-            onClick={() => setDisplayCreate(true)}
-            data-cy="headerCreateButton"
-          >
-            Create
-          </Item>
-        )}
-        <Item
-          key="faq"
-          icon={<QuestionOutlined />}
-          onClick={() => setDisplayHowToSearch(true)}
-        >
-          FAQ
-        </Item>
-        <SubMenu
-          key="SubMenu"
-          icon={<UserOutlined size={25} />}
-          title="Account"
-          data-cy="headerMenu"
-        >
-          <ItemGroup title="Documentation">
-            <Item key="generalDocs" icon={<BookOutlined />}>
-              <Link to="/docs/general" target="_blank">
-                General Docs
-              </Link>
-            </Item>
-            <Item key="capclient" icon={<CodeOutlined />}>
-              <Link to="/docs/cli" target="_blank">
-                CAP Client
-              </Link>
-            </Item>
-            <Item key="capapi" icon={<ScheduleOutlined />}>
-              <Link to="/docs/api" target="_blank">
-                CAP API
-              </Link>
-            </Item>
-          </ItemGroup>
-          <ItemGroup title="Support">
-            <Item key="ticketservice" icon={<QuestionCircleOutlined />}>
-              <a
-                href="https://cern.service-now.com/service-portal?id=functional_element&name=Data-Analysis-Preservation"
-                target="_blank"
-              >
-                CERN Ticketing Service
-              </a>
-            </Item>
-            <Item key="capemailsupport" icon={<MailOutlined />}>
-              <a href="mailto:analysis-preservation-support@cern.ch">
-                CAP Email Support
-              </a>
-            </Item>
-          </ItemGroup>
-          <Divider />
-          <Item key="settings" icon={<SettingOutlined />}>
-            <Link to={SETTINGS}>Settings</Link>
-          </Item>
-          {(roles.get("isSuperUser") || roles.get("schemaAdmin").size > 0) && (
-            <Item key="admin" icon={<ToolOutlined />}>
-              <Link to={CMS}>Admin</Link>
-            </Item>
-          )}
-          <Item
-            key="logout"
-            icon={<LogoutOutlined />}
-            data-cy="logoutButton"
-            onClick={() => logout()}
-          >
-            Logout
-          </Item>
-        </SubMenu>
-      </Menu>
+      <Menu
+        title="account"
+        theme="dark"
+        selectable={false}
+        mode="horizontal"
+        items={[
+          permissions && {
+            key: "createAnalysis",
+            label: "Create",
+            icon: <PlusOutlined />,
+            onClick: () => setDisplayCreate(true),
+          },
+          {
+            key: "faq",
+            label: "FAQ",
+            icon: <QuestionOutlined />,
+            onClick: () => setDisplayHowToSearch(true),
+          },
+          {
+            key: "subMenu",
+            label: "Account",
+            icon: <UserOutlined size={25} />,
+            children: [
+              {
+                key: "documentation",
+                label: "Documentation",
+                type: "group",
+                children: [
+                  {
+                    key: "generalDocs",
+                    label: (
+                      <Link to="/docs/general" target="_blank">
+                        General Docs
+                      </Link>
+                    ),
+                    icon: <BookOutlined />,
+                  },
+                  {
+                    key: "capClient",
+                    label: (
+                      <Link to="/docs/cli" target="_blank">
+                        CAP Client
+                      </Link>
+                    ),
+                    icon: <CodeOutlined />,
+                  },
+                  {
+                    key: "capApi",
+                    label: (
+                      <Link to="/docs/api" target="_blank">
+                        CAP API
+                      </Link>
+                    ),
+                    icon: <ScheduleOutlined />,
+                  },
+                ],
+              },
+              {
+                key: "support",
+                label: "Suport",
+                type: "group",
+                children: [
+                  {
+                    key: "ticketService",
+                    label: (
+                      <a
+                        href="https://cern.service-now.com/service-portal?id=functional_element&name=Data-Analysis-Preservation"
+                        target="_blank"
+                      >
+                        CERN Ticketing Service
+                      </a>
+                    ),
+                    icon: <QuestionCircleOutlined />,
+                  },
+                  {
+                    key: "capemailsupport",
+                    label: (
+                      <a href="mailto:analysis-preservation-support@cern.ch">
+                        CAP Email Support
+                      </a>
+                    ),
+                    icon: <MailOutlined />,
+                  },
+                ],
+              },
+              {
+                type: "divider",
+                style: { borderColor: "gray", margin: "15px" },
+              },
+              {
+                key: "settings",
+                label: <Link to="/settings">Settings</Link>,
+                icon: <SettingOutlined />,
+              },
+              {
+                key: "logout",
+                label: "Logout",
+                icon: <LogoutOutlined />,
+                onClick: () => logout(),
+              },
+            ],
+          },
+        ]}
+      />
     </React.Fragment>
   );
 };
@@ -125,7 +150,6 @@ const LoggedInMenu = ({ permissions, logout, roles }) => {
 LoggedInMenu.propTypes = {
   logout: PropTypes.func,
   permissions: PropTypes.bool,
-  roles: PropTypes.object,
 };
 
 export default LoggedInMenu;

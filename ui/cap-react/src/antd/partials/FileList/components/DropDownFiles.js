@@ -1,37 +1,30 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Dropdown, Space, Typography, Row, Menu, Col } from "antd";
+import { Dropdown, Space, Typography, Row, Col } from "antd";
 import {
   CloseOutlined,
   CloudDownloadOutlined,
   DownOutlined,
-  InfoCircleOutlined
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import prettyBytes from "pretty-bytes";
-import { Route } from "react-router-dom";
-import { DRAFT_ITEM } from "../../../routes";
 import EllipsisText from "../../EllipsisText";
 
 const { Text } = Typography;
 
-const menu = (data, infoClick, getFileVersions, deleteFile) => (
-  <Menu>
-    <Route
-      path={DRAFT_ITEM}
-      render={() => (
-        <Menu.Item
-          key="info"
-          icon={<InfoCircleOutlined />}
-          onClick={() => {
-            infoClick();
-            getFileVersions();
-          }}
-        >
-          Info
-        </Menu.Item>
-      )}
-    />
-    <Menu.Item key="download" icon={<CloudDownloadOutlined />}>
+const menu = (data, infoClick, getFileVersions, deleteFile) => [
+  {
+    key: "info",
+    label: "Info",
+    icon: <InfoCircleOutlined />,
+    onClick: () => {
+      infoClick();
+      getFileVersions();
+    },
+  },
+  {
+    key: "download",
+    label: (
       <a
         href={
           data.data.links && data.data.links.self
@@ -42,30 +35,29 @@ const menu = (data, infoClick, getFileVersions, deleteFile) => (
       >
         Download
       </a>
-    </Menu.Item>
-    <Route
-      path={DRAFT_ITEM}
-      render={() => (
-        <React.Fragment>
-          <Menu.Divider />
-          <Menu.Item
-            key="delete"
-            icon={<CloseOutlined />}
-            onClick={() => deleteFile(data.data.links.self, data.data.key)}
-            danger
-          >
-            Delete
-          </Menu.Item>
-        </React.Fragment>
-      )}
-    />
-  </Menu>
-);
+    ),
+    icon: <CloudDownloadOutlined />,
+  },
+  { type: "divider" },
+  {
+    key: "delete",
+    label: "Delete",
+    icon: <CloseOutlined />,
+    onClick: () => deleteFile(data.data.links.self, data.data.key),
+    danger: true,
+  },
+];
 
-const DropDownFiles = props => {
+const DropDownFiles = ({
+  file,
+  onFileClick,
+  infoClick,
+  getFileVersions,
+  deleteFile,
+}) => {
   const [isShown, setIsShown] = useState(false);
 
-  if (!props.file) return null;
+  if (!file) return null;
 
   return (
     <React.Fragment>
@@ -81,10 +73,10 @@ const DropDownFiles = props => {
             align="center"
             style={{ width: "100%" }}
             wrap={false}
-            onClick={() => props.onFileClick && props.onFileClick(props.file)}
+            onClick={() => onFileClick && onFileClick(file)}
           >
             <Space>
-              {props.file.icon}
+              {file.icon}
               <EllipsisText
                 middle
                 tooltip
@@ -92,7 +84,7 @@ const DropDownFiles = props => {
                 suffixCount={10}
                 type="secondary"
               >
-                {props.file.name}
+                {file.name}
               </EllipsisText>
             </Space>
           </Row>
@@ -103,16 +95,18 @@ const DropDownFiles = props => {
               <Text
                 style={{ wrap: false, textOverflow: "" }}
                 type="secondary"
-              >{`${prettyBytes(props.file.data.size).toUpperCase()}`}</Text>
+              >{`${prettyBytes(file.data.size).toUpperCase()}`}</Text>
               {isShown && (
                 <Dropdown
                   trigger="click"
-                  overlay={menu(
-                    props.file,
-                    () => props.infoClick(props.file),
-                    () => props.getFileVersions(),
-                    (link, path) => props.deleteFile(link, path)
-                  )}
+                  menu={{
+                    items: menu(
+                      file,
+                      () => infoClick(file),
+                      () => getFileVersions(),
+                      (link, path) => deleteFile(link, path)
+                    ),
+                  }}
                 >
                   <DownOutlined style={{ fontSize: "10px" }} />
                 </Dropdown>
@@ -127,11 +121,10 @@ const DropDownFiles = props => {
 
 DropDownFiles.propTypes = {
   file: PropTypes.object,
-  versions: PropTypes.object,
   deleteFile: PropTypes.func,
   getFileVersions: PropTypes.func,
   infoClick: PropTypes.func,
-  onFileClick: PropTypes.func
+  onFileClick: PropTypes.func,
 };
 
 export default DropDownFiles;

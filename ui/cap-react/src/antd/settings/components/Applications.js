@@ -19,7 +19,7 @@ const Applications = ({
   return (
     <React.Fragment>
       <Modal
-        visible={displayTokenModal}
+        open={displayTokenModal}
         onCancel={() => setDisplayTokenModal(false)}
         title="New OAuth Application"
         okText="Create Token"

@@ -20,7 +20,7 @@ const Search = ({
     fetchSearch(match);
   }, []);
 
-  const _changePageSize = (size) => {
+  const _changePageSize = size => {
     let currentParams = queryString.parse(history.location.search);
 
     const location = {
@@ -38,7 +38,7 @@ const Search = ({
 
     if (Array.isArray(currentParams[parent])) {
       currentParams[parent] = currentParams[parent].filter(
-        (item) => item != child
+        item => item != child
       );
     } else {
       delete currentParams[parent];
@@ -51,7 +51,7 @@ const Search = ({
     history.push(location);
   };
 
-  const _updateSortOption = (sort) => {
+  const _updateSortOption = sort => {
     let currentParams = queryString.parse(history.location.search);
 
     const location = {
@@ -68,7 +68,7 @@ const Search = ({
       currentParams["q"] = "";
     } else {
       if (Array.isArray(currentParams[param])) {
-        currentParams[param] = currentParams[param].filter((i) => i != item);
+        currentParams[param] = currentParams[param].filter(i => i != item);
       } else {
         delete currentParams[param];
       }
@@ -109,7 +109,7 @@ const Search = ({
             title="Filters"
             placement="left"
             onClose={() => setDisplayFilters(false)}
-            visible={displayFilters}
+            open={displayFilters}
             contentWrapperStyle={{ width: !screens.sm ? "80%" : "50%" }}
           >
             <Facets
@@ -136,7 +136,7 @@ const Search = ({
           <ResultsHeader
             location={location}
             results={results}
-            onChange={(sort) => _updateSortOption(sort)}
+            onChange={sort => _updateSortOption(sort)}
             shouldDisplayFacetButton={!screens.lg}
             updateDisplayFacet={() => setDisplayFilters(true)}
           />

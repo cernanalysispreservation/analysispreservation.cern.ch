@@ -162,7 +162,7 @@ const NormalArrayFieldTemplate = ({
       {uiLatex && (
         <Modal
           destroyOnClose
-          visible={showModal}
+          open={showModal}
           onCancel={() => {
             setShowModal(false);
             setLatexData(null);
@@ -204,7 +204,7 @@ const NormalArrayFieldTemplate = ({
       )}
       {uiImport && (
         <ImportListModal
-          visible={importModal}
+          open={importModal}
           uiImport={uiImport}
           schema={schema}
           formData={formData}
@@ -215,7 +215,7 @@ const NormalArrayFieldTemplate = ({
       )}
       {uiEmail && formData && (
         <Modal
-          visible={emailModal}
+          open={emailModal}
           onCancel={() => setEmailModal(false)}
           title="Select user & egroups emails to send"
           okText="Send Email"

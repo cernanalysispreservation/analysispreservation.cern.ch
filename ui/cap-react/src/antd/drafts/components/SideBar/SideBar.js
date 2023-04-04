@@ -92,7 +92,7 @@ const SideBar = ({
             </Descriptions.Item>
           ))}
         </Descriptions>
-        <FileManager visible={showModal} onCancel={() => setShowModal(false)} />
+        <FileManager open={showModal} onCancel={() => setShowModal(false)} />
         <Card
           size="small"
           title="Files | Data | Repos"

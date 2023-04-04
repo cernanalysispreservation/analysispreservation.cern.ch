@@ -4,7 +4,7 @@
     width="80"
     version="1.1"
     type="logo"
-    a11yTitle="Atlas"
+    a11ytitle="Atlas"
   >
     <path d="M0 323.15h323.147V0H0v323.15z" fill="#fff" />
     <path

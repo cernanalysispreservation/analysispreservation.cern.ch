@@ -33,7 +33,7 @@ const Notifications = ({ schemaConfig, createNotificationCategory }) => {
     <Layout style={{ height: "100%", padding: 0 }}>
       <Modal
         destroyOnClose
-        visible={modalVisible}
+        open={modalVisible}
         title="Create a new collection"
         okText="Create"
         cancelText="Cancel"
@@ -82,17 +82,17 @@ const Notifications = ({ schemaConfig, createNotificationCategory }) => {
           </Col>
         </Row>
 
-        <Menu selectable>
-          {schemaConfig &&
-            schemaConfig.entrySeq().map(item => (
-              <Menu.Item
-                key={item[0]}
-                onClick={() => setSelectedCategory(item[0])}
-              >
-                {item[0]}
-              </Menu.Item>
-            ))}
-        </Menu>
+        <Menu
+          selectable
+          items={
+            schemaConfig &&
+            schemaConfig.entrySeq().map(item => ({
+              key: item[0],
+              label: item[0],
+              onClick: () => setSelectedCategory(item[0]),
+            }))
+          }
+        />
       </Layout.Sider>
       <Layout.Content style={{ overflowY: "scroll" }}>
         {selectedCategory ? (

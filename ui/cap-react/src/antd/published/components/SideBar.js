@@ -11,7 +11,7 @@ const SideBar = ({ files, status, onClose, visibleFileDrawer }) => {
       title="File Settings"
       placement="right"
       onClose={onClose}
-      visible={visibleFileDrawer}
+      open={visibleFileDrawer}
       key="fileSettings"
       size="large"
       bodyStyle={{ padding: "5px" }}
@@ -26,7 +26,7 @@ const SideBar = ({ files, status, onClose, visibleFileDrawer }) => {
         background: "#fff",
         padding: "10px 5px",
         height: "100%",
-        overflowX: "hidden"
+        overflowX: "hidden",
       }}
     >
       <FileList files={files} status={status} />
@@ -38,7 +38,7 @@ SideBar.propTypes = {
   status: PropTypes.string,
   onClose: PropTypes.func,
   visibleFileDrawer: PropTypes.bool,
-  files: PropTypes.object
+  files: PropTypes.object,
 };
 
 export default SideBar;
