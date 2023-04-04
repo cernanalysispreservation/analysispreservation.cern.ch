@@ -5,3 +5,4 @@ cap
 yarn.lock
 .gitignore
 Dockerfile
+*.svg

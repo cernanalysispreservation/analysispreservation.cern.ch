@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Menu, Space, Switch, Typography } from "antd";
+import { Menu, Switch, Typography, Row } from "antd";
 import { isTabContainsError } from "./utils/tabfield";
 
 const TabFieldMenu = ({
@@ -12,47 +12,45 @@ const TabFieldMenu = ({
   setAnalysisChecked,
   setActive,
   formErrors,
-  optionsTabs
+  optionsTabs,
 }) => {
   return (
     <Menu
       mode="inline"
       selectedKeys={[active]}
       style={{ height: "100%", width: "220px" }}
-    >
-      {analysis_mode.length > 0 &&
-        showReuseMode && (
-          <Menu.Item key="analysis_reuse_mode">
-            <Space size="large">
-              <Typography.Text>Reuse Mode</Typography.Text>
-              <Switch
-                disabled={analysis_mode[0].content.props.readonly}
-                checked={analysisChecked}
-                onChange={checked => {
-                  analysis_mode[0].content.props.onChange(
-                    checked ? "true" : undefined
-                  );
-                  setAnalysisChecked(checked);
-                }}
-              />
-            </Space>
-          </Menu.Item>
-        )}
-      {tabs.map(item => (
-        <Menu.Item
-          key={item.name}
-          onClick={() => {
-            setActive(item.name);
-          }}
-          danger={isTabContainsError(
+      items={[
+        analysis_mode.length > 0 &&
+          showReuseMode && {
+            key: "analysis_reuse_mode",
+            label: (
+              <Row align="middle" justify="space-between">
+                <Typography.Text>Reuse Mode</Typography.Text>
+                <Switch
+                  disabled={analysis_mode[0].content.props.readonly}
+                  checked={analysisChecked}
+                  onChange={checked => {
+                    analysis_mode[0].content.props.onChange(
+                      checked ? "true" : undefined
+                    );
+                    setAnalysisChecked(checked);
+                  }}
+                />
+              </Row>
+            ),
+          },
+      ].concat(
+        tabs.map(item => ({
+          key: item.name,
+          label: item.title || item.content.props.schema.title,
+          onClick: () => setActive(item.name),
+          danger: isTabContainsError(
             optionsTabs ? item.idsList : item.content.props.idSchema.$id,
             formErrors
-          )}
-        >
-          {item.title || item.content.props.schema.title}
-        </Menu.Item>
-      ))}
-    </Menu>
+          ),
+        }))
+      )}
+    />
   );
 };
 
@@ -66,7 +64,7 @@ TabFieldMenu.propTypes = {
   analysis_mode: PropTypes.array,
   showReuseMode: PropTypes.bool,
   analysisChecked: PropTypes.bool,
-  optionsTabs: PropTypes.object
+  optionsTabs: PropTypes.object,
 };
 
 export default TabFieldMenu;

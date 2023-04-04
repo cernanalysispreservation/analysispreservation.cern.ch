@@ -77,12 +77,12 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
       title: "Department",
       dataIndex: "department",
       key: "department",
-      render: (tag) => <Tag color="geekblue">{tag}</Tag>,
+      render: tag => <Tag color="geekblue">{tag}</Tag>,
     },
     {
       title: "Action",
       key: "action",
-      render: (item) => (
+      render: item => (
         <Button
           type="primary"
           onClick={() => {
@@ -110,7 +110,7 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
       );
 
       setLdapData(
-        response.data.map((item) => ({
+        response.data.map(item => ({
           target: searchFor,
           key: item.email ? item.email : item,
           email: item.email ? item.email : item,
@@ -128,7 +128,7 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
   return (
     <React.Fragment>
       <Modal
-        visible={showModal}
+        open={showModal}
         onCancel={() => {
           setShowModal(false);
           form.resetFields();
@@ -149,7 +149,7 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
           {searchType.length > 1 && (
             <Form.Item label="Search For" name="searchFor">
               <Radio.Group buttonStyle="solid">
-                {searchType.map((type) => (
+                {searchType.map(type => (
                   <Radio.Button key={type} value={type}>
                     {type}
                   </Radio.Button>
@@ -192,13 +192,14 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
             </a>
             <Tag color="blue">{formData.department}</Tag>
           </Space>
-          {!autoOpenModal && !readonly && (
-            <Button
-              type="danger"
-              icon={<DeleteOutlined />}
-              onClick={() => onChange(undefined)}
-            />
-          )}
+          {!autoOpenModal &&
+            !readonly && (
+              <Button
+                type="danger"
+                icon={<DeleteOutlined />}
+                onClick={() => onChange(undefined)}
+              />
+            )}
         </Row>
       ) : (
         <Row

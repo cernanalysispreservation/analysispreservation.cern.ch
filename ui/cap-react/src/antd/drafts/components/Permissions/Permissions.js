@@ -205,7 +205,7 @@ const Permissions = ({
   return (
     <React.Fragment>
       <Modal
-        visible={displayModal}
+        open={displayModal}
         onCancel={() => {
           setDisplayModal(false);
           form.resetFields();

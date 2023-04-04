@@ -15,7 +15,7 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
   return (
     <React.Fragment>
       <Modal
-        visible={showModal}
+        open={showModal}
         onCancel={() => setShowModal(false)}
         title="File Manager"
         width={800}
