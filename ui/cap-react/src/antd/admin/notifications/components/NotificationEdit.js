@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Col, PageHeader, Popconfirm, Row } from "antd";
+import { Button, Col, Popconfirm, Row } from "antd";
+import { PageHeader } from "@ant-design/pro-layout";
 import Form from "../../../forms/Form";
 import { schema, uiSchema } from "../utils";
 import { DeleteOutlined } from "@ant-design/icons";

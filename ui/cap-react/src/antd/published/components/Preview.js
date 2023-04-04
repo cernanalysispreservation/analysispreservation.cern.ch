@@ -1,17 +1,8 @@
 import React, { useState } from "react";
 import { transformSchema } from "../../partials/Utils/schema";
 import PropTypes from "prop-types";
-import {
-  PageHeader,
-  Space,
-  Tag,
-  Button,
-  Row,
-  Col,
-  Radio,
-  Grid,
-  Layout
-} from "antd";
+import { Space, Tag, Button, Row, Col, Radio, Grid, Layout } from "antd";
+import { PageHeader } from "@ant-design/pro-layout";
 import { EditOutlined } from "@ant-design/icons";
 import JSONSchemaPreviewer from "../../partials/JSONSchemaPreviewer";
 
@@ -28,7 +19,7 @@ const Preview = ({
   canUpdate,
   id,
   metadata = { general_title: "" },
-  schemas = { schema: {}, uiSchema: {} }
+  schemas = { schema: {}, uiSchema: {} },
 }) => {
   const [display, setDisplay] = useState(
     schemas.uiSchema["ui:object"] == "tabView" ? "tabView" : "list"
@@ -68,7 +59,7 @@ const Preview = ({
                 history.push({
                   pathname: `/drafts/${draft_id}`,
                   from: location.pathname,
-                  pageFrom: "Published Preview"
+                  pageFrom: "Published Preview",
                 })
               }
             >
@@ -147,7 +138,7 @@ Preview.propTypes = {
   id: PropTypes.string,
   canUpdate: PropTypes.bool,
   files: PropTypes.object,
-  status: PropTypes.string
+  status: PropTypes.string,
 };
 
 export default Preview;
