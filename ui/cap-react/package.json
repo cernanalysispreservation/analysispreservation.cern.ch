@@ -34,6 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "4.7.0",
+    "@ant-design/pro-layout": "7.10.3",
     "@codemirror/commands": "6.1.2",
     "@codemirror/lang-json": "6.0.1",
     "@codemirror/language": "6.3.1",
@@ -47,7 +48,7 @@
     "@rjsf/core": "3.2.1",
     "@sentry/react": "^5.0.0",
     "@vitejs/plugin-react": "3.1.0",
-    "antd": "^4.18.3",
+    "antd": "5.4.0",
     "axios": "0.27.2",
     "classnames": "2.3.1",
     "clean-deep": "3.3.0",

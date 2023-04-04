@@ -5,17 +5,8 @@ import { COLLECTION_BASE } from "../../routes";
 import { shouldDisplayTabButton } from "../utils";
 import SideBar from "./SideBar";
 import { EditOutlined } from "@ant-design/icons";
-import {
-  PageHeader,
-  Space,
-  Tag,
-  Button,
-  Row,
-  Col,
-  Radio,
-  Grid,
-  Layout,
-} from "antd";
+import { Space, Tag, Button, Row, Col, Radio, Grid, Layout } from "antd";
+import { PageHeader } from "@ant-design/pro-layout";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
