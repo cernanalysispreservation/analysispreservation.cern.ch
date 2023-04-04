@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Breadcrumb,
-  Button,
-  Col,
-  PageHeader,
-  Popconfirm,
-  Row,
-  Typography,
-} from "antd";
+import { Breadcrumb, Button, Col, Popconfirm, Row, Typography } from "antd";
+import { PageHeader } from "@ant-design/pro-layout";
 import Customize from "../containers/Customize";
 import { DeleteOutlined } from "@ant-design/icons";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
