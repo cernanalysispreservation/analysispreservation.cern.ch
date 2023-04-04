@@ -84,20 +84,20 @@ install_requires = [
     'invenio-mail==1.0.2',
     'invenio-rest==1.1.2',
     'invenio-theme==1.1.4',
-    'invenio-celery @ git+https://github.com/parths007/invenio-celery.git@mock/v1.1.1',
+    'invenio-celery@git+https://github.com/cernanalysispreservation/invenio-celery.git@mock/v1.1.1#egg=invenio-celery',
     'invenio-logging[sentry,sentry-sdk] @ git+https://github.com/inveniosoftware/invenio-logging@94bc56117593eae62ba975d576e8c7b991311c0d',
 
     # Invenio Auth Deps
     'invenio-access==1.3.0',
     'invenio-accounts==1.1.1',
     'invenio-oauth2server==1.0.4',
-    'invenio-oauthclient @ git+https://github.com/parths007/invenio-oauthclient.git@v1.1.3',
-    'invenio-userprofiles @ git+https://github.com/parths007/invenio-userprofiles.git@v1.0.1',
+    'invenio-oauthclient @ git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@v1.1.3',
+    'invenio-userprofiles @ git+https://github.com/cernanalysispreservation/invenio-userprofiles.git@v1.0.1',
 
     # Invenio Metadata Deps
-    'invenio-indexer @ git+https://github.com/parths007/invenio-indexer.git@os-2-new',
-    'invenio-jsonschemas @ git+https://github.com/parths007/invenio-jsonschemas.git@v1.0.1',
-    'invenio-oaiserver @ git+https://github.com/parths007/invenio-oaiserver.git@os-2-new',
+    'invenio-indexer @ git+https://github.com/cernanalysispreservation/invenio-indexer.git@os-2-new',
+    'invenio-jsonschemas @ git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@v1.0.1',
+    'invenio-oaiserver @ git+https://github.com/cernanalysispreservation/invenio-oaiserver.git@os-2-new',
     'invenio-pidstore==1.1.0',
     'invenio-records-rest @ git+https://github.com/parths007/invenio-records-rest.git@os-2-new',
     'invenio-records-ui==1.0.1',
@@ -106,16 +106,16 @@ install_requires = [
     'invenio-search @ git+https://github.com/parths007/invenio-search.git@v1.2.3#egg=invenio-search',
 
     # Invenio Files deps
-    'invenio-files-rest @ git+https://github.com/parths007/invenio-files-rest.git@v1.0.5',
-    'invenio-records-files @ git+https://github.com/parths007/invenio-records-files.git@new#egg=invenio-records-files',
+    'invenio-files-rest @ git+https://github.com/cernanalysispreservation/invenio-files-rest.git@mock/v1.0.5',
+    'invenio-records-files @ git+https://github.com/cernanalysispreservation/invenio-records-files.git@new#egg=invenio-records-files',
 
     # Database deps
     'invenio-db[postgresql,versioning]==1.0.13',
 
     # Invenio required deps
-    'invenio-deposit @ git+https://github.com/parths007/invenio-deposit.git@os-2',
+    'invenio-deposit @ git+https://github.com/cernanalysispreservation/invenio-deposit.git@os-2',
     'invenio-accounts-rest==1.0.0a4',
-    'invenio-query-parser @ git+https://github.com/parths007/invenio-query-parser.git@os',
+    'invenio-query-parser @ git+https://github.com/cernanalysispreservation/invenio-query-parser.git@os',
     'invenio[auth,base,metadata,postgresql]==3.2.0',
 ]
 
