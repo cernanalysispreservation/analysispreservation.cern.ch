@@ -11,7 +11,7 @@ const DraftSideBar = ({ visibleFileDrawer, onClose }) => {
       title="File Settings"
       placement="right"
       onClose={onClose}
-      visible={visibleFileDrawer}
+      open={visibleFileDrawer}
       key="fileSettings"
       size="large"
       bodyStyle={{ padding: "5px" }}

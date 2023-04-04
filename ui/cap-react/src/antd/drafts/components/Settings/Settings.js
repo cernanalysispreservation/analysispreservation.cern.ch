@@ -9,7 +9,7 @@ import {
   Typography,
   Popconfirm,
   Modal,
-  Alert
+  Alert,
 } from "antd";
 import { Link } from "react-router-dom";
 import { LinkOutlined, DeleteTwoTone } from "@ant-design/icons";
@@ -27,7 +27,7 @@ const Settings = ({
   publishDraft,
   updateDraft,
   deleteDraft,
-  canUpdate
+  canUpdate,
 }) => {
   const publishMyDraft = () => {
     equal(cleanDeep(formData), cleanDeep(metadata))
@@ -42,12 +42,12 @@ const Settings = ({
   return (
     <Row justify="center">
       <Modal
-        visible={confirmPublish}
+        open={confirmPublish}
         title="Publish Draft"
         onCancel={() => setConfirmPublish(false)}
         okButtonProps={{
           onClick: publishMyDraft,
-          "data-cy": "draftSettingsPublish"
+          "data-cy": "draftSettingsPublish",
         }}
         okText="Publish"
       >
@@ -86,7 +86,7 @@ const Settings = ({
                   <Button type="link" icon={<LinkOutlined />}>
                     Current Version
                   </Button>
-                </Link>
+                </Link>,
               ]
             }
           >
@@ -158,7 +158,7 @@ Settings.propTypes = {
   publishDraft: PropTypes.func,
   updateDraft: PropTypes.func,
   deleteDraft: PropTypes.func,
-  canUpdate: PropTypes.bool
+  canUpdate: PropTypes.bool,
 };
 
 export default Settings;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Space } from "antd";
-import DropDownFiles from "../containers/DropDown";
+import DropDownFiles from "../containers/DropDownFiles";
 import { _getIcon } from "./getFileItemIcon";
 export const constructTree = (data, setFile, onFileClick) => {
   let paths = [];
@@ -39,7 +39,7 @@ function arrangeIntoTree(paths, setFile, onFileClick) {
               {part}
             </Space>
           ),
-          data: pathData
+          data: pathData,
         };
         if (path.length > j + 1) newPart["children"] = [];
         if (!(path.length > j + 1)) {

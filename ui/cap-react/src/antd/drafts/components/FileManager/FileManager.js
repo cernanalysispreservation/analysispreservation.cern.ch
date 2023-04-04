@@ -8,23 +8,17 @@ import {
   Row,
   Space,
   Typography,
-  Upload
+  Upload,
 } from "antd";
 import {
   CheckCircleTwoTone,
   InboxOutlined,
   MinusCircleOutlined,
-  PlusOutlined
+  PlusOutlined,
 } from "@ant-design/icons";
 import { _getIcon } from "../../../partials/FileList/utils/getFileItemIcon";
 import prettyBytes from "pretty-bytes";
-const FileManager = ({
-  visible,
-  onCancel,
-  links,
-  uploadFile,
-  filesToUpload
-}) => {
+const FileManager = ({ open, onCancel, links, uploadFile, filesToUpload }) => {
   const [fileList, setFileList] = useState([]);
   const [status, setStatus] = useState("ready");
   useEffect(
@@ -48,7 +42,7 @@ const FileManager = ({
 
   return (
     <Modal
-      visible={visible}
+      open={open}
       onCancel={() => {
         onCancel();
         setFileList([]);
@@ -72,7 +66,7 @@ const FileManager = ({
                 (acc, item) => acc + item.key + "=" + item.value + ";",
                 ""
               )
-          )
+          ),
       }}
     >
       <Upload.Dragger
@@ -83,7 +77,7 @@ const FileManager = ({
           form.setFieldsValue({
             filename: file.name,
             directory: "",
-            file_tags: []
+            file_tags: [],
           });
         }}
         itemRender={(_, file) =>
@@ -99,7 +93,7 @@ const FileManager = ({
                   padding: "10px",
                   border: "2px dashed steelblue",
                   margin: "10px 0",
-                  opacity: status == "uploading" && 0.5
+                  opacity: status == "uploading" && 0.5,
                 }}
               >
                 <Row justify="space-between">
@@ -176,11 +170,11 @@ const FileManager = ({
 };
 
 FileManager.propTypes = {
-  visible: PropTypes.bool,
+  open: PropTypes.bool,
   onCancel: PropTypes.func,
   links: PropTypes.object,
   uploadFile: PropTypes.func,
-  filesToUpload: PropTypes.object
+  filesToUpload: PropTypes.object,
 };
 
 export default FileManager;

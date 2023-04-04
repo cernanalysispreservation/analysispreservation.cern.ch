@@ -96,7 +96,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
       <Modal
         className="__Form__"
         destroyOnClose
-        visible={visible}
+        open={visible}
         onCancel={() => {
           setVisible(false);
           setItemToDisplay(null);

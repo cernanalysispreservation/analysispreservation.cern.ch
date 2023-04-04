@@ -20,23 +20,29 @@ const Reviews = ({
   const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    // if the modal is open and then we have an error update
-    // but we do not have anything it means that the request went through
-    // so we can just close the modal
-    if (!loading && !error && showModal) {
-      setShowModal(false);
-    }
-  }, [loading, error]);
+  useEffect(
+    () => {
+      // if the modal is open and then we have an error update
+      // but we do not have anything it means that the request went through
+      // so we can just close the modal
+      if (!loading && !error && showModal) {
+        setShowModal(false);
+      }
+    },
+    [loading, error]
+  );
 
-  useEffect(() => {
-    // when there is a close modal functionality
-    // lets clear everything
-    if (!showModal) {
-      clearErrors();
-      form.resetFields();
-    }
-  }, [showModal]);
+  useEffect(
+    () => {
+      // when there is a close modal functionality
+      // lets clear everything
+      if (!showModal) {
+        clearErrors();
+        form.resetFields();
+      }
+    },
+    [showModal]
+  );
 
   // if the draft is not reviewable then return null
   if (!review) return null;
@@ -44,7 +50,7 @@ const Reviews = ({
   return (
     <React.Fragment>
       <Modal
-        visible={showModal}
+        open={showModal}
         title="Add new Review"
         okText="Submit Review"
         okButtonProps={{
@@ -61,7 +67,7 @@ const Reviews = ({
             comment: "",
             reviewType: null,
           }}
-          onFinish={(values) => {
+          onFinish={values => {
             isReviewingPublished
               ? reviewPublished({
                   body: values.comment,
@@ -110,7 +116,7 @@ const Reviews = ({
         )}
       </Modal>
       <Modal
-        visible={showReviewsModal}
+        open={showReviewsModal}
         footer={
           <Button onClick={() => setShowReviewsModal(false)}>Close</Button>
         }

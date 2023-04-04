@@ -6,7 +6,7 @@ import TimeAgo from "react-timeago";
 import { CloudDownloadOutlined } from "@ant-design/icons";
 import moment from "moment";
 
-const FileModal = ({ visible, file, onCancel, versions }) => {
+const FileModal = ({ open, file, onCancel, versions }) => {
   if (!file) return null;
   let _versions = versions
     .filter(version => version.get("key") === file.data.key)
@@ -15,26 +15,26 @@ const FileModal = ({ visible, file, onCancel, versions }) => {
       created: i.get("created"),
       head: i.get("is_head"),
       size: prettyBytes(i.get("size")).toUpperCase(),
-      link: i.getIn(["links", "self"])
+      link: i.getIn(["links", "self"]),
     }))
     .toJS();
 
   const timeOptions = {
     day: "numeric",
     month: "long",
-    year: "numeric"
+    year: "numeric",
   };
 
   const columns = [
     {
       dataIndex: "checksum",
       key: "checksum",
-      render: text => <a>{text}</a>
+      render: text => <a>{text}</a>,
     },
     {
       dataIndex: "head",
       key: "head",
-      render: is_head => is_head && <Tag color="green">latest</Tag>
+      render: is_head => is_head && <Tag color="green">latest</Tag>,
     },
     {
       dataIndex: "created",
@@ -49,12 +49,12 @@ const FileModal = ({ visible, file, onCancel, versions }) => {
         ) : (
           <TimeAgo date={created} minPeriod="60" />
         );
-      }
+      },
     },
     {
       dataIndex: "size",
       key: "size",
-      width: "60px"
+      width: "60px",
     },
     {
       dataIndex: "link",
@@ -64,16 +64,16 @@ const FileModal = ({ visible, file, onCancel, versions }) => {
         <a download href={link}>
           <CloudDownloadOutlined />
         </a>
-      )
-    }
+      ),
+    },
   ];
   return (
     <Modal
-      visible={visible}
+      open={open}
       width={640}
       onCancel={onCancel}
       okButtonProps={{
-        onClick: onCancel
+        onClick: onCancel,
       }}
       title="File Info"
     >
@@ -96,10 +96,10 @@ const FileModal = ({ visible, file, onCancel, versions }) => {
 };
 
 FileModal.propTypes = {
-  visible: PropTypes.bool,
+  open: PropTypes.bool,
   file: PropTypes.object,
   onCancel: PropTypes.func,
-  versions: PropTypes.object
+  versions: PropTypes.object,
 };
 
 export default FileModal;

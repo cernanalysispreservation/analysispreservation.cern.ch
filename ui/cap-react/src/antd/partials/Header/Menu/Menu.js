@@ -5,64 +5,82 @@ import { WELCOME } from "../../../routes";
 import OauthPopup from "../../OAuthPopUp";
 import { LoginOutlined } from "@ant-design/icons";
 import LoginForm from "../LoginForm";
-const { Item } = Menu;
+import { useState } from "react";
 
 const SimpleMenu = ({
   initCurrentUser,
   loginLocalUser,
-  location = { state: { next: "/" } }
+  location = { state: { next: "/" } },
 }) => {
   if (location.pathname != WELCOME) return null;
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   let oauthLink =
     process.env.NODE_ENV === "development"
       ? `/oauth/login/cern?next=/`
       : `/api/oauth/login/cern?next=/`;
 
-  return (
-    <Menu theme="dark" selectable={false} mode="horizontal">
-      {process.env.NODE_ENV === "development" || process.env.ENABLE_E2E ? (
-        <Dropdown
-          trigger="click"
-          overlay={<LoginForm loginLocalUser={loginLocalUser} />}
-          size="large"
-        >
-          <Item key="locallogin" icon={<LoginOutlined />} data-cy="localLogin">
-            Local Login
-          </Item>
-        </Dropdown>
-      ) : null}
-      <Item key="home">
-        <a href="#home">Home</a>
-      </Item>
-      <Item key="discover">
-        <a href="#discover">What is Cap</a>
-      </Item>
-      <Item key="explain">
-        <a href="#explain">Get Started</a>
-      </Item>
-      <Item key="integrations">
-        <a href="#integrations">Integrations</a>
-      </Item>
-      <Item key="documentation">
-        <a href="#documentation">Documentation</a>
-      </Item>
-      <Item key="login">
+  const menuItems = [
+    { label: <a href="#home">Home</a>, key: "home" },
+    { label: <a href="#discover">What is Cap</a>, key: "discover" },
+    { label: <a href="#explain">Get Started</a>, key: "explain" },
+    {
+      label: <a href="#integrations">Integrations</a>,
+      key: "integrations",
+    },
+    {
+      label: <a href="#documentation">Documentation</a>,
+      key: "documentation",
+    },
+    {
+      label: (
         <OauthPopup
           url={oauthLink}
           loginCallBack={() => initCurrentUser(location.state.next)}
         >
           <Button type="primary">Log In</Button>
         </OauthPopup>
-      </Item>
-    </Menu>
+      ),
+      key: "login",
+    },
+  ];
+
+  (process.env.NODE_ENV == "development" || process.env.ENABLE_E2E) &&
+    menuItems.unshift({
+      label: (
+        <Dropdown
+          menu={{
+            items: [
+              {
+                label: <LoginForm loginLocalUser={loginLocalUser} />,
+                key: "localLoginForm",
+              },
+            ],
+          }}
+          open={dropdownOpen}
+          onOpenChange={x => {
+            console.log(x);
+            setDropdownOpen(x);
+          }}
+        >
+          <div>
+            <LoginOutlined /> Local login
+          </div>
+        </Dropdown>
+      ),
+      key: "locallogin",
+    });
+
+  return (
+    <Menu theme="dark" selectable={false} mode="horizontal" items={menuItems} />
   );
 };
 
 SimpleMenu.propTypes = {
   location: PropTypes.object,
   initCurrentUser: PropTypes.func,
-  loginLocalUser: PropTypes.func
+  loginLocalUser: PropTypes.func,
 };
 
 export default SimpleMenu;

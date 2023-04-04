@@ -7,7 +7,7 @@ import Files from "./Files";
 
 const FileList = ({
   files,
-  renderList = ["files", "repositories", "title"]
+  renderList = ["files", "repositories", "title"],
 }) => {
   const [fileToDisplay, setFileToDisplay] = useState(null);
 
@@ -28,7 +28,7 @@ const FileList = ({
   return (
     <React.Fragment>
       <FileModal
-        visible={fileToDisplay}
+        open={fileToDisplay}
         onCancel={() => setFileToDisplay(false)}
         file={fileToDisplay}
       />
@@ -45,7 +45,7 @@ const FileList = ({
 
 FileList.propTypes = {
   renderList: PropTypes.array,
-  files: PropTypes.array
+  files: PropTypes.array,
 };
 
 export default FileList;
