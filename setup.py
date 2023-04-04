@@ -96,7 +96,7 @@ install_requires = [
     'invenio-mail==1.0.2',
     'invenio-rest==1.1.2',
     'invenio-theme==1.1.4',
-    'invenio-celery @ git+https://github.com/cernanalysispreservation/invenio-celery.git@mock/v1.1.1',
+    'invenio-celery@git+https://github.com/cernanalysispreservation/invenio-celery.git@mock/v1.1.1#egg=invenio-celery',
     'invenio-logging[sentry,sentry-sdk] @ git+https://github.com/inveniosoftware/invenio-logging@94bc56117593eae62ba975d576e8c7b991311c0d',
 
     # Invenio Auth Deps
