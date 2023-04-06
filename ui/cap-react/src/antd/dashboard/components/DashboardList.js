@@ -60,6 +60,10 @@ const DashboardList = ({
                 ? `/drafts/${item.id}`
                 : `/published/${item.id}`
             }
+            style={{
+              boxShadow: "0px 20px 1px -20px darkgray",
+              backgroundColor: "blue !important",
+            }}
           >
             <DashboardListItem item={item} listType={listType} />
           </Link>
