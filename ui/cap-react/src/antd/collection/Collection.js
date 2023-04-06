@@ -5,10 +5,9 @@ import { fetchRecordsResults } from "../../actions/common";
 import { Card, Col, Empty, Row, Select, Space, Tag, Typography } from "antd";
 import RichEditorWidget from "../forms/widgets/RichEditorWidget";
 import { ReactComponent as NoDocs } from "../../img/noDocs.svg";
-import DashboardList from "../dashboard/components/DashoboardList";
+import DashboardList from "../dashboard/components/DashboardList";
 import { _getCollectionList } from "../dashboard/utils";
 import CollectionPermissions from "./CollectionPermissions";
-import "./Collection.less";
 import ErrorScreen from "../partials/Error";
 
 const Collection = props => {
@@ -29,53 +28,43 @@ const Collection = props => {
   let lists = _getCollectionList(props.results);
 
   return (
-    <Row
-      justify="center"
-      style={{ padding: "10px 0" }}
-      className="__Collection__"
-    >
+    <Row justify="center" style={{ padding: "10px 0" }}>
       <Col lg={18} xs={22} xl={14}>
         <Space direction="vertical" style={{ width: "100%" }} size="large">
-          <div className="banner">
-            <Row justify="space-between" style={{ marginBottom: "20px" }}>
-              <Space direction="vertical">
-                <Typography.Title level={3}>
-                  {props.schema_data.has("fullname") &&
-                    props.schema_data.get("fullname")}
-                </Typography.Title>
-                <Tag>{props.schema_data.get("name")} </Tag>
-              </Space>
-              <div>
-                <Select
-                  defaultValue={version ? version : "allversions"}
-                  style={{ width: 110 }}
-                  size="small"
-                  onChange={val =>
-                    val == "allversions"
-                      ? props.history.push(`/collection/${collection_name}`)
-                      : props.history.push(
-                          `/collection/${collection_name}/${val}`
-                        )
-                  }
-                >
-                  {[
-                    "allversions",
-                    ...(props.schema_data.has("versions") &&
-                      props.schema_data.get("versions").map(item => item)),
-                  ].map(item => (
-                    <Select.Option value={item} key={item}>
-                      {item === "allversions" ? "All Versions" : item}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </div>
-            </Row>
-            <Typography.Text>
-              {props.schema_data.hasIn(["config", "description"])
-                ? props.schema_data.getIn(["config", "description"])
-                : "No Description"}
-            </Typography.Text>
-          </div>
+          <Row justify="space-between" style={{ marginBottom: "20px" }}>
+            <Space direction="vertical">
+              <Typography.Title level={3}>
+                {props.schema_data.has("fullname") &&
+                  props.schema_data.get("fullname")}
+              </Typography.Title>
+              <Tag>{props.schema_data.get("name")} </Tag>
+            </Space>
+            <Select
+              defaultValue={version ? version : "allversions"}
+              style={{ width: 110 }}
+              size="small"
+              onChange={val =>
+                val == "allversions"
+                  ? props.history.push(`/collection/${collection_name}`)
+                  : props.history.push(`/collection/${collection_name}/${val}`)
+              }
+            >
+              {[
+                "allversions",
+                ...(props.schema_data.has("versions") &&
+                  props.schema_data.get("versions").map(item => item)),
+              ].map(item => (
+                <Select.Option value={item} key={item}>
+                  {item === "allversions" ? "All Versions" : item}
+                </Select.Option>
+              ))}
+            </Select>
+          </Row>
+          <Typography.Text>
+            {props.schema_data.hasIn(["config", "description"])
+              ? props.schema_data.getIn(["config", "description"])
+              : "No Description"}
+          </Typography.Text>
 
           <Row gutter={[24, 16]}>
             <Col xs={24} md={12}>

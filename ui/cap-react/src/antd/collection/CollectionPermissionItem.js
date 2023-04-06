@@ -12,7 +12,7 @@ const CollectionPermissionItem = ({ permissions, title }) => {
         ) : (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="  There are not egroups/users email addresses provided for this
+            description="  There are no egroups/users email addresses provided for this
           category"
           />
         )}

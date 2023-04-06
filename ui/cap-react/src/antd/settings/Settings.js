@@ -1,16 +1,14 @@
 import React from "react";
+import { Row, Col, Space } from "antd";
 
 import Applications from "./containers/Applications";
 import Integrations from "./containers/Integrations";
 import Profile from "./containers/Profile";
 
-import "./Settings.less";
-import { Row, Col, Space } from "antd";
-
 const Settings = () => {
   return (
     <Row justify="center">
-      <Col xs={22} sm={20} md={18} lg={16} xl={12} className="__Settings__">
+      <Col xs={22} sm={20} md={18} lg={16} xl={12}>
         <Space direction="vertical" size="large" style={{ width: "100%" }}>
           <Profile />
           <Applications />

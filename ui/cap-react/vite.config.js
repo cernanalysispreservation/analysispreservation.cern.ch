@@ -2,7 +2,6 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import fs from "fs/promises";
-import theme from "./src/antd/theme";
 import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig(({ mode }) => {
@@ -57,16 +56,6 @@ export default defineConfig(({ mode }) => {
             },
           },
         ],
-      },
-    },
-    // Adds support for inline JS in antd's less files
-    css: {
-      preprocessorOptions: {
-        less: {
-          javascriptEnabled: true,
-          additionalData: "@root-entry-name: default;",
-          modifyVars: theme,
-        },
       },
     },
     // TEMPORARY: allows using process.env (ideally we should use import.meta.env I think)

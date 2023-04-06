@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Statistic, Card, Divider } from "antd";
+import { Row, Col, Statistic, Card, Divider, Typography } from "antd";
 import { _getList } from "../utils";
-import DashboardList from "./DashoboardList";
+import DashboardList from "./DashboardList";
 import DashboardQuickSearch from "../containers/QuickSearch";
-import "./Dashboard.less";
 
 const Dashboard = ({ fetchDashboard, results, loading }) => {
   useEffect(() => {
@@ -12,71 +11,88 @@ const Dashboard = ({ fetchDashboard, results, loading }) => {
   }, []);
   let lists = _getList(results);
 
+  const statisticValueStyle = { textAlign: "center" };
+
   return (
-    <Row
-      gutter={[{ xs: 8, sm: 16, md: 24 }, { xs: 8, sm: 16, md: 24 }]}
-      className="padding10"
-    >
+    <Row style={{ padding: "10px" }}>
       <Col
         xs={{ span: 24, order: 2 }}
         md={{ span: 12, order: 1 }}
-        className="padding10"
+        style={{ padding: "10px" }}
       >
         <DashboardList
           loading={loading}
           listType="draft"
           list={lists["drafts"]}
           header="Draft Documents"
-          emptyMessage="Draft analyses that your collaborators have given you read/write access to."
+          description="Draft analyses that your collaborators have given you read/write access to."
+          displayShowAll
         />
       </Col>
       <Col
         xs={{ span: 24, order: 1 }}
         md={{ span: 12, order: 2 }}
-        className="padding10"
+        style={{ padding: "10px" }}
       >
-        <Card>
+        <Card style={{ paddingBottom: "10px" }}>
           <Row justify="space-around" align="middle">
             <Statistic
               value={results.user_drafts_count}
               title="Drafts"
               loading={loading}
+              valueStyle={statisticValueStyle}
             />
             <Divider type="vertical" />
             <Statistic
               value={results.user_published_count}
               title="Published"
               loading={loading}
+              valueStyle={statisticValueStyle}
             />
             <Divider type="vertical" />
             <Statistic
               value={results.user_count}
               title="Total"
               loading={loading}
+              valueStyle={statisticValueStyle}
             />
           </Row>
         </Card>
 
-        <Card title="Quick Search">
+        <Card
+          title={<Typography.Text strong>Quick Search</Typography.Text>}
+          size="small"
+          headStyle={{ height: "46px", textAlign: "center" }}
+          style={{ marginTop: "20px" }}
+        >
           <DashboardQuickSearch />
         </Card>
       </Col>
-      <Col xs={{ span: 24, order: 3 }} md={{ span: 12 }} className="padding10">
+      <Col
+        xs={{ span: 24, order: 3 }}
+        md={{ span: 12 }}
+        style={{ padding: "10px" }}
+      >
         <DashboardList
           loading={loading}
           listType="published"
           list={lists["published"]}
-          header="Published (in CAP) Documents"
-          emptyMessage="All analyses published on CAP by members of your collaboration."
+          header="Published Documents in CAP"
+          description="All analyses published on CAP by members of your collaboration."
+          displayShowAll
         />
       </Col>
-      <Col xs={{ span: 24, order: 4 }} md={{ span: 12 }} className="padding10">
+      <Col
+        xs={{ span: 24, order: 4 }}
+        md={{ span: 12 }}
+        style={{ padding: "10px" }}
+      >
         <DashboardList
           loading={loading}
           listType="workflows"
           list={lists["workflows"]}
-          header="workflows"
-          emptyMessage="Recent workflows attached to your content"
+          header="Workflows"
+          description="Recent workflows attached to your content."
         />
       </Col>
     </Row>
@@ -86,7 +102,7 @@ const Dashboard = ({ fetchDashboard, results, loading }) => {
 Dashboard.propTypes = {
   fetchDashboard: PropTypes.func,
   results: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
 };
 
 export default Dashboard;

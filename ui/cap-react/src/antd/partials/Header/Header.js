@@ -6,7 +6,6 @@ import { Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import LoggedInMenu from "./LoggedInMenu";
 import SimpleMenu from "./Menu";
-import "./Header.less";
 
 import AntSearchBar from "../SearchBar";
 

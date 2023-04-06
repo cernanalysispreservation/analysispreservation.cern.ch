@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import PropTypes from "prop-types";
-import "./App.less";
 import WelcomePage from "../welcome";
 import IndexPage from "../index/IndexPage";
 
