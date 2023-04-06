@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Row, Col, Button } from "antd";
-import { withConfigConsumer } from "antd/lib/config-provider/context";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 import PropTypes from "prop-types";
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
@@ -50,24 +49,25 @@ const FixedArrayFieldTemplate = ({
           </Row>
         </Col>
 
-        {canAdd && !readonly && (
-          <Col span={24}>
-            <Row gutter={rowGutter} justify="end">
-              <Col flex="192px">
-                <Button
-                  block
-                  className="array-item-add"
-                  disabled={disabled}
-                  onClick={onAddClick}
-                  type="primary"
-                >
-                  <PlusCircleOutlined /> Add{" "}
-                  {options && options.addLabel ? options.addLabel : `Item`}
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        )}
+        {canAdd &&
+          !readonly && (
+            <Col span={24}>
+              <Row gutter={rowGutter} justify="end">
+                <Col flex="192px">
+                  <Button
+                    block
+                    className="array-item-add"
+                    disabled={disabled}
+                    onClick={onAddClick}
+                    type="primary"
+                  >
+                    <PlusCircleOutlined /> Add{" "}
+                    {options && options.addLabel ? options.addLabel : `Item`}
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          )}
       </Row>
     </fieldset>
   );
@@ -90,6 +90,4 @@ FixedArrayFieldTemplate.propTypes = {
   uiSchema: PropTypes.object,
 };
 
-export default withConfigConsumer({ prefixCls: "form" })(
-  FixedArrayFieldTemplate
-);
+export default FixedArrayFieldTemplate;

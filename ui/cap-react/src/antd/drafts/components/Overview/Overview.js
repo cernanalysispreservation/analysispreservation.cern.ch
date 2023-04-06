@@ -47,37 +47,23 @@ const Overview = ({
 
   const infoArray = [
     {
-      text: <Typography.Text>{revision} revision</Typography.Text>,
+      text: `${revision} revision`,
       icon: <InfoCircleOutlined />,
     },
     {
-      text: (
-        <Typography.Text>
-          {" "}
-          {users || 0} users / {roles || 0} roles
-        </Typography.Text>
-      ),
+      text: `${users || 0} users / ${roles || 0} roles`,
       icon: <UserOutlined />,
     },
     {
-      text: (
-        <Typography.Text>
-          {webhooks && webhooks.length} repositories
-        </Typography.Text>
-      ),
+      text: `${webhooks && webhooks.length} repositories`,
       icon: <CodeOutlined />,
     },
     {
-      text: <Typography.Text>{files && files.size} files</Typography.Text>,
+      text: `${files && files.size} files`,
       icon: <FolderOutlined />,
     },
     {
-      text: (
-        <Typography.Text>
-          {" "}
-          {(schema && schema.version) || "-"} schema version
-        </Typography.Text>
-      ),
+      text: `${(schema && schema.version) || "-"} schema version`,
       icon: <InfoCircleOutlined />,
     },
   ];

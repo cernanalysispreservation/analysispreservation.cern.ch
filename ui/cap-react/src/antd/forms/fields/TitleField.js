@@ -1,7 +1,6 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { withConfigConsumer } from "antd/lib/config-provider/context";
 import { Button, Row, Space, Tooltip } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ImportOutlined, MailOutlined } from "@ant-design/icons";
@@ -132,4 +131,4 @@ TitleField.defaultProps = {
   formContext: {},
 };
 
-export default withConfigConsumer({ prefixCls: "form" })(TitleField);
+export default TitleField;

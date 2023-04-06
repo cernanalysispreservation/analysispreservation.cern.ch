@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-RegularItalic.woff") format("woff");
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-Semibold.woff") format("woff");
+  font-style: normal;
+  font-weight: 600;
+}
+
+.__mainContent__{
+  overflow-x: hidden;
+}
+
+.__mainLayout__ {
+  height: 100vh !important;
+  overflow-x: hidden;
+  padding: 0 !important
+}
+
+.ant-layout-footer{
+  padding: 0;
+}
+
+.ant-layout-header {
+  height: fit-content;
+}
+
+.rjsf{
+  height: 100%;
+}
+
+.hoverPointer:hover{
+  cursor: pointer;
+}
+
+.scrollableTabs .ant-tabs-content-holder {
+  overflow-y: scroll;
+}
+
+.ant-descriptions-view table {
+  margin-bottom: 0;
+}
+
+.no-bottom-border .ant-menu-item::after {
+    border-bottom: none !important;
+}
+
+.__mainHeader__ {
+  padding: 0 10px;
+}
+
+.__mainHeader__ ul {
+  justify-content: flex-end;
+}

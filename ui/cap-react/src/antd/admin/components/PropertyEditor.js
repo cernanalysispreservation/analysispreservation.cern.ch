@@ -84,7 +84,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
           <Typography.Title
             level={5}
             editable={{
-              text: { name },
+              text: name,
               onChange: value => renameId(path.toJS(), value),
             }}
             style={{ textAlign: "center" }}
