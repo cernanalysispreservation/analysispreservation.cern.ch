@@ -2,13 +2,13 @@ name: Backend tests
 
 on:
   push:
-    branches: [ master, ant ]
+    branches: [master, next]
     paths-ignore:
-    - 'ui/**'
+      - "ui/**"
   pull_request:
-    branches: [ master, ant, faser ]
+    branches: [master, next]
     paths-ignore:
-    - 'ui/**'
+      - "ui/**"
 
 jobs:
   lint-python-changes:
@@ -19,10 +19,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Run darker
         run: |
+          pip install flake8
           pip install darker[isort]
           darker . --check -i -L flake8
 
@@ -40,7 +41,7 @@ jobs:
           POSTGRES_PASSWORD: cap
           POSTGRES_DB: cap
         ports:
-        - 5432:5432
+          - 5432:5432
       rabbitmq:
         image: rabbitmq:3-management
         ports:
@@ -68,7 +69,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install system dependencies
         run: |

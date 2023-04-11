@@ -5,13 +5,12 @@ on:
       - master
       - qa
       - production
-      - 'upgrade-3'
-      - 'cap-next-cloud'
+      - next
   pull_request:
     branches:
       - qa
       - production
-      - faser
+      - next
 jobs:
   Cypress:
     name: Cypress
