@@ -2,11 +2,11 @@ name: Backend tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, next ]
     paths-ignore:
     - 'ui/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, next ]
     paths-ignore:
     - 'ui/**'
 
@@ -23,6 +23,7 @@ jobs:
 
       - name: Run darker
         run: |
+          pip install flake8
           pip install darker[isort]
           darker . --check -i -L flake8
 

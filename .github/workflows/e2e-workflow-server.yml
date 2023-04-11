@@ -2,7 +2,7 @@ name: E2E - Server changes with python package installations
 
 on:
   pull_request:
-    branches: [master, ant, 'upgrade-3']
+    branches: [master, ant, next]
     paths:
       - "setup.py"
       - "requirements.txt"
