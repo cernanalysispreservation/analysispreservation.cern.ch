@@ -2,7 +2,7 @@ name: Lint Source
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, next ]
 
 jobs:
   lint-shellcheck:
