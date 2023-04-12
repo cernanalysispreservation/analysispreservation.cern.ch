@@ -223,9 +223,7 @@ if os.environ.get('DEV_HOST', False):
             APP_ALLOWED_HOSTS.append(host.strip())
     else:
         APP_ALLOWED_HOSTS.append(hosts)
-# OAI-PMH
-# =======
-OAISERVER_ID_PREFIX = 'oai:analysispreservation.cern.ch:'
+
 
 # Debug
 # =====

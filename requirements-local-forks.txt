@@ -4,7 +4,6 @@
 -e git+https://github.com/cernanalysispreservation/invenio-userprofiles.git@v1.0.1#egg=invenio-userprofiles
 -e git+https://github.com/cernanalysispreservation/invenio-indexer.git@os-2-new#egg=invenio-indexer
 -e git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@v1.0.1#egg=invenio-jsonschemas
--e git+https://github.com/cernanalysispreservation/invenio-oaiserver.git@os-2-new#egg=invenio-oaiserver
 -e git+https://github.com/parths007/invenio-records-rest.git@os-2-new#egg=invenio-records-rest
 -e git+https://github.com/parths007/invenio-search.git@v1.2.3#egg=invenio-search[opensearch2]
 -e git+https://github.com/cernanalysispreservation/invenio-files-rest.git@mock/v1.0.5#egg=invenio-files-rest

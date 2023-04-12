@@ -97,7 +97,6 @@ install_requires = [
     # Invenio Metadata Deps
     'invenio-indexer @ git+https://github.com/cernanalysispreservation/invenio-indexer.git@os-2-new',
     'invenio-jsonschemas @ git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@v1.0.1',
-    'invenio-oaiserver @ git+https://github.com/cernanalysispreservation/invenio-oaiserver.git@os-2-new',
     'invenio-pidstore==1.1.0',
     'invenio-records-rest @ git+https://github.com/parths007/invenio-records-rest.git@os-2-new',
     'invenio-records-ui==1.0.1',
