@@ -9,7 +9,10 @@ export const slugify = text => {
     .replace(/-+$/, ""); // Trim - from end of text
 };
 
-export const _initSchemaStructure = (name, description) => ({
+export const _initSchemaStructure = (
+  name = "New schema",
+  description = ""
+) => ({
   schema: {
     title: name,
     description: description,

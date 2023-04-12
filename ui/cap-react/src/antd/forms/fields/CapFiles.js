@@ -21,9 +21,7 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
         width={800}
         footer={null}
       >
-        <Typography.Title level={5}>
-          Select a file from the list
-        </Typography.Title>
+        <Typography.Text strong>Select a file from the list</Typography.Text>
         <Files
           memoFiles={files}
           onFileClick={name => {

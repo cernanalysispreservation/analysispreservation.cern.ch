@@ -1,8 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { Button, Row, Space, Tooltip } from "antd";
-import Text from "antd/lib/typography/Text";
+import { Button, Row, Space, Tooltip, Typography } from "antd";
 import { ImportOutlined, MailOutlined } from "@ant-design/icons";
 import Markdown from "../../partials/Markdown/Markdown";
 
@@ -70,7 +69,15 @@ const TitleField = ({
   if ((uiImport && !readonly) || uiLatex || uiEmail) {
     return (
       <Row justify="space-between">
-        {titleText}
+        <Typography.Text
+          strong
+          className={labelClassName}
+          htmlFor={id}
+          onClick={handleLabelClick}
+          title={typeof title === "string" ? title : ""}
+        >
+          {labelChildren}
+        </Typography.Text>
         <Space style={{ flexWrap: "wrap" }}>
           {uiImport && (
             <Tooltip title="Import from a list">
@@ -112,7 +119,17 @@ const TitleField = ({
       </Row>
     );
   }
-  return <React.Fragment>{titleText}</React.Fragment>;
+  return (
+    <Typography.Text
+      strong
+      className={labelClassName}
+      htmlFor={id}
+      onClick={handleLabelClick}
+      title={typeof title === "string" ? title : ""}
+    >
+      {labelChildren}
+    </Typography.Text>
+  );
 };
 
 TitleField.propTypes = {

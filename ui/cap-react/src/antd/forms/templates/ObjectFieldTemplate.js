@@ -1,13 +1,11 @@
 import React from "react";
 import classNames from "classnames";
 import _ from "lodash";
-import { utils } from "@rjsf/core";
-import { Button, Col, Row } from "antd";
+import { canExpand } from "@rjsf/utils";
+import { Button, Col, Divider, Row, Typography } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import TabField from "./TabField";
 import PropTypes from "prop-types";
-import FieldHeader from "./Field/FieldHeader";
-const { canExpand } = utils;
 
 const ObjectFieldTemplate = ({
   description,
@@ -36,7 +34,7 @@ const ObjectFieldTemplate = ({
 
   const findSchemaType = element => findSchema(element).type;
 
-  const findUiSchema = element => element.content.props.uiSchema;
+  const findUiSchema = element => element.content.props.uiSchema || {};
 
   const findUiSchemaField = element => findUiSchema(element)["ui:field"];
 
@@ -143,7 +141,6 @@ ObjectFieldTemplate.propTypes = {
   title: PropTypes.string,
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
-  TitleField: PropTypes.node,
 };
 
 export default ObjectFieldTemplate;
