@@ -1,12 +1,6 @@
 import React from "react";
-
-import { utils } from "@rjsf/core";
-import PropTypes from "prop-types";
-import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
-import NormalArrayFieldTemplate from "./NormalArrayFieldTemplate";
-
-const {
-  getDefaultRegistry,
+import { getDefaultRegistry } from "@rjsf/core";
+import {
   getUiOptions,
   getWidget,
   isFilesArray,
@@ -14,7 +8,11 @@ const {
   isMultiSelect,
   optionsList,
   retrieveSchema,
-} = utils;
+} from "@rjsf/utils";
+import PropTypes from "prop-types";
+import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
+import NormalArrayFieldTemplate from "./NormalArrayFieldTemplate";
+import TitleField from "../../fields/internal/TitleField";
 
 const ArrayFieldTemplate = ({
   TitleField,

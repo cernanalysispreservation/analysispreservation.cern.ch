@@ -10,6 +10,7 @@ import objectPath from "object-path";
 
 import "./Form.less";
 import { Form } from "@rjsf/antd";
+import validator from "@rjsf/validator-ajv8";
 
 const RJSFForm = ({
   formRef,
@@ -52,6 +53,12 @@ const RJSFForm = ({
     return errors;
   };
 
+  const templates = {
+    FieldTemplate: Fields || FieldTemplate,
+    ArrayFieldTemplate: Arrays || ArrayFieldTemplate,
+    ObjectFieldTemplate: Objects || ObjectFieldTemplate,
+  };
+
   return (
     <Form
       className={["__Form__", ...className].join(" ")}
@@ -62,16 +69,14 @@ const RJSFForm = ({
       formData={formData}
       fields={{ ...CAPFields, ...fields }}
       widgets={{ ...CAPWidgets, ...widgets }}
-      ObjectFieldTemplate={Objects || ObjectFieldTemplate}
-      ArrayFieldTemplate={Arrays || ArrayFieldTemplate}
-      FieldTemplate={Fields || FieldTemplate}
+      templates={templates}
       liveValidate={liveValidate}
-      noValidate={false}
       showErrorList={showErrorList}
       noHtml5Validate={true}
       onError={() => {}}
       onBlur={() => {}}
-      validate={validate}
+      customValidate={validate}
+      validator={validator}
       extraErrors={extraErrors}
       onChange={onChange}
       readonly={readonly}

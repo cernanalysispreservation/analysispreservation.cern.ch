@@ -28,7 +28,7 @@ const FieldTemplate = ({
   readonly,
   required,
   schema,
-  uiSchema,
+  uiSchema = {},
   rawDescription,
 }) => {
   const {

@@ -11,7 +11,15 @@ import { isItTheArrayField, _validate } from "../utils/index";
 import DropArea from "./DropArea";
 
 const FieldTemplate = props => {
-  const { schema, uiSchema, rawErrors = [], children, formContext } = props;
+  const {
+    schema,
+    uiSchema = {},
+    rawErrors = [],
+    children,
+    formContext,
+    id,
+    addProperty,
+  } = props;
 
   const [display, setDisplay] = useState(false);
   let path = {
@@ -24,7 +32,7 @@ const FieldTemplate = props => {
   };
 
   // The content of a JSON Object field is also considered a 'root'
-  if (props.id == "root" && !formContext.nestedForm) {
+  if (id == "root" && !formContext.nestedForm) {
     const inside = (
       <div
         style={{
@@ -39,8 +47,8 @@ const FieldTemplate = props => {
       return (
         <HoverBox
           allowsChildren
-          addProperty={props.addProperty}
-          key={props.id}
+          addProperty={addProperty}
+          key={id}
           path={path}
           shouldHideChildren={shouldBoxHideChildren(uiSchema)}
         >
@@ -92,8 +100,8 @@ const FieldTemplate = props => {
       // The HoverBox wrapper here is needed to allow dropping items into objects
       // or arrays directly without having to expand them first
       <HoverBox
-        addProperty={props.addProperty}
-        key={props.id}
+        addProperty={addProperty}
+        key={id}
         path={path}
         shouldHideChildren={shouldBoxHideChildren(uiSchema)}
       >
