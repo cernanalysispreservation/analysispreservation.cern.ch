@@ -11,16 +11,16 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       schemaInit(
         slugify(Math.random().toString() + "_" + "name"),
-        _initSchemaStructure("name", "description"),
+        _initSchemaStructure(),
         {
-          fullname: name
+          fullname: name,
         }
       )
-    )
+    ),
 });
 
 const mapStateToProps = state => ({
-  schema: state.schemaWizard.getIn(["current", "schema"])
+  schema: state.schemaWizard.getIn(["current", "schema"]),
 });
 
 export default connect(

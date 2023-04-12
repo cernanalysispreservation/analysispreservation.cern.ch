@@ -301,31 +301,18 @@
           },
           "wg":{
             "type":"string",
-            "enum":[
-              "BPH",
-              "FTR",
-              "B2G",
-              "EXO",
-              "HIG",
-              "HIN",
-              "SMP",
-              "SUS",
-              "TOP",
-              "PPS",
-              "other"
-            ],
-            "enumNames":[
-              "B physics and quarkonia (BPH)",
-              "Future (FTR)",
-              "Beyond-two-generations (B2G)",
-              "Exotica (EXO)",
-              "Higgs physics (HIG)",
-              "Heavy ions physics (HIN)",
-              "Standard Model physics (SMP)",
-              "Supersymmetry (SUS)",
-              "Top physics (TOP)",
-              "Physics of the CMS-Totem Precision Proton Spectometer (PPS)",
-              "Other (please specify)"
+            "oneOf": [
+              { "const": "BPH", "title": "B physics and quarkonia (BPH)" },
+              { "const": "FTR", "title": "Future (FTR)" },
+              { "const": "B2G", "title": "Beyond-two-generations (B2G)" },
+              { "const": "EXO", "title": "Exotica (EXO)" },
+              { "const": "HIG", "title": "Higgs physics (HIG)" },
+              { "const": "HIN", "title": "Heavy ions physics (HIN)" },
+              { "const": "SMP", "title": "Standard Model physics (SMP)" },
+              { "const": "SUS", "title": "Supersymmetry (SUS)" },
+              { "const": "TOP", "title": "Top physics (TOP)" },
+              { "const": "PPS", "title": "Physics of the CMS-Totem Precision Proton Spectometer (PPS)" },
+              { "const": "other", "title": "Other (please specify)" }
             ],
             "description":"PAG/POG identifier",
             "title":"1.3. Working group"

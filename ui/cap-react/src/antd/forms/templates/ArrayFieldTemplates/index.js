@@ -1,12 +1,6 @@
 import React from "react";
-
-import { utils } from "@rjsf/core";
-import PropTypes from "prop-types";
-import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
-import NormalArrayFieldTemplate from "./NormalArrayFieldTemplate";
-
-const {
-  getDefaultRegistry,
+import { getDefaultRegistry } from "@rjsf/core";
+import {
   getUiOptions,
   getWidget,
   isFilesArray,
@@ -14,11 +8,13 @@ const {
   isMultiSelect,
   optionsList,
   retrieveSchema,
-} = utils;
+} from "@rjsf/utils";
+import PropTypes from "prop-types";
+import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
+import NormalArrayFieldTemplate from "./NormalArrayFieldTemplate";
+import TitleField from "../../fields/internal/TitleField";
 
 const ArrayFieldTemplate = ({
-  DescriptionField,
-  TitleField,
   autofocus,
   canAdd,
   className,
@@ -119,7 +115,6 @@ const ArrayFieldTemplate = ({
       <FixedArrayFieldTemplate
         canAdd={canAdd}
         className={className}
-        DescriptionField={DescriptionField}
         disabled={disabled}
         formContext={formContext}
         formData={formData}
@@ -150,7 +145,6 @@ const ArrayFieldTemplate = ({
     <NormalArrayFieldTemplate
       canAdd={canAdd}
       className={className}
-      DescriptionField={DescriptionField}
       disabled={disabled}
       formContext={formContext}
       formData={formData}
@@ -169,7 +163,6 @@ const ArrayFieldTemplate = ({
   );
 };
 ArrayFieldTemplate.propTypes = {
-  DescriptionField: PropTypes.node,
   TitleField: PropTypes.node,
   autofocus: PropTypes.bool,
   canAdd: PropTypes.bool,

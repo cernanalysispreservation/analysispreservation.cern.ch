@@ -1,19 +1,13 @@
 import React from "react";
 import classNames from "classnames";
 import _ from "lodash";
-import { utils } from "@rjsf/core";
-import { Button, Col, Divider, Row } from "antd";
+import { canExpand } from "@rjsf/utils";
+import { Button, Col, Divider, Row, Typography } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import TabField from "./TabField";
 import PropTypes from "prop-types";
-import Text from "antd/lib/typography/Text";
-const { canExpand } = utils;
-const DESCRIPTION_COL_STYLE = {
-  paddingBottom: "8px",
-};
 
 const ObjectFieldTemplate = ({
-  DescriptionField,
   description,
   disabled,
   formContext,
@@ -40,7 +34,7 @@ const ObjectFieldTemplate = ({
 
   const findSchemaType = element => findSchema(element).type;
 
-  const findUiSchema = element => element.content.props.uiSchema;
+  const findUiSchema = element => element.content.props.uiSchema || {};
 
   const findUiSchemaField = element => findUiSchema(element)["ui:field"];
 
@@ -83,36 +77,36 @@ const ObjectFieldTemplate = ({
   return (
     <fieldset style={{ margin: "0 12px" }} id={idSchema.$id}>
       <Row gutter={rowGutter}>
-        {uiSchema["ui:title"] !== false &&
-          (uiSchema["ui:title"] || title) && (
-            <Col
-              style={{
-                padding: "0",
-                marginBottom: "12px",
-              }}
-              className={labelColClassName}
-              span={24}
-            >
-              {
-                <Divider
-                  id={`${idSchema.$id}-title`}
-                  orientation="left"
-                  style={{ margin: 0 }}
-                >
-                  <Text strong>{uiSchema["ui:title"] || title}</Text>
-                </Divider>
-              }
-            </Col>
-          )}
-        {uiSchema["ui:description"] !== false &&
-          (uiSchema["ui:description"] || description) && (
-            <Col span={24} style={DESCRIPTION_COL_STYLE}>
-              <DescriptionField
-                description={uiSchema["ui:description"] || description}
-                id={`${idSchema.$id}-description`}
-              />
-            </Col>
-          )}
+        <div style={{ marginBottom: "8px" }}>
+          {uiSchema["ui:title"] !== false &&
+            (uiSchema["ui:title"] || title) && (
+              <Col
+                style={{ padding: "0" }}
+                className={labelColClassName}
+                span={24}
+              >
+                {
+                  <Divider
+                    id={`${idSchema.$id}-title`}
+                    orientation="left"
+                    style={{ margin: 0 }}
+                  >
+                    <Typography.Title level={5}>
+                      {uiSchema["ui:title"] || title}
+                    </Typography.Title>
+                  </Divider>
+                }
+              </Col>
+            )}
+          {uiSchema["ui:description"] !== false &&
+            (uiSchema["ui:description"] || description) && (
+              <Col span={24}>
+                <Typography.Text type="secondary">
+                  {uiSchema["ui:description"] || description}
+                </Typography.Text>
+              </Col>
+            )}
+        </div>
         <Col span={24} className="nestedObject">
           <Row gutter={10}>
             {properties.filter(e => !e.hidden).map(element => (
@@ -160,8 +154,6 @@ ObjectFieldTemplate.propTypes = {
   title: PropTypes.string,
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
-  DescriptionField: PropTypes.node,
-  TitleField: PropTypes.node,
 };
 
 export default ObjectFieldTemplate;

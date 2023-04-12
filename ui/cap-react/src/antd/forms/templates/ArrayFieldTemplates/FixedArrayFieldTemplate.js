@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Typography } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 import PropTypes from "prop-types";
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
@@ -13,7 +13,6 @@ const DESCRIPTION_COL_STYLE = {
 const FixedArrayFieldTemplate = ({
   canAdd,
   className,
-  DescriptionField,
   disabled,
   formContext,
   // formData,
@@ -55,11 +54,9 @@ const FixedArrayFieldTemplate = ({
 
         {(uiSchema["ui:description"] || schema.description) && (
           <Col span={24} style={DESCRIPTION_COL_STYLE}>
-            <DescriptionField
-              description={uiSchema["ui:description"] || schema.description}
-              id={`${idSchema.$id}-description`}
-              key={`array-field-description-${idSchema.$id}`}
-            />
+            <Typography.Text type="secondary">
+              {uiSchema["ui:description"] || schema.description}
+            </Typography.Text>
           </Col>
         )}
 
@@ -105,7 +102,6 @@ const FixedArrayFieldTemplate = ({
 FixedArrayFieldTemplate.propTypes = {
   canAdd: PropTypes.bool,
   className: PropTypes.string,
-  DescriptionField: PropTypes.node,
   disabled: PropTypes.bool,
   formContext: PropTypes.object,
   idSchema: PropTypes.object,

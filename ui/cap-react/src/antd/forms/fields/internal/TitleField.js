@@ -1,8 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { Button, Row, Space, Tooltip } from "antd";
-import Text from "antd/lib/typography/Text";
+import { Button, Row, Space, Tooltip, Typography } from "antd";
 import { ImportOutlined, MailOutlined } from "@ant-design/icons";
 
 const TitleField = ({
@@ -47,7 +46,7 @@ const TitleField = ({
   if ((uiImport && !readonly) || uiLatex || uiEmail) {
     return (
       <Row justify="space-between">
-        <Text
+        <Typography.Text
           strong
           className={labelClassName}
           htmlFor={id}
@@ -55,7 +54,7 @@ const TitleField = ({
           title={typeof title === "string" ? title : ""}
         >
           {labelChildren}
-        </Text>
+        </Typography.Text>
         <Space style={{ flexWrap: "wrap" }}>
           {uiImport && (
             <Tooltip title="Import from a list">
@@ -98,7 +97,7 @@ const TitleField = ({
     );
   }
   return (
-    <Text
+    <Typography.Text
       strong
       className={labelClassName}
       htmlFor={id}
@@ -106,7 +105,7 @@ const TitleField = ({
       title={typeof title === "string" ? title : ""}
     >
       {labelChildren}
-    </Text>
+    </Typography.Text>
   );
 };
 

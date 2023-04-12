@@ -1,17 +1,16 @@
 /* eslint-disable no-else-return */
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { utils } from "@rjsf/core";
+import { asNumber, guessType } from "@rjsf/utils";
 import Select from "antd/lib/select";
 import debounce from "lodash/debounce";
 import axios from "axios";
 import { fromJS } from "immutable";
 import { Empty } from "antd";
 import PropTypes from "prop-types";
-const { asNumber, guessType } = utils;
 
 const SELECT_STYLE = {
-  width: "100%"
+  width: "100%",
 };
 
 const nums = new Set(["number", "integer"]);
@@ -63,7 +62,7 @@ const SelectWidget = ({
   // required,
   schema,
   value,
-  formData
+  formData,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
@@ -158,7 +157,7 @@ const SelectWidget = ({
 };
 
 SelectWidget.defaultProps = {
-  formContext: {}
+  formContext: {},
 };
 SelectWidget.propTypes = {
   disabled: PropTypes.bool,
@@ -175,11 +174,11 @@ SelectWidget.propTypes = {
   options: PropTypes.object,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
-  onFocus: PropTypes.func
+  onFocus: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
-  formData: state.draftItem.get("formData")
+  formData: state.draftItem.get("formData"),
 });
 
 export default connect(

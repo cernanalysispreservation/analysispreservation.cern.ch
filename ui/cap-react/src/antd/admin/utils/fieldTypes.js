@@ -27,14 +27,12 @@ const common = {
     title: {
       type: "string",
       title: "Title",
-      description:
-        "Provide the title that you want to be displayed for your field",
+      description: "Provide a title to be displayed in your field",
     },
     description: {
       title: "Description",
       type: "string",
-      description:
-        "Provide the description that you want to be displayed for your field",
+      description: "Provide a description to be displayed in your field",
     },
   },
   optionsUiSchema: {
@@ -289,7 +287,8 @@ const simple = {
             mask: {
               type: "string",
               title: "Input mask",
-              description: "Add a mask to visualize and limit the format of the input. Use the following format: `0` (number), `a` (lowercase letter), `A` (uppercase letter), `*` (letter or number). You can escape all these with `\\`. The rest of the characters will be treated as constants"
+              description:
+                "Add a mask to visualize and limit the format of the input. Use the following format: `0` (number), `a` (lowercase letter), `A` (uppercase letter), `*` (letter or number). You can escape all these with `\\`. The rest of the characters will be treated as constants",
             },
           },
         },
@@ -392,8 +391,10 @@ const simple = {
         type: {
           title: "Type of the number",
           type: "string",
-          enum: ["integer", "number"],
-          enumNames: ["Integer", "Float"],
+          oneOf: [
+            { const: "integer", title: "Integer" },
+            { const: "number", title: "Float" },
+          ],
         },
         readOnly: extra.optionsSchema.readOnly,
       },
@@ -426,9 +427,11 @@ const simple = {
         ...common.optionsSchema,
         type: {
           title: "Type",
-          enum: ["boolean", "array"],
-          enumNames: ["One Option", "Multiple Options"],
           type: "string",
+          oneOf: [
+            { const: "boolean", title: "One Option" },
+            { const: "array", title: "Multiple Options" },
+          ],
         },
         readOnly: extra.optionsSchema.readOnly,
       },
@@ -515,8 +518,11 @@ const simple = {
           type: "string",
           title: "The type of the returned value",
           description: "Define the type of the returned value",
-          enum: ["boolean", "string", "number"],
-          enumNames: ["Boolean", "String", "Number"],
+          oneOf: [
+            { const: "boolean", title: "Boolean" },
+            { const: "string", title: "String" },
+            { const: "number", title: "Number" },
+          ],
         },
         readOnly: extra.optionsSchema.readOnly,
       },
@@ -609,11 +615,10 @@ const simple = {
         type: {
           title: "Type",
           type: "string",
-          enum: ["string", "number", "array"],
-          enumNames: [
-            "Select one value (text)",
-            "Select one value (number)",
-            "Select multiple values",
+          oneOf: [
+            { const: "string", title: "Select one value (text)" },
+            { const: "number", title: "Select one value (number)" },
+            { const: "array", title: "Select multiple values" },
           ],
         },
         readOnly: extra.optionsSchema.readOnly,
@@ -829,8 +834,11 @@ const advanced = {
           type: "array",
           items: {
             type: "string",
-            enum: ["orcid", "ror", "zenodo"],
-            enumNames: ["ORCiD", "ROR", "Zenodo"],
+            oneOf: [
+              { const: "orcid", title: "ORCiD" },
+              { const: "ror", title: "ROR" },
+              { const: "zenodo", title: "Zenodo" },
+            ],
           },
           uniqueItems: "true",
         },
@@ -944,8 +952,10 @@ export const hiddenFields = {
         type: {
           title: "Type of the number",
           type: "string",
-          enum: ["integer", "number"],
-          enumNames: ["Integer", "Float"],
+          oneOf: [
+            { const: "integer", title: "Integer" },
+            { const: "number", title: "Float" },
+          ],
         },
         readOnly: extra.optionsSchema.readOnly,
       },

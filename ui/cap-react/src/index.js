@@ -5,7 +5,7 @@ import Root from "./antd/Root";
 import * as Sentry from "@sentry/react";
 
 import "antd/dist/reset.css"
-import "./style.css";
+import "./style.less";
 
 if (process.env.SENTRY_UI_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_UI_DSN });
