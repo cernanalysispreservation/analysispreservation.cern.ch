@@ -62,5 +62,9 @@ export default defineConfig(({ mode }) => {
     define: {
       "process.env": {},
     },
+    // Avoid duplicate dependencies (codemirror was breaking because of this)
+    resolve: {
+      dedupe: ["@codemirror/state", "@codemirror/view"],
+    },
   };
 });
