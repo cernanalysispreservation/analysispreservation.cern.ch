@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, List, Modal, Row, Typography } from "antd";
 
@@ -100,7 +100,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
   if (items.length < 1) return null;
 
   return (
-    <React.Fragment>
+    <>
       <Modal
         className="__Form__"
         destroyOnClose
@@ -155,7 +155,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
           </ErrorFieldIndicator>
         )}
       />
-    </React.Fragment>
+    </>
   );
 };
 

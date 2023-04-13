@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Card, Button, Alert, Space } from "antd";
 import CreateForm from "../drafts/CreateForm";

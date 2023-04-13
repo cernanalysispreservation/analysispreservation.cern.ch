@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { DatePicker } from "antd";
 import queryString from "query-string";

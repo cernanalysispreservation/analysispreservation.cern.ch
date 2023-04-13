@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Prompt } from "react-router";
 import { Alert, Modal } from "antd";
@@ -45,7 +45,7 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       <Prompt when={when} message={handleBlockedNavigation} />
       <Modal
         open={showModal}
@@ -64,7 +64,7 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
           showIcon
         />
       </Modal>
-    </React.Fragment>
+    </>
   );
 };
 

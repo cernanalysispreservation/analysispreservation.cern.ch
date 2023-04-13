@@ -5,7 +5,7 @@ import MarkdownIt from "markdown-it";
 import tm from "markdown-it-texmath";
 import "markdown-it-texmath/css/texmath.css";
 import PropTypes from "prop-types";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 

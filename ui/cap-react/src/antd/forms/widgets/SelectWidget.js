@@ -1,5 +1,5 @@
 /* eslint-disable no-else-return */
-import React, { useState } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import { asNumber, guessType } from "@rjsf/utils";
 import Select from "antd/lib/select";

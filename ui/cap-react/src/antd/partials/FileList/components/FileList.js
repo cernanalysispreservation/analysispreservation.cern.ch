@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import { Space } from "antd";
@@ -26,7 +26,7 @@ const FileList = ({
   );
 
   return (
-    <React.Fragment>
+    <>
       <FileModal
         open={fileToDisplay}
         onCancel={() => setFileToDisplay(false)}
@@ -39,7 +39,7 @@ const FileList = ({
           moodaUpate={onClickModal}
         />
       </Space>
-    </React.Fragment>
+    </>
   );
 };
 

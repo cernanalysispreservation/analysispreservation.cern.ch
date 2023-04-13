@@ -1,5 +1,3 @@
-import React from "react";
-
 const OrcidSvg = () => (
   <svg viewBox="0 0 270 270" width="2em">
     <path

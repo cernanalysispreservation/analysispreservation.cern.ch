@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Button, Input, Tooltip } from "antd";
 import { CopyOutlined, LinkOutlined } from "@ant-design/icons";
 
@@ -32,7 +30,7 @@ const UriWidget = ({
       onFocus={handleFocus}
       disabled={disabled || (readonlyAsDisabled && readonly)}
       suffix={
-        <React.Fragment>
+        <>
           <Tooltip title="Open URI">
             <Button
               href={value}
@@ -51,7 +49,7 @@ const UriWidget = ({
               disabled={!value}
             />
           </Tooltip>
-        </React.Fragment>
+        </>
       }
     />
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Form, Input, Modal, Radio, Typography } from "antd";
 
@@ -48,7 +48,7 @@ const Reviews = ({
   if (!review) return null;
 
   return (
-    <React.Fragment>
+    <>
       <Modal
         open={showModal}
         title="Add new Review"
@@ -174,7 +174,7 @@ const Reviews = ({
           />
         </Card>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

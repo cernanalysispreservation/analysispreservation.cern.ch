@@ -1,4 +1,3 @@
-import React from "react";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Space, Typography } from "antd";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Layout, Grid, Drawer } from "antd";
 import NavMenu from "./NavMenu";

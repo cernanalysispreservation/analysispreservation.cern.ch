@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Row, Space, Tag, Typography, Descriptions, Card } from "antd";
 import { Link, Route } from "react-router-dom";

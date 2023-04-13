@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Menu, Dropdown, Button } from "antd";
 import { WELCOME } from "../../../routes";

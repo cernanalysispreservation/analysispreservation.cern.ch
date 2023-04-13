@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Divider, Row, Space, Tag } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";

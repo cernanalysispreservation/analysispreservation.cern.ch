@@ -14,7 +14,6 @@ import {
   Html5Outlined,
   FolderOutlined
 } from "@ant-design/icons";
-import React from "react";
 
 export const _getIcon = mimetype => {
   if (!mimetype) {

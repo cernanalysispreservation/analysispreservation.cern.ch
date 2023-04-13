@@ -1,4 +1,3 @@
-import React from "react";
 import { Cascader } from "antd";
 import { transformSchema } from "../../partials/Utils/schema";
 

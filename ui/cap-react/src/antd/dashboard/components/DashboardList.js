@@ -4,7 +4,7 @@ import DashboardListLoader from "./Loader";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Row, List, Col, Typography, Tooltip } from "antd";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const DashboardList = ({
