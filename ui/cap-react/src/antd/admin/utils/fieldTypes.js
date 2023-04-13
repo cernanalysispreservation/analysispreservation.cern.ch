@@ -714,10 +714,42 @@ const simple = {
       title: "Date Schema",
       properties: {
         ...common.optionsSchema,
+        format: {
+          type: "string",
+          title: "Type",
+          enum: ["date", "date-time"],
+          default: "date",
+        },
+        customFormat: {
+          type: "string",
+          title: "Format",
+          description:
+            "Define the date format ([help](https://day.js.org/docs/en/display/format#list-of-all-available-formats)). Remember to include the time in the format if you have selected `date-time` as type",
+        },
+        minDate: {
+          type: "string",
+          title: "Minimum date allowed",
+        },
+        maxDate: {
+          type: "string",
+          title: "Maximum date allowed",
+        },
         readOnly: extra.optionsSchema.readOnly,
       },
     },
     optionsSchemaUiSchema: {
+      customFormat: {
+        "ui:placeholder": "DD/MM/YYYY",
+        "ui:options": {
+          descriptionIsMarkdown: true,
+        },
+      },
+      minDate: {
+        "ui:widget": "date",
+      },
+      maxDate: {
+        "ui:widget": "date",
+      },
       readOnly: extra.optionsSchemaUiSchema.readOnly,
     },
     optionsUiSchema: {
@@ -874,7 +906,7 @@ const advanced = {
         tagPattern: {
           type: "string",
           title: "Pattern",
-          description: "Provide a regex expression for your pattern",
+          description: "Provide a regex for your pattern",
         },
         tagPatternErrorMessage: {
           type: "string",

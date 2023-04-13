@@ -131,56 +131,78 @@ const ImportListModal = ({
       okText="Import"
       destroyOnClose
     >
-      <Tabs defaultActiveKey="1">
-        <Tabs.TabPane tab="Fetch from URL" key="1">
-          <Input.Search
-            enterButton="Fetch"
-            placeHolder="Insert your pattern e.x /dataset/*"
-            onChange={e => {
-              e.target.value == "" && fetchedResults && setFetchedResults(null);
-              updateAll(fetchedResults || [], false);
-            }}
-            onSearch={fetchSuggestions}
-          />
-          {fetchedResults && (
-            <List
-              dataSource={fetchedResults}
-              renderItem={item => (
-                <List.Item>
-                  <List.Item.Meta
-                    title={
-                      <Checkbox
-                        checked={data && data.includes(item)}
-                        onChange={() => {
-                          if (!data) setData(item + "\n");
-                          else {
-                            data.includes(item)
-                              ? setData(data => data.replace(item + "\n", ""))
-                              : setData(data => data + item + "\n");
+      <Tabs
+        defaultActiveKey="1"
+        items={[
+          {
+            key: "1",
+            label: "Fetch from URL",
+            children: (
+              <>
+                <Input.Search
+                  enterButton="Fetch"
+                  placeHolder="Insert your pattern e.x /dataset/*"
+                  onChange={e => {
+                    e.target.value == "" &&
+                      fetchedResults &&
+                      setFetchedResults(null);
+                    updateAll(fetchedResults || [], false);
+                  }}
+                  onSearch={fetchSuggestions}
+                />
+                {fetchedResults && (
+                  <List
+                    dataSource={fetchedResults}
+                    renderItem={item => (
+                      <List.Item>
+                        <List.Item.Meta
+                          title={
+                            <Checkbox
+                              checked={data && data.includes(item)}
+                              onChange={() => {
+                                if (!data) setData(item + "\n");
+                                else {
+                                  data.includes(item)
+                                    ? setData(data =>
+                                        data.replace(item + "\n", "")
+                                      )
+                                    : setData(data => data + item + "\n");
+                                }
+                              }}
+                            >
+                              {item}
+                            </Checkbox>
                           }
-                        }}
-                      >
-                        {item}
-                      </Checkbox>
-                    }
+                        />
+                      </List.Item>
+                    )}
                   />
-                </List.Item>
-              )}
-            />
-          )}
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Add List manually" key="2">
-          <Typography.Title level={5}>
-            {description} || Paste your list here. Insert one item per line:
-          </Typography.Title>
-          <Input.TextArea
-            rows={15}
-            value={data}
-            placeholder={placeholder || "ex.\n\nitem1 \n\nitem2 \n\nitem3\n"}
-            onChange={e => setData(e.target.value)}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+                )}
+              </>
+            ),
+          },
+          {
+            key: "2",
+            label: "Add list manually",
+            children: (
+              <>
+                <Typography.Title level={5}>
+                  {description} || Paste your list here. Insert one item per
+                  line:
+                </Typography.Title>
+                <Input.TextArea
+                  rows={15}
+                  value={data}
+                  placeholder={
+                    placeholder || "ex.\n\nitem1 \n\nitem2 \n\nitem3\n"
+                  }
+                  onChange={e => setData(e.target.value)}
+                />
+              </>
+            ),
+          },
+        ]}
+      />
     </Modal>
   );
 };

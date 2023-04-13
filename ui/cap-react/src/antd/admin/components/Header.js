@@ -125,35 +125,37 @@ const Header = ({
         width={1000}
         footer={null}
       >
-        <Tabs defaultActiveKey="schema">
-          <Tabs.TabPane tab="Schema" key="schema" style={diffModalTabStyle}>
-            {_renderSchemaPreview("schema")}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab="UI Schema"
-            key="uiSchema"
-            style={diffModalTabStyle}
-          >
-            {_renderSchemaPreview("uiSchema")}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab="Schema Diff"
-            key="schemaDiff"
-            style={diffModalTabStyle}
-          >
-            {_renderSchemaPreview("schemaDiff")}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab="UI Schema Diff"
-            key="uiSchemaDiff"
-            style={diffModalTabStyle}
-          >
-            {_renderSchemaPreview("uiSchemaDiff")}
-          </Tabs.TabPane>
-        </Tabs>
+        <Tabs
+          defaultActiveKey="schema"
+          items={[
+            {
+              key: "schema",
+              label: "Schema",
+              children: _renderSchemaPreview("schema"),
+              style: diffModalTabStyle,
+            },
+            {
+              key: "uiSchema",
+              label: "UI Schema",
+              children: _renderSchemaPreview("uiSchema"),
+              style: diffModalTabStyle,
+            },
+            {
+              key: "schemaDiff",
+              label: "Schema Diff",
+              children: _renderSchemaPreview("schemaDiff"),
+              style: diffModalTabStyle,
+            },
+            {
+              key: "uiSchemaDiff",
+              label: "UI Schema Diff",
+              children: _renderSchemaPreview("uiSchemaDiff"),
+              style: diffModalTabStyle,
+            },
+          ]}
+        />
       </Modal>
       <Modal
-        title="Schema Settings"
         open={settingsModal}
         onCancel={() => setSettingsModal(false)}
         okButtonProps={{
