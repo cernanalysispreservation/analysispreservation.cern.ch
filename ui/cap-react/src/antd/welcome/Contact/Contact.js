@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col, Space, Typography, Button, Grid } from "antd";
 import {
   MailOutlined,

@@ -1,4 +1,3 @@
-import React from "react";
 import DocumentTitle from "../partials/DocumentTitle";
 import { Switch, Route } from "react-router-dom";
 import { CMS, CMS_NEW, CMS_SCHEMA_PATH } from "../routes";

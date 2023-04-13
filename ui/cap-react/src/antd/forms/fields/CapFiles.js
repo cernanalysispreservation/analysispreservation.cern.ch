@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, Row, Space, Typography } from "antd";
 import { connect } from "react-redux";
@@ -13,7 +13,7 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
 
   //TODO: we should investigate whether the onChange should also accept directories
   return (
-    <React.Fragment>
+    <>
       <Modal
         open={showModal}
         onCancel={() => setShowModal(false)}
@@ -67,7 +67,7 @@ const CapFiles = ({ uiSchema, files, onChange, formData }) => {
             "Select a file or a repository from your list to link here"}
         </Button>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

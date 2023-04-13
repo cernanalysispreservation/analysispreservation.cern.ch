@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col, Space, Skeleton } from "antd";
 
 const Facets = () => {

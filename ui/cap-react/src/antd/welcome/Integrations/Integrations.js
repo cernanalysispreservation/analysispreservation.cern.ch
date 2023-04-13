@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col, Typography, Space } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 import { ReactComponent as ReanaIcon } from "../img/reana.svg";

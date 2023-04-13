@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Avatar, Col, Row, Typography } from "antd";
 import { stringToHslColor } from "../../../utils";

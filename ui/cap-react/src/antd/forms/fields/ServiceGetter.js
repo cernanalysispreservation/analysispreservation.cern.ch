@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
 import axios from "axios";
 import Ror from "./services/Ror";

@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Space, Table, Tag, Typography } from "antd";
 import prettyBytes from "pretty-bytes";

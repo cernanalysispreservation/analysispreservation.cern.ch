@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { notification, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";

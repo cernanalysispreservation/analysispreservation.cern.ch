@@ -8,7 +8,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { Space, Tag, Button, Row, Col, Radio, Grid, Layout } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Preview = ({

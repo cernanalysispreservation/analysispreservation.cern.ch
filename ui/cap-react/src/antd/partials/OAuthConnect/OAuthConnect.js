@@ -1,5 +1,5 @@
-import React from "react";
-export default class OAuthConnect extends React.PureComponent {
+import { PureComponent } from "react";
+export default class OAuthConnect extends PureComponent {
   componentDidMount() {
     setTimeout(() => {
       if (window.opener) {

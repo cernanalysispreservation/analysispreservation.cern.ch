@@ -1,5 +1,3 @@
-import React from "react";
-
 const RorSvg = () => (
   <svg viewBox="0 0 229.82 75.17" width="3em">
     <path

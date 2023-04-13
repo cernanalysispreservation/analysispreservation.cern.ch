@@ -1,4 +1,3 @@
-import React from "react";
 import { List, Row, Skeleton } from "antd";
 
 const DashboardLoader = () => {

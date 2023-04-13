@@ -1,4 +1,3 @@
-import React from "react";
 import { Descriptions, Typography, Grid } from "antd";
 const { useBreakpoint } = Grid;
 

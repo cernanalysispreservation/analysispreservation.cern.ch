@@ -1,4 +1,3 @@
-import React from "react";
 import { Tooltip } from "antd";
 import PropTypes from "prop-types";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Row, Space, Typography } from "antd";
 import { LinkOutlined } from "@ant-design/icons";

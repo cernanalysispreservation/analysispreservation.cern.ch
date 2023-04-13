@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Button, Checkbox, Row, Tag } from "antd";
 import ShowMore from "../../partials/ShowMore";
@@ -16,9 +15,9 @@ const FacetItem = ({
   return (
     <ShowMore limit={limit} item={item} category={category}>
       {({ current, updateShowMore, filter, expanded, countMore }) => (
-        <React.Fragment>
-          {current.map((item) => (
-            <React.Fragment key={String(item.get("key"))}>
+        <>
+          {current.map(item => (
+            <div key={String(item.get("key"))}>
               <Row
                 justify="space-between"
                 align="top"
@@ -27,7 +26,7 @@ const FacetItem = ({
                 <Checkbox
                   key={item.get("key")}
                   name={String(item.get("key"))}
-                  onChange={(e) => onChange(category, e)}
+                  onChange={e => onChange(category, e)}
                   checked={isAggSelected(
                     selectedAggs[category],
                     item.get("key")
@@ -54,7 +53,7 @@ const FacetItem = ({
                 item.keySeq().map((key, index) => {
                   return key.startsWith("facet_") ? (
                     <div key={index + key} style={{ paddingLeft: "10px" }}>
-                      {item.getIn([key, "buckets"]).map((nested) => (
+                      {item.getIn([key, "buckets"]).map(nested => (
                         <Row
                           flex
                           key={nested.get("key")}
@@ -67,7 +66,7 @@ const FacetItem = ({
                         >
                           <Checkbox
                             name={String(nested.get("key"))}
-                            onChange={(e) =>
+                            onChange={e =>
                               onChange(key.replace("facet_", ""), e)
                             }
                             checked={isAggSelected(
@@ -94,7 +93,7 @@ const FacetItem = ({
                     </div>
                   ) : null;
                 })}
-            </React.Fragment>
+            </div>
           ))}
           {filter && (
             <Button
@@ -106,7 +105,7 @@ const FacetItem = ({
               {expanded ? "Show less" : `Show ${countMore} more`}
             </Button>
           )}
-        </React.Fragment>
+        </>
       )}
     </ShowMore>
   );

@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Space, Tag } from "antd";
 const SelectContentType = ({ contentTypes, select }) => {

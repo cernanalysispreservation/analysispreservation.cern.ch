@@ -1,4 +1,3 @@
-import React from "react";
 import DocumentTitle from "../partials/DocumentTitle";
 import { Col, Row, Space, Typography } from "antd";
 

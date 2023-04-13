@@ -1,4 +1,3 @@
-import React from "react";
 import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";

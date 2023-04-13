@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Row, Typography } from "antd";
 import SchemaTree from "../containers/SchemaTree";

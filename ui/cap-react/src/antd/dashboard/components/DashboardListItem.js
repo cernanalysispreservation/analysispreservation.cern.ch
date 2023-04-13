@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { List, Typography } from "antd";
 import TimeAgo from "react-timeago";

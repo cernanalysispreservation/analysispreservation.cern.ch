@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Col, Row } from "antd";
 import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
 import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";

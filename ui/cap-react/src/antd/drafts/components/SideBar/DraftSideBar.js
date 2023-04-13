@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Col, Grid, Drawer } from "antd";
 import SideBar from "../../containers/SideBar";

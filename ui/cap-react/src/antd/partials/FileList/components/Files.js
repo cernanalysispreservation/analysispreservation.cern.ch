@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 import { Divider, Empty, Space, Tree } from "antd";
 import { filter } from "lodash";
@@ -24,7 +24,7 @@ const Files = ({
   const getContentFromProps = value => {
     const choices = {
       repositories: (
-        <React.Fragment>
+        <>
           <Space direction="vertical" style={{ width: "100%" }}>
             {displayTitle && (
               <Divider style={{ fontSize: "1em", margin: "0" }}>
@@ -45,10 +45,10 @@ const Files = ({
               />
             )}
           </Space>
-        </React.Fragment>
+        </>
       ),
       files: (
-        <React.Fragment>
+        <>
           <Space direction="vertical" style={{ width: "100%" }}>
             {displayTitle && (
               <Divider style={{ fontSize: "1em", margin: "0" }}>
@@ -69,7 +69,7 @@ const Files = ({
               />
             )}
           </Space>
-        </React.Fragment>
+        </>
       ),
     };
 
@@ -85,4 +85,4 @@ Files.propTypes = {
   memoFiles: PropTypes.object,
 };
 
-export default React.memo(Files);
+export default memo(Files);

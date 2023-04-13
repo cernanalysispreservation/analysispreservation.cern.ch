@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Result, Button } from "antd";
 import { withRouter } from "react-router-dom";

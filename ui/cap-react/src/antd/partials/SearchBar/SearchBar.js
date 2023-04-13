@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Input, AutoComplete } from "antd";
 import queryString from "query-string";

@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Typography, Space } from "antd";
 import { Link } from "react-router-dom";
 

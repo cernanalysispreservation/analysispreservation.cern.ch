@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Typography } from "antd";
 
@@ -10,7 +10,7 @@ const ShowMoreText = (
   const [counter, setCounter] = useState(0);
 
   return (
-    <React.Fragment>
+    <>
       <Typography.Paragraph
         key={counter}
         {...props}
@@ -19,7 +19,7 @@ const ShowMoreText = (
           onExpand: () => {
             setExpand(true);
             expand && setCounter(counter + 1);
-          }
+          },
         }}
       >
         {props.children}
@@ -35,12 +35,12 @@ const ShowMoreText = (
           Show Less
         </Button>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
 ShowMoreText.propTypes = {
-  children: PropTypes.string
+  children: PropTypes.string,
 };
 
 export default ShowMoreText;

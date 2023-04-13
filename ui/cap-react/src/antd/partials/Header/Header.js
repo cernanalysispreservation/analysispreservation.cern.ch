@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { ReactComponent as CAPLogoLight } from "../../../img/cap-logo-light.svg";
 import { Row, Col } from "antd";
@@ -21,7 +20,7 @@ const Header = ({ logout, permissions, isLoggedIn }) => {
         </Link>
       </Col>
       {isLoggedIn ? (
-        <React.Fragment>
+        <>
           <Col
             xs={{ span: 24, order: 3 }}
             md={{ span: 15, order: 2 }}
@@ -40,7 +39,7 @@ const Header = ({ logout, permissions, isLoggedIn }) => {
           >
             <LoggedInMenu logout={logout} permissions={permissions} />
           </Col>
-        </React.Fragment>
+        </>
       ) : (
         <Col
           xs={{ order: 2, span: 12 }}

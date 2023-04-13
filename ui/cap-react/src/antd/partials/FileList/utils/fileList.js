@@ -1,4 +1,3 @@
-import React from "react";
 import { Space } from "antd";
 import DropDownFiles from "../containers/DropDownFiles";
 import { _getIcon } from "./getFileItemIcon";

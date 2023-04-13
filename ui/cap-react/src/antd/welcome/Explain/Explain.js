@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col, Typography, Space, Card, Divider } from "antd";
 
 const Explain = () => {

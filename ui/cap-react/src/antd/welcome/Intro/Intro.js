@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as HomeImage } from "../img/home-image.svg";
 import { Row, Col, Typography, Space } from "antd";
 import {

@@ -1,5 +1,4 @@
 import { Typography } from "antd";
-import React from "react";
 
 const SNOW_INCIDENT_LINK =
   "https://cern.service-now.com/service-portal?id=sc_cat_item&name=incident&fe=CERN-Analysis-Preservation";

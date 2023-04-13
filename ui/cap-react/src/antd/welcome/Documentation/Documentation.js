@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col, Typography, Button, Card, Space } from "antd";
 import { CodeOutlined, CodepenOutlined, ReadOutlined } from "@ant-design/icons";
 

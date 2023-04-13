@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Space, Typography } from "antd";
 import Markdown from "../../../partials/Markdown";

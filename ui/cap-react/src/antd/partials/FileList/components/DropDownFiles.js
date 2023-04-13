@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Dropdown, Space, Typography, Row, Col } from "antd";
 import {
@@ -60,7 +60,7 @@ const DropDownFiles = ({
   if (!file) return null;
 
   return (
-    <React.Fragment>
+    <>
       <Row
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
@@ -115,7 +115,7 @@ const DropDownFiles = ({
           </Row>
         </Col>
       </Row>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 import _debounce from "lodash/debounce";
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Permissions = ({
   draft_id,
@@ -203,7 +203,7 @@ const Permissions = ({
 
   const [displayModal, setDisplayModal] = useState(false);
   return (
-    <React.Fragment>
+    <>
       <Modal
         open={displayModal}
         onCancel={() => {
@@ -268,7 +268,7 @@ const Permissions = ({
           pagination={{ pageSize: 5 }}
         />
       </Card>
-    </React.Fragment>
+    </>
   );
 };
 

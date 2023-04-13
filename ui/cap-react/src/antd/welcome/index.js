@@ -1,4 +1,3 @@
-import React from "react";
 import Intro from "./Intro";
 import Discover from "./Discover";
 import Explain from "./Explain";

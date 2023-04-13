@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Col, Drawer, Grid } from "antd";
 import FileList from "../../partials/FileList";

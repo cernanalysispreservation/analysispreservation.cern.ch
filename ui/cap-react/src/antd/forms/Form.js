@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import ObjectFieldTemplate from "./templates/ObjectFieldTemplate";
 import ArrayFieldTemplate from "./templates/ArrayFieldTemplates";

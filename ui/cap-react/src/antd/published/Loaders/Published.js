@@ -1,4 +1,3 @@
-import React from "react";
 import { Col, Row, Skeleton, Space } from "antd";
 
 const Published = () => {

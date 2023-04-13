@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { CheckOutlined, DiffOutlined, CloseOutlined } from "@ant-design/icons";
 import { Space, Tag, Typography } from "antd";

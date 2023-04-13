@@ -1,4 +1,3 @@
-import React from "react";
 import { Route } from "react-router-dom";
 import { PUBLISHED_ITEM } from "../../routes";
 import Published from "../containers/Published";

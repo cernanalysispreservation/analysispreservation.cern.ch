@@ -15,7 +15,7 @@ import {
   Button,
 } from "antd";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const MAX_DISPLAYED_COLLECTIONS = 20;

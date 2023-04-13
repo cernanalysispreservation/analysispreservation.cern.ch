@@ -1,4 +1,3 @@
-import React from "react";
 import SortableBox from "./SortableBox";
 
 const RenderSortable = (parent, card, i, moveCard) => {

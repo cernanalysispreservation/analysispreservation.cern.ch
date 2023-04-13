@@ -1,5 +1,3 @@
-import React from "react";
-
 import { ADDITIONAL_PROPERTY_FLAG } from "@rjsf/utils";
 import { Button, Col, Form, Input, Row } from "antd";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";

@@ -1,4 +1,3 @@
-import React from "react";
 import { getDefaultRegistry } from "@rjsf/core";
 import {
   getUiOptions,
