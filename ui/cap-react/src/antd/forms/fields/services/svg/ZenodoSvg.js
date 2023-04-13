@@ -1,5 +1,3 @@
-import React from "react";
-
 const ZenodoSvg = () => (
   <svg viewBox="0 0 200 80" width="3em">
     <linearGradient

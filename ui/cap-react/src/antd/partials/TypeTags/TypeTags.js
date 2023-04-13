@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Tag } from "antd";
 import PropTypes from "prop-types";
 
@@ -23,7 +23,7 @@ function TypeTags({ types, updateActiveList }) {
 
 TypeTags.propTypes = {
   types: PropTypes.array,
-  updateActiveList: PropTypes.func
+  updateActiveList: PropTypes.func,
 };
 
 export default TypeTags;

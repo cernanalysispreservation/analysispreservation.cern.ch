@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Space, Typography, DatePicker } from "antd";
 import FacetItem from "./FacetItem";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Alert,
@@ -9,7 +9,7 @@ import {
   Input,
   Space,
   Tag,
-  Typography
+  Typography,
 } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 
@@ -42,7 +42,7 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
         style={{
           background: "#f0f2f5",
           padding: "10px",
-          width: "100%"
+          width: "100%",
         }}
       >
         <Typography.Title level={5}>
@@ -151,7 +151,7 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
           </Space>
         </Card>
         {!addFilepath && (
-          <React.Fragment>
+          <>
             <Card
               title="Automatically Upload on release"
               extra={
@@ -242,7 +242,7 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
                   )}
               </Space>
             </Card>
-          </React.Fragment>
+          </>
         )}
       </Space>
     )
@@ -252,7 +252,7 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
 RepoActions.propTypes = {
   myRepo: PropTypes.object,
   uploadRepo: PropTypes.func,
-  error: PropTypes.object
+  error: PropTypes.object,
 };
 
 export default RepoActions;

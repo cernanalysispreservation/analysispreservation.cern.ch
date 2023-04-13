@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Collapse } from "antd";
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";

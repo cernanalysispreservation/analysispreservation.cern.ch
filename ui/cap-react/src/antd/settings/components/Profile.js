@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Card, Avatar, Typography, Tag, Row, Col, Space, Button } from "antd";
 import { MailOutlined } from "@ant-design/icons";
@@ -34,7 +34,7 @@ const Profile = ({ user, cernProfile }) => {
               {emailName}
             </Avatar>
             {cernProfile && (
-              <React.Fragment>
+              <>
                 <Typography.Title level={4}>
                   {cernProfile.get("display_name")}
                 </Typography.Title>
@@ -46,7 +46,7 @@ const Profile = ({ user, cernProfile }) => {
                     <Tag color="geekblue">{cernProfile.get("common_name")}</Tag>
                   )}
                 </Space>
-              </React.Fragment>
+              </>
             )}
             <Col>
               <Button

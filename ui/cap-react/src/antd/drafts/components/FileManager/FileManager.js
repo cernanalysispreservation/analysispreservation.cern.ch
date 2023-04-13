@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -112,7 +112,7 @@ const FileManager = ({ open, onCancel, links, uploadFile, filesToUpload }) => {
                     </Form.Item>
                     <Form.List name="file_tags">
                       {(fields, { add, remove }) => (
-                        <React.Fragment>
+                        <>
                           {fields.map(field => (
                             <Space
                               key={[field.fieldKey, "file_tags"]}
@@ -147,7 +147,7 @@ const FileManager = ({ open, onCancel, links, uploadFile, filesToUpload }) => {
                               Add Tag
                             </Button>
                           </Form.Item>
-                        </React.Fragment>
+                        </>
                       )}
                     </Form.List>
                   </Form>

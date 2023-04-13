@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DocumentTitle from "../partials/DocumentTitle";
 import {
   Row,
@@ -149,7 +149,7 @@ const Schemas = ({ match }) => {
         <ErrorScreen />
       ) : (
         schema && (
-          <React.Fragment>
+          <>
             <Modal
               open={showModal}
               onCancel={() => setShowModal(false)}
@@ -281,7 +281,7 @@ const Schemas = ({ match }) => {
                 </Row>
               </Col>
             </Row>
-          </React.Fragment>
+          </>
         )
       )}
     </DocumentTitle>

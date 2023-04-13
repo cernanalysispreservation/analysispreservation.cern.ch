@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Tag, Empty, Typography, Space, Row } from "antd";
 

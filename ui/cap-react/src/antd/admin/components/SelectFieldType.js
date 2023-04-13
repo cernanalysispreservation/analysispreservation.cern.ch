@@ -1,4 +1,3 @@
-import React from "react";
 import { Col, Collapse, Row, Space, Typography } from "antd";
 import fields from "../utils/fieldTypes";
 import Draggable from "./Draggable";

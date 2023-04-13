@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Popconfirm, Row } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
@@ -22,7 +21,7 @@ const NotificationEdit = ({
       .toJS();
 
   return (
-    <React.Fragment>
+    <>
       <PageHeader
         title={`Notification #${index + 1}`}
         onBack={onBack}
@@ -56,7 +55,7 @@ const NotificationEdit = ({
           />
         </Col>
       </Row>
-    </React.Fragment>
+    </>
   );
 };
 

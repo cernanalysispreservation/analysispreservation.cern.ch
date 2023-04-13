@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Statistic, Card, Divider, Typography } from "antd";
 import { _getList } from "../utils";

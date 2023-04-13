@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Button, Empty } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";

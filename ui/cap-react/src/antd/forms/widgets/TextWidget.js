@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import MaskedInput from "./MaskedInput";
 import { Button, InputNumber } from "antd";
 import axios from "axios";

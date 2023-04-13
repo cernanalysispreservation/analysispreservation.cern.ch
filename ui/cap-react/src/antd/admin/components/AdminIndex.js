@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, Col, Row } from "antd";
 import CreateForm from "../containers/CreateForm";
 import DropZoneForm from "../containers/DropZoneForm";

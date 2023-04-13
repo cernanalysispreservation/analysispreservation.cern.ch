@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -245,7 +245,7 @@ const Permissions = ({
 
   const [displayModal, setDisplayModal] = useState(false);
   return (
-    <React.Fragment>
+    <>
       <Modal
         open={displayModal}
         onCancel={() => {
@@ -310,7 +310,7 @@ const Permissions = ({
           pagination={{ pageSize: 5 }}
         />
       </Card>
-    </React.Fragment>
+    </>
   );
 };
 

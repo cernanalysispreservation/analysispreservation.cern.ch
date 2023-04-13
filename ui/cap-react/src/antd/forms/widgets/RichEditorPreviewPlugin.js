@@ -1,4 +1,3 @@
-import * as React from "react";
 import { PluginComponent } from "react-markdown-editor-lite";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 

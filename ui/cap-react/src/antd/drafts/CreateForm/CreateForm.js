@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Space, Form, Input, Radio } from "antd";
 const BLOCK_DEPOSIT_GROUPS = ["cms-analysis"];

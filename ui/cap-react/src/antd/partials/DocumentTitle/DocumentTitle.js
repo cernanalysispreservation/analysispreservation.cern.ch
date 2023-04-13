@@ -1,20 +1,18 @@
-import React from "react";
+import { Children } from "react";
 import PropTypes from "prop-types";
 import withSideEffect from "react-side-effect";
 
-class DocumentTitle extends React.Component {
-  render() {
-    if (this.props.children) {
-      return React.Children.only(this.props.children);
-    } else {
-      return null;
-    }
+const DocumentTitle = ({ children }) => {
+  if (children) {
+    return Children.only(children);
+  } else {
+    return null;
   }
-}
+};
 
 DocumentTitle.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 function reducePropsToState(propsList) {

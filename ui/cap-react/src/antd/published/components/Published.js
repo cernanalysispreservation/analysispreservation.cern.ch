@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  PUBLISHED_ITEM,
-} from "../../routes";
+import { PUBLISHED_ITEM } from "../../routes";
 import { Route, Switch } from "react-router-dom";
 import DocumentTitle from "../../partials/DocumentTitle";
 import PublishedPreview from "../containers/Preview";
@@ -14,7 +12,7 @@ const Published = ({
   match,
   getPublishedItem,
   clearPublishedState,
-  loading
+  loading,
 }) => {
   useEffect(() => {
     const { id } = match.params;
@@ -46,7 +44,7 @@ Published.propTypes = {
   item: PropTypes.object,
   getPublishedItem: PropTypes.func,
   clearPublishedState: PropTypes.func,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
 };
 
 export default Published;

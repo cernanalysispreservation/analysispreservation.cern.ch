@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { transformSchema } from "../../partials/Utils/schema";
 import PropTypes from "prop-types";
 import { Space, Tag, Button, Row, Col, Radio, Grid, Layout } from "antd";

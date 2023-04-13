@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { Button, Row, Select, Space, Typography } from "antd";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Menu, Modal } from "antd";
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
   const [displayHowToSearch, setDisplayHowToSearch] = useState(false);
 
   return (
-    <React.Fragment>
+    <>
       <DraftCreate
         open={displayCreate}
         onCancel={() => setDisplayCreate(displayCreate => !displayCreate)}
@@ -143,7 +143,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
           },
         ]}
       />
-    </React.Fragment>
+    </>
   );
 };
 
