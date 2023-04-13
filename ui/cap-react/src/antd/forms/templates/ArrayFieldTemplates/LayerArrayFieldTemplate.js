@@ -50,7 +50,11 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
             <Row>
               <Button
                 key="up"
-                icon={<ArrowUpOutlined style={{ fontSize: "14px" }} />}
+                icon={
+                  <Row justify="center">
+                    <ArrowUpOutlined />
+                  </Row>
+                }
                 onClick={item.onReorderClick(item.index, item.index - 1)}
                 disabled={item.disabled || item.readonly || !item.hasMoveUp}
                 type="link"
@@ -61,7 +65,11 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
             <Row>
               <Button
                 key="down"
-                icon={<ArrowDownOutlined style={{ fontSize: "14px" }} />}
+                icon={
+                  <Row justify="center">
+                    <ArrowDownOutlined />
+                  </Row>
+                }
                 onClick={item.onReorderClick(item.index, item.index + 1)}
                 disabled={item.disabled || item.readonly || !item.hasMoveDown}
                 type="link"
@@ -111,7 +119,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
       </Modal>
 
       <List
-        className="LayerArrayFieldList"
+        className="layerArrayFieldList"
         style={{ overflow: "auto" }}
         dataSource={items}
         renderItem={item => (
@@ -119,6 +127,12 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
             <List.Item
               className="layerListItem"
               actions={getActionsButtons(item)}
+              style={{
+                border: "1px solid #f0f0f0",
+                padding: "10px",
+                marginBottom: "5px",
+                backgroundColor: "white",
+              }}
             >
               <List.Item.Meta
                 title={

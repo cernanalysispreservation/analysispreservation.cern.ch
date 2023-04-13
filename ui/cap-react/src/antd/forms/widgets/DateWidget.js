@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { DatePicker } from "antd";
 
-import moment from "moment";
+import dayjs from "dayjs";
 
 const DATE_ISO_FORMAT = "YYYY-MM-DD";
 const DATE_TIME_ISO_FORMAT = "YYYY-MM-DD HH:mm:ss";
@@ -23,28 +23,19 @@ const DateWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const [defaultFormat, setDefaultFormat] = useState();
+  const [isoFormat, setIsoFormat] = useState();
 
   useEffect(
     () => {
-      setDefaultFormat(
-        schema.format === "date-time"
-          ? DATE_TIME_DEFAULT_FORMAT
-          : DATE_DEFAULT_FORMAT
+      setIsoFormat(
+        schema.format === "date-time" ? DATE_TIME_ISO_FORMAT : DATE_ISO_FORMAT
       );
     },
     [schema]
   );
 
-  const handleChange = date => {
-    onChange(
-      date
-        ? schema.format === "date-time"
-          ? moment(date).toISOString(true)
-          : moment(date).format(DATE_ISO_FORMAT)
-        : undefined
-    );
-  };
+  const handleChange = date =>
+    onChange(date ? date.format(isoFormat) : undefined);
 
   const handleBlur = ({ target }) => onBlur(id, target.checked);
 
@@ -53,13 +44,17 @@ const DateWidget = ({
   return (
     <DatePicker
       showTime={schema.format === "date-time"}
-      format={schema.customFormat || defaultFormat}
+      format={
+        schema.customFormat ||
+        (schema.format === "date-time"
+          ? DATE_TIME_DEFAULT_FORMAT
+          : DATE_DEFAULT_FORMAT)
+      }
       disabledDate={current =>
         current &&
-        ((schema.minDate &&
-          current < moment(schema.minDate, DATE_DEFAULT_FORMAT)) ||
+        ((schema.minDate && current < dayjs(schema.minDate, DATE_ISO_FORMAT)) ||
           (schema.maxDate &&
-            current > moment(schema.maxDate, DATE_DEFAULT_FORMAT).add(1, "d")))
+            current > dayjs(schema.maxDate, DATE_ISO_FORMAT).add(1, "d")))
       }
       autoFocus={autofocus}
       disabled={disabled || (readonlyAsDisabled && readonly)}
@@ -69,7 +64,7 @@ const DateWidget = ({
       onChange={!readonly ? handleChange : undefined}
       onFocus={!readonly ? handleFocus : undefined}
       style={{ width: "100%" }}
-      value={value && moment(value, DATE_TIME_ISO_FORMAT)}
+      value={value && dayjs(value, isoFormat)}
     />
   );
 };
