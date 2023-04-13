@@ -60,7 +60,7 @@ export const uiSchema = {
 
 export const configSchema = {
   schema: {
-    title: "Schema Configuration",
+    title: "Schema Settings",
     type: "object",
     properties: {
       name: {

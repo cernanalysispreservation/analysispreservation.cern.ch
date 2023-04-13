@@ -2,7 +2,17 @@ import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 
 import Button from "antd/lib/button";
-import { Row, Col, Modal, Space, Tag, Checkbox, Table, Typography } from "antd";
+import {
+  Row,
+  Col,
+  Modal,
+  Space,
+  Tag,
+  Checkbox,
+  Table,
+  Typography,
+  theme,
+} from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
@@ -40,7 +50,9 @@ const NormalArrayFieldTemplate = ({
   uiSchema,
   formData,
 }) => {
+  const { useToken } = theme;
   const { labelAlign = "right", rowGutter = 24 } = formContext;
+
   const [latexData, setLatexData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
@@ -56,6 +68,8 @@ const NormalArrayFieldTemplate = ({
     labelClsBasic,
     labelAlign === "left" && `${labelClsBasic}-left`
   );
+  const { token } = useToken();
+
   let uiImport = null;
   let uiLatex = null;
   let uiEmail = null;
@@ -330,6 +344,14 @@ const NormalArrayFieldTemplate = ({
                   disabled={disabled || readonly}
                   onClick={onAddClick}
                   type="primary"
+                  // This is needed since for some reason this particular button doesn't use the root
+                  // styles (it has a different CSS hash className). This is the only solution that worked.
+                  // FIXME: Check eventually if this can be fixed with a new @rjsf/antd or antd version.
+                  style={{
+                    borderRadius: token.borderRadius,
+                    backgroundColor: token.colorPrimary,
+                    fontFamily: token.fontFamily,
+                  }}
                 >
                   <PlusCircleOutlined /> Add{" "}
                   {options && options.addLabel ? options.addLabel : `Item`}

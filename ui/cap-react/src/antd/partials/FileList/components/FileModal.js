@@ -4,7 +4,7 @@ import { Modal, Space, Table, Tag, Typography } from "antd";
 import prettyBytes from "pretty-bytes";
 import TimeAgo from "react-timeago";
 import { CloudDownloadOutlined } from "@ant-design/icons";
-import moment from "moment";
+import dayjs from "dayjs";
 
 const FileModal = ({ open, file, onCancel, versions }) => {
   if (!file) return null;
@@ -40,8 +40,8 @@ const FileModal = ({ open, file, onCancel, versions }) => {
       dataIndex: "created",
       key: "created",
       render: created => {
-        let nowTime = moment();
-        let createdTime = moment(new Date(created));
+        let nowTime = dayjs();
+        let createdTime = dayjs(new Date(created));
         let createdPlusExtraTime = createdTime.add(3, "h");
 
         return createdPlusExtraTime.diff(nowTime) < 0 ? (

@@ -123,6 +123,7 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
               value={service}
               placeHolder="Select service"
               onChange={val => setService(val)}
+              style={{ width: "100%" }}
             >
               {uiSchema["ui:servicesList"].map(service => (
                 <Select.Option value={service} key={service}>

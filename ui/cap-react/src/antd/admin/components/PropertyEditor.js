@@ -8,13 +8,13 @@ import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 const renderPath = pathToUpdate => {
   let prev;
   let content;
-  let result = [];
+  const breadcrumbItems = [];
 
   let path = pathToUpdate.getIn(["path"]).toJS();
 
   path &&
     path.map(item => {
-      if (result.length == 0) {
+      if (breadcrumbItems.length == 0) {
         if (item == "properties") content = "{ } root";
         else if (item == "items") content = "[ ] root";
       } else {
@@ -27,14 +27,12 @@ const renderPath = pathToUpdate => {
         } else prev = item;
       }
 
-      if (!prev) result.push(<Breadcrumb.Item>{content}</Breadcrumb.Item>);
+      if (!prev) breadcrumbItems.push({ title: content });
     });
 
-  if (prev) result.push(<Breadcrumb.Item>{prev}</Breadcrumb.Item>);
+  if (prev) breadcrumbItems.push({ title: prev });
 
-  if (result.length == 0) result.push(<Breadcrumb.Item>root</Breadcrumb.Item>);
-
-  return <Breadcrumb>{result}</Breadcrumb>;
+  return <Breadcrumb items={breadcrumbItems} />;
 };
 const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
   const [name, setName] = useState();
@@ -45,7 +43,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
       if (path) {
         const p = path.getIn(["path"]).toJS();
         if (p.length) {
-          setName(p.find(item => item !== "properties" && item != "items"));
+          setName(p.findLast(item => item !== "properties" && item != "items"));
         } else {
           setName("root");
         }
@@ -77,7 +75,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
         }
       />
       <Row justify="center">
-        <Col xs={22} style={{ paddingBottom: "20px", textAlign: "center" }}>
+        <Col xs={22} style={{ paddingBottom: "10px", textAlign: "center" }}>
           {renderPath(path)}
         </Col>
         <Col xs={18}>

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Input, Button, Menu, Typography } from "antd";
+import { Form, Input, Button, Typography } from "antd";
 
 const LoginForm = ({ loginLocalUser, history, authError }) => {
   const [form] = Form.useForm();

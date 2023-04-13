@@ -66,58 +66,70 @@ const Customize = ({
   };
 
   return (
-    <Tabs className="scrollableTabs" centered style={{ flex: 1 }}>
-      <Tabs.TabPane tab="Schema Settings" key="1">
-        <PropertyKeyEditorForm
-          schema={schema && schema.toJS()}
-          uiSchema={uiSchema && uiSchema.toJS()}
-          formData={schema && schema.toJS()}
-          onChange={_onSchemaChange}
-          optionsSchemaObject="optionsSchema"
-          optionsUiSchemaObject="optionsSchemaUiSchema"
-        />
-      </Tabs.TabPane>
-      <Tabs.TabPane tab="UI Schema Settings" key="2">
-        {_path.size != 0 ? (
-          <PropertyKeyEditorForm
-            schema={schema && schema.toJS()}
-            uiSchema={uiSchema && uiSchema.toJS()}
-            formData={uiSchema && uiSchema.toJS()}
-            onChange={_onUiSchemaChange}
-            optionsSchemaObject="optionsUiSchema"
-            optionsUiSchemaObject="optionsUiSchemaUiSchema"
-            key={_uiPath}
-          />
-        ) : (
-          <Space
-            direction="vertical"
-            style={{ padding: "0 12px", width: "100%" }}
-          >
-            <Typography.Text>Size Options</Typography.Text>
-            <Radio.Group
-              size="small"
-              onChange={e => sizeChange(e.target.value)}
-              value={size}
-              style={{ paddingBottom: "15px" }}
-            >
-              {Object.keys(SIZE_OPTIONS).map(size => (
-                <Radio.Button value={size}>{size}</Radio.Button>
-              ))}
-            </Radio.Group>
-            <Typography.Text>Align Options</Typography.Text>
-            <Radio.Group
-              size="small"
-              onChange={e => alignChange(e.target.value)}
-              value={justify}
-            >
-              {JUSTIFY_OPTIONS.map(justify => (
-                <Radio.Button value={justify}>{justify}</Radio.Button>
-              ))}
-            </Radio.Group>
-          </Space>
-        )}
-      </Tabs.TabPane>
-    </Tabs>
+    <Tabs
+      className="scrollableTabs"
+      centered
+      style={{ flex: 1 }}
+      items={[
+        {
+          key: "1",
+          label: "Schema Settings",
+          children: (
+            <PropertyKeyEditorForm
+              schema={schema && schema.toJS()}
+              uiSchema={uiSchema && uiSchema.toJS()}
+              formData={schema && schema.toJS()}
+              onChange={_onSchemaChange}
+              optionsSchemaObject="optionsSchema"
+              optionsUiSchemaObject="optionsSchemaUiSchema"
+            />
+          ),
+        },
+        {
+          key: "2",
+          label: "UI Schema Settings",
+          children:
+            _path.size != 0 ? (
+              <PropertyKeyEditorForm
+                schema={schema && schema.toJS()}
+                uiSchema={uiSchema && uiSchema.toJS()}
+                formData={uiSchema && uiSchema.toJS()}
+                onChange={_onUiSchemaChange}
+                optionsSchemaObject="optionsUiSchema"
+                optionsUiSchemaObject="optionsUiSchemaUiSchema"
+                key={_uiPath}
+              />
+            ) : (
+              <Space
+                direction="vertical"
+                style={{ padding: "0 12px", width: "100%" }}
+              >
+                <Typography.Text>Size Options</Typography.Text>
+                <Radio.Group
+                  size="small"
+                  onChange={e => sizeChange(e.target.value)}
+                  value={size}
+                  style={{ paddingBottom: "15px" }}
+                >
+                  {Object.keys(SIZE_OPTIONS).map(size => (
+                    <Radio.Button value={size}>{size}</Radio.Button>
+                  ))}
+                </Radio.Group>
+                <Typography.Text>Align Options</Typography.Text>
+                <Radio.Group
+                  size="small"
+                  onChange={e => alignChange(e.target.value)}
+                  value={justify}
+                >
+                  {JUSTIFY_OPTIONS.map(justify => (
+                    <Radio.Button value={justify}>{justify}</Radio.Button>
+                  ))}
+                </Radio.Group>
+              </Space>
+            ),
+        },
+      ]}
+    />
   );
 };
 
