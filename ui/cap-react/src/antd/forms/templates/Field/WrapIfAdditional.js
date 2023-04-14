@@ -35,7 +35,7 @@ const WrapIfAdditional = ({
   } = formContext;
 
   const keyLabel = `${label} Key`; // i18n ?
-  const additional = schema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
+  const additional = Object.hasOwn(schema, ADDITIONAL_PROPERTY_FLAG);
 
   if (!additional) {
     return (

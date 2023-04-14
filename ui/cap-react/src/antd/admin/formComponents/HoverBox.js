@@ -22,7 +22,6 @@ function HoverBox({
   propKey,
   addProperty,
   children,
-  index,
   shouldHideChildren,
 }) {
   const [{ isOverCurrent }, drop] = useDrop({
@@ -42,7 +41,7 @@ function HoverBox({
   });
 
   return (
-    <div ref={drop} style={getStyle(isOverCurrent)} index={index}>
+    <div ref={drop} style={getStyle(isOverCurrent)}>
       {children}
     </div>
   );
@@ -53,7 +52,6 @@ HoverBox.propTypes = {
   path: PropTypes.array,
   addProperty: PropTypes.func,
   propKey: PropTypes.string,
-  index: PropTypes.number,
   shouldHideChildren: PropTypes.bool,
   schema: PropTypes.object,
 };
