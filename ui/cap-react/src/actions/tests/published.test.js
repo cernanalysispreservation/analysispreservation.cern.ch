@@ -3,26 +3,27 @@ import thunk from "redux-thunk";
 import * as actions from "../published";
 import axios from "axios";
 import { Map } from "immutable";
+import { describe, test, expect, vi } from "vitest";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const ID = "CAP.TEST.123";
 const ERROR = {
   status: 400,
-  data: "This is an error"
+  data: "This is an error",
 };
 const DATA = {
   id: ID,
   schema: {
-    fullname: "CMS"
+    fullname: "CMS",
   },
   can_review: false,
   created: "2021-08-31T12:47:22.090235+00:00",
   created_by: {
-    email: "cap@cern.ch"
+    email: "cap@cern.ch",
   },
   metadata: {
-    general_title: "this is the general title"
+    general_title: "this is the general title",
   },
   status: "published",
   revision: 0,
@@ -31,31 +32,31 @@ const DATA = {
   can_update: false,
   links: {},
   draft_id: "1234",
-  loading: false
+  loading: false,
 };
 const REVIEW = {
   body: "This is a great post",
   id: "123",
   resolved: false,
   reviewer: "cap@cern.ch",
-  type: "approved"
+  type: "approved",
 };
 describe("Published actions test suite", () => {
-  it("Get Published item success", async () => {
+  test("Get Published item success", async () => {
     const expectedActions = [
       {
-        type: actions.PUBLISHED_ITEM_REQUEST
+        type: actions.PUBLISHED_ITEM_REQUEST,
       },
       {
         type: actions.PUBLISHED_ITEM_SUCCESS,
-        published: DATA
-      }
+        published: DATA,
+      },
     ];
 
-    axios.get = jest.fn(() => {
+    axios.get = vi.fn(() => {
       return Promise.resolve({
         status: 200,
-        data: DATA
+        data: DATA,
       });
     });
 
@@ -67,8 +68,8 @@ describe("Published actions test suite", () => {
         uiSchema: null,
         loading: false,
         error: null,
-        files: Map({})
-      })
+        files: Map({}),
+      }),
     });
 
     await store.dispatch(actions.getPublishedItem(ID)).then(() => {
@@ -76,21 +77,21 @@ describe("Published actions test suite", () => {
     });
   });
 
-  it("Get Published item error", async () => {
+  test("Get Published item error", async () => {
     const expectedActions = [
       { type: actions.PUBLISHED_ITEM_REQUEST },
       {
         type: actions.PUBLISHED_ITEM_ERROR,
-        error: ERROR
-      }
+        error: ERROR,
+      },
     ];
 
-    axios.get = jest.fn(() => {
+    axios.get = vi.fn(() => {
       return Promise.reject({
         response: {
           status: 400,
-          error: ERROR
-        }
+          error: ERROR,
+        },
       });
     });
 
@@ -102,8 +103,8 @@ describe("Published actions test suite", () => {
         uiSchema: null,
         loading: false,
         error: null,
-        files: Map({})
-      })
+        files: Map({}),
+      }),
     });
 
     await store.dispatch(actions.getPublishedItem(ID)).catch(() => {
@@ -111,24 +112,21 @@ describe("Published actions test suite", () => {
     });
   });
 
-  // this is the id that is used for the toaster
-  document.body.innerHTML = "<div id='ct-container'>" + "</div>";
-
-  it("Review Published success", async () => {
+  test("Review Published success", async () => {
     const expectedActions = [
       {
-        type: actions.REVIEW_PUBISHED_REQUEST
+        type: actions.REVIEW_PUBISHED_REQUEST,
       },
       {
         type: actions.REVIEW_PUBISHED_SUCCESS,
-        payload: REVIEW
-      }
+        payload: REVIEW,
+      },
     ];
 
-    axios.post = jest.fn(() => {
+    axios.post = vi.fn(() => {
       return Promise.resolve({
         status: 200,
-        data: REVIEW
+        data: REVIEW,
       });
     });
 
@@ -143,9 +141,9 @@ describe("Published actions test suite", () => {
         files: Map({}),
         links: {
           review:
-            "http://localhost:3000/api/deposits/c8feb00afc1b41ada5be670e59734fa8/actions/review"
-        }
-      })
+            "http://localhost:3000/api/deposits/c8feb00afc1b41ada5be670e59734fa8/actions/review",
+        },
+      }),
     });
 
     await store.dispatch(actions.reviewPublished(REVIEW)).then(() => {
@@ -153,21 +151,21 @@ describe("Published actions test suite", () => {
     });
   });
 
-  it("Review published item errror", async () => {
+  test("Review published item errror", async () => {
     const expectedActions = [
       { type: actions.REVIEW_PUBISHED_REQUEST },
       {
         type: actions.REVIEW_PUBISHED_ERROR,
-        error: ERROR
-      }
+        error: ERROR,
+      },
     ];
 
-    axios.post = jest.fn(() => {
+    axios.post = vi.fn(() => {
       return Promise.reject({
         response: {
           status: 400,
-          data: ERROR
-        }
+          data: ERROR,
+        },
       });
     });
 
@@ -182,9 +180,9 @@ describe("Published actions test suite", () => {
         files: Map({}),
         links: {
           review:
-            "http://localhost:3000/api/deposits/c8feb00afc1b41ada5be670e59734fa8/actions/review"
-        }
-      })
+            "http://localhost:3000/api/deposits/c8feb00afc1b41ada5be670e59734fa8/actions/review",
+        },
+      }),
     });
 
     await store.dispatch(actions.reviewPublished(REVIEW)).catch(() => {
