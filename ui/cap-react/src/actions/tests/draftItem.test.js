@@ -4,7 +4,7 @@ import * as actions from "../draftItem";
 import * as commonActions from "../common";
 import axios from "axios";
 import { Map } from "immutable";
-import { act } from "react-dom/test-utils";
+import { describe, expect, test, vi } from "vitest";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -77,16 +77,14 @@ const response_data_edit = {
   updated: "2020-03-25T11:29:11.735378+00:00",
 };
 
-// this id is used from the toast mechanism in order to append the messages
-document.body.innerHTML = "<div id='ct-container'>" + "</div>";
 describe("Action Creators => draftItem", () => {
-  it("Async Patch General Title Success", async () => {
+  test("Async Patch General Title Success", async () => {
     const expectedActions = [
       { type: actions.GENERAL_TITLE_REQUEST },
       { type: actions.GENERAL_TITLE_SUCCESS, draft },
     ];
 
-    axios.patch = jest.fn(() => {
+    axios.patch = vi.fn(() => {
       return Promise.resolve({
         status: 200,
         data: response_data,
@@ -107,13 +105,13 @@ describe("Action Creators => draftItem", () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
   });
-  it("Async Patch General Title Failed from Data", async () => {
+  test("Async Patch General Title Failed from Data", async () => {
     const expectedActions = [
       { type: actions.GENERAL_TITLE_REQUEST },
       { type: actions.GENERAL_TITLE_SUCCESS, draft },
     ];
 
-    axios.patch = jest.fn(() => {
+    axios.patch = vi.fn(() => {
       return Promise.resolve({
         status: 200,
         data: response_data_edit,
@@ -134,14 +132,14 @@ describe("Action Creators => draftItem", () => {
         expect(store.getActions()).not.toEqual(expectedActions);
       });
   });
-  it("Async Failed Patch General Title Error", async () => {
+  test("Async Failed Patch General Title Error", async () => {
     const error = undefined;
     const expectedActions = [
       { type: actions.GENERAL_TITLE_REQUEST },
       { type: actions.GENERAL_TITLE_ERROR, error },
     ];
 
-    axios.patch = jest.fn(() => {
+    axios.patch = vi.fn(() => {
       return Promise.reject({
         error: undefined,
       });
@@ -162,13 +160,13 @@ describe("Action Creators => draftItem", () => {
       });
   });
 
-  it("Async Create Draft Success", async () => {
+  test("Async Create Draft Success", async () => {
     const expectedActions = [
       { type: actions.CREATE_DRAFT_REQUEST },
       { type: actions.CREATE_DRAFT_SUCCESS, draft },
     ];
 
-    axios.post = jest.fn(() => {
+    axios.post = vi.fn(() => {
       return Promise.resolve({
         data: draft,
       });
@@ -190,7 +188,7 @@ describe("Action Creators => draftItem", () => {
       });
   });
 
-  it("Async Create Draft Error", async () => {
+  test("Async Create Draft Error", async () => {
     const expectedActions = [
       { type: actions.CREATE_DRAFT_REQUEST },
       {
@@ -198,7 +196,7 @@ describe("Action Creators => draftItem", () => {
       },
     ];
 
-    axios.post = jest.fn(() => {
+    axios.post = vi.fn(() => {
       return Promise.reject({
         response: {
           data: { message: "This is an error message for the create process" },
@@ -221,14 +219,13 @@ describe("Action Creators => draftItem", () => {
       });
   });
 
-  it("Async Publish Draft Success", async () => {
-    document.body.append = "";
+  test("Async Publish Draft Success", async () => {
     const expectedActions = [
       { type: actions.PUBLISH_DRAFT_REQUEST },
       { type: actions.PUBLISH_DRAFT_SUCCESS, draft },
     ];
 
-    axios.post = jest.fn(() => {
+    axios.post = vi.fn(() => {
       return Promise.resolve({
         data: draft,
       });
@@ -243,17 +240,15 @@ describe("Action Creators => draftItem", () => {
       }),
     });
 
-    await act(async () => {
-      await store.dispatch(actions.postPublishDraft()).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    await store.dispatch(actions.postPublishDraft()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 
-  it("Async Publish Draft Error", async () => {
+  test("Async Publish Draft Error", async () => {
     const expectedActions = [{ type: actions.PUBLISH_DRAFT_REQUEST }];
 
-    axios.post = jest.fn(() => {
+    axios.post = vi.fn(() => {
       return Promise.reject({
         error: "this is the error from the publish draft",
       });
@@ -267,14 +262,12 @@ describe("Action Creators => draftItem", () => {
       }),
     });
 
-    await act(async () => {
-      await store.dispatch(actions.postPublishDraft()).catch(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    await store.dispatch(actions.postPublishDraft()).catch(() => {
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 
-  it("Async Publish Draft Validation Error", async () => {
+  test("Async Publish Draft Validation Error", async () => {
     const expectedActions = [
       { type: actions.PUBLISH_DRAFT_REQUEST },
       {
@@ -283,7 +276,7 @@ describe("Action Creators => draftItem", () => {
       },
     ];
 
-    axios.post = jest.fn(() => {
+    axios.post = vi.fn(() => {
       return Promise.reject({
         response: {
           status: 422,
@@ -308,10 +301,8 @@ describe("Action Creators => draftItem", () => {
       }),
     });
 
-    await act(async () => {
-      await store.dispatch(actions.postPublishDraft()).catch(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    await store.dispatch(actions.postPublishDraft()).catch(() => {
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });
