@@ -44,7 +44,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
     if (!item.hasToolbar) return [];
 
     return [
-      <Row gutter={4}>
+      <Row key={item.key} gutter={4}>
         {(item.hasMoveUp || item.hasMoveDown) && (
           <Col>
             <Row>

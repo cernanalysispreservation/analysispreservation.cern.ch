@@ -29,7 +29,7 @@ const ErrorPage = ({ error, componentStack }) => {
           </li>
           <li>
             <span>Open a </span>
-            <a target="_blank" href={SNOW_INCIDENT_LINK}>
+            <a target="_blank" rel="noreferrer" href={SNOW_INCIDENT_LINK}>
               service now incident
             </a>
             <span>, please include the details below in your message:</span>

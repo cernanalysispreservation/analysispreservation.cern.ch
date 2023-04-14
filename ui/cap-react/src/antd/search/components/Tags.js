@@ -6,7 +6,7 @@ const Tags = ({
   params = undefined,
   clearFilter,
   anatype,
-  removeAnatype
+  removeAnatype,
 }) => {
   if (!params) return null;
 
@@ -44,6 +44,7 @@ const Tags = ({
               ))
             ) : (
               <Tag
+                key={item}
                 closable
                 color="geekblue"
                 onClose={() => onClick(item[0], item[1])}
@@ -66,7 +67,7 @@ Tags.propTypes = {
   params: PropTypes.object,
   clearFilter: PropTypes.func,
   anatype: PropTypes.string,
-  removeAnatype: PropTypes.func
+  removeAnatype: PropTypes.func,
 };
 
 export default Tags;

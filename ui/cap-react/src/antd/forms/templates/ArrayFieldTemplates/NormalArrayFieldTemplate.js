@@ -253,7 +253,9 @@ const NormalArrayFieldTemplate = ({
               {uiEmailDefaults.length > 0 ? (
                 <Col>
                   Default email recepients:{" "}
-                  <Space>{uiEmailDefaults.map(i => <Tag>{i}</Tag>)}</Space>
+                  <Space>
+                    {uiEmailDefaults.map(i => <Tag key={i}>{i}</Tag>)}
+                  </Space>
                 </Col>
               ) : null}
               <Table
