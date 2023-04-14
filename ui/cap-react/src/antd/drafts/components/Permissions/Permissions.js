@@ -14,7 +14,7 @@ import {
   Typography,
 } from "antd";
 import axios from "axios";
-import _debounce from "lodash/debounce";
+import { debounce } from "lodash-es";
 import DropDown from "./DropDown";
 import { DeleteOutlined } from "@ant-design/icons";
 
@@ -222,7 +222,7 @@ const Permissions = ({
     [permissions]
   );
 
-  const fetchLDAPdata = _debounce(async ({ searchFor, searchInput }) => {
+  const fetchLDAPdata = debounce(async ({ searchFor, searchInput }) => {
     setTableLoading(true);
     const response = await axios.get(
       `/api/services/ldap/${searchFor}/mail?query=${searchInput}`

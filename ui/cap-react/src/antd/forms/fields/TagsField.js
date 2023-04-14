@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Form, Input, Tag, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 
 const TagsField = ({ schema, onChange, readonly, formData }) => {
   const [tags, setTags] = useState([]);
