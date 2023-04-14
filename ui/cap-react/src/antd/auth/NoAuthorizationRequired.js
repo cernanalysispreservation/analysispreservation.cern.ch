@@ -17,14 +17,14 @@ export default function(ComposedComponent) {
       return true;
     }
 
-    componentWillUpdate(nextProps) {
+    UNSAFE_componentWillUpdate(nextProps) {
       if (nextProps.isLoggedIn) {
         this.props.history.push("/");
       }
     }
 
     PropTypes = {
-      router: PropTypes.object
+      router: PropTypes.object,
     };
 
     render() {
@@ -34,7 +34,7 @@ export default function(ComposedComponent) {
 
   NotAuthentication.propTypes = {
     isLoggedIn: PropTypes.bool,
-    history: PropTypes.object
+    history: PropTypes.object,
   };
 
   function mapStateToProps(state) {

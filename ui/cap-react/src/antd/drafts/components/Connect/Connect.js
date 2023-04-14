@@ -146,21 +146,23 @@ const Connect = ({
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Card title="Repositories">
           <Typography.Paragraph>
-            <Typography.Text strong>Download</Typography.Text> a snapshot of
+            <Typography.Text strong>Download</Typography.Text>{" "}
+            {`a snapshot of
             repository, that you'd like to preserve with your analysis. You can
             point to the whole repo, specific branch or even a single file -
             whatever your analysis needs. Some repositories are private or
             restricted for CERN users only (like all the repos in CERN Gitlab) -
             to download those you need to connect your Github/Gitlab account
-            first
+            first`}
           </Typography.Paragraph>
           <Typography.Paragraph>
-            <Typography.Text strong>Connect</Typography.Text> repositories with
+            <Typography.Text strong>Connect</Typography.Text>{" "}
+            {`repositories with
             analysis that are still in progress, to keep them in sync. We'll
             make a new snapshot on any changes pushed in this repository. This
             way your analysis will be always up to date with your code. Keep in
             mind that you cannot connect to public repositories (owner has to
-            give you a specific access to do that).
+            give you a specific access to do that).`}
           </Typography.Paragraph>
         </Card>
 

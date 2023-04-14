@@ -21,7 +21,7 @@ const Customize = ({
 
   useEffect(
     () => {
-      if (uiSchema && uiSchema.toJS().hasOwnProperty("ui:options")) {
+      if (uiSchema && Object.hasOwn(uiSchema.toJS(), "ui:options")) {
         setSize(uiSchema.toJS()["ui:options"].size);
         setJustify(uiSchema.toJS()["ui:options"].justify);
       }
@@ -112,7 +112,9 @@ const Customize = ({
                   style={{ paddingBottom: "15px" }}
                 >
                   {Object.keys(SIZE_OPTIONS).map(size => (
-                    <Radio.Button value={size}>{size}</Radio.Button>
+                    <Radio.Button key={size} value={size}>
+                      {size}
+                    </Radio.Button>
                   ))}
                 </Radio.Group>
                 <Typography.Text>Align Options</Typography.Text>
@@ -122,7 +124,9 @@ const Customize = ({
                   value={justify}
                 >
                   {JUSTIFY_OPTIONS.map(justify => (
-                    <Radio.Button value={justify}>{justify}</Radio.Button>
+                    <Radio.Button key={justify} value={justify}>
+                      {justify}
+                    </Radio.Button>
                   ))}
                 </Radio.Group>
               </Space>

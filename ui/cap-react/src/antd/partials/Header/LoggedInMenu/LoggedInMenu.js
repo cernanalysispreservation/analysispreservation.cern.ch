@@ -107,6 +107,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
                       <a
                         href="https://cern.service-now.com/service-portal?id=functional_element&name=Data-Analysis-Preservation"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         CERN Ticketing Service
                       </a>
