@@ -1,7 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { Divider, Empty, Space, Tree } from "antd";
-import { filter } from "lodash";
+import { filter } from "lodash-es";
 import { constructTree } from "../utils/fileList";
 
 const Files = ({

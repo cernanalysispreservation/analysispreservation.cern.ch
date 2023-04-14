@@ -1,4 +1,4 @@
-import _omit from "lodash/omit";
+import { omit } from "lodash-es";
 
 export const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -14,14 +14,14 @@ export const transformSchema = schema => {
     "_fetched_from",
     "_user_edited",
     "control_number",
-    "_review"
+    "_review",
   ];
 
-  schema.properties = _omit(schema.properties, schemaFieldsToRemove);
+  schema.properties = omit(schema.properties, schemaFieldsToRemove);
   schema = {
     type: schema.type,
     properties: schema.properties,
-    dependencies: schema.dependencies
+    dependencies: schema.dependencies,
   };
   return schema;
 };

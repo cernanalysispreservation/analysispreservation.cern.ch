@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import _ from "lodash";
+import { isObject, isNumber } from "lodash-es";
 import { canExpand } from "@rjsf/utils";
 import { Button, Col, Divider, Row, Typography } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
@@ -60,12 +60,12 @@ const ObjectFieldTemplate = ({
         ? 24
         : 12;
 
-    if (_.isObject(colSpan)) {
+    if (isObject(colSpan)) {
       return (
         colSpan[widget] || colSpan[field] || colSpan[type] || defaultColSpan
       );
     }
-    if (_.isNumber(colSpan)) {
+    if (isNumber(colSpan)) {
       return colSpan;
     }
     return defaultColSpan;
