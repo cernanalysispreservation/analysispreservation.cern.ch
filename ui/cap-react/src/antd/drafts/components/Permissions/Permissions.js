@@ -15,7 +15,7 @@ import {
   Typography,
 } from "antd";
 import axios from "axios";
-import _debounce from "lodash/debounce";
+import { debounce } from "lodash-es";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 
@@ -180,7 +180,7 @@ const Permissions = ({
     setEmailsArray(emailsArray);
   }, [permissions]);
 
-  const fetchLDAPdata = _debounce(async ({ searchFor, searchInput }) => {
+  const fetchLDAPdata = debounce(async ({ searchFor, searchInput }) => {
     setTableLoading(true);
     const response = await axios.get(
       `/api/services/ldap/${searchFor}/mail?query=${searchInput}`

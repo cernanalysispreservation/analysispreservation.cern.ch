@@ -13,7 +13,7 @@ import {
   Typography,
 } from "antd";
 import axios from "axios";
-import _debounce from "lodash/debounce";
+import { debounce } from "lodash-es";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { SearchOutlined } from "@ant-design/icons";
 
@@ -102,7 +102,7 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
     },
   ];
 
-  const fetchLDAPdata = _debounce(
+  const fetchLDAPdata = debounce(
     async ({ searchFor = searchType[0], searchInput }) => {
       setTableLoading(true);
       const response = await axios.get(

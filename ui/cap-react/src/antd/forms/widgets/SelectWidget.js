@@ -3,7 +3,7 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { asNumber, guessType } from "@rjsf/utils";
 import Select from "antd/lib/select";
-import debounce from "lodash/debounce";
+import { debounce } from "lodash-es";
 import axios from "axios";
 import { fromJS } from "immutable";
 import { Empty } from "antd";
