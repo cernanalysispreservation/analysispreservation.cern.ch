@@ -66,5 +66,9 @@ export default defineConfig(({ mode }) => {
     resolve: {
       dedupe: ["@codemirror/state", "@codemirror/view"],
     },
+    // Avoid errors when accesing e.g. document from tests
+    test: {
+      environment: "happy-dom",
+    },
   };
 });
