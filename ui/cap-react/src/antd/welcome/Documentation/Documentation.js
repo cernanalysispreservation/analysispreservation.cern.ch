@@ -12,7 +12,7 @@ const Documentation = () => {
           General Docs
         </Button>
       ),
-      icon: <ReadOutlined style={{ fontSize: "3em" }} />
+      icon: <ReadOutlined style={{ fontSize: "3em" }} />,
     },
     {
       title: "CLI Client",
@@ -23,7 +23,7 @@ const Documentation = () => {
         <Button type="primary" href="/docs/cli/" target="_blank">
           CAP-client Guide
         </Button>
-      )
+      ),
     },
     {
       title: "RESTful API",
@@ -34,11 +34,15 @@ const Documentation = () => {
         <Button type="primary" href="/docs/api" target="_blank">
           API Guides & Docs
         </Button>
-      )
-    }
+      ),
+    },
   ];
   return (
-    <Col xs={24} style={{ margin: "2rem 0", padding: "1rem" }}>
+    <Col
+      xs={24}
+      style={{ margin: "2rem 0", padding: "1rem" }}
+      id="documentation"
+    >
       <Space direction="vertical" style={{ width: "100%" }} size="large">
         <Typography.Title
           style={{ textAlign: "center", fontSize: "3rem" }}
@@ -46,7 +50,7 @@ const Documentation = () => {
         >
           Documentation
         </Typography.Title>
-        <Row id="documentation" gutter={[64, 64]} justify="center">
+        <Row gutter={[64, 64]} justify="center">
           {boxes.map(item => (
             <Col key={item.title} xs={22} sm={10} lg={8} xl={6} xxl={4}>
               <Card style={{ height: "100%" }}>

@@ -21,18 +21,13 @@ const SimpleMenu = ({
       : `/api/oauth/login/cern?next=/`;
 
   const menuItems = [
-    { label: <a href="#home">Home</a>, key: "home" },
-    { label: <a href="#discover">What is Cap</a>, key: "discover" },
-    { label: <a href="#explain">Get Started</a>, key: "explain" },
+    { key: "home", label: <a href="#home">Home</a> },
+    { key: "discover", label: <a href="#discover">What is Cap</a> },
+    { key: "explain", label: <a href="#explain">Get Started</a> },
+    { key: "integrations", label: <a href="#integrations">Integrations</a> },
+    { key: "documentation", label: <a href="#documentation">Documentation</a> },
     {
-      label: <a href="#integrations">Integrations</a>,
-      key: "integrations",
-    },
-    {
-      label: <a href="#documentation">Documentation</a>,
-      key: "documentation",
-    },
-    {
+      key: "login",
       label: (
         <OauthPopup
           url={oauthLink}
@@ -41,12 +36,12 @@ const SimpleMenu = ({
           <Button type="primary">Log In</Button>
         </OauthPopup>
       ),
-      key: "login",
     },
   ];
 
   (process.env.NODE_ENV == "development" || process.env.ENABLE_E2E) &&
     menuItems.unshift({
+      key: "localLogin",
       label: (
         <Dropdown
           menu={{
@@ -58,17 +53,14 @@ const SimpleMenu = ({
             ],
           }}
           open={dropdownOpen}
-          onOpenChange={x => {
-            console.log(x);
-            setDropdownOpen(x);
-          }}
+          onOpenChange={x => setDropdownOpen(x)}
         >
           <div>
             <LoginOutlined /> Local login
           </div>
         </Dropdown>
       ),
-      key: "locallogin",
+      "data-cy": "localLogin",
     });
 
   return (

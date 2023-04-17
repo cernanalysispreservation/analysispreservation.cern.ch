@@ -5,17 +5,11 @@ import { MailOutlined } from "@ant-design/icons";
 import { stringToHslColor } from "../../utils";
 
 const Profile = ({ user, cernProfile }) => {
-  console.log("payaya@cern.ch".split("@")[0].split(".")[0]);
-
   const [emailName] = useState(() => {
-    const left = user
-      .get("email")
-      .split("@")[0]
-      .split(".");
+    const left = user.get("email").split("@")[0].split(".");
     const first = left[0].charAt(0).toUpperCase();
-    const second = (left.length > 1
-      ? left[1].charAt(0)
-      : left[0].charAt(1)
+    const second = (
+      left.length > 1 ? left[1].charAt(0) : left[0].charAt(1)
     ).toUpperCase();
     return `${first}${second}`;
   });

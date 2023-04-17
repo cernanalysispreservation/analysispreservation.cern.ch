@@ -7,9 +7,7 @@ describe("Reviews Platform", () => {
 
     cy.get("[data-cy=reviewShowModal]").click();
 
-    cy.get("[data-cy=reviewOptions]")
-      .contains("Approve")
-      .click();
+    cy.get("[data-cy=reviewOptions]").contains("Approve").click();
 
     cy.get("[data-cy=reviewAddComment]").type(
       "This is a great report I will approve it"
@@ -34,9 +32,7 @@ describe("Reviews Platform", () => {
   it("Login from CMS account, and validate that you can not add reviews to the previous published", () => {
     cy.loginUrl("cms@inveniosoftware.org", "cmscms");
 
-    cy.get("[data-cy=PublishedinCAPDocuments-list] a")
-      .first()
-      .click();
+    cy.get("[data-cy=PublishedDocumentsinCAP-list] a").first().click();
 
     cy.get("[data-cy=reviewShowModal]").should("not.exist");
     cy.get("[data-cy=reviewShowReviews]").should("exist");
