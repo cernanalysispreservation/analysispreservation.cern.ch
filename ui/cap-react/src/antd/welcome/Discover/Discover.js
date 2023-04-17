@@ -10,6 +10,7 @@ const Discover = () => {
         padding: "1rem",
         margin: "2rem 0",
       }}
+      id="discover"
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Typography.Title
@@ -18,12 +19,7 @@ const Discover = () => {
         >
           Discover
         </Typography.Title>
-        <Row
-          justify="center"
-          align="middle"
-          style={{ textAlign: "center" }}
-          id="discover"
-        >
+        <Row justify="center" align="middle" style={{ textAlign: "center" }}>
           <Col
             xs={22}
             lg={18}

@@ -92,7 +92,7 @@ export function selectProperty(path) {
 }
 
 export function initSchemaWizard(data) {
-  return function(dispatch) {
+  return function (dispatch) {
     const { id, deposit_schema, deposit_options, ...configs } = data;
 
     configs.config = merge(configs.config, NOTIFICATIONS);
@@ -113,7 +113,7 @@ export function getSchema(name, version = null) {
   if (version)
     schemaLink = `/api/jsonschemas/${name}/${version}?resolve=1&config=1`;
   else schemaLink = `/api/jsonschemas/${name}?resolve=1&config=1`;
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(schemaInitRequest());
     axios
       .get(schemaLink)
@@ -144,14 +144,14 @@ export function getSchema(name, version = null) {
 }
 
 export function getSchemasLocalStorage() {
-  return function() {
+  return function () {
     //let availableSchemas = localStorage.getItem("availableSchemas");
     let availableSchemas = JSON.parse(availableSchemas);
   };
 }
 
 export function createContentType(content_type) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(schemaInitRequest());
 
     let { name, description } = content_type;
@@ -166,18 +166,18 @@ export function createContentType(content_type) {
 }
 
 export function selectContentType(id) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(push(`${CMS}/${id}`));
   };
 }
 
 export function selectFieldType(path, change) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(updateByPath(path, change));
   };
 }
 export function updateCurrentSchemaWithField(schema) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     let state = getState().schemaWizard;
     let propKey = state.getIn(["field", "propKey"]);
     let path = state.getIn(["field", "path"]).toJS();
@@ -219,7 +219,7 @@ export function updateByPath(path, value) {
 }
 
 export function addByPath({ schema: path, uiSchema: uiPath }, data) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     let schema = getState()
       .schemaWizard.getIn(["current", "schema", ...path])
       .toJS();
@@ -227,9 +227,7 @@ export function addByPath({ schema: path, uiSchema: uiPath }, data) {
     let _path = path;
     let _uiPath = uiPath;
 
-    let random_name = `item_${Math.random()
-      .toString(36)
-      .substring(2, 8)}`;
+    let random_name = `item_${Math.random().toString(36).substring(2, 8)}`;
 
     if (schema.type) {
       if (schema.type == "object") {
@@ -264,7 +262,7 @@ export function addProperty(path, key) {
 
 // delete item from schema and uiSchema
 export function deleteByPath(item) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const { path, uiPath } = item;
     const uiItemToDelete = uiPath.pop();
 
@@ -303,7 +301,7 @@ export function deleteByPath(item) {
 
 // update the id field of a property
 export function renameIdByPath(item, newName) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const path = item.path;
     const uiPath = item.uiPath;
 
@@ -386,7 +384,7 @@ export function createNotificationCategory(category) {
 }
 
 export function createNewNotification(category) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const valuesPath = [
       "config",
       "config",
@@ -412,7 +410,7 @@ export function createNewNotification(category) {
 }
 
 export function removeNotification(index, category) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const path = ["config", "config", "notifications", "actions", category];
 
     let notification = getState().schemaWizard.getIn(path);
@@ -425,7 +423,7 @@ export function removeNotification(index, category) {
 }
 
 export function updateNotificationData(data, index, category) {
-  return function(dispatch) {
+  return function (dispatch) {
     const valuesPath = [
       "config",
       "config",
@@ -440,7 +438,7 @@ export function updateNotificationData(data, index, category) {
 }
 
 export function saveSchemaChanges() {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const state = getState();
     const config = state.schemaWizard.get("config");
     const pathname = state.router.location.pathname;
@@ -458,7 +456,7 @@ export function saveSchemaChanges() {
       !config.get("fullname")
     ) {
       notification.warning({
-        description: "schema name fullname and version are required",
+        description: "Schema name, fullname and version are required",
         message: "Missing information",
       });
       return;
