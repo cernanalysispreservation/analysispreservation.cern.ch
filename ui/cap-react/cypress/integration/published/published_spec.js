@@ -1,6 +1,4 @@
-import { PUBLISHED } from "../../routes";
-
-describe("Published Tests", function() {
+describe("Published Tests", function () {
   const firstTitle = "My First CMS Analysis";
   it("Publish a CMS Draft", () => {
     // create a new ALICE Analysis
@@ -9,9 +7,7 @@ describe("Published Tests", function() {
 
     cy.visit("/");
 
-    cy.get("[data-cy=DraftDocuments-list] a")
-      .first()
-      .click();
+    cy.get("[data-cy=DraftDocuments-list] a").first().click();
 
     // navigate to settings tab
     cy.get("[data-cy=itemNavSettings]").click();
@@ -29,10 +25,9 @@ describe("Published Tests", function() {
     cy.loginUrl("cms@inveniosoftware.org", "cmscms");
 
     // safety handler, in order to have time for the re indexing of elastic
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    cy.get("[data-cy=PublishedinCAPDocuments-list] a")
-      .first()
-      .click();
+    cy.get("[data-cy=PublishedDocumentsinCAP-list] a").first().click();
 
     cy.get("[data-cy=editPublished]").click();
 
@@ -44,9 +39,7 @@ describe("Published Tests", function() {
   it("Change a published into a Draft", () => {
     cy.loginUrl("cms@inveniosoftware.org", "cmscms");
 
-    cy.get("[data-cy=PublishedinCAPDocuments-list] a")
-      .first()
-      .click();
+    cy.get("[data-cy=PublishedDocumentsinCAP-list] a").first().click();
 
     cy.get("[data-cy=editPublished]").click();
 

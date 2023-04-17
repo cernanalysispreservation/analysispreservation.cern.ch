@@ -23,9 +23,7 @@ describe("Validate Deposit Groups", () => {
     cy.get("[data-cy=anatype]")
       .children("label")
       .each(value => {
-        cy.wrap(value)
-          .get("span")
-          .contains("ATLAS Analysis");
+        cy.wrap(value).get("span").contains("ATLAS Analysis");
       });
   });
   it("Deposit Groups for an Alice member", () => {
@@ -36,9 +34,7 @@ describe("Validate Deposit Groups", () => {
     cy.get("[data-cy=anatype]")
       .children("label")
       .each(value => {
-        cy.wrap(value)
-          .get("span")
-          .contains("ALICE Analysis");
+        cy.wrap(value).get("span").contains("ALICE Analysis");
       });
   });
   it("Deposit Groups for an LHCB member", () => {
@@ -49,15 +45,13 @@ describe("Validate Deposit Groups", () => {
     cy.get("[data-cy=anatype]")
       .children("label")
       .each(value => {
-        cy.wrap(value)
-          .get("span")
-          .contains("LHCb Analysis");
+        cy.wrap(value).get("span").contains("LHCb Analysis");
       });
   });
 });
 
 describe("Visit create path, with a specific analysis name", () => {
-  it("Cms analysis should be  pre selected", () => {
+  it("Cms analysis should be pre selected", () => {
     cy.loginUrl("cms@inveniosoftware.org", "cmscms", `${CREATE}/cms-analysis`);
 
     cy.get("[data-cy=anatype] label.ant-radio-button-wrapper-checked").contains(

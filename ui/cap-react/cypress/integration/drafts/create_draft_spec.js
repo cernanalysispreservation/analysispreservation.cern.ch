@@ -1,6 +1,6 @@
 import { DRAFTS } from "../../routes";
 
-describe("Create Draft", function() {
+describe("Create Draft", function () {
   let firstTitle = "Random Title";
   let updatedTitle = "This is my new title";
   it("Create a new Draft", () => {
@@ -13,9 +13,7 @@ describe("Create Draft", function() {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     // navigate to the draft
-    cy.get("[data-cy=DraftDocuments-list] a")
-      .first()
-      .click();
+    cy.get("[data-cy=DraftDocuments-list] a").first().click();
 
     cy.get("[data-cy=editableTitleEdit]").click();
 
@@ -30,16 +28,12 @@ describe("Create Draft", function() {
   it("Update the general title of the draft", () => {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
-    cy.get("[data-cy=DraftDocuments-list] a")
-      .first()
-      .click();
+    cy.get("[data-cy=DraftDocuments-list] a").first().click();
 
     cy.get("[data-cy=editableTitleEdit]").click();
 
     // erase the previous title and insert the new one
-    cy.get("[data-cy=editableInput]")
-      .clear()
-      .type(`${updatedTitle}{enter}`);
+    cy.get("[data-cy=editableInput]").clear().type(`${updatedTitle}{enter}`);
 
     cy.get("[data-cy=editableTitleValue]").contains(updatedTitle);
   });
@@ -47,9 +41,7 @@ describe("Create Draft", function() {
   it("Delete Draft", () => {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
-    cy.get("[data-cy=DraftDocuments-list] a")
-      .first()
-      .click();
+    cy.get("[data-cy=DraftDocuments-list] a").first().click();
 
     // navigate to settings tab
     cy.get("[data-cy=itemNavSettings]").click();
@@ -58,9 +50,7 @@ describe("Create Draft", function() {
     cy.get("[data-cy=draft-delete-btn]").click();
 
     // validate delete
-    cy.get(".ant-popover-buttons button")
-      .contains("Delete")
-      .click();
+    cy.get(".ant-popconfirm-buttons button").contains("Delete").click();
 
     cy.url().should("not.include", DRAFTS);
   });
@@ -69,17 +59,13 @@ describe("Create Draft", function() {
     cy.loginUrl("info@inveniosoftware.org", "infoinfo");
 
     // open the Create modal
-    cy.get("[data-cy=headerCreateButton]")
-      .contains("Create")
-      .click();
+    cy.get("[data-cy=headerCreateButton]").contains("Create").click();
 
     // type in a General Title
     cy.get("input[type='text']").type("This is my new draft");
 
     // Start Preserving
-    cy.get("div")
-      .contains("Start Preserving")
-      .click();
+    cy.get("div").contains("Start Preserving").click();
 
     cy.url().should("not.include", DRAFTS);
   });

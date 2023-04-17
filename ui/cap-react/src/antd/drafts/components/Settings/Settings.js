@@ -108,7 +108,7 @@ const Settings = ({
             description={
               status === "draft" && !recid ? (
                 <Typography.Paragraph>
-                  <Typography.Text strong>Delete</Typography.Text> permantly
+                  <Typography.Text strong>Delete</Typography.Text> permanently
                   your analysis and all metadata
                 </Typography.Paragraph>
               ) : (

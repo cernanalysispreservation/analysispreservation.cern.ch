@@ -8,44 +8,44 @@ const Explain = () => {
         {
           title: "Metadata",
           description:
-            "Your analysis description, input data, sources, referenced analyses, collaborators"
+            "Your analysis description, input data, sources, referenced analyses, collaborators",
         },
         {
           title: "Files",
-          description: "Plots, tables, formulas, likelihoods "
+          description: "Plots, tables, formulas, likelihoods ",
         },
         {
           title: "Code",
-          description: "Scripts, instructions, repositories"
+          description: "Scripts, instructions, repositories",
         },
         {
           title: "Workflows",
-          description: "Containerized images, workflows "
+          description: "Containerized images, workflows ",
         },
         {
           title: "Documentation",
-          description: "Publications, presentations, conferences, notes "
-        }
-      ]
+          description: "Publications, presentations, conferences, notes ",
+        },
+      ],
     },
     {
       title: "How",
       data: [
         {
           title: "Web Interface",
-          description: "Login from your browser and explore all the features"
+          description: "Login from your browser and explore all the features",
         },
         {
           title: "Command Line",
           description:
-            "Use our command line client to automate the preservation process and make it part of your everyday work cycle"
+            "Use our command line client to automate the preservation process and make it part of your everyday work cycle",
         },
         {
           title: "RESTful Interface",
           description:
-            "Integrate CERN Analysis Preservation with your existing services and tools by using our REST API "
-        }
-      ]
+            "Integrate CERN Analysis Preservation with your existing services and tools by using our REST API ",
+        },
+      ],
     },
     {
       title: "Who",
@@ -53,28 +53,28 @@ const Explain = () => {
         {
           title: "Researchers",
           description:
-            "It doesn't matter on which stage of your analysis you are, it's never too early or too late to preserve your work"
+            "It doesn't matter on which stage of your analysis you are, it's never too early or too late to preserve your work",
         },
         {
           title: "Collaborators",
           description:
-            "Share your work with others and invite them to contribute "
+            "Share your work with others and invite them to contribute ",
         },
         {
           title: "Reviewers",
           description:
-            "Access analyses and all their components from one central place  "
+            "Access analyses and all their components from one central place  ",
         },
         {
           title: "Students",
           description:
-            "Search through older analyses, share with your supervisors, and preserve your work so that it never gets lost "
-        }
-      ]
-    }
+            "Search through older analyses, share with your supervisors, and preserve your work so that it never gets lost ",
+        },
+      ],
+    },
   ];
   return (
-    <Col xs={24} style={{ margin: "2rem 0", padding: "1rem" }}>
+    <Col xs={24} style={{ margin: "2rem 0", padding: "1rem" }} id="explain">
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Typography.Title
           style={{ textAlign: "center", fontSize: "3rem" }}
@@ -88,7 +88,7 @@ const Explain = () => {
             <Col key={item.title} xs={22} md={10} lg={8} xl={6} xxl={5}>
               <Card
                 style={{
-                  height: "100%"
+                  height: "100%",
                 }}
               >
                 <Space direction="vertical" style={{ width: "100%" }}>
@@ -104,7 +104,7 @@ const Explain = () => {
                       style={{
                         width: "100%",
                         padding: "0.2rem",
-                        textAlign: "center"
+                        textAlign: "center",
                       }}
                     >
                       <Typography.Paragraph strong>

@@ -40,7 +40,6 @@ const LoggedInMenu = ({ permissions, logout }) => {
       </Modal>
 
       <Menu
-        title="account"
         theme="dark"
         selectable={false}
         mode="horizontal"
@@ -50,6 +49,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
             label: "Create",
             icon: <PlusOutlined />,
             onClick: () => setDisplayCreate(true),
+            "data-cy": "headerCreateButton",
           },
           {
             key: "faq",
@@ -61,6 +61,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
             key: "subMenu",
             label: "Account",
             icon: <UserOutlined size={25} />,
+            "data-cy": "headerMenu",
             children: [
               {
                 key: "documentation",
@@ -139,6 +140,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
                 label: "Logout",
                 icon: <LogoutOutlined />,
                 onClick: () => logout(),
+                "data-cy": "logoutButton",
               },
             ],
           },
