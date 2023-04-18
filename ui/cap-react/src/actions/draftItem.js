@@ -69,10 +69,10 @@ export const draftsItemSuccess = (draft_id, draft) => ({
   draft_id,
   draft,
 });
-export const draftsItemError = (error) => ({ type: DRAFTS_ITEM_ERROR, error });
+export const draftsItemError = error => ({ type: DRAFTS_ITEM_ERROR, error });
 
 export const publishDraftRequest = () => ({ type: PUBLISH_DRAFT_REQUEST });
-export const publishDraftSuccess = (draft) => ({
+export const publishDraftSuccess = draft => ({
   type: PUBLISH_DRAFT_SUCCESS,
   draft,
 });
@@ -120,24 +120,24 @@ export function toggleFilePreviewEdit(payload = {}) {
 
 export const toggleValidate = () => ({ type: TOGGLE_VALIDATE });
 
-export const formDataChange = (data) => ({ type: FORM_DATA_CHANGE, data });
+export const formDataChange = data => ({ type: FORM_DATA_CHANGE, data });
 
-export const generalTitleChange = (title) => ({
+export const generalTitleChange = title => ({
   type: GENERAL_TITLE_CHANGED,
   title,
 });
 export const generalTitleRequest = () => ({ type: GENERAL_TITLE_REQUEST });
-export const generalTitleSuccess = (draft) => ({
+export const generalTitleSuccess = draft => ({
   type: GENERAL_TITLE_SUCCESS,
   draft,
 });
-export const generalTitleError = (error) => ({
+export const generalTitleError = error => ({
   type: GENERAL_TITLE_ERROR,
   error,
 });
 
 export const createDraftRequest = () => ({ type: CREATE_DRAFT_REQUEST });
-export const createDraftSuccess = (draft) => ({
+export const createDraftSuccess = draft => ({
   type: CREATE_DRAFT_SUCCESS,
   draft,
 });
@@ -153,7 +153,7 @@ export const updateDraftSuccess = (draft_id, draft) => ({
   draft_id,
   draft,
 });
-export const updateDraftError = (error) => ({
+export const updateDraftError = error => ({
   type: UPDATE_DRAFT_ERROR,
   error,
 });
@@ -164,7 +164,7 @@ export const discardDraftSuccess = (draft_id, draft) => ({
   draft_id,
   draft,
 });
-export const discardDraftError = (error) => ({
+export const discardDraftError = error => ({
   type: DISCARD_DRAFT_ERROR,
   error,
 });
@@ -175,7 +175,7 @@ export const reviewDraftSuccess = (draft_id, draft) => ({
   draft_id,
   draft,
 });
-export const reviewDraftError = (error) => ({
+export const reviewDraftError = error => ({
   type: REVIEW_DRAFT_ERROR,
   error,
 });
@@ -190,7 +190,7 @@ export const editPublishedSuccess = (draft_id, draft) => ({
   draft_id,
   draft,
 });
-export const editPublishedError = (error) => ({
+export const editPublishedError = error => ({
   type: EDIT_PUBLISHED_ERROR,
   error,
 });
@@ -198,7 +198,7 @@ export const editPublishedError = (error) => ({
 export const permissionsItemRequest = () => ({
   type: PERMISSIONS_ITEM_REQUEST,
 });
-export const permissionsItemSuccess = (permissions) => ({
+export const permissionsItemSuccess = permissions => ({
   type: PERMISSIONS_ITEM_SUCCESS,
   permissions,
 });
@@ -241,7 +241,7 @@ export function createDraft(data = {}, ana_type) {
         const draft_id = state.draftItem.get("id");
         dispatch(push(`/drafts/${draft_id}/edit`));
       })
-      .catch((error) => {
+      .catch(error => {
         // probably is not used should be checked with tests
         // in order to validate that is not used
         throw error;
@@ -250,7 +250,7 @@ export function createDraft(data = {}, ana_type) {
 }
 
 export function postCreateDraft(data = {}, ana_type) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(createDraftRequest());
 
     let uri = "/api/deposits/";
@@ -263,7 +263,7 @@ export function postCreateDraft(data = {}, ana_type) {
           "Cache-Control": "no-cache",
         },
       })
-      .then((response) => {
+      .then(response => {
         let draft = response.data;
         if (draft.id) {
           dispatch(createDraftSuccess(response.data));
@@ -272,7 +272,7 @@ export function postCreateDraft(data = {}, ana_type) {
           });
         }
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch(createDraftError());
         notification.error({
           message: "Something went wrong",
@@ -310,7 +310,7 @@ export function patchGeneralTitle(draft_id, title) {
       .patch(uri, patch_data, {
         headers: { "Content-Type": "application/json-patch+json" },
       })
-      .then((response) => {
+      .then(response => {
         if (response.status == 200) {
           dispatch(generalTitleSuccess(response.data));
           notification.success({
@@ -319,7 +319,7 @@ export function patchGeneralTitle(draft_id, title) {
           });
         }
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch(generalTitleError(error.response));
         notification.error({
           message: "Your title was not changed",
@@ -330,27 +330,27 @@ export function patchGeneralTitle(draft_id, title) {
 }
 
 export function editPublished(data = {}, draft_id) {
-  return (dispatch) => {
-    return dispatch(postAndPutPublished(data, draft_id)).catch((error) => {
+  return dispatch => {
+    return dispatch(postAndPutPublished(data, draft_id)).catch(error => {
       dispatch(dispatch(editPublishedError(error.response)));
       throw error;
     });
   };
 }
 
-export const publishedToDraftStatus = (draft_id) => (dispatch) => {
+export const publishedToDraftStatus = draft_id => dispatch => {
   dispatch(editPublishedRequest());
   let uri = `/api/deposits/${draft_id}/actions/edit`;
   return axios
     .post(uri)
-    .then((resp) => {
+    .then(resp => {
       dispatch(editPublishedSuccess(draft_id, resp.data));
       notification.success({
         message: "Draft Status",
         description: "Your record status successfully changed to Draft",
       });
     })
-    .catch((error) => {
+    .catch(error => {
       notification.error({
         message: error.message,
         description:
@@ -362,25 +362,25 @@ export const publishedToDraftStatus = (draft_id) => (dispatch) => {
 };
 
 export function postAndPutPublished(data = {}, draft_id) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(editPublishedRequest());
 
     let uri = `/api/deposits/${draft_id}/actions/edit`;
 
     return axios
       .post(uri)
-      .then((resp) => {
+      .then(resp => {
         dispatch(editPublishedSuccess(draft_id, resp.data.metadata));
         return axios
           .put(`/api/deposits/${draft_id}`, data)
-          .then((response) => {
+          .then(response => {
             dispatch(updateDraftSuccess(draft_id, response.data));
             notification.success({
               message: "Draft updated",
               description: "Your data has been updated",
             });
           })
-          .catch((error) => {
+          .catch(error => {
             dispatch(updateDraftError(error));
             notification.error({
               message: error.message,
@@ -390,7 +390,7 @@ export function postAndPutPublished(data = {}, draft_id) {
             throw error;
           });
       })
-      .catch((error) => {
+      .catch(error => {
         notification.error({
           message: error.message,
           description:
@@ -402,21 +402,21 @@ export function postAndPutPublished(data = {}, draft_id) {
 }
 
 export function discardDraft(draft_id) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(discardDraftRequest());
 
     let uri = `/api/deposits/${draft_id}/actions/discard`;
 
     axios
       .post(uri)
-      .then((response) => {
+      .then(response => {
         dispatch(discardDraftSuccess(draft_id, response.data));
         notification.success({
           message: "Data discarded",
           description: "Your data has been discarded",
         });
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch(discardDraftError(error));
         notification.error({
           message: error.message,
@@ -428,7 +428,7 @@ export function discardDraft(draft_id) {
 }
 
 export function reviewDraft(draft_id, review, message = "submitted") {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(reviewDraftRequest());
 
     let uri = `/api/deposits/${draft_id}/actions/review`;
@@ -440,22 +440,22 @@ export function reviewDraft(draft_id, review, message = "submitted") {
           Accept: "application/form+json",
         },
       })
-      .then((response) => {
+      .then(response => {
         notification.success({
           message: "Review Submission",
           description: `Your review has been ${message}`,
         });
         return dispatch(reviewDraftSuccess(draft_id, response.data));
       })
-      .catch((error) => {
+      .catch(error => {
         return dispatch(reviewDraftError(error.response.data));
       });
   };
 }
 
 export function updateDraft(data, draft_id) {
-  return (dispatch) => {
-    return dispatch(putUpdateDraft(data, draft_id)).catch((error) => {
+  return dispatch => {
+    return dispatch(putUpdateDraft(data, draft_id)).catch(error => {
       dispatch(updateDraftError(error));
     });
   };
@@ -471,14 +471,14 @@ export function putUpdateDraft(data, draft_id) {
 
     return axios
       .put(links.self, data)
-      .then((response) => {
+      .then(response => {
         dispatch(updateDraftSuccess(draft_id, response.data));
         notification.success({
           message: "Draft saved",
           description: "Your Draft has been updated successfully",
         });
       })
-      .catch((error) => {
+      .catch(error => {
         let errorHeading = "Error while updating";
         let errorDescription;
         let errorThrow = "Error while updating";
@@ -486,9 +486,9 @@ export function putUpdateDraft(data, draft_id) {
         if (error.response.status == 422) {
           let _errors = error.response.data.errors;
           let errorTree = {};
-          _errors.map((e) => {
+          _errors.map(e => {
             let tmp = errorTree;
-            e.field.map((field) => {
+            e.field.map(field => {
               if (!tmp[field]) tmp[field] = {};
               tmp = tmp[field];
             });
@@ -564,7 +564,7 @@ export function postPublishDraft() {
 
     return axios
       .post(links.publish)
-      .then((response) => {
+      .then(response => {
         dispatch(publishDraftSuccess(response.data));
         notification.success({
           key: "publishing",
@@ -572,7 +572,7 @@ export function postPublishDraft() {
           description: "Your Draft has been successfully published",
         });
       })
-      .catch((error) => {
+      .catch(error => {
         let errorHeading = "Error while publishing";
         let errorDescription;
         let errorThrow = "Error while publishing";
@@ -580,9 +580,9 @@ export function postPublishDraft() {
         if (error.response.status == 422) {
           let _errors = error.response.data.errors;
           let errorTree = {};
-          _errors.map((e) => {
+          _errors.map(e => {
             let tmp = errorTree;
-            e.field.map((field) => {
+            e.field.map(field => {
               if (!tmp[field]) tmp[field] = {};
               tmp = tmp[field];
             });
@@ -628,10 +628,10 @@ export function postPublishDraft() {
 }
 
 export function publishDraft(draft_id) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(postPublishDraft(draft_id))
       .then(() => {})
-      .catch((error) => {
+      .catch(error => {
         dispatch(publishDraftError(error));
       });
   };
@@ -662,9 +662,9 @@ export function deleteDraft() {
         });
         dispatch(deleteDraftSuccess());
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch(deleteDraftError());
-        notification.success({
+        notification.error({
           key: "deleting",
           message: error.message,
           description:
@@ -675,16 +675,16 @@ export function deleteDraft() {
 }
 
 export function handlePermissions(draft_id, type, email, action, operation) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(permissionsItemRequest());
     let data = _get_permissions_data(type, email, action, operation);
     let uri = `/api/deposits/${draft_id}/actions/permissions`;
     axios
       .post(uri, data)
-      .then((response) => {
+      .then(response => {
         dispatch(permissionsItemSuccess(response.data.access));
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch(remove_loading());
         notification.error({
           description: error.response.data.message,
@@ -695,7 +695,7 @@ export function handlePermissions(draft_id, type, email, action, operation) {
 
 function _get_permissions_data(type, email, action, operation) {
   return Array.isArray(action)
-    ? action.map((item) => ({
+    ? action.map(item => ({
         type: `${type}`,
         email: `${email}`,
         op: `${operation}`,
@@ -712,7 +712,7 @@ function _get_permissions_data(type, email, action, operation) {
 }
 
 export function getDraftByIdAndInitForm(draft_id) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(draftsItemRequest());
 
     let uri = `/api/deposits/${draft_id}`;
@@ -724,7 +724,7 @@ export function getDraftByIdAndInitForm(draft_id) {
           "Cache-Control": "no-cache",
         },
       })
-      .then((response) => {
+      .then(response => {
         let {
           links: { bucket: bucket_link = null },
         } = response.data;
@@ -735,7 +735,7 @@ export function getDraftByIdAndInitForm(draft_id) {
         dispatch(draftsItemSuccess(draft_id, { ...response.data }));
         if (bucket_link) dispatch(getBucketByUri(bucket_link));
       })
-      .catch((error) => {
+      .catch(error => {
         // TOFIX: the response for 403 was an html we need to it this way
         // when response for 403 will be json to fix
         let e = {
@@ -757,7 +757,7 @@ export function getDraftByIdAndInitForm(draft_id) {
 // ********************************************************
 // ********************************************************
 export function getDraftById(draft_id, fetchSchemaFlag = false) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(draftsItemRequest());
 
     let uri = `/api/deposits/${draft_id}`;
@@ -768,7 +768,7 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
+      .then(response => {
         let url;
 
         if (fetchSchemaFlag && response.data.metadata.$schema) {
@@ -779,7 +779,7 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         let bucket_id = response.data.links.bucket.split("/").pop();
         dispatch(getBucketById(bucket_id));
       })
-      .catch((error) => {
+      .catch(error => {
         const e = error.response
           ? error.response.data
           : {

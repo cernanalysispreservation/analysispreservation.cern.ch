@@ -18,9 +18,7 @@ describe("Search Results Suite", () => {
     cy.get("[data-cy=draft-delete-btn]").click();
 
     // validate delete
-    cy.get(".ant-popover-buttons button")
-      .contains("Delete")
-      .click();
+    cy.get(".ant-popconfirm-buttons button").contains("Delete").click();
 
     cy.url().should("not.include", DRAFTS);
   });
