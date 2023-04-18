@@ -18,7 +18,7 @@ services:
       - web-api
       - frontend
   cypress:
-    image: "cypress/included:6.3.0"
+    image: "cypress/included:12.10.0"
     # entrypoint: cypress run --headless --browser chrome
     environment:
       - CYPRESS_BASE_URL=https://nginx
@@ -26,7 +26,7 @@ services:
     working_dir: /app/cap-react
     volumes:
       - ./ui/cap-react/cypress:/app/cap-react/cypress
-      - ./ui/cap-react/cypress.json:/app/cap-react/cypress.json
+      - ./ui/cap-react/cypress.config.js:/app/cap-react/cypress.config.js
     links:
       - web-api
       - nginx

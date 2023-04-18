@@ -29,7 +29,7 @@ services:
     working_dir: /app/cap-react
     volumes:
       - ./ui/cap-react/cypress:/app/cap-react/cypress
-      - ./ui/cap-react/cypress.json:/app/cap-react/cypress.json
+      - ./ui/cap-react/cypress.config.js:/app/cap-react/cypress.config.js
     links:
       - web-api
       - nginx
