@@ -222,10 +222,12 @@ export function logout() {
   return function (dispatch) {
     dispatch(logoutRequest());
 
-    axios.get("/api/logout").then(function () {
-      localStorage.clear();
-      dispatch(logoutSuccess());
-    });
+    axios.get("/api/logout");
+    // FIXME: /logout returns a 302 with redirects to /. However, this somehow returns a 404 now, meaning
+    // that a .then() block wouldn't be executed. Thus the following has been temporarily pulled out.
+    localStorage.clear();
+    dispatch(logoutSuccess());
+    history.push("/");
   };
 }
 
