@@ -38,11 +38,7 @@ const Documentation = () => {
     },
   ];
   return (
-    <Col
-      xs={24}
-      style={{ margin: "2rem 0", padding: "1rem" }}
-      id="documentation"
-    >
+    <Col xs={24} style={{ margin: "30px" }} id="documentation">
       <Space direction="vertical" style={{ width: "100%" }} size="large">
         <Typography.Title
           style={{ textAlign: "center", fontSize: "3rem" }}
@@ -52,7 +48,7 @@ const Documentation = () => {
         </Typography.Title>
         <Row gutter={[64, 64]} justify="center">
           {boxes.map(item => (
-            <Col key={item.title} xs={22} sm={10} lg={8} xl={6} xxl={4}>
+            <Col key={item.title} xs={22} sm={10} lg={7} xl={6} xxl={4}>
               <Card style={{ height: "100%" }}>
                 <Space
                   direction="vertical"

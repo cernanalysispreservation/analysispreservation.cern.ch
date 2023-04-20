@@ -74,7 +74,7 @@ const Explain = () => {
     },
   ];
   return (
-    <Col xs={24} style={{ margin: "2rem 0", padding: "1rem" }} id="explain">
+    <Col xs={24} style={{ padding: "30px" }} id="explain">
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Typography.Title
           style={{ textAlign: "center", fontSize: "3rem" }}
@@ -92,7 +92,10 @@ const Explain = () => {
                 }}
               >
                 <Space direction="vertical" style={{ width: "100%" }}>
-                  <Typography.Title level={3} style={{ textAlign: "center" }}>
+                  <Typography.Title
+                    level={3}
+                    style={{ textAlign: "center", margin: 0 }}
+                  >
                     {item.title}
                   </Typography.Title>
                   <Divider />
@@ -107,10 +110,11 @@ const Explain = () => {
                         textAlign: "center",
                       }}
                     >
-                      <Typography.Paragraph strong>
-                        {box.title}
-                      </Typography.Paragraph>
-                      <Typography.Paragraph style={{ fontSize: "1.1rem" }}>
+                      <Typography.Title level={5}>{box.title}</Typography.Title>
+                      <Typography.Paragraph
+                        type="secondary"
+                        style={{ fontSize: "1.1rem" }}
+                      >
                         {box.description}
                       </Typography.Paragraph>
                     </Space>

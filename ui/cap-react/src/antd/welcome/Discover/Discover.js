@@ -5,14 +5,12 @@ const Discover = () => {
     <Col
       xs={24}
       style={{
-        minHeight: "20vh",
         background: "#fff",
-        padding: "1rem",
-        margin: "2rem 0",
+        padding: "30px",
       }}
       id="discover"
     >
-      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+      <Space direction="vertical" style={{ width: "100%" }}>
         <Typography.Title
           style={{ textAlign: "center", fontSize: "3rem" }}
           italic
@@ -20,15 +18,9 @@ const Discover = () => {
           Discover
         </Typography.Title>
         <Row justify="center" align="middle" style={{ textAlign: "center" }}>
-          <Col
-            xs={22}
-            lg={18}
-            xl={10}
-            xxl={8}
-            style={{ fontSize: "1.2rem", lineHeight: 1.5 }}
-          >
+          <Col xs={22} lg={18} xl={10} xxl={8}>
             <Space direction="vertical" size="large">
-              <Typography.Paragraph italic>
+              <Typography.Paragraph italic style={{ fontSize: "1.1rem" }}>
                 {`
                 CERN Analysis Preservation (CAP) is a service for researchers to
                 preserve and document the various components of their physics
@@ -38,7 +30,7 @@ const Discover = () => {
                 and accessible by their collaborators for the long-term.`}
               </Typography.Paragraph>
 
-              <Typography.Paragraph italic>
+              <Typography.Paragraph italic style={{ fontSize: "1.1rem" }}>
                 {`
                 CAP uses existing collaboration tools and a flexible data model,
                 and it is designed to be easily integrated into researchers'
