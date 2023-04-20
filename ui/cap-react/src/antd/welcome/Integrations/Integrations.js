@@ -8,9 +8,8 @@ const Integrations = () => {
     <Col
       xs={24}
       style={{
-        margin: "2rem 0",
         background: "#fff",
-        padding: "1rem",
+        padding: "30px",
       }}
       id="integrations"
     >
@@ -22,14 +21,16 @@ const Integrations = () => {
           Integrations
         </Typography.Title>
         <Row justify="center">
-          <Col xs={22} sm={15} style={{ margin: "2rem 0", padding: "1rem" }}>
+          <Col xs={22} sm={15}>
             <Row align="space-between">
               <Col xs={24} md={12}>
                 <Space direction="vertical">
                   <Typography.Title italic level={3}>
                     Source Code
                   </Typography.Title>
-                  <Typography.Paragraph style={{ fontSize: "1.1rem" }}>
+                  <Typography.Paragraph
+                    style={{ fontSize: "1.1rem", margin: 0 }}
+                  >
                     Attach code to your workspace. Connect your Github and CERN
                     Gitlab accounts, follow repository changes and automatically
                     keep snapshots of your work and of the tools/libraries you
@@ -49,19 +50,23 @@ const Integrations = () => {
             xs={22}
             sm={15}
             style={{
-              margin: "2rem 0",
-              padding: "1rem",
+              margin: "40px",
+              padding: "30px",
               boxShadow: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px",
             }}
           >
-            <Row align="space-between">
-              <PIDFair />
-              <Col xs={24} md={12}>
+            <Row align="middle" justify="space-between" gutter={[40, 40]}>
+              <Col xs={24} lg={12} style={{ textAlign: "center" }}>
+                <PIDFair />
+              </Col>
+              <Col xs={24} lg={12}>
                 <Space direction="vertical">
                   <Typography.Title italic level={3}>
                     Persistent Identifiers/FAIR data
                   </Typography.Title>
-                  <Typography.Paragraph style={{ fontSize: "1.1rem" }}>
+                  <Typography.Paragraph
+                    style={{ fontSize: "1.1rem", margin: 0 }}
+                  >
                     Preserve your analysis in a FAIR manner (Findable Accesible
                     Interoperable Reusable). Use persistent identifiers (PIDs)
                     to capture and connect your analysis components. Make your
@@ -72,7 +77,7 @@ const Integrations = () => {
               </Col>
             </Row>
           </Col>
-          <Col xs={22} sm={15} style={{ margin: "2rem 0", padding: "1rem" }}>
+          <Col xs={22} sm={15}>
             <Row align="space-between">
               <Col xs={24} md={12}>
                 <Space direction="vertical">
