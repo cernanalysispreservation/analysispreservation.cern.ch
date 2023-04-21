@@ -50,6 +50,7 @@ install_requires = [
 
     # CAP specific libraries
     'jsonref>=1.0.0',
+    'dojson==1.4.0',
     'jsonresolver>=0.3.2',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
@@ -76,28 +77,27 @@ install_requires = [
     'reana-client==0.8.1',
     'reana-commons[yadage,snakemake]==0.8.4',
 
-    # Invenio Base Deps
+    # Invenio Base Deps    
     'invenio-base==1.2.5',
     'invenio-admin==1.1.2',
-    'invenio-assets==1.1.3',
+    'invenio-assets==1.2.2',
     'invenio-formatter==1.0.2',
     'invenio-mail==1.0.2',
     'invenio-rest==1.1.2',
-    'invenio-theme==1.1.4',
-    'invenio-celery@git+https://github.com/cernanalysispreservation/invenio-celery.git@mock/v1.1.1#egg=invenio-celery',
-    'invenio-logging[sentry,sentry-sdk] @ git+https://github.com/inveniosoftware/invenio-logging@94bc56117593eae62ba975d576e8c7b991311c0d',
+    'invenio-theme==1.3.4',
+    'invenio-celery==1.2.5',
+    'invenio-logging[sentry,sentry-sdk]==1.3.2',
 
     # Invenio Auth Deps
     'invenio-access==1.3.0',
-    'invenio-accounts==1.1.1',
+    'invenio-accounts==1.2.1',
     'invenio-oauth2server==1.0.4',
-    'invenio-oauthclient @ git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@v1.1.3',
-    'invenio-userprofiles @ git+https://github.com/cernanalysispreservation/invenio-userprofiles.git@v1.0.1',
+    'invenio-oauthclient @ git+https://github.com/parths007/invenio-oauthclient.git@v1.2.1',
+    'invenio-userprofiles @ git+https://github.com/parths007/invenio-userprofiles.git@v1.2.4',
 
     # Invenio Metadata Deps
     'invenio-indexer @ git+https://github.com/cernanalysispreservation/invenio-indexer.git@os-2-new',
     'invenio-jsonschemas @ git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@v1.0.1',
-    'invenio-oaiserver @ git+https://github.com/cernanalysispreservation/invenio-oaiserver.git@os-2-new',
     'invenio-pidstore==1.1.0',
     'invenio-records-rest @ git+https://github.com/parths007/invenio-records-rest.git@os-2-new',
     'invenio-records-ui==1.0.1',
@@ -116,7 +116,10 @@ install_requires = [
     'invenio-deposit @ git+https://github.com/cernanalysispreservation/invenio-deposit.git@os-2',
     'invenio-accounts-rest==1.0.0a4',
     'invenio-query-parser @ git+https://github.com/cernanalysispreservation/invenio-query-parser.git@os',
-    'invenio[auth,base,metadata,postgresql]==3.2.0',
+    'invenio-app>=1.2.3,<1.3.0',
+    'invenio-cache>=1.0.0,<1.1.0',
+    'invenio-config>=1.0.2,<1.1.0',
+    'invenio-i18n==1.2.0',
 ]
 
 packages = find_packages()
