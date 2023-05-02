@@ -106,7 +106,7 @@ install_requires = [
     'invenio-search @ git+https://github.com/parths007/invenio-search.git@v1.2.3#egg=invenio-search',
 
     # Invenio Files deps
-    'invenio-files-rest @ git+https://github.com/cernanalysispreservation/invenio-files-rest.git@mock/v1.0.5',
+    'invenio-files-rest @ git+https://github.com/parths007/invenio-files-rest.git@v1.1.1',
     'invenio-records-files @ git+https://github.com/cernanalysispreservation/invenio-records-files.git@new#egg=invenio-records-files',
 
     # Database deps
