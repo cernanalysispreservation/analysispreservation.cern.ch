@@ -44,6 +44,7 @@ include .gitlint
 include .prettierignore
 include .githooks/pre-commit
 include .githooks/pre-push
+include .githooks/prepare-commit-msg
 include docker/haproxy/Dockerfile
 include docker/nginx/Dockerfile
 include docker/postgres/Dockerfile
