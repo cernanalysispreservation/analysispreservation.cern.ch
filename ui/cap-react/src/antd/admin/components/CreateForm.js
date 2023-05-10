@@ -8,21 +8,19 @@ const CreateForm = ({ createContentType }) => {
       <Form.Item
         label="Name"
         name="name"
-        data-cy="admin-form-name"
         rules={[{ required: true, message: "Please input schema name!" }]}
       >
-        <Input />
+        <Input data-cy="admin-form-name" />
       </Form.Item>
 
       <Form.Item
         label="Description"
         name="description"
-        data-cy="admin-form-description"
         rules={[
           { required: true, message: "Please input schema description!" }
         ]}
       >
-        <Input.TextArea />
+        <Input.TextArea data-cy="admin-form-description" />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
