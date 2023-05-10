@@ -232,6 +232,17 @@ class CAPDeposit(Deposit, Reviewable):
     def _publish_edited(self):
         record = super(CAPDeposit, self)._publish_edited()
         record._add_deposit_permissions(record, record.id)
+        with db.session.begin_nested():
+            if self.files and record.files.bucket is not None:
+                # Unlock the record bucket
+                record.files.bucket.locked = False
+                # Lock the deposit's files bucket
+                self.files.bucket.locked = True
+                # Sync the record files with the deposit files
+                self.files.bucket.sync(record.files.bucket)
+                # lock the record bucket after update
+                record.files.bucket.locked = True
+        db.session.commit()
 
         if record["_experiment"]:
             record._add_experiment_permissions(record, record.id)

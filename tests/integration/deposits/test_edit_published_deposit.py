@@ -24,6 +24,8 @@
 # or submit itself to any jurisdiction.
 """Integration tests for record edit."""
 
+from io import BytesIO
+
 
 ###########################################
 # api/deposits/{pid}/actions/edit [POST]
@@ -130,3 +132,26 @@ def test_edit_record(client, create_deposit, users, auth_headers_for_superuser):
             .format(depid)
         }
     }
+
+
+def test_edit_record_with_uploading_new_files(client, users, auth_headers_for_user, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
+    deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
+    pid = deposit['_deposit']['id']
+
+    client.post('/deposits/{}/actions/publish'.format(pid),
+                       headers=auth_headers_for_user(owner))
+
+    client.post('/deposits/{}/actions/edit'.format(pid),
+                       headers=auth_headers_for_user(owner))
+
+    bucket = deposit.files.bucket
+    client.put('/files/{}/file_2.txt'.format(bucket),
+                      input_stream=BytesIO(b'Hello brave new world!'),
+                      headers=auth_headers_for_user(owner))
+
+    resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                       headers=auth_headers_for_user(owner))
+
+    assert len(resp.json['files']) == 2
