@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import { permissionsPerUser } from "../../../utils";
+import DropDown from "./DropDown";
+import { DeleteOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -11,19 +12,19 @@ import {
   Tag,
   Tooltip,
   Grid,
-  Typography
+  Typography,
 } from "antd";
 import axios from "axios";
 import _debounce from "lodash/debounce";
-import DropDown from "./DropDown";
-import { DeleteOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 
 const Permissions = ({
   draft_id,
   handlePermissions,
   permissions,
   created_by,
-  canAdmin
+  canAdmin,
 }) => {
   const [ldapData, setLdapData] = useState([]);
   const [permissionsArray, setPermissionsArray] = useState([]);
@@ -42,7 +43,7 @@ const Permissions = ({
       if (item.email == record.email) {
         return {
           ...item,
-          permission: newPermissions
+          permission: newPermissions,
         };
       } else return item;
     });
@@ -55,18 +56,18 @@ const Permissions = ({
     {
       title: "Name",
       dataIndex: "name",
-      key: "name"
+      key: "name",
     },
     {
       title: "Email",
       dataIndex: "email",
-      key: "email"
+      key: "email",
     },
     {
       title: "Department",
       dataIndex: "department",
       key: "department",
-      render: tag => <Tag color="geekblue">{tag}</Tag>
+      render: tag => <Tag color="geekblue">{tag}</Tag>,
     },
     {
       title: "Permissions",
@@ -77,7 +78,7 @@ const Permissions = ({
           permission={item.permission}
           updatePermissions={val => updateModalLdapPermission(val, item)}
         />
-      )
+      ),
     },
     {
       title: "Action",
@@ -100,8 +101,8 @@ const Permissions = ({
           >
             Add
           </Button>
-        )
-    }
+        ),
+    },
   ];
   const columns = [
     {
@@ -117,7 +118,7 @@ const Permissions = ({
         ) : (
           <Typography.Text>{txt}</Typography.Text>
         );
-      }
+      },
     },
     {
       title: "Type",
@@ -128,7 +129,7 @@ const Permissions = ({
           <Tag color="geekblue">owner</Tag>
         ) : (
           <Tag color="blue">{item.type}</Tag>
-        )
+        ),
     },
     {
       title: "Permissions",
@@ -149,7 +150,7 @@ const Permissions = ({
             )
           }
         />
-      )
+      ),
     },
     {
       title: "Action",
@@ -169,58 +170,15 @@ const Permissions = ({
             )
           }
         />
-      )
-    }
+      ),
+    },
   ];
 
-  useEffect(
-    () => {
-      let access = {};
-      let accessArray = [];
-      let emailsArray = [];
-      permissions &&
-        Object.keys(permissions).map(action => {
-          permissions[action].users.map(user => {
-            if (!access[user.email])
-              access[user.email] = {
-                email: user.email,
-                permissions: [],
-                type: "user"
-              };
-            access[user.email].permissions.push(action);
-
-            if (access[user.email]) {
-              accessArray = accessArray.filter(
-                item => item.email != user.email
-              );
-            }
-            accessArray.push(access[user.email]);
-            emailsArray.push(user.email);
-          });
-
-          permissions[action].roles.map(role => {
-            if (!access[role])
-              access[role] = {
-                email: role,
-                permissions: [],
-                type: "egroup"
-              };
-            access[role].permissions.push(action);
-            if (access[role]) {
-              accessArray = accessArray.filter(item => item.email != role);
-            }
-            accessArray.push(access[role]);
-            emailsArray.push(role);
-          });
-        });
-
-      setPermissionsArray(
-        accessArray.sort((a, b) => (a.email < b.email ? -1 : 1))
-      );
-      setEmailsArray(emailsArray);
-    },
-    [permissions]
-  );
+  useEffect(() => {
+    const { permissionsArray, emailsArray } = permissionsPerUser(permissions);
+    setPermissionsArray(permissionsArray);
+    setEmailsArray(emailsArray);
+  }, [permissions]);
 
   const fetchLDAPdata = _debounce(async ({ searchFor, searchInput }) => {
     setTableLoading(true);
@@ -237,7 +195,7 @@ const Permissions = ({
         name: item.email
           ? item.profile.display_name
           : item.split("@cern.ch")[0],
-        permission: ["deposit-read"]
+        permission: ["deposit-read"],
       }))
     );
     setTableLoading(false);
@@ -258,7 +216,7 @@ const Permissions = ({
             setDisplayModal(false);
             form.resetFields();
             setLdapData([]);
-          }
+          },
         }}
         title="Give user/egroup permissions"
         width={1000}
@@ -319,7 +277,7 @@ Permissions.propTypes = {
   handlePermissions: PropTypes.func,
   permissions: PropTypes.object,
   canAdmin: PropTypes.bool,
-  created_by: PropTypes.object
+  created_by: PropTypes.object,
 };
 
 export default Permissions;

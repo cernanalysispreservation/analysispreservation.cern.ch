@@ -1,131 +1,219 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { fetchRecordsResults } from "../../actions/common";
-import { Card, Col, Empty, Row, Select, Space, Tag, Typography } from "antd";
-import RichEditorWidget from "../forms/widgets/RichEditorWidget";
-import NoDocs from "../../img/noDocs.svg";
-import DashboardList from "../dashboard/components/DashoboardList";
+import DashboardList from "../dashboard/components/DashboardList";
 import { _getCollectionList } from "../dashboard/utils";
-import CollectionPermissions from "./CollectionPermissions";
-import "./Collection.less";
+import RichEditorWidget from "../forms/widgets/RichEditorWidget";
 import ErrorScreen from "../partials/Error";
+import CollectionPermissions from "./CollectionPermissions";
+import { CloseOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Col,
+  Empty,
+  Row,
+  Select,
+  Space,
+  Tag,
+  Typography,
+  notification,
+} from "antd";
+import axios from "axios";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
-const Collection = props => {
+const Collection = ({
+  match,
+  fetchRecordsResults,
+  error,
+  results,
+  schemaData,
+  history,
+  loading,
+  roles,
+}) => {
+  const [readme, setReadme] = useState();
+  const [editing, setEditing] = useState();
+
   useEffect(() => {
     // get URL params collection_name and version
-    let { collection_name, version = null } = props.match.params;
+    let { collection_name, version = null } = match.params;
 
     // fetch results for the deposit/records
-    props.fetchRecordsResults(collection_name, version);
+    fetchRecordsResults(collection_name, version);
   }, []);
+
+  useEffect(() => {
+    setReadme(schemaData.getIn(["config", "readme"]));
+  }, [schemaData]);
+
   // //  display error screen when error occurs
-  if (props.error) {
-    return <ErrorScreen message={props.error} />;
+  if (error) {
+    return <ErrorScreen message={error} />;
   }
 
-  let { collection_name, version } = props.match.params;
+  let { collection_name, version } = match.params;
 
-  let lists = _getCollectionList(props.results);
+  let lists = _getCollectionList(results);
+
+  const cancelEdit = () => {
+    setReadme(schemaData.getIn(["config", "readme"]));
+    setEditing(false);
+  };
+
+  const saveEdit = () => {
+    axios
+      .patch(
+        `/api/jsonschemas/${schemaData.get("name")}/${schemaData.get(
+          "version"
+        )}?config=1`,
+        [
+          {
+            op: "add",
+            path: "/config/readme",
+            value: readme,
+          },
+        ]
+      )
+      .then(() => {
+        notification.success({
+          message: "Readme updated",
+        });
+      })
+      .catch(() =>
+        notification.error({
+          message: "Readme not updated",
+          description:
+            "Error while updating the collection's readme, please try again",
+        })
+      );
+
+    setEditing(false);
+  };
 
   return (
-    <Row
-      justify="center"
-      style={{ padding: "10px 0" }}
-      className="__Collection__"
-    >
-      <Col lg={18} xs={22} xl={14}>
+    <Row justify="center" style={{ padding: "30px 0" }}>
+      <Col xs={22} lg={18} xl={14}>
         <Space direction="vertical" style={{ width: "100%" }} size="large">
-          <div className="banner">
-            <Row justify="space-between" style={{ marginBottom: "20px" }}>
-              <Space direction="vertical">
-                <Typography.Title level={3}>
-                  {props.schema_data.has("fullname") &&
-                    props.schema_data.get("fullname")}
-                </Typography.Title>
-                <Tag>{props.schema_data.get("name")} </Tag>
-              </Space>
-              <div>
-                <Select
-                  defaultValue={version ? version : "allversions"}
-                  style={{ width: 110 }}
-                  size="small"
-                  onChange={val =>
-                    val == "allversions"
-                      ? props.history.push(`/collection/${collection_name}`)
-                      : props.history.push(
-                          `/collection/${collection_name}/${val}`
-                        )
-                  }
-                >
-                  {[
-                    "allversions",
-                    ...(props.schema_data.has("versions") &&
-                      props.schema_data.get("versions").map(item => item)),
-                  ].map(item => (
+          <Row justify="space-between" wrap={false}>
+            <Col>
+              <Typography.Title level={3}>
+                {schemaData.has("fullname") && schemaData.get("fullname")}
+              </Typography.Title>
+              <Tag color="geekblue">{schemaData.get("name")} </Tag>
+            </Col>
+            <Col>
+              <Select
+                defaultValue={version ? version : "allversions"}
+                style={{ width: 110 }}
+                onChange={val =>
+                  val == "allversions"
+                    ? history.push(`/collection/${collection_name}`)
+                    : history.push(`/collection/${collection_name}/${val}`)
+                }
+              >
+                <Select.Option value="allversions" key="allversions">
+                  All Versions
+                </Select.Option>
+                {schemaData.has("versions") &&
+                  schemaData.get("versions").map(item => (
                     <Select.Option value={item} key={item}>
-                      {item === "allversions" ? "All Versions" : item}
+                      {item}
                     </Select.Option>
                   ))}
-                </Select>
-              </div>
-            </Row>
-            <Typography.Text>
-              {props.schema_data.hasIn(["config", "description"])
-                ? props.schema_data.getIn(["config", "description"])
-                : "No Description"}
-            </Typography.Text>
-          </div>
-
-          <Row gutter={[24, 16]}>
-            <Col xs={24} md={12}>
-              <Space direction="vertical" style={{ width: "100%" }}>
-                <Card title="Read me">
-                  {props.schema_data.has("config") && (
-                    <div className="collection-rich-editor">
-                      {props.schema_data.hasIn(["config", "readme"]) ? (
-                        <RichEditorWidget
-                          value={props.schema_data.getIn(["config", "readme"])}
-                          canViewProps={{ menu: false }}
-                          viewProps={{ html: true, md: false }}
-                          readonly
-                        />
-                      ) : (
-                        <Empty image={<NoDocs />} description="No Content" />
-                      )}
-                    </div>
-                  )}
-                </Card>
-                <Card>
-                  <DashboardList
-                    header="Latest Drafts"
-                    loading={props.loading}
-                    listType="draft"
-                    list={lists["drafts"]}
-                  />
-                </Card>
-                <Card>
-                  <DashboardList
-                    header="Latest Published"
-                    loading={props.loading}
-                    listType="published"
-                    list={lists["published"]}
-                  />
-                </Card>
-              </Space>
+              </Select>
             </Col>
+          </Row>
+          <Typography.Text>
+            {schemaData.hasIn(["config", "description"])
+              ? schemaData.getIn(["config", "description"])
+              : "No Description"}
+          </Typography.Text>
 
-            <Col xs={24} md={12}>
-              <Space direction="vertical" style={{ width: "100%" }}>
-                <Card title="Permissions">
-                  <CollectionPermissions
-                    permissions={props.schema_data.getIn([
-                      "config",
-                      "permissions",
-                    ])}
+          <Row gutter={[16, 16]}>
+            <Col xs={24}>
+              <Card
+                title="Read me"
+                extra={
+                  (roles.get("isSuperUser") ||
+                    roles.get("schemaAdmin").get(schemaData.get("name"))) &&
+                  (editing ? (
+                    <Space>
+                      <Button
+                        key="cancel"
+                        icon={<CloseOutlined />}
+                        onClick={cancelEdit}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        key="save"
+                        icon={<SaveOutlined />}
+                        type="primary"
+                        onClick={saveEdit}
+                      >
+                        Save
+                      </Button>
+                    </Space>
+                  ) : (
+                    <Button
+                      key="edit"
+                      icon={<EditOutlined />}
+                      onClick={() => setEditing(true)}
+                    >
+                      Edit
+                    </Button>
+                  ))
+                }
+                bodyStyle={{
+                  padding: "1px 0 0 0",
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                }}
+              >
+                {readme || editing ? (
+                  <RichEditorWidget
+                    value={readme}
+                    readonly={!editing}
+                    height={editing ? 300 : 0}
+                    noBorder={!editing}
+                    onChange={e => setReadme(e)}
                   />
-                </Card>
-              </Space>
+                ) : (
+                  <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description="No Content"
+                  />
+                )}
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={24}>
+              <Card title="Permissions">
+                <CollectionPermissions
+                  permissions={schemaData.getIn(["config", "permissions"])}
+                />
+              </Card>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 16]}>
+            <Col xs={24} md={12}>
+              <DashboardList
+                header="Latest Drafts"
+                loading={loading}
+                listType="draft"
+                list={lists["drafts"]}
+              />
+            </Col>
+            <Col xs={24} md={12}>
+              <DashboardList
+                header="Latest Published"
+                loading={loading}
+                listType="published"
+                list={lists["published"]}
+              />
             </Col>
           </Row>
         </Space>
@@ -136,7 +224,8 @@ const Collection = props => {
 
 Collection.propTypes = {
   schema: PropTypes.object,
-  schema_data: PropTypes.object,
+  roles: PropTypes.object,
+  schemaData: PropTypes.object,
   match: PropTypes.object,
   results: PropTypes.object,
   history: PropTypes.object,
@@ -148,7 +237,8 @@ Collection.propTypes = {
 const mapStateToProps = state => ({
   results: state.collection.getIn(["results"]),
   depositGroups: state.auth.getIn(["currentUser", "depositGroups"]),
-  schema_data: state.collection.get("schema_data"),
+  roles: state.auth.getIn(["currentUser", "roles"]),
+  schemaData: state.collection.get("schema_data"),
   loading: state.collection.get("loading"),
   error: state.collection.get("error"),
 });
@@ -158,7 +248,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchRecordsResults(name, version)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Collection);
+export default connect(mapStateToProps, mapDispatchToProps)(Collection);

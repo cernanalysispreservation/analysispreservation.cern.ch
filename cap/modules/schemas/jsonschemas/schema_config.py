@@ -26,6 +26,7 @@ SCHEMA_CONFIG_JSONSCHEMA_V1 = {
         "notifications": notifications_schema,
         "reviewable": {"type": "boolean"},
         "repositories": repositories_schema,
+        "readme": {"type": "string"},
     },
     "additionalProperties": False,
 }
