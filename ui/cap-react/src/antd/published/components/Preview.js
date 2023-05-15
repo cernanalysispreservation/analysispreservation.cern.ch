@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import JSONSchemaPreviewer from "../../partials/JSONSchemaPreviewer";
+import Reviews from "../../partials/Reviews";
 import { transformSchema } from "../../partials/Utils/schema";
-import PropTypes from "prop-types";
+import { COLLECTION_BASE } from "../../routes";
+import { shouldDisplayTabButton } from "../utils";
+import SideBar from "./SideBar";
+import { EditOutlined } from "@ant-design/icons";
 import {
   PageHeader,
   Space,
@@ -10,14 +14,11 @@ import {
   Col,
   Radio,
   Grid,
-  Layout
+  Layout,
 } from "antd";
-import { EditOutlined } from "@ant-design/icons";
-import JSONSchemaPreviewer from "../../partials/JSONSchemaPreviewer";
-
-import { shouldDisplayTabButton } from "../utils";
-import SideBar from "./SideBar";
-import Reviews from "../../partials/Reviews";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Preview = ({
   history,
@@ -28,7 +29,7 @@ const Preview = ({
   canUpdate,
   id,
   metadata = { general_title: "" },
-  schemas = { schema: {}, uiSchema: {} }
+  schemas = { schema: {}, uiSchema: {} },
 }) => {
   const [display, setDisplay] = useState(
     schemas.uiSchema["ui:object"] == "tabView" ? "tabView" : "list"
@@ -50,9 +51,15 @@ const Preview = ({
               <Tag color="purple">Published</Tag>
               <Tag>{id}</Tag>
               {schemaType && (
-                <Tag>
-                  {schemaType.fullname} v{schemaType.version}
-                </Tag>
+                <Link
+                  to={`/${COLLECTION_BASE}/${schemaType.name}/${
+                    schemaType.version || ""
+                  }`}
+                >
+                  <Tag color="geekblue">
+                    {schemaType.fullname} v{schemaType.version}
+                  </Tag>
+                </Link>
               )}
             </Space>
           </Space>
@@ -68,7 +75,7 @@ const Preview = ({
                 history.push({
                   pathname: `/drafts/${draft_id}`,
                   from: location.pathname,
-                  pageFrom: "Published Preview"
+                  pageFrom: "Published Preview",
                 })
               }
             >
@@ -147,7 +154,7 @@ Preview.propTypes = {
   id: PropTypes.string,
   canUpdate: PropTypes.bool,
   files: PropTypes.object,
-  status: PropTypes.string
+  status: PropTypes.string,
 };
 
 export default Preview;
