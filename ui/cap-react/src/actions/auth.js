@@ -1,7 +1,7 @@
-import axios from "axios";
+import { matomoInstance } from "../antd/Root";
 import { history } from "../store/configureStore";
 import { notification } from "antd";
-import { matomoInstance } from "../antd/Root";
+import axios from "axios";
 
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
@@ -87,13 +87,13 @@ export function revokeTokenSuccess(token) {
 }
 
 export function loginLocalUser(data) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(loginRequest());
 
     let uri = `/api/login/local?next=${data.next}`;
     axios
       .post(uri, data)
-      .then(function(response) {
+      .then(function (response) {
         let token = "12345";
 
         localStorage.setItem("token", token);
@@ -103,7 +103,7 @@ export function loginLocalUser(data) {
 
         dispatch(initCurrentUser(next));
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(
           loginError(
             error.response.data.error ||
@@ -115,12 +115,12 @@ export function loginLocalUser(data) {
 }
 
 export function initCurrentUser(next = undefined) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(initCurrentUserRequest());
     axios
       .get("/api/me")
-      .then(function(response) {
-        let { id, deposit_groups = [] } = response.data;
+      .then(function (response) {
+        let { id, deposit_groups = [], roles } = response.data;
         localStorage.setItem("token", id);
         if (matomoInstance)
           matomoInstance.pushInstruction("setUserId", response.data.email);
@@ -131,6 +131,12 @@ export function initCurrentUser(next = undefined) {
             profile: response.data,
             depositGroups: deposit_groups,
             permissions: deposit_groups.length === 0 ? false : true,
+            roles: {
+              schemaAdmin: roles
+                .filter(r => r.startsWith("schema-admin"))
+                .map(r => r.split(":")[1]),
+              isSuperUser: roles.includes("superuser"),
+            },
           })
         );
         dispatch(initCurrentUserSuccess());
@@ -140,22 +146,22 @@ export function initCurrentUser(next = undefined) {
           history.push(next);
         }
       })
-      .catch(function() {
+      .catch(function () {
         dispatch(clearAuth());
         dispatch(initCurrentUserError());
       });
   };
 }
 export function updateDepositGroups() {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .get("/api/me")
-      .then(function(response) {
+      .then(function (response) {
         let { deposit_groups = [] } = response.data;
 
         dispatch(depositGroupsUpdate(deposit_groups));
       })
-      .catch(function() {
+      .catch(function () {
         notification.error({
           message: "There was an issue with your request",
           description: "Please try again",
@@ -165,39 +171,38 @@ export function updateDepositGroups() {
 }
 
 export function updateIntegrations() {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .get("/api/me")
-      .then(function(response) {
+      .then(function (response) {
         let { profile: { services: integrations = {} } = {} } = response.data;
         dispatch({
           type: INTEGRATIONS_UPDATE,
           integrations,
         });
       })
-      .catch(function() {});
+      .catch(function () {});
   };
 }
 
 export function removeIntegrations(service) {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .get(`/api/auth/disconnect/${service}`)
-      .then(function() {
+      .then(function () {
         axios
           .get("/api/me")
-          .then(function(response) {
-            let {
-              profile: { services: integrations = {} } = {},
-            } = response.data;
+          .then(function (response) {
+            let { profile: { services: integrations = {} } = {} } =
+              response.data;
             dispatch({
               type: INTEGRATIONS_UPDATE,
               integrations,
             });
           })
-          .catch(function() {});
+          .catch(function () {});
       })
-      .catch(function(error) {
+      .catch(function (error) {
         notification.error({
           description: error.response.data.message,
         });
@@ -206,7 +211,7 @@ export function removeIntegrations(service) {
 }
 
 export function clearAuth() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(logoutRequest());
     localStorage.clear();
     dispatch(logoutSuccess());
@@ -214,10 +219,10 @@ export function clearAuth() {
 }
 
 export function logout() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(logoutRequest());
 
-    axios.get("/api/logout").then(function() {
+    axios.get("/api/logout").then(function () {
       localStorage.clear();
       dispatch(logoutSuccess());
     });
@@ -225,14 +230,14 @@ export function logout() {
 }
 
 export function getUsersAPIKeys() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(apiKeyListRequest());
     axios
       .get("/api/applications/")
-      .then(function(response) {
+      .then(function (response) {
         dispatch(apiKeyListSuccess(response.data));
       })
-      .catch(function() {
+      .catch(function () {
         notification.error({
           message: "It was not possible to get API keys",
           description: "Please try again",
@@ -243,14 +248,14 @@ export function getUsersAPIKeys() {
 }
 
 export function createToken(data) {
-  return function(dispatch) {
+  return function (dispatch) {
     // dispatch(apiKeyListRequest());
     axios
       .post("/api/applications/tokens/new/", data)
-      .then(function(response) {
+      .then(function (response) {
         dispatch(createTokenSuccess(response.data));
       })
-      .catch(function() {
+      .catch(function () {
         notification.error({
           message: "There was an issue with your request",
           description: "Please try again",
@@ -260,14 +265,14 @@ export function createToken(data) {
 }
 
 export function revokeToken(token_id) {
-  return function(dispatch) {
+  return function (dispatch) {
     // dispatch(apiKeyListRequest());
     axios
       .get(`/api/applications/tokens/${token_id}/revoke/`)
-      .then(function() {
+      .then(function () {
         dispatch(revokeTokenSuccess(token_id));
       })
-      .catch(function() {
+      .catch(function () {
         notification.error({
           message: "There was an issue with your request",
           description: "Please try again",
@@ -277,14 +282,14 @@ export function revokeToken(token_id) {
 }
 
 export function createApplication() {
-  return function(dispatch) {
+  return function (dispatch) {
     // dispatch(apiKeyListRequest());
     axios
       .get("/api/applications/")
-      .then(function(response) {
+      .then(function (response) {
         dispatch(apiKeyListSuccess(response.data));
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(apiKeyListError(error));
       });
   };

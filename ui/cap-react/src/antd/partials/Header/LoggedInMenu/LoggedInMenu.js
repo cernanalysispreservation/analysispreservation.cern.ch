@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Menu, Modal } from "antd";
-import { Link } from "react-router-dom";
+import DraftCreate from "../../../drafts/DraftCreate";
+import { CMS, SETTINGS } from "../../../routes";
+import HowToSearchPage from "../../HowToSearch";
 import {
   SettingOutlined,
   LogoutOutlined,
@@ -12,14 +11,17 @@ import {
   CodeOutlined,
   ScheduleOutlined,
   QuestionOutlined,
-  PlusOutlined
+  PlusOutlined,
+  ToolOutlined,
 } from "@ant-design/icons";
-import DraftCreate from "../../../drafts/DraftCreate";
-import HowToSearchPage from "../../HowToSearch";
+import { Menu, Modal } from "antd";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const { Item, SubMenu, ItemGroup, Divider } = Menu;
 
-const LoggedInMenu = ({ permissions, logout }) => {
+const LoggedInMenu = ({ permissions, logout, roles }) => {
   const [displayCreate, setDisplayCreate] = useState(false);
   const [displayHowToSearch, setDisplayHowToSearch] = useState(false);
 
@@ -99,8 +101,13 @@ const LoggedInMenu = ({ permissions, logout }) => {
           </ItemGroup>
           <Divider />
           <Item key="settings" icon={<SettingOutlined />}>
-            <Link to="/settings">Settings</Link>
+            <Link to={SETTINGS}>Settings</Link>
           </Item>
+          {(roles.get("isSuperUser") || roles.get("schemaAdmin").size > 0) && (
+            <Item key="admin" icon={<ToolOutlined />}>
+              <Link to={CMS}>Admin</Link>
+            </Item>
+          )}
           <Item
             key="logout"
             icon={<LogoutOutlined />}
@@ -117,7 +124,8 @@ const LoggedInMenu = ({ permissions, logout }) => {
 
 LoggedInMenu.propTypes = {
   logout: PropTypes.func,
-  permissions: PropTypes.bool
+  permissions: PropTypes.bool,
+  roles: PropTypes.object,
 };
 
 export default LoggedInMenu;

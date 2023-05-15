@@ -1,1 +1,1 @@
-export { default } from "./LoggedInMenu";
+export { default } from "./LoggedInMenuContainer";
