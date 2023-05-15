@@ -1,14 +1,13 @@
-import React, { useRef } from "react";
-import PropTypes from "prop-types";
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
-import tm from "markdown-it-texmath";
 import Toggler from "./RichEditorPreviewPlugin";
-
-import "react-markdown-editor-lite/lib/index.css";
-import "katex/dist/katex.min.css";
-import "markdown-it-texmath/css/texmath.css";
 import "./styles/RichEditorWidget.css";
+import "katex/dist/katex.min.css";
+import MarkdownIt from "markdown-it";
+import tm from "markdown-it-texmath";
+import "markdown-it-texmath/css/texmath.css";
+import PropTypes from "prop-types";
+import React, { useRef } from "react";
+import MdEditor from "react-markdown-editor-lite";
+import "react-markdown-editor-lite/lib/index.css";
 
 const RichEditorWidget = props => {
   const mdParser = new MarkdownIt();
@@ -32,7 +31,15 @@ const RichEditorWidget = props => {
 
   return (
     <MdEditor
-      style={{ height: "500px" }}
+      style={{
+        height:
+          props.height === 0
+            ? undefined
+            : props.height > 0
+            ? props.height
+            : "500px",
+        border: props.noBorder ? "none" : undefined,
+      }}
       config={{
         canView: {
           fullScreen: false,
@@ -70,6 +77,7 @@ const RichEditorWidget = props => {
       onChange={handleEditorChange}
       value={props.value}
       ref={myEditor}
+      key={props.noBorder}
     />
   );
 };
@@ -81,6 +89,8 @@ RichEditorWidget.propTypes = {
   displayedFromModal: PropTypes.bool,
   canViewProps: PropTypes.object,
   viewProps: PropTypes.object,
+  noBorder: PropTypes.bool,
+  height: PropTypes.number,
 };
 
 export default RichEditorWidget;

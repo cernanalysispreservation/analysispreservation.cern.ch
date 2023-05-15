@@ -1,17 +1,15 @@
-import { connect } from "react-redux";
 import { fetchDashboard } from "../../../actions/dashboard";
 import Dashboard from "../components/Dashboard";
+import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
   loading: state.dashboard.get("loading"),
-  results: state.dashboard.getIn(["results"])
+  results: state.dashboard.getIn(["results"]),
+  groups: state.auth.getIn(["currentUser", "depositGroups"]),
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDashboard: () => dispatch(fetchDashboard())
+  fetchDashboard: () => dispatch(fetchDashboard()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
