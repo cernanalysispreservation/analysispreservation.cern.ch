@@ -107,7 +107,7 @@ install_requires = [
 
     # Invenio Files deps
     'invenio-files-rest @ git+https://github.com/parths007/invenio-files-rest.git@v1.1.1',
-    'invenio-records-files @ git+https://github.com/cernanalysispreservation/invenio-records-files.git@new#egg=invenio-records-files',
+    'invenio-records-files>=1.2.1',
 
     # Database deps
     'invenio-db[postgresql,versioning]==1.0.13',

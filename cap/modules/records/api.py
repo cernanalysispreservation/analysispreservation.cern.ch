@@ -68,6 +68,46 @@ def RECORD_ACTION_NEEDS(id):
 class CAPRecord(Record):
     """Record API class for CAP."""
 
+    @classmethod
+    def create_bucket(cls, data):
+        """Create a bucket for this record.
+
+        Override this method to provide more advanced bucket creation
+        capabilities. This method may return a new or existing bucket, or may
+        return None, in case no bucket should be created.
+        """
+        return None
+
+    @classmethod
+    def load_bucket(cls, record):
+        """Load the bucket id from the record metadata.
+
+        Override this method to provide custom behavior for retrieving the
+        bucket id from the record metadata. By default the bucket id is
+        retrieved from the ``_bucket`` key. If you override this method, make
+        sure you also  override :py:data:`Record.dump_bucket()`.
+
+        :param record: A record instance.
+        """
+        return
+
+    @classmethod
+    def dump_bucket(cls, data, bucket):
+        """Dump the bucket id into the record metadata.
+
+        Override this method to provide custom behavior for storing the bucket
+        id in the record metadata. By default the bucket id is stored in the
+        ``_bucket`` key. If you override this method, make sure you also
+        override :py:data:`Record.load_bucket()`.
+
+        This method is called after the bucket is created, but before the
+        record is created in the database.
+
+        :param data: A dictionary of the record metadata.
+        :param bucket: The created bucket for the record.
+        """
+        pass
+
     def get_record_metadata(self):
         """Get Record Metadata instance for deposit."""
         return RecordMetadata.query.filter_by(id=self.id).one_or_none()
