@@ -188,15 +188,6 @@ const Collection = ({
               </Card>
             </Col>
           </Row>
-          <Row>
-            <Col xs={24}>
-              <Card title="Permissions">
-                <CollectionPermissions
-                  permissions={schemaData.getIn(["config", "permissions"])}
-                />
-              </Card>
-            </Col>
-          </Row>
 
           <Row gutter={[16, 16]}>
             <Col xs={24} md={12}>
@@ -214,6 +205,16 @@ const Collection = ({
                 listType="published"
                 list={lists["published"]}
               />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col xs={24}>
+              <Card title="Permissions">
+                <CollectionPermissions
+                  permissions={schemaData.getIn(["config", "permissions"])}
+                />
+              </Card>
             </Col>
           </Row>
         </Space>
