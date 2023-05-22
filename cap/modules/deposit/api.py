@@ -682,7 +682,9 @@ class CAPDeposit(Deposit, Reviewable):
         deposit = super(CAPDeposit, cls).get_record(
             id_=id_, with_deleted=with_deleted
         )
-        deposit["_files"] = deposit.files.dumps()
+        deposit["_files"] = []
+        if deposit.files is not None:
+            deposit["_files"] = deposit.files.dumps()
         return deposit
 
     @classmethod
