@@ -1107,6 +1107,44 @@ def test_get_deposit_when_owner_returns_deposit(
     assert resp.status_code == 200
 
 
+def test_get_deposit_with_serializer_arg(
+    client, users, auth_headers_for_user, create_deposit
+):
+    user = users['alice_user']
+    deposit = create_deposit(user, 'alice')
+
+    # test get-json: 'application/json'
+    resp_1 = client.get(
+        '/deposits/{}/?format=get-json'.format(deposit['_deposit']['id']),
+        headers=auth_headers_for_user(user),
+    )
+    assert resp_1.status_code == 200
+
+    # test get-basic: 'application/basic+json'
+    resp_2 = client.get(
+        '/deposits/{}/?format=get-basic'.format(deposit['_deposit']['id']),
+        headers=auth_headers_for_user(user),
+    )
+    assert resp_2.status_code == 200
+    assert list(resp_2.json.keys()) == ['created', 'metadata', 'pid', 'updated']
+    
+    # test get-permissions: 'application/permissions+json'
+    resp_3 = client.get(
+        '/deposits/{}/?format=get-permissions'.format(deposit['_deposit']['id']),
+        headers=auth_headers_for_user(user),
+    )
+    assert resp_3.status_code == 200
+    assert list(resp_3.json.keys()) == ['permissions']
+
+    # test get-repositories: 'application/repositories+json'
+    resp_3 = client.get(
+        '/deposits/{}/?format=get-repositories'.format(deposit['_deposit']['id']),
+        headers=auth_headers_for_user(user),
+    )
+    assert resp_3.status_code == 200
+    assert list(resp_3.json.keys()) == ['webhooks']
+
+
 def test_get_deposit_when_other_member_of_collaboration_returns_403(
     client, users, auth_headers_for_user, create_deposit
 ):
