@@ -17,7 +17,6 @@ const {
 } = utils;
 
 const ArrayFieldTemplate = ({
-  DescriptionField,
   TitleField,
   autofocus,
   canAdd,
@@ -119,7 +118,6 @@ const ArrayFieldTemplate = ({
       <FixedArrayFieldTemplate
         canAdd={canAdd}
         className={className}
-        DescriptionField={DescriptionField}
         disabled={disabled}
         formContext={formContext}
         formData={formData}
@@ -150,7 +148,6 @@ const ArrayFieldTemplate = ({
     <NormalArrayFieldTemplate
       canAdd={canAdd}
       className={className}
-      DescriptionField={DescriptionField}
       disabled={disabled}
       formContext={formContext}
       formData={formData}
@@ -169,7 +166,6 @@ const ArrayFieldTemplate = ({
   );
 };
 ArrayFieldTemplate.propTypes = {
-  DescriptionField: PropTypes.node,
   TitleField: PropTypes.node,
   autofocus: PropTypes.bool,
   canAdd: PropTypes.bool,

@@ -1,20 +1,15 @@
 import React from "react";
-import classNames from "classnames";
 
 import { Row, Col, Button } from "antd";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 import PropTypes from "prop-types";
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
-
-const DESCRIPTION_COL_STYLE = {
-  paddingBottom: "8px",
-};
+import FieldHeader from "../Field/FieldHeader";
 
 const FixedArrayFieldTemplate = ({
   canAdd,
   className,
-  DescriptionField,
   disabled,
   formContext,
   // formData,
@@ -22,47 +17,23 @@ const FixedArrayFieldTemplate = ({
   items,
   options,
   onAddClick,
-  prefixCls,
   readonly,
   // registry,
-  required,
   schema,
   title,
-  TitleField,
   uiSchema,
 }) => {
-  const { labelAlign = "right", rowGutter = 24 } = formContext;
-
-  const labelClsBasic = `${prefixCls}-item-label`;
-  const labelColClassName = classNames(
-    labelClsBasic,
-    labelAlign === "left" && `${labelClsBasic}-left`
-    // labelCol.className,
-  );
+  const { rowGutter = 24 } = formContext;
 
   return (
     <fieldset className={className} id={idSchema.$id}>
       <Row gutter={rowGutter}>
-        {title && (
-          <Col className={labelColClassName} span={24} style={{ padding: "0" }}>
-            <TitleField
-              id={`${idSchema.$id}__title`}
-              key={`array-field-title-${idSchema.$id}`}
-              required={required}
-              title={uiSchema["ui:title"] || title}
-            />
-          </Col>
-        )}
-
-        {(uiSchema["ui:description"] || schema.description) && (
-          <Col span={24} style={DESCRIPTION_COL_STYLE}>
-            <DescriptionField
-              description={uiSchema["ui:description"] || schema.description}
-              id={`${idSchema.$id}-description`}
-              key={`array-field-description-${idSchema.$id}`}
-            />
-          </Col>
-        )}
+        <FieldHeader
+          label={uiSchema["ui:title"] || title}
+          isObject
+          description={uiSchema["ui:description"] || schema.description}
+          uiSchema={uiSchema}
+        />
 
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>
@@ -105,7 +76,6 @@ const FixedArrayFieldTemplate = ({
 FixedArrayFieldTemplate.propTypes = {
   canAdd: PropTypes.bool,
   className: PropTypes.string,
-  DescriptionField: PropTypes.node,
   disabled: PropTypes.bool,
   formContext: PropTypes.object,
   idSchema: PropTypes.object,

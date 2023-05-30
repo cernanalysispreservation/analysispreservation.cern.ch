@@ -2,18 +2,14 @@ import React from "react";
 import classNames from "classnames";
 import _ from "lodash";
 import { utils } from "@rjsf/core";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import TabField from "./TabField";
 import PropTypes from "prop-types";
-import Text from "antd/lib/typography/Text";
+import FieldHeader from "./Field/FieldHeader";
 const { canExpand } = utils;
-const DESCRIPTION_COL_STYLE = {
-  paddingBottom: "8px",
-};
 
 const ObjectFieldTemplate = ({
-  DescriptionField,
   description,
   disabled,
   formContext,
@@ -83,65 +79,51 @@ const ObjectFieldTemplate = ({
   return (
     <fieldset style={{ margin: "0 12px" }} id={idSchema.$id}>
       <Row gutter={rowGutter}>
-        {uiSchema["ui:title"] !== false &&
-          (uiSchema["ui:title"] || title) && (
-            <Col
-              style={{
-                padding: "0",
-                marginBottom: "12px",
-              }}
-              className={labelColClassName}
-              span={24}
-            >
-              {
-                <Divider
-                  id={`${idSchema.$id}-title`}
-                  orientation="left"
-                  style={{ margin: 0 }}
-                >
-                  <Text strong>{uiSchema["ui:title"] || title}</Text>
-                </Divider>
-              }
-            </Col>
-          )}
-        {uiSchema["ui:description"] !== false &&
-          (uiSchema["ui:description"] || description) && (
-            <Col span={24} style={DESCRIPTION_COL_STYLE}>
-              <DescriptionField
-                description={uiSchema["ui:description"] || description}
-                id={`${idSchema.$id}-description`}
-              />
-            </Col>
-          )}
+        <Col
+          style={{
+            padding: "0",
+            marginBottom: "12px",
+          }}
+          className={labelColClassName}
+          span={24}
+        >
+          <FieldHeader
+            label={uiSchema["ui:title"] || title}
+            isObject
+            description={uiSchema["ui:description"] || description}
+            uiSchema={uiSchema}
+          />
+        </Col>
         <Col span={24} className="nestedObject">
           <Row gutter={10}>
-            {properties.filter(e => !e.hidden).map(element => (
-              <Col key={element.name} span={calculateColSpan(element)}>
-                {element.content}
-              </Col>
-            ))}
+            {properties
+              .filter(e => !e.hidden)
+              .map(element => (
+                <Col key={element.name} span={calculateColSpan(element)}>
+                  {element.content}
+                </Col>
+              ))}
           </Row>
         </Col>
       </Row>
 
-      {canExpand(schema, uiSchema, formData) &&
-        !readonly && (
-          <Col span={24}>
-            <Row gutter={rowGutter} justify="end">
-              <Col flex="192px">
-                <Button
-                  block
-                  className="object-property-expand"
-                  disabled={disabled}
-                  onClick={onAddClick(schema)}
-                  type="primary"
-                >
-                  <PlusCircleOutlined /> Add Item
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        )}
+      {canExpand(schema, uiSchema, formData) && !readonly && (
+        <Col span={24}>
+          <Row gutter={rowGutter} justify="end">
+            <Col flex="192px">
+              <Button
+                block
+                className="object-property-expand"
+                disabled={disabled}
+                onClick={onAddClick(schema)}
+                type="primary"
+              >
+                <PlusCircleOutlined /> Add Item
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+      )}
     </fieldset>
   );
 };
@@ -160,7 +142,6 @@ ObjectFieldTemplate.propTypes = {
   title: PropTypes.string,
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
-  DescriptionField: PropTypes.node,
   TitleField: PropTypes.node,
 };
 
