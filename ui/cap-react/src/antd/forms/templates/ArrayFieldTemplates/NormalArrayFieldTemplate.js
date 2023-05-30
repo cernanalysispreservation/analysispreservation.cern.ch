@@ -22,15 +22,11 @@ import {
   defaultHighlightStyle,
   StreamLanguage,
 } from "@codemirror/language";
-
-const DESCRIPTION_COL_STYLE = {
-  paddingBottom: "8px",
-};
+import FieldHeader from "../Field/FieldHeader";
 
 const NormalArrayFieldTemplate = ({
   canAdd,
   className,
-  DescriptionField,
   disabled,
   formContext,
   idSchema,
@@ -153,13 +149,10 @@ const NormalArrayFieldTemplate = ({
       : setSelectedEmailList(formData.map(user => user.profile.email));
   };
 
-  useEffect(
-    () => {
-      if (emailModal && formData.length != selectedEmailList.length)
-        setSelectedEmailList(formData.map(user => user.profile.email));
-    },
-    [emailModal]
-  );
+  useEffect(() => {
+    if (emailModal && formData.length != selectedEmailList.length)
+      setSelectedEmailList(formData.map(user => user.profile.email));
+  }, [emailModal]);
 
   return (
     <fieldset
@@ -219,69 +212,72 @@ const NormalArrayFieldTemplate = ({
           onCancel={() => setImportModal(false)}
         />
       )}
-      {uiEmail &&
-        formData && (
-          <Modal
-            visible={emailModal}
-            onCancel={() => setEmailModal(false)}
-            title="Select user & egroups emails to send"
-            okText="Send Email"
-            okType="link"
-            okButtonProps={{
-              href: `mailto:${uiEmailDefaults
-                .concat(selectedEmailList)
-                .join(",")}`,
-            }}
-            width={900}
-          >
-            <Space direction="vertical" style={{ width: "100%" }} size="large">
-              <Checkbox
-                onChange={() => updateEmailSelectedListAll()}
-                checked={formData.length === selectedEmailList.length}
-              >
-                Select all
-              </Checkbox>
-              {uiEmailDefaults.length > 0 ? (
-                <Col>
-                  Default email recepients:{" "}
-                  <Space>{uiEmailDefaults.map(i => <Tag>{i}</Tag>)}</Space>
-                </Col>
-              ) : null}
-              <Table
-                dataSource={formData.map(i => i.profile || i)}
-                columns={[
-                  {
-                    title: "Email User",
-                    key: "action",
-                    render: (_, user) => (
-                      <Checkbox
-                        checked={selectedEmailList.includes(user.email)}
-                        onChange={() => updateEmailSelectedList(user.email)}
-                      />
-                    ),
-                  },
-                  {
-                    title: "Name",
-                    dataIndex: "name",
-                    key: "name",
-                  },
-                  {
-                    title: "Email",
-                    dataIndex: "email",
-                    key: "email",
-                    render: txt => <Tag color="geekblue">{txt}</Tag>,
-                  },
-                  {
-                    title: "Department",
-                    dataIndex: "department",
-                    key: "department",
-                    render: txt => <Tag color="blue">{txt}</Tag>,
-                  },
-                ]}
-              />
-            </Space>
-          </Modal>
-        )}
+      {uiEmail && formData && (
+        <Modal
+          visible={emailModal}
+          onCancel={() => setEmailModal(false)}
+          title="Select user & egroups emails to send"
+          okText="Send Email"
+          okType="link"
+          okButtonProps={{
+            href: `mailto:${uiEmailDefaults
+              .concat(selectedEmailList)
+              .join(",")}`,
+          }}
+          width={900}
+        >
+          <Space direction="vertical" style={{ width: "100%" }} size="large">
+            <Checkbox
+              onChange={() => updateEmailSelectedListAll()}
+              checked={formData.length === selectedEmailList.length}
+            >
+              Select all
+            </Checkbox>
+            {uiEmailDefaults.length > 0 ? (
+              <Col>
+                Default email recepients:{" "}
+                <Space>
+                  {uiEmailDefaults.map(i => (
+                    <Tag>{i}</Tag>
+                  ))}
+                </Space>
+              </Col>
+            ) : null}
+            <Table
+              dataSource={formData.map(i => i.profile || i)}
+              columns={[
+                {
+                  title: "Email User",
+                  key: "action",
+                  render: (_, user) => (
+                    <Checkbox
+                      checked={selectedEmailList.includes(user.email)}
+                      onChange={() => updateEmailSelectedList(user.email)}
+                    />
+                  ),
+                },
+                {
+                  title: "Name",
+                  dataIndex: "name",
+                  key: "name",
+                },
+                {
+                  title: "Email",
+                  dataIndex: "email",
+                  key: "email",
+                  render: txt => <Tag color="geekblue">{txt}</Tag>,
+                },
+                {
+                  title: "Department",
+                  dataIndex: "department",
+                  key: "department",
+                  render: txt => <Tag color="blue">{txt}</Tag>,
+                },
+              ]}
+            />
+          </Space>
+        </Modal>
+      )}
       <Row gutter={rowGutter}>
         {title && (
           <Col className={labelColClassName} span={24} style={{ padding: "0" }}>
@@ -300,16 +296,10 @@ const NormalArrayFieldTemplate = ({
             />
           </Col>
         )}
-
-        {(uiSchema["ui:description"] || schema.description) && (
-          <Col span={24} style={{ ...DESCRIPTION_COL_STYLE, padding: "0" }}>
-            <DescriptionField
-              description={uiSchema["ui:description"] || schema.description}
-              id={`${idSchema.$id}__description`}
-              key={`array-field-description-${idSchema.$id}`}
-            />
-          </Col>
-        )}
+        <FieldHeader
+          description={uiSchema["ui:description"] || schema.description}
+          uiSchema={uiSchema}
+        />
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>
             {items && (
@@ -329,26 +319,23 @@ const NormalArrayFieldTemplate = ({
             )}
           </Row>
         </Col>
-        {items &&
-          items.length > 0 &&
-          canAdd &&
-          !readonly && (
-            <Col span={24} style={{ marginTop: "10px" }}>
-              <Row gutter={rowGutter} justify="end">
-                <Col flex="192px">
-                  <Button
-                    block
-                    disabled={disabled || readonly}
-                    onClick={onAddClick}
-                    type="primary"
-                  >
-                    <PlusCircleOutlined /> Add{" "}
-                    {options && options.addLabel ? options.addLabel : `Item`}
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          )}
+        {items && items.length > 0 && canAdd && !readonly && (
+          <Col span={24} style={{ marginTop: "10px" }}>
+            <Row gutter={rowGutter} justify="end">
+              <Col flex="192px">
+                <Button
+                  block
+                  disabled={disabled || readonly}
+                  onClick={onAddClick}
+                  type="primary"
+                >
+                  <PlusCircleOutlined /> Add{" "}
+                  {options && options.addLabel ? options.addLabel : `Item`}
+                </Button>
+              </Col>
+            </Row>
+          </Col>
+        )}
       </Row>
     </fieldset>
   );
@@ -357,7 +344,6 @@ const NormalArrayFieldTemplate = ({
 NormalArrayFieldTemplate.propTypes = {
   canAdd: PropTypes.bool,
   className: PropTypes.string,
-  DescriptionField: PropTypes.node,
   disabled: PropTypes.bool,
   formContext: PropTypes.object,
   idSchema: PropTypes.object,
