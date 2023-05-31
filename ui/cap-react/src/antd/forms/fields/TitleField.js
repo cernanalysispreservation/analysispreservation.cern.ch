@@ -5,6 +5,7 @@ import { withConfigConsumer } from "antd/lib/config-provider/context";
 import { Button, Row, Space, Tooltip } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ImportOutlined, MailOutlined } from "@ant-design/icons";
+import Markdown from "../../partials/Markdown/Markdown";
 
 const TitleField = ({
   formContext,
@@ -19,6 +20,8 @@ const TitleField = ({
   enableImport,
   enableLatex,
   readonly,
+  titleIsMarkdown,
+  isObject,
 }) => {
   const { colon = true } = formContext;
 
@@ -45,18 +48,29 @@ const TitleField = ({
 
   if (!title) return null;
 
+  const titleText = (
+    <Text
+      style={{ fontSize: isObject && "12pt" }}
+      strong
+      className={labelClassName}
+      htmlFor={id}
+      onClick={handleLabelClick}
+      title={typeof title === "string" ? title : ""}
+    >
+      <Markdown
+        text={labelChildren}
+        style={{
+          color: "#000",
+        }}
+        renderAsHtml={titleIsMarkdown}
+      />
+    </Text>
+  );
+
   if ((uiImport && !readonly) || uiLatex || uiEmail) {
     return (
       <Row justify="space-between">
-        <Text
-          strong
-          className={labelClassName}
-          htmlFor={id}
-          onClick={handleLabelClick}
-          title={typeof title === "string" ? title : ""}
-        >
-          {labelChildren}
-        </Text>
+        {titleText}
         <Space style={{ flexWrap: "wrap" }}>
           {uiImport && (
             <Tooltip title="Import from a list">
@@ -98,17 +112,7 @@ const TitleField = ({
       </Row>
     );
   }
-  return (
-    <Text
-      strong
-      className={labelClassName}
-      htmlFor={id}
-      onClick={handleLabelClick}
-      title={typeof title === "string" ? title : ""}
-    >
-      {labelChildren}
-    </Text>
-  );
+  return <React.Fragment>{titleText}</React.Fragment>;
 };
 
 TitleField.propTypes = {
