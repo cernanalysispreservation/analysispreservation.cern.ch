@@ -299,6 +299,8 @@ const NormalArrayFieldTemplate = ({
         <FieldHeader
           description={uiSchema["ui:description"] || schema.description}
           uiSchema={uiSchema}
+          id={`${idSchema.$id}-header`}
+          key={`array-field-header-${idSchema.$id}`}
         />
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>

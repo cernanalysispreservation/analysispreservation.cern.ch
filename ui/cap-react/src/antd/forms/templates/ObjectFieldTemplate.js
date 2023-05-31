@@ -92,6 +92,7 @@ const ObjectFieldTemplate = ({
             isObject
             description={uiSchema["ui:description"] || description}
             uiSchema={uiSchema}
+            id={`${idSchema.$id}-header`}
           />
         </Col>
         <Col span={24} className="nestedObject">
