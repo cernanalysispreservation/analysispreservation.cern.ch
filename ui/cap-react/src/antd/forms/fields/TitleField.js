@@ -56,6 +56,7 @@ const TitleField = ({
       htmlFor={id}
       onClick={handleLabelClick}
       title={typeof title === "string" ? title : ""}
+      id={id}
     >
       <Markdown
         text={labelChildren}

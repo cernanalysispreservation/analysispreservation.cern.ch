@@ -30,9 +30,9 @@ const FixedArrayFieldTemplate = ({
       <Row gutter={rowGutter}>
         <FieldHeader
           label={uiSchema["ui:title"] || title}
-          isObject
           description={uiSchema["ui:description"] || schema.description}
           uiSchema={uiSchema}
+          idSchema={idSchema}
         />
 
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
