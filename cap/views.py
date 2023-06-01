@@ -20,6 +20,7 @@ from os.path import join
 from elasticsearch import ConnectionError
 from elasticsearch.exceptions import NotFoundError
 from flask import Blueprint, jsonify, abort
+from invenio_access.permissions import Permission
 from invenio_files_rest.models import Location
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
@@ -36,7 +37,11 @@ from cap.modules.records.serializers import record_json_v1
 from cap.modules.workflows.utils import get_user_workflows
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.serializers import collection_serializer
-from cap.modules.schemas.permissions import ReadSchemaPermission
+from cap.modules.schemas.permissions import (
+    deposit_schema_read_action,
+    ReadSchemaPermission,
+    record_schema_read_action,
+)
 
 blueprint = Blueprint(
     'cap',
@@ -146,7 +151,11 @@ def collection(collection_name, version=None):
     except JSONSchemaNotFound:
         abort(404)
 
-    if not ReadSchemaPermission(collection_schema).can():
+    if not (
+        ReadSchemaPermission(collection_schema).can() or
+        Permission(deposit_schema_read_action(collection_schema.id)).can() or
+        Permission(record_schema_read_action(collection_schema.id)).can()
+    ):
         abort(403)
 
     try:

@@ -228,6 +228,28 @@ def test_collection_view_fetching_properly_results(client, users,create_deposit,
     assert cms_v2_deposit_2['_deposit']['id'] not in cms_drafts
 
 
+def test_collections_view_for_schema_read_permission(app, db, client, users, create_deposit,
+                                                    auth_headers_for_user, cli_runner, json_headers):
+    superuser = users['superuser']
+    lhcb_user = users['lhcb_user']
 
+    superuser_headers = auth_headers_for_user(superuser) + json_headers
+    test_headers = auth_headers_for_user(lhcb_user)
 
+    # create schema
+    schema_data = json.dumps(
+        dict(name='test-schema', version='1.0.0',)
+    )
+    schema_resp = client.post('/jsonschemas/', data=schema_data, headers=superuser_headers)
+    assert schema_resp.status_code == 200
 
+    resp = client.get('/collection/test-schema',
+                      headers=test_headers)
+    assert resp.status_code == 403
+
+    cli_runner(
+        'fixtures permissions -p read -u lhcb_user@cern.ch --allow --deposit test-schema')
+
+    resp = client.get('/collection/test-schema',
+                      headers=test_headers)
+    assert resp.status_code == 200
