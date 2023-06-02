@@ -66,7 +66,7 @@ const Collection = ({
       .patch(
         `/api/jsonschemas/${schemaData.get("name")}/${schemaData.get(
           "version"
-        )}?config=1`,
+        )}`,
         [
           {
             op: "add",
