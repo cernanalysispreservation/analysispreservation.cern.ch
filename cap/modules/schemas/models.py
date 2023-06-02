@@ -48,6 +48,7 @@ from cap.modules.records.errors import get_error_path
 from cap.modules.user.utils import (
     get_existing_or_register_role,
     get_existing_or_register_user,
+    get_remote_account_by_id,
 )
 from cap.types import json_type
 
@@ -345,7 +346,6 @@ class Schema(db.Model):
 
     def get_schema_permissions(self):
         """Retrieve permissions from 'Schema.config'."""
-        results = {"roles": {}, "users": {}}
         action_roles = ActionRoles.query.filter(
             ActionRoles.argument == str(self.id),
             ActionRoles.action.like("%-schema-%"),
@@ -356,14 +356,19 @@ class Schema(db.Model):
             ActionUsers.action.like("%-schema-%"),
         ).all()
 
-        zipped_action_roles = [(a.action, a.role.name) for a in action_roles]
-        zipped_action_users = [(a.action, a.user.email) for a in action_users]
+        permissions = {}
+        for ar in action_roles:
+            if ar.action not in permissions:
+                permissions[ar.action] = {"roles": [], "users": []}
+            permissions[ar.action]["roles"].append(ar.role.name)
+        for au in action_users:
+            if au.action not in permissions:
+                permissions[au.action] = {"roles": [], "users": []}
+            permissions[au.action]["users"].append(
+                get_remote_account_by_id(au.user.id)
+            )
 
-        for k, v in zipped_action_roles:
-            results["roles"].setdefault(k, []).append(v)
-        for k, v in zipped_action_users:
-            results["users"].setdefault(k, []).append(v)
-        return results
+        return permissions
 
     @classmethod
     def get_latest(cls, name):
