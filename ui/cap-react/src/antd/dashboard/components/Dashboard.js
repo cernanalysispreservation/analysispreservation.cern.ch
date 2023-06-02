@@ -34,7 +34,7 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
         key={e["deposit_group"]}
         to={`${COLLECTION_BASE}/${e["deposit_group"]}`}
       >
-        <Tag>{e["deposit_group"]}</Tag>
+        <Tag>{e["name"]}</Tag>
       </Link>
     ));
 
@@ -92,7 +92,7 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
           </Row>
         </Card>
 
-        <Card title="Quick Search">
+        <Card title="Quick Search" style={{ textAlign: "center" }}>
           <DashboardQuickSearch />
         </Card>
 
@@ -133,7 +133,7 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
           loading={loading}
           listType="workflows"
           list={lists["workflows"]}
-          header="workflows"
+          header="Workflows"
           emptyMessage="Recent workflows attached to your content"
         />
       </Col>
