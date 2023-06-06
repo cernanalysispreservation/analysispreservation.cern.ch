@@ -1,3 +1,8 @@
+import React, { useEffect } from "react";
+import Loadable from "react-loadable";
+import { Switch, Route } from "react-router-dom";
+
+import "./App.less";
 import AboutPage from "../about";
 import requireAuth from "../auth/AuthorizationRequired";
 import noRequireAuth from "../auth/NoAuthorizationRequired";
@@ -12,13 +17,9 @@ import Loading from "../routes/Loading";
 import SchemasPage from "../schemas";
 import ErrorPage from "../utils/ErrorPage";
 import WelcomePage from "../welcome";
-import "./App.less";
 import * as Sentry from "@sentry/react";
 import { Layout, Row, Spin } from "antd";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
-import Loadable from "react-loadable";
-import { Switch, Route } from "react-router-dom";
 
 const CMSIndex = Loadable({
   loader: () => import("../admin"),

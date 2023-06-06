@@ -190,7 +190,11 @@ class CollectionSerializer(Schema):
         required=True, validate=validate.Regexp(regex=r"(\d+).(\d+).(\d+)")
     )
     fullname = fields.Str()
-    config = fields.Dict()
+    config = fields.Method("generate_schema_config", dump_only=True)
+
+    def generate_schema_config(self, obj):
+        return dict(permissions=obj.get_schema_permissions(), **obj.config)
+
     versions = fields.Method("get_schema_versions", dump_only=True)
 
     def get_schema_versions(self, obj):

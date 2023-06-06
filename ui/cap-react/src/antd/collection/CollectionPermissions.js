@@ -8,9 +8,11 @@ const CollectionPermissions = ({ permissions }) => {
   const [permissionsArray, setPermissionsArray] = useState();
 
   useEffect(() => {
-    const { permissionsArray } = permissionsPerUser(permissions);
-    setPermissionsArray(permissionsArray);
-  }, []);
+    if (permissions) {
+      const { permissionsArray } = permissionsPerUser(permissions.toJS());
+      setPermissionsArray(permissionsArray);
+    }
+  }, [permissions]);
 
   const renderPermissionType = (e, type) => {
     return e && e.includes(type) ? (
@@ -33,35 +35,35 @@ const CollectionPermissions = ({ permissions }) => {
           dataIndex: "permissions",
           key: "read",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-read"),
+          render: e => renderPermissionType(e, "deposit-schema-read"),
         },
         {
           title: "Create",
           dataIndex: "permissions",
           key: "create",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-create"),
+          render: e => renderPermissionType(e, "deposit-schema-create"),
         },
         {
           title: "Review",
           dataIndex: "permissions",
           key: "review",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-review"),
+          render: e => renderPermissionType(e, "deposit-schema-review"),
         },
         {
           title: "Update",
           dataIndex: "permissions",
           key: "update",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-update"),
+          render: e => renderPermissionType(e, "deposit-schema-update"),
         },
         {
           title: "Admin",
           dataIndex: "permissions",
           key: "admin",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-admin"),
+          render: e => renderPermissionType(e, "deposit-schema-admin"),
         },
       ]}
       dataSource={permissionsArray}
