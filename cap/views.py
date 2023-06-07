@@ -37,11 +37,7 @@ from cap.modules.records.serializers import record_json_v1
 from cap.modules.workflows.utils import get_user_workflows
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.serializers import collection_serializer
-from cap.modules.schemas.permissions import (
-    deposit_schema_read_action,
-    ReadSchemaPermission,
-    record_schema_read_action,
-)
+from cap.modules.schemas.permissions import ReadCollectionSchemaPermission
 
 blueprint = Blueprint(
     'cap',
@@ -151,11 +147,7 @@ def collection(collection_name, version=None):
     except JSONSchemaNotFound:
         abort(404)
 
-    if not (
-        ReadSchemaPermission(collection_schema).can() or
-        Permission(deposit_schema_read_action(collection_schema.id)).can() or
-        Permission(record_schema_read_action(collection_schema.id)).can()
-    ):
+    if not ReadCollectionSchemaPermission(collection_schema).can():
         abort(403)
 
     try:
