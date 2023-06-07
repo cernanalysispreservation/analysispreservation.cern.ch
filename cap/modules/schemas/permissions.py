@@ -111,6 +111,7 @@ class ReadSchemaPermission(Permission):
 
         super(ReadSchemaPermission, self).__init__(*_needs)
 
+
 class ReadCollectionSchemaPermission(ReadSchemaPermission):
     """Schema collection read permission."""
 
