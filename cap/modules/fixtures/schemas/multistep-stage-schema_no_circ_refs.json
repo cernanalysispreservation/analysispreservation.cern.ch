@@ -81,7 +81,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "multistep-stage"
+    "$id": "multistep-stage"
   },
   "name": "multistep-stage-schema_no_circ_refs"
 }

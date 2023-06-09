@@ -23,7 +23,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "glob_publisher"
+    "$id": "glob_publisher"
   },
   "deposit_options": [
     "workflows[].workflow.stages[].scheduler.step.publisher.globexpression",

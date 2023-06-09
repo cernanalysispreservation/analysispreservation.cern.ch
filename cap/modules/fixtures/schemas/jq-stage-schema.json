@@ -40,7 +40,7 @@
     "additionalProperties": true,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "jq-stage"
+    "$id": "jq-stage"
   },
   "name": "jq-stage-schema"
 }

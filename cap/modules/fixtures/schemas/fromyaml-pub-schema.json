@@ -21,7 +21,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "yaml_publisher"
+    "$id": "yaml_publisher"
   },
   "deposit_options": [
     "workflows[].workflow.stages[].scheduler.step.publisher.yamlfile"

@@ -1,6 +1,6 @@
 [
   {
-    "id": "123",
+    "$id": "123",
     "short_title": "JDM - Dark Matter and Energy Summary",
     "full_title": "Searches for Dark Matter ",
     "pub_short_title": "Dark Matter and Dark Energy Summary 13 TeV",
@@ -9,7 +9,7 @@
     "status": "phase0_closed",
     "phase_0": [
       {
-        "id": "12344",
+        "$id": "12344",
         "main_physics_aim": null,
         "dataset_used": null,
         "model_tested": null,
@@ -17,20 +17,20 @@
       }
     ],
     "gitlab_group": {
-      "id": "12345",
+      "$id": "12345",
       "projects": [
         {
-          "id": "33333",
+          "$id": "33333",
           "url":
             "https://gitlab.cern.ch/atlas-physics-office/EXOT/ANA-EXOT-2017-12345/ANA-EXOT-2017-12345-INT1"
         },
         {
-          "id": "44444",
+          "$id": "44444",
           "url":
             "https://gitlab.cern.ch/atlas-physics-office/EXOT/ANA-EXOT-2017-12345/ANA-EXOT-2017-12345-PAPER"
         },
         {
-          "id": "55555",
+          "$id": "55555",
           "url":
             "https://gitlab.cern.ch/atlas-physics-office/EXOT/ANA-EXOT-2017-12345/ANA-EXOT-2017-12345-CONF"
         }
