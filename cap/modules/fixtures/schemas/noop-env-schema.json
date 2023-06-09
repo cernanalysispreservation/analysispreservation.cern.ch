@@ -17,7 +17,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "noop-env"
+    "$id": "noop-env"
   },
   "name": "noop-env-schema"
 }

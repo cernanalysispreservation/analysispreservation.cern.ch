@@ -55,7 +55,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "array",
-    "id": "parameter_selection"
+    "$id": "parameter_selection"
   },
   "deposit_options": {
     "items": [

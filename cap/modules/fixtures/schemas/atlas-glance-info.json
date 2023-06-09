@@ -96,7 +96,7 @@
     },
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "glance_info"
+    "$id": "glance_info"
   },
   "name": "atlas-glance-info"
 }

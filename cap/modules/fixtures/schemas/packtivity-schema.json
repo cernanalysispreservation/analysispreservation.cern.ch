@@ -89,7 +89,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "packtivity_meta"
+    "$id": "packtivity_meta"
   },
   "deposit_options": {
     "items": [

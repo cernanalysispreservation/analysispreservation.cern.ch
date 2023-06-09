@@ -64,7 +64,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "array",
-    "id": "yadage_stage"
+    "$id": "yadage_stage"
   },
   "name": "atlas-analysis-input-files"
 }

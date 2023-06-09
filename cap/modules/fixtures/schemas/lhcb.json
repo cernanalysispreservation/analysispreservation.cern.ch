@@ -168,7 +168,7 @@
           },
           "keywords": {
             "type": "string",
-            "id": "keywords",
+            "$id": "keywords",
             "title": "Keywords"
           },
           "institutes": {
@@ -191,7 +191,7 @@
         },
         "title": "Basic Information",
         "type": "object",
-        "id": "basic_info",
+        "$id": "basic_info",
         "description": "Please provide some information relevant for all parts of the Analysis here"
       },
       "$ana_type": {
@@ -255,7 +255,7 @@
               }
             },
             "type": "array",
-            "id": "publications",
+            "$id": "publications",
             "title": "Publications"
           },
           "internal_discussions": {
@@ -277,7 +277,7 @@
               }
             },
             "type": "array",
-            "id": "internal-discussions",
+            "$id": "internal-discussions",
             "title": "Internal Discussions"
           },
           "presentations": {
@@ -299,7 +299,7 @@
               }
             },
             "type": "array",
-            "id": "presentations",
+            "$id": "presentations",
             "title": "Presentations"
           },
           "documentations": {
@@ -318,7 +318,7 @@
               "description": "Add documentation"
             },
             "type": "array",
-            "id": "documentations",
+            "$id": "documentations",
             "title": "Documentations"
           }
         },

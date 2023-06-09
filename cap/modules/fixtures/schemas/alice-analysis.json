@@ -21,7 +21,7 @@
       },
       "basic_info": {
         "title": "Basic Information",
-        "id": "basic_info",
+        "$id": "basic_info",
         "type": "object",
         "properties": {
           "analysis_title": {

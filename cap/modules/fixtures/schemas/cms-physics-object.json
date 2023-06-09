@@ -7,7 +7,7 @@
   "deposit_schema": {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "physics_object",
+    "$id": "physics_object",
     "dependencies": {
       "object": {
         "oneOf": [

@@ -22,7 +22,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "string_interpolated"
+    "$id": "string_interpolated"
   },
   "deposit_options": [
     {

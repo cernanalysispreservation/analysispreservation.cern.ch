@@ -127,7 +127,7 @@
       },
       "selection_triggers": {
         "items": {
-          "id": "trigger",
+          "$id": "trigger",
           "type": "object",
           "properties": {
             "element": {
