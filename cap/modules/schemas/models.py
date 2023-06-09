@@ -509,6 +509,26 @@ def timestamp_before_update(mapper, connection, target):
     target.updated = datetime.utcnow()
 
 
+def create_indices():
+    schemas = Schema.query.all()
+    for schema in schemas:
+        if schema.is_indexed:
+            create_index(
+                schema.deposit_index,
+                schema.deposit_mapping,
+                schema.deposit_aliases,
+            )
+            create_index(
+                schema.record_index,
+                schema.record_mapping,
+                schema.record_aliases,
+            )
+
+            # invenio search needs it
+            mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')
+            current_cache.delete_memoized(import_string(mappings_imp))
+
+
 # def recreate_index_schemas():
 #     # 1. Get all indexed schemas
 #     # 2. Delete index to update
