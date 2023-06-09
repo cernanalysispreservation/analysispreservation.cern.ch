@@ -47,7 +47,7 @@
     },
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "cadi_info"
+    "$id": "cadi_info"
   },
   "name": "cms-cadi-info"
 }

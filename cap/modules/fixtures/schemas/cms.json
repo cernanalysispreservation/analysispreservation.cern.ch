@@ -17,7 +17,7 @@
             "title": "Main Measurements Workflows",
             "type": "array",
             "description": "Please provide information about the main measurements of your analysis",
-            "id": "main_measurements"
+            "$id": "main_measurements"
           },
           "final_results": {
             "title": "Final Results",
@@ -316,7 +316,7 @@
                 "title": "Further categorisation Heavy Ion results"
               }
             },
-            "id": "analysis_keywords",
+            "$id": "analysis_keywords",
             "title": "Analysis Keywords"
           },
           "abstract": {
@@ -339,7 +339,7 @@
         },
         "title": "Basic Information",
         "type": "object",
-        "id": "basic_info",
+        "$id": "basic_info",
         "required": ["cadi_id"],
         "description": "Please provide some information relevant for all parts of the Analysis here"
       },
@@ -359,7 +359,7 @@
             "title": "Monte Carlo Background Datasets",
             "type": "array",
             "description": "Please list all Monte Carlo Background datasets",
-            "id": "mc_bg_datasets"
+            "$id": "mc_bg_datasets"
           },
           "json_files": {
             "items": {
@@ -422,7 +422,7 @@
                           "title": "Triggers",
                           "type": "array",
                           "description": "Add selection of triggers from list matched with selected path and year",
-                          "id": "triggers"
+                          "$id": "triggers"
                         }
                       }
                     }
@@ -434,7 +434,7 @@
             "title": "Primary Datasets",
             "type": "array",
             "description": "Please list all primary datasets here",
-            "id": "primary_datasets"
+            "$id": "primary_datasets"
           },
           "mc_sig_datasets": {
             "items": {
@@ -445,7 +445,7 @@
             "title": "Monte Carlo Signal Datasets",
             "type": "array",
             "description": "Please list all Monte Carlo Signal datasets",
-            "id": "mc_sig_datasets"
+            "$id": "mc_sig_datasets"
           },
           "custom_datasets": {
             "items": {
@@ -470,12 +470,12 @@
             "title": "Custom Datasets",
             "type": "array",
             "description": "Please list all custom datasets that couldn't be found from the DAS search",
-            "id": "custom_datasets"
+            "$id": "custom_datasets"
           }
         },
         "title": "Input Data",
         "type": "object",
-        "id": "input_data",
+        "$id": "input_data",
         "description": "Please list all datasets and triggers relevant for your analysis here"
       },
       "cadi_info": {
@@ -501,7 +501,7 @@
         "title": "N-tuples Production",
         "type": "array",
         "description": "Provide details on the intermediate n-tuples production",
-        "id": "ntuples_production"
+        "$id": "ntuples_production"
       },
       "_access": {
         "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
@@ -534,7 +534,7 @@
             },
             "title": "Presentations",
             "type": "array",
-            "id": "presentations",
+            "$id": "presentations",
             "description": "Upload presentations about the analysis"
           },
           "documentations": {
@@ -544,7 +544,7 @@
             },
             "title": "Additional Documentations",
             "type": "array",
-            "id": "documentations",
+            "$id": "documentations",
             "description": "Add any useful additional documentation"
           },
           "publications": {
@@ -553,12 +553,12 @@
             },
             "title": "Publications",
             "type": "array",
-            "id": "publications",
+            "$id": "publications",
             "description": "Add references to related publications"
           },
           "keywords": {
             "type": "string",
-            "id": "keywords",
+            "$id": "keywords",
             "title": "Keywords"
           },
           "internal_discussions": {
@@ -568,7 +568,7 @@
             },
             "title": "Internal Discussions",
             "type": "array",
-            "id": "internal-discussions",
+            "$id": "internal-discussions",
             "description": "Link to hypernews thread"
           }
         },
