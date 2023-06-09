@@ -19,7 +19,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "yadage_workflow"
+    "$id": "yadage_workflow"
   },
   "name": "workflow-schema_no_circ_refs"
 }

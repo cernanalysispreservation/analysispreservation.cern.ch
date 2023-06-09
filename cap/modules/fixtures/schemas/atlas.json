@@ -29,7 +29,7 @@
         },
         "additionalProperties": false,
         "type": "array",
-        "id": "input_datasets"
+        "$id": "input_datasets"
       },
       "_deposit": {
         "$ref":
@@ -42,7 +42,7 @@
       "basic_info": {
         "title": "Basic Information",
         "required": ["analysis_title", "glance_id"],
-        "id": "basic_info",
+        "$id": "basic_info",
         "propertyOrder": 10,
         "type": "object",
         "properties": {
@@ -130,7 +130,7 @@
         },
         "additionalProperties": false,
         "type": "array",
-        "id": "publications"
+        "$id": "publications"
       }
     }
   },

@@ -340,7 +340,7 @@ const simple = {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             rows: {
               title: "Rows",
-              description: "The number of the textarea rows",
+              description: "The number of rows in the textarea",
               type: "number",
             },
             maxLength: {
@@ -352,7 +352,7 @@ const simple = {
             minLength: {
               title: "Min Length",
               description:
-                "Provide a number as the minimum limit of charactes, empty if not provded",
+                "Provide a number as the minimum limit of characters, empty if not provded",
               type: "number",
             },
             placeholder: {

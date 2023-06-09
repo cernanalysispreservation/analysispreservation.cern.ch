@@ -58,7 +58,7 @@
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "id": "docker_enc_environment"
+    "$id": "docker_enc_environment"
   },
   "name": "docker-enc-schema"
 }
