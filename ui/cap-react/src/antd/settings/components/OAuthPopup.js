@@ -28,7 +28,7 @@ const OAuthPopup = ({
     );
   };
 
-    return <div onClick={createPopup}> {children} </div>;
+  return <div onClick={createPopup}> {children} </div>;
 };
 
 OAuthPopup.propTypes = {
@@ -40,4 +40,4 @@ OAuthPopup.propTypes = {
   loginCallBack: PropTypes.func,
 };
 
-export default OAuthPopup
+export default OAuthPopup;

@@ -6,14 +6,14 @@ const Error = ({
   history,
   error = {
     message: "Page was not Found",
-    status: "404"
-  }
+    status: "404",
+  },
 }) => {
   const getMessage = () => {
     const choices = {
       404: "The page your are looking for, either was removed <br /> or<br /> the url path is not correct",
       403: "Your account doesn't have permissions to access the content of this page",
-      500: "Currently our service can not provide any information due to a problem. Please try again later"
+      500: "Currently our service can not provide any information due to a problem. Please try again later",
     };
 
     return choices[error.status];
@@ -23,7 +23,7 @@ const Error = ({
       403: "Permission Required",
       404: "Page was not Found",
       500: "Network Error",
-      410: "PID has been deleted."
+      410: "PID has been deleted.",
     };
     return choices[error.status];
   };
@@ -45,7 +45,7 @@ Error.propTypes = {
   error: PropTypes.object,
   history: PropTypes.object,
   message: PropTypes.string,
-  status: PropTypes
+  status: PropTypes,
 };
 
 export default withRouter(Error);

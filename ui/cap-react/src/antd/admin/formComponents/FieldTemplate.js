@@ -129,9 +129,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-let _FieldTemplate = connect(
-  state => state,
-  mapDispatchToProps
-)(FieldTemplate);
+let _FieldTemplate = connect(state => state, mapDispatchToProps)(FieldTemplate);
 
 export default _FieldTemplate;

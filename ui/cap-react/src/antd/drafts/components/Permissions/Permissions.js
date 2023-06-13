@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { permissionsPerUser } from "../../../utils";
 import DropDown from "./DropDown";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -16,8 +18,6 @@ import {
 } from "antd";
 import axios from "axios";
 import { debounce } from "lodash-es";
-import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
 
 const Permissions = ({
   draft_id,

@@ -4,7 +4,7 @@ import { canEdit } from "../../utils/permissions";
 import {
   ArrowLeftOutlined,
   FolderOutlined,
-  MenuOutlined
+  MenuOutlined,
 } from "@ant-design/icons";
 import EditableField from "../../../partials/EditableField";
 
@@ -16,7 +16,7 @@ const DraftHeader = ({
   pushPath,
   openMenuDrawer,
   openFileDrawer,
-  updateGeneralTitle
+  updateGeneralTitle,
 }) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
@@ -76,7 +76,7 @@ DraftHeader.propTypes = {
   pushPath: PropTypes.func,
   openMenuDrawer: PropTypes.func,
   openFileDrawer: PropTypes.func,
-  updateGeneralTitle: PropTypes.func
+  updateGeneralTitle: PropTypes.func,
 };
 
 export default DraftHeader;

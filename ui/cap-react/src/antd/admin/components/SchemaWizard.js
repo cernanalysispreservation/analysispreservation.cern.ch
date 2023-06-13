@@ -11,7 +11,7 @@ const SchemaWizard = ({ field, loader }) => {
   if (loader)
     return (
       <Row style={{ height: "100%" }} align="middle" justify="center">
-        <Spin size="large" />;
+        <Spin size="large" />
       </Row>
     );
   return (

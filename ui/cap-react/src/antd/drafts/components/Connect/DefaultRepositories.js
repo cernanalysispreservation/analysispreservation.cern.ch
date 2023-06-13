@@ -80,13 +80,12 @@ const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
               }
               extra={genExtra(
                 key,
-                repos.filter(
-                  r =>
-                    r.host == value.host &&
-                    r.name == value.default_name &&
-                    r.owner == value.org_name
-                      ? true
-                      : false
+                repos.filter(r =>
+                  r.host == value.host &&
+                  r.name == value.default_name &&
+                  r.owner == value.org_name
+                    ? true
+                    : false
                 ).length > 0
                   ? true
                   : false,

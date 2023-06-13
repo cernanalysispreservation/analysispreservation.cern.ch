@@ -21,23 +21,20 @@ import prettyBytes from "pretty-bytes";
 const FileManager = ({ open, onCancel, links, uploadFile, filesToUpload }) => {
   const [fileList, setFileList] = useState([]);
   const [status, setStatus] = useState("ready");
-  useEffect(
-    () => {
-      const currentName = form.getFieldsValue().directory
-        ? form.getFieldsValue().directory + "/" + form.getFieldsValue().filename
-        : form.getFieldsValue().filename;
+  useEffect(() => {
+    const currentName = form.getFieldsValue().directory
+      ? form.getFieldsValue().directory + "/" + form.getFieldsValue().filename
+      : form.getFieldsValue().filename;
 
-      if (fileList.length > 0 && filesToUpload.has(currentName)) {
-        setStatus(filesToUpload.get(currentName).status);
-        if (filesToUpload.get(currentName).status == "done")
-          setTimeout(() => {
-            setFileList([]);
-            setStatus("ready");
-          }, 1000);
-      }
-    },
-    [filesToUpload]
-  );
+    if (fileList.length > 0 && filesToUpload.has(currentName)) {
+      setStatus(filesToUpload.get(currentName).status);
+      if (filesToUpload.get(currentName).status == "done")
+        setTimeout(() => {
+          setFileList([]);
+          setStatus("ready");
+        }, 1000);
+    }
+  }, [filesToUpload]);
   const [form] = Form.useForm();
 
   return (
@@ -57,8 +54,8 @@ const FileManager = ({ open, onCancel, links, uploadFile, filesToUpload }) => {
             fileList[0], // Send only first file from the list
             form.getFieldsValue().directory
               ? form.getFieldsValue().directory +
-                "/" +
-                form.getFieldsValue().filename
+                  "/" +
+                  form.getFieldsValue().filename
               : form.getFieldsValue().filename,
             form
               .getFieldsValue()

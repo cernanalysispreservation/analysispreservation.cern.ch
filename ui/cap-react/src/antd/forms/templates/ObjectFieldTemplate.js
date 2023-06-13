@@ -1,10 +1,11 @@
 import classNames from "classnames";
 import { isObject, isNumber } from "lodash-es";
 import { canExpand } from "@rjsf/utils";
-import { Button, Col, Divider, Row, Typography } from "antd";
+import { Button, Col, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import TabField from "./TabField";
 import PropTypes from "prop-types";
+import FieldHeader from "./Field/FieldHeader";
 
 const ObjectFieldTemplate = ({
   description,

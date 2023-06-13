@@ -181,7 +181,4 @@ const mapStateToProps = state => ({
   formData: state.draftItem.get("formData"),
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(SelectWidget);
+export default connect(mapStateToProps, null)(SelectWidget);

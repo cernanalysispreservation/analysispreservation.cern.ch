@@ -29,16 +29,13 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
 
     return stringify ? stringify.reduce(reducer, "") : null;
   };
-  useEffect(
-    () => {
-      if (items && itemToDisplay)
-        setItemToDisplay({
-          index: itemToDisplay.index,
-          children: items[itemToDisplay.index].children,
-        });
-    },
-    [items]
-  );
+  useEffect(() => {
+    if (items && itemToDisplay)
+      setItemToDisplay({
+        index: itemToDisplay.index,
+        children: items[itemToDisplay.index].children,
+      });
+  }, [items]);
 
   const getActionsButtons = item => {
     if (!item.hasToolbar) return [];

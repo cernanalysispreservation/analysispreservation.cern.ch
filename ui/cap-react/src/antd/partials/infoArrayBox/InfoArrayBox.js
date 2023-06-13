@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Divider, Row, Space, Tag } from "antd";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 
-const renderResourceIcon = (host) => {
+const renderResourceIcon = host => {
   switch (host) {
     case "github.com":
       return <GithubOutlined />;

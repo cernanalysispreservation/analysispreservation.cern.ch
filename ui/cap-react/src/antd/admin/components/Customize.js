@@ -19,15 +19,12 @@ const Customize = ({
   const [justify, setJustify] = useState(() => "start");
   const [size, setSize] = useState("xlarge");
 
-  useEffect(
-    () => {
-      if (uiSchema && Object.hasOwn(uiSchema.toJS(), "ui:options")) {
-        setSize(uiSchema.toJS()["ui:options"].size);
-        setJustify(uiSchema.toJS()["ui:options"].justify);
-      }
-    },
-    [uiSchema]
-  );
+  useEffect(() => {
+    if (uiSchema && Object.hasOwn(uiSchema.toJS(), "ui:options")) {
+      setSize(uiSchema.toJS()["ui:options"].size);
+      setJustify(uiSchema.toJS()["ui:options"].justify);
+    }
+  }, [uiSchema]);
 
   const _onSchemaChange = data => {
     onSchemaChange(path.get("path").toJS(), data.formData);

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Space, Typography } from "antd";
 import Markdown from "../../../partials/Markdown";
-import TitleField from "../../fields/TitleField";
+import TitleField from "../../fields/internal/TitleField";
 
 const FieldHeader = ({ label, description, uiSchema, isObject, idSchema }) => {
   return (

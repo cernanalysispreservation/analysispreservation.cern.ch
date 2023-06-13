@@ -158,7 +158,4 @@ const mapStateToProps = state => ({
   formErrors: state.draftItem.get("formErrors"),
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(TabField);
+export default connect(mapStateToProps, null)(TabField);

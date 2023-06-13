@@ -9,7 +9,7 @@ const Results = ({ results, loading }) => {
   const timeOptions = {
     day: "numeric",
     month: "long",
-    year: "numeric"
+    year: "numeric",
   };
 
   if (loading) return <ResultsLoading />;
@@ -55,8 +55,10 @@ const Results = ({ results, loading }) => {
         {[
           item.getIn(["schema", "name"]),
           new Date(item.get("created")).toLocaleString("en-GB", timeOptions),
-          ...item.get("labels")
-        ].map(label => <Tag key={label}>{label}</Tag>)}
+          ...item.get("labels"),
+        ].map(label => (
+          <Tag key={label}>{label}</Tag>
+        ))}
       </Space>
 
       {item.hasIn(["metadata", "basic_info", "abstract"]) && (
@@ -94,7 +96,7 @@ const Results = ({ results, loading }) => {
 
 Results.propTypes = {
   results: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
 };
 
 export default Results;

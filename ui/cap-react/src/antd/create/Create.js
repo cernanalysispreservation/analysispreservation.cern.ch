@@ -37,7 +37,7 @@ const Create = ({ contentTypes, match }) => {
                 onClick={() => form.submit()}
               >
                 Start Preserving
-              </Button>
+              </Button>,
             ]}
           >
             <CreateForm
@@ -54,7 +54,7 @@ const Create = ({ contentTypes, match }) => {
 
 Create.propTypes = {
   contentTypes: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
 };
 
 export default Create;

@@ -7,7 +7,7 @@ const DashboardListItem = ({ item }) => {
 
   let {
     general_title = "Untitled Document",
-    basic_info: { abstract = "" } = {}
+    basic_info: { abstract = "" } = {},
   } = metadata;
 
   const getTitle = () => {
@@ -43,7 +43,7 @@ const DashboardListItem = ({ item }) => {
 };
 
 DashboardListItem.propTypes = {
-  item: PropTypes.object
+  item: PropTypes.object,
 };
 
 export default DashboardListItem;

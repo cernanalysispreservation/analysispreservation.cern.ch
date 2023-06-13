@@ -12,7 +12,7 @@ import {
   FontSizeOutlined,
   VideoCameraOutlined,
   Html5Outlined,
-  FolderOutlined
+  FolderOutlined,
 } from "@ant-design/icons";
 
 export const _getIcon = mimetype => {
@@ -32,16 +32,16 @@ export const _getIcon = mimetype => {
       zip: <FileZipOutlined />,
       gzip: <FileZipOutlined />,
       "x-sh": <CodeOutlined />,
-      javascript: <CodepenOutlined />
+      javascript: <CodepenOutlined />,
     },
     audio: {
-      default: <AudioOutlined />
+      default: <AudioOutlined />,
     },
     font: {
-      default: <FontSizeOutlined />
+      default: <FontSizeOutlined />,
     },
     image: {
-      default: <FileImageOutlined />
+      default: <FileImageOutlined />,
     },
     model: {
       // default: <D3Icon type="status" size="xsmall" />
@@ -52,11 +52,11 @@ export const _getIcon = mimetype => {
       // json: <HtmlIcon type="status" size="xsmall" />,
       html: <Html5Outlined />,
       css: <BgColorsOutlined />,
-      "x-python": <CodeOutlined />
+      "x-python": <CodeOutlined />,
     },
     video: {
-      default: <VideoCameraOutlined />
-    }
+      default: <VideoCameraOutlined />,
+    },
   };
 
   if (typeToIcon[type][subtype]) {

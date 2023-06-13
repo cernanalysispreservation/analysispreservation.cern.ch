@@ -43,7 +43,7 @@ const Preview = ({
               <Tag>{id}</Tag>
               {schemaType && (
                 <Link
-                  to={`/${COLLECTION_BASE}/${schemaType.name}/${
+                  to={`${COLLECTION_BASE}/${schemaType.name}/${
                     schemaType.version || ""
                   }`}
                 >

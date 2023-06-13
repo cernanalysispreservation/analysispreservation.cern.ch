@@ -36,18 +36,21 @@ const RJSFForm = ({
   // we want to allow forms to be saved even without required fields
   // if these fields are not filled in when publishing then an error will be shown
   const transformErrors = errors => {
-    errors = errors.filter(item => item.name != "required").map(error => {
-      if (error.name == "required") return null;
+    errors = errors
+      .filter(item => item.name != "required")
+      .map(error => {
+        if (error.name == "required") return null;
 
-      // Update messages for undefined fields when required,
-      // from "should be string" ==> "Either edit or remove"
-      if (error.message == "should be string") {
-        let errorMessages = objectPath.get(formData, error.property);
-        if (errorMessages == undefined) error.message = "Either edit or remove";
-      }
+        // Update messages for undefined fields when required,
+        // from "should be string" ==> "Either edit or remove"
+        if (error.message == "should be string") {
+          let errorMessages = objectPath.get(formData, error.property);
+          if (errorMessages == undefined)
+            error.message = "Either edit or remove";
+        }
 
-      return error;
-    });
+        return error;
+      });
 
     return errors;
   };
