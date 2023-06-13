@@ -8,7 +8,7 @@ import { services } from "../../utils/services";
 const Integrations = ({
   updateIntegrations,
   integrations,
-  removeIntegrations
+  removeIntegrations,
 }) => {
   return (
     <Card title="Integrations with other services">
@@ -63,7 +63,7 @@ const Integrations = ({
 Integrations.propTypes = {
   updateIntegrations: PropTypes.func,
   integrations: PropTypes.object,
-  removeIntegrations: PropTypes.func
+  removeIntegrations: PropTypes.func,
 };
 
 export default Integrations;

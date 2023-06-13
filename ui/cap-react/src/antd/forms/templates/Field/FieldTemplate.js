@@ -76,6 +76,7 @@ const FieldTemplate = ({
                 label={label}
                 description={rawDescription}
                 uiSchema={uiSchema}
+                idSchema={{ $id: id }}
               />
             )
           }

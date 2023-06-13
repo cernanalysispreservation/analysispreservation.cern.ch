@@ -25,12 +25,12 @@ const common = {
     title: {
       type: "string",
       title: "Title",
-      description: "Provide a title to be displayed in your field",
+      description: "Provide a title to be displayed for your field",
     },
     description: {
       title: "Description",
       type: "string",
-      description: "Provide a description to be displayed in your field",
+      description: "Provide a description to be displayed for your field",
     },
   },
   optionsUiSchema: {
@@ -345,14 +345,12 @@ const simple = {
             },
             maxLength: {
               title: "Max Length",
-              description:
-                "Provide a number as the maximum limit of characters, infinity if not provided",
+              description: "Infinity if not provided",
               type: "number",
             },
             minLength: {
               title: "Min Length",
-              description:
-                "Provide a number as the minimum limit of characters, empty if not provded",
+              description: "Empty if not provided",
               type: "number",
             },
             placeholder: {

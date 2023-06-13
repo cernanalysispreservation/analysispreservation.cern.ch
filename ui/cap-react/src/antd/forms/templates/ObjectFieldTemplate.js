@@ -1,10 +1,11 @@
 import classNames from "classnames";
 import { isObject, isNumber } from "lodash-es";
 import { canExpand } from "@rjsf/utils";
-import { Button, Col, Divider, Row, Typography } from "antd";
+import { Button, Col, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import TabField from "./TabField";
 import PropTypes from "prop-types";
+import FieldHeader from "./Field/FieldHeader";
 
 const ObjectFieldTemplate = ({
   description,
@@ -76,65 +77,52 @@ const ObjectFieldTemplate = ({
   return (
     <fieldset style={{ margin: "0 12px" }} id={idSchema.$id}>
       <Row gutter={rowGutter}>
-        <div style={{ marginBottom: "8px" }}>
-          {uiSchema["ui:title"] !== false &&
-            (uiSchema["ui:title"] || title) && (
-              <Col
-                style={{ padding: "0" }}
-                className={labelColClassName}
-                span={24}
-              >
-                {
-                  <Divider
-                    id={`${idSchema.$id}-title`}
-                    orientation="left"
-                    style={{ margin: 0 }}
-                  >
-                    <Typography.Title level={5}>
-                      {uiSchema["ui:title"] || title}
-                    </Typography.Title>
-                  </Divider>
-                }
-              </Col>
-            )}
-          {uiSchema["ui:description"] !== false &&
-            (uiSchema["ui:description"] || description) && (
-              <Col span={24}>
-                <Typography.Text type="secondary">
-                  {uiSchema["ui:description"] || description}
-                </Typography.Text>
-              </Col>
-            )}
-        </div>
+        <Col
+          style={{
+            padding: "0",
+            marginBottom: "12px",
+          }}
+          className={labelColClassName}
+          span={24}
+        >
+          <FieldHeader
+            label={uiSchema["ui:title"] || title}
+            isObject
+            description={uiSchema["ui:description"] || description}
+            uiSchema={uiSchema}
+            idSchema={idSchema}
+          />
+        </Col>
         <Col span={24} className="nestedObject">
           <Row gutter={10}>
-            {properties.filter(e => !e.hidden).map(element => (
-              <Col key={element.name} span={calculateColSpan(element)}>
-                {element.content}
-              </Col>
-            ))}
+            {properties
+              .filter(e => !e.hidden)
+              .map(element => (
+                <Col key={element.name} span={calculateColSpan(element)}>
+                  {element.content}
+                </Col>
+              ))}
           </Row>
         </Col>
       </Row>
 
-      {canExpand(schema, uiSchema, formData) &&
-        !readonly && (
-          <Col span={24}>
-            <Row gutter={rowGutter} justify="end">
-              <Col flex="192px">
-                <Button
-                  block
-                  className="object-property-expand"
-                  disabled={disabled}
-                  onClick={onAddClick(schema)}
-                  type="primary"
-                >
-                  <PlusCircleOutlined /> Add Item
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        )}
+      {canExpand(schema, uiSchema, formData) && !readonly && (
+        <Col span={24}>
+          <Row gutter={rowGutter} justify="end">
+            <Col flex="192px">
+              <Button
+                block
+                className="object-property-expand"
+                disabled={disabled}
+                onClick={onAddClick(schema)}
+                type="primary"
+              >
+                <PlusCircleOutlined /> Add Item
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+      )}
     </fieldset>
   );
 };

@@ -153,10 +153,7 @@ function mapDispatchToProps(dispatch) {
     selectProperty: path => dispatch(selectProperty(path)),
   };
 }
-export default connect(
-  state => state,
-  mapDispatchToProps
-)(SchemaTreeItem);
+export default connect(state => state, mapDispatchToProps)(SchemaTreeItem);
 
 let mapType2Icon = {
   object: <div>&#123;&#32;&#125;</div>,

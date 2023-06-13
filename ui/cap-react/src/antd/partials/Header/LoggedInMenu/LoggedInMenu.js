@@ -1,7 +1,6 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
-import { Menu, Modal } from "antd";
-import { Link } from "react-router-dom";
+import DraftCreate from "../../../drafts/DraftCreate";
+import { CMS, SETTINGS } from "../../../routes";
+import HowToSearchPage from "../../HowToSearch";
 import {
   SettingOutlined,
   LogoutOutlined,
@@ -13,11 +12,15 @@ import {
   ScheduleOutlined,
   QuestionOutlined,
   PlusOutlined,
+  ToolOutlined,
 } from "@ant-design/icons";
-import DraftCreate from "../../../drafts/DraftCreate";
-import HowToSearchPage from "../../HowToSearch";
+import { FloatButton, Menu, Modal } from "antd";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { history } from "../../../../store/configureStore";
 
-const LoggedInMenu = ({ permissions, logout }) => {
+const LoggedInMenu = ({ permissions, logout, roles, location }) => {
   const [displayCreate, setDisplayCreate] = useState(false);
   const [displayHowToSearch, setDisplayHowToSearch] = useState(false);
 
@@ -132,7 +135,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
               },
               {
                 key: "settings",
-                label: <Link to="/settings">Settings</Link>,
+                label: <Link to={SETTINGS}>Settings</Link>,
                 icon: <SettingOutlined />,
               },
               {
@@ -146,6 +149,19 @@ const LoggedInMenu = ({ permissions, logout }) => {
           },
         ]}
       />
+
+      {!location.pathname.startsWith(CMS) &&
+        (roles.get("isSuperUser") || roles.get("schemaAdmin").size > 0) && (
+          <FloatButton
+            icon={<ToolOutlined />}
+            type="primary"
+            shape="square"
+            description="Admin"
+            onClick={() => {
+              history.push(CMS);
+            }}
+          />
+        )}
     </>
   );
 };
@@ -153,6 +169,7 @@ const LoggedInMenu = ({ permissions, logout }) => {
 LoggedInMenu.propTypes = {
   logout: PropTypes.func,
   permissions: PropTypes.bool,
+  roles: PropTypes.object,
 };
 
 export default LoggedInMenu;

@@ -25,12 +25,15 @@ import { lazy } from "react";
 
 const AdminPage = lazy(() => import("../admin"));
 
-const App = ({ initCurrentUser, loadingInit, history }) => {
+const App = ({ initCurrentUser, loadingInit, history, roles }) => {
   useEffect(() => {
     initCurrentUser(history.location.state);
   }, []);
 
   useTrackPageViews(history.location.pathname);
+
+  const isAdmin =
+    roles && (roles.get("isSuperUser") || roles.get("schemaAdmin").size > 0);
 
   if (loadingInit)
     return (
@@ -57,7 +60,7 @@ const App = ({ initCurrentUser, loadingInit, history }) => {
               <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
               <Route path={ABOUT} component={AboutPage} />
               <Route path={POLICY} component={PolicyPage} />
-              <Route path={CMS} component={AdminPage} />
+              {isAdmin && <Route path={CMS} component={AdminPage} />}
               <Route path={SCHEMAS} component={SchemasPage} />
               <Route path={HOME} component={requireAuth(IndexPage)} />
             </Switch>
@@ -75,6 +78,7 @@ App.propTypes = {
   initCurrentUser: PropTypes.func,
   loadingInit: PropTypes.bool,
   history: PropTypes.object,
+  roles: PropTypes.object,
 };
 
 export default App;

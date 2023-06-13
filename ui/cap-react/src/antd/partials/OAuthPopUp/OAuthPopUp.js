@@ -7,7 +7,7 @@ export default class OauthPopup extends PureComponent {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    window["loginCallBack"] = function() {
+    window["loginCallBack"] = function () {
       if (props.loginCallBack) props.loginCallBack(urlParams.get("next"));
       return null;
     };

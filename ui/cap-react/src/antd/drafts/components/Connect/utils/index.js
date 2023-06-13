@@ -1,6 +1,6 @@
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 
-export const getIcon = (host) => {
+export const getIcon = host => {
   switch (host) {
     case "github.com":
       return <GithubOutlined />;

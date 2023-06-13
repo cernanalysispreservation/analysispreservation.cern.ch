@@ -6,14 +6,14 @@ import { FilterOutlined } from "@ant-design/icons";
 const SORT_OPTIONS = [
   { value: "mostrecent", label: "Newest First" },
   { value: "-mostrecent", label: "Oldest First" },
-  { value: "bestmatch", label: "Best Match" }
+  { value: "bestmatch", label: "Best Match" },
 ];
 
 const getValueFromLocation = (value = "mostrecent") => {
   const choices = {
     mostrecent: "Newest First",
     "-mostrecent": "Oldest First",
-    bestmatch: "Best Match"
+    bestmatch: "Best Match",
   };
 
   return choices[value];
@@ -24,7 +24,7 @@ const Header = ({
   results,
   onChange,
   shouldDisplayFacetButton,
-  updateDisplayFacet
+  updateDisplayFacet,
 }) => {
   const total = results.getIn(["hits", "total"]) || 0;
 
@@ -117,7 +117,7 @@ Header.propTypes = {
   results: PropTypes.object,
   onChange: PropTypes.func,
   shouldDisplayFacetButton: PropTypes.bool,
-  updateDisplayFacet: PropTypes.func
+  updateDisplayFacet: PropTypes.func,
 };
 
 export default Header;

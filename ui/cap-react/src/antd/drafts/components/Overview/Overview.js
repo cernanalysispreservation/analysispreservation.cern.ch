@@ -41,9 +41,10 @@ const Overview = ({
   loading,
   history,
 }) => {
-  const { users, roles } = useMemo(() => calculateCollaborators(access), [
-    access,
-  ]);
+  const { users, roles } = useMemo(
+    () => calculateCollaborators(access),
+    [access]
+  );
 
   const infoArray = [
     {
@@ -102,22 +103,21 @@ const Overview = ({
             }
           />
         )}
-        {mySchema &&
-          mySchema.name == "cms-stats-questionnaire" && (
-            <Alert
-              type="warning"
-              showIcon
-              message="Warning"
-              description={
-                <Typography.Text>
-                  For your {(mySchema && mySchema.fullname) || "document"} , to
-                  be <Typography.Text strong>reviewed</Typography.Text> you need
-                  to <Typography.Text strong>Publish</Typography.Text> it first
-                  (through settings tab)
-                </Typography.Text>
-              }
-            />
-          )}
+        {mySchema && mySchema.name == "cms-stats-questionnaire" && (
+          <Alert
+            type="warning"
+            showIcon
+            message="Warning"
+            description={
+              <Typography.Text>
+                For your {(mySchema && mySchema.fullname) || "document"} , to be{" "}
+                <Typography.Text strong>reviewed</Typography.Text> you need to{" "}
+                <Typography.Text strong>Publish</Typography.Text> it first
+                (through settings tab)
+              </Typography.Text>
+            }
+          />
+        )}
 
         <Card
           title="Metadata"
@@ -147,21 +147,20 @@ const Overview = ({
             </Space>
           }
         >
-          {schemas &&
-            schemas.schema && (
-              <div style={{ maxHeight: "30vh", overflowX: "hidden" }}>
-                <JSONSchemaPreviewer
-                  formData={metadata}
-                  schema={transformSchema(schemas.schema)}
-                  schemaType={mySchema}
-                  uiSchema={schemas.uiSchema || {}}
-                  display="list"
-                  onChange={() => {}}
-                >
-                  <span />
-                </JSONSchemaPreviewer>
-              </div>
-            )}
+          {schemas && schemas.schema && (
+            <div style={{ maxHeight: "30vh", overflowX: "hidden" }}>
+              <JSONSchemaPreviewer
+                formData={metadata}
+                schema={transformSchema(schemas.schema)}
+                schemaType={mySchema}
+                uiSchema={schemas.uiSchema || {}}
+                display="list"
+                onChange={() => {}}
+              >
+                <span />
+              </JSONSchemaPreviewer>
+            </div>
+          )}
         </Card>
         <Reviews />
         <Card title="Connected Repositories">

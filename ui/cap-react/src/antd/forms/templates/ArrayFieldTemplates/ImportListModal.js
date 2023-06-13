@@ -25,16 +25,11 @@ const ImportListModal = ({
   const [data, setData] = useState(null);
   // const [error, setError] = useState(null);
 
-  useEffect(
-    () => {
-      if (currentIndex) {
-        formItems[currentIndex.index].children.props.onChange(
-          currentIndex.value
-        );
-      }
-    },
-    [currentIndex]
-  );
+  useEffect(() => {
+    if (currentIndex) {
+      formItems[currentIndex.index].children.props.onChange(currentIndex.value);
+    }
+  }, [currentIndex]);
 
   const updateAll = (items = [], add = true) => {
     let updated = items.map(item => item + "\n");

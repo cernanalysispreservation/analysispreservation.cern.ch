@@ -1,22 +1,22 @@
 import PropTypes from "prop-types";
 import { Space, Typography } from "antd";
 import Markdown from "../../../partials/Markdown";
+import TitleField from "../../fields/internal/TitleField";
 
-const FieldHeader = ({ label, description, uiSchema }) => {
+const FieldHeader = ({ label, description, uiSchema, isObject, idSchema }) => {
   return (
     <Space direction="vertical" size={0}>
-      <Typography.Text strong>
-        <Markdown
-          text={label}
-          style={{
-            color: "#000",
-          }}
-          renderAsHtml={
+      {uiSchema["ui:title"] !== false && label && (
+        <TitleField
+          title={label}
+          titleIsMarkdown={
             uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
           }
+          isObject={isObject}
+          id={`${idSchema.$id}-title`}
         />
-      </Typography.Text>
-      <Typography.Text type="secondary">
+      )}
+      <Typography.Text type="secondary" id={`${idSchema.$id}-description`}>
         {description && (
           <Markdown
             text={description}
@@ -39,6 +39,8 @@ FieldHeader.propTypes = {
   label: PropTypes.string,
   uiSchema: PropTypes.object,
   description: PropTypes.node,
+  isObject: PropTypes.bool,
+  idSchema: PropTypes.object,
 };
 
 export default FieldHeader;

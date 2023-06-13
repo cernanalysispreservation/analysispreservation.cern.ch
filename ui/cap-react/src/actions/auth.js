@@ -1,7 +1,7 @@
-import axios from "axios";
+import { matomoInstance } from "../antd/Root";
 import { history } from "../store/configureStore";
 import { notification } from "antd";
-import { matomoInstance } from "../antd/Root";
+import axios from "axios";
 
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
@@ -120,7 +120,7 @@ export function initCurrentUser(next = undefined) {
     axios
       .get("/api/me")
       .then(function (response) {
-        let { id, deposit_groups = [] } = response.data;
+        let { id, deposit_groups = [], roles } = response.data;
         localStorage.setItem("token", id);
         if (matomoInstance)
           matomoInstance.pushInstruction("setUserId", response.data.email);
@@ -131,6 +131,12 @@ export function initCurrentUser(next = undefined) {
             profile: response.data,
             depositGroups: deposit_groups,
             permissions: deposit_groups.length === 0 ? false : true,
+            roles: {
+              schemaAdmin: roles
+                .filter(r => r.startsWith("schema-admin"))
+                .map(r => r.split(":")[1]),
+              isSuperUser: roles.includes("superuser"),
+            },
           })
         );
         dispatch(initCurrentUserSuccess());

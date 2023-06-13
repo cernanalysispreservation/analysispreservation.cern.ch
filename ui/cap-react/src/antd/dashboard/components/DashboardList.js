@@ -32,9 +32,11 @@ const DashboardList = ({
             <Typography.Text strong style={{ marginRight: "10px" }}>
               {header}
             </Typography.Text>
-            <Tooltip title={description} placement="right">
-              <InfoCircleOutlined />
-            </Tooltip>
+            {description && (
+              <Tooltip title={description} placement="right">
+                <InfoCircleOutlined />
+              </Tooltip>
+            )}
           </Col>
           <Col flex="none">
             <TypeTags

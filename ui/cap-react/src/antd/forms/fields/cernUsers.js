@@ -192,14 +192,13 @@ const CernUsers = ({ onChange, formData, uiSchema, readonly }) => {
             </a>
             <Tag color="blue">{formData.department}</Tag>
           </Space>
-          {!autoOpenModal &&
-            !readonly && (
-              <Button
-                type="danger"
-                icon={<DeleteOutlined />}
-                onClick={() => onChange(undefined)}
-              />
-            )}
+          {!autoOpenModal && !readonly && (
+            <Button
+              type="danger"
+              icon={<DeleteOutlined />}
+              onClick={() => onChange(undefined)}
+            />
+          )}
         </Row>
       ) : (
         <Row

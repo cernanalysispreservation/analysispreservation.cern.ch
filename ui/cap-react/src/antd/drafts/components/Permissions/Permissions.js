@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { permissionsPerUser } from "../../../utils";
+import DropDown from "./DropDown";
+import { DeleteOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -15,8 +18,6 @@ import {
 } from "antd";
 import axios from "axios";
 import { debounce } from "lodash-es";
-import DropDown from "./DropDown";
-import { DeleteOutlined } from "@ant-design/icons";
 
 const Permissions = ({
   draft_id,
@@ -173,54 +174,11 @@ const Permissions = ({
     },
   ];
 
-  useEffect(
-    () => {
-      let access = {};
-      let accessArray = [];
-      let emailsArray = [];
-      permissions &&
-        Object.keys(permissions).map(action => {
-          permissions[action].users.map(user => {
-            if (!access[user.email])
-              access[user.email] = {
-                email: user.email,
-                permissions: [],
-                type: "user",
-              };
-            access[user.email].permissions.push(action);
-
-            if (access[user.email]) {
-              accessArray = accessArray.filter(
-                item => item.email != user.email
-              );
-            }
-            accessArray.push(access[user.email]);
-            emailsArray.push(user.email);
-          });
-
-          permissions[action].roles.map(role => {
-            if (!access[role])
-              access[role] = {
-                email: role,
-                permissions: [],
-                type: "egroup",
-              };
-            access[role].permissions.push(action);
-            if (access[role]) {
-              accessArray = accessArray.filter(item => item.email != role);
-            }
-            accessArray.push(access[role]);
-            emailsArray.push(role);
-          });
-        });
-
-      setPermissionsArray(
-        accessArray.sort((a, b) => (a.email < b.email ? -1 : 1))
-      );
-      setEmailsArray(emailsArray);
-    },
-    [permissions]
-  );
+  useEffect(() => {
+    const { permissionsArray, emailsArray } = permissionsPerUser(permissions);
+    setPermissionsArray(permissionsArray);
+    setEmailsArray(emailsArray);
+  }, [permissions]);
 
   const fetchLDAPdata = debounce(async ({ searchFor, searchInput }) => {
     setTableLoading(true);

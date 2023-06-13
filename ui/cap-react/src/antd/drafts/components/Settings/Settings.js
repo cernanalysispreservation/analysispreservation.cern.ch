@@ -96,8 +96,8 @@ const Settings = ({
               of everything that your analysis contains - metadata, files,
               plots, repositories - assigning to it an unique versioned
               identifier. All members of your collaboration can search and
-              reference published content. Once published analysis cannot be
-              deleted, but can be modified and published again with a new
+              reference published content. Once published, an analysis cannot be
+              deleted, but it can be modified and published again with a new
               version tag.
             </Typography.Paragraph>
           </Card>

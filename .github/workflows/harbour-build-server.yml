@@ -1,0 +1,35 @@
+name: Build and export CAP server image
+
+on:
+  push:
+    branches: ['master', 'dev', 'qa', 'test']
+    paths-ignore:
+      - "ui/**"
+
+jobs:
+  build-image:
+    needs: python-tests
+    name: Build and export server image
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+        id: get_branch
+
+      - name: Build and export
+        uses: cern-sis/gh-workflows/.github/actions/docker-build@v6.1.0
+        with:
+          dockerfile: ./docker/harbour/backend/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          image: cern-sis/cap-server
+          registry: registry.cern.ch
+          cache: false
+          tags: ${{ steps.get_branch.outputs.BRANCH_NAME }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+          build-args: |
+            BRANCH_NAME=${{ steps.get_branch.outputs.BRANCH_NAME }}

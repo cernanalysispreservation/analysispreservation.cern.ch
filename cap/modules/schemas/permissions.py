@@ -112,6 +112,24 @@ class ReadSchemaPermission(Permission):
         super(ReadSchemaPermission, self).__init__(*_needs)
 
 
+class ReadCollectionSchemaPermission(ReadSchemaPermission):
+    """Schema collection read permission."""
+
+    def __init__(self, schema):
+        """Initialize state.
+
+        Admin access for:
+
+        * all members of experiment assigned to schema
+        * all users/roles assigned to schema-object-admin action
+
+        """
+        super(ReadCollectionSchemaPermission, self).__init__(schema)
+
+        self.explicit_needs.add(deposit_schema_read_action(schema.id))
+        self.explicit_needs.add(record_schema_read_action(schema.id))
+
+
 class AdminSchemaPermission(Permission):
     """Schema admin permission."""
 

@@ -9,8 +9,9 @@ const Ror = ({ data }) => {
           <Typography.Title level={5} style={{ marginBottom: 0 }}>
             {data.name}
           </Typography.Title>
-          {data.acronyms &&
-            data.acronyms.length > 0 && <Tag color="blue">{data.acronyms}</Tag>}
+          {data.acronyms && data.acronyms.length > 0 && (
+            <Tag color="blue">{data.acronyms}</Tag>
+          )}
         </Space>
       </Descriptions.Item>
       <Descriptions.Item label="Country">

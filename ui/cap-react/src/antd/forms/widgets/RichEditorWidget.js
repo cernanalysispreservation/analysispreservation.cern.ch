@@ -33,7 +33,15 @@ const RichEditorWidget = props => {
 
   return (
     <MdEditor
-      style={{ height: "500px" }}
+      style={{
+        height:
+          props.height === 0
+            ? undefined
+            : props.height > 0
+            ? props.height
+            : "500px",
+        border: props.noBorder ? "none" : undefined,
+      }}
       config={{
         canView: {
           fullScreen: false,
@@ -71,6 +79,7 @@ const RichEditorWidget = props => {
       onChange={handleEditorChange}
       value={props.value}
       ref={myEditor}
+      key={props.noBorder}
     />
   );
 };
@@ -82,6 +91,8 @@ RichEditorWidget.propTypes = {
   displayedFromModal: PropTypes.bool,
   canViewProps: PropTypes.object,
   viewProps: PropTypes.object,
+  noBorder: PropTypes.bool,
+  height: PropTypes.number,
 };
 
 export default RichEditorWidget;

@@ -11,7 +11,6 @@ import {
 import PropTypes from "prop-types";
 import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
 import NormalArrayFieldTemplate from "./NormalArrayFieldTemplate";
-import TitleField from "../../fields/internal/TitleField";
 
 const ArrayFieldTemplate = ({
   autofocus,
@@ -126,7 +125,6 @@ const ArrayFieldTemplate = ({
         required={required}
         schema={schema}
         title={title}
-        TitleField={TitleField}
         uiSchema={uiSchema}
       />
     );
@@ -156,13 +154,11 @@ const ArrayFieldTemplate = ({
       required={required}
       schema={schema}
       title={title}
-      TitleField={TitleField}
       uiSchema={uiSchema}
     />
   );
 };
 ArrayFieldTemplate.propTypes = {
-  TitleField: PropTypes.node,
   autofocus: PropTypes.bool,
   canAdd: PropTypes.bool,
   className: PropTypes.string,

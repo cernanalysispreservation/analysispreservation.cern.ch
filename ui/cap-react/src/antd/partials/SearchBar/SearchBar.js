@@ -7,8 +7,8 @@ const SEARCH_PATHS = [
   { label: "Drafts", pathname: "/drafts" },
   {
     label: "Published",
-    pathname: "/search"
-  }
+    pathname: "/search",
+  },
 ];
 
 const SearchBar = ({ pushPath }) => {
@@ -27,7 +27,7 @@ const SearchBar = ({ pushPath }) => {
             Search {query} on{" "}
             <a onClick={() => pushPath(item.searchOn)}>{item.label}</a>
           </span>
-        )
+        ),
       };
     });
   const handleSearch = value => {
@@ -39,7 +39,7 @@ const SearchBar = ({ pushPath }) => {
 
     const search_location = {
       pathname: searchOn,
-      search: `${queryString.stringify({ q: searchValue })}`
+      search: `${queryString.stringify({ q: searchValue })}`,
     };
     setValue(searchValue);
     pushPath(search_location);
@@ -68,7 +68,7 @@ const SearchBar = ({ pushPath }) => {
 };
 
 SearchBar.propTypes = {
-  pushPath: PropTypes.func
+  pushPath: PropTypes.func,
 };
 
 export default SearchBar;

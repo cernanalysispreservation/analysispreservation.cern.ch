@@ -12,7 +12,7 @@ const Explain = () => {
         },
         {
           title: "Files",
-          description: "Plots, tables, formulas, likelihoods ",
+          description: "Plots, tables, formulas, likelihoods",
         },
         {
           title: "Code",
@@ -20,11 +20,11 @@ const Explain = () => {
         },
         {
           title: "Workflows",
-          description: "Containerized images, workflows ",
+          description: "Containerized images, workflows",
         },
         {
           title: "Documentation",
-          description: "Publications, presentations, conferences, notes ",
+          description: "Publications, presentations, conferences, notes",
         },
       ],
     },
@@ -43,7 +43,7 @@ const Explain = () => {
         {
           title: "RESTful Interface",
           description:
-            "Integrate CERN Analysis Preservation with your existing services and tools by using our REST API ",
+            "Integrate CERN Analysis Preservation with your existing services and tools by using our REST API",
         },
       ],
     },
@@ -58,17 +58,17 @@ const Explain = () => {
         {
           title: "Collaborators",
           description:
-            "Share your work with others and invite them to contribute ",
+            "Share your work with others and invite them to contribute",
         },
         {
           title: "Reviewers",
           description:
-            "Access analyses and all their components from one central place  ",
+            "Access analyses and all their components from one central place",
         },
         {
           title: "Students",
           description:
-            "Search through older analyses, share with your supervisors, and preserve your work so that it never gets lost ",
+            "Search through older analyses, share with your supervisors, and preserve your work so that it never gets lost",
         },
       ],
     },

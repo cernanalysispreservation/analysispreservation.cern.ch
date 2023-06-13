@@ -29,9 +29,7 @@ tests_require = [
     'pytest-pep8>=1.0.6',
     'pytest-random-order>=0.5.4',
     'pytest==5.3.5',
-    'yapf>=0.28.0',
     'responses==0.10.6',
-    'selenium>=3.4.3',
 ]
 
 extras_require = {'docs': ['Sphinx>=1.5.1'], 'tests': tests_require}

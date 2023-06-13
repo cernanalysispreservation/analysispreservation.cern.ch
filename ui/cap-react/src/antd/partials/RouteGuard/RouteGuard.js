@@ -35,14 +35,11 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
     setWhen(true);
   }, []);
 
-  useEffect(
-    () => {
-      if (confirmedNavigation && lastLocation) {
-        navigate(lastLocation.pathname);
-      }
-    },
-    [confirmedNavigation, lastLocation]
-  );
+  useEffect(() => {
+    if (confirmedNavigation && lastLocation) {
+      navigate(lastLocation.pathname);
+    }
+  }, [confirmedNavigation, lastLocation]);
 
   return (
     <>

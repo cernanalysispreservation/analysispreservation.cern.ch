@@ -13,7 +13,7 @@ export default ComposedComponent => {
               pathname: `/login`,
               search: `?next=${this.props.history.location.pathname}`,
               state: { next: this.props.history.location.pathname },
-              from: this.props.match.path
+              from: this.props.match.path,
             }}
           />
         );
@@ -26,7 +26,7 @@ export default ComposedComponent => {
   Authentication.propTypes = {
     isLoggedIn: PropTypes.bool,
     history: PropTypes.object,
-    match: PropTypes.object
+    match: PropTypes.object,
   };
 
   function mapStateToProps(state) {

@@ -9,6 +9,8 @@ import JSONSchemaPreviewer from "../../partials/JSONSchemaPreviewer";
 import { shouldDisplayTabButton } from "../utils";
 import SideBar from "./SideBar";
 import Reviews from "../../partials/Reviews";
+import { Link } from "react-router-dom";
+import { COLLECTION_BASE } from "../../routes";
 
 const Preview = ({
   history,
@@ -41,9 +43,15 @@ const Preview = ({
               <Tag color="purple">Published</Tag>
               <Tag>{id}</Tag>
               {schemaType && (
-                <Tag>
-                  {schemaType.fullname} v{schemaType.version}
-                </Tag>
+                <Link
+                  to={`${COLLECTION_BASE}/${schemaType.name}/${
+                    schemaType.version || ""
+                  }`}
+                >
+                  <Tag color="geekblue">
+                    {schemaType.fullname} v{schemaType.version}
+                  </Tag>
+                </Link>
               )}
             </Space>
           </Space>

@@ -10,9 +10,7 @@ const Orcid = ({ data }) => {
           size={50}
           style={{
             backgroundColor: stringToHslColor(
-              `${data.person.name["family-name"].value} ${
-                data.person.name["family-name"].value
-              }`,
+              `${data.person.name["family-name"].value} ${data.person.name["family-name"].value}`,
               40,
               70
             ),
