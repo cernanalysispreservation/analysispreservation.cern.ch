@@ -46,7 +46,7 @@ let _addErrors = (errors, path) => {
   });
   return errors;
 };
-export const _validate = function(formData, errors) {
+export const _validate = function (formData, errors) {
   return _addErrors(errors, { schema: [], uiSchema: [] });
 };
 

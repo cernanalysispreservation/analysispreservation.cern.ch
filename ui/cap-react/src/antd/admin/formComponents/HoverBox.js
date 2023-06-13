@@ -60,7 +60,4 @@ const mapStateToProps = state => ({
   schema: state.schemaWizard.getIn(["current", "schema"]),
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(HoverBox);
+export default connect(mapStateToProps, null)(HoverBox);

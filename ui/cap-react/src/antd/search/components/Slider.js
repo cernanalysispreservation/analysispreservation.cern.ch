@@ -5,22 +5,19 @@ import queryString from "query-string";
 import { withRouter } from "react-router-dom";
 
 const RangeSlider = ({ items, category, history }) => {
-  const { range } = useMemo(
-    () => {
-      let barChartData = {};
-      let range = [];
-      items.get("buckets").map(item => {
-        barChartData[item.get("key_as_string")] = item.get("doc_count");
-        range.push(new Date(item.get("key")).getFullYear());
-      });
+  const { range } = useMemo(() => {
+    let barChartData = {};
+    let range = [];
+    items.get("buckets").map(item => {
+      barChartData[item.get("key_as_string")] = item.get("doc_count");
+      range.push(new Date(item.get("key")).getFullYear());
+    });
 
-      // make sure the earlier date is first
-      range.sort();
+    // make sure the earlier date is first
+    range.sort();
 
-      return { range: [range[0], range[range.length - 1]] };
-    },
-    [items]
-  );
+    return { range: [range[0], range[range.length - 1]] };
+  }, [items]);
 
   const [sliderRange, setSliderRange] = useState(range);
 

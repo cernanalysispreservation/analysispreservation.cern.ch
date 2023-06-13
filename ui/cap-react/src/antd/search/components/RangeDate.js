@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 const { RangePicker } = DatePicker;
 
 const RangeDate = ({ category, history }) => {
-  const onChange = (dateRange) => {
+  const onChange = dateRange => {
     let params = queryString.parse(history.location.search);
 
     const location = {

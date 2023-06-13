@@ -10,14 +10,11 @@ const ErrorFieldIndicator = ({ id, children, formErrors }) => {
 ErrorFieldIndicator.propTypes = {
   id: PropTypes.string,
   children: PropTypes.node,
-  formErrors: PropTypes.object
+  formErrors: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  formErrors: state.draftItem.get("formErrors")
+  formErrors: state.draftItem.get("formErrors"),
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(ErrorFieldIndicator);
+export default connect(mapStateToProps, null)(ErrorFieldIndicator);

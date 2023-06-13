@@ -39,7 +39,7 @@ const IntegrationConnected = ({ name, data, onClick }) => {
 IntegrationConnected.propTypes = {
   name: PropTypes.string,
   data: PropTypes.object,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 
 export default IntegrationConnected;

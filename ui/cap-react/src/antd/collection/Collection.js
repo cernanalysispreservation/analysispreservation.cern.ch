@@ -100,7 +100,7 @@ const Collection = ({
               <Typography.Title level={3}>
                 {schemaData.has("fullname") && schemaData.get("fullname")}
               </Typography.Title>
-              <Tag color="geekblue">{schemaData.get("name")} </Tag>
+              <Tag color="geekblue">{schemaData.get("name")}</Tag>
             </Col>
             <Col>
               <Select

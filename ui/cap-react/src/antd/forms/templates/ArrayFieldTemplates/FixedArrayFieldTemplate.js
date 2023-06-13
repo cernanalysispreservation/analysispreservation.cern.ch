@@ -9,13 +9,11 @@ const FixedArrayFieldTemplate = ({
   className,
   disabled,
   formContext,
-  // formData,
   idSchema,
   items,
   options,
   onAddClick,
   readonly,
-  // registry,
   schema,
   title,
   uiSchema,
@@ -83,7 +81,6 @@ FixedArrayFieldTemplate.propTypes = {
   required: PropTypes.bool,
   schema: PropTypes.object,
   title: PropTypes.string,
-  TitleField: PropTypes.node,
   uiSchema: PropTypes.object,
 };
 

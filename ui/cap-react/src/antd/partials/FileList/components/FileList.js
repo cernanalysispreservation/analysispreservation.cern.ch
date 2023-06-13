@@ -11,12 +11,9 @@ const FileList = ({
 }) => {
   const [fileToDisplay, setFileToDisplay] = useState(null);
 
-  const memoFiles = useMemo(
-    () => {
-      return files;
-    },
-    [files]
-  );
+  const memoFiles = useMemo(() => {
+    return files;
+  }, [files]);
   const myRenderList = useMemo(() => renderList, []);
   const onClickModal = useCallback(
     file => {

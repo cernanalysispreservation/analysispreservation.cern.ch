@@ -2,6 +2,7 @@ import Toggler from "./RichEditorPreviewPlugin";
 import "./styles/RichEditorWidget.css";
 import "katex/dist/katex.min.css";
 import MarkdownIt from "markdown-it";
+import katex from "katex";
 import tm from "markdown-it-texmath";
 import "markdown-it-texmath/css/texmath.css";
 import PropTypes from "prop-types";

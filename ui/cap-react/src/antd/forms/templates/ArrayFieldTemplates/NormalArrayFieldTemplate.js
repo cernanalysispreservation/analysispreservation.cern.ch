@@ -2,17 +2,7 @@ import { useEffect, useState } from "react";
 import classNames from "classnames";
 
 import Button from "antd/lib/button";
-import {
-  Row,
-  Col,
-  Modal,
-  Space,
-  Tag,
-  Checkbox,
-  Table,
-  Typography,
-  theme,
-} from "antd";
+import { Row, Col, Modal, Space, Tag, Checkbox, Table, theme } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
@@ -31,6 +21,7 @@ import {
   StreamLanguage,
 } from "@codemirror/language";
 import FieldHeader from "../Field/FieldHeader";
+import TitleField from "../../fields/internal/TitleField";
 
 const NormalArrayFieldTemplate = ({
   canAdd,
@@ -46,7 +37,6 @@ const NormalArrayFieldTemplate = ({
   required,
   schema,
   title,
-  TitleField,
   uiSchema,
   formData,
 }) => {
@@ -252,7 +242,7 @@ const NormalArrayFieldTemplate = ({
                 Default email recepients:{" "}
                 <Space>
                   {uiEmailDefaults.map(i => (
-                    <Tag>{i}</Tag>
+                    <Tag key={i}>{i}</Tag>
                   ))}
                 </Space>
               </Col>
@@ -293,29 +283,35 @@ const NormalArrayFieldTemplate = ({
         </Modal>
       )}
       <Row gutter={rowGutter}>
-        {title && (
-          <Col className={labelColClassName} span={24} style={{ padding: "0" }}>
-            <TitleField
-              id={`${idSchema.$id}__title`}
-              key={`array-field-title-${idSchema.$id}`}
-              required={required}
-              title={uiSchema["ui:title"] || title}
-              uiImport={uiImport}
-              uiLatex={uiLatex}
-              uiEmail={uiEmail}
-              readonly={readonly}
-              enableLatex={() => _enableLatex()}
-              enableImport={() => setImportModal(true)}
-              enableEmail={() => setEmailModal(true)}
-            />
-          </Col>
-        )}
-        <FieldHeader
-          description={uiSchema["ui:description"] || schema.description}
-          uiSchema={uiSchema}
-          key={`array-field-header-${idSchema.$id}`}
-          idSchema={idSchema}
-        />
+        <div style={{ marginBottom: "8px" }}>
+          {title && (
+            <Col
+              className={labelColClassName}
+              span={24}
+              style={{ padding: "0" }}
+            >
+              <TitleField
+                id={`${idSchema.$id}__title`}
+                key={`array-field-title-${idSchema.$id}`}
+                required={required}
+                title={uiSchema["ui:title"] || title}
+                uiImport={uiImport}
+                uiLatex={uiLatex}
+                uiEmail={uiEmail}
+                readonly={readonly}
+                enableLatex={() => _enableLatex()}
+                enableImport={() => setImportModal(true)}
+                enableEmail={() => setEmailModal(true)}
+              />
+            </Col>
+          )}
+          <FieldHeader
+            description={uiSchema["ui:description"] || schema.description}
+            uiSchema={uiSchema}
+            key={`array-field-header-${idSchema.$id}`}
+            idSchema={idSchema}
+          />
+        </div>
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
           <Row>
             {items && (
@@ -378,7 +374,6 @@ NormalArrayFieldTemplate.propTypes = {
   required: PropTypes.bool,
   schema: PropTypes.object,
   title: PropTypes.string,
-  TitleField: PropTypes.node,
   uiSchema: PropTypes.object,
   formData: PropTypes.object,
 };

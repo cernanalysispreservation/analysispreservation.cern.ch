@@ -18,18 +18,17 @@ const EmptyArrayField = ({
       style={{ margin: "5px" }}
       description={"No Items added"}
     >
-      {canAdd &&
-        !readonly && (
-          <Button
-            className="array-item-add"
-            disabled={disabled}
-            onClick={onAddClick}
-            type="primary"
-            icon={<PlusCircleOutlined />}
-          >
-            Add {options && options.addLabel ? options.addLabel : `Item`}
-          </Button>
-        )}
+      {canAdd && !readonly && (
+        <Button
+          className="array-item-add"
+          disabled={disabled}
+          onClick={onAddClick}
+          type="primary"
+          icon={<PlusCircleOutlined />}
+        >
+          Add {options && options.addLabel ? options.addLabel : `Item`}
+        </Button>
+      )}
     </Empty>
   );
 };

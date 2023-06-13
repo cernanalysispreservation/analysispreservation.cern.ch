@@ -41,7 +41,7 @@ EllipsisText.propTypes = {
   length: PropTypes.number,
   middle: PropTypes.bool,
   tooltip: PropTypes.bool,
-  suffixCount: PropTypes.number
+  suffixCount: PropTypes.number,
 };
 
 export default EllipsisText;

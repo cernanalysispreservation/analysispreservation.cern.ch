@@ -10,14 +10,11 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
 
-  useEffect(
-    () => {
-      if (inputVisible) {
-        inputRef.current.focus();
-      }
-    },
-    [inputVisible]
-  );
+  useEffect(() => {
+    if (inputVisible) {
+      inputRef.current.focus();
+    }
+  }, [inputVisible]);
 
   useEffect(() => {
     setTags(getInitialTags());
@@ -112,19 +109,18 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
           </Form.Item>
         </Form>
       )}
-      {!inputVisible &&
-        !readonly && (
-          <Tag
-            onClick={() => setInputVisible(true)}
-            style={{
-              borderStyle: "dashed",
-              cursor: "pointer",
-              backgroundColor: "#F6F7F8",
-            }}
-          >
-            <PlusOutlined /> New Tag
-          </Tag>
-        )}
+      {!inputVisible && !readonly && (
+        <Tag
+          onClick={() => setInputVisible(true)}
+          style={{
+            borderStyle: "dashed",
+            cursor: "pointer",
+            backgroundColor: "#F6F7F8",
+          }}
+        >
+          <PlusOutlined /> New Tag
+        </Tag>
+      )}
     </Space>
   );
 };

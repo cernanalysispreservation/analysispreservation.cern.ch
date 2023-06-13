@@ -6,13 +6,13 @@ const Description = ({ review }) => {
   const icon = {
     approved: <CheckOutlined style={{ color: "#52c41a" }} />,
     request_changes: <DiffOutlined style={{ color: "rgb(24, 144, 255)  " }} />,
-    declined: <CloseOutlined style={{ color: "#ff4d4f" }} />
+    declined: <CloseOutlined style={{ color: "#ff4d4f" }} />,
   };
 
   const text = {
     approved: "approved",
     request_changes: "changes requested",
-    declined: "declined"
+    declined: "declined",
   };
   return (
     <Space direction="horizontal">

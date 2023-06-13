@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { Button, Row, Typography } from "antd";
+import { Button, Row, Spin } from "antd";
 
 const Loading = ({ error, retry, timedOut, pastDelay }) => {
   if (error) {
     return (
-      <Row>
-        There is an error loading component
+      <Row style={{ height: "100%" }} align="middle" justify="center">
+        There is an error loading the component
         <Button type="primary" onClick={retry}>
           Retry Loading
         </Button>
@@ -15,8 +15,8 @@ const Loading = ({ error, retry, timedOut, pastDelay }) => {
 
   if (timedOut) {
     return (
-      <Row>
-        Loading takes more time
+      <Row style={{ height: "100%" }} align="middle" justify="center">
+        Loading timed out
         <Button type="primary" onClick={retry}>
           Retry Loading
         </Button>
@@ -26,8 +26,8 @@ const Loading = ({ error, retry, timedOut, pastDelay }) => {
 
   if (pastDelay) {
     return (
-      <Row>
-        <Typography.Text>Loading...</Typography.Text>
+      <Row style={{ height: "100%" }} align="middle" justify="center">
+        <Spin size="large" />
       </Row>
     );
   }
@@ -39,7 +39,7 @@ Loading.propTypes = {
   error: PropTypes.object,
   retry: PropTypes.func,
   timedOut: PropTypes.bool,
-  pastDelay: PropTypes.bool
+  pastDelay: PropTypes.bool,
 };
 
 export default Loading;

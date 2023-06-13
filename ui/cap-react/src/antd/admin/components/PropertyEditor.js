@@ -38,19 +38,16 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
   const [name, setName] = useState();
   const screens = useBreakpoint();
 
-  useEffect(
-    () => {
-      if (path) {
-        const p = path.getIn(["path"]).toJS();
-        if (p.length) {
-          setName(p.findLast(item => item !== "properties" && item != "items"));
-        } else {
-          setName("root");
-        }
+  useEffect(() => {
+    if (path) {
+      const p = path.getIn(["path"]).toJS();
+      if (p.length) {
+        setName(p.findLast(item => item !== "properties" && item != "items"));
+      } else {
+        setName("root");
       }
-    },
-    [path]
-  );
+    }
+  }, [path]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>

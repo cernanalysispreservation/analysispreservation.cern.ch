@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import WelcomePage from "../welcome";
@@ -19,10 +19,10 @@ import { Layout, Row, Spin } from "antd";
 
 import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMAS } from "../routes";
 import ErrorPage from "../utils/ErrorPage";
-import WelcomePage from "../welcome";
 import * as Sentry from "@sentry/react";
 import useTrackPageViews from "../hooks/useTrackPageViews";
 import { lazy } from "react";
+import Loading from "../routes/Loading/Loading";
 
 const AdminPage = lazy(() => import("../admin"));
 
@@ -57,14 +57,16 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
             <Header />
           </Layout.Header>
           <Layout.Content className="__mainContent__">
-            <Switch>
-              <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
-              <Route path={ABOUT} component={AboutPage} />
-              <Route path={POLICY} component={PolicyPage} />
-              {isAdmin && <Route path={CMS} component={AdminPage} />}
-              <Route path={SCHEMAS} component={SchemasPage} />
-              <Route path={HOME} component={requireAuth(IndexPage)} />
-            </Switch>
+            <Suspense fallback={<Loading pastDelay />}>
+              <Switch>
+                <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
+                <Route path={ABOUT} component={AboutPage} />
+                <Route path={POLICY} component={PolicyPage} />
+                {isAdmin && <Route path={CMS} component={AdminPage} />}
+                <Route path={SCHEMAS} component={SchemasPage} />
+                <Route path={HOME} component={requireAuth(IndexPage)} />
+              </Switch>
+            </Suspense>
           </Layout.Content>
           <Layout.Footer>
             <Footer />

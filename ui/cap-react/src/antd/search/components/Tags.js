@@ -29,29 +29,28 @@ const Tags = ({
         </Tag>
       )}
       {Object.entries(params) &&
-        Object.entries(params).map(
-          item =>
-            Array.isArray(item[1]) ? (
-              item[1].map(nested => (
-                <Tag
-                  key={nested}
-                  color="geekblue"
-                  closable
-                  onClose={() => onClick(item[0], nested)}
-                >
-                  {item[0]}-{decodeURIComponent(nested)}
-                </Tag>
-              ))
-            ) : (
+        Object.entries(params).map(item =>
+          Array.isArray(item[1]) ? (
+            item[1].map(nested => (
               <Tag
-                key={item}
-                closable
+                key={nested}
                 color="geekblue"
-                onClose={() => onClick(item[0], item[1])}
+                closable
+                onClose={() => onClick(item[0], nested)}
               >
-                {item[0]}-{decodeURIComponent(item[1])}
+                {item[0]}-{decodeURIComponent(nested)}
               </Tag>
-            )
+            ))
+          ) : (
+            <Tag
+              key={item}
+              closable
+              color="geekblue"
+              onClose={() => onClick(item[0], item[1])}
+            >
+              {item[0]}-{decodeURIComponent(item[1])}
+            </Tag>
+          )
         )}
       {clearAllFilters && (
         <Tag closable onClose={clearFilter}>

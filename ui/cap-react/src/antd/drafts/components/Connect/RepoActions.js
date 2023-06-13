@@ -19,22 +19,13 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
   const [loading, setLoading] = useState(null);
   const [myform] = Form.useForm();
 
-  useEffect(
-    () => {
-      setLoading(null);
-      if (
-        myRepo &&
-        myRepo.filepath &&
-        myRepo.filepath.length > 0 &&
-        !addFilepath
-      )
-        setAddFilepath(true);
+  useEffect(() => {
+    setLoading(null);
+    if (myRepo && myRepo.filepath && myRepo.filepath.length > 0 && !addFilepath)
+      setAddFilepath(true);
 
-      if (myRepo && !myRepo.filepath && addFilepath) setAddFilepath(false);
-    },
-
-    [error, myRepo]
-  );
+    if (myRepo && !myRepo.filepath && addFilepath) setAddFilepath(false);
+  }, [error, myRepo]);
   return (
     myRepo && (
       <Space
@@ -49,20 +40,19 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
           You have selected the following repository:
         </Typography.Title>
 
-        {myRepo.owner &&
-          myRepo.name && (
-            <Tag
-              icon={
-                myRepo.resource.includes("github") ? (
-                  <GithubOutlined />
-                ) : (
-                  <GitlabOutlined />
-                )
-              }
-            >
-              {myRepo.owner}/{myRepo.name}
-            </Tag>
-          )}
+        {myRepo.owner && myRepo.name && (
+          <Tag
+            icon={
+              myRepo.resource.includes("github") ? (
+                <GithubOutlined />
+              ) : (
+                <GitlabOutlined />
+              )
+            }
+          >
+            {myRepo.owner}/{myRepo.name}
+          </Tag>
+        )}
         <Form
           form={myform}
           layout="inline"
@@ -70,11 +60,10 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
           onValuesChange={() =>
             myform
               .validateFields()
-              .catch(
-                e =>
-                  e.errorFields.length > 0
-                    ? !disableUploadButton && setDisableUploadButton(true)
-                    : disableUploadButton && setDisableUploadButton(false)
+              .catch(e =>
+                e.errorFields.length > 0
+                  ? !disableUploadButton && setDisableUploadButton(true)
+                  : disableUploadButton && setDisableUploadButton(false)
               )
           }
         >
@@ -135,19 +124,18 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
               Upload and preserve the current snapshot of a repository on a
               branch, release/tag or ref
             </Typography.Text>
-            {error &&
-              error.type == "upload" && (
-                <Space>
-                  <Alert
-                    showIcon
-                    type="error"
-                    message={
-                      error.message ||
-                      "Something happened when creating the upload task"
-                    }
-                  />
-                </Space>
-              )}
+            {error && error.type == "upload" && (
+              <Space>
+                <Alert
+                  showIcon
+                  type="error"
+                  message={
+                    error.message ||
+                    "Something happened when creating the upload task"
+                  }
+                />
+              </Space>
+            )}
           </Space>
         </Card>
         {!addFilepath && (
@@ -177,24 +165,23 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
                   upload a snapshot of a repository, when a new version is
                   released or a tag is created
                 </Typography.Text>
-                {error &&
-                  error.type == "release" && (
-                    <Space>
-                      <Alert
-                        showIcon
-                        type="error"
-                        message={
-                          error.message ||
-                          "Something happened when creating the upload task"
-                        }
-                      />
-                      <Alert
-                        showIcon
-                        type="warning"
-                        message="Only owners or accounts with write access to the repository are allowed to do this"
-                      />
-                    </Space>
-                  )}
+                {error && error.type == "release" && (
+                  <Space>
+                    <Alert
+                      showIcon
+                      type="error"
+                      message={
+                        error.message ||
+                        "Something happened when creating the upload task"
+                      }
+                    />
+                    <Alert
+                      showIcon
+                      type="warning"
+                      message="Only owners or accounts with write access to the repository are allowed to do this"
+                    />
+                  </Space>
+                )}
               </Space>
             </Card>
             <Card
@@ -222,24 +209,23 @@ const RepoActions = ({ myRepo, uploadRepo, error }) => {
                   upload a snapshot of a repository, when a push event takes
                   place
                 </Typography.Paragraph>
-                {error &&
-                  error.type == "push" && (
-                    <Space>
-                      <Alert
-                        showIcon
-                        type="error"
-                        message={
-                          error.message ||
-                          "Something happened when creating the upload task"
-                        }
-                      />
-                      <Alert
-                        showIcon
-                        type="warning"
-                        message="Only owners or accounts with write access to the repository are allowed to do this"
-                      />
-                    </Space>
-                  )}
+                {error && error.type == "push" && (
+                  <Space>
+                    <Alert
+                      showIcon
+                      type="error"
+                      message={
+                        error.message ||
+                        "Something happened when creating the upload task"
+                      }
+                    />
+                    <Alert
+                      showIcon
+                      type="warning"
+                      message="Only owners or accounts with write access to the repository are allowed to do this"
+                    />
+                  </Space>
+                )}
               </Space>
             </Card>
           </>

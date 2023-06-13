@@ -4,7 +4,7 @@ import InputMask from "react-input-mask";
 const MAPPINGS = {
   a: /[a-z]/,
   A: /[A-Z]/,
-  "0": /[0-9]/,
+  0: /[0-9]/,
   "*": /[a-zA-Z0-9]/,
 };
 

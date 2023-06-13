@@ -16,7 +16,7 @@ const CodeEditor = ({
     keymap.of([indentWithTab]),
     linter(lint()),
     lintGutter(),
-    EditorView.updateListener.of((update) => {
+    EditorView.updateListener.of(update => {
       if (update.docChanged) {
         handleEdit(update.state.doc.toString());
       }

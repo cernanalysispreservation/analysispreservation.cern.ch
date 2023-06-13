@@ -20,7 +20,7 @@ const DropZoneForm = ({ initWizard }) => {
           const { name } = file;
           if (isfileJson(name)) {
             let reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
               const newSchema = JSON.parse(event.target.result);
               if (newSchema["deposit_schema"] && newSchema["deposit_options"]) {
                 initWizard(newSchema);
@@ -29,7 +29,7 @@ const DropZoneForm = ({ initWizard }) => {
                   message: "Missing Keys",
                   key: "keys",
                   description:
-                    "Your json should include a deposit_schema and a deposit_option key"
+                    "Your json should include a deposit_schema and a deposit_option key",
                 });
               }
             };
@@ -38,7 +38,7 @@ const DropZoneForm = ({ initWizard }) => {
             notification.error({
               message: "File Format",
               key: "format",
-              description: "Your file format should be json"
+              description: "Your file format should be json",
             });
           }
         }
@@ -55,7 +55,7 @@ const DropZoneForm = ({ initWizard }) => {
 };
 
 DropZoneForm.propTypes = {
-  initWizard: PropTypes.func
+  initWizard: PropTypes.func,
 };
 
 export default DropZoneForm;

@@ -25,14 +25,11 @@ const DateWidget = ({
 
   const [isoFormat, setIsoFormat] = useState();
 
-  useEffect(
-    () => {
-      setIsoFormat(
-        schema.format === "date-time" ? DATE_TIME_ISO_FORMAT : DATE_ISO_FORMAT
-      );
-    },
-    [schema]
-  );
+  useEffect(() => {
+    setIsoFormat(
+      schema.format === "date-time" ? DATE_TIME_ISO_FORMAT : DATE_ISO_FORMAT
+    );
+  }, [schema]);
 
   const handleChange = date =>
     onChange(date ? date.format(isoFormat) : undefined);

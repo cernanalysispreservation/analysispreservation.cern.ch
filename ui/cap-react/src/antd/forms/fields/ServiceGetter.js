@@ -33,14 +33,11 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
 
-  useEffect(
-    () => {
-      if (uiSchema["ui:servicesList"].length === 1) {
-        setService(uiSchema["ui:servicesList"]);
-      }
-    },
-    [uiSchema]
-  );
+  useEffect(() => {
+    if (uiSchema["ui:servicesList"].length === 1) {
+      setService(uiSchema["ui:servicesList"]);
+    }
+  }, [uiSchema]);
 
   const getContentByName = name => {
     const choices = {

@@ -26,7 +26,7 @@ const AccordionArrayFieldTemplate = ({ items = [], formContext, id }) => {
 AccordionArrayFieldTemplate.propTypes = {
   items: PropTypes.array,
   formContext: PropTypes.object,
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default AccordionArrayFieldTemplate;

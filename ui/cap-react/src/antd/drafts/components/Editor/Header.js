@@ -17,7 +17,7 @@ const Header = ({
   draft,
   formRef,
   canUpdate,
-  canAdmin
+  canAdmin,
 }) => {
   if (schemaErrors.length > 0) return null;
 
@@ -32,7 +32,7 @@ const Header = ({
     if (errors.length > 0) {
       notification.error({
         message: "Form could not be submitted",
-        description: "Make sure all the fields are properly filled in"
+        description: "Make sure all the fields are properly filled in",
       });
 
       return { errorFlag: errors.length > 0, errorSchema };
@@ -52,7 +52,7 @@ const Header = ({
     if (_checkIfEmpty(formDataWithoutGeneralTitle)) {
       notification.warning({
         message: "Form is empty",
-        description: "Please add some content first, and try saving again"
+        description: "Please add some content first, and try saving again",
       });
 
       return { errorFlag: true, errorSchema: [] };
@@ -157,7 +157,7 @@ const Header = ({
       justify="space-between"
       style={{
         padding: "10px",
-        background: "#fff"
+        background: "#fff",
       }}
     >
       <Radio.Group
@@ -195,7 +195,7 @@ Header.propTypes = {
   draft: PropTypes.object,
   formRef: PropTypes.object,
   canAdmin: PropTypes.bool,
-  canUpdate: PropTypes.bool
+  canUpdate: PropTypes.bool,
 };
 
 export default Header;

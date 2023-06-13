@@ -18,7 +18,7 @@ const EllipsisMiddle = ({ suffixCount, children, copyable }) => {
 EllipsisMiddle.propTypes = {
   copyable: PropTypes.bool,
   children: PropTypes.string,
-  suffixCount: PropTypes.number
+  suffixCount: PropTypes.number,
 };
 
 export default EllipsisMiddle;

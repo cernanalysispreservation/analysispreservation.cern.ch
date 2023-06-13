@@ -181,7 +181,8 @@ const Header = ({
                   title={
                     <Typography.Text>
                       Are you sure you want to go back to the admin screen?
-                      <br />You will lose all unsaved changes
+                      <br />
+                      You will lose all unsaved changes
                     </Typography.Text>
                   }
                   okType="link"

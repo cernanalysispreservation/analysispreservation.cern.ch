@@ -87,7 +87,4 @@ const mapDispatchToProps = dispatch => ({
   selectPath: (path, type) => dispatch(selectPath(path, type)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CapFiles);
+export default connect(mapStateToProps, mapDispatchToProps)(CapFiles);

@@ -45,7 +45,7 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
       {showModal && (
         <Modal
           title="Your Collections"
-          visible={showModal}
+          open={showModal}
           onCancel={() => setShowModal(false)}
           footer={null}
         >

@@ -52,9 +52,4 @@ const mapStateToProps = state => ({
   metadata: state.draftItem.get("metadata"),
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    null
-  )(DraftCreate)
-);
+export default withRouter(connect(mapStateToProps, null)(DraftCreate));

@@ -97,32 +97,31 @@ const SideBar = ({
           size="small"
           title="Files | Data | Repos"
           extra={[
-            status != "published" &&
-              canEdit(canAdmin, canUpdate) && (
-                <Route
-                  path={DRAFT_ITEM}
-                  render={() => (
-                    <Space direction="horizontal" size="middle">
-                      <Button
-                        size="small"
-                        key="refresh"
-                        icon={<ReloadOutlined />}
-                        onClick={() => {
-                          let { bucket } = links;
-                          let bucket_id = bucket.split("/").pop();
-                          getBucketById(bucket_id);
-                        }}
-                      />
-                      <Button
-                        key="add"
-                        size="small"
-                        icon={<PlusOutlined />}
-                        onClick={() => setShowModal(true)}
-                      />
-                    </Space>
-                  )}
-                />
-              ),
+            status != "published" && canEdit(canAdmin, canUpdate) && (
+              <Route
+                path={DRAFT_ITEM}
+                render={() => (
+                  <Space direction="horizontal" size="middle">
+                    <Button
+                      size="small"
+                      key="refresh"
+                      icon={<ReloadOutlined />}
+                      onClick={() => {
+                        let { bucket } = links;
+                        let bucket_id = bucket.split("/").pop();
+                        getBucketById(bucket_id);
+                      }}
+                    />
+                    <Button
+                      key="add"
+                      size="small"
+                      icon={<PlusOutlined />}
+                      onClick={() => setShowModal(true)}
+                    />
+                  </Space>
+                )}
+              />
+            ),
           ]}
         >
           <DepositFilesList files={files} />
