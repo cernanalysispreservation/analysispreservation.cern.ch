@@ -143,19 +143,22 @@ def get_default_mapping(name, version):
     return default_mapping
 
 
-def get_schema(f):
+def pass_schema(f):
     """Decorator to check if schema exists by name and/or version."""
 
     @wraps(f)
-    def wrapper(
-        self=None, name=None, version=None, schema=None, *args, **kwargs
-    ):
+    def wrapper(*args, **kwargs):
+        name = kwargs.get('name')
+        version = kwargs.get('version')
+
         if name:
             try:
                 if version:
                     schema = Schema.get(name, version)
                 else:
                     schema = Schema.get_latest(name)
+
+                kwargs['schema'] = schema
             except JSONSchemaNotFound:
                 return (
                     jsonify(
@@ -166,26 +169,22 @@ def get_schema(f):
                     ),
                     404,
                 )
-        return f(
-            self=self,
-            name=name,
-            version=version,
-            schema=schema,
-            *args,
-            **kwargs,
-        )
+        return f(*args, **kwargs)
 
     return wrapper
 
 
-def get_all_schemas(f):
+def pass_schema_versions(f):
     """Decorator to return all schema by name."""
 
     @wraps(f)
-    def wrapper(self=None, name=None, schemas=None, *args, **kwargs):
+    def wrapper(*args, **kwargs):
+        name = kwargs.get('name')
+
         if name:
             try:
                 schemas = Schema.get_all_versions(name)
+                kwargs['schemas'] = schemas
             except (JSONSchemaNotFound, IndexError):
                 return (
                     jsonify(
@@ -196,7 +195,7 @@ def get_all_schemas(f):
                     ),
                     404,
                 )
-        return f(self=self, name=name, schemas=schemas, *args, **kwargs)
+        return f(*args, **kwargs)
 
     return wrapper
 

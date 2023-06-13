@@ -56,9 +56,9 @@ from .serializers import (
 from .utils import (
     check_allowed_patch_operation,
     check_allowed_patch_path,
-    get_all_schemas,
     get_default_mapping,
-    get_schema,
+    pass_schema,
+    pass_schema_versions,
     schema_admin_permission,
 )
 
@@ -71,14 +71,17 @@ blueprint = Blueprint(
 super_admin_permission = admin_permission_factory(None)
 
 
-def process_config_operations(request, config_key, schema):
-    serialized_config = schema.config_serialize().get('config', {})
+def process_config_request(config_key, schema):
+    serialized_config = schema.config
     if request.method == 'GET':
-        return serialized_config.get(config_key, {})
+        return jsonify(serialized_config.get(config_key, {}))
 
     if request.method == 'DELETE':
-        key_config_schema = {'config': {config_key: {}}}
+        key_config_schema = {'config': {**serialized_config}}
+        if key_config_schema['config'].get(config_key):
+            del key_config_schema['config'][config_key]
         schema.update(**key_config_schema)
+        flag_modified(schema, 'config')
         db.session.commit()
         return 'Deleted.', 204
 
@@ -86,12 +89,14 @@ def process_config_operations(request, config_key, schema):
         data = request.get_json()
         key_config = serialized_config.get(config_key, {})
         if request.method == "POST":
-            post_obejct = {'config': {config_key: data}}
+            post_obejct = {'config': {**serialized_config, config_key: data}}
             schema.update(**post_obejct)
             flag_modified(schema, 'config')
         if request.method == 'PATCH':
             patched_key_config = apply_patch(key_config, data)
-            patched_object = {'config': {config_key: patched_key_config}}
+            patched_object = {
+                'config': {**serialized_config, config_key: patched_key_config}
+            }
             schema.update(**patched_object)
         db.session.commit()
         return jsonify(schema.config_serialize()), 201
@@ -121,7 +126,7 @@ def process_config_operations(request, config_key, schema):
 
 @blueprint.route('/<string:name>/versions', methods=['GET'])
 @login_required
-@get_all_schemas
+@pass_schema_versions
 def get_all_versions(name=None, schemas=None, *args, **kwargs):
     """Get all versions of a schema that user has access to."""
     response = {
@@ -139,7 +144,7 @@ def get_all_versions(name=None, schemas=None, *args, **kwargs):
     methods=['GET', 'POST', 'DELETE'],
 )
 # @login_required
-@get_schema
+@pass_schema
 @schema_admin_permission
 @super_admin_permission.require(http_exception=403)
 def permissions(name=None, version=None, schema=None, *args, **kwargs):
@@ -162,13 +167,13 @@ def permissions(name=None, version=None, schema=None, *args, **kwargs):
     '/<string:name>/<schema_version:version>/notifications',
     methods=['GET', 'PATCH', 'DELETE', 'POST'],
 )
-@get_schema
+@pass_schema
 @schema_admin_permission
 @super_admin_permission.require(http_exception=403)
 def notifications_config(name=None, version=None, schema=None, *args, **kwargs):
     """CRUD operations for schema notification configuration."""
     config_key = 'notifications'
-    return process_config_operations(request, config_key, schema)
+    return process_config_request(config_key, schema)
 
 
 @blueprint.route(
@@ -220,7 +225,7 @@ class SchemaAPI(MethodView):
 
     decorators = [login_required]
 
-    @get_schema
+    @pass_schema
     def get(self, name=None, version=None, schema=None, *args, **kwargs):
         """Get all schemas that user has access to."""
         resolve = request.args.get('resolve', False)
@@ -312,7 +317,7 @@ class SchemaAPI(MethodView):
             return jsonify(schema.config_serialize())
 
     @super_admin_permission.require(http_exception=403)
-    @get_schema
+    @pass_schema
     def delete(self, name, version, schema=None, *args, **kwargs):
         """Delete schema."""
         with AdminSchemaPermission(schema).require(403):
@@ -321,8 +326,8 @@ class SchemaAPI(MethodView):
 
             return 'Schema deleted.', 204
 
-    @get_schema
     @super_admin_permission.require(http_exception=403)
+    @pass_schema
     def patch(self, name, version, schema=None, *args, **kwargs):
         serialized_schema = schema.patch_serialize()
         with AdminSchemaPermission(schema).require(403):
@@ -386,14 +391,6 @@ class SchemaAPI(MethodView):
                 )
 
             return jsonify(schema.config_serialize())
-
-    # TODO check if config validates with the model decorator
-    # def _validate_config(self, data):
-    #     config = data.get('config')
-    #     if config:
-    #         errors = validate_schema_config(config)
-    #         if errors:
-    #             raise abort(400, errors)
 
 
 schema_view_func = SchemaAPI.as_view('schemas')

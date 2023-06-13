@@ -104,25 +104,6 @@ def test_get_schema_version_converter_with_wrong_version(client, db, users, auth
         deposit_options={'title': 'deposit_options'},
         record_schema={'title': 'record_schema'},
         record_options={'title': 'record_options'},
-        record_mapping={
-            'mappings': {
-                'properties': {
-                    'title': {
-                        'type': 'text'
-                    }
-                }
-            }
-        },
-        deposit_mapping={
-            'mappings':
-                {
-                    'properties': {
-                        'keyword': {
-                            'type': 'keyword'
-                        }
-                    }
-                }
-        },
         is_indexed=True,
     )
 
@@ -1945,7 +1926,7 @@ def test_patch_notifications_config(
 
 
 def test_post_notifications_config(
-    client, schema, auth_headers_for_user, users, json_headers):
+    client, schema, auth_headers_for_user, users, json_headers, cli_runner):
     owner = users['superuser']
     schema = dict(
         name='new-schema',
@@ -1964,6 +1945,17 @@ def test_post_notifications_config(
         headers=json_headers + auth_headers_for_user(owner),
     )
 
+
+    resp = client.get(
+        '/jsonschemas/new-schema?config=1',
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert 'reviewable' in resp.json['config'].keys()
+    assert 'notifications' in resp.json['config'].keys()
+
+    # Test POST valid config and rest of configs don't change
     valid_post_data = {
         'actions': {
             'review': [
@@ -2010,6 +2002,16 @@ def test_post_notifications_config(
     )
     assert resp.status_code == 201
 
+
+    resp = client.get(
+        '/jsonschemas/new-schema?config=1',
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+
+    assert resp.status_code == 200
+    assert 'reviewable' in resp.json['config'].keys()
+    assert 'notifications' in resp.json['config'].keys()
+
     invalid_post_data = {
         'actions': {
             'review': [
@@ -2048,6 +2050,7 @@ def test_post_notifications_config(
         },
     }
 
+    # Test POST invalid config and config doesn't change
     resp = client.post(
         '/jsonschemas/new-schema/notifications',
         data=json.dumps(invalid_post_data),
@@ -2055,3 +2058,57 @@ def test_post_notifications_config(
     )
     assert resp.status_code == 400
     assert resp.json['message'] == 'Schema configuration validation error'
+
+    resp = client.get(
+        '/jsonschemas/new-schema?config=1',
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 200
+    assert 'reviewable' in resp.json['config'].keys()
+    assert 'notifications' in resp.json['config'].keys()
+    assert 'publish' not in resp.json['config']['notifications']['actions'].keys()
+    assert 'review' in resp.json['config']['notifications']['actions'].keys()
+
+    # Test PATCH invalid config and config doesn't change
+    patch_schema = [{ "op": "add", "path": "/name", "value": "cms-patch-schema" }]
+    resp = client.patch(
+        '/jsonschemas/new-schema/notifications',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 400
+
+    # Test PATCH invalid config and config doesn't change
+    patch_schema = [{ "op": "add", "path": "/actions/publish", "value": [] }]
+    resp = client.patch(
+        '/jsonschemas/new-schema/notifications',
+        data=json.dumps(patch_schema),
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 201
+
+
+    resp = client.get(
+        '/jsonschemas/new-schema?config=1',
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 200
+    assert 'reviewable' in resp.json['config'].keys()
+    assert 'notifications' in resp.json['config'].keys()
+    assert 'publish' in resp.json['config']['notifications']['actions'].keys()
+    assert 'review' in resp.json['config']['notifications']['actions'].keys()
+
+
+    resp = client.delete(
+        '/jsonschemas/new-schema/notifications',
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 204
+
+    resp = client.get(
+        '/jsonschemas/new-schema?config=1',
+        headers=json_headers + auth_headers_for_user(owner),
+    )
+    assert resp.status_code == 200
+    assert 'reviewable' in resp.json['config'].keys()
+    assert 'notifications' not in resp.json['config'].keys()
