@@ -19,7 +19,7 @@ services:
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
       - ./docker/nginx/ssl:/etc/ssl
   cypress:
-    image: "cypress/included:6.3.0"
+    image: "cypress/included:12.10.0"
     # entrypoint: cypress run --headless --browser chrome
     entrypoint: []
     command: echo "Cypress initiated"

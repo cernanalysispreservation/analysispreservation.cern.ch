@@ -13,7 +13,6 @@ import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
 import NormalArrayFieldTemplate from "./NormalArrayFieldTemplate";
 
 const ArrayFieldTemplate = ({
-  TitleField,
   autofocus,
   canAdd,
   className,
