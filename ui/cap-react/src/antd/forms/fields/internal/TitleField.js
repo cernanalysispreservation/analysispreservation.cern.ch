@@ -1,7 +1,11 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { Button, Row, Space, Tooltip, Typography } from "antd";
-import { ImportOutlined, MailOutlined } from "@ant-design/icons";
+import {
+  ExportOutlined,
+  ImportOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
 import Markdown from "../../../partials/Markdown/Markdown";
 
 const TitleField = ({
@@ -46,7 +50,7 @@ const TitleField = ({
   if (!title) return null;
 
   const titleText = (
-    <Text
+    <Typography.Text
       style={{ fontSize: isObject && "12pt" }}
       strong
       className={labelClassName}
@@ -62,28 +66,18 @@ const TitleField = ({
         }}
         renderAsHtml={titleIsMarkdown}
       />
-    </Text>
+    </Typography.Text>
   );
-
   if ((uiImport && !readonly) || uiLatex || uiEmail) {
     return (
       <Row justify="space-between">
-        <Typography.Text
-          strong
-          className={labelClassName}
-          htmlFor={id}
-          onClick={handleLabelClick}
-          title={typeof title === "string" ? title : ""}
-        >
-          {labelChildren}
-        </Typography.Text>
+        {titleText}
         <Space style={{ flexWrap: "wrap" }}>
           {uiImport && (
             <Tooltip title="Import from a list">
               <Button
                 icon={<ImportOutlined />}
                 block
-                shape="round"
                 size="small"
                 onClick={enableImport}
               />
@@ -92,9 +86,8 @@ const TitleField = ({
           {uiLatex && (
             <Tooltip title="Export LaTeX">
               <Button
-                icosn={<MailOutlined />}
+                icon={<ExportOutlined />}
                 block
-                shape="round"
                 size="small"
                 title="LaTeX"
                 onClick={enableLatex}
@@ -108,7 +101,6 @@ const TitleField = ({
               <Button
                 icon={<MailOutlined />}
                 block
-                shape="round"
                 size="small"
                 onClick={enableEmail}
               />
@@ -118,17 +110,7 @@ const TitleField = ({
       </Row>
     );
   }
-  return (
-    <Typography.Text
-      strong
-      className={labelClassName}
-      htmlFor={id}
-      onClick={handleLabelClick}
-      title={typeof title === "string" ? title : ""}
-    >
-      {labelChildren}
-    </Typography.Text>
-  );
+  return <>{titleText}</>;
 };
 
 TitleField.propTypes = {

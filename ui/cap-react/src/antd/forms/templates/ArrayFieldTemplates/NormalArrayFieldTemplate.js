@@ -283,7 +283,7 @@ const NormalArrayFieldTemplate = ({
         </Modal>
       )}
       <Row gutter={rowGutter}>
-        <div style={{ marginBottom: "8px" }}>
+        <div style={{ marginBottom: "8px", width: "100%" }}>
           {title && (
             <Col
               className={labelColClassName}
