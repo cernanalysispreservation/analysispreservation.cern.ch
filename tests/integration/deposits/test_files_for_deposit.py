@@ -31,6 +31,7 @@ from mock import patch
 from pytest import mark
 from six import BytesIO
 
+from cap.modules.deposit.api import CAPDeposit
 
 #########################################
 # api/deposits/{pid}/files [GET]
@@ -570,6 +571,51 @@ def test_put_header_invalid_tags(client, users, auth_headers_for_user,
                       auth_headers_for_user(owner))
 
     assert resp.status_code == 400
+
+
+def test_bucket_locked_status(client, users, auth_headers_for_user, create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    deposit = create_deposit(owner, 'test', experiment='CMS')
+    depid = deposit['_deposit']['id']
+    deposit_bucket = deposit.files.bucket
+    assert deposit_bucket.locked is False
+
+    # Upload file
+    client.put('/files/{}/file_1.txt'.format(deposit_bucket),
+                input_stream=BytesIO(b'Hello world!'),
+                headers=headers)
+
+    client.post('/deposits/{}/actions/publish'.format(depid), headers=headers)
+    assert deposit_bucket.locked is True
+
+    deposit = CAPDeposit.get_record(deposit.id)
+    assert deposit.files.bucket.locked == True
+
+    _, record = deposit.fetch_published()
+    record_bucket = record.files.bucket
+    assert record_bucket.locked == True
+    resp_put = client.put('/files/{}/file_2.txt'.format(record_bucket),
+                      input_stream=BytesIO(b'Hello brave new world!'),
+                      headers=headers)
+    assert resp_put.status_code == 403
+
+    # check the record contains different bucket
+    assert deposit_bucket != record_bucket
+
+    # check the content of record_bucket matched the get record `files` response
+    resp = client.get('/records/{}'.format(record['control_number']),
+                      headers=auth_headers_for_user(owner))
+
+    rec_files = resp.json.get('files')
+    assert len(rec_files) == len(record_bucket.objects)
+
+    # Check the response object has same metadata as the bucket
+    assert rec_files[0].get('key') == record_bucket.objects[0].key
+    assert rec_files[0].get('version_id') == str(record_bucket.objects[0].version_id)
+    assert rec_files[0].get('mimetype') == record_bucket.objects[0].mimetype
+    assert rec_files[0].get('size') == record_bucket.objects[0].file.size
+    assert rec_files[0].get('checksum') == record_bucket.objects[0].file.checksum
 
 
 #########################################
