@@ -135,7 +135,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
                 title={
                   <Typography.Text ellipsis={{ rows: 1 }}>
                     {stringifyItem(
-                      item.children.props.uiSchema["ui:options"],
+                      item?.children?.props?.uiSchema?.["ui:options"] ?? null,
                       item.children.props.formData
                     ) || `Item #${item.index + 1}`}
                   </Typography.Text>
