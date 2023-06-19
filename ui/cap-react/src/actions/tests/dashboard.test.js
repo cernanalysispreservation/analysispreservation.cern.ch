@@ -1,7 +1,7 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import * as actions from "../dashboard";
-import axios from "axios";
+import axios from "../../axios";
 import { Map } from "immutable";
 import { describe, expect, test, vi } from "vitest";
 

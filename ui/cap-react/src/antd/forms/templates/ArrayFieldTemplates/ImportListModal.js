@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Input, List, Modal, Tabs, Typography } from "antd";
-import axios from "axios";
+import axios from "../../../../axios";
 
 const ImportListModal = ({
   open,

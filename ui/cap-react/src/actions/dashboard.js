@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { notification } from "antd";
 
 export const DASHBOARD_QUERY_REQUEST = "DASHBOARD_QUERY_REQUEST";

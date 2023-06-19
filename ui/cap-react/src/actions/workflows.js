@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { push } from "connected-react-router";
 
 const WORKFLOWS_API_URL = "/api/workflows";

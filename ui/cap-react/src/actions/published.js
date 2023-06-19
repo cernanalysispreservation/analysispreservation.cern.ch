@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { notification } from "antd";
 export const PUBLISHED_ITEM_REQUEST = "PUBLISHED_ITEM_REQUEST";
 export const PUBLISHED_ITEM_SUCCESS = "PUBLISHED_ITEM_SUCCESS";

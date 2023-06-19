@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { notification, message } from "antd";
 
 export const TOGGLE_FILEMANAGER_LAYER = "TOGGLE_FILEMANAGER_LAYER";

@@ -17,7 +17,7 @@ import {
   Typography,
   notification,
 } from "antd";
-import axios from "axios";
+import axios from "../../axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";

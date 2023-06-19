@@ -2,7 +2,7 @@ import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import * as actions from "../draftItem";
 import * as commonActions from "../common";
-import axios from "axios";
+import axios from "../../axios";
 import { Map } from "immutable";
 import { describe, expect, test, vi } from "vitest";
 

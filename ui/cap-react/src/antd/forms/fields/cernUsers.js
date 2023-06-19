@@ -12,7 +12,7 @@ import {
   Tag,
   Typography,
 } from "antd";
-import axios from "axios";
+import axios from "../../../axios";
 import { debounce } from "lodash-es";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { SearchOutlined } from "@ant-design/icons";

@@ -16,7 +16,7 @@ import {
   Grid,
   Typography,
 } from "antd";
-import axios from "axios";
+import axios from "../../../../axios";
 import { debounce } from "lodash-es";
 
 const Permissions = ({

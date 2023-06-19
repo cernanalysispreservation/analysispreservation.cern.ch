@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { notification } from "antd";
 import { COLLECTION_BASE } from "../antd/routes";
 

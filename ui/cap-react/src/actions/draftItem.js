@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { push } from "connected-react-router";
 import { fetchAndAssignSchema, formErrorsChange } from "./common";
 import { getBucketByUri, getBucketById } from "./files";

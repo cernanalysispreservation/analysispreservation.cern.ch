@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MaskedInput from "./MaskedInput";
 import { Button, InputNumber } from "antd";
-import axios from "axios";
+import axios from "../../../axios";
 import { fromJS } from "immutable";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";

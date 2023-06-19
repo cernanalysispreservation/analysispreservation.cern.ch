@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
-import axios from "axios";
+import axios from "../../../axios";
 import Ror from "./services/Ror";
 import Zenodo from "./services/Zenodo";
 import Orcid from "./services/Orcid";

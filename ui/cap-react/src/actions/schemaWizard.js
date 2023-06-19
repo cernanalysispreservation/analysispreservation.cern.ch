@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { merge } from "lodash-es";
 import { fromJS } from "immutable";
 import { push } from "connected-react-router";
