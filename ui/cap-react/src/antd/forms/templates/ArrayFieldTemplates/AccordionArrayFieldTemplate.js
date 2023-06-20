@@ -8,17 +8,22 @@ const AccordionArrayFieldTemplate = ({ items = [], formContext, id }) => {
 
   return (
     <ErrorFieldIndicator id={id}>
-      <Collapse expandIconPosition="right">
-        <Collapse.Panel header={`${items.length} item(s)`} key="1">
-          {items.map((itemProps, idx) => (
-            <ArrayFieldTemplateItem
-              key={id + idx}
-              {...itemProps}
-              formContext={formContext}
-            />
-          ))}
-        </Collapse.Panel>
-      </Collapse>
+      <Collapse
+        expandIconPosition="right"
+        items={[
+          {
+            key: "1",
+            label: `${items.length} item(s)`,
+            children: items.map((itemProps, idx) => (
+              <ArrayFieldTemplateItem
+                key={id + idx}
+                {...itemProps}
+                formContext={formContext}
+              />
+            )),
+          },
+        ]}
+      />
     </ErrorFieldIndicator>
   );
 };

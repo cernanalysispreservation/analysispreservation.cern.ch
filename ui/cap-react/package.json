@@ -6,12 +6,7 @@
     "npm": ">=3"
   },
   "scripts": {
-    "preinstall": "node tools/nodeVersionCheck.js",
     "precommit": "pretty-quick --staged --single-quote",
-    "remove-demo": "babel-node tools/removeDemo.js",
-    "start-message": "babel-node tools/startMessage.js",
-    "prestart": "npm run start-message",
-    "start": "concurrently -k -r -s first \"npm run test:watch\" \"npm run open:src\"",
     "lint": "eslint src",
     "lint:fix": "eslint --fix",
     "clean-dist": "npm run remove-dist && mkdir dist",

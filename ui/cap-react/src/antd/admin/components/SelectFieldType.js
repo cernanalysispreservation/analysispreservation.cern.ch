@@ -11,9 +11,13 @@ const SelectFieldType = () => {
       >
         Field types
       </Typography.Title>
-      <Collapse defaultActiveKey={["simple", "collections"]} ghost>
-        {Object.entries(fields).map(([key, type]) => (
-          <Collapse.Panel key={key} header={type.title}>
+      <Collapse
+        defaultActiveKey={["simple", "collections"]}
+        ghost
+        items={Object.entries(fields).map(([key, type]) => ({
+          key: key,
+          label: type.title,
+          children: (
             <Row gutter={[16, 8]}>
               {Object.entries(type.fields).map(([key, type], index) => (
                 <Col xs={22} xl={12} key={key} style={{ width: "100%" }}>
@@ -26,9 +30,9 @@ const SelectFieldType = () => {
                 </Col>
               ))}
             </Row>
-          </Collapse.Panel>
-        ))}
-      </Collapse>
+          ),
+        }))}
+      />
     </div>
   );
 };

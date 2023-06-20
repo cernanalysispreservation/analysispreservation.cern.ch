@@ -10,7 +10,6 @@ import {
   Descriptions,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 
 const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
@@ -61,75 +60,80 @@ const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
         size={"middle"}
         style={{ display: "flex", padding: "10px 0" }}
       >
-        <Collapse expandIconPosition="end">
-          {Object.entries(repositories).map(([key, value]) => (
-            <CollapsePanel
-              showAfrrow={false}
-              key={key}
-              header={
-                <Space align="center">
-                  {value.host == "github.com" ? (
-                    <GithubOutlined />
-                  ) : (
-                    <GitlabOutlined />
-                  )}{" "}
-                  <Typography.Text strong>
-                    {value.display_name || key}
-                  </Typography.Text>
-                </Space>
-              }
-              extra={genExtra(
-                key,
-                repos.filter(r =>
-                  r.host == value.host &&
-                  r.name == value.default_name &&
-                  r.owner == value.org_name
-                    ? true
-                    : false
-                ).length > 0
+        <Collapse
+          expandIconPosition="end"
+          items={Object.entries(repositories).map(([key, value]) => ({
+            key: key,
+            label: (
+              <Space align="center">
+                {value.host == "github.com" ? (
+                  <GithubOutlined />
+                ) : (
+                  <GitlabOutlined />
+                )}{" "}
+                <Typography.Text strong>
+                  {value.display_name || key}
+                </Typography.Text>
+              </Space>
+            ),
+            extra: genExtra(
+              key,
+              repos.filter(r =>
+                r.host == value.host &&
+                r.name == value.default_name &&
+                r.owner == value.org_name
                   ? true
-                  : false,
-                value
-              )}
-            >
-              <Typography.Paragraph>
-                {value.display_description}
-              </Typography.Paragraph>
-              <Descriptions column={2} size="small">
-                <Descriptions.Item label="Host">{value.host}</Descriptions.Item>
-                <Descriptions.Item label="License">
-                  {value.license || "-"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Organisation/Group name">
-                  {value.org_name}
-                </Descriptions.Item>
-                <Descriptions.Item label="Authentication">
-                  {value.authentication
-                    ? value.authentication.type == "cap"
-                      ? "CAP"
-                      : "Personal"
-                    : null}
-                </Descriptions.Item>
-                <Descriptions.Item label="Repository name">
-                  {value.repo_name ? (
-                    value.repo_name.template_file ? (
-                      <Space>
-                        {value.repo_name.template_file} <Tag>Template file</Tag>
-                      </Space>
-                    ) : (
-                      <Space>
-                        {value.repo_name.template} <Tag>Template string</Tag>
-                      </Space>
-                    )
-                  ) : null}
-                </Descriptions.Item>
-                <Descriptions.Item>
-                  {value.org_name}/{value.default_name}
-                </Descriptions.Item>
-              </Descriptions>
-            </CollapsePanel>
-          ))}
-        </Collapse>
+                  : false
+              ).length > 0
+                ? true
+                : false,
+              value
+            ),
+            showArrow: false,
+            children: (
+              <>
+                <Typography.Paragraph>
+                  {value.display_description}
+                </Typography.Paragraph>
+                <Descriptions column={2} size="small">
+                  <Descriptions.Item label="Host">
+                    {value.host}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="License">
+                    {value.license || "-"}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Organisation/Group name">
+                    {value.org_name}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Authentication">
+                    {value.authentication
+                      ? value.authentication.type == "cap"
+                        ? "CAP"
+                        : "Personal"
+                      : null}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Repository name">
+                    {value.repo_name ? (
+                      value.repo_name.template_file ? (
+                        <Space>
+                          {value.repo_name.template_file}{" "}
+                          <Tag>Template file</Tag>
+                        </Space>
+                      ) : (
+                        <Space>
+                          {value.repo_name.template} <Tag>Template string</Tag>
+                        </Space>
+                      )
+                    ) : null}
+                  </Descriptions.Item>
+                  <Descriptions.Item>
+                    {value.org_name}/{value.default_name}
+                  </Descriptions.Item>
+                </Descriptions>
+              </>
+            ),
+          }))}
+        />
       </Space>
     </Card>
   );

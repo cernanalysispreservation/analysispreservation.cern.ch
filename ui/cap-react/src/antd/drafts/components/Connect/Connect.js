@@ -212,25 +212,24 @@ const Connect = ({
         )}
         <Card title="Connected Repositories">
           {repos && repos.length > 0 ? (
-            <Collapse>
-              {repos.map(repo => (
-                <Collapse.Panel
-                  header={`${repo.owner}/${repo.name}`}
-                  key={repo.id}
-                  extra={
-                    <Space size="middle">
-                      <Typography.Text>
-                        {getEvenTypeLabel(repo.event_type)}
-                      </Typography.Text>
-                      {repo.branch}
-                      {getIcon(repo.host)}
-                    </Space>
-                  }
-                >
+            <Collapse
+              items={repos.map(repo => ({
+                key: repo.id,
+                label: `${repo.owner}/${repo.name}`,
+                extra: (
+                  <Space size="middle">
+                    <Typography.Text>
+                      {getEvenTypeLabel(repo.event_type)}
+                    </Typography.Text>
+                    {repo.branch}
+                    {getIcon(repo.host)}
+                  </Space>
+                ),
+                children: (
                   <Table dataSource={repo.snapshots} columns={columns} />
-                </Collapse.Panel>
-              ))}
-            </Collapse>
+                ),
+              }))}
+            />
           ) : (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
