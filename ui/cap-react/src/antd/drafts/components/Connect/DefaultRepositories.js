@@ -10,7 +10,6 @@ import {
   Descriptions,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import { GithubOutlined, GitlabOutlined } from "@ant-design/icons";
 
 const Connect = ({ draftID, repos = [], repoConfig = {}, upload }) => {
