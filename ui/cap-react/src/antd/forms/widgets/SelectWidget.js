@@ -9,6 +9,15 @@ import { fromJS } from "immutable";
 import { Empty } from "antd";
 import PropTypes from "prop-types";
 
+
+import {
+  ariaDescribedByIds,
+  enumOptionsIndexForValue,
+  enumOptionsValueForIndex,
+} from '@rjsf/utils';
+import isString from 'lodash/isString';
+
+
 const SELECT_STYLE = {
   width: "100%",
 };
@@ -66,15 +75,25 @@ const SelectWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const { enumOptions, enumDisabled, suggestions, params } = options;
+  const { enumOptions, enumDisabled, suggestions, params, emptyValue} = options;
 
   const handleChange = nextValue => onChange(processValue(schema, nextValue));
 
-  const handleBlur = () => onBlur(id, processValue(schema, value));
+  const handleBlur = () => onBlur(id, enumOptionsValueForIndex(value, enumOptions, emptyValue));
 
-  const handleFocus = () => onFocus(id, processValue(schema, value));
+  const handleFocus = () => onFocus(id, enumOptionsValueForIndex(value, enumOptions, emptyValue));
 
-  const getPopupContainer = node => node.parentNode;
+  const filterOption = (input, option) => {
+    if (option && isString(option.label)) {
+      // labels are strings in this context
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    }
+    return false;
+  };
+
+  const getPopupContainer = (node) => node.parentNode;
+
+  const selectedIndexes = enumOptionsIndexForValue(value, enumOptions, multiple);
 
   const stringify = currentValue =>
     Array.isArray(currentValue) ? value.map(String) : String(value);
@@ -121,37 +140,45 @@ const SelectWidget = ({
 
   let valuesToRender = suggestions ? searchValues : enumOptions;
 
+
+  // Antd's typescript definitions do not contain the following props that are actually necessary and, if provided,
+  // they are used, so hacking them in via by spreading `extraProps` on the component to avoid typescript errors
+  const extraProps = {
+    name: id,
+  };
   return (
     <Select
       autoFocus={autofocus}
       disabled={disabled || (readonlyAsDisabled && readonly)}
       getPopupContainer={getPopupContainer}
       id={id}
-      mode={typeof multiple !== "undefined" ? "multiple" : undefined}
-      name={id}
+      mode={multiple ? 'multiple' : undefined}
       onBlur={!readonly ? handleBlur : undefined}
       onChange={!readonly ? handleChange : undefined}
-      onSearch={suggestions && debounce(updateSearch, 500)}
       onFocus={!readonly ? handleFocus : undefined}
+      onSearch={suggestions && debounce(updateSearch, 500)}
+      showSearch={suggestions}
       placeholder={placeholder}
       style={SELECT_STYLE}
-      value={typeof value !== "undefined" ? stringify(value) : undefined}
-      showSearch={suggestions}
-      filterOption={!suggestions}
-      loading={loading}
+      value={selectedIndexes}
+      {...extraProps}
+      filterOption={filterOption}
+      filterOptinon={!suggestions}
+      aria-describedby={ariaDescribedByIds(id)}
       notFoundContent={
         <Empty description="No Results" image={Empty.PRESENTED_IMAGE_SIMPLE} />
       }
     >
-      {valuesToRender.map(({ value: optionValue, label: optionLabel }) => (
-        <Select.Option
-          disabled={enumDisabled && enumDisabled.indexOf(optionValue) !== -1}
-          key={String(optionValue)}
-          value={String(optionValue)}
-        >
-          {optionLabel}
-        </Select.Option>
-      ))}
+      {Array.isArray(enumOptions) &&
+        enumOptions.map(({ value: optionValue, label: optionLabel }, index) => (
+          <Select.Option
+            disabled={Array.isArray(enumDisabled) && enumDisabled.indexOf(optionValue) !== -1}
+            key={String(index)}
+            value={String(index)}
+          >
+            {optionLabel}
+          </Select.Option>
+        ))}
     </Select>
   );
 };
