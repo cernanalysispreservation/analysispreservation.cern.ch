@@ -13,6 +13,9 @@ export default defineConfig(({ mode }) => {
       svgr(),
       visualizer({
         filename: "bundle-stats.html",
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
       }),
     ],
     server: {
