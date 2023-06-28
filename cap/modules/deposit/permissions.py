@@ -116,20 +116,42 @@ class DepositPermission(Permission):
     """Generic deposit permission."""
 
     actions = {
-        "read": deposit_read_need,
-        "update": deposit_update_need,
-        "review": deposit_review_need,
-        "admin": deposit_admin_need,
+        "read": [
+            deposit_read_need,
+            deposit_update_need,
+            deposit_admin_need,
+            deposit_review_need,
+        ],
+        "update": [
+            deposit_update_need,
+            deposit_admin_need,
+        ],
+        "review": [
+            deposit_review_need,
+            deposit_admin_need,
+        ],
+        "admin": [
+            deposit_admin_need,
+        ],
     }
 
     schema_actions = {
-        "read": deposit_schema_read_action,
-        "update": deposit_schema_update_action,
-        "review": deposit_schema_review_action,
-        "admin": deposit_schema_admin_action,
-        "upload": deposit_schema_upload_action,
-        "clone": deposit_schema_clone_action,
-        "delete": deposit_schema_delete_action,
+        "read": [
+            deposit_schema_read_action,
+            deposit_schema_update_action,
+            deposit_schema_review_action,
+            deposit_schema_admin_action,
+        ],
+        "update": [deposit_schema_update_action, deposit_schema_admin_action],
+        "review": [deposit_schema_review_action, deposit_schema_admin_action],
+        "admin": [deposit_schema_admin_action],
+        "upload": [
+            deposit_schema_upload_action,
+            deposit_schema_update_action,
+            deposit_schema_admin_action,
+        ],
+        "clone": [deposit_schema_clone_action, deposit_schema_admin_action],
+        "delete": [deposit_schema_delete_action, deposit_schema_admin_action],
     }
 
     def __init__(self, deposit, action, extra_needs=None):
@@ -139,16 +161,19 @@ class DepositPermission(Permission):
             deposit: deposit to which access is requested.
         """
         _needs = set()
-        _needs.add(self.actions['admin'](deposit))
 
         if extra_needs:
             _needs.update(extra_needs)
 
         if action in self.actions:
-            _needs.add(self.actions[action](deposit))
+            action_needs = set([an(deposit) for an in self.actions[action]])
+            _needs.update(action_needs)
 
         if action in self.schema_actions:
-            _needs.add(self.schema_actions[action](deposit.schema.id))
+            schema_action_needs = set(
+                [an(deposit.schema.id) for an in self.schema_actions[action]]
+            )
+            _needs.update(schema_action_needs)
 
         super(DepositPermission, self).__init__(*_needs)
 

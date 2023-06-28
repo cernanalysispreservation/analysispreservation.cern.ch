@@ -81,7 +81,7 @@ def test_deposit_clone_when_other_user_returns_403(client, users,
     assert resp.status_code == 403
 
 
-def test_deposit_clone_when_user_has_only_update_permission_returns_403(
+def test_deposit_clone_when_user_has_only_update_permission_returns_201(
         client, users, auth_headers_for_user, create_deposit, json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'test-analysis', publish=True)
@@ -98,7 +98,7 @@ def test_deposit_clone_when_user_has_only_update_permission_returns_403(
     resp = client.post('/deposits/{}/actions/clone'.format(pid),
                        headers=auth_headers_for_user(other_user))
 
-    assert resp.status_code == 403
+    assert resp.status_code == 201
 
 
 @mark.parametrize("action", [
