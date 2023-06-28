@@ -3,7 +3,8 @@
     "name":"cap-project",
     "workspaces":["cap-react", "forms-playground"],
     "scripts": {
-        "cap":"yarn workspace cap-react dev:docker",
+        "cap":"yarn workspace cap-react dev",
+        "cap:docker":"yarn workspace cap-react dev:docker",
         "forms":"yarn workspace forms-playground start"
     },
     "devDependencies": {

@@ -5,21 +5,29 @@
 # CERN Analysis Preservation is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-FROM exiasr/alpine-yarn-nginx
+FROM nginx:1.24
+
+
+RUN apt-get update
+RUN apt-get install -y curl bash
+
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x  | bash -
+RUN apt-get install -y nodejs
+
+RUN apt-get update && apt-get -y install  git python g++ make
+RUN npm install --global yarn
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/nginx/conf.d/* /etc/nginx/conf.d/
-COPY ./docker/nginx/test.key /etc/ssl/private/test.key
-COPY ./docker/nginx/test.crt /etc/ssl/certs/test.crt
+COPY ./docker/nginx/ssl/private/test.key /etc/ssl/private/test.key
+COPY ./docker/nginx/ssl/certs/test.crt /etc/ssl/certs/test.crt
 
 ENV WORKING_DIR=/tmp/cap
 ENV NGINX_HTML_DIR=/usr/share/nginx/html
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 
 RUN mkdir -p $NGINX_HTML_DIR
-
-RUN apk update
-RUN apk add git yarn python g++ make && rm -rf /var/cache/apk/*
 
 # We invalidate cache always because there is no easy way for now to detect
 # if something in the whole git repo changed. For docker git clone <url> <dir>

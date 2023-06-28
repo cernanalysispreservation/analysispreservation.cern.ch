@@ -8,4 +8,4 @@ RUN yarn install
 
 EXPOSE 3000
 
-CMD ["npm","run", "cap"]
+CMD ["npm","run", "cap:docker"]
