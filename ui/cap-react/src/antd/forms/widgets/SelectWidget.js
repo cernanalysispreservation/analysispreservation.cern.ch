@@ -95,8 +95,8 @@ const SelectWidget = ({
 
   const selectedIndexes = enumOptionsIndexForValue(value, enumOptions, multiple);
 
-  const stringify = currentValue =>
-    Array.isArray(currentValue) ? value.map(String) : String(value);
+  // const stringify = currentValue =>
+  //   Array.isArray(currentValue) ? value.map(String) : String(value);
 
   const _replace_hash_with_current_indexes = path => {
     let indexes = id.split("_").filter(item => !isNaN(item)),
@@ -162,6 +162,7 @@ const SelectWidget = ({
       style={SELECT_STYLE}
       value={selectedIndexes}
       {...extraProps}
+      loading={loading}
       filterOption={filterOption}
       filterOptinon={!suggestions}
       aria-describedby={ariaDescribedByIds(id)}
@@ -169,8 +170,8 @@ const SelectWidget = ({
         <Empty description="No Results" image={Empty.PRESENTED_IMAGE_SIMPLE} />
       }
     >
-      {Array.isArray(enumOptions) &&
-        enumOptions.map(({ value: optionValue, label: optionLabel }, index) => (
+      {Array.isArray(valuesToRender) &&
+        valuesToRender.map(({ value: optionValue, label: optionLabel }, index) => (
           <Select.Option
             disabled={Array.isArray(enumDisabled) && enumDisabled.indexOf(optionValue) !== -1}
             key={String(index)}
