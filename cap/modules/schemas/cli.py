@@ -25,10 +25,14 @@
 
 import itertools
 import json
+import jsonpatch
+from jsonschema import Draft7Validator, exceptions
 import os
 
 import click
 import requests
+import subprocess
+import tempfile
 from flask import current_app
 from flask_cli import with_appcontext
 from invenio_accounts.models import Role, User
@@ -209,6 +213,71 @@ def _get_or_create_token(token_name, user_email):
         return token_.access_token
     else:
         return None
+
+
+@fixtures.command()
+@click.option('--current', default='draft4', type=click.STRING)
+@click.option('--new', default='draft7', type=click.STRING)
+@click.option('--run', is_flag=True)
+@with_appcontext
+def migrate(current, new, run):
+    """Command to migrate the versions of jsonschemas.
+
+    Options:
+    1. --current: Current version of jsonschema. Eg: 'draft4'
+    2. --new: New version of jsonschema to migrate. Eg: 'draft7'
+    3. --run: Flag to commit the changes in the db.
+
+    Eg: cap fixtures migrate --current 'draft4' --new 'draft7' --run
+    """
+    # Verify npm environment and install alterschema.
+    subprocess.check_output('npm -v', shell=True)
+    subprocess.check_output('npm init -y', shell=True)
+    subprocess.check_output('npm install alterschema', shell=True)
+
+    schemas = Schema.query.all()
+    for schema_model in schemas:
+        click.secho(f'Migrating {schema_model.name}', fg='green')
+        for attr in ['deposit_schema', 'record_schema']:
+            # Migrate individual schema
+            schema = getattr(schema_model, attr)
+
+            temp_path = store_schema_temporarily(schema)
+            try:
+                output = subprocess.check_output(
+                    f'node_modules/.bin/alterschema --from {current} --to {new} {temp_path}',
+                    shell=True
+                )
+                click.secho('Alterschema ran successfully!')
+                new_schema = json.loads(output)
+            except subprocess.CalledProcessError as e:
+                click.secho(f'alterschema command failed: {str(e)}', fg='red')
+                continue
+
+            handle_required_fields(new_schema)
+            handle_dependencies_fields(new_schema)
+            handle_enum_enumnames_fields(new_schema)
+
+            alterschema_patch = jsonpatch.make_patch(schema, new_schema)
+            click.secho(f'{attr}: {alterschema_patch}')
+
+            validator = Draft7Validator(new_schema)
+            try:
+                validator.check_schema(new_schema)
+            except exceptions.SchemaError as e:
+                click.secho(
+                    f'Schema {schema_model.name} field {attr} is not valid: {e.message}',
+                    fg='red'
+                )
+                continue
+
+            setattr(schema_model, attr, new_schema)
+
+            if run:
+                click.secho('Commiting to the database', fg='green')
+                db.session.commit()
+
+    click.secho('Migration done successfully!', fg='green')
 
 
 @fixtures.command()
@@ -526,3 +595,84 @@ def has_all_required_fields(data):
                 if req_field not in schema_fields:
                     return False
     return True
+
+
+def store_schema_temporarily(schema):
+    """Store schema in a temporary file."""
+    with tempfile.NamedTemporaryFile(suffix='.json', delete=False) as temp:
+        temp.write(json.dumps(schema).encode('utf-8'))
+        return temp.name
+
+
+def handle_enum_enumnames_fields(schema):
+    """Convert enum, enumNames to oneOf in a schema."""
+    if isinstance(schema, dict):
+        items_to_check = schema.items()
+        modifications = []
+        for key, value in items_to_check:
+            if key == 'enum' and 'enumNames' in schema:
+                enum_values = schema['enum']
+                enum_names = schema['enumNames']
+                one_of_array = [
+                    {'const': val, 'title': name}
+                    for val, name in zip(enum_values, enum_names)
+                ]
+                modifications.append(('remove', 'enum'))
+                modifications.append(('remove', 'enumNames'))
+                modifications.append(('add', 'oneOf', one_of_array))
+            else:
+                handle_enum_enumnames_fields(value)
+
+        for operation, key, *value in modifications:
+            if operation == 'remove':
+                del schema[key]
+            elif operation == 'add':
+                schema[key] = value[0]
+
+    elif isinstance(schema, list):
+        for item in schema:
+            handle_enum_enumnames_fields(item)
+
+
+def handle_required_fields(schema):
+    """Convert required from bool to list in a schema."""
+    if isinstance(schema, dict):
+        if 'properties' in schema:
+            required_properties = []
+            for property, value in schema['properties'].items():
+                if isinstance(value, dict):
+                    if value.get('required', False) == 'true':
+                        del value['required']
+                        required_properties.append(property)
+                    handle_required_fields(value)
+            if required_properties:
+                schema['required'] = required_properties
+        else:
+            for value in schema.values():
+                handle_required_fields(value)
+    elif isinstance(schema, list):
+        for item in schema:
+            handle_required_fields(item)
+
+
+def handle_dependencies_fields(schema):
+    """Convert dependencies from list to object in schema."""
+    if isinstance(schema, dict):
+        for key, value in list(schema.items()):
+            if key == 'properties':
+                for prop, val in value.items():
+                    if (
+                        isinstance(val, dict)
+                        and 'dependencies' in val
+                        and isinstance(val['dependencies'], list)
+                    ):
+                        dependencies = val.pop('dependencies')
+                        if dependencies:
+                            if 'dependentRequired' not in schema:
+                                schema['dependentRequired'] = {}
+                            schema['dependentRequired'][prop] = dependencies
+            if isinstance(value, dict) or isinstance(value, list):
+                handle_dependencies_fields(value)
+    elif isinstance(schema, list):
+        for item in schema:
+            handle_dependencies_fields(item)
