@@ -36,7 +36,7 @@ from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_rest.errors import FieldError
 from invenio_search import current_search
 from invenio_search import current_search_client as es
-from jsonschema import Draft4Validator
+from jsonschema import Draft7Validator
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.exc import IntegrityError
@@ -220,7 +220,7 @@ class Schema(db.Model):
     def validate_config(self, key, value):
         """Validate the config."""
         if value:
-            validator = Draft4Validator(SCHEMA_CONFIG_JSONSCHEMA_V1)
+            validator = Draft7Validator(SCHEMA_CONFIG_JSONSCHEMA_V1)
             errors = []
 
             for error in validator.iter_errors(value):

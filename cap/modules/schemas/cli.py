@@ -25,14 +25,13 @@
 
 import itertools
 import json
-import jsonpatch
-from jsonschema import Draft7Validator, exceptions
 import os
-
-import click
-import requests
 import subprocess
 import tempfile
+
+import click
+import jsonpatch
+import requests
 from flask import current_app
 from flask_cli import with_appcontext
 from invenio_accounts.models import Role, User
@@ -40,6 +39,7 @@ from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_oauth2server.models import Token
 from invenio_search import current_search_client
+from jsonschema import Draft7Validator, exceptions
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -245,8 +245,8 @@ def migrate(current, new, run):
             temp_path = store_schema_temporarily(schema)
             try:
                 output = subprocess.check_output(
-                    f'node_modules/.bin/alterschema --from {current} --to {new} {temp_path}',
-                    shell=True
+                    f'node_modules/.bin/alterschema --from {current} --to {new} {temp_path}',  # noqa
+                    shell=True,
                 )
                 click.secho('Alterschema ran successfully!')
                 new_schema = json.loads(output)
@@ -266,8 +266,8 @@ def migrate(current, new, run):
                 validator.check_schema(new_schema)
             except exceptions.SchemaError as e:
                 click.secho(
-                    f'Schema {schema_model.name} field {attr} is not valid: {e.message}',
-                    fg='red'
+                    f'Schema {schema_model.name} field {attr} is not valid: {e.message}',  # noqa
+                    fg='red',
                 )
                 continue
 
