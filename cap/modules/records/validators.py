@@ -23,8 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Record validators."""
 
-from jsonschema import Draft4Validator
+from jsonschema import Draft7Validator
 from jsonschema.validators import extend
 
-record_validators = dict(Draft4Validator.VALIDATORS)
-RecordValidator = extend(Draft4Validator, validators=record_validators)
+record_validators = dict(Draft7Validator.VALIDATORS)
+RecordValidator = extend(Draft7Validator, validators=record_validators)

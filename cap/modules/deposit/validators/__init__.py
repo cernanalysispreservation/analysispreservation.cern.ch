@@ -27,9 +27,9 @@
 import os
 
 from flask import current_app
-from jsonschema._types import draft4_type_checker
+from jsonschema._types import draft7_type_checker
 from jsonschema._utils import load_schema
-from jsonschema.validators import Draft4Validator, create, extend
+from jsonschema.validators import Draft7Validator, create, extend
 
 from cap.modules.deposit.validators.users import (
     find_field_copy,
@@ -41,7 +41,7 @@ from cap.modules.experiments.validators import (
     validate_unique_cadi,
 )
 
-deposit_validators = dict(Draft4Validator.VALIDATORS)
+deposit_validators = dict(Draft7Validator.VALIDATORS)
 
 if not os.environ.get("CAP_CMS_VALIDATION_DISABLE"):
     deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
@@ -49,7 +49,7 @@ if not os.environ.get("CAP_CMS_VALIDATION_DISABLE"):
 deposit_validators['x-validate-unique-cadi'] = validate_unique_cadi
 # deposit_validators['x-validate-cadi-id'] = validate_cadi_id
 
-DepositValidator = extend(Draft4Validator, validators=deposit_validators)
+DepositValidator = extend(Draft7Validator, validators=deposit_validators)
 NoRequiredValidator = extend(DepositValidator, {'required': None})
 
 
@@ -68,15 +68,15 @@ INCLUDE_VALIDATORS = [
 ]
 minimal_validators = {
     i: v
-    for i, v in Draft4Validator.VALIDATORS.items()
+    for i, v in Draft7Validator.VALIDATORS.items()
     if i in INCLUDE_VALIDATORS
 }
 
 MinimalValidator = create(
-    load_schema('draft4'),
+    load_schema('draft7'),
     validators=minimal_validators,
-    type_checker=draft4_type_checker,
-    version="draft4-clean",
+    type_checker=draft7_type_checker,
+    version="draft7-clean",
     id_of=lambda schema: schema.get("id", ""),
 )
 

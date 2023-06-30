@@ -22,10 +22,10 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Models for schemas."""
-from jsonschema.validators import Draft4Validator
+from jsonschema.validators import Draft7Validator
 from marshmallow import ValidationError, validate
 
-draft4SchemaValidator = Draft4Validator(Draft4Validator.META_SCHEMA)
+draft7SchemaValidator = Draft7Validator(Draft7Validator.META_SCHEMA)
 
 
 class JSONSchemaValidator(validate.Validator):
@@ -36,7 +36,7 @@ class JSONSchemaValidator(validate.Validator):
         # make errors compliant with marshamllow ValidationError format
         errors = {
             '.'.join(error.path): [str(error.message)]
-            for error in draft4SchemaValidator.iter_errors(value)
+            for error in draft7SchemaValidator.iter_errors(value)
         }
         if errors:
             raise ValidationError(message=errors)
