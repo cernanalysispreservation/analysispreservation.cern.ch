@@ -6,6 +6,7 @@ import { transformSchema } from "../../utils/transformSchema";
 import Header from "../../containers/EditorHeader";
 import Form from "../../../forms";
 import { canEdit } from "../../utils/permissions";
+import { debounce } from "lodash-es";
 
 const Editor = ({
   schemaErrors,
@@ -39,7 +40,7 @@ const Editor = ({
             formRef={formRef}
             schema={_schema}
             uiSchema={schemas.uiSchema || {}}
-            onChange={_formDataChange}
+            onChange={debounce(_formDataChange, 200)}
             extraErrors={extraErrors || {}}
             draftEditor
             readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}

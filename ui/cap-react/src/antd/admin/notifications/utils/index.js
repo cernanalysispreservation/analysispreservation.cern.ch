@@ -348,7 +348,7 @@ export const uiSchema = {
       items: {
         mails: {
           default: {
-            "ui:widget": "tags",
+            "ui:field": "tags",
           },
           formatted: {
             "ui:array": "default",

@@ -9,14 +9,12 @@ import { fromJS } from "immutable";
 import { Empty } from "antd";
 import PropTypes from "prop-types";
 
-
 import {
   ariaDescribedByIds,
   enumOptionsIndexForValue,
   enumOptionsValueForIndex,
-} from '@rjsf/utils';
-import isString from 'lodash/isString';
-
+} from "@rjsf/utils";
+import isString from "lodash/isString";
 
 const SELECT_STYLE = {
   width: "100%",
@@ -75,13 +73,16 @@ const SelectWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const { enumOptions, enumDisabled, suggestions, params, emptyValue} = options;
+  const { enumOptions, enumDisabled, suggestions, params, emptyValue } =
+    options;
 
   const handleChange = nextValue => onChange(processValue(schema, nextValue));
 
-  const handleBlur = () => onBlur(id, enumOptionsValueForIndex(value, enumOptions, emptyValue));
+  const handleBlur = () =>
+    onBlur(id, enumOptionsValueForIndex(value, enumOptions, emptyValue));
 
-  const handleFocus = () => onFocus(id, enumOptionsValueForIndex(value, enumOptions, emptyValue));
+  const handleFocus = () =>
+    onFocus(id, enumOptionsValueForIndex(value, enumOptions, emptyValue));
 
   const filterOption = (input, option) => {
     if (option && isString(option.label)) {
@@ -91,9 +92,13 @@ const SelectWidget = ({
     return false;
   };
 
-  const getPopupContainer = (node) => node.parentNode;
+  const getPopupContainer = node => node.parentNode;
 
-  const selectedIndexes = enumOptionsIndexForValue(value, enumOptions, multiple);
+  const selectedIndexes = enumOptionsIndexForValue(
+    value,
+    enumOptions,
+    multiple
+  );
 
   // const stringify = currentValue =>
   //   Array.isArray(currentValue) ? value.map(String) : String(value);
@@ -140,7 +145,6 @@ const SelectWidget = ({
 
   let valuesToRender = suggestions ? searchValues : enumOptions;
 
-
   // Antd's typescript definitions do not contain the following props that are actually necessary and, if provided,
   // they are used, so hacking them in via by spreading `extraProps` on the component to avoid typescript errors
   const extraProps = {
@@ -152,7 +156,7 @@ const SelectWidget = ({
       disabled={disabled || (readonlyAsDisabled && readonly)}
       getPopupContainer={getPopupContainer}
       id={id}
-      mode={multiple ? 'multiple' : undefined}
+      mode={multiple ? "multiple" : undefined}
       onBlur={!readonly ? handleBlur : undefined}
       onChange={!readonly ? handleChange : undefined}
       onFocus={!readonly ? handleFocus : undefined}
@@ -164,22 +168,26 @@ const SelectWidget = ({
       {...extraProps}
       loading={loading}
       filterOption={filterOption}
-      filterOptinon={!suggestions}
       aria-describedby={ariaDescribedByIds(id)}
       notFoundContent={
         <Empty description="No Results" image={Empty.PRESENTED_IMAGE_SIMPLE} />
       }
     >
       {Array.isArray(valuesToRender) &&
-        valuesToRender.map(({ value: optionValue, label: optionLabel }, index) => (
-          <Select.Option
-            disabled={Array.isArray(enumDisabled) && enumDisabled.indexOf(optionValue) !== -1}
-            key={String(index)}
-            value={String(index)}
-          >
-            {optionLabel}
-          </Select.Option>
-        ))}
+        valuesToRender.map(
+          ({ value: optionValue, label: optionLabel }, index) => (
+            <Select.Option
+              disabled={
+                Array.isArray(enumDisabled) &&
+                enumDisabled.indexOf(optionValue) !== -1
+              }
+              key={String(index)}
+              value={String(index)}
+            >
+              {optionLabel}
+            </Select.Option>
+          )
+        )}
     </Select>
   );
 };
