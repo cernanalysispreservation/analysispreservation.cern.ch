@@ -6,6 +6,7 @@ import { fromJS } from "immutable";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { formDataChange } from "../../../actions/draftItem";
+import { isRegExp } from "lodash-es";
 
 const INPUT_STYLE = {
   width: "100%",
@@ -163,7 +164,7 @@ const TextWidget = ({
       onFocus={!readonly ? handleFocus : undefined}
       placeholder={placeholder}
       value={value}
-      pattern={schema.pattern}
+      pattern={isRegExp(schema.pattern) ? schema.pattern : undefined}
       mask={mask}
       convertToUppercase={convertToUppercase}
       message={message}

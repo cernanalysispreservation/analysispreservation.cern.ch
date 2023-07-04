@@ -253,7 +253,7 @@ const simple = {
           description:
             "The input will be validated against this regex on form submission",
           type: "string",
-          pattern: "^^[w]*$$",
+          format: "regex",
         },
         readOnly: extra.optionsSchema.readOnly,
       },

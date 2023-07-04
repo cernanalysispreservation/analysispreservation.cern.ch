@@ -48,6 +48,7 @@ const PropertyKeyEditorForm = ({
       widgets={widgets}
       formData={formData}
       onChange={onChange}
+      liveValidate
     />
   );
 };
