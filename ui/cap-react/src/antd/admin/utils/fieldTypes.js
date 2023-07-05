@@ -512,7 +512,7 @@ const simple = {
         ...common.optionsSchema,
         type: {
           type: "string",
-          title: "The type of the returned value",
+          title: "Type of the returned value",
           description: "Define the type of the returned value",
           oneOf: [
             { const: "boolean", title: "Boolean" },
@@ -875,7 +875,7 @@ const advanced = {
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
       "ui:servicesList": {
-        "ui:widget": "checkboxes",
+        "ui:widget": "checkbox",
       },
     },
     default: {

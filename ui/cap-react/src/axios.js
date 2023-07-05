@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiClient = axios.create();
 
-if (process.env.NODE_ENV !== "production") {
+if (!process.env.DOCKER && process.env.NODE_ENV != "production") {
   // Request interceptor to change URL
   apiClient.interceptors.request.use(
     config => {

@@ -1,5 +1,4 @@
 import TextWidget from "./TextWidget";
-import SelectWidget from "./SelectWidget";
 import RichEditorWidget from "./RichEditorWidget";
 import SwitchWidget from "./SwitchWidget";
 import CheckboxWidget from "./CheckboxWidget";
@@ -9,7 +8,6 @@ import DateWidget from "./DateWidget";
 const widgets = {
   text: TextWidget,
   uri: UriWidget,
-  select: SelectWidget,
   latex: RichEditorWidget,
   richeditor: RichEditorWidget,
   switch: SwitchWidget,
