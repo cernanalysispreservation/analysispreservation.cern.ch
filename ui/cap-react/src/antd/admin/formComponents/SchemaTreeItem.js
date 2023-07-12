@@ -113,7 +113,7 @@ const SchemaTreeItem = ({
                   style={{ fontSize: "12px" }}
                   ellipsis
                 >
-                  {schema.title || "Untitled field"}
+                  {schema.title}
                 </Typography.Text>
               </Col>
             </Row>

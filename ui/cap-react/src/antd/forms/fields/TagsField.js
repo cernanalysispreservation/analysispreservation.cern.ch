@@ -69,7 +69,7 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
   };
 
   return (
-    <Space size={[0, 8]} wrap>
+    <Space size={[0, 8]} wrap className="tagsField">
       {tags.map(tag => (
         <Tag
           key={tag}

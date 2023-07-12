@@ -85,6 +85,7 @@ const FieldTemplate = ({
           style={wrapperStyle}
           validateStatus={rawErrors ? "error" : undefined}
           wrapperCol={wrapperCol}
+          tooltip={schema.tooltip}
         >
           {children}
         </Form.Item>

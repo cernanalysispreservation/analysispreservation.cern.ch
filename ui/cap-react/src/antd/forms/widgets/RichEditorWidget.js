@@ -1,5 +1,4 @@
 import Toggler from "./RichEditorPreviewPlugin";
-import "./styles/RichEditorWidget.css";
 import "katex/dist/katex.min.css";
 import MarkdownIt from "markdown-it";
 import katex from "katex";

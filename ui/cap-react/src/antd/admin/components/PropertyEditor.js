@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Breadcrumb, Button, Col, Popconfirm, Row, Typography } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Col,
+  Grid,
+  Popconfirm,
+  Row,
+  Typography,
+} from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
 import Customize from "../containers/Customize";
 import { DeleteOutlined } from "@ant-design/icons";
-import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
+
+const { useBreakpoint } = Grid;
+
 const renderPath = pathToUpdate => {
   let prev;
   let content;
@@ -53,7 +63,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <PageHeader
         onBack={enableCreateMode}
-        title={screens.xl && "Field settings"}
+        title={(screens.xl || path.get("path").size == 0) && "Field settings"}
         extra={
           path.get("path").size > 0 && (
             <Popconfirm
@@ -66,7 +76,7 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
                 enableCreateMode();
               }}
             >
-              <Button danger shape="circle" icon={<DeleteOutlined />} />
+              <Button danger icon={<DeleteOutlined />} />
             </Popconfirm>
           )
         }

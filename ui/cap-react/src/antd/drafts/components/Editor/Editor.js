@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { Col, Layout } from "antd";
 import Error from "../../../partials/Error/";
-import { transformSchema } from "../../utils/transformSchema";
+import { transformSchema } from "../../../partials/Utils/schema";
 import Header from "../../containers/EditorHeader";
 import Form from "../../../forms";
 import { canEdit } from "../../utils/permissions";

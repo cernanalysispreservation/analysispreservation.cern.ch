@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Card, Col, Row, Typography } from "antd";
+import { Button, Card, Col, Grid, Row, Typography } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
 import { withRouter } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 import NotificationEdit from "../containers/NotificationEdit";
-import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
+
+const { useBreakpoint } = Grid;
 
 const NotificationList = ({
   category,

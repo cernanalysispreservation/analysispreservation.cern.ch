@@ -14,10 +14,10 @@ import {
   Tooltip,
 } from "antd";
 import {
-  ArrowLeftOutlined,
   DiffOutlined,
   DownloadOutlined,
   FormOutlined,
+  HomeOutlined,
   NotificationOutlined,
   SaveOutlined,
   SettingOutlined,
@@ -191,7 +191,7 @@ const Header = ({
                   placement="bottom"
                   onConfirm={() => pushPath(CMS)}
                 >
-                  <Button type="text" icon={<ArrowLeftOutlined />}>
+                  <Button type="text" icon={<HomeOutlined />}>
                     {screens.lg && "Admin Home Page"}
                   </Button>
                 </Popconfirm>

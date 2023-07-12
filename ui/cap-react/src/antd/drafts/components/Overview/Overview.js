@@ -11,7 +11,7 @@ import {
   Tag,
   Typography,
 } from "antd";
-import { transformSchema } from "../../utils/transformSchema";
+import { transformSchema } from "../../../partials/Utils/schema";
 import JSONSchemaPreviewer from "../../../partials/JSONSchemaPreviewer";
 import {
   CodeOutlined,

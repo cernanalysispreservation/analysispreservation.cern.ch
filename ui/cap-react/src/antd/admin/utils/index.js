@@ -1,3 +1,11 @@
+export const SIZE_OPTIONS = {
+  xsmall: 8,
+  small: 12,
+  medium: 16,
+  large: 20,
+  xlarge: 24,
+};
+
 export const slugify = text => {
   return text
     .toString()
@@ -58,12 +66,4 @@ export const isItTheArrayField = (schema, uiSchema) => {
   return (
     schema.type === "array" && !uiSchema["ui:field"] && !uiSchema["ui:widget"]
   );
-};
-
-export const SIZE_OPTIONS = {
-  xsmall: 8,
-  small: 12,
-  medium: 16,
-  large: 20,
-  xlarge: 24,
 };
