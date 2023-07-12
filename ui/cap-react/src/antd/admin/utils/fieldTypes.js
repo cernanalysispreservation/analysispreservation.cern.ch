@@ -65,12 +65,19 @@ const extra = {
   optionsSchema: {
     readOnly: {
       type: "boolean",
-      title: "Do you want this field to be read only?",
+      title: "Read-only",
+    },
+    isRequired: {
+      title: "Required",
+      type: "boolean",
     },
   },
   optionsSchemaUiSchema: {
     readOnly: {
       "ui:widget": "switch",
+    },
+    isRequired: {
+      "ui:widget": "required",
     },
   },
 };
@@ -256,10 +263,13 @@ const simple = {
           format: "regex",
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+
       pattern: {
         "ui:placeholder": "^.*$",
       },
@@ -324,10 +334,12 @@ const simple = {
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       type: "object",
@@ -393,10 +405,12 @@ const simple = {
           ],
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,
@@ -430,6 +444,7 @@ const simple = {
           ],
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
       dependencies: {
         type: {
@@ -479,6 +494,7 @@ const simple = {
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,
@@ -521,10 +537,12 @@ const simple = {
           ],
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       type: "object",
@@ -577,10 +595,12 @@ const simple = {
           },
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,
@@ -618,6 +638,7 @@ const simple = {
           ],
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
       dependencies: {
         type: {
@@ -660,13 +681,16 @@ const simple = {
                   enum: ["array"],
                 },
                 items: {
-                  type: "object",
                   title: "Define your options",
+                  type: "object",
                   properties: {
                     enum: {
                       title: "Options List",
                       type: "array",
-                      items: { type: "string", title: "Option" },
+                      items: {
+                        title: "Option",
+                        type: "string",
+                      },
                     },
                   },
                 },
@@ -678,6 +702,7 @@ const simple = {
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,
@@ -731,6 +756,7 @@ const simple = {
           title: "Maximum date allowed",
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
@@ -747,6 +773,7 @@ const simple = {
         "ui:widget": "date",
       },
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,
@@ -777,10 +804,12 @@ const advanced = {
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       type: "object",
@@ -821,9 +850,13 @@ const advanced = {
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+    },
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
@@ -849,9 +882,14 @@ const advanced = {
       title: "ID Fetcher Field Schema",
       properties: {
         ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+    },
     optionsUiSchema: {
       type: "object",
       title: "UI Schema",
@@ -910,9 +948,14 @@ const advanced = {
           description:
             "Provide a message to display when the input does not match the pattern",
         },
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+    },
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
@@ -942,10 +985,12 @@ const advanced = {
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,
@@ -986,10 +1031,12 @@ export const hiddenFields = {
           ],
         },
         readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
       },
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,

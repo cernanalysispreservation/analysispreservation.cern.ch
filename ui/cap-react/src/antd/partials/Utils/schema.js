@@ -21,6 +21,7 @@ export const transformSchema = schema => {
     type: schema.type,
     properties: schema.properties,
     dependencies: schema.dependencies,
+    required: schema.required,
   };
   return schema;
 };

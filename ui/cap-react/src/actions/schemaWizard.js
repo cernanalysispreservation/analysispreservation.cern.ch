@@ -91,6 +91,59 @@ export function selectProperty(path) {
   };
 }
 
+const findParentPath = schemaPath => {
+  // Objects have to be required always for validation to work inside
+  let isObj;
+  for (let i = schemaPath.length - 1; i >= 0; i--) {
+    // If we find a properties, it means we're inside an object (and not an array)
+    if (schemaPath[i] === "properties") {
+      isObj = true;
+    } else if (isObj) {
+      return schemaPath.splice(0, i + 1);
+    } else {
+      isObj = false;
+    }
+  }
+  return [];
+};
+
+export function updateRequired(schemaPath, checked) {
+  return function (dispatch) {
+    if (schemaPath.length) {
+      const parentPath = findParentPath(schemaPath);
+      const fieldName = schemaPath[schemaPath.length - 1];
+      dispatch(updateRequiredByPath(parentPath, fieldName, checked));
+      dispatch(updateRequired(parentPath, checked));
+    }
+  };
+}
+
+export function updateRequiredByPath(path, fieldName, isRequired) {
+  return function (dispatch, getState) {
+    let schema = getState()
+      .schemaWizard.getIn(["current", "schema", ...path])
+      .toJS();
+
+    let required = schema.required || [];
+
+    if (isRequired) {
+      if (!required.includes(fieldName)) {
+        required.push(fieldName);
+      }
+    } else {
+      required = required.filter(e => e !== fieldName);
+    }
+
+    let updatedSchema = { ...schema, required: required };
+
+    if (!required.length) {
+      delete updatedSchema.required;
+    }
+
+    dispatch(updateSchemaByPath(path, updatedSchema));
+  };
+}
+
 export function initSchemaWizard(data) {
   return function (dispatch) {
     const { id, deposit_schema, deposit_options, ...configs } = data;
@@ -265,6 +318,8 @@ export function deleteByPath(item) {
   return function (dispatch, getState) {
     const { path, uiPath } = item;
     const uiItemToDelete = uiPath.pop();
+
+    dispatch(updateRequired(path, false));
 
     // ********* schema **********
     let itemToDelete = path.pop();

@@ -23,8 +23,14 @@ const FieldTemplate = props => {
 
   const [display, setDisplay] = useState(false);
   let path = {
-    schema: [...formContext.schema, ...(rawErrors[0].schema || [])],
-    uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])],
+    schema: [
+      ...formContext.schema,
+      ...(rawErrors.find(e => typeof e === "object").schema || []),
+    ],
+    uiSchema: [
+      ...formContext.uiSchema,
+      ...(rawErrors.find(e => typeof e === "object").uiSchema || []),
+    ],
   };
 
   const shouldBoxHideChildren = uiSchema => {

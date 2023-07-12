@@ -20,7 +20,6 @@ const RJSFForm = ({
   onChange,
   formContext,
   readonly,
-  draftEditor,
   className = [],
   ObjectFieldTemplate: Objects,
   ArrayFieldTemplate: Arrays,
@@ -82,7 +81,7 @@ const RJSFForm = ({
       extraErrors={extraErrors}
       onChange={onChange}
       readonly={readonly}
-      transformErrors={draftEditor && transformErrors}
+      transformErrors={transformErrors}
       formContext={{
         formRef: formRef,
         ...formContext,
