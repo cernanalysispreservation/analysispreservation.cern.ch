@@ -1,6 +1,6 @@
-import axios from "../../axios";
+import axios from "../../../axios";
 import { useEffect, useState } from "react";
-import DocumentTitle from "../partials/DocumentTitle";
+import DocumentTitle from "../../partials/DocumentTitle";
 import {
   Row,
   Col,
@@ -10,19 +10,27 @@ import {
   Modal,
   notification,
   Tooltip,
+  Menu,
+  Grid,
 } from "antd";
 import {
   DiffOutlined,
+  HomeOutlined,
   InfoCircleOutlined,
   SaveOutlined,
   UndoOutlined,
 } from "@ant-design/icons";
-import ErrorScreen from "../partials/Error";
-import CodeEditor from "../utils/CodeEditor";
+import ErrorScreen from "../../partials/Error";
+import CodeEditor from "../../utils/CodeEditor";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
-import CodeDiffViewer from "../utils/CodeDiffViewer";
+import CodeDiffViewer from "../../utils/CodeDiffViewer";
+import { CMS } from "../../routes";
 
-const Schemas = ({ match }) => {
+const { useBreakpoint } = Grid;
+
+const Schemas = ({ match, pushPath }) => {
+  const screens = useBreakpoint();
+
   const EDITABLE_FIELDS = [
     "fullname",
     "use_deposit_as_record",
@@ -141,6 +149,7 @@ const Schemas = ({ match }) => {
       setField(originalSchema[selection]);
       setSchema({ ...schema, [selection]: originalSchema[selection] });
     }
+    setJsonError(false);
   };
 
   return (
@@ -173,29 +182,134 @@ const Schemas = ({ match }) => {
                 right={JSON.stringify(field, null, 2)}
               />
             </Modal>
+            <Row>
+              <Col xs={4}>
+                <Menu
+                  mode="horizontal"
+                  className="no-bottom-border"
+                  items={[
+                    {
+                      key: "admin",
+                      label: (
+                        <Button
+                          type="text"
+                          icon={<HomeOutlined />}
+                          onClick={() => pushPath(CMS)}
+                        >
+                          {screens.lg && "Admin Home Page"}
+                        </Button>
+                      ),
+                    },
+                  ]}
+                />
+              </Col>
+              <Col xs={20}>
+                <Menu
+                  mode="horizontal"
+                  selectable={false}
+                  style={{
+                    justifyContent: "flex-end",
+                  }}
+                  className="no-bottom-border"
+                  items={[
+                    {
+                      key: "diff",
+                      label: (
+                        <Tooltip
+                          placement="bottom"
+                          title={
+                            jsonError &&
+                            "Please fix the syntax errors to be able to view the diff"
+                          }
+                        >
+                          <Button
+                            icon={<DiffOutlined />}
+                            type="text"
+                            onClick={() => setShowModal(true)}
+                            disabled={jsonError}
+                          >
+                            {screens.lg &&
+                              (selection === FULL_SCHEMA
+                                ? "Full diff"
+                                : "Field diff")}
+                          </Button>
+                        </Tooltip>
+                      ),
+                      style: { padding: "0 10px 0 0" },
+                    },
+                    {
+                      key: "revert",
+                      label: (
+                        <Tooltip
+                          placement="bottom"
+                          title={
+                            selection === FULL_SCHEMA
+                              ? "Revert all unsaved changes"
+                              : "Revert unsaved changes to this field"
+                          }
+                        >
+                          <Button
+                            icon={<UndoOutlined />}
+                            type="text"
+                            onClick={handleRevert}
+                          >
+                            {screens.lg &&
+                              (selection === FULL_SCHEMA
+                                ? "Revert all"
+                                : "Revert field")}
+                          </Button>
+                        </Tooltip>
+                      ),
+                      style: { padding: "0 10px 0 0" },
+                    },
+                    {
+                      key: "save",
+                      label: (
+                        <Tooltip
+                          placement="bottom"
+                          title={
+                            (jsonError &&
+                              "Please fix the syntax errors to be able to save changes") ||
+                            (selection != FULL_SCHEMA &&
+                              !EDITABLE_FIELDS.includes(selection) &&
+                              "Please select an editable field to be able to edit and save the changes")
+                          }
+                        >
+                          <Button
+                            icon={<SaveOutlined />}
+                            type="primary"
+                            onClick={handleSave}
+                            disabled={
+                              jsonError ||
+                              (selection != FULL_SCHEMA &&
+                                !EDITABLE_FIELDS.includes(selection))
+                            }
+                          >
+                            {screens.lg &&
+                              (selection === FULL_SCHEMA
+                                ? "Save all"
+                                : "Save field")}
+                          </Button>
+                        </Tooltip>
+                      ),
+                      style: { padding: "0 10px 0 0" },
+                    },
+                  ]}
+                />
+              </Col>
+            </Row>
             <Row justify="center">
-              <Col xs={22} lg={14}>
+              <Col xs={22} lg={18}>
                 <Row
                   justify="space-between"
                   align="middle"
-                  style={{ marginBottom: "1em" }}
-                  gutter={10}
+                  style={{ padding: "1em 0" }}
+                  gutter={[10, 10]}
                 >
                   <Col flex="auto">
-                    <Typography.Title style={{ marginBottom: "0" }}>
+                    <Typography.Title level={2} style={{ marginBottom: 0 }}>
                       {schema_name} ({schema.version})
                     </Typography.Title>
-                  </Col>
-                  <Col>
-                    <Tooltip
-                      placement="bottom"
-                      title="Select a field to edit it (if it is editable). 
-                  Check the diff, revert or save the changes to that field, 
-                  or go back to 'Full schema' to check the full diff or to 
-                  revert or save all changes at once."
-                    >
-                      <InfoCircleOutlined />
-                    </Tooltip>
                   </Col>
                   <Col xs={15} md={6}>
                     {schema && (
@@ -212,60 +326,16 @@ const Schemas = ({ match }) => {
                   <Col>
                     <Tooltip
                       placement="bottom"
-                      title={
-                        jsonError
-                          ? "Please fix the syntax errors to be able to view the diff"
-                          : selection === FULL_SCHEMA
-                          ? "View the full diff"
-                          : "View field diff"
-                      }
+                      title="Select a field to edit it (if it is editable). 
+                  Check the diff, revert or save the changes to that field, 
+                  or go back to 'Full schema' to check the full diff or to 
+                  revert or save all changes at once."
                     >
-                      <Button
-                        icon={<DiffOutlined />}
-                        onClick={() => setShowModal(true)}
-                        disabled={jsonError}
-                      />
-                    </Tooltip>
-                  </Col>
-                  <Col>
-                    <Tooltip
-                      placement="bottom"
-                      title={
-                        selection === FULL_SCHEMA
-                          ? "Revert all unsaved changes"
-                          : "Revert unsaved changes to this field"
-                      }
-                    >
-                      <Button icon={<UndoOutlined />} onClick={handleRevert} />
-                    </Tooltip>
-                  </Col>
-                  <Col>
-                    <Tooltip
-                      placement="bottom"
-                      title={
-                        jsonError
-                          ? "Please fix the syntax errors to be able to save changes"
-                          : selection === FULL_SCHEMA
-                          ? "Save all changes"
-                          : !EDITABLE_FIELDS.includes(selection)
-                          ? "Please select an editable field to be able to edit and save the changes"
-                          : "Save changes to this field"
-                      }
-                    >
-                      <Button
-                        icon={<SaveOutlined />}
-                        type="primary"
-                        onClick={handleSave}
-                        disabled={
-                          jsonError ||
-                          (selection != FULL_SCHEMA &&
-                            !EDITABLE_FIELDS.includes(selection))
-                        }
-                      />
+                      <InfoCircleOutlined />
                     </Tooltip>
                   </Col>
                 </Row>
-                <Row justify="center">
+                <Row justify="center" style={{ backgroundColor: "white" }}>
                   <Col xs={24}>
                     <CodeEditor
                       value={JSON.stringify(
@@ -278,7 +348,7 @@ const Schemas = ({ match }) => {
                       handleEdit={handleEdit}
                       lint={jsonParseLinter}
                       schema={schema} // to render a new editor instance on schema change
-                      height="calc(100vh - 300px)"
+                      height="calc(100vh - 325px)"
                     />
                   </Col>
                 </Row>

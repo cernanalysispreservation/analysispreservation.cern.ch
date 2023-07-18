@@ -4,8 +4,7 @@ import { Provider } from "react-redux";
 import App from "../antd/App";
 import { ConfigProvider } from "antd";
 import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
-
-const PRIMARY_COLOR = "#006996";
+import { PRIMARY_COLOR } from "./utils";
 
 export const matomoInstance =
   process.env.PIWIK_URL && process.env.PIWIK_SITEID

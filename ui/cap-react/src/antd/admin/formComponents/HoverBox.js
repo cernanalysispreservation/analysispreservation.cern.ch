@@ -1,6 +1,7 @@
 import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { PRIMARY_COLOR } from "../../utils";
 
 function getStyle(isOverCurrent) {
   const style = {
@@ -10,7 +11,7 @@ function getStyle(isOverCurrent) {
 
   return isOverCurrent
     ? {
-        outline: "1px solid #006996",
+        outline: `1px solid ${PRIMARY_COLOR}`,
         outlineOffset: "-1px",
         ...style,
       }

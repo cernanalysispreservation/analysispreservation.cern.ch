@@ -7,11 +7,13 @@ export const SEARCH_TIPS = "/search-tips";
 export const STATUS = "/status";
 
 export const CMS = "/admin";
-export const CMS_NEW = `${CMS}/new`;
-export const CMS_SCHEMA_PATH = `${CMS}/:schema_name?/:schema_version?`;
-export const CMS_NOTIFICATION = `${CMS_SCHEMA_PATH}/notifications/:category?`;
-export const CMS_NOTIFICATION_CATEGORY = `${CMS_NOTIFICATION}/:category`;
-export const CMS_NOTIFICATION_EDIT = `${CMS_NOTIFICATION_CATEGORY}/:id`;
+export const CMS_SCHEMA = `${CMS}/schema`;
+export const CMS_SCHEMA_PATH = `${CMS}/schema/:schema_name/:schema_version?`;
+export const CMS_EDITOR = `${CMS}/editor`;
+export const CMS_NEW = `${CMS_EDITOR}/new`;
+export const CMS_EDITOR_PATH = `${CMS_EDITOR}/:schema_name?/:schema_version?`;
+export const COLLECTION_BASE = "/collection";
+export const COLLECTION = `${COLLECTION_BASE}/:collection_name/:version?`;
 
 export const DRAFTS = "/drafts";
 export const DRAFT_ITEM = `${DRAFTS}/:draft_id`;

@@ -1,1 +1,1 @@
-export { default } from "./Schemas";
+export { default } from "./containers/Schemas";

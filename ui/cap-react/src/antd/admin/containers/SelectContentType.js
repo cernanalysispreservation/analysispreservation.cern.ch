@@ -1,20 +1,21 @@
 import { connect } from "react-redux";
 import SelectContentType from "../components/SelectContentType";
-import { selectContentType } from "../../../actions/schemaWizard";
+import {
+  selectContentTypeEdit,
+  selectContentTypeView,
+} from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
   return {
-    contentTypes: state.auth.getIn(["currentUser", "depositGroups"])
+    contentTypes: state.auth.getIn(["currentUser", "depositGroups"]),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    select: id => dispatch(selectContentType(id))
+    selectEdit: id => dispatch(selectContentTypeEdit(id)),
+    selectView: id => dispatch(selectContentTypeView(id)),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectContentType);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectContentType);
