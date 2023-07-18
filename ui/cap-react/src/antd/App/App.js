@@ -6,7 +6,6 @@ import IndexPage from "../index/IndexPage";
 
 import AboutPage from "../about";
 import PolicyPage from "../policy";
-import SchemasPage from "../schemas";
 
 import noRequireAuth from "../auth/NoAuthorizationRequired";
 import requireAuth from "../auth/AuthorizationRequired";
@@ -17,7 +16,7 @@ import Footer from "../partials/Footer";
 import DocumentTitle from "../partials/DocumentTitle";
 import { Layout, Row, Spin } from "antd";
 
-import { HOME, WELCOME, ABOUT, POLICY, CMS, SCHEMA } from "../routes";
+import { HOME, WELCOME, ABOUT, POLICY, CMS } from "../routes";
 
 import ErrorPage from "../utils/ErrorPage";
 import * as Sentry from "@sentry/react";
@@ -66,7 +65,6 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
                 <Route path={ABOUT} component={AboutPage} />
                 <Route path={POLICY} component={PolicyPage} />
                 {isAdmin && <Route path={CMS} component={AdminPage} />}
-                <Route path={SCHEMA} component={SchemasPage} />
                 <Route path={HOME} component={requireAuth(IndexPage)} />
               </Switch>
             </Suspense>

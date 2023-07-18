@@ -3,7 +3,7 @@ import { merge } from "lodash-es";
 import { fromJS } from "immutable";
 import { push } from "connected-react-router";
 import { notification } from "antd";
-import { CMS, CMS_NEW } from "../antd/routes";
+import { CMS, CMS_EDITOR, CMS_NEW, CMS_SCHEMA } from "../antd/routes";
 import { slugify, _initSchemaStructure } from "../antd/admin/utils";
 import { updateDepositGroups } from "./auth";
 
@@ -218,9 +218,15 @@ export function createContentType(content_type) {
   };
 }
 
-export function selectContentType(id) {
+export function selectContentTypeEdit(id) {
   return function (dispatch) {
     dispatch(push(`${CMS_EDITOR}/${id}`));
+  };
+}
+
+export function selectContentTypeView(id) {
+  return function (dispatch) {
+    dispatch(push(`${CMS_SCHEMA}/${id}`));
   };
 }
 
