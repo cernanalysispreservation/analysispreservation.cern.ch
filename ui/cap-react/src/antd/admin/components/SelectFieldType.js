@@ -31,6 +31,7 @@ const SelectFieldType = () => {
               ))}
             </Row>
           ),
+          className: type.className,
         }))}
       />
     </div>

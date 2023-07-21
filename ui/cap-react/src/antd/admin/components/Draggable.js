@@ -19,7 +19,7 @@ const Draggable = ({ data, children }) => {
   const opacity = isDragging ? 0.4 : 1;
 
   return (
-    <div ref={drag} style={{ ...style, opacity }}>
+    <div ref={drag} style={{ ...style, opacity }} className={data.className}>
       {children}
     </div>
   );

@@ -89,6 +89,7 @@ const collections = {
     title: "Object",
     icon: <div>&#123;&#32;&#125;</div>,
     description: "Data in JSON format, Grouped section",
+    className: "tour-object-field",
     child: {},
     optionsSchema: {
       type: "object",
@@ -132,6 +133,7 @@ const collections = {
     icon: <UnorderedListOutlined />,
     description:
       "A list of things. List of strings, numbers, objects, references",
+    className: "tour-list-field",
     child: {},
     optionsSchema: {
       type: "object",
@@ -249,6 +251,7 @@ const simple = {
     title: "Text",
     icon: <FontSizeOutlined />,
     description: "Titles, names, paragraphs, IDs, list of names",
+    className: "tour-text-field",
     child: {},
     optionsSchema: {
       type: "object",
@@ -1058,6 +1061,7 @@ const fields = {
     title: "Collections",
     description: "",
     fields: collections,
+    className: "tour-collections",
   },
   simple: {
     title: "Fields",

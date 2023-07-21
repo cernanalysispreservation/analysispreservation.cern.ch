@@ -25,6 +25,7 @@ const SchemaWizard = ({ field, loader }) => {
             height: "100%",
             display: "flex",
           }}
+          className="tour-field-types"
         >
           {field ? <PropertyEditor /> : <SelectFieldType />}
         </Col>
@@ -37,6 +38,7 @@ const SchemaWizard = ({ field, loader }) => {
             padding: "0px 15px",
             backgroundColor: "#F6F7F8",
           }}
+          className="tour-schema-preview"
         >
           <SchemaPreview />
         </Col>
@@ -44,6 +46,7 @@ const SchemaWizard = ({ field, loader }) => {
           xs={24}
           sm={14}
           style={{ overflowX: "hidden", height: "100%", padding: "0px 15px" }}
+          className="tour-form-preview"
         >
           <FormPreview />
         </Col>
