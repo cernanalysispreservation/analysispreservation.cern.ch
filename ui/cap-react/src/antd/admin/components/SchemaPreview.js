@@ -30,6 +30,7 @@ const SchemaPreview = ({ schema, selectProperty }) => {
           shape="circle"
           icon={<SettingOutlined />}
           onClick={() => selectProperty({ schema: [], uiSchema: [] })}
+          className="tour-root-settings"
         />
       </Row>
       <Row style={{ padding: "0 10px" }}>

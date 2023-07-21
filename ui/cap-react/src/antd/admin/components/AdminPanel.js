@@ -5,7 +5,12 @@ import { CMS_NEW } from "../../routes";
 import DocumentTitle from "../../partials/DocumentTitle";
 import SchemaWizard from "../containers/SchemaWizard";
 import Notifications from "../notifications/containers/Notifications";
-import { Layout } from "antd";
+import { FloatButton, Layout } from "antd";
+import Joyride, { STATUS } from "react-joyride";
+import { steps } from "../utils/tour/admin";
+import TourTooltip from "../utils/tour/TourTooltip";
+import { CarOutlined } from "@ant-design/icons";
+import useStickyState from "../../hooks/useStickyState";
 
 const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
   useEffect(() => {
@@ -24,16 +29,49 @@ const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
 
   const [display, setDisplay] = useState("builder");
 
+  const [tourDone, setTourDone] = useStickyState(false, "tourDone");
+
   const getPageTitle = () =>
     location.pathname.includes("notifications")
       ? "Notifications"
       : "Form Builder";
+
   return (
     <DocumentTitle title={getPageTitle()}>
       <Layout style={{ height: "100%", padding: 0 }}>
         <Header display={display} setDisplay={setDisplay} />
         <Layout.Content>
+          <Joyride
+            steps={steps}
+            continuous
+            disableCloseOnEsc
+            showProgress
+            showSkipButton
+            hideCloseButton
+            spotlightPadding={0}
+            tooltipComponent={joyrideProps => (
+              <TourTooltip total={steps.length} {...joyrideProps} />
+            )}
+            // run={!tourDone || window.localStorage.getItem("tourDone") != "true"}
+            run={!tourDone}
+            spotlightClicks
+            callback={({ status }) =>
+              [STATUS.FINISHED, STATUS.SKIPPED].includes(status) &&
+              setTourDone(true)
+            }
+            styles={{
+              options: { primaryColor: "#006996" },
+              spotlight: { borderRadius: 0 },
+            }}
+          />
           {display === "notifications" ? <Notifications /> : <SchemaWizard />}
+          <FloatButton
+            icon={<CarOutlined />}
+            type="primary"
+            shape="square"
+            description="Tour"
+            onClick={() => setTourDone(false)}
+          />
         </Layout.Content>
       </Layout>
     </DocumentTitle>

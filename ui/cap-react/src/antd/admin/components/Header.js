@@ -105,11 +105,16 @@ const Header = ({
     return previews[schemaPreviewDisplay]; //?
   };
 
-  const getMenuItem = (key, label, icon, onClick, type) => ({
+  const getMenuItem = (key, label, icon, onClick, className) => ({
     key,
     label: (
       <Tooltip title={!screens.lg && label}>
-        <Button icon={icon} type={type || "text"} onClick={onClick}>
+        <Button
+          icon={icon}
+          type={key === "save" ? "primary" : "text"}
+          onClick={onClick}
+          className={className}
+        >
           {screens.lg && label}
         </Button>
       </Tooltip>
@@ -213,6 +218,7 @@ const Header = ({
               key: "notifications",
               label: "Notifications",
               icon: <NotificationOutlined />,
+              className: "tour-notifications-tab",
             },
           ]}
         />
@@ -229,18 +235,22 @@ const Header = ({
             getMenuItem("export", "Export Schema", <DownloadOutlined />, () =>
               _getSchema()
             ),
-            getMenuItem("diff", "Diff", <DiffOutlined />, () =>
-              setDiffModal(true)
-            ),
-            getMenuItem("settings", "Settings", <SettingOutlined />, () =>
-              setSettingsModal(true)
+            getMenuItem(
+              "diff",
+              "Diff",
+              <DiffOutlined />,
+              () => setDiffModal(true),
+              "tour-diff"
             ),
             getMenuItem(
-              "save",
-              "Save updates",
-              <SaveOutlined />,
-              () => saveSchemaChanges(),
-              "primary"
+              "settings",
+              "Settings",
+              <SettingOutlined />,
+              () => setSettingsModal(true),
+              "tour-schema-settings"
+            ),
+            getMenuItem("save", "Save updates", <SaveOutlined />, () =>
+              saveSchemaChanges()
             ),
           ]}
         />
