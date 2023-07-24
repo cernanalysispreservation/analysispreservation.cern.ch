@@ -1,6 +1,6 @@
 import { permissionsPerUser } from "../utils";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { Empty, Table } from "antd";
+import { CloseOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { Empty, Space, Table, Tag, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
@@ -15,10 +15,29 @@ const CollectionPermissions = ({ permissions }) => {
   }, [permissions]);
 
   const renderPermissionType = (e, type) => {
-    return e && e.includes(type) ? (
-      <CheckOutlined style={{ color: "green" }} />
+    let tags = [];
+    if (e.includes(`deposit-schema-${type}`)) {
+      tags.push(
+        <Tooltip title="Drafts">
+          <Tag color="geekblue" style={{ marginRight: 0 }}>
+            D
+          </Tag>
+        </Tooltip>
+      );
+    }
+    if (e.includes(`record-schema-${type}`)) {
+      tags.push(
+        <Tooltip title="Published">
+          <Tag color="purple" style={{ marginRight: 0 }}>
+            P
+          </Tag>
+        </Tooltip>
+      );
+    }
+    return tags.length ? (
+      <Space>{tags}</Space>
     ) : (
-      <CloseOutlined style={{ color: "crimson" }} />
+      <CloseOutlined style={{ color: "lightgray" }} />
     );
   };
 
@@ -31,39 +50,55 @@ const CollectionPermissions = ({ permissions }) => {
           key: "user",
         },
         {
+          title: "Type",
+          dataIndex: "type",
+          key: "type",
+          align: "center",
+          render: e =>
+            e === "egroup" ? (
+              <Tooltip title="egroup">
+                <TeamOutlined />
+              </Tooltip>
+            ) : (
+              <Tooltip title="user">
+                <UserOutlined />
+              </Tooltip>
+            ),
+        },
+        {
           title: "Read",
           dataIndex: "permissions",
           key: "read",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-schema-read"),
+          render: e => renderPermissionType(e, "read"),
         },
         {
           title: "Create",
           dataIndex: "permissions",
           key: "create",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-schema-create"),
+          render: e => renderPermissionType(e, "create"),
         },
         {
           title: "Review",
           dataIndex: "permissions",
           key: "review",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-schema-review"),
+          render: e => renderPermissionType(e, "review"),
         },
         {
           title: "Update",
           dataIndex: "permissions",
           key: "update",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-schema-update"),
+          render: e => renderPermissionType(e, "update"),
         },
         {
           title: "Admin",
           dataIndex: "permissions",
           key: "admin",
           align: "center",
-          render: e => renderPermissionType(e, "deposit-schema-admin"),
+          render: e => renderPermissionType(e, "admin"),
         },
       ]}
       dataSource={permissionsArray}
