@@ -1,3 +1,5 @@
+- [News](./news.md)
+
 ### DOCUMENTATION
 
 - [Introduction](./introduction.md)
@@ -22,7 +24,8 @@
 - [Sharing your analysis](./share_analysis.md)
 - [How to search](./search.md)
 - [Workflows](./workflows.md)
-
+- [Collections](./collections.md)
+- [Admin panel](./admin.md)
 
 ### Tutorials
 
