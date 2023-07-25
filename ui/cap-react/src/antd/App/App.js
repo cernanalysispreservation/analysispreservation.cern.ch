@@ -23,6 +23,7 @@ import * as Sentry from "@sentry/react";
 import useTrackPageViews from "../hooks/useTrackPageViews";
 import { lazy } from "react";
 import Loading from "../routes/Loading/Loading";
+import MessageBanner from "../partials/MessageBanner";
 
 const AdminPage = lazy(() => import("../admin"));
 
@@ -55,6 +56,7 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
         <Layout className="__mainLayout__">
           <Layout.Header className="__mainHeader__">
             <Header />
+            <MessageBanner />
           </Layout.Header>
           <Layout.Content className="__mainContent__">
             <Suspense fallback={<Loading pastDelay />}>
