@@ -1,6 +1,7 @@
 import { Row, Col } from "antd";
 import PropTypes from "prop-types";
 import ArrayUtils from "./ArrayUtils";
+import { cloneElement } from "react";
 
 const ArrayFieldTemplateItem = ({
   children,
@@ -30,7 +31,10 @@ const ArrayFieldTemplateItem = ({
           marginRight: "5px",
         }}
       >
-        {children}
+        {
+          // Don't show labels in array items
+          cloneElement(children, { name: "" })
+        }
       </Col>
       {hasToolbar && (
         <ArrayUtils

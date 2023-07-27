@@ -3,9 +3,17 @@ import { Space, Typography } from "antd";
 import Markdown from "../../../partials/Markdown";
 import TitleField from "../../fields/internal/TitleField";
 
-const FieldHeader = ({ label, description, uiSchema, isObject, idSchema }) => {
+const FieldHeader = ({
+  label,
+  description,
+  uiSchema,
+  isObject,
+  idSchema,
+  titleField,
+}) => {
   return (
     <Space direction="vertical" size={0}>
+      {titleField && titleField}
       {uiSchema["ui:title"] !== false && label && (
         <TitleField
           title={label}
@@ -16,8 +24,8 @@ const FieldHeader = ({ label, description, uiSchema, isObject, idSchema }) => {
           id={`${idSchema.$id}-title`}
         />
       )}
-      <Typography.Text type="secondary" id={`${idSchema.$id}-description`}>
-        {description && (
+      {description && (
+        <Typography.Text type="secondary" id={`${idSchema.$id}-description`}>
           <Markdown
             text={description}
             style={{
@@ -28,8 +36,8 @@ const FieldHeader = ({ label, description, uiSchema, isObject, idSchema }) => {
               uiSchema["ui:options"].descriptionIsMarkdown
             }
           />
-        )}
-      </Typography.Text>
+        </Typography.Text>
+      )}
     </Space>
   );
 };
@@ -41,6 +49,7 @@ FieldHeader.propTypes = {
   description: PropTypes.node,
   isObject: PropTypes.bool,
   idSchema: PropTypes.object,
+  titleField: PropTypes.element,
 };
 
 export default FieldHeader;

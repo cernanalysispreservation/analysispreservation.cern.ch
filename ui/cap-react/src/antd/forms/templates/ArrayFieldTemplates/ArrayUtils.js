@@ -21,6 +21,7 @@ const ArrayUtils = ({
           <Col>
             <Row>
               <Button
+                className="up-down-array-button"
                 disabled={disabled || !hasMoveUp}
                 icon={<ArrowUpOutlined style={{ fontSize: "14px" }} />}
                 onClick={onReorderClick(index, index - 1)}
@@ -31,6 +32,7 @@ const ArrayUtils = ({
             </Row>
             <Row>
               <Button
+                className="up-down-array-button"
                 disabled={disabled || !hasMoveDown}
                 icon={<ArrowDownOutlined style={{ fontSize: "14px" }} />}
                 onClick={onReorderClick(index, index + 1)}

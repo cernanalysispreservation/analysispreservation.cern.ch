@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import classNames from "classnames";
 
 import Button from "antd/lib/button";
 import { Row, Col, Modal, Space, Tag, Checkbox, Table, theme } from "antd";
@@ -32,7 +31,6 @@ const NormalArrayFieldTemplate = ({
   items,
   options,
   onAddClick,
-  prefixCls,
   readonly,
   required,
   schema,
@@ -41,7 +39,7 @@ const NormalArrayFieldTemplate = ({
   formData,
 }) => {
   const { useToken } = theme;
-  const { labelAlign = "right", rowGutter = 24 } = formContext;
+  const { rowGutter = 24 } = formContext;
 
   const [latexData, setLatexData] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -53,11 +51,6 @@ const NormalArrayFieldTemplate = ({
   );
   const [copy, setCopy] = useState(false);
   const [importModal, setImportModal] = useState(false);
-  const labelClsBasic = `${prefixCls}-item-label`;
-  const labelColClassName = classNames(
-    labelClsBasic,
-    labelAlign === "left" && `${labelClsBasic}-left`
-  );
   const { token } = useToken();
 
   let uiImport = null;
@@ -284,12 +277,8 @@ const NormalArrayFieldTemplate = ({
       )}
       <Row gutter={rowGutter}>
         <div style={{ marginBottom: "8px", width: "100%" }}>
-          {title && (
-            <Col
-              className={labelColClassName}
-              span={24}
-              style={{ padding: "0" }}
-            >
+          <FieldHeader
+            titleField={
               <TitleField
                 id={`${idSchema.$id}__title`}
                 key={`array-field-title-${idSchema.$id}`}
@@ -303,9 +292,7 @@ const NormalArrayFieldTemplate = ({
                 enableImport={() => setImportModal(true)}
                 enableEmail={() => setEmailModal(true)}
               />
-            </Col>
-          )}
-          <FieldHeader
+            }
             description={uiSchema["ui:description"] || schema.description}
             uiSchema={uiSchema}
             key={`array-field-header-${idSchema.$id}`}
