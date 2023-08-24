@@ -60,7 +60,7 @@ const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
               setTourDone(true)
             }
             styles={{
-              options: { primaryColor: "#006996" },
+              options: { primaryColor: PRIMARY_COLOR },
               spotlight: { borderRadius: 0 },
             }}
           />
