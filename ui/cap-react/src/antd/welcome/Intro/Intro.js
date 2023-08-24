@@ -5,6 +5,7 @@ import {
   TeamOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
+import { PRIMARY_COLOR } from "../../utils/theme";
 
 const Intro = () => {
   const { useBreakpoint } = Grid;
@@ -45,7 +46,7 @@ const Intro = () => {
               >
                 CERN
                 <br />
-                <span style={{ color: "#006996", fontWeight: "lighter" }}>
+                <span style={{ color: PRIMARY_COLOR, fontWeight: "lighter" }}>
                   Analysis Preservation
                 </span>
               </Typography.Title>
