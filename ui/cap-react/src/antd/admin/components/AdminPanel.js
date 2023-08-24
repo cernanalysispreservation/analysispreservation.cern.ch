@@ -11,6 +11,7 @@ import { steps } from "../utils/tour/admin";
 import TourTooltip from "../utils/tour/TourTooltip";
 import { CarOutlined } from "@ant-design/icons";
 import useStickyState from "../../hooks/useStickyState";
+import { PRIMARY_COLOR } from "../../utils/theme";
 
 const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
   useEffect(() => {
@@ -52,8 +53,7 @@ const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
             tooltipComponent={joyrideProps => (
               <TourTooltip total={steps.length} {...joyrideProps} />
             )}
-            // run={!tourDone || window.localStorage.getItem("tourDone") != "true"}
-            run={!tourDone}
+            run={!tourDone && display != "notifications"}
             spotlightClicks
             callback={({ status }) =>
               [STATUS.FINISHED, STATUS.SKIPPED].includes(status) &&
