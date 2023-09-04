@@ -28,6 +28,8 @@ export const ADD_NEW_NOTIFICATION = "ADD_NEW_NOTIFICATION";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
 export const CREATE_NOTIFICATION_GROUP = "CREATE_NOTIFICATION_GROUP";
 
+export const SET_SCHEMA_PERMISSIONS = "SET_SCHEMA_PERMISSIONS";
+
 const NOTIFICATIONS = {
   notifications: {
     actions: {
@@ -55,6 +57,13 @@ export function deleteNotification(notification) {
   return {
     type: REMOVE_NOTIFICATION,
     payload: notification,
+  };
+}
+
+export function setSchemaPermissions(permissions) {
+  return {
+    type: SET_SCHEMA_PERMISSIONS,
+    permissions,
   };
 }
 
@@ -195,6 +204,72 @@ export function getSchema(name, version = null) {
       });
   };
 }
+
+export function getSchemaPermissions(name, version = null) {
+  let schemaPermissionLink;
+
+  if (version)
+    schemaPermissionLink = `/api/jsonschemas/${name}/${version}/permissions`;
+  else schemaPermissionLink = `/api/jsonschemas/${name}/permissions`;
+  return function (dispatch) {
+    // dispatch(schemaInitRequest());
+    axios
+      .get(schemaPermissionLink)
+      .then(resp => {
+        dispatch(setSchemaPermissions(resp.data))
+      })
+      .catch(() => {
+        notification.error({
+          message: "Fetching permissions failed",
+          description: "There was an error fetching the schema permissions",
+        });
+      });
+  };
+}
+
+export function postSchemaPermissions(name, version = null, permissions) {
+  let schemaPermissionLink;
+
+  if (version)
+    schemaPermissionLink = `/api/jsonschemas/${name}/${version}/permissions`;
+  else schemaPermissionLink = `/api/jsonschemas/${name}/permissions`;
+  return function (dispatch) {
+    // dispatch(schemaInitRequest());
+    axios
+      .post(schemaPermissionLink, permissions)
+      .then(() => {
+        dispatch(getSchemaPermissions(name, version))
+      })
+      .catch(() => {
+        notification.error({
+          message: "Updating schema permissions failed",
+          description: "There was an error updating the schema permissions",
+        });
+      });
+  };
+}
+
+export function deleteSchemaPermissions(name, version = null, permissions) {
+  let schemaPermissionLink;
+
+  if (version)
+    schemaPermissionLink = `/api/jsonschemas/${name}/${version}/permissions`;
+  else schemaPermissionLink = `/api/jsonschemas/${name}/permissions`;
+  return function (dispatch) {
+    axios
+      .delete(schemaPermissionLink, {data: permissions})
+      .then(() => {
+        dispatch(getSchemaPermissions(name, version))
+      })
+      .catch(() => {
+        notification.error({
+          message: "Deleting schema permissions failed",
+          description: "There was an error deleting the schema permissions",
+        });
+      });
+  };
+}
+
 
 export function getSchemasLocalStorage() {
   return function () {

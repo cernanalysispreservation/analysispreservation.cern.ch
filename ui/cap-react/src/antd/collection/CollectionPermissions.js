@@ -1,61 +1,50 @@
 import { permissionsPerUser } from "../utils";
-import { CloseOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
-import { Empty, Space, Table, Tag, Tooltip } from "antd";
+import { TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { Empty, Table, Tooltip, Typography } from "antd";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import CollectionPermissionsColumn from "./CollectionPermissionsColumn";
 
-const CollectionPermissions = ({ permissions }) => {
-  const [permissionsArray, setPermissionsArray] = useState();
-
+const CollectionPermissions = ({ dont, permissions, editable, handlePermissions, defaultPermissions }) => {
+  const [permissionsArray, setPermissionsArray] = useState([]);
   useEffect(() => {
-    if (permissions) {
+    if (dont) {
+      setPermissionsArray(permissions)
+    }
+    else if (permissions) {
       const { permissionsArray } = permissionsPerUser(permissions.toJS());
       setPermissionsArray(permissionsArray);
     }
-  }, [permissions]);
 
-  const renderPermissionType = (e, type) => {
-    let tags = [];
-    if (e.includes(`deposit-schema-${type}`)) {
-      tags.push(
-        <Tooltip title="Drafts">
-          <Tag color="geekblue" style={{ marginRight: 0 }}>
-            D
-          </Tag>
-        </Tooltip>
-      );
+    if (defaultPermissions) {
+      const permissionsMap = {};
+      let { permissionsArray: perms} = permissionsPerUser(defaultPermissions)
+      for (const item of perms) {
+        permissionsMap[item.email] = item.permissions;
+      }
+
+      const mergedArray = permissions.map((item) => ({
+        ...item,
+        permission: permissionsMap[item.email] || [],
+        permissions: permissionsMap[item.email] || [],
+      }));
+
+      setPermissionsArray(mergedArray)
     }
-    if (e.includes(`record-schema-${type}`)) {
-      tags.push(
-        <Tooltip title="Published">
-          <Tag color="purple" style={{ marginRight: 0 }}>
-            P
-          </Tag>
-        </Tooltip>
-      );
-    }
-    return tags.length ? (
-      <Space>{tags}</Space>
-    ) : (
-      <CloseOutlined style={{ color: "lightgray" }} />
-    );
-  };
+
+  }, [permissions, defaultPermissions]);
 
   return permissionsArray && permissionsArray.length > 0 ? (
     <Table
+      size="small"
+      scroll={{x: true}}
       columns={[
         {
           title: "User",
           dataIndex: "email",
           key: "user",
-        },
-        {
-          title: "Type",
-          dataIndex: "type",
-          key: "type",
-          align: "center",
-          render: e =>
-            e === "egroup" ? (
+          render: (e, item) => <Typography.Text >
+           {item.type === "egroup" ? (
               <Tooltip title="egroup">
                 <TeamOutlined />
               </Tooltip>
@@ -63,43 +52,44 @@ const CollectionPermissions = ({ permissions }) => {
               <Tooltip title="user">
                 <UserOutlined />
               </Tooltip>
-            ),
+            )}  {e} 
+          </Typography.Text>
         },
         {
           title: "Read",
           dataIndex: "permissions",
           key: "read",
           align: "center",
-          render: e => renderPermissionType(e, "read"),
+          render: (e, item) => <CollectionPermissionsColumn e={e} item={item} type="read" editable={editable} handlePermissions={handlePermissions} />,
         },
         {
           title: "Create",
           dataIndex: "permissions",
           key: "create",
           align: "center",
-          render: e => renderPermissionType(e, "create"),
+          render: (e, item) => <CollectionPermissionsColumn e={e} item={item} type="create" editable={editable} handlePermissions={handlePermissions} />,
         },
         {
           title: "Review",
           dataIndex: "permissions",
           key: "review",
           align: "center",
-          render: e => renderPermissionType(e, "review"),
+          render: (e, item) => <CollectionPermissionsColumn e={e} item={item} type="review" editable={editable} handlePermissions={handlePermissions}/>,
         },
         {
           title: "Update",
           dataIndex: "permissions",
           key: "update",
           align: "center",
-          render: e => renderPermissionType(e, "update"),
+          render: (e, item) => <CollectionPermissionsColumn e={e} item={item} type="update" editable={editable} handlePermissions={handlePermissions}/>,
         },
         {
           title: "Admin",
           dataIndex: "permissions",
           key: "admin",
           align: "center",
-          render: e => renderPermissionType(e, "admin"),
-        },
+          render: (e, item) => <CollectionPermissionsColumn e={e} item={item} type="admin" editable={editable} handlePermissions={handlePermissions}/>,
+        }
       ]}
       dataSource={permissionsArray}
       fixedHeader

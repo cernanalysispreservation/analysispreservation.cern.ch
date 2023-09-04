@@ -16,6 +16,7 @@ import {
   ADD_NEW_NOTIFICATION,
   REMOVE_NOTIFICATION,
   CREATE_NOTIFICATION_GROUP,
+  SET_SCHEMA_PERMISSIONS
 } from "../actions/schemaWizard";
 
 const initialState = Map({
@@ -34,6 +35,7 @@ const initialState = Map({
   error: null,
   loader: false,
   version: null,
+  permissions: null,
 });
 
 export default function schemaReducer(state = initialState, action) {
@@ -102,6 +104,8 @@ export default function schemaReducer(state = initialState, action) {
       return state.setIn(action.payload.path, action.payload.item);
     case REMOVE_NOTIFICATION:
       return state.setIn(action.payload.path, action.payload.notification);
+    case SET_SCHEMA_PERMISSIONS:
+      return state.set("permissions", action.permissions);
     case CREATE_NOTIFICATION_GROUP:
       return state.setIn(action.path, []);
     default:
