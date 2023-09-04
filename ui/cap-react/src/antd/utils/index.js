@@ -21,6 +21,7 @@ export const permissionsPerUser = permissions => {
             email: user.email,
             permissions: [],
             type: "user",
+            key: `user-${user.email}`
           };
         access[user.email].permissions.push(action);
 
@@ -37,6 +38,7 @@ export const permissionsPerUser = permissions => {
             email: role,
             permissions: [],
             type: "egroup",
+            key: `egroup-${role}`
           };
         access[role].permissions.push(action);
         if (access[role]) {

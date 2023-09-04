@@ -67,6 +67,7 @@ export const configSchema = {
         type: "string",
         title: "Schema ID",
         description: "Unique ID of the schema",
+        readOnly: true
       },
       version: {
         type: "string",

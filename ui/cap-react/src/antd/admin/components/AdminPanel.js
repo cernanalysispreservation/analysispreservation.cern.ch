@@ -12,6 +12,7 @@ import TourTooltip from "../utils/tour/TourTooltip";
 import { CarOutlined } from "@ant-design/icons";
 import useStickyState from "../../hooks/useStickyState";
 import { PRIMARY_COLOR } from "../../utils/theme";
+import Permissions from "../permissions/Permissions";
 
 const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
   useEffect(() => {
@@ -34,8 +35,19 @@ const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
 
   const getPageTitle = () =>
     location.pathname.includes("notifications")
-      ? "Notifications"
-      : "Form Builder";
+      ? "Notifications" : location.pathname.includes("permissions") ?
+      "Permissions" : "Form Builder";
+
+  const getDisplay = () => {
+    switch (display) {
+      case "notifications":
+        return <Notifications />;
+      case "permissions":
+        return <Permissions />;
+      default:
+        return <SchemaWizard />;
+    }
+  };
 
   return (
     <DocumentTitle title={getPageTitle()}>
@@ -64,7 +76,7 @@ const AdminPanel = ({ location, match, schema, schemaInit, getSchema }) => {
               spotlight: { borderRadius: 0 },
             }}
           />
-          {display === "notifications" ? <Notifications /> : <SchemaWizard />}
+          {getDisplay()}
           <FloatButton
             icon={<CarOutlined />}
             type="primary"

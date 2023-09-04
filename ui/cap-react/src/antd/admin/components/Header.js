@@ -1,6 +1,5 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import Form from "../../forms/Form";
 import {
   Col,
   Menu,
@@ -23,7 +22,6 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { CMS } from "../../routes";
-import { configSchema } from "../utils/schemaSettings";
 import CodeViewer from "../../utils/CodeViewer";
 import { json } from "@codemirror/lang-json";
 import CodeDiffViewer from "../../utils/CodeDiffViewer";
@@ -37,12 +35,10 @@ const Header = ({
   uiSchema,
   initialUiSchema,
   initialSchema,
-  updateSchemaConfig,
   display,
   setDisplay,
 }) => {
   const [diffModal, setDiffModal] = useState(false);
-  const [settingsModal, setSettingsModal] = useState(false);
   const screens = useBreakpoint();
 
   const diffModalTabStyle = {
@@ -160,19 +156,6 @@ const Header = ({
           ]}
         />
       </Modal>
-      <Modal
-        open={settingsModal}
-        onCancel={() => setSettingsModal(false)}
-        okButtonProps={{
-          onClick: () => setSettingsModal(false),
-        }}
-      >
-        <Form
-          {...configSchema}
-          formData={config.toJS()}
-          onChange={data => updateSchemaConfig(data.formData)}
-        />
-      </Modal>
 
       <Col xs={4} sm={4} lg={5} order={1}>
         <Menu
@@ -220,6 +203,12 @@ const Header = ({
               icon: <NotificationOutlined />,
               className: "tour-notifications-tab",
             },
+            {
+              key: "permissions",
+              label: "Settings",
+              icon: <SettingOutlined />,
+              className: "tour-settings-tab",
+            },
           ]}
         />
       </Col>
@@ -241,13 +230,6 @@ const Header = ({
               <DiffOutlined />,
               () => setDiffModal(true),
               "tour-diff"
-            ),
-            getMenuItem(
-              "settings",
-              "Settings",
-              <SettingOutlined />,
-              () => setSettingsModal(true),
-              "tour-schema-settings"
             ),
             getMenuItem("save", "Save updates", <SaveOutlined />, () =>
               saveSchemaChanges()
