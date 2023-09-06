@@ -45,17 +45,17 @@ def _filter_only_latest(schemas_list):
     return [next(g) for k, g in groupby(schemas_list, lambda s: s.name)]
 
 
-@current_cache.memoize()
 def get_mappings():
-    """Implementation for mappings getter for invenio_search module."""
-    mappings = {}
-    schemas = Schema.query.filter_by(is_indexed=True).all()
-
-    for schema in schemas:
-        mappings[schema.deposit_index] = {}
-        mappings[schema.record_index] = {}
-
-    return mappings
+    @current_cache.memoize()
+    def get_mappings_inner():
+        """Implementation for mappings getter for invenio_search module."""
+        mappings = {}
+        schemas = Schema.query.filter_by(is_indexed=True).all()
+        for schema in schemas:
+            mappings[schema.deposit_index] = {}
+            mappings[schema.record_index] = {}
+        return mappings
+    return get_mappings_inner()
 
 
 def _filter_by_deposit_read_access(schemas_list):
@@ -99,48 +99,58 @@ def _filter_by_record_create_access(schemas_list):
     ]
 
 
-@current_cache.memoize()
 def get_cached_indexed_schemas_for_user_create(latest=True, user_id=None):
-    """Return all indexed schemas current user has read access to."""
-    schemas = get_indexed_schemas(latest=latest)
-    schemas = _filter_by_deposit_create_access(schemas)
-    return schemas
+    @current_cache.memoize()
+    def get_cached_indexed_schemas_for_user_create_inner(latest, user_id):
+        schemas = get_indexed_schemas(latest=latest)
+        schemas = _filter_by_deposit_create_access(schemas)
+        return schemas
+
+    return get_cached_indexed_schemas_for_user_create_inner(latest, user_id)
 
 
-@current_cache.memoize()
 def get_cached_indexed_schemas_for_user_admin(latest=True, user_id=None):
-    """Return all indexed schemas current user has read access to."""
-    schemas = get_indexed_schemas(latest=latest)
-    schemas = _filter_by_admin_access(schemas)
-    return schemas
+    @current_cache.memoize()
+    def get_cached_indexed_schemas_for_user_admin_inner(latest, user_id):
+        """Return all indexed schemas current user has read access to."""
+        schemas = get_indexed_schemas(latest=latest)
+        schemas = _filter_by_admin_access(schemas)
+        return schemas
+
+    return get_cached_indexed_schemas_for_user_admin_inner(latest, user_id)
 
 
-@current_cache.memoize()
 def get_cached_indexed_schemas_for_user_read(latest=True, user_id=None):
-    """Return all indexed schemas current user has read access to."""
-    schemas = get_indexed_schemas(latest=latest)
-    schemas = _filter_by_deposit_read_access(schemas)
+    @current_cache.memoize()
+    def get_cached_indexed_schemas_for_user_read_inner():
+        """Return all indexed schemas current user has read access to."""
+        schemas = get_indexed_schemas(latest=latest)
+        schemas = _filter_by_deposit_read_access(schemas)
+        return schemas
 
-    return schemas
-
-
-@current_cache.memoize()
-def get_cached_indexed_record_schemas_for_user_create(
-    latest=True, user_id=None
-):
-    """Return all indexed schemas current user has read access to."""
-    schemas = get_indexed_schemas(latest=latest)
-    schemas = _filter_by_record_create_access(schemas)
-    return schemas
+    return get_cached_indexed_schemas_for_user_read_inner()
 
 
-@current_cache.memoize()
+def get_cached_indexed_record_schemas_for_user_create(latest=True, user_id=None):
+    @current_cache.memoize()
+    def get_cached_indexed_record_schemas_for_user_create_inner(latest, user_id):
+        """Return all indexed schemas current user has read access to."""
+        schemas = get_indexed_schemas(latest=latest)
+        schemas = _filter_by_record_create_access(schemas)
+        return schemas
+
+    return get_cached_indexed_record_schemas_for_user_create_inner(latest, user_id)
+
+
 def get_cached_indexed_record_schemas_for_user_read(latest=True, user_id=None):
-    """Return all indexed schemas current user has read access to."""
-    schemas = get_indexed_schemas(latest=latest)
-    schemas = _filter_by_record_read_access(schemas)
+    @current_cache.memoize()
+    def get_cached_indexed_record_schemas_for_user_read_inner(latest, user_id):
+        """Return all indexed schemas current user has read access to."""
+        schemas = get_indexed_schemas(latest=latest)
+        schemas = _filter_by_record_read_access(schemas)
+        return schemas
 
-    return schemas
+    return get_cached_indexed_record_schemas_for_user_read_inner(latest, user_id)
 
 
 def get_indexed_schemas(latest=True):
