@@ -5,6 +5,7 @@ import CheckboxWidget from "./CheckboxWidget";
 import UriWidget from "./UriWidget";
 import DateWidget from "./DateWidget";
 import RequiredWidget from "./containers/RequiredWidget";
+import SelectWidget from "./SelectWidget";
 
 const widgets = {
   text: TextWidget,
@@ -15,6 +16,7 @@ const widgets = {
   checkbox: CheckboxWidget,
   date: DateWidget,
   required: RequiredWidget,
+  select: SelectWidget,
 };
 
 export default widgets;
