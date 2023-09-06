@@ -269,6 +269,42 @@ def test_get_record_when_owner_returns_record(
     assert resp.status_code == 200
 
 
+def test_get_record_with_serializer_arg(
+    client, db, users, auth_headers_for_user, create_deposit
+):
+    owner = users['cms_user']
+    deposit = create_deposit(
+        owner,
+        'cms-analysis',
+        {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+            'basic_info': {
+                'analysis_number': 'dream_team',
+            },
+        },
+        experiment='CMS',
+        files={'file_1.txt': BytesIO(b'Hello world!')},
+        publish=True,
+    )
+
+    recid = deposit['control_number']
+
+    # test get-json: 'application/json'
+    resp_1 = client.get(
+        '/records/{}/?format=get-json'.format(recid),
+        headers=[('Accept', 'application/json')] + auth_headers_for_user(owner),
+    )
+    assert resp_1.status_code == 200
+
+    # test get-basic: 'application/basic+json'
+    resp_2 = client.get(
+        '/records/{}/?format=get-basic'.format(recid),
+        headers=[('Accept', 'application/json')] + auth_headers_for_user(owner),
+    )
+    assert resp_2.status_code == 200
+    assert list(resp_2.json.keys()) == ['created', 'metadata', 'pid', 'recid','updated']
+
+
 def test_get_record_when_superuser_returns_record(
     client, db, users, auth_headers_for_user, auth_headers_for_superuser, create_deposit
 ):

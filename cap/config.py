@@ -223,9 +223,6 @@ if os.environ.get('DEV_HOST', False):
             APP_ALLOWED_HOSTS.append(host.strip())
     else:
         APP_ALLOWED_HOSTS.append(hosts)
-# OAI-PMH
-# =======
-OAISERVER_ID_PREFIX = 'oai:analysispreservation.cern.ch:'
 
 # Debug
 # =====
@@ -465,6 +462,10 @@ CAP_FACETS = {
 RECORDS_REST_FACETS = {'deposits': CAP_FACETS, 'records': CAP_FACETS}
 
 #: Records REST API endpoints.
+
+# Mapping of values of the defined query arg to valid mimetypes for records/search serializers.
+REST_MIMETYPE_QUERY_ARG_NAME = 'format' 
+
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
 
 RECORDS_REST_ENDPOINTS['recid'].update(
@@ -485,6 +486,12 @@ RECORDS_REST_ENDPOINTS['recid'].update(
                 ':record_form_json_v1_response'
             ),
         },
+        'default_media_type': 'application/json',
+        'record_serializers_aliases': {
+            'get-json': 'application/json',
+            'get-basic': 'application/basic+json',
+            'get-form': 'application/form+json',
+        },
         'search_serializers': {
             'application/json': (
                 'cap.modules.records.serializers' ':record_json_v1_search'
@@ -492,6 +499,10 @@ RECORDS_REST_ENDPOINTS['recid'].update(
             'application/basic+json': (
                 'cap.modules.records.serializers' ':basic_json_v1_search'
             ),
+        },
+        'search_serializers_aliases': {
+            'list-json': 'application/json',
+            'list-basic': 'application/basic+json',
         },
         'read_permission_factory_imp': check_oauth2_scope(
             lambda record: ReadRecordPermission(record).can(), write_scope.id
@@ -729,6 +740,14 @@ DEPOSIT_REST_ENDPOINTS['depid'].update(
                 ':repositories_json_v1_response'
             ),
         },
+        'default_media_type': 'application/json',
+        'record_serializers_aliases': {
+            'get-json': 'application/json',
+            'get-basic': 'application/basic+json',
+            'get-permissions': 'application/permissions+json',
+            'get-form': 'application/form+json',
+            'get-repositories': 'application/repositories+json',
+        },
         'search_serializers': {
             'application/json': (
                 'cap.modules.deposit.serializers' ':deposit_json_v1_search'
@@ -736,6 +755,10 @@ DEPOSIT_REST_ENDPOINTS['depid'].update(
             'application/basic+json': (
                 'cap.modules.records.serializers' ':basic_json_v1_search'
             ),
+        },
+        'search_serializers_aliases': {
+            'list-json': 'application/json',
+            'list-basic': 'application/basic+json',
         },
         'files_serializers': {
             'application/json': (
