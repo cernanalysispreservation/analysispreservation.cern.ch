@@ -13,6 +13,9 @@ const PropertyKeyEditorForm = ({
 }) => {
   let type;
 
+  const cleanupSelect = () =>
+    schema.type === "array" ? delete formData.enum : delete formData.items;
+
   // in case we can not define the type of the element from the uiSchema,
   // extract the type from the schema
   if (
@@ -23,6 +26,9 @@ const PropertyKeyEditorForm = ({
   } else {
     if (uiSchema["ui:widget"]) {
       type = uiSchema["ui:widget"];
+      if (uiSchema["ui:widget"] === "select") {
+        cleanupSelect();
+      }
     }
     if (uiSchema["ui:field"]) {
       type = uiSchema["ui:field"];
