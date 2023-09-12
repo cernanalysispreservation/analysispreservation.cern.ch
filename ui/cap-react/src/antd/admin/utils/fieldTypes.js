@@ -643,65 +643,79 @@ const simple = {
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
-      dependencies: {
-        type: {
-          oneOf: [
-            {
-              properties: {
-                type: {
-                  enum: ["string"],
-                },
-                enum: {
-                  title: "Define your options",
-                  type: "array",
-                  description: "The options for the widget",
-                  items: {
-                    title: "Option",
-                    type: "string",
-                  },
-                },
+      allOf: [
+        {
+          if: {
+            properties: {
+              type: {
+                const: "string",
               },
             },
-            {
-              properties: {
-                type: {
-                  enum: ["number"],
-                },
-                enum: {
-                  title: "Define your options",
-                  type: "array",
-                  description: "The options for the widget",
-                  items: {
-                    title: "Option",
-                    type: "number",
-                  },
-                },
-              },
-            },
-            {
-              properties: {
-                type: {
-                  enum: ["array"],
-                },
+          },
+          then: {
+            properties: {
+              enum: {
+                title: "Define your options",
+                type: "array",
+                description: "The options for the widget",
                 items: {
-                  title: "Define your options",
-                  type: "object",
-                  properties: {
-                    enum: {
-                      title: "Options List",
-                      type: "array",
-                      items: {
-                        title: "Option",
-                        type: "string",
-                      },
+                  title: "Option",
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+        {
+          if: {
+            properties: {
+              type: {
+                const: "number",
+              },
+            },
+          },
+          then: {
+            properties: {
+              enum: {
+                title: "Define your options",
+                type: "array",
+                description: "The options for the widget",
+                items: {
+                  title: "Option",
+                  type: "number",
+                },
+              },
+            },
+          },
+        },
+        {
+          if: {
+            properties: {
+              type: {
+                const: "array",
+              },
+            },
+          },
+          then: {
+            properties: {
+              items: {
+                title: "Define your options",
+                type: "object",
+                properties: {
+                  enum: {
+                    title: "Options List",
+                    type: "array",
+                    items: {
+                      title: "Option",
+                      type: "string",
                     },
                   },
                 },
               },
             },
-          ],
+          },
         },
-      },
+      ],
     },
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
@@ -715,13 +729,8 @@ const simple = {
     },
     default: {
       schema: {
-        enum: ["Option A", "Option B", "Option C"],
         type: "string",
         uniqueItems: true,
-        items: {
-          type: "string",
-          enum: ["Option A", "Option B", "Option C", "Option D"],
-        },
       },
       uiSchema: {
         "ui:widget": "select",
