@@ -63,8 +63,6 @@ const SelectWidget = ({
 
   const getPopupContainer = node => node.parentNode;
 
-  console.log(value, enumOptions, multiple);
-
   const selectedIndexes = enumOptionsIndexForValue(
     value,
     enumOptions,
@@ -126,7 +124,7 @@ const SelectWidget = ({
       onSearch={suggestions && debounce(handleSearch, 500)}
       showSearch={suggestions}
       placeholder={placeholder}
-      value={selectedIndexes}
+      value={suggestions ? value : selectedIndexes}
       {...extraProps}
       filterOption={filterOption}
       aria-describedby={ariaDescribedByIds(id)}
