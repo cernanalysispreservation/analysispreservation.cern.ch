@@ -67,3 +67,5 @@ export const isItTheArrayField = (schema, uiSchema) => {
     schema.type === "array" && !uiSchema["ui:field"] && !uiSchema["ui:widget"]
   );
 };
+
+export const timer = ms => new Promise(res => setTimeout(res, ms));

@@ -326,7 +326,7 @@
           "ana_notes": {
             "items": {
               "pattern": "^AN-[0-9]{4}/[0-9]{3}$",
-              "placeholder": "e.g. AN-2010-107",
+              "placeholder": "e.g. AN-2010/107",
               "type": "string"
             },
             "type": "array",
@@ -1160,7 +1160,7 @@
         "ui:array": "StringArrayField",
         "items": {
           "ui:options": {
-            "mask":"\\AN-0000-000"
+            "mask":"\\AN-0000/000"
           }
         }
       }

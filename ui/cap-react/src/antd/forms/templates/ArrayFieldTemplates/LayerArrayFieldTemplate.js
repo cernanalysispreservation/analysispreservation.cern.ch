@@ -126,14 +126,14 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
               actions={getActionsButtons(item)}
               style={{
                 border: "1px solid #f0f0f0",
-                padding: "10px",
+                padding: "0 10px",
                 marginBottom: "5px",
                 backgroundColor: "white",
               }}
             >
               <List.Item.Meta
                 title={
-                  <Typography.Text ellipsis={{ rows: 1 }}>
+                  <Typography.Text ellipsis>
                     {stringifyItem(
                       item?.children?.props?.uiSchema?.["ui:options"] ?? null,
                       item.children.props.formData
@@ -147,6 +147,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
                     children: item.children,
                   });
                 }}
+                style={{ padding: "10px 0" }}
               />
             </List.Item>
           </ErrorFieldIndicator>
