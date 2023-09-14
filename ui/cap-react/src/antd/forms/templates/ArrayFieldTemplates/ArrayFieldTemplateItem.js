@@ -1,12 +1,10 @@
 import { Row, Col } from "antd";
 import PropTypes from "prop-types";
 import ArrayUtils from "./ArrayUtils";
-import { cloneElement } from "react";
 
 const ArrayFieldTemplateItem = ({
   children,
   disabled,
-  formContext,
   hasMoveDown,
   hasMoveUp,
   hasRemove,
@@ -15,12 +13,11 @@ const ArrayFieldTemplateItem = ({
   onDropIndexClick,
   onReorderClick,
   readonly,
+  uiSchema,
 }) => {
-  const { toolbarAlign = "top" } = formContext;
-
   return (
     <Row
-      align={toolbarAlign}
+      align={uiSchema && uiSchema["ui:label"] === false ? "top" : "middle"}
       key={`array-item-${index}`}
       style={{ margin: "10px 0px" }}
       className="arrayFieldRow"
@@ -31,10 +28,7 @@ const ArrayFieldTemplateItem = ({
           marginRight: "5px",
         }}
       >
-        {
-          // Don't show labels in array items
-          cloneElement(children, { name: "" })
-        }
+        {children}
       </Col>
       {hasToolbar && (
         <ArrayUtils

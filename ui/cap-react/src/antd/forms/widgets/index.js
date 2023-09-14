@@ -6,6 +6,7 @@ import UriWidget from "./UriWidget";
 import DateWidget from "./DateWidget";
 import RequiredWidget from "./containers/RequiredWidget";
 import SelectWidget from "./SelectWidget";
+import ReverseSwitchWidget from "./ReverseSwitchWidget";
 
 const widgets = {
   text: TextWidget,
@@ -17,6 +18,7 @@ const widgets = {
   date: DateWidget,
   required: RequiredWidget,
   select: SelectWidget,
+  reverseSwitch: ReverseSwitchWidget,
 };
 
 export default widgets;

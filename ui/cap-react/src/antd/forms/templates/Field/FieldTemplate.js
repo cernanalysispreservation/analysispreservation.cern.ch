@@ -69,8 +69,10 @@ const FieldTemplate = ({
           hasFeedback={schema.type !== "array" && schema.type !== "object"}
           help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
           htmlFor={id}
+          // displayLabel is always false for custom fields, so we need the or condition
           label={
-            (displayLabel || uiSchema["ui:field"]) &&
+            (displayLabel ||
+              (uiSchema["ui:field"] && uiSchema["ui:label"] != false)) &&
             label && (
               <FieldHeader
                 label={label}

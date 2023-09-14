@@ -50,6 +50,10 @@ const common = {
           },
         },
       },
+      "ui:label": {
+        title: "Hide label",
+        type: "boolean",
+      },
     },
   },
   optionsUiSchemaUiSchema: {
@@ -57,6 +61,9 @@ const common = {
       span: {
         "ui:widget": "slider",
       },
+    },
+    "ui:label": {
+      "ui:widget": "reverseSwitch",
     },
   },
 };
@@ -116,6 +123,7 @@ const collections = {
           },
         },
       },
+      "ui:label": common.optionsUiSchema.properties["ui:label"],
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
@@ -272,7 +280,6 @@ const simple = {
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
-
       pattern: {
         "ui:placeholder": "^.*$",
       },
@@ -303,6 +310,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -375,6 +383,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -564,6 +573,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -830,6 +840,7 @@ const advanced = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -882,7 +893,7 @@ const advanced = {
     child: {},
     optionsSchema: {
       type: "object",
-      title: "ID Fetcher Field Schema",
+      title: "ID Fetcher Schema",
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
