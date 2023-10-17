@@ -43,3 +43,6 @@ bundle-stats.html
 cypress/screenshots
 
 .env
+
+.yalc
+yalc.lock

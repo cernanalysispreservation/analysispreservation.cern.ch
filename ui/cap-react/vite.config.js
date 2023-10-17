@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import fs from "fs/promises";
 import { visualizer } from "rollup-plugin-visualizer";
+import ViteRestart from "vite-plugin-restart";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -16,6 +17,10 @@ export default defineConfig(({ mode }) => {
         open: true,
         gzipSize: true,
         brotliSize: true,
+      }),
+      // Restarts the dev server (full reload aka --force) when a new version of react-formule is available
+      ViteRestart({
+        restart: [".yalc/react-formule/dist/react-formule.js"],
       }),
     ],
     server: {

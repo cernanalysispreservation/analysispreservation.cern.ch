@@ -24,20 +24,40 @@ import useTrackPageViews from "../hooks/useTrackPageViews";
 import { lazy } from "react";
 import Loading from "../routes/Loading/Loading";
 import MessageBanner from "../partials/MessageBanner";
+import { FormuleContext } from "react-formule";
+import { theme } from "../utils/theme";
+import { customFieldTypes, customFields } from "../forms/formuleConfig";
+import { isEmpty } from "lodash-es";
+import { transformSchema } from "../partials/Utils/schema";
 
 const AdminPage = lazy(() => import("../admin"));
 
-const App = ({ initCurrentUser, loadingInit, history, roles }) => {
+const App = ({
+  initCurrentUser,
+  loadingInit,
+  history,
+  roles,
+  synchronizeFormuleState,
+  formDataChange,
+}) => {
   useEffect(() => {
     initCurrentUser(history.location.state);
   }, []);
 
   useTrackPageViews(history.location.pathname);
 
+  const handleFormuleStateChange = newState => {
+    synchronizeFormuleState(newState);
+    const newFormData = { ...newState.formData };
+    if (!isEmpty(newFormData)) {
+      formDataChange(newFormData);
+    }
+  };
+
   const isAdmin =
     roles && (roles.get("isSuperUser") || roles.get("schemaAdmin").size > 0);
 
-  if (loadingInit)
+  if (loadingInit) {
     return (
       <Layout className="__mainLayout__">
         <Row style={{ height: "100%" }} align="middle" justify="center">
@@ -45,6 +65,7 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
         </Row>
       </Layout>
     );
+  }
 
   return (
     <DocumentTitle title="Dashboard">
@@ -60,13 +81,24 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
           </Layout.Header>
           <Layout.Content className="__mainContent__">
             <Suspense fallback={<Loading pastDelay />}>
-              <Switch>
-                <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
-                <Route path={ABOUT} component={AboutPage} />
-                <Route path={POLICY} component={PolicyPage} />
-                {isAdmin && <Route path={CMS} component={AdminPage} />}
-                <Route path={HOME} component={requireAuth(IndexPage)} />
-              </Switch>
+              <FormuleContext
+                synchronizeState={handleFormuleStateChange}
+                theme={theme}
+                customFieldTypes={customFieldTypes}
+                customFields={customFields}
+                transformSchema={transformSchema}
+              >
+                <Switch>
+                  <Route
+                    path={WELCOME}
+                    component={noRequireAuth(WelcomePage)}
+                  />
+                  <Route path={ABOUT} component={AboutPage} />
+                  <Route path={POLICY} component={PolicyPage} />
+                  {isAdmin && <Route path={CMS} component={AdminPage} />}
+                  <Route path={HOME} component={requireAuth(IndexPage)} />
+                </Switch>
+              </FormuleContext>
             </Suspense>
           </Layout.Content>
           <Layout.Footer>
