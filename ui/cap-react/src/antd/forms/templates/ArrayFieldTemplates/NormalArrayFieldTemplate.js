@@ -48,7 +48,7 @@ const NormalArrayFieldTemplate = ({
   const [emailModal, setEmailModal] = useState(false);
   const [selectedEmailList, setSelectedEmailList] = useState(
     uiSchema["ui:options"] && uiSchema["ui:options"].email
-      ? formData.map(user => user.profile.email)
+      ? formData.map(user => user?.profile?.email)
       : []
   );
   const [copy, setCopy] = useState(false);
@@ -148,12 +148,12 @@ const NormalArrayFieldTemplate = ({
   const updateEmailSelectedListAll = () => {
     formData.length === selectedEmailList.length
       ? setSelectedEmailList([])
-      : setSelectedEmailList(formData.map(user => user.profile.email));
+      : setSelectedEmailList(formData.map(user => user?.profile?.email));
   };
 
   useEffect(() => {
     if (emailModal && formData.length != selectedEmailList.length)
-      setSelectedEmailList(formData.map(user => user.profile.email));
+      setSelectedEmailList(formData.map(user => user?.profile?.email));
   }, [emailModal]);
 
   return (
