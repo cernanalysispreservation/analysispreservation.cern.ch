@@ -122,11 +122,11 @@ const SelectWidget = ({
       onChange={!readonly ? handleChange : undefined}
       onFocus={!readonly ? handleFocus : undefined}
       onSearch={suggestions && debounce(handleSearch, 500)}
-      showSearch={suggestions}
+      showSearch
       placeholder={placeholder}
       value={suggestions ? value : selectedIndexes}
       {...extraProps}
-      filterOption={filterOption}
+      filterOption={!suggestions && filterOption}
       aria-describedby={ariaDescribedByIds(id)}
       loading={loading}
       notFoundContent={
