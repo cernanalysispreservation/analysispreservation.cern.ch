@@ -1,6 +1,5 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import Form from "../../forms/Form";
 import {
   Col,
   Menu,
@@ -27,6 +26,7 @@ import { configSchema } from "../utils/schemaSettings";
 import CodeViewer from "../../utils/CodeViewer";
 import { json } from "@codemirror/lang-json";
 import CodeDiffViewer from "../../utils/CodeDiffViewer";
+import { MosesForm } from "cap-moses";
 
 const { useBreakpoint } = Grid;
 const Header = ({
@@ -54,8 +54,8 @@ const Header = ({
   const _getSchema = () => {
     const fileData = JSON.stringify(
       {
-        deposit_schema: schema.toJS(),
-        deposit_options: uiSchema.toJS(),
+        deposit_schema: schema,
+        deposit_options: uiSchema,
         ...config.toJS(),
       },
       null,
@@ -65,37 +65,37 @@ const Header = ({
     const a = document.createElement("a");
     const file = new Blob([fileData], { type: "text/json" });
     a.href = URL.createObjectURL(file);
-    a.download = "fileName.json"; //TODO: Should be a proper name
+    a.download = `${config.toJS().name || "cap-schema"}.json`;
     a.click();
   };
   const _renderSchemaPreview = schemaPreviewDisplay => {
     let previews = {
       uiSchema: (
         <CodeViewer
-          value={JSON.stringify(uiSchema.toJS(), null, 2)}
+          value={JSON.stringify(uiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schema: (
         <CodeViewer
-          value={JSON.stringify(schema.toJS(), null, 2)}
+          value={JSON.stringify(schema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       uiSchemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(initialUiSchema.toJS(), null, 2)}
-          right={JSON.stringify(uiSchema.toJS(), null, 2)}
+          left={JSON.stringify(initialUiSchema, null, 2)}
+          right={JSON.stringify(uiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(initialSchema.toJS(), null, 2)}
-          right={JSON.stringify(schema.toJS(), null, 2)}
+          left={JSON.stringify(initialSchema, null, 2)}
+          right={JSON.stringify(schema, null, 2)}
           lang={json}
           height="100%"
         />
@@ -167,7 +167,7 @@ const Header = ({
           onClick: () => setSettingsModal(false),
         }}
       >
-        <Form
+        <MosesForm
           {...configSchema}
           formData={config.toJS()}
           onChange={data => updateSchemaConfig(data.formData)}

@@ -1,9 +1,23 @@
+import { initMosesSchema } from "cap-moses";
+import { merge } from "lodash-es";
+import store from "../../../store/configureStore";
+import { updateSchemaConfig } from "../../../actions/builder";
+
 export const SIZE_OPTIONS = {
   xsmall: 8,
   small: 12,
   medium: 16,
   large: 20,
   xlarge: 24,
+};
+
+const NOTIFICATIONS = {
+  notifications: {
+    actions: {
+      review: [],
+      publish: [],
+    },
+  },
 };
 
 export const slugify = text => {
@@ -17,15 +31,14 @@ export const slugify = text => {
     .replace(/-+$/, ""); // Trim - from end of text
 };
 
-export const _initSchemaStructure = (
-  name = "New schema",
-  description = ""
-) => ({
-  schema: {
-    title: name,
-    description: description,
-    type: "object",
-    properties: {},
-  },
-  uiSchema: {},
-});
+export const initMosesSchemaWithNotifications = (
+  data = {},
+  name,
+  description
+) => {
+  data.config = merge(data.config || {}, NOTIFICATIONS);
+  initMosesSchema(data, name, description);
+  /* eslint no-unused-vars: ["error", { "ignoreRestSiblings": true }]*/
+  const { deposit_schema, deposit_options, ...configs } = data;
+  store.dispatch(updateSchemaConfig(configs));
+};

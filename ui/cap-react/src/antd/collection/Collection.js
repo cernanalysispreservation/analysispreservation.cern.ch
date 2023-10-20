@@ -1,7 +1,7 @@
 import { fetchRecordsResults } from "../../actions/common";
 import DashboardList from "../dashboard/components/DashboardList";
 import { _getCollectionList } from "../dashboard/utils";
-import RichEditorWidget from "../forms/widgets/RichEditorWidget";
+import RichEditorWidget from "../forms/RichEditorWidget";
 import ErrorScreen from "../partials/Error";
 import CollectionPermissions from "./CollectionPermissions";
 import { CloseOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";

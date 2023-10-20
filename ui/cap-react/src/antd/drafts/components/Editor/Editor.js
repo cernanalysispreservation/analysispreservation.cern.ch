@@ -4,9 +4,9 @@ import { Col, Layout } from "antd";
 import Error from "../../../partials/Error/";
 import { transformSchema } from "../../../partials/Utils/schema";
 import Header from "../../containers/EditorHeader";
-import Form from "../../../forms";
 import { canEdit } from "../../utils/permissions";
 import { debounce } from "lodash-es";
+import { MosesForm } from "cap-moses";
 
 const Editor = ({
   schemaErrors,
@@ -35,7 +35,7 @@ const Editor = ({
       <Layout style={{ height: "100%", padding: 0 }}>
         <Header formRef={formRef} mode={mode} updateMode={setMode} />
         <Layout.Content style={{ height: "100%", overflowX: "hidden" }}>
-          <Form
+          <MosesForm
             formData={formData || {}}
             formRef={formRef}
             schema={_schema}

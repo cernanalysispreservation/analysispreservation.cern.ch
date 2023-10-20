@@ -1,5 +1,5 @@
+import { MosesForm } from "cap-moses";
 import PropTypes from "prop-types";
-import Form from "../../forms/Form";
 
 const JSONSchemaPreviewer = ({
   isPublished,
@@ -14,7 +14,7 @@ const JSONSchemaPreviewer = ({
 }) => {
   return (
     schema && (
-      <Form
+      <MosesForm
         className={className}
         schema={schema}
         showErrorList={false}
@@ -37,7 +37,7 @@ const JSONSchemaPreviewer = ({
         }}
       >
         {children}
-      </Form>
+      </MosesForm>
     )
   );
 };
