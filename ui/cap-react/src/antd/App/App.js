@@ -28,6 +28,7 @@ import { MosesContext } from "cap-moses";
 import { PRIMARY_COLOR } from "../utils/theme";
 import { customFieldTypes, customFields } from "../forms/mosesConfig";
 import { isEmpty } from "lodash-es";
+import { transformSchema } from "../partials/Utils/schema";
 
 const AdminPage = lazy(() => import("../admin"));
 
@@ -94,6 +95,7 @@ const App = ({
                 }}
                 customFieldTypes={customFieldTypes}
                 customFields={customFields}
+                transformSchema={transformSchema}
               >
                 <Switch>
                   <Route
