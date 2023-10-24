@@ -9,6 +9,8 @@ import OrcidSvg from "./services/svg/OrcidSvg";
 import ZenodoSvg from "./services/svg/ZenodoSvg";
 import RorSvg from "./services/svg/RorSvg";
 import Icon from "@ant-design/icons";
+import CAPDeposit from "./services/CAPDeposit";
+import CAPLogo from "./services/svg/capLogo";
 
 const SERVICES = {
   orcid: {
@@ -26,15 +28,25 @@ const SERVICES = {
     url: "/api/services/zenodo/record/",
     svg: ZenodoSvg,
   },
+  capRecords: {
+    name: "CAP Records",
+    url: "/api/records/",
+    svg: ZenodoSvg,
+  },
+  capDeposits: {
+    name: "CAP Deposits",
+    url: "/api/deposits/",
+    svg: CAPLogo,
+  },
 };
 
-const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
+const ServiceGetter = ({ formData = {}, uiSchema ={}, onChange }) => {
   const [service, setService] = useState();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
 
   useEffect(() => {
-    if (uiSchema["ui:servicesList"].length === 1) {
+    if (uiSchema?.["ui:servicesList"]?.length === 1) {
       setService(uiSchema["ui:servicesList"]);
     }
   }, [uiSchema]);
@@ -44,8 +56,9 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
       ror: <Ror data={formData.fetched} />,
       zenodo: <Zenodo data={formData.fetched} />,
       orcid: <Orcid data={formData.fetched} />,
+      capDeposits: <CAPDeposit data={formData.fetched} />,
     };
-    return choices[name];
+    return choices[name] || <span>{JSON.stringify(formData.fetched)}</span>;
   };
 
   const getId = (service, id) => {
@@ -81,7 +94,7 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
       try {
         const results = await axios.get(currentServiceApi + resourceID);
         let { data } = results;
-        if (!data.status) {
+        if (!data.statuss) {
           const resource_data = {
             source: {
               service: service,
@@ -103,10 +116,11 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
   return (
     <div>
       {formData.fetched ? (
-        <Row wrap={false} align="middle">
+        <Row wrap={false} align="middle" gutter={10}>
           <Col flex="auto">{getContentByName(formData.source.service)}</Col>
           <Col flex="none">
             <Button
+              size="small"
               danger
               onClick={() => onChange({})}
               icon={<DeleteOutlined />}
@@ -115,14 +129,14 @@ const ServiceGetter = ({ formData = {}, uiSchema, onChange }) => {
         </Row>
       ) : (
         <Space direction="vertical" style={{ width: "100%" }}>
-          {uiSchema["ui:servicesList"].length > 1 && (
+          {uiSchema["ui:servicesList"]?.length > 1 && (
             <Select
               value={service}
               placeHolder="Select service"
               onChange={val => setService(val)}
               style={{ width: "100%" }}
             >
-              {uiSchema["ui:servicesList"].map(service => (
+              {uiSchema["ui:servicesList"]?.map(service => (
                 <Select.Option value={service} key={service}>
                   {SERVICES[service].name}
                 </Select.Option>

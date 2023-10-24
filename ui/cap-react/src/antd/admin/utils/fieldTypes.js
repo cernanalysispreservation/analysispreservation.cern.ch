@@ -247,6 +247,50 @@ const collections = {
 };
 
 const simple = {
+  importData: {
+    title: "Import Data",
+    icon: <FileOutlined />,
+    description: "Provided a URL or query",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "File upload widget",
+      properties: {
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
+        "x-cap-import-data": {
+          type: "object",
+          properties: {
+            queryUrl: {
+              type: "string"
+            },
+            resultsPath: {
+              type: "string"
+            },
+          }
+        }
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+    },
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "object",
+      },
+      uiSchema: {
+        "ui:field": "importData",
+      },
+    },
+  },
   text: {
     title: "Text",
     icon: <FontSizeOutlined />,
@@ -916,6 +960,8 @@ const advanced = {
               { const: "orcid", title: "ORCiD" },
               { const: "ror", title: "ROR" },
               { const: "zenodo", title: "Zenodo" },
+              { const: "capRecords", title: "CAP Records" },
+              { const: "capDeposits", title: "CAP Deposits" },
             ],
           },
           uniqueItems: "true",
@@ -934,7 +980,8 @@ const advanced = {
         properties: {},
       },
       uiSchema: {
-        "ui:servicesList": ["orcid", "ror", "zenodo"],
+        "ui:serfvicesList": ["orcid", "ror", "zenodo"],
+        "ui:servicesList": ["capDeposits"],
         "ui:field": "idFetcher",
       },
     },
