@@ -100,7 +100,7 @@ class DepositFormSchema(DepositSchema):
     @post_dump
     def remove_skip_values(self, data):
         # maybe we should add 'x_cap_permissions' and 'user_schema_permissions'
-        keys = ["can_review", "review", "x_cap_permission"]
+        keys = ["can_review", "review", "x_cap_permission", "egroups"]
 
         for key in keys:
             if data.get(key, "") is None:

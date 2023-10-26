@@ -77,6 +77,7 @@ from cap.modules.user.utils import (
     get_existing_or_register_user,
 )
 
+from .egroups import CERNEgroupMixin
 from .errors import (
     DepositValidationError,
     ReviewError,
@@ -104,6 +105,7 @@ PRESERVE_FIELDS = (
     "_buckets",
     "_files",
     "_review",
+    "_egroups",
     "_experiment",
     "_access",
     "_user_edited",
@@ -134,7 +136,7 @@ EMPTY_ACCESS_OBJECT = {
 }
 
 
-class CAPDeposit(Deposit, Reviewable):
+class CAPDeposit(Deposit, Reviewable, CERNEgroupMixin):
     """Define API for changing deposit state."""
 
     deposit_fetcher = staticmethod(cap_deposit_fetcher)

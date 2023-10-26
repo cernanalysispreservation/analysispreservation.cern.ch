@@ -10,9 +10,12 @@ import {
   Popconfirm,
   Modal,
   Alert,
+  Input,
+  Form,
+  Table,
 } from "antd";
 import { Link } from "react-router-dom";
-import { LinkOutlined, DeleteTwoTone } from "@ant-design/icons";
+import { LinkOutlined, DeleteTwoTone, PlusCircleFilled } from "@ant-design/icons";
 import Reviews from "../../../partials/Reviews";
 import Permissions from "../../containers/Permissions";
 import equal from "deep-equal";
@@ -21,12 +24,14 @@ import cleanDeep from "clean-deep";
 const Settings = ({
   recid,
   status,
+  egroups,
   formData,
   metadata,
   draft_id,
   publishDraft,
   updateDraft,
   deleteDraft,
+  addEgroupToDraft,
   canUpdate,
 }) => {
   const publishMyDraft = () => {
@@ -39,8 +44,13 @@ const Settings = ({
     setConfirmPublish(false);
   };
   const [confirmPublish, setConfirmPublish] = useState(false);
+  const [createModalEnabled, setCreateModalEnabled] = useState(false);
+
+  const _addEgroup = group => {
+    addEgroupToDraft(draft_id, group);
+  };
   return (
-    <Row justify="center">
+    <Row justify="center" style={{ padding: "20px" }}>
       <Modal
         open={confirmPublish}
         title="Publish Draft"
@@ -101,6 +111,85 @@ const Settings = ({
               version tag.
             </Typography.Paragraph>
           </Card>
+
+          {egroups && (
+            <Card
+              title="CERN E-groups"
+              size="small"
+              extra={
+                <Button
+                  size="small"
+                  icon={<PlusCircleFilled size={10} />}
+                  onClick={() => setCreateModalEnabled(true)}
+                  type="default"
+                >
+                  Create e-group
+                </Button>
+              }
+            >
+              <Typography.Paragraph stfyle={{ padding: 0, margin: 0 }}>
+                Here you can find and link{" "}
+                <Typography.Text strong>CERN E-groups</Typography.Text>{" "}
+                associated with this entry
+              </Typography.Paragraph>
+              <Modal
+                open={createModalEnabled}
+                centered
+                title="Create & link new egroup"
+                description="Create & link new egroup"
+                footer={false}
+                onCancel={() => setCreateModalEnabled(false)}
+              >
+                <Form onFinish={_addEgroup} layout="vertical">
+                  {/* <Space.Compact> */}
+                  <Form.Item
+                    name="name"
+                    label="E-group Name"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input an e-group name",
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder={`e.g. CAP-${draft_id}-admins`.toLowerCase()}
+                    ></Input>
+                  </Form.Item>
+                  <Form.Item name="description" label="Description">
+                    <Input.TextArea
+                      placeholder={`e.g. This is an ${draft_id} associated e-group for reviewers..`}
+                    ></Input.TextArea>
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      Add egroup
+                    </Button>
+                  </Form.Item>
+                  {/* </Space.Compact> */}
+                </Form>
+              </Modal>
+              <Table
+                dataSource={egroups}
+                size="small"
+                columns={[
+                  {
+                    key: "name",
+                    dataIndex: "name",
+                    title: "E-Group Name",
+                    width: "35%",
+                    render: i => <Typography.Text code>{i}</Typography.Text>,
+                  },
+                  {
+                    key: "description",
+                    dataIndex: "description",
+                    title: "Description",
+                    width: "65%",
+                  },
+                ]}
+              />
+            </Card>
+          )}
           <Permissions />
           <Reviews />
           <Alert

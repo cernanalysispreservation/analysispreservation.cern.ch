@@ -14,6 +14,7 @@ const ReviewList = ({
 }) => {
   return (
     <List
+      size="small"
       style={{ maxHeight: "50vh", overflowX: "hidden" }}
       dataSource={review}
       renderItem={item => (

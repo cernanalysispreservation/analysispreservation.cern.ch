@@ -121,6 +121,18 @@ class ReviewError(RESTException):
         self.description = description or 'Review is not a possible action.'
 
 
+class EgroupError(RESTException):
+    """Exception during review for analysis."""
+
+    code = 400
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super().__init__(**kwargs)
+
+        self.description = description or 'Egroup action is not a possible.'
+
+
 class ReviewValidationError(RESTValidationError):
     """Review validation error exception."""
 

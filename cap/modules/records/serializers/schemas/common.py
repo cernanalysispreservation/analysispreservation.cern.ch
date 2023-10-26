@@ -139,6 +139,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
 
     experiment = fields.Str(attribute='metadata._experiment', dump_only=True)
     status = fields.Str(attribute='metadata._deposit.status', dump_only=True)
+    egroups = fields.Method("get_egroups", dump_only=True)
     created_by = fields.Method('get_created_by', dump_only=True)
     is_owner = fields.Method('is_current_user_owner', dump_only=True)
 
@@ -202,12 +203,20 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                 '_access',
                 '_files',
                 '_review',
+                '_egroups',
                 '_fetched_from',
                 '_user_edited',
                 '_collection',
             ]
         }
         return result
+
+    def get_egroups(self, obj):
+        _egroups = obj.get("metadata", {}).get("_egroups", [])
+        if "deposit" not in obj or obj["deposit"].schema_egroups_enabled():
+            return _egroups
+        else:
+            return None
 
     def get_created_by(self, obj):
         user_id = obj.get('metadata', {})['_deposit'].get('created_by')

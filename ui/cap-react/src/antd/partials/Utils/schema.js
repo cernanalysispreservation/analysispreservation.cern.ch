@@ -14,6 +14,7 @@ export const transformSchema = schema => {
     "_user_edited",
     "control_number",
     "_review",
+    "_egroups",
   ];
 
   schema.properties = omit(schema.properties, schemaFieldsToRemove);
