@@ -33,6 +33,7 @@ from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_files.models import RecordsBuckets
 from sqlalchemy.orm.exc import NoResultFound
 
+from cap.modules.deposit.errors import WrongJSONSchemaError
 from cap.modules.experiments.permissions import cms_pag_convener_action
 from cap.modules.records.permissions import RecordFilesPermission
 from cap.modules.schemas.models import Schema
@@ -47,8 +48,6 @@ from cap.modules.schemas.permissions import (
     deposit_schema_upload_action,
 )
 from cap.modules.schemas.resolvers import resolve_schema_by_url
-
-from .errors import WrongJSONSchemaError
 
 DepositReadActionNeed = partial(ParameterizedActionNeed, 'deposit-read')
 """Action need for reading a record."""

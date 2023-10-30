@@ -53,10 +53,32 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
-from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
+from cap.modules.deposit.errors import (
+    DepositValidationError,
+    DisconnectWebhookError,
+    FileUploadError,
+    ReviewError,
+    UniqueRequiredValidationError,
+    UpdateDepositPermissionsError,
+)
+from cap.modules.deposit.fetchers import cap_deposit_fetcher
 from cap.modules.deposit.loaders import get_val_from_path
+from cap.modules.deposit.minters import cap_deposit_minter
+from cap.modules.deposit.permissions import (
+    AdminDepositPermission,
+    CloneDepositPermission,
+    DepositAdminActionNeed,
+    DepositReadActionNeed,
+    DepositUpdateActionNeed,
+    ReviewDepositPermission,
+    UpdateDepositPermission,
+)
+from cap.modules.deposit.review import Reviewable
 from cap.modules.deposit.utils import perform_copying_fields
-from cap.modules.deposit.validators import NoRequiredValidator
+from cap.modules.deposit.validators import (
+    NoRequiredValidator,
+    get_custom_validator,
+)
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.records.errors import get_error_path
@@ -76,26 +98,6 @@ from cap.modules.user.utils import (
     get_existing_or_register_role,
     get_existing_or_register_user,
 )
-
-from .errors import (
-    DepositValidationError,
-    ReviewError,
-    UniqueRequiredValidationError,
-    UpdateDepositPermissionsError,
-)
-from .fetchers import cap_deposit_fetcher
-from .minters import cap_deposit_minter
-from .permissions import (
-    AdminDepositPermission,
-    CloneDepositPermission,
-    DepositAdminActionNeed,
-    DepositReadActionNeed,
-    DepositUpdateActionNeed,
-    ReviewDepositPermission,
-    UpdateDepositPermission,
-)
-from .review import Reviewable
-from .validators import get_custom_validator
 
 _datastore = LocalProxy(lambda: current_app.extensions["security"].datastore)
 

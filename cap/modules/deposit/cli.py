@@ -25,9 +25,9 @@
 
 from __future__ import absolute_import, print_function
 
-import os
 import copy
 import json
+import os
 import uuid
 from datetime import datetime
 
@@ -42,13 +42,16 @@ from jsonschema.exceptions import ValidationError
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.fetchers import cap_deposit_fetcher
 from cap.modules.deposit.minters import cap_deposit_minter
+from cap.modules.deposit.utils import add_read_permission_for_egroup
 from cap.modules.fixtures.cli import fixtures
-from cap.modules.user.utils import get_existing_or_register_user, \
-    get_existing_or_register_role
-from cap.modules.schemas.resolvers import resolve_schema_by_url, \
-    schema_name_to_url
-
-from .utils import add_read_permission_for_egroup
+from cap.modules.schemas.resolvers import (
+    resolve_schema_by_url,
+    schema_name_to_url,
+)
+from cap.modules.user.utils import (
+    get_existing_or_register_role,
+    get_existing_or_register_user,
+)
 
 
 @fixtures.command('add')
@@ -80,7 +83,8 @@ def add(file_path, schema, version, egroup, usermail, limit):
 
                 click.secho(
                     'Draft with id {} already exist!'.format(pid_value),
-                    fg='red')
+                    fg='red',
+                )
 
             except PIDDoesNotExistError:
                 record_uuid = uuid.uuid4()
@@ -91,29 +95,45 @@ def add(file_path, schema, version, egroup, usermail, limit):
                 if egroup:
                     add_read_permission_for_egroup(deposit, egroup)
 
-                click.secho('Draft {} added.'.format(pid.pid_value),
-                            fg='green')
+                click.secho('Draft {} added.'.format(pid.pid_value), fg='green')
 
         db.session.commit()
 
 
 @fixtures.command('create-deposit')
-@click.option('--file', '-f',
-              type=click.Path(exists=True),
-              required=True,
-              help='JSON data file')
-@click.option('--ana', '-a',
-              help='Type of analysis',)
-@click.option('--role', '-r',
-              'roles', multiple=True,
-              help='Role with access to the record')
-@click.option('--user', '-u',
-              'users', multiple=True,
-              help='User with access to the record')
-@click.option('--owner', '-o',
-              help='Owner of the record')
-@click.option('--save-errors-to', '-e', 'save_errors',
-              help="Provide a filename, that wrong records will be saved to.")
+@click.option(
+    '--file',
+    '-f',
+    type=click.Path(exists=True),
+    required=True,
+    help='JSON data file',
+)
+@click.option(
+    '--ana',
+    '-a',
+    help='Type of analysis',
+)
+@click.option(
+    '--role',
+    '-r',
+    'roles',
+    multiple=True,
+    help='Role with access to the record',
+)
+@click.option(
+    '--user',
+    '-u',
+    'users',
+    multiple=True,
+    help='User with access to the record',
+)
+@click.option('--owner', '-o', help='Owner of the record')
+@click.option(
+    '--save-errors-to',
+    '-e',
+    'save_errors',
+    help="Provide a filename, that wrong records will be saved to.",
+)
 @with_appcontext
 def create_deposit(file, ana, roles, users, owner, save_errors):
     """Create a new deposit through the CLI.
@@ -146,8 +166,7 @@ def save_errors_to_json(save_errors, errors):
     """Saves the wrong records to a specified file."""
     timestamp = datetime.now().strftime("%d-%b-%Y-%H:%M:%S")
     wrong_records_path = os.path.join(
-        os.getcwd(),
-        f'{save_errors}_errors_{timestamp}.json'
+        os.getcwd(), f'{save_errors}_errors_{timestamp}.json'
     )
 
     with open(wrong_records_path, 'w') as _json:
@@ -165,13 +184,18 @@ def check_and_update_data_with_schema(data, ana):
     if not schema and not ana:
         click.secho(
             'You need to provide the --ana/-a parameter OR '
-            'add the $schema field in your JSON', fg='red')
+            'add the $schema field in your JSON',
+            fg='red',
+        )
         return False
 
     try:
         if schema:
             if ana:
-                click.secho("Your data already provide a $schema, --ana will not be used.")  # noqa
+                click.secho(
+                    "Your data already provide a $schema,"
+                    " --ana will not be used."
+                )
             resolve_schema_by_url(schema)
         elif ana:
             data['$schema'] = schema_name_to_url(ana)
@@ -201,12 +225,14 @@ def create_deposit_with_permissions(data, roles, users, owner, ana, errors):
                 for role in roles:
                     _role = get_existing_or_register_role(role.strip())
                     deposit._add_egroup_permissions(
-                        _role, ['deposit-read'], db.session)
+                        _role, ['deposit-read'], db.session
+                    )
             if users:
                 for user in users:
                     _user = get_existing_or_register_user(user.strip())
                     deposit._add_user_permissions(
-                        _user, ['deposit-read'], db.session)
+                        _user, ['deposit-read'], db.session
+                    )
 
             deposit.commit()
         except ValidationError as err:
@@ -215,4 +241,6 @@ def create_deposit_with_permissions(data, roles, users, owner, ana, errors):
             return
 
     db.session.commit()
-    click.secho(f"Created deposit with id: {deposit['_deposit']['id']}", fg='green')  # noqa
+    click.secho(
+        f"Created deposit with id: {deposit['_deposit']['id']}", fg='green'
+    )  # noqa
