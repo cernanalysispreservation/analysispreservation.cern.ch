@@ -25,12 +25,17 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_deposit.serializers import json_file_response
-from invenio_records_rest.serializers.response import (record_responsify,
-                                                       search_responsify)
+from invenio_records_rest.serializers.response import (
+    record_responsify,
+    search_responsify,
+)
 
-from .json import DepositSerializer
-from .schemas.json import DepositSchema, DepositFormSchema, DepositSearchSchema
+from cap.modules.deposit.serializers.json import DepositSerializer
+from cap.modules.deposit.serializers.schemas.json import (
+    DepositFormSchema,
+    DepositSchema,
+    DepositSearchSchema,
+)
 
 # Serializers
 # ===========
@@ -42,14 +47,12 @@ deposit_search_json_v1 = DepositSerializer(DepositSearchSchema)
 # Records-REST serializers
 # ========================
 # JSON record serializer for individual records.
-deposit_json_v1_response = record_responsify(deposit_json_v1,
-                                             'application/json')
-deposit_form_json_v1_response = record_responsify(deposit_form_json_v1,
-                                                  'application/json')
-deposit_json_v1_search = search_responsify(deposit_search_json_v1,
-                                           'application/json')
-
-# Files-REST serializers
-# ========================
-# JSON Files serializers for deposit files
-files_response = json_file_response
+deposit_json_v1_response = record_responsify(
+    deposit_json_v1, 'application/json'
+)
+deposit_form_json_v1_response = record_responsify(
+    deposit_form_json_v1, 'application/json'
+)
+deposit_json_v1_search = search_responsify(
+    deposit_search_json_v1, 'application/json'
+)

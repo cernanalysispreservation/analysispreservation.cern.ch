@@ -30,10 +30,9 @@ from cachetools.keys import hashkey
 from flask import current_app, request
 from invenio_records_files.links import default_bucket_link_factory
 
+from cap.modules.deposit.api import CAPDeposit
+from cap.modules.deposit.utils import extract_actions_from_class
 from cap.modules.records.utils import api_url_for, url_to_api_url
-
-from .api import CAPDeposit
-from .utils import extract_actions_from_class
 
 
 @cached(LRUCache(maxsize=1024), key=lambda pid, **kwargs: hashkey(str(pid)))
@@ -46,7 +45,7 @@ def links_factory(pid, record=None, record_hit=None, **kwargs):
             host=request.host,
             scheme=request.scheme,
             pid_value=pid.pid_value,
-        )
+        ),
     }
 
     try:
@@ -55,7 +54,8 @@ def links_factory(pid, record=None, record_hit=None, **kwargs):
             links['bucket'] = url_to_api_url(bucket_link)
     except Exception:
         current_app.logger.info(
-            f'Bucket link generation error for deposit: {pid.pid_value}')
+            f'Bucket link generation error for deposit: {pid.pid_value}'
+        )
 
     for action in extract_actions_from_class(CAPDeposit):
         if action != "review":

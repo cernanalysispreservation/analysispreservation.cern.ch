@@ -764,7 +764,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update(
         },
         'files_serializers': {
             'application/json': (
-                'cap.modules.deposit.serializers:files_response'
+                'invenio_deposit.serializers:json_file_response'
             ),
         },
         'search_class': 'cap.modules.deposit.search:CAPDepositSearch',

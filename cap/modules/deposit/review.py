@@ -25,19 +25,22 @@
 
 from __future__ import absolute_import, print_function
 
+import uuid
+
+from flask_login import current_user
 from marshmallow import Schema, fields, validate
 
-import uuid
-from flask_login import current_user
-from .errors import ReviewError, ReviewValidationError
+from cap.modules.deposit.errors import ReviewError, ReviewValidationError
 from cap.modules.user.utils import get_user_email_by_id
 
 
 class ReviewSchema(Schema):
     """Schema for deposit review."""
 
-    type = fields.Str(validate=validate.OneOf(
-        ["approved", "request_changes", "declined"]), required=True)
+    type = fields.Str(
+        validate=validate.OneOf(["approved", "request_changes", "declined"]),
+        required=True,
+    )
     body = fields.Str()
     id = fields.Str(required=True)
     reviewer = fields.Method('get_reviewer', dump_only=True)
@@ -51,8 +54,10 @@ class ReviewSchema(Schema):
 class ReviewCreatePayload(Schema):
     """Schema for deposit review."""
 
-    type = fields.Str(validate=validate.OneOf(
-        ["approved", "request_changes", "declined"]), required=True)
+    type = fields.Str(
+        validate=validate.OneOf(["approved", "request_changes", "declined"]),
+        required=True,
+    )
     body = fields.Str()
 
 
@@ -60,8 +65,9 @@ class ReviewUpdatePayload(Schema):
     """Schema for deposit review."""
 
     id = fields.Str(required=True)
-    action = fields.Str(validate=validate.OneOf(
-        ["comment", "delete", "resolve"]), required=True)
+    action = fields.Str(
+        validate=validate.OneOf(["comment", "delete", "resolve"]), required=True
+    )
     comments = fields.Str()
 
 
