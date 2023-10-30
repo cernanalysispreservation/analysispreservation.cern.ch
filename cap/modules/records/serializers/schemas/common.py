@@ -130,7 +130,32 @@ class CAPObjectVersionSchema(ObjectVersionSchema):
         return data
 
 
-class CommonRecordSchema(Schema, StrictKeysMixin):
+class CommonRecordMetadataSchema(Schema):
+    metadata = fields.Method('get_metadata', dump_only=True)
+
+    def get_metadata(self, obj):
+        result = {
+            k: v
+            for k, v in obj.get('metadata', {}).items()
+            if k
+            not in [
+                'control_number',
+                '$schema',
+                '_deposit',
+                '_experiment',
+                '_access',
+                '_files',
+                '_review',
+                '_fetched_from',
+                '_user_edited',
+                '_collection',
+            ]
+        }
+
+        return result
+
+
+class CommonRecordSchema(CommonRecordMetadataSchema, StrictKeysMixin):
     """Base record schema."""
 
     id = fields.Str(attribute='pid.pid_value', dump_only=True)
@@ -141,8 +166,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     status = fields.Str(attribute='metadata._deposit.status', dump_only=True)
     created_by = fields.Method('get_created_by', dump_only=True)
     is_owner = fields.Method('is_current_user_owner', dump_only=True)
-
-    metadata = fields.Method('get_metadata', dump_only=True)
 
     links = fields.Raw(dump_only=True)
     files = fields.Method('get_files', dump_only=True)
@@ -188,26 +211,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                 'fullname': schema.fullname or '',
             }
             return result
-
-    def get_metadata(self, obj):
-        result = {
-            k: v
-            for k, v in obj.get('metadata', {}).items()
-            if k
-            not in [
-                'control_number',
-                '$schema',
-                '_deposit',
-                '_experiment',
-                '_access',
-                '_files',
-                '_review',
-                '_fetched_from',
-                '_user_edited',
-                '_collection',
-            ]
-        }
-        return result
 
     def get_created_by(self, obj):
         user_id = obj.get('metadata', {})['_deposit'].get('created_by')

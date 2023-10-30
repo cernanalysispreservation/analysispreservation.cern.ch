@@ -847,3 +847,108 @@ def test_deposit_validation_on_schema_field_user_cannot_edit_with_custom_message
 
     assert resp.status_code == 422
     assert resp.json['errors'][0]['message'] == 'Test error message from schema.'
+
+
+
+def test_deposit_validation_x_cap_fetch(client, users,
+                                        auth_headers_for_user,
+                                        json_headers, create_schema,
+                                        create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+
+    create_schema('validation-schema',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'object',
+                              "properties": {
+                                  "field1":  {"type": "string"},
+                                  "field2": {
+                                      "type": "object",
+                                      "properties": {
+                                        "field2_1": {"type": "string"},
+                                        "field2_2": {"type": "string"},
+                                      },
+                                      "required": ["field2_2"]
+                                  }
+                              },
+                              "additionalProperties": False
+                          }
+                      },
+                  })
+
+    deposit = create_deposit(owner,
+                             'test-analysis-2',
+                             experiment='CMS',
+                             metadata={"$ana_type": "test-analysis-2", "random_prop": "boom"})
+    deposit_id = deposit.pid.pid_value
+
+    resp = client.get('/deposits/'.format(deposit['_deposit']['id']),
+                      headers=headers + json_headers)
+
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'obj': {
+                              'type': 'object',
+                              'x-cap-fetch': {
+                                  "name": "service",
+                                  "description": "",
+                                #   "url": "/api/deposits",
+                                #   "request": {
+                                #       "searchParam": "q",
+                                #       "params": {
+                                #       }
+                                #   },
+                                  "schema": {"type": "object"},
+                                  "schemaURL": "https://analysispreservation.cern.ch/api/schemas/depostis/records/validation-schema-v0.0.1.json",
+                              },
+                              "properties": {
+                                  "url":  {"type": "string"},
+                                  "data": {"$ref": "https://analysispreservation.cern.ch/api/schemas/depostis/records/validation-schema-v0.0.1.json"}
+                              },
+                              "required": ["url"]
+                          }
+                      },
+                  })
+    deposit = create_deposit(owner, 'test-analysis')
+    pid = deposit['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid),
+                      headers=headers + json_headers,
+                      data=json.dumps({
+                          "obj": {
+                              "url": f"http://analysispreservation.cern.ch/api/deposits/{deposit_id}"
+                            }
+                        }
+                    ))
+
+    deposit2 = create_deposit(owner, 'validation-schema')
+    pid2 = deposit2['_deposit']['id']
+
+    resp = client.put('/deposits/{}'.format(pid2),
+                      headers=headers + json_headers,
+                      data=json.dumps({
+                          "obj": {
+                              "url": f"http://analysispreservation.cern.ch/api/deposits/{deposit_id}"
+                            }
+                        }
+                    ))
+
+    assert resp.status_code == 422
+
+    assert "('url' was unexpected)" in resp.json['errors'][0]['message']
+

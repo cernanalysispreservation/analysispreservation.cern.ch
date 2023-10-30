@@ -31,6 +31,7 @@ from jsonschema._types import draft7_type_checker
 from jsonschema._utils import load_schema
 from jsonschema.validators import Draft7Validator, create, extend
 
+from cap.modules.deposit.validators.services import fetch_data_from_url
 from cap.modules.deposit.validators.users import (
     find_field_copy,
     validate_field_schema_editing,
@@ -49,6 +50,7 @@ if not os.environ.get("CAP_CMS_VALIDATION_DISABLE"):
 deposit_validators['x-validate-unique-cadi'] = validate_unique_cadi
 # deposit_validators['x-validate-cadi-id'] = validate_cadi_id
 
+deposit_validators['x-cap-fetch'] = fetch_data_from_url
 DepositValidator = extend(Draft7Validator, validators=deposit_validators)
 NoRequiredValidator = extend(DepositValidator, {'required': None})
 

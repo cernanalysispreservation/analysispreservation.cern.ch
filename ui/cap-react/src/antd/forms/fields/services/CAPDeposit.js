@@ -1,5 +1,15 @@
 import PropTypes from "prop-types";
-import { Avatar, Card, Col, Divider, Modal, Row, Space, Tag, Typography } from "antd";
+import {
+  Avatar,
+  Card,
+  Col,
+  Divider,
+  Modal,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
 import { stringToHslColor } from "../../../utils";
 import { EyeFilled, EyeInvisibleFilled, LinkOutlined } from "@ant-design/icons";
 import { useState } from "react";
@@ -23,20 +33,25 @@ const CAPDeposit = ({ data }) => {
         />
       </Modal>
       <Card size="small" bordered={false} actions={[]}>
-          <Card.Meta
-            size="small"
-            avatar={<Tag>{data.schema.fullname}</Tag>}
-            title={data?.metadata?.general_title || "No title"}
-            description={
-            <Space split={<Divider type="vertical" />}>
-              <Typography.Link target="_blank" href={data?.links?.self}>
-              <LinkOutlined  />
-              </Typography.Link>
-              <EyeFilled onClick={() => setShowModal(true)} />
-            </Space>
+        <Space
+          style={{ flex: 1, display: "flex", justifyContent: "space-between" }}
+        >
+          <Space style={{ flex: 1 }}>
+            <Card.Meta
+              size="small"
+              avatar={data?.schema?.fullname && <Tag>{data?.schema?.fullname}</Tag>}
+              title={data?.metadata?.general_title || "No title"}
+              description={"No description"}
+            />
+          </Space>
 
-            }
-          />
+          <Space split={<Divider type="vertical" />}>
+            <Typography.Link target="_blank" href={data?.links?.self}>
+              <LinkOutlined />
+            </Typography.Link>
+            <EyeFilled onClick={() => setShowModal(true)} />
+          </Space>
+        </Space>
       </Card>
     </>
   );

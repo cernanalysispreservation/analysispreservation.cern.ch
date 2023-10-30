@@ -259,17 +259,6 @@ const simple = {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
-        "x-cap-import-data": {
-          type: "object",
-          properties: {
-            queryUrl: {
-              type: "string"
-            },
-            resultsPath: {
-              type: "string"
-            },
-          }
-        }
       },
     },
     optionsSchemaUiSchema: {
@@ -278,9 +267,65 @@ const simple = {
     },
     optionsUiSchema: {
       ...common.optionsUiSchema,
+      "properties": {
+        ...common.optionsUiSchema.properties,
+        "x-cap-import-data": {
+          type: "object",
+          properties: {
+            queryUrl: {
+              title: "Query URL",
+              description: "URL to query for and wait for response data",
+              type: "string",
+              placeholder: "/api/deposits"
+            },
+            queryParam: {
+              type: "string",
+              title: "Query Param",
+              description: "URL to query for and wait for response data",
+            },
+            hitTitle: {
+              type: "string",
+              title: "Item Title",
+              description: "What to display as result item title? Should be path of the response data, e.g 'metadata.general_title'",
+            },
+            hitDescription: {
+              type: "string",
+              title: "Item Description",
+              description: "What to display as result item description? Should be path of the response data, e.g 'metadata.general_title'",
+            },
+            resultsPath: {
+              type: "string",
+              title: "Results path",
+              description: "If response data is not an array, provide the path in the data where the results array exists. E.g 'hits.hits'",
+            },
+            resultsTotalPath: {
+              type: "string",
+              title: "Results Total path",
+              description: "If results total is returned, specify the path in the response data. E.g 'hits.hits'",
+            },
+          }
+        },
+      }
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "x-cap-import-data": {
+        queryUrl: {
+          "ui:placeholder": "/api/deposits"
+        },
+        queryParam: {
+          "ui:placeholder": "q"
+        },
+        hitTitle: {
+          "ui:placeholder": "metadata.general_title"
+        },
+        hitDescription: {
+          "ui:placeholder": "created_by.email"
+        },
+        resultsPath: {
+          "ui:placeholder": "hits.hits"
+        },
+      }
     },
     default: {
       schema: {
