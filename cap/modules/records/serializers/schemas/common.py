@@ -130,7 +130,33 @@ class CAPObjectVersionSchema(ObjectVersionSchema):
         return data
 
 
-class CommonRecordSchema(Schema, StrictKeysMixin):
+class CommonRecordMetadataSchema(Schema):
+    metadata = fields.Method('get_metadata', dump_only=True)
+
+    def get_metadata(self, obj):
+        result = {
+            k: v
+            for k, v in obj.get('metadata', {}).items()
+            if k
+            not in [
+                'control_number',
+                '$schema',
+                '_deposit',
+                '_experiment',
+                '_access',
+                '_files',
+                '_review',
+                '_fetched_from',
+                '_user_edited',
+                '_egroups',
+                '_collection',
+            ]
+        }
+
+        return result
+
+
+class CommonRecordSchema(CommonRecordMetadataSchema, StrictKeysMixin):
     """Base record schema."""
 
     id = fields.Str(attribute='pid.pid_value', dump_only=True)
@@ -142,8 +168,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     egroups = fields.Method("get_egroups", dump_only=True)
     created_by = fields.Method('get_created_by', dump_only=True)
     is_owner = fields.Method('is_current_user_owner', dump_only=True)
-
-    metadata = fields.Method('get_metadata', dump_only=True)
 
     links = fields.Raw(dump_only=True)
     files = fields.Method('get_files', dump_only=True)
@@ -189,27 +213,6 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                 'fullname': schema.fullname or '',
             }
             return result
-
-    def get_metadata(self, obj):
-        result = {
-            k: v
-            for k, v in obj.get('metadata', {}).items()
-            if k
-            not in [
-                'control_number',
-                '$schema',
-                '_deposit',
-                '_experiment',
-                '_access',
-                '_files',
-                '_review',
-                '_egroups',
-                '_fetched_from',
-                '_user_edited',
-                '_collection',
-            ]
-        }
-        return result
 
     def get_egroups(self, obj):
         _egroups = obj.get("metadata", {}).get("_egroups", [])

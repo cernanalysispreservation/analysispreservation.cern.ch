@@ -523,6 +523,8 @@ export function saveSchemaChanges() {
       return;
     }
 
+    // Removes 'fullname' from config data (so that schema can validate in the backend)
+    delete sendData["config"]["fullname"]
     // check whether there are changes to the deposit schema
     const isSchemaUpdated = !state.schemaWizard
       .getIn(["current", "schema"])

@@ -31,7 +31,7 @@ const SERVICES = {
   capRecords: {
     name: "CAP Records",
     url: "/api/records/",
-    svg: ZenodoSvg,
+    svg: CAPLogo,
   },
   capDeposits: {
     name: "CAP Deposits",
@@ -40,7 +40,7 @@ const SERVICES = {
   },
 };
 
-const ServiceGetter = ({ formData = {}, uiSchema ={}, onChange }) => {
+const ServiceGetter = ({ formData = {}, uiSchema = {}, onChange }) => {
   const [service, setService] = useState();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
@@ -94,16 +94,14 @@ const ServiceGetter = ({ formData = {}, uiSchema ={}, onChange }) => {
       try {
         const results = await axios.get(currentServiceApi + resourceID);
         let { data } = results;
-        if (!data.statuss) {
-          const resource_data = {
-            source: {
-              service: service,
-              externalID: resourceID,
-            },
-            fetched: data,
-          };
-          onChange(resource_data);
-        } else setErrorMessage("Resource not found or inaccessible");
+        const resource_data = {
+          source: {
+            service: service,
+            externalID: resourceID,
+          },
+          fetched: data,
+        };
+        onChange(resource_data);
       } catch (e) {
         setErrorMessage("Resource not found or inaccessible");
       }
@@ -113,9 +111,9 @@ const ServiceGetter = ({ formData = {}, uiSchema ={}, onChange }) => {
     }
   };
 
-  return (
-    <div>
-      {formData.fetched ? (
+  if (formData.fetched) {
+    return (
+      <div>
         <Row wrap={false} align="middle" gutter={10}>
           <Col flex="auto">{getContentByName(formData.source.service)}</Col>
           <Col flex="none">
@@ -127,41 +125,44 @@ const ServiceGetter = ({ formData = {}, uiSchema ={}, onChange }) => {
             />
           </Col>
         </Row>
-      ) : (
-        <Space direction="vertical" style={{ width: "100%" }}>
-          {uiSchema["ui:servicesList"]?.length > 1 && (
-            <Select
-              value={service}
-              placeHolder="Select service"
-              onChange={val => setService(val)}
-              style={{ width: "100%" }}
-            >
-              {uiSchema["ui:servicesList"]?.map(service => (
-                <Select.Option value={service} key={service}>
-                  {SERVICES[service].name}
-                </Select.Option>
-              ))}
-            </Select>
-          )}
-          {service && (
-            <Space direction="vertical">
-              <Space align="center">
-                <Icon
-                  component={SERVICES[service].svg}
-                  style={{ verticalAlign: "middle" }}
-                />
-                <Input.Search
-                  placeholder={`${SERVICES[service].name} ID here`}
-                  enterButton="Fetch"
-                  loading={loading}
-                  onSearch={onSearch}
-                />
-              </Space>
-              <Typography.Text type="danger">{errorMessage}</Typography.Text>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <Space direction="vertical" style={{ width: "100%" }}>
+        {uiSchema["ui:servicesList"]?.length > 1 && (
+          <Select
+            value={service}
+            placeHolder="Select service"
+            onChange={val => setService(val)}
+            style={{ width: "100%" }}
+          >
+            {uiSchema["ui:servicesList"]?.map(service => (
+              <Select.Option value={service} key={service}>
+                {SERVICES[service].name}
+              </Select.Option>
+            ))}
+          </Select>
+        )}
+        {service && (
+          <Space direction="vertical">
+            <Space align="center">
+              <Icon
+                component={SERVICES[service].svg}
+                style={{ verticalAlign: "middle" }}
+              />
+              <Input.Search
+                placeholder={`${SERVICES[service].name} ID here`}
+                enterButton="Fetch"
+                loading={loading}
+                onSearch={onSearch}
+              />
             </Space>
-          )}
-        </Space>
-      )}
+            <Typography.Text type="danger">{errorMessage}</Typography.Text>
+          </Space>
+        )}
+      </Space>
     </div>
   );
 };
