@@ -24,6 +24,8 @@ import useTrackPageViews from "../hooks/useTrackPageViews";
 import { lazy } from "react";
 import Loading from "../routes/Loading/Loading";
 import MessageBanner from "../partials/MessageBanner";
+import { MosesContext } from "cap-moses";
+import { PRIMARY_COLOR } from "../utils/theme";
 
 const AdminPage = lazy(() => import("../admin"));
 
@@ -60,13 +62,29 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
           </Layout.Header>
           <Layout.Content className="__mainContent__">
             <Suspense fallback={<Loading pastDelay />}>
-              <Switch>
-                <Route path={WELCOME} component={noRequireAuth(WelcomePage)} />
-                <Route path={ABOUT} component={AboutPage} />
-                <Route path={POLICY} component={PolicyPage} />
-                {isAdmin && <Route path={CMS} component={AdminPage} />}
-                <Route path={HOME} component={requireAuth(IndexPage)} />
-              </Switch>
+              <MosesContext
+                theme={{
+                  token: {
+                    colorPrimary: PRIMARY_COLOR,
+                    colorLink: PRIMARY_COLOR,
+                    colorLinkHover: "#1a7fa3",
+                    borderRadius: 2,
+                    colorBgLayout: "#f0f2f5",
+                    fontFamily: "Titillium Web",
+                  },
+                }}
+              >
+                <Switch>
+                  <Route
+                    path={WELCOME}
+                    component={noRequireAuth(WelcomePage)}
+                  />
+                  <Route path={ABOUT} component={AboutPage} />
+                  <Route path={POLICY} component={PolicyPage} />
+                  {isAdmin && <Route path={CMS} component={AdminPage} />}
+                  <Route path={HOME} component={requireAuth(IndexPage)} />
+                </Switch>
+              </MosesContext>
             </Suspense>
           </Layout.Content>
           <Layout.Footer>

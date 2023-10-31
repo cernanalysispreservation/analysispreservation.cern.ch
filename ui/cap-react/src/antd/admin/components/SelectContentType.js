@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 import { Button, Col, Row, Space } from "antd";
 import CheckableTag from "antd/es/tag/CheckableTag";
 import { useState } from "react";
-import { PRIMARY_COLOR } from "../../utils";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { CMS_EDITOR, CMS_SCHEMA } from "../../routes";
 import { withRouter } from "react-router";
+import { PRIMARY_COLOR } from "../../utils/theme";
 const SelectContentType = ({ contentTypes, history }) => {
   const [selectedTag, setSelectedTag] = useState();
 

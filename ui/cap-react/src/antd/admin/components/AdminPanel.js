@@ -54,19 +54,7 @@ const AdminPanel = ({ location, match, getSchema, loading }) => {
   return (
     <DocumentTitle title={getPageTitle()}>
       <Layout style={{ height: "100%", padding: 0 }}>
-        <MosesContext
-          synchronizeState={synchronizeState}
-          theme={{
-            token: {
-              colorPrimary: PRIMARY_COLOR,
-              colorLink: PRIMARY_COLOR,
-              colorLinkHover: "#1a7fa3",
-              borderRadius: 2,
-              colorBgLayout: "#f0f2f5",
-              fontFamily: "Titillium Web",
-            },
-          }}
-        >
+        <MosesContext synchronizeState={synchronizeState}>
           <Header
             schema={schema}
             uiSchema={uiSchema}
