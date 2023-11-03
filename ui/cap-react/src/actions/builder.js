@@ -8,6 +8,8 @@ import { initMosesSchemaWithNotifications } from "../antd/admin/utils";
 import { updateDepositGroups } from "./auth";
 import { getMosesState } from "cap-moses";
 
+export const SYNCHRONIZE_MOSES_STATE = "SYNCHRONIZE_MOSES_STATE";
+
 export const SET_SCHEMA_LOADING = "SET_SCHEMA_LOADING";
 export const UPDATE_SCHEMA_CONFIG = "UPDATE_SCHEMA_CONFIG";
 
@@ -15,6 +17,11 @@ export const UPDATE_NOTIFICATION_BY_INDEX = "UPDATE_NOTIFICATION_BY_INDEX";
 export const UPDATE_NOTIFICATIONS = "UPDATE_NOTIFICATIONS";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
 export const CREATE_NOTIFICATION_GROUP = "CREATE_NOTIFICATION_GROUP";
+
+export const synchronizeMosesState = value => ({
+  type: SYNCHRONIZE_MOSES_STATE,
+  value,
+});
 
 export const setSchemaLoading = value => ({
   type: SET_SCHEMA_LOADING,
@@ -49,7 +56,7 @@ export const createNotificationCategory = category => ({
 export const createNewNotification = category => (dispatch, getState) => {
   const valuesPath = ["config", "config", "notifications", "actions", category];
 
-  let notifications = fromJS(getState().form.getIn(valuesPath, []));
+  let notifications = fromJS(getState().builder.getIn(valuesPath, []));
   notifications = notifications.push(fromJS({}));
 
   dispatch(
@@ -66,7 +73,7 @@ export const createNewNotification = category => (dispatch, getState) => {
 
 export const removeNotification = (index, category) => (dispatch, getState) => {
   const path = ["config", "config", "notifications", "actions", category];
-  let notification = getState().form.getIn(path);
+  let notification = getState().builder.getIn(path);
   let newNotification = notification.delete(index);
   dispatch(deleteNotification({ path, notification: newNotification }));
 };

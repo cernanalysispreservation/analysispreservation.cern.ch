@@ -11,22 +11,16 @@ import TourTooltip from "../utils/tour/TourTooltip";
 import { CarOutlined } from "@ant-design/icons";
 import useStickyState from "../../hooks/useStickyState";
 import { PRIMARY_COLOR } from "../../utils/theme";
-import { MosesContext, getMosesState } from "cap-moses";
 import { isEmpty } from "lodash-es";
 import { initMosesSchemaWithNotifications } from "../utils";
 
-const AdminPanel = ({ location, match, getSchema, loading }) => {
-  const [schema, setSchema] = useState();
-  const [uiSchema, setUiSchema] = useState();
-  const [initialSchema, setInitialSchema] = useState();
-  const [initialUiSchema, setInitialUiSchema] = useState();
-
+const AdminPanel = ({ location, match, getSchema, loading, mosesState }) => {
   useEffect(() => {
     let { schema_name, schema_version } = match.params;
 
     if (schema_name == "new") {
       // If the schema hasn't been initialized yet (i.e. the user has navigated directly to /new), initialize it
-      if (isEmpty(getMosesState().current.schema)) {
+      if (isEmpty(mosesState?.current?.schema)) {
         initMosesSchemaWithNotifications();
       }
       // Otherwise do nothing as it means it's been already initialized in CreateForm or DropDownBox
@@ -34,13 +28,6 @@ const AdminPanel = ({ location, match, getSchema, loading }) => {
       getSchema(schema_name, schema_version);
     }
   }, []);
-
-  const synchronizeState = newState => {
-    setSchema(newState.current.schema);
-    setUiSchema(newState.current.uiSchema);
-    setInitialSchema(newState.initial.schema);
-    setInitialUiSchema(newState.initial.uiSchema);
-  };
 
   const [display, setDisplay] = useState("builder");
 
@@ -54,54 +41,45 @@ const AdminPanel = ({ location, match, getSchema, loading }) => {
   return (
     <DocumentTitle title={getPageTitle()}>
       <Layout style={{ height: "100%", padding: 0 }}>
-        <MosesContext synchronizeState={synchronizeState}>
-          <Header
-            schema={schema}
-            uiSchema={uiSchema}
-            initialSchema={initialSchema}
-            initialUiSchema={initialUiSchema}
-            display={display}
-            setDisplay={setDisplay}
-          />
-          <Layout.Content>
-            <Joyride
-              steps={steps}
-              continuous
-              disableCloseOnEsc
-              showProgress
-              showSkipButton
-              hideCloseButton
-              spotlightPadding={0}
-              tooltipComponent={joyrideProps => (
-                <TourTooltip total={steps.length} {...joyrideProps} />
-              )}
-              run={!tourDone && display != "notifications"}
-              spotlightClicks
-              callback={({ status }) =>
-                [STATUS.FINISHED, STATUS.SKIPPED].includes(status) &&
-                setTourDone(true)
-              }
-              styles={{
-                options: { primaryColor: PRIMARY_COLOR },
-                spotlight: { borderRadius: 0 },
-              }}
-            />
-            {display === "notifications" ? (
-              <Notifications />
-            ) : (
-              <SchemaWizard
-                loading={isEmpty(getMosesState().current.schema) || loading}
-              />
+        <Header display={display} setDisplay={setDisplay} />
+        <Layout.Content>
+          <Joyride
+            steps={steps}
+            continuous
+            disableCloseOnEsc
+            showProgress
+            showSkipButton
+            hideCloseButton
+            spotlightPadding={0}
+            tooltipComponent={joyrideProps => (
+              <TourTooltip total={steps.length} {...joyrideProps} />
             )}
-            <FloatButton
-              icon={<CarOutlined />}
-              type="primary"
-              shape="square"
-              description="Tour"
-              onClick={() => setTourDone(false)}
+            run={!tourDone && display != "notifications"}
+            spotlightClicks
+            callback={({ status }) =>
+              [STATUS.FINISHED, STATUS.SKIPPED].includes(status) &&
+              setTourDone(true)
+            }
+            styles={{
+              options: { primaryColor: PRIMARY_COLOR },
+              spotlight: { borderRadius: 0 },
+            }}
+          />
+          {display === "notifications" ? (
+            <Notifications />
+          ) : (
+            <SchemaWizard
+              loading={isEmpty(mosesState?.current?.schema) || loading}
             />
-          </Layout.Content>
-        </MosesContext>
+          )}
+          <FloatButton
+            icon={<CarOutlined />}
+            type="primary"
+            shape="square"
+            description="Tour"
+            onClick={() => setTourDone(false)}
+          />
+        </Layout.Content>
       </Layout>
     </DocumentTitle>
   );

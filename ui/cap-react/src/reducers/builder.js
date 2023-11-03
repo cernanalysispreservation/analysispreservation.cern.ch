@@ -7,6 +7,7 @@ import {
   REMOVE_NOTIFICATION,
   CREATE_NOTIFICATION_GROUP,
   SET_SCHEMA_LOADING,
+  SYNCHRONIZE_MOSES_STATE,
 } from "../actions/builder";
 
 const initialState = Map({
@@ -17,6 +18,8 @@ const initialState = Map({
 
 export default function schemaReducer(state = initialState, action) {
   switch (action.type) {
+    case SYNCHRONIZE_MOSES_STATE:
+      return state.set("mosesState", action.value);
     case SET_SCHEMA_LOADING:
       return state.set("loading", action.value);
     case UPDATE_SCHEMA_CONFIG:

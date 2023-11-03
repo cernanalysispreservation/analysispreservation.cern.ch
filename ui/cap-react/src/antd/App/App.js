@@ -26,10 +26,17 @@ import Loading from "../routes/Loading/Loading";
 import MessageBanner from "../partials/MessageBanner";
 import { MosesContext } from "cap-moses";
 import { PRIMARY_COLOR } from "../utils/theme";
+import { customFieldTypes, customFields } from "../forms/mosesConfig";
 
 const AdminPage = lazy(() => import("../admin"));
 
-const App = ({ initCurrentUser, loadingInit, history, roles }) => {
+const App = ({
+  initCurrentUser,
+  loadingInit,
+  history,
+  roles,
+  synchronizeMosesState,
+}) => {
   useEffect(() => {
     initCurrentUser(history.location.state);
   }, []);
@@ -39,7 +46,7 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
   const isAdmin =
     roles && (roles.get("isSuperUser") || roles.get("schemaAdmin").size > 0);
 
-  if (loadingInit)
+  if (loadingInit) {
     return (
       <Layout className="__mainLayout__">
         <Row style={{ height: "100%" }} align="middle" justify="center">
@@ -47,6 +54,7 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
         </Row>
       </Layout>
     );
+  }
 
   return (
     <DocumentTitle title="Dashboard">
@@ -63,6 +71,7 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
           <Layout.Content className="__mainContent__">
             <Suspense fallback={<Loading pastDelay />}>
               <MosesContext
+                synchronizeState={synchronizeMosesState}
                 theme={{
                   token: {
                     colorPrimary: PRIMARY_COLOR,
@@ -73,6 +82,8 @@ const App = ({ initCurrentUser, loadingInit, history, roles }) => {
                     fontFamily: "Titillium Web",
                   },
                 }}
+                customFieldTypes={customFieldTypes}
+                customFields={customFields}
               >
                 <Switch>
                   <Route

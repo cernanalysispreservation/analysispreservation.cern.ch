@@ -33,10 +33,7 @@ const Header = ({
   config,
   pushPath,
   saveSchemaChanges,
-  schema,
-  uiSchema,
-  initialUiSchema,
-  initialSchema,
+  mosesState,
   updateSchemaConfig,
   display,
   setDisplay,
@@ -51,11 +48,14 @@ const Header = ({
     maxHeight: "calc(100vh - 300px)",
   };
 
+  const mosesCurrentSchema = mosesState?.current?.schema;
+  const mosesCurrentUiSchema = mosesState?.current?.uiSchema;
+
   const _getSchema = () => {
     const fileData = JSON.stringify(
       {
-        deposit_schema: schema,
-        deposit_options: uiSchema,
+        deposit_schema: mosesCurrentSchema,
+        deposit_options: mosesCurrentUiSchema,
         ...config.toJS(),
       },
       null,
@@ -72,30 +72,30 @@ const Header = ({
     let previews = {
       uiSchema: (
         <CodeViewer
-          value={JSON.stringify(uiSchema, null, 2)}
+          value={JSON.stringify(mosesCurrentUiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schema: (
         <CodeViewer
-          value={JSON.stringify(schema, null, 2)}
+          value={JSON.stringify(mosesCurrentSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       uiSchemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(initialUiSchema, null, 2)}
-          right={JSON.stringify(uiSchema, null, 2)}
+          left={JSON.stringify(mosesState?.initial?.uiSchema, null, 2)}
+          right={JSON.stringify(mosesCurrentUiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(initialSchema, null, 2)}
-          right={JSON.stringify(schema, null, 2)}
+          left={JSON.stringify(mosesState?.initial?.schema, null, 2)}
+          right={JSON.stringify(mosesCurrentSchema, null, 2)}
           lang={json}
           height="100%"
         />
