@@ -27,6 +27,7 @@ import MessageBanner from "../partials/MessageBanner";
 import { MosesContext } from "cap-moses";
 import { PRIMARY_COLOR } from "../utils/theme";
 import { customFieldTypes, customFields } from "../forms/mosesConfig";
+import { isEmpty } from "lodash-es";
 
 const AdminPage = lazy(() => import("../admin"));
 
@@ -36,12 +37,21 @@ const App = ({
   history,
   roles,
   synchronizeMosesState,
+  formDataChange,
 }) => {
   useEffect(() => {
     initCurrentUser(history.location.state);
   }, []);
 
   useTrackPageViews(history.location.pathname);
+
+  const handleMosesStateChange = newState => {
+    synchronizeMosesState(newState);
+    const newFormData = { ...newState.formData };
+    if (!isEmpty(newFormData)) {
+      formDataChange(newFormData);
+    }
+  };
 
   const isAdmin =
     roles && (roles.get("isSuperUser") || roles.get("schemaAdmin").size > 0);
@@ -71,7 +81,7 @@ const App = ({
           <Layout.Content className="__mainContent__">
             <Suspense fallback={<Loading pastDelay />}>
               <MosesContext
-                synchronizeState={synchronizeMosesState}
+                synchronizeState={handleMosesStateChange}
                 theme={{
                   token: {
                     colorPrimary: PRIMARY_COLOR,

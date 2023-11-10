@@ -5,14 +5,12 @@ import Error from "../../../partials/Error/";
 import { transformSchema } from "../../../partials/Utils/schema";
 import Header from "../../containers/EditorHeader";
 import { canEdit } from "../../utils/permissions";
-import { debounce } from "lodash-es";
 import { MosesForm } from "cap-moses";
 
 const Editor = ({
   schemaErrors,
   schemas = { schema: {}, uiSchema: {} },
   formData,
-  formDataChange,
   extraErrors,
   formRef,
   history,
@@ -29,7 +27,6 @@ const Editor = ({
   let _schema =
     schemas && schemas.schema ? transformSchema(schemas.schema) : null;
 
-  const _formDataChange = change => formDataChange(change.formData);
   return (
     <Col span={24} style={{ height: "100%", overflow: "auto" }}>
       <Layout style={{ height: "100%", padding: 0 }}>
@@ -40,7 +37,6 @@ const Editor = ({
             formRef={formRef}
             schema={_schema}
             uiSchema={schemas.uiSchema || {}}
-            onChange={debounce(_formDataChange, 200)}
             extraErrors={extraErrors || {}}
             draftEditor
             readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}
@@ -55,11 +51,6 @@ Editor.propTypes = {
   schemaErrors: PropTypes.array,
   schemas: PropTypes.object,
   formData: PropTypes.object,
-  currentUser: PropTypes.object,
-  match: PropTypes.object,
-  initForm: PropTypes.func,
-  fetchSchemaByNameVersion: PropTypes.func,
-  formDataChange: PropTypes.func,
   extraErrors: PropTypes.object,
   formRef: PropTypes.object,
   history: PropTypes.object,

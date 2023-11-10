@@ -155,7 +155,6 @@ const Overview = ({
                 schemaType={mySchema}
                 uiSchema={schemas.uiSchema || {}}
                 display="list"
-                onChange={() => {}}
               >
                 <span />
               </JSONSchemaPreviewer>

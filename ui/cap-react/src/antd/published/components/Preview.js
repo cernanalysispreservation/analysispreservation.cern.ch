@@ -116,7 +116,6 @@ const Preview = ({
                 schema={transformSchema(schemas.schema)}
                 schemaType={schemaType}
                 uiSchema={schemas.uiSchema}
-                onChange={() => {}}
                 isPublished
                 className={["__PublishedForm__"]}
               >
