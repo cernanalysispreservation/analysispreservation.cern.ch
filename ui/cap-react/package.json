@@ -43,6 +43,7 @@
     "@vitejs/plugin-react": "3.1.0",
     "antd": "^5.4.2",
     "axios": "0.27.2",
+    "cap-moses": "file:.yalc/cap-moses",
     "classnames": "2.3.1",
     "clean-deep": "3.3.0",
     "codemirror": "6.0.1",
@@ -78,8 +79,7 @@
     "sanitize-html": "2.4.0",
     "squirrelly": "8.0.8",
     "vite": "4.2.1",
-    "vite-plugin-svgr": "2.4.0",
-    "cap-moses": "file:/Users/miguelg/projects/cap-moses"
+    "vite-plugin-svgr": "2.4.0"
   },
   "devDependencies": {
     "autoprefixer": "7.1.4",
@@ -104,6 +104,7 @@
     "replace": "0.3.0",
     "rimraf": "2.6.1",
     "rollup-plugin-visualizer": "5.9.0",
+    "vite-plugin-restart": "0.3.1",
     "vitest": "0.30.1"
   },
   "keywords": [],
