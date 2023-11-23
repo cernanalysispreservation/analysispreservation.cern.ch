@@ -25,7 +25,7 @@ import { lazy } from "react";
 import Loading from "../routes/Loading/Loading";
 import MessageBanner from "../partials/MessageBanner";
 import { MosesContext } from "cap-moses";
-import { PRIMARY_COLOR } from "../utils/theme";
+import { theme } from "../utils/theme";
 import { customFieldTypes, customFields } from "../forms/mosesConfig";
 import { isEmpty } from "lodash-es";
 import { transformSchema } from "../partials/Utils/schema";
@@ -83,16 +83,7 @@ const App = ({
             <Suspense fallback={<Loading pastDelay />}>
               <MosesContext
                 synchronizeState={handleMosesStateChange}
-                theme={{
-                  token: {
-                    colorPrimary: PRIMARY_COLOR,
-                    colorLink: PRIMARY_COLOR,
-                    colorLinkHover: "#1a7fa3",
-                    borderRadius: 2,
-                    colorBgLayout: "#f0f2f5",
-                    fontFamily: "Titillium Web",
-                  },
-                }}
+                theme={theme}
                 customFieldTypes={customFieldTypes}
                 customFields={customFields}
                 transformSchema={transformSchema}
