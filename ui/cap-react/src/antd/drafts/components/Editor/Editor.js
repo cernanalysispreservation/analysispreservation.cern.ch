@@ -5,7 +5,7 @@ import Error from "../../../partials/Error/";
 import { transformSchema } from "../../../partials/Utils/schema";
 import Header from "../../containers/EditorHeader";
 import { canEdit } from "../../utils/permissions";
-import { MosesForm } from "cap-moses";
+import { FormuleForm } from "react-formule";
 
 const Editor = ({
   schemaErrors,
@@ -32,7 +32,7 @@ const Editor = ({
       <Layout style={{ height: "100%", padding: 0 }}>
         <Header formRef={formRef} mode={mode} updateMode={setMode} />
         <Layout.Content style={{ height: "100%", overflowX: "hidden" }}>
-          <MosesForm
+          <FormuleForm
             formData={formData || {}}
             formRef={formRef}
             schema={_schema}

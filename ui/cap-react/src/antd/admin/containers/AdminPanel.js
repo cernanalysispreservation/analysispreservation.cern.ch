@@ -4,7 +4,7 @@ import { getSchema } from "../../../actions/builder";
 
 const mapStateToProps = state => ({
   loading: state.builder.get("loading"),
-  mosesState: state.builder.get("mosesState"),
+  formuleState: state.builder.get("formuleState"),
 });
 
 const mapDispatchToProps = dispatch => ({

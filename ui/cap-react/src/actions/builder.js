@@ -4,11 +4,11 @@ import { fromJS } from "immutable";
 import { push } from "connected-react-router";
 import { notification } from "antd";
 import { CMS, CMS_NEW } from "../antd/routes";
-import { initMosesSchemaWithNotifications } from "../antd/admin/utils";
+import { initFormuleSchemaWithNotifications } from "../antd/admin/utils";
 import { updateDepositGroups } from "./auth";
-import { getMosesState } from "cap-moses";
+import { getFormuleState } from "react-formule";
 
-export const SYNCHRONIZE_MOSES_STATE = "SYNCHRONIZE_MOSES_STATE";
+export const SYNCHRONIZE_FORMULE_STATE = "SYNCHRONIZE_FORMULE_STATE";
 
 export const SET_SCHEMA_LOADING = "SET_SCHEMA_LOADING";
 export const UPDATE_SCHEMA_CONFIG = "UPDATE_SCHEMA_CONFIG";
@@ -18,8 +18,8 @@ export const UPDATE_NOTIFICATIONS = "UPDATE_NOTIFICATIONS";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
 export const CREATE_NOTIFICATION_GROUP = "CREATE_NOTIFICATION_GROUP";
 
-export const synchronizeMosesState = value => ({
-  type: SYNCHRONIZE_MOSES_STATE,
+export const synchronizeFormuleState = value => ({
+  type: SYNCHRONIZE_FORMULE_STATE,
   value,
 });
 
@@ -109,8 +109,8 @@ export const getSchema = (name, version = null) => {
         let { deposit_schema, deposit_options } = schema;
 
         if (deposit_schema && deposit_options) {
-          // The schemas are sent to be managed by moses but the config is kept in CAP (see function body)
-          initMosesSchemaWithNotifications(schema);
+          // The schemas are sent to be managed by formule but the config is kept in CAP (see function body)
+          initFormuleSchemaWithNotifications(schema);
           dispatch(setSchemaLoading(false));
         }
       })
@@ -127,11 +127,11 @@ export const getSchema = (name, version = null) => {
 export const saveSchemaChanges = () => (dispatch, getState) => {
   const state = getState();
   const config = state.builder.get("config");
-  const mosesState = getMosesState();
+  const formuleState = getFormuleState();
   const pathname = state.router.location.pathname;
   const sendData = {
-    deposit_schema: mosesState.current.schema,
-    deposit_options: mosesState.current.uiSchema,
+    deposit_schema: formuleState.current.schema,
+    deposit_options: formuleState.current.uiSchema,
     ...config.toJS(),
   };
 
@@ -151,8 +151,8 @@ export const saveSchemaChanges = () => (dispatch, getState) => {
 
   // check whether there are changes to the deposit schema
   const isSchemaUpdated = !isEqual(
-    mosesState.current.schema,
-    mosesState.initial.schema
+    formuleState.current.schema,
+    formuleState.initial.schema
   );
   // check whether there are changes to the config object
   const isConfigVersionUpdated =
@@ -170,7 +170,7 @@ export const saveSchemaChanges = () => (dispatch, getState) => {
     return axios
       .post("/api/jsonschemas", sendData)
       .then(res => {
-        initMosesSchemaWithNotifications(res.data);
+        initFormuleSchemaWithNotifications(res.data);
         notification.success({
           message: "New schema created",
           description: "schema successfully created",

@@ -24,9 +24,9 @@ import useTrackPageViews from "../hooks/useTrackPageViews";
 import { lazy } from "react";
 import Loading from "../routes/Loading/Loading";
 import MessageBanner from "../partials/MessageBanner";
-import { MosesContext } from "cap-moses";
+import { FormuleContext } from "react-formule";
 import { theme } from "../utils/theme";
-import { customFieldTypes, customFields } from "../forms/mosesConfig";
+import { customFieldTypes, customFields } from "../forms/formuleConfig";
 import { isEmpty } from "lodash-es";
 import { transformSchema } from "../partials/Utils/schema";
 
@@ -37,7 +37,7 @@ const App = ({
   loadingInit,
   history,
   roles,
-  synchronizeMosesState,
+  synchronizeFormuleState,
   formDataChange,
 }) => {
   useEffect(() => {
@@ -46,8 +46,8 @@ const App = ({
 
   useTrackPageViews(history.location.pathname);
 
-  const handleMosesStateChange = newState => {
-    synchronizeMosesState(newState);
+  const handleFormuleStateChange = newState => {
+    synchronizeFormuleState(newState);
     const newFormData = { ...newState.formData };
     if (!isEmpty(newFormData)) {
       formDataChange(newFormData);
@@ -81,8 +81,8 @@ const App = ({
           </Layout.Header>
           <Layout.Content className="__mainContent__">
             <Suspense fallback={<Loading pastDelay />}>
-              <MosesContext
-                synchronizeState={handleMosesStateChange}
+              <FormuleContext
+                synchronizeState={handleFormuleStateChange}
                 theme={theme}
                 customFieldTypes={customFieldTypes}
                 customFields={customFields}
@@ -98,7 +98,7 @@ const App = ({
                   {isAdmin && <Route path={CMS} component={AdminPage} />}
                   <Route path={HOME} component={requireAuth(IndexPage)} />
                 </Switch>
-              </MosesContext>
+              </FormuleContext>
             </Suspense>
           </Layout.Content>
           <Layout.Footer>

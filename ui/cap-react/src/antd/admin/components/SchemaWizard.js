@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Col, Row, Spin } from "antd";
-import { FormPreview, SchemaPreview, SelectOrEdit } from "cap-moses";
+import { FormPreview, SchemaPreview, SelectOrEdit } from "react-formule";
 
 const SchemaWizard = ({ loading }) => {
   if (loading)

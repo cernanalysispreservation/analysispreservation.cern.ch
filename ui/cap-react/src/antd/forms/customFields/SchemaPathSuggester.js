@@ -12,7 +12,7 @@ const SchemaPathSuggester = ({
   name,
   formData,
   formContext,
-  mosesState,
+  formuleState,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
@@ -39,7 +39,7 @@ const SchemaPathSuggester = ({
     <Cascader
       options={convertToOptions(
         getPropertiesOrItems(
-          transformSchema({ ...mosesState?.current?.schema })
+          transformSchema({ ...formuleState?.current?.schema })
         )
       )}
       disabled={disabled || (readonlyAsDisabled && readonly)}
@@ -55,7 +55,7 @@ const SchemaPathSuggester = ({
 
 function mapStateToProps(state) {
   return {
-    mosesState: state.builder.get("mosesState"),
+    formuleState: state.builder.get("formuleState"),
   };
 }
 

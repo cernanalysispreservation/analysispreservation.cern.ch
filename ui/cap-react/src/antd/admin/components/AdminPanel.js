@@ -12,16 +12,16 @@ import { CarOutlined } from "@ant-design/icons";
 import useStickyState from "../../hooks/useStickyState";
 import { PRIMARY_COLOR } from "../../utils/theme";
 import { isEmpty } from "lodash-es";
-import { initMosesSchemaWithNotifications } from "../utils";
+import { initFormuleSchemaWithNotifications } from "../utils";
 
-const AdminPanel = ({ location, match, getSchema, loading, mosesState }) => {
+const AdminPanel = ({ location, match, getSchema, loading, formuleState }) => {
   useEffect(() => {
     let { schema_name, schema_version } = match.params;
 
     if (schema_name == "new") {
       // If the schema hasn't been initialized yet (i.e. the user has navigated directly to /new), initialize it
-      if (isEmpty(mosesState?.current?.schema)) {
-        initMosesSchemaWithNotifications();
+      if (isEmpty(formuleState?.current?.schema)) {
+        initFormuleSchemaWithNotifications();
       }
       // Otherwise do nothing as it means it's been already initialized in CreateForm or DropDownBox
     } else {
@@ -69,7 +69,7 @@ const AdminPanel = ({ location, match, getSchema, loading, mosesState }) => {
             <Notifications />
           ) : (
             <SchemaWizard
-              loading={isEmpty(mosesState?.current?.schema) || loading}
+              loading={isEmpty(formuleState?.current?.schema) || loading}
             />
           )}
           <FloatButton

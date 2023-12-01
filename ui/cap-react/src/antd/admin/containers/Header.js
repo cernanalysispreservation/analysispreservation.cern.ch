@@ -10,7 +10,7 @@ function mapStateToProps(state) {
   return {
     config: state.builder.get("config"),
     pathname: state.router.location.pathname,
-    mosesState: state.builder.get("mosesState"),
+    formuleState: state.builder.get("formuleState"),
   };
 }
 

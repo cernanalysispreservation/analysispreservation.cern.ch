@@ -1,4 +1,4 @@
-import { initMosesSchema } from "cap-moses";
+import { initFormuleSchema } from "react-formule";
 import { merge } from "lodash-es";
 import store from "../../../store/configureStore";
 import { updateSchemaConfig } from "../../../actions/builder";
@@ -31,13 +31,13 @@ export const slugify = text => {
     .replace(/-+$/, ""); // Trim - from end of text
 };
 
-export const initMosesSchemaWithNotifications = (
+export const initFormuleSchemaWithNotifications = (
   data = {},
   name,
   description
 ) => {
   data.config = merge(data.config || {}, NOTIFICATIONS);
-  initMosesSchema(data, name, description);
+  initFormuleSchema(data, name, description);
   /* eslint no-unused-vars: ["error", { "ignoreRestSiblings": true }]*/
   const { deposit_schema, deposit_options, ...configs } = data;
   store.dispatch(updateSchemaConfig(configs));

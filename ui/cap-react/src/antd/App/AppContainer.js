@@ -1,5 +1,5 @@
 import { initCurrentUser } from "../../actions/auth";
-import { synchronizeMosesState } from "../../actions/builder";
+import { synchronizeFormuleState } from "../../actions/builder";
 import { formDataChange } from "../../actions/draftItem";
 import App from "./App";
 import { connect } from "react-redux";
@@ -12,7 +12,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   initCurrentUser: next => dispatch(initCurrentUser(next)),
-  synchronizeMosesState: newState => dispatch(synchronizeMosesState(newState)),
+  synchronizeFormuleState: newState =>
+    dispatch(synchronizeFormuleState(newState)),
   formDataChange: newFormData => dispatch(formDataChange(newFormData)),
 });
 

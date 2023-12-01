@@ -1,13 +1,13 @@
 import { Button, Form, Input } from "antd";
 import { CMS_NEW } from "../../routes";
 import { withRouter } from "react-router";
-import { initMosesSchemaWithNotifications } from "../utils";
+import { initFormuleSchemaWithNotifications } from "../utils";
 
 const CreateForm = ({ history }) => {
   const onFinish = content => {
     let { name, description } = content;
     const config = { config: { fullname: name } };
-    initMosesSchemaWithNotifications({ config }, name, description);
+    initFormuleSchemaWithNotifications({ config }, name, description);
     history.push(CMS_NEW);
   };
 

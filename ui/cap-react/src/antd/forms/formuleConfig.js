@@ -1,4 +1,4 @@
-import { commonFields, extraFields } from "cap-moses";
+import { commonFields, extraFields } from "react-formule";
 
 import { FileOutlined } from "@ant-design/icons";
 import CernUsers from "./customFields/CernUsers";

@@ -1,4 +1,4 @@
-import { MosesForm } from "cap-moses";
+import { FormuleForm } from "react-formule";
 import PropTypes from "prop-types";
 
 const JSONSchemaPreviewer = ({
@@ -14,7 +14,7 @@ const JSONSchemaPreviewer = ({
 }) => {
   return (
     schema && (
-      <MosesForm
+      <FormuleForm
         className={className}
         schema={schema}
         showErrorList={false}
@@ -37,7 +37,7 @@ const JSONSchemaPreviewer = ({
         }}
       >
         {children}
-      </MosesForm>
+      </FormuleForm>
     )
   );
 };

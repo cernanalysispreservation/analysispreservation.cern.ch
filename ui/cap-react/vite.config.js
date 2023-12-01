@@ -18,9 +18,9 @@ export default defineConfig(({ mode }) => {
         gzipSize: true,
         brotliSize: true,
       }),
-      // Restarts the dev server (full reload aka --force) when a new version of cap-moses is available
+      // Restarts the dev server (full reload aka --force) when a new version of react-formule is available
       ViteRestart({
-        restart: [".yalc/cap-moses/dist/cap-moses.js"],
+        restart: [".yalc/react-formule/dist/react-formule.js"],
       }),
     ],
     server: {

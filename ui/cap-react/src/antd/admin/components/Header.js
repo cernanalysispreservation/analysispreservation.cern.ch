@@ -26,14 +26,14 @@ import { configSchema } from "../utils/schemaSettings";
 import CodeViewer from "../../utils/CodeViewer";
 import { json } from "@codemirror/lang-json";
 import CodeDiffViewer from "../../utils/CodeDiffViewer";
-import { MosesForm } from "cap-moses";
+import { FormuleForm } from "react-formule";
 
 const { useBreakpoint } = Grid;
 const Header = ({
   config,
   pushPath,
   saveSchemaChanges,
-  mosesState,
+  formuleState,
   updateSchemaConfig,
   display,
   setDisplay,
@@ -48,14 +48,14 @@ const Header = ({
     maxHeight: "calc(100vh - 300px)",
   };
 
-  const mosesCurrentSchema = mosesState?.current?.schema;
-  const mosesCurrentUiSchema = mosesState?.current?.uiSchema;
+  const formuleCurrentSchema = formuleState?.current?.schema;
+  const formuleCurrentUiSchema = formuleState?.current?.uiSchema;
 
   const _getSchema = () => {
     const fileData = JSON.stringify(
       {
-        deposit_schema: mosesCurrentSchema,
-        deposit_options: mosesCurrentUiSchema,
+        deposit_schema: formuleCurrentSchema,
+        deposit_options: formuleCurrentUiSchema,
         ...config.toJS(),
       },
       null,
@@ -72,30 +72,30 @@ const Header = ({
     let previews = {
       uiSchema: (
         <CodeViewer
-          value={JSON.stringify(mosesCurrentUiSchema, null, 2)}
+          value={JSON.stringify(formuleCurrentUiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schema: (
         <CodeViewer
-          value={JSON.stringify(mosesCurrentSchema, null, 2)}
+          value={JSON.stringify(formuleCurrentSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       uiSchemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(mosesState?.initial?.uiSchema, null, 2)}
-          right={JSON.stringify(mosesCurrentUiSchema, null, 2)}
+          left={JSON.stringify(formuleState?.initial?.uiSchema, null, 2)}
+          right={JSON.stringify(formuleCurrentUiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(mosesState?.initial?.schema, null, 2)}
-          right={JSON.stringify(mosesCurrentSchema, null, 2)}
+          left={JSON.stringify(formuleState?.initial?.schema, null, 2)}
+          right={JSON.stringify(formuleCurrentSchema, null, 2)}
           lang={json}
           height="100%"
         />
@@ -167,7 +167,7 @@ const Header = ({
           onClick: () => setSettingsModal(false),
         }}
       >
-        <MosesForm
+        <FormuleForm
           {...configSchema}
           formData={config.toJS()}
           onChange={data => updateSchemaConfig(data.formData)}
