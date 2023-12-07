@@ -49,6 +49,20 @@ LABELS = {
         'condition': lambda obj: obj.get('metadata', {}).get('_experiment')
         == 'CMS',
     },
+    'institute': {
+        'path': 'metadata.institute',
+        'condition': lambda obj: obj.get('metadata')
+        .get('_collection', {})
+        .get('name')
+        == 'na62authors',
+    },
+    'orcidid': {
+        'path': 'metadata.orcidid',
+        'condition': lambda obj: obj.get('metadata')
+        .get('_collection', {})
+        .get('name')
+        == 'na62authors',
+    }
     #    'cms_keywords': {
     #        'path': 'metadata.additional_resources.keywords',
     #        'condition':

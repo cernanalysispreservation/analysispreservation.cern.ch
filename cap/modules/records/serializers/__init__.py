@@ -25,18 +25,43 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_records_rest.serializers.response import (record_responsify,
-                                                       search_responsify)
+from invenio_records_rest.serializers.response import (
+    record_responsify,
+    search_responsify,
+)
 
-from .json import RecordSerializer, CAPJSONSerializer
-from .schemas.json import (BasicDepositSchema, PermissionsDepositSchema,
-                           RecordFormSchema, RecordSchema,
-                           RepositoriesDepositSchema)
+from .author_xml import AuthorXMLSerializer
+from .csv import CSVSerializer
+from .json import CAPJSONSerializer, RecordSerializer
+from .schemas.json import (
+    BasicDepositSchema,
+    PermissionsDepositSchema,
+    RecordFormSchema,
+    RecordSchema,
+    RepositoriesDepositSchema,
+)
 
 # Serializers
 # ===========
 # CAP JSON serializer version 1.0.0
 record_json_v1 = RecordSerializer(RecordSchema)
+record_csv_v1 = CSVSerializer(
+    RecordSchema,
+    csv_included_fields=[
+        "metadata_name",
+        "metadata_surname",
+        "metadata_institution",
+    ],
+)
+record_xml_v1 = AuthorXMLSerializer(
+    RecordSchema,
+    csv_included_fields=[
+        "metadata_name",
+        "metadata_surname",
+        "metadata_institution",
+    ],
+)
+
 record_form_json_v1 = RecordSerializer(RecordFormSchema)
 
 basic_json_v1 = CAPJSONSerializer(BasicDepositSchema)
@@ -47,16 +72,27 @@ repositories_json_v1 = CAPJSONSerializer(RepositoriesDepositSchema)
 # ========================
 # JSON record serializer for individual records.
 record_json_v1_response = record_responsify(record_json_v1, 'application/json')
-record_form_json_v1_response = record_responsify(record_form_json_v1,
-                                                 'application/json')
+record_form_json_v1_response = record_responsify(
+    record_form_json_v1, 'application/json'
+)
 record_json_v1_search = search_responsify(record_json_v1, 'application/json')
-basic_json_v1_response = record_responsify(basic_json_v1,
-                                           'application/basic+json')
+basic_json_v1_response = record_responsify(
+    basic_json_v1, 'application/basic+json'
+)
 permissions_json_v1_response = record_responsify(
-    permissions_json_v1, 'application/permissions+json')
+    permissions_json_v1, 'application/permissions+json'
+)
 
 # JSON record serializer for search results.
-basic_json_v1_search = search_responsify(basic_json_v1,
-                                         'application/basic+json')
+basic_json_v1_search = search_responsify(
+    basic_json_v1, 'application/basic+json'
+)
+
+# JSON record serializer for search results.
+record_xml_v1_search = search_responsify(
+    record_xml_v1, 'application/marcxml+xml'
+)
+record_csv_v1_search = search_responsify(record_csv_v1, 'application/csv')
 repositories_json_v1_response = record_responsify(
-    repositories_json_v1, 'application/repositories+json')
+    repositories_json_v1, 'application/repositories+json'
+)
