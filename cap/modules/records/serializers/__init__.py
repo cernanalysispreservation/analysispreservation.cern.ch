@@ -37,6 +37,8 @@ from cap.modules.records.serializers.json import (
 from cap.modules.records.serializers.schemas.common import (
     CommonRecordMetadataSchema,
 )
+from cap.modules.records.serializers.author_xml import AuthorXMLSerializer
+from cap.modules.records.serializers.csv import CSVSerializer
 from cap.modules.records.serializers.schemas.json import (
     BasicDepositSchema,
     PermissionsDepositSchema,
@@ -50,6 +52,23 @@ from cap.modules.records.serializers.schemas.json import (
 # CAP JSON serializer version 1.0.0
 record_metadata_json_v1 = RecordSerializer(CommonRecordMetadataSchema)
 record_json_v1 = RecordSerializer(RecordSchema)
+record_csv_v1 = CSVSerializer(
+    RecordSchema,
+    csv_included_fields=[
+        "metadata_name",
+        "metadata_surname",
+        "metadata_institution",
+    ],
+)
+record_xml_v1 = AuthorXMLSerializer(
+    RecordSchema,
+    csv_included_fields=[
+        "metadata_name",
+        "metadata_surname",
+        "metadata_institution",
+    ],
+)
+
 record_form_json_v1 = RecordSerializer(RecordFormSchema)
 
 basic_json_v1 = CAPJSONSerializer(BasicDepositSchema)
@@ -75,6 +94,12 @@ permissions_json_v1_response = record_responsify(
 basic_json_v1_search = search_responsify(
     basic_json_v1, 'application/basic+json'
 )
+
+# JSON record serializer for search results.
+record_xml_v1_search = search_responsify(
+    record_xml_v1, 'application/marcxml+xml'
+)
+record_csv_v1_search = search_responsify(record_csv_v1, 'application/csv')
 repositories_json_v1_response = record_responsify(
     repositories_json_v1, 'application/repositories+json'
 )

@@ -517,6 +517,12 @@ RECORDS_REST_ENDPOINTS['recid'].update(
             'application/basic+json': (
                 'cap.modules.records.serializers' ':basic_json_v1_search'
             ),
+            'application/marcxml+xml': (
+                'cap.modules.records.serializers' ':record_xml_v1_search'
+            ),
+            'application/csv': (
+                'cap.modules.records.serializers' ':record_csv_v1_search'
+            ),
         },
         'read_permission_factory_imp': check_oauth2_scope(
             lambda record: ReadRecordPermission(record).can(), write_scope.id
@@ -760,6 +766,12 @@ DEPOSIT_REST_ENDPOINTS['depid'].update(
             ),
             'application/basic+json': (
                 'cap.modules.records.serializers' ':basic_json_v1_search'
+            ),
+            'application/marcxml+xml': (
+                'cap.modules.records.serializers' ':record_xml_v1_search'
+            ),
+            'application/csv': (
+                'cap.modules.records.serializers' ':record_csv_v1_search'
             ),
         },
         'files_serializers': {
