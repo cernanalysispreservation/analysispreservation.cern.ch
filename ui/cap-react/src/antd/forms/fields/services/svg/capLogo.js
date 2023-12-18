@@ -47,29 +47,29 @@ const CAPLogo = () => (
     <path
       d="M8.62293 11.9492C8.62293 11.9492 5.11902 16.7118 4.16267 19.0225C1.59092 25.2312 0.983259 39.9814 4.16267 45.9008C7.70488 52.4965 34.801 51.9523 38.4339 45.9008C41.8924 40.1396 41.0056 25.2312 38.4339 19.0225C37.7516 17.3759 35.588 14.0816 34.5097 12.5559"
       stroke="#2C3E50"
-      stroke-width="4"
-      stroke-miterlimit="10"
+      strokeWidth="4"
+      strokeMiterlimit="10"
     />
     <path
       d="M21.8345 9.10253C29.1928 9.10253 35.1578 7.51257 35.1578 5.55126C35.1578 3.58996 29.1928 2 21.8345 2C14.4763 2 8.51123 3.58996 8.51123 5.55126C8.51123 7.51257 14.4763 9.10253 21.8345 9.10253Z"
       stroke="#2C3E50"
-      stroke-width="4"
-      stroke-miterlimit="10"
+      strokeWidth="4"
+      strokeMiterlimit="10"
     />
     <path
       d="M8.51074 7.47852V11.8622"
       stroke="#2C3E50"
-      stroke-width="3"
-      stroke-miterlimit="10"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="3"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M34.5098 12.5751C32.5971 13.7854 27.756 15.1791 21.8345 15.1791C14.476 15.1791 8.51123 13.4921 8.51123 11.4102"
       stroke="#2C3E50"
-      stroke-width="4"
-      stroke-miterlimit="10"
-      stroke-linecap="round"
+      strokeWidth="4"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
     />
     <path
       d="M21.452 45.7406C24.8492 45.7406 27.6032 45.2998 27.6032 44.756C27.6032 44.2123 24.8492 43.7715 21.452 43.7715C18.0548 43.7715 15.3008 44.2123 15.3008 44.756C15.3008 45.2998 18.0548 45.7406 21.452 45.7406Z"

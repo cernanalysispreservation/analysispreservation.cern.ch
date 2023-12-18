@@ -103,7 +103,7 @@ class DepositFormSchema(DepositSchema):
         keys = ["can_review", "review", "x_cap_permission", "egroups"]
 
         for key in keys:
-            if data.get(key, "") is None:
+            if not data.get(key, ""):
                 del data[key]
 
         return data
@@ -116,7 +116,7 @@ class DepositFormSchema(DepositSchema):
     can_admin = fields.Method("can_user_admin", dump_only=True)
     can_review = fields.Method("can_user_review", dump_only=True)
     review = fields.Method("get_review", dump_only=True)
-    links = fields.Method("get_links_with_review", dump_only=True)
+    links = fields.Method("get_links", dump_only=True)
     x_cap_permission = fields.Dict(attribute="x-cap-permission", dump_only=True)
 
     def get_webhooks(self, obj):
@@ -177,11 +177,14 @@ class DepositFormSchema(DepositSchema):
         else:
             return None
 
-    def get_links_with_review(self, obj):
+    def get_links(self, obj):
         links = obj["links"]
 
         if obj["deposit"].schema_is_reviewable():
             links["review"] = links["publish"].replace("publish", "review")
+
+        if obj["deposit"].schema_egroups_enabled():
+            links["egroups"] = links["publish"].replace("publish", "egroups")
 
         return links
 

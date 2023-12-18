@@ -58,7 +58,7 @@ def links_factory(pid, record=None, record_hit=None, **kwargs):
         )
 
     for action in extract_actions_from_class(CAPDeposit):
-        if action != "review":
+        if action not in ["review", "egroups"]:
             links[action] = api_url_for('depid_actions', pid, action=action)
 
     return links

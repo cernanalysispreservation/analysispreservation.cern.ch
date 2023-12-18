@@ -79,7 +79,7 @@ class RecordFormSchema(RecordSchema):
         keys = ["can_review", "review", "egroups"]
 
         for key in keys:
-            if data.get(key, '') is None:
+            if not data.get(key, ''):
                 del data[key]
 
         return data
@@ -160,6 +160,8 @@ class RecordFormSchema(RecordSchema):
                 deposit.pid,
                 action="review",
             )
+
+        links.pop('egroups', None)
 
         return links
 

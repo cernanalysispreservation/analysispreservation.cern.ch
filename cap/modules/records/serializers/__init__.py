@@ -30,6 +30,8 @@ from invenio_records_rest.serializers.response import (
     search_responsify,
 )
 
+from cap.modules.records.serializers.author_xml import AuthorXMLSerializer
+from cap.modules.records.serializers.csv import CSVSerializer
 from cap.modules.records.serializers.json import (
     CAPJSONSerializer,
     RecordSerializer,
@@ -37,8 +39,6 @@ from cap.modules.records.serializers.json import (
 from cap.modules.records.serializers.schemas.common import (
     CommonRecordMetadataSchema,
 )
-from cap.modules.records.serializers.author_xml import AuthorXMLSerializer
-from cap.modules.records.serializers.csv import CSVSerializer
 from cap.modules.records.serializers.schemas.json import (
     BasicDepositSchema,
     PermissionsDepositSchema,

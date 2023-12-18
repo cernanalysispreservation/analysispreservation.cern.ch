@@ -167,13 +167,21 @@ def permissions(
     # create all combinations of actions and roles
     try:
         actions_roles = list(itertools.product(requested_actions, roles))
-        schema.process_action_roles(schema_action, actions_roles)
+        roles_logs = schema.process_action_roles(schema_action, actions_roles)
         # create all combinations of actions and users
         actions_users = list(itertools.product(requested_actions, users))
-        schema.process_action_users(schema_action, actions_users)
+        users_logs = schema.process_action_users(schema_action, actions_users)
     except IntegrityError:
         return click.secho("Action user/role already exists.", fg="red")
     click.secho("Process finished.", fg="green")
+    errors = [log for log in roles_logs if log.get('status') == 'error']
+    errors += [log for log in users_logs if log.get('status') == 'error']
+
+    for e in errors:
+        click.secho(
+            f"User/Role \"{e.get('role')}\" - \"{e.get('message')}\"",
+            fg="yellow",
+        )
 
 
 @fixtures.command()

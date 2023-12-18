@@ -53,6 +53,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
+from cap.modules.deposit.egroups import CERNEgroupMixin
 from cap.modules.deposit.errors import (
     DepositValidationError,
     DisconnectWebhookError,
@@ -98,8 +99,6 @@ from cap.modules.user.utils import (
     get_existing_or_register_role,
     get_existing_or_register_user,
 )
-
-from cap.modules.deposit.egroups import CERNEgroupMixin
 
 _datastore = LocalProxy(lambda: current_app.extensions["security"].datastore)
 

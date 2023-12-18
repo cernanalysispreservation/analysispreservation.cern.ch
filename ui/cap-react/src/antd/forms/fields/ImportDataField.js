@@ -5,38 +5,27 @@ import axios from "axios";
 import { isEmpty } from "lodash-es";
 
 import {
-  Avatar,
   Button,
-  Checkbox,
   Col,
   Divider,
   Input,
   List,
   Row,
-  Select,
   Skeleton,
   Space,
-  Typography,
 } from "antd";
 import CAPDeposit from "./services/CAPDeposit";
 import { DeleteOutlined } from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const EMPTY_VALUE = "---- No Selection ---- ";
-
-
 // This component should always return an object with properties: url, data
 // url: (required) URL pointing to the resource to fetch
 // data: fetched data from the provided URL
 
-const ImportDataField = ({ schema, uiSchema, formData, onChange }) => {
-  const [selected, setSelected] = useState();
-
-  const query = uiSchema?.["ui:options"]?.query || undefined;
+const ImportDataField = ({ uiSchema, formData, onChange }) => {
 
   const [fetchedResults, setFetchedResults] = useState([]);
   const [fetchedResultsTotal, setFetchedResultsTotal] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(null);
   const [data, setData] = useState(formData?.data);
 
   const [searchValue, setSearchValue] = useState("");
@@ -52,8 +41,8 @@ const ImportDataField = ({ schema, uiSchema, formData, onChange }) => {
       // resultsTotalPath = "hits.total",
       hitTitle = "metadata.general_title",
       hitDescription = "created_by.email",
-      hitLink = "links.self",
-      hitDataPath = ""
+      // hitLink = "links.self",
+      // hitDataPath = ""
     } = {},
   } = uiSchema || {};
 
@@ -71,12 +60,12 @@ const ImportDataField = ({ schema, uiSchema, formData, onChange }) => {
     return resultsTotal;
   };
 
-  const getHitFromData = data => {
-    let hit = data;
-    const hitPathArray = hitDataPath.split(".");
-    hitPathArray.map(p => (hit = hit[p]));
-    return hit;
-  };
+  // const getHitFromData = data => {
+  //   let hit = data;
+  //   const hitPathArray = hitDataPath.split(".");
+  //   hitPathArray.map(p => (hit = hit[p]));
+  //   return hit;
+  // };
 
   const serializeResults = data => {
     return data.map(entry => {
@@ -152,7 +141,7 @@ const ImportDataField = ({ schema, uiSchema, formData, onChange }) => {
           <Button
             size="small"
             danger
-            onClick={i => {
+            onClick={() => {
                   onChange(null)
                   setData(null);
                   setFetchedResults([]);
@@ -201,7 +190,8 @@ const ImportDataField = ({ schema, uiSchema, formData, onChange }) => {
             style={{ backgroundColor: "#fff" }}
             renderItem={item => (
               <List.Item
-                onClick={i => {
+                key={item.value}
+                onClick={() => {
                   onChange({
                     url: item?.data?.links?.self,
                     data: item.data
@@ -209,7 +199,6 @@ const ImportDataField = ({ schema, uiSchema, formData, onChange }) => {
                   setData(item.data);
                   setFetchedResults([]);
                 }}
-                extfra={[<div>Content</div>]}
               >
                 <List.Item.Meta
                   title={item.label}

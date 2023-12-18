@@ -1,22 +1,16 @@
 import PropTypes from "prop-types";
 import {
-  Avatar,
   Card,
-  Col,
   Divider,
   Modal,
-  Row,
   Space,
   Tag,
   Typography,
 } from "antd";
-import { stringToHslColor } from "../../../utils";
-import { EyeFilled, EyeInvisibleFilled, LinkOutlined } from "@ant-design/icons";
+import { EyeFilled, LinkOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import CodeEditor from "../../../utils/CodeEditor";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
-import CAPLogo from "./svg/capLogo";
-import { Link } from "react-router-dom";
 
 const CAPDeposit = ({ data }) => {
   const [showModal, setShowModal] = useState(false);

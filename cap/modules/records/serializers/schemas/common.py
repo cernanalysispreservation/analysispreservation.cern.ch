@@ -27,7 +27,13 @@ from flask import url_for
 from flask_login import current_user
 from invenio_files_rest.models import ObjectVersion
 from invenio_files_rest.serializer import ObjectVersionSchema
-from marshmallow import Schema, ValidationError, fields, validates_schema
+from marshmallow import (
+    Schema,
+    ValidationError,
+    fields,
+    post_dump,
+    validates_schema,
+)
 
 from cap.modules.records.utils import url_to_api_url
 from cap.modules.schemas.resolvers import resolve_schema_by_url
@@ -172,6 +178,16 @@ class CommonRecordMetadataSchema(Schema):
 
 class CommonRecordSchema(CommonRecordMetadataSchema, StrictKeysMixin):
     """Base record schema."""
+
+    @post_dump
+    def remove_skip_values(self, data):
+        keys = ["egroups"]
+
+        for key in keys:
+            if not data.get(key, ''):
+                del data[key]
+
+        return data
 
     id = fields.Str(attribute='pid.pid_value', dump_only=True)
 
