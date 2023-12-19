@@ -29,8 +29,8 @@ from invenio_access.permissions import Permission
 from invenio_cache import current_cache
 from sqlalchemy.event import listen
 
-from .models import Schema
-from .permissions import (
+from cap.modules.schemas.models import Schema
+from cap.modules.schemas.permissions import (
     AdminSchemaPermission,
     ReadSchemaPermission,
     deposit_schema_create_action,
@@ -209,11 +209,15 @@ def clear_schema_access_cache(mapper, connection, target):
     if target.action.startswith("deposit-schema-") or target.action.startswith(
         "record-schema-"
     ):
-        get_cached_indexed_schemas_for_user_create.delete_memoized()
-        get_cached_indexed_schemas_for_user_read.delete_memoized()
-        get_cached_indexed_schemas_for_user_admin.delete_memoized()
-        get_cached_indexed_record_schemas_for_user_create.delete_memoized()
-        get_cached_indexed_record_schemas_for_user_read.delete_memoized()
+        delete_schema_access_cache()
+
+
+def delete_schema_access_cache():
+    get_cached_indexed_schemas_for_user_create.delete_memoized()
+    get_cached_indexed_schemas_for_user_read.delete_memoized()
+    get_cached_indexed_schemas_for_user_admin.delete_memoized()
+    get_cached_indexed_record_schemas_for_user_create.delete_memoized()
+    get_cached_indexed_record_schemas_for_user_read.delete_memoized()
 
 
 listen(ActionUsers, "after_insert", clear_schema_access_cache)
