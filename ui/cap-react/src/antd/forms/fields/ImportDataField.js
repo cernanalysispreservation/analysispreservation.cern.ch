@@ -100,7 +100,7 @@ const ImportDataField = ({ uiSchema, formData, onChange }) => {
     setSearchPage(1);
   };
 
-  const _onSearch = (value, event, { source }) => {
+  const _onSearch = (value, event, { source = "input" } = {}) => {
     if (source == "input") {
       fetchSuggestions();
     }
