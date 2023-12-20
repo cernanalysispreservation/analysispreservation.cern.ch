@@ -184,7 +184,7 @@ class CommonRecordSchema(CommonRecordMetadataSchema, StrictKeysMixin):
         keys = ["egroups"]
 
         for key in keys:
-            if not data.get(key, ''):
+            if data.get(key, '') is None:
                 del data[key]
 
         return data
@@ -246,7 +246,7 @@ class CommonRecordSchema(CommonRecordMetadataSchema, StrictKeysMixin):
 
     def get_egroups(self, obj):
         _egroups = obj.get("metadata", {}).get("_egroups", [])
-        if "deposit" not in obj or obj["deposit"].schema_egroups_enabled():
+        if "deposit" in obj and obj["deposit"].schema_egroups_enabled():
             return _egroups
         else:
             return None

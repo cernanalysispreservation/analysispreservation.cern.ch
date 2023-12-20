@@ -442,7 +442,7 @@ def test_get_record_with_form_json_serializer(
         },
         'can_update': True,
         'is_owner': True,
-        # 'can_review': False,
+        'can_review': False,
         'created': rec.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': rec.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'created_by': {'email': example_user.email, 'profile': {}},

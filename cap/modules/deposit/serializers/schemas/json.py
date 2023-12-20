@@ -103,7 +103,7 @@ class DepositFormSchema(DepositSchema):
         keys = ["can_review", "review", "x_cap_permission", "egroups"]
 
         for key in keys:
-            if not data.get(key, ""):
+            if data.get(key, "") is None:
                 del data[key]
 
         return data

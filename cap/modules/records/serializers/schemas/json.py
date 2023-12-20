@@ -79,7 +79,7 @@ class RecordFormSchema(RecordSchema):
         keys = ["can_review", "review", "egroups"]
 
         for key in keys:
-            if not data.get(key, ''):
+            if data.get(key, '') is None:
                 del data[key]
 
         return data
