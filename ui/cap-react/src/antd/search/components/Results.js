@@ -16,7 +16,7 @@ const Results = ({ results, loading }) => {
 
   if (!results.size > 0)
     return (
-      <Row style={{ background: "#fff" }} justify="center">
+      <Row key="search-results-empty" style={{ background: "#fff" }} justify="center">
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={
