@@ -65,7 +65,7 @@ const Header = ({
     const a = document.createElement("a");
     const file = new Blob([fileData], { type: "text/json" });
     a.href = URL.createObjectURL(file);
-    a.download = `${config.toJS().name || "cap-schema"}.json`;
+    a.download = `${config.toJS().name || "cap-schema"}-export-v${config.toJS().version}-${Date.now()}.json`;
     a.click();
   };
   const _renderSchemaPreview = schemaPreviewDisplay => {

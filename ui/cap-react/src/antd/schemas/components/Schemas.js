@@ -165,11 +165,11 @@ const Schemas = ({ match, pushPath }) => {
               title={`${selection} diff`}
               width={1000}
               footer={null}
-              bodyStyle={{
+              style={{ body: {
                 overflowX: "scroll",
                 overflowY: "auto",
                 maxHeight: "calc(100vh - 200px)",
-              }}
+              }}}
             >
               <CodeDiffViewer
                 left={JSON.stringify(

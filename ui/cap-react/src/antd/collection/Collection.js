@@ -165,11 +165,11 @@ const Collection = ({
                     </Button>
                   ))
                 }
-                bodyStyle={{
+                style={{ body: {
                   padding: "1px 0 0 0",
                   maxHeight: "300px",
                   overflowY: "auto",
-                }}
+                }}}
               >
                 {readme || editing ? (
                   <RichEditorWidget
