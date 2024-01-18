@@ -27,7 +27,13 @@ from flask import url_for
 from flask_login import current_user
 from invenio_files_rest.models import ObjectVersion
 from invenio_files_rest.serializer import ObjectVersionSchema
-from marshmallow import Schema, ValidationError, fields, validates_schema
+from marshmallow import (
+    Schema,
+    ValidationError,
+    fields,
+    post_dump,
+    validates_schema,
+)
 
 from cap.modules.records.utils import url_to_api_url
 from cap.modules.schemas.resolvers import resolve_schema_by_url
@@ -49,6 +55,20 @@ LABELS = {
         'condition': lambda obj: obj.get('metadata', {}).get('_experiment')
         == 'CMS',
     },
+    'institute': {
+        'path': 'metadata.institute',
+        'condition': lambda obj: obj.get('metadata')
+        .get('_collection', {})
+        .get('name')
+        == 'na62authors',
+    },
+    'orcidid': {
+        'path': 'metadata.orcidid',
+        'condition': lambda obj: obj.get('metadata')
+        .get('_collection', {})
+        .get('name')
+        == 'na62authors',
+    }
     #    'cms_keywords': {
     #        'path': 'metadata.additional_resources.keywords',
     #        'condition':
@@ -130,8 +150,44 @@ class CAPObjectVersionSchema(ObjectVersionSchema):
         return data
 
 
-class CommonRecordSchema(Schema, StrictKeysMixin):
+class CommonRecordMetadataSchema(Schema):
+    metadata = fields.Method('get_metadata', dump_only=True)
+
+    def get_metadata(self, obj):
+        result = {
+            k: v
+            for k, v in obj.get('metadata', {}).items()
+            if k
+            not in [
+                'control_number',
+                '$schema',
+                '_deposit',
+                '_experiment',
+                '_access',
+                '_files',
+                '_review',
+                '_fetched_from',
+                '_user_edited',
+                '_egroups',
+                '_collection',
+            ]
+        }
+
+        return result
+
+
+class CommonRecordSchema(CommonRecordMetadataSchema, StrictKeysMixin):
     """Base record schema."""
+
+    @post_dump
+    def remove_skip_values(self, data):
+        keys = ["egroups"]
+
+        for key in keys:
+            if data.get(key, '') is None:
+                del data[key]
+
+        return data
 
     id = fields.Str(attribute='pid.pid_value', dump_only=True)
 
@@ -139,10 +195,9 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
 
     experiment = fields.Str(attribute='metadata._experiment', dump_only=True)
     status = fields.Str(attribute='metadata._deposit.status', dump_only=True)
+    egroups = fields.Method("get_egroups", dump_only=True)
     created_by = fields.Method('get_created_by', dump_only=True)
     is_owner = fields.Method('is_current_user_owner', dump_only=True)
-
-    metadata = fields.Method('get_metadata', dump_only=True)
 
     links = fields.Raw(dump_only=True)
     files = fields.Method('get_files', dump_only=True)
@@ -189,25 +244,12 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
             }
             return result
 
-    def get_metadata(self, obj):
-        result = {
-            k: v
-            for k, v in obj.get('metadata', {}).items()
-            if k
-            not in [
-                'control_number',
-                '$schema',
-                '_deposit',
-                '_experiment',
-                '_access',
-                '_files',
-                '_review',
-                '_fetched_from',
-                '_user_edited',
-                '_collection',
-            ]
-        }
-        return result
+    def get_egroups(self, obj):
+        _egroups = obj.get("metadata", {}).get("_egroups", [])
+        if "deposit" in obj and obj["deposit"].schema_egroups_enabled():
+            return _egroups
+        else:
+            return None
 
     def get_created_by(self, obj):
         user_id = obj.get('metadata', {})['_deposit'].get('created_by')

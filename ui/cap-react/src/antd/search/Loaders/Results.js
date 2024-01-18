@@ -1,9 +1,9 @@
 import { Skeleton } from "antd";
 
 const Results = () => {
-  return [...Array(5)].map(item => (
+  return [...Array(5)].map((_, index) => (
     <div
-      key={item}
+      key={index}
       style={{ background: "#fff", padding: "15px", marginBottom: "10px" }}
     >
       <Skeleton active />

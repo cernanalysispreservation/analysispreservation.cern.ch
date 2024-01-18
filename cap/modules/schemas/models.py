@@ -45,6 +45,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.utils import import_string
 
 from cap.modules.records.errors import get_error_path
+from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (
     get_existing_or_register_role,
     get_existing_or_register_user,
@@ -287,8 +288,14 @@ class Schema(db.Model):
             for role in permissions[permission_type].get("roles", []):
                 actions_roles.append([action_name, role])
 
-        self.process_action_roles(schema_action, actions_roles)
-        self.process_action_users(schema_action, actions_users)
+        permissions_roles_log = self.process_action_roles(
+            schema_action, actions_roles
+        )
+        permissions_users_log = self.process_action_users(
+            schema_action, actions_users
+        )
+
+        return permissions_roles_log + permissions_users_log
 
     def process_action_roles(self, schema_action, actions_roles):
         """Permission process action.
@@ -305,13 +312,42 @@ class Schema(db.Model):
         processor = schema_actions[schema_action]
         # check for kind of action, in order to use the correct argument
         # schema actions need id, deposit/record actions need name
+        permission_logs = []
         for _action, _role in actions_roles:
-            with db.session.begin_nested():
-                role = get_existing_or_register_role(_role)
-                role_id = role.id
-                schema_argument = str(self.id)
-                processor(allowed_actions[_action], schema_argument, role_id)
-            db.session.commit()
+            try:
+                with db.session.begin_nested():
+                    role = get_existing_or_register_role(_role)
+                    db.session.flush()
+                    role_id = role.id
+                    schema_argument = str(self.id)
+                    processor(
+                        allowed_actions[_action], schema_argument, role_id
+                    )
+                db.session.commit()
+                permission_logs.append(
+                    {
+                        "action": _action,
+                        "role": role.name,
+                        "status": schema_action,
+                    }
+                )
+            except (DoesNotExistInLDAP, IntegrityError) as err:
+                message = ""
+                if isinstance(err, DoesNotExistInLDAP):
+                    message = "Doesn't exist in CERN database"
+                elif isinstance(err, IntegrityError):
+                    message = "Already exists"
+                permission_logs.append(
+                    {
+                        "action": _action,
+                        "role": _role,
+                        "status": "error",
+                        "message": message,
+                    }
+                )
+                continue
+
+        return permission_logs
 
     def process_action_users(self, schema_action, actions_users):
         """
@@ -329,13 +365,41 @@ class Schema(db.Model):
         processor = schema_actions[schema_action]
         # check for kind of action, in order to use the correct argument
         # schema actions need id, deposit/record actions need name
+        permission_logs = []
         for _action, _user in actions_users:
-            with db.session.begin_nested():
-                user = get_existing_or_register_user(_user)
-                user_id = user.id
-                schema_argument = str(self.id)
-                processor(allowed_actions[_action], schema_argument, user_id)
-            db.session.commit()
+            try:
+                with db.session.begin_nested():
+                    user = get_existing_or_register_user(_user)
+                    db.session.flush()
+                    user_id = user.id
+                    schema_argument = str(self.id)
+                    processor(
+                        allowed_actions[_action], schema_argument, user_id
+                    )
+                db.session.commit()
+                permission_logs.append(
+                    {
+                        "action": _action,
+                        "user": user.email,
+                        "status": schema_action,
+                    }
+                )
+            except (DoesNotExistInLDAP, IntegrityError) as err:
+                message = ""
+                if isinstance(err, DoesNotExistInLDAP):
+                    message = "Doesn't exist in CERN database"
+                elif isinstance(err, IntegrityError):
+                    message = "Already exists"
+                permission_logs.append(
+                    {
+                        "action": _action,
+                        "role": _user,
+                        "status": "error",
+                        "message": message,
+                    }
+                )
+                continue
+        return permission_logs
 
     def give_admin_access_for_user(self, user):
         """Give admin access for users."""

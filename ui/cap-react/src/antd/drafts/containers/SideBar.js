@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   status: state.draftItem.get("status"),
   schema: state.draftItem.get("schema"),
   experiment: state.draftItem.get("experiment"),
+  egroups: state.draftItem.get("egroups"),
   revision: state.draftItem.get("revision"),
   created_by: state.draftItem.get("created_by"),
   created: state.draftItem.get("created"),

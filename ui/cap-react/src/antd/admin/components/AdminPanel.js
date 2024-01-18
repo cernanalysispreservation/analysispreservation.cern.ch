@@ -13,6 +13,7 @@ import useStickyState from "../../hooks/useStickyState";
 import { PRIMARY_COLOR } from "../../utils/theme";
 import { isEmpty } from "lodash-es";
 import { initFormuleSchemaWithNotifications } from "../utils";
+import Permissions from "../permissions/Permissions";
 
 const AdminPanel = ({ location, match, getSchema, loading, formuleState }) => {
   useEffect(() => {
@@ -36,7 +37,24 @@ const AdminPanel = ({ location, match, getSchema, loading, formuleState }) => {
   const getPageTitle = () =>
     location.pathname.includes("notifications")
       ? "Notifications"
+      : location.pathname.includes("permissions")
+      ? "Permissions"
       : "Form Builder";
+
+  const getDisplay = () => {
+    switch (display) {
+      case "notifications":
+        return <Notifications />;
+      case "permissions":
+        return <Permissions />;
+      default:
+        return (
+          <SchemaWizard
+            loading={isEmpty(formuleState?.current?.schema) || loading}
+          />
+        );
+    }
+  };
 
   return (
     <DocumentTitle title={getPageTitle()}>
@@ -65,13 +83,7 @@ const AdminPanel = ({ location, match, getSchema, loading, formuleState }) => {
               spotlight: { borderRadius: 0 },
             }}
           />
-          {display === "notifications" ? (
-            <Notifications />
-          ) : (
-            <SchemaWizard
-              loading={isEmpty(formuleState?.current?.schema) || loading}
-            />
-          )}
+          {getDisplay()}
           <FloatButton
             icon={<CarOutlined />}
             type="primary"

@@ -1,12 +1,24 @@
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Button, Row, Select, Space, Typography } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Row, Select, Space, Typography } from "antd";
+import { EllipsisOutlined, FilterOutlined } from "@ant-design/icons";
+import { DRAFTS, PUBLISHED } from "../../routes";
 
 const SORT_OPTIONS = [
   { value: "mostrecent", label: "Newest First" },
   { value: "-mostrecent", label: "Oldest First" },
   { value: "bestmatch", label: "Best Match" },
+];
+
+const EXPORT_OPTIONS = [
+  {
+    key: "csv",
+    label: "Export CSV",
+  },
+  {
+    key: "xml",
+    label: "Export XML",
+  },
 ];
 
 const getValueFromLocation = (value = "mostrecent") => {
@@ -30,6 +42,45 @@ const Header = ({
 
   let searchParams = queryString.parse(location.search);
   let sortParam = searchParams.sort || "mostrecent";
+
+  const onExport = async (mimetype) => {
+    let acceptHeader = null;
+    if (mimetype == "csv") { acceptHeader = "application/csv"}
+    else if (mimetype == "xml") { acceptHeader = "application/marcxml+xml"}
+    else return;
+
+    const timestamp = new Date().getTime();
+    const filename = `export-${timestamp}.${mimetype}`
+
+    let record_type = null;
+    if (location.pathname == DRAFTS) { record_type = "deposits"}
+    else if (location.pathname == PUBLISHED) { record_type = "records"}
+    else return;
+
+    try {
+      const apiUrl = `/api/${record_type}/${location.search}`;
+      const headers = { 'Accept': acceptHeader };
+
+      const response = await fetch(apiUrl, { headers });
+
+      if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+  } catch (error) {
+      console.error('Download failed', error);
+  }
+  };
+
   // let isDescending = sortParam && sortParam[0] == "-";
   // TODO: For asc/desc sorting
   // let sortValue = isDescending ? sortParam.substring(1) : sortParam;
@@ -60,7 +111,7 @@ const Header = ({
       )}
       <Space>
         {shouldDisplayFacetButton && (
-          <Button icon={<FilterOutlined />} onClick={updateDisplayFacet}>
+          <Button size="small" icon={<FilterOutlined />} onClick={updateDisplayFacet}>
             Filters
           </Button>
         )}
@@ -82,6 +133,16 @@ const Header = ({
               </Select.Option>
             ))}
           </Select>
+          <Dropdown
+            placement="bottomRight"
+            trigger={["click"]}
+            menu={{
+              items: EXPORT_OPTIONS,
+              onClick: e => onExport(e.key)
+            }}
+          >
+            <Button size="small" icon={<EllipsisOutlined />} />
+          </Dropdown>
           {/*
           <Radio.Group size="small" value={descSort} onChange={updateSort}>
             <Radio.Button value="asc">

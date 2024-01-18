@@ -30,11 +30,13 @@ from invenio_db import db
 def _allow_role(action, arg, id):
     """Allow action for schema processor."""
     db.session.add(ActionRoles.allow(action, argument=arg, role_id=id))
+    delete_access_cache()
 
 
 def _deny_role(action, arg, id):
     """Deny action for schema processor."""
     db.session.add(ActionRoles.deny(action, argument=arg, role_id=id))
+    delete_access_cache()
 
 
 def _remove_role(action, arg, id):
@@ -42,16 +44,19 @@ def _remove_role(action, arg, id):
     ActionRoles.query_by_action(action, argument=arg).filter(
         ActionRoles.role_id == id
     ).delete(synchronize_session=False)
+    delete_access_cache()
 
 
 def _allow_user(action, arg, id):
     """Allow action for schema processor."""
     db.session.add(ActionUsers.allow(action, argument=arg, user_id=id))
+    delete_access_cache()
 
 
 def _deny_user(action, arg, id):
     """Deny action for schema processor."""
     db.session.add(ActionUsers.deny(action, argument=arg, user_id=id))
+    delete_access_cache()
 
 
 def _remove_user(action, arg, id):
@@ -59,3 +64,10 @@ def _remove_user(action, arg, id):
     ActionUsers.query_by_action(action, argument=arg).filter(
         ActionUsers.user_id == id
     ).delete(synchronize_session=False)
+    delete_access_cache()
+
+
+def delete_access_cache():
+    from cap.modules.schemas.imp import delete_schema_access_cache
+
+    delete_schema_access_cache()

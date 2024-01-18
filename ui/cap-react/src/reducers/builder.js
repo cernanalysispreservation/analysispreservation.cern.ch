@@ -8,12 +8,14 @@ import {
   CREATE_NOTIFICATION_GROUP,
   SET_SCHEMA_LOADING,
   SYNCHRONIZE_FORMULE_STATE,
+  SET_SCHEMA_PERMISSIONS,
 } from "../actions/builder";
 
 const initialState = Map({
   initialConfig: {},
   config: Map({}),
   loading: false,
+  permissions: null,
 });
 
 export default function schemaReducer(state = initialState, action) {
@@ -32,6 +34,8 @@ export default function schemaReducer(state = initialState, action) {
       return state.setIn(action.payload.path, action.payload.notification);
     case CREATE_NOTIFICATION_GROUP:
       return state.setIn(action.path, []);
+    case SET_SCHEMA_PERMISSIONS:
+      return state.set("permissions", action.permissions);
     default:
       return state;
   }

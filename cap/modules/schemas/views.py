@@ -149,15 +149,31 @@ def get_all_versions(name=None, schemas=None, *args, **kwargs):
 @super_admin_permission.require(http_exception=403)
 def permissions(name=None, version=None, schema=None, *args, **kwargs):
     """Get all versions of a schema that user has access to."""
+    permission_logs = []
     if request.method == "GET":
         schema_permissions = schema.get_schema_permissions()
         return jsonify(schema_permissions)
     elif request.method == "POST":
         data = request.json
-        schema.modify_record_permissions(data)
-        return jsonify({}), 201
+        if data.get("deposit", None):
+            permission_logs += schema.modify_record_permissions(data["deposit"])
+        if data.get("record", None):
+            permission_logs += schema.modify_record_permissions(
+                data["record"], record_type="record"
+            )
+        return jsonify(permission_logs), 201
     elif request.method == "DELETE":
-        return jsonify({}), 204
+        data = request.json
+        if data.get("deposit", None):
+            permission_logs += schema.modify_record_permissions(
+                data["deposit"], schema_action="remove"
+            )
+        if data.get("record", None):
+            permission_logs += schema.modify_record_permissions(
+                data["record"], record_type="record", schema_action="remove"
+            )
+
+        return jsonify(permission_logs), 202
 
 
 @blueprint.route(

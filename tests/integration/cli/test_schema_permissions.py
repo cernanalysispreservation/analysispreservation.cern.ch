@@ -205,4 +205,4 @@ def test_action_allow_read_schema_fails_if_already_in_db(app, db, users, create_
     res = cli_runner('fixtures permissions -p read -r test-users@cern.ch --schema --allow test-schema')
 
     assert res.exit_code == 0
-    assert 'Action user/role already exists.' in res.output
+    assert 'Already exists' in res.output

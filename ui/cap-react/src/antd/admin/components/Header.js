@@ -22,11 +22,9 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { CMS } from "../../routes";
-import { configSchema } from "../utils/schemaSettings";
 import CodeViewer from "../../utils/CodeViewer";
 import { json } from "@codemirror/lang-json";
 import CodeDiffViewer from "../../utils/CodeDiffViewer";
-import { FormuleForm } from "react-formule";
 
 const { useBreakpoint } = Grid;
 const Header = ({
@@ -34,12 +32,10 @@ const Header = ({
   pushPath,
   saveSchemaChanges,
   formuleState,
-  updateSchemaConfig,
   display,
   setDisplay,
 }) => {
   const [diffModal, setDiffModal] = useState(false);
-  const [settingsModal, setSettingsModal] = useState(false);
   const screens = useBreakpoint();
 
   const diffModalTabStyle = {
@@ -65,7 +61,9 @@ const Header = ({
     const a = document.createElement("a");
     const file = new Blob([fileData], { type: "text/json" });
     a.href = URL.createObjectURL(file);
-    a.download = `${config.toJS().name || "cap-schema"}-export-v${config.toJS().version}-${Date.now()}.json`;
+    a.download = `${config.toJS().name || "cap-schema"}-export-v${
+      config.toJS().version
+    }-${Date.now()}.json`;
     a.click();
   };
   const _renderSchemaPreview = schemaPreviewDisplay => {
@@ -160,19 +158,6 @@ const Header = ({
           ]}
         />
       </Modal>
-      <Modal
-        open={settingsModal}
-        onCancel={() => setSettingsModal(false)}
-        okButtonProps={{
-          onClick: () => setSettingsModal(false),
-        }}
-      >
-        <FormuleForm
-          {...configSchema}
-          formData={config.toJS()}
-          onChange={data => updateSchemaConfig(data.formData)}
-        />
-      </Modal>
 
       <Col xs={4} sm={4} lg={5} order={1}>
         <Menu
@@ -220,6 +205,12 @@ const Header = ({
               icon: <NotificationOutlined />,
               className: "tour-notifications-tab",
             },
+            {
+              key: "permissions",
+              label: "Settings",
+              icon: <SettingOutlined />,
+              className: "tour-settings-tab",
+            },
           ]}
         />
       </Col>
@@ -242,13 +233,6 @@ const Header = ({
               () => setDiffModal(true),
               "tour-diff"
             ),
-            getMenuItem(
-              "settings",
-              "Settings",
-              <SettingOutlined />,
-              () => setSettingsModal(true),
-              "tour-schema-settings"
-            ),
             getMenuItem("save", "Save updates", <SaveOutlined />, () =>
               saveSchemaChanges()
             ),
@@ -261,14 +245,11 @@ const Header = ({
 
 Header.propTypes = {
   config: PropTypes.object,
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object,
-  initialUiSchema: PropTypes.object,
-  initialSchema: PropTypes.object,
   pushPath: PropTypes.func,
-  updateSchemaConfig: PropTypes.func,
   saveSchemaChanges: PropTypes.func,
-  pathname: PropTypes.string,
+  formuleState: PropTypes.object,
+  display: PropTypes.string,
+  setDisplay: PropTypes.func,
 };
 
 export default Header;

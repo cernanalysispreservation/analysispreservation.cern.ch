@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { permissionsPerUser } from "../../../utils";
 import DropDown from "./DropDown";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusCircleFilled } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -250,18 +250,22 @@ const Permissions = ({
         />
       </Modal>
       <Card
+        size="small"
         title="Access & Permissions"
         extra={
           <Button
             disabled={!canAdmin}
-            type="primary"
+            icon={<PlusCircleFilled size={5}/>}
+            size="small"
+            type="default"
             onClick={() => setDisplayModal(true)}
           >
-            Add
+            Add Permissions
           </Button>
         }
       >
         <Table
+          size="small"
           dataSource={permissionsArray}
           columns={columns}
           fixedHeader

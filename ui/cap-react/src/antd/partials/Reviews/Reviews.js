@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Card, Form, Input, Modal, Radio, Typography } from "antd";
 
 import ReviewList from "./ReviewList";
+import { PlusCircleFilled } from "@ant-design/icons";
 
 const Reviews = ({
   review,
@@ -145,12 +146,15 @@ const Reviews = ({
         )
       ) : (
         <Card
+          size="small"
           title="Reviews"
           extra={
             canReview && (
               <Button
                 data-cy="reviewShowModal"
-                type="primary"
+                icon={<PlusCircleFilled size={5}/>}
+                size="small"
+                type="default"
                 onClick={() => setShowModal(true)}
               >
                 Add Review

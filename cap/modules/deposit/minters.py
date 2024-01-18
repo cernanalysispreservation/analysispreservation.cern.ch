@@ -30,12 +30,14 @@ import uuid
 
 from invenio_pidstore.models import PersistentIdentifier, PIDStatus
 
+from cap.modules.deposit.utils import (
+    generate_auto_incremental_pid,
+    set_copy_to_attr,
+)
 from cap.modules.schemas.resolvers import (
     resolve_schema_by_name_and_version,
     resolve_schema_by_url,
 )
-
-from .utils import generate_auto_incremental_pid, set_copy_to_attr
 
 
 def cap_deposit_minter(record_uuid, data, schema=None):

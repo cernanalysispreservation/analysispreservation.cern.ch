@@ -517,6 +517,12 @@ RECORDS_REST_ENDPOINTS['recid'].update(
             'application/basic+json': (
                 'cap.modules.records.serializers' ':basic_json_v1_search'
             ),
+            'application/marcxml+xml': (
+                'cap.modules.records.serializers' ':record_xml_v1_search'
+            ),
+            'application/csv': (
+                'cap.modules.records.serializers' ':record_csv_v1_search'
+            ),
         },
         'read_permission_factory_imp': check_oauth2_scope(
             lambda record: ReadRecordPermission(record).can(), write_scope.id
@@ -761,10 +767,16 @@ DEPOSIT_REST_ENDPOINTS['depid'].update(
             'application/basic+json': (
                 'cap.modules.records.serializers' ':basic_json_v1_search'
             ),
+            'application/marcxml+xml': (
+                'cap.modules.records.serializers' ':record_xml_v1_search'
+            ),
+            'application/csv': (
+                'cap.modules.records.serializers' ':record_csv_v1_search'
+            ),
         },
         'files_serializers': {
             'application/json': (
-                'cap.modules.deposit.serializers:files_response'
+                'invenio_deposit.serializers:json_file_response'
             ),
         },
         'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
@@ -956,3 +968,8 @@ GITLAB_CAP_TOKEN = "CHANGE_ME"
 
 #: Enable Prometheus flask exporter
 PROMETHEUS_ENABLE_EXPORTER_FLASK = False
+
+#: CERN E-groups
+CERN_EGROUP_ACCOUNT_USERNAME = "CHANGE_ME"
+CERN_EGROUP_ACCOUNT_PASSWORD = "CHANGE_ME"
+CERN_EGROUP_ACCOUNT_DEFAULT_OWNER_ID = "CHANGE_ME_NUMBER"

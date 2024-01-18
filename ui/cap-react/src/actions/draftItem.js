@@ -792,3 +792,31 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
       });
   };
 }
+
+export function addEgroupToDraft(draft_id, group) {
+  return () => {
+    let uri = `/api/deposits/${draft_id}/actions/egroups`;
+    let data = {
+      "type": "add-egroup",
+      "name": group.name,
+      "desciption": group.description
+    }
+    return axios
+      .post(uri, data)
+      .then(() => {
+        notification.success({
+          message: "e-Group creation",
+          description: "The e-group was created and attahced to the entry succesfully",
+        });
+      })
+      .catch(error => {
+        let {response: {data}} = error;
+        notification.error({
+          message: "Failed while creating e-group",
+          description: data.message,
+        });
+
+        throw error;
+      });
+  };
+}

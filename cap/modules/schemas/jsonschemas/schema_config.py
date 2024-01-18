@@ -25,6 +25,7 @@ SCHEMA_CONFIG_JSONSCHEMA_V1 = {
         "x-cap-permission": {"type": "boolean"},
         "notifications": notifications_schema,
         "reviewable": {"type": "boolean"},
+        "ergoups": {"type": "boolean"},
         "repositories": repositories_schema,
         "readme": {"type": "string"},
     },
