@@ -1,7 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Input, AutoComplete } from "antd";
+import { Input, AutoComplete, Modal } from "antd";
 import queryString from "query-string";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import HowToSearch from "../HowToSearch";
+
+const { Search } = Input;
 
 const SEARCH_PATHS = [
   { label: "Drafts", pathname: "/drafts" },
@@ -14,6 +18,7 @@ const SEARCH_PATHS = [
 const SearchBar = ({ pushPath }) => {
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState("");
+  const [displayHowToSearch, setDisplayHowToSearch] = useState(false);
 
   const searchResult = query =>
     SEARCH_PATHS.map((item, idx) => {
@@ -46,24 +51,42 @@ const SearchBar = ({ pushPath }) => {
   };
 
   return (
-    <AutoComplete
-      style={{ width: "100%", verticalAlign: "middle" }}
-      options={options}
-      onSelect={onSelect}
-      onSearch={handleSearch}
-      value={value}
-      onChange={setValue}
-    >
-      <Input.Search
-        size="large"
-        placeholder="Search"
-        enterButton
-        data-cy="searchbar"
-        onSearch={val =>
-          onSelect(null, { searchValue: val, searchOn: "/drafts" })
-        }
-      />
-    </AutoComplete>
+    <div style={{ verticalAlign: "middle" }}>
+      <Modal
+        open={displayHowToSearch}
+        onCancel={() => setDisplayHowToSearch(false)}
+        background="#f5f5f5"
+        title="How to Search"
+        footer={null}
+        width={950}
+      >
+        <HowToSearch />
+      </Modal>
+      <AutoComplete
+        style={{ width: "100%", height: "100%", verticalAlign: "middle" }}
+        options={options}
+        onSelect={onSelect}
+        onSearch={handleSearch}
+        value={value}
+        onChange={setValue}
+      >
+        <Search
+          size="large"
+          placeholder="Search"
+          enterButton
+          data-cy="searchbar"
+          onSearch={val =>
+            onSelect(null, { searchValue: val, searchOn: "/drafts" })
+          }
+          prefix={
+            <QuestionCircleOutlined
+              onClick={() => setDisplayHowToSearch(true)}
+              style={{ marginRight: "5px" }}
+            />
+          }
+        />
+      </AutoComplete>
+    </div>
   );
 };
 

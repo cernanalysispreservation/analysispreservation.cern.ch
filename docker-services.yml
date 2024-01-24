@@ -79,7 +79,7 @@ services:
       - "15672:15672"
       - "5672:5672"
   es:
-    image: elasticsearch:5.6.4
+    image: webhippie/elasticsearch:5.6
     restart: "always"
     environment:
       - bootstrap.memory_lock=true

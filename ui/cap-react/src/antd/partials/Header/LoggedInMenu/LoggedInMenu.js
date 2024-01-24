@@ -1,6 +1,5 @@
 import DraftCreate from "../../../drafts/DraftCreate";
 import { CMS, SETTINGS } from "../../../routes";
-import HowToSearchPage from "../../HowToSearch";
 import {
   SettingOutlined,
   LogoutOutlined,
@@ -10,19 +9,23 @@ import {
   BookOutlined,
   CodeOutlined,
   ScheduleOutlined,
-  QuestionOutlined,
   PlusOutlined,
   ToolOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
-import { FloatButton, Menu, Modal } from "antd";
+import { Button, FloatButton, Grid, Menu, Popover } from "antd";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { history } from "../../../../store/configureStore";
+import AntSearchBar from "../../SearchBar";
+
+const { useBreakpoint } = Grid;
 
 const LoggedInMenu = ({ permissions, logout, roles, location }) => {
   const [displayCreate, setDisplayCreate] = useState(false);
-  const [displayHowToSearch, setDisplayHowToSearch] = useState(false);
+  const [displaySearchPopover, setDisplaySearchPopover] = useState(false);
+  const screens = useBreakpoint();
 
   return (
     <>
@@ -31,17 +34,6 @@ const LoggedInMenu = ({ permissions, logout, roles, location }) => {
         onCancel={() => setDisplayCreate(displayCreate => !displayCreate)}
       />
 
-      <Modal
-        open={displayHowToSearch}
-        onCancel={() => setDisplayHowToSearch(false)}
-        background="#f5f5f5"
-        title="How to Search"
-        footer={null}
-        width={950}
-      >
-        <HowToSearchPage />
-      </Modal>
-
       <Menu
         theme="dark"
         selectable={false}
@@ -49,20 +41,35 @@ const LoggedInMenu = ({ permissions, logout, roles, location }) => {
         items={[
           permissions && {
             key: "createAnalysis",
-            label: "Create",
-            icon: <PlusOutlined />,
+            label: (
+              <Button
+                icon={<PlusOutlined />}
+                shape={!screens.md && "circle"}
+                type="primary"
+                size="small"
+              >
+                {screens.md && "Create"}
+              </Button>
+            ),
             onClick: () => setDisplayCreate(true),
             "data-cy": "headerCreateButton",
           },
-          {
-            key: "faq",
-            label: "FAQ",
-            icon: <QuestionOutlined />,
-            onClick: () => setDisplayHowToSearch(true),
+          !screens.md && {
+            key: "search",
+            label: (
+              <Popover
+                content={<AntSearchBar />}
+                open={displaySearchPopover}
+                onOpenChange={() => setDisplaySearchPopover(false)}
+              >
+                <SearchOutlined />
+              </Popover>
+            ),
+            onClick: () => setDisplaySearchPopover(!displaySearchPopover),
           },
           {
             key: "subMenu",
-            label: "Account",
+            label: screens.md && "Account",
             icon: <UserOutlined size={25} />,
             "data-cy": "headerMenu",
             children: [
