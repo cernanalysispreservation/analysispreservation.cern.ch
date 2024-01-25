@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {
   AppstoreOutlined,
   BranchesOutlined,
-  PlayCircleOutlined,
   SettingOutlined,
   TagOutlined,
 } from "@ant-design/icons";
@@ -37,12 +36,6 @@ const NavMenu = ({ match, history, formErrors }) => {
             </Link>
           ),
           icon: <BranchesOutlined />,
-        },
-        {
-          key: "workflows",
-          label: "Workflows",
-          icon: <PlayCircleOutlined />,
-          disabled: true,
         },
         {
           key: "settings",
