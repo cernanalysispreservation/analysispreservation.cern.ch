@@ -41,7 +41,7 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
     ));
 
   return (
-    <Row style={{ padding: "10px" }}>
+    <Row gutter={[20, 20]} style={{ padding: "20px" }}>
       {showModal && (
         <Modal
           title="Your Collections"
@@ -54,26 +54,18 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
           </Space>
         </Modal>
       )}
-      <Col
-        xs={{ span: 24, order: 2 }}
-        md={{ span: 12, order: 1 }}
-        style={{ padding: "10px" }}
-      >
-        <DashboardList
-          loading={loading}
-          listType="draft"
-          list={lists["drafts"]}
-          header="Draft Documents"
-          description="Draft analyses that your collaborators have given you read/write access to"
-          displayShowAll
-        />
+      <Col xs={{ span: 24, order: 2 }} md={{ span: 12, order: 1 }}>
+        <Card
+          title={<Typography.Text strong>Quick Search</Typography.Text>}
+          size="small"
+          headStyle={{ height: "46px", textAlign: "center" }}
+          style={{ height: "100%" }}
+        >
+          <DashboardQuickSearch />
+        </Card>
       </Col>
-      <Col
-        xs={{ span: 24, order: 1 }}
-        md={{ span: 12, order: 2 }}
-        style={{ padding: "10px" }}
-      >
-        <Card style={{ paddingBottom: "10px" }}>
+      <Col xs={{ span: 24, order: 1 }} md={{ span: 12, order: 2 }}>
+        <Card style={{ paddingBottom: "1px" }}>
           <Row justify="space-around" align="middle">
             <Statistic
               value={results.user_drafts_count}
@@ -99,23 +91,20 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
         </Card>
 
         <Card
-          title={<Typography.Text strong>Quick Search</Typography.Text>}
-          size="small"
-          headStyle={{ height: "46px", textAlign: "center" }}
-          style={{ marginTop: "20px" }}
-        >
-          <DashboardQuickSearch />
-        </Card>
-
-        <Card
           title={<Typography.Text strong>Your Collections</Typography.Text>}
           size="small"
           headStyle={{ height: "46px" }}
           style={{ marginTop: "20px" }}
         >
           <Space size={[0, 8]} wrap>
-            {generateCollectionTags(
-              groups.toJS().slice(0, MAX_DISPLAYED_COLLECTIONS)
+            {groups.toJS() ? (
+              generateCollectionTags(
+                groups.toJS().slice(0, MAX_DISPLAYED_COLLECTIONS)
+              )
+            ) : (
+              <Typography.Text style={{ color: "rgba(0, 0, 0, 0.25)" }}>
+                No data
+              </Typography.Text>
             )}
             {groups.size > MAX_DISPLAYED_COLLECTIONS && (
               <Button
@@ -130,11 +119,19 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
           </Space>
         </Card>
       </Col>
-      <Col
-        xs={{ span: 24, order: 3 }}
-        md={{ span: 12 }}
-        style={{ padding: "10px" }}
-      >
+
+      <Col xs={{ span: 24, order: 4 }} md={{ span: 12, order: 3 }}>
+        <DashboardList
+          loading={loading}
+          listType="draft"
+          list={lists["drafts"]}
+          header="Draft Documents"
+          description="Draft analyses that your collaborators have given you read/write access to"
+          displayShowAll
+        />
+      </Col>
+
+      <Col xs={{ span: 24, order: 4 }} md={{ span: 12, order: 4 }}>
         <DashboardList
           loading={loading}
           listType="published"
@@ -142,19 +139,6 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
           header="Published Documents in CAP"
           description="All analyses published on CAP by members of your collaboration"
           displayShowAll
-        />
-      </Col>
-      <Col
-        xs={{ span: 24, order: 4 }}
-        md={{ span: 12 }}
-        style={{ padding: "10px" }}
-      >
-        <DashboardList
-          loading={loading}
-          listType="workflows"
-          list={lists["workflows"]}
-          header="Workflows"
-          emptyMessage="Recent workflows attached to your content"
         />
       </Col>
     </Row>
