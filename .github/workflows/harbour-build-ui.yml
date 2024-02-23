@@ -2,14 +2,13 @@ name: Build and export CAP UI image
 
 on:
   push:
-    branches: ['master', 'dev', 'qa', 'test']
-    paths:
-      - "ui/**"
-      - ".github/workflows/ui-test.yml"
+    branches: ["master", "dev", "qa", "test", "with-formule"]
+    # paths:
+    #   - "ui/**"
+    #   - ".github/workflows/ui-test.yml"
 
 jobs:
   build-image:
-    needs: UITest
     name: Build and export ui image
     runs-on: ubuntu-20.04
 
