@@ -31,10 +31,7 @@ const Header = ({
   config,
   pushPath,
   saveSchemaChanges,
-  schema,
-  uiSchema,
-  initialUiSchema,
-  initialSchema,
+  formuleState,
   display,
   setDisplay,
 }) => {
@@ -47,11 +44,14 @@ const Header = ({
     maxHeight: "calc(100vh - 300px)",
   };
 
+  const formuleCurrentSchema = formuleState?.current?.schema;
+  const formuleCurrentUiSchema = formuleState?.current?.uiSchema;
+
   const _getSchema = () => {
     const fileData = JSON.stringify(
       {
-        deposit_schema: schema.toJS(),
-        deposit_options: uiSchema.toJS(),
+        deposit_schema: formuleCurrentSchema,
+        deposit_options: formuleCurrentUiSchema,
         ...config.toJS(),
       },
       null,
@@ -61,37 +61,39 @@ const Header = ({
     const a = document.createElement("a");
     const file = new Blob([fileData], { type: "text/json" });
     a.href = URL.createObjectURL(file);
-    a.download = "fileName.json"; //TODO: Should be a proper name
+    a.download = `${config.toJS().name || "cap-schema"}-export-v${
+      config.toJS().version
+    }-${Date.now()}.json`;
     a.click();
   };
   const _renderSchemaPreview = schemaPreviewDisplay => {
     let previews = {
       uiSchema: (
         <CodeViewer
-          value={JSON.stringify(uiSchema.toJS(), null, 2)}
+          value={JSON.stringify(formuleCurrentUiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schema: (
         <CodeViewer
-          value={JSON.stringify(schema.toJS(), null, 2)}
+          value={JSON.stringify(formuleCurrentSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       uiSchemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(initialUiSchema.toJS(), null, 2)}
-          right={JSON.stringify(uiSchema.toJS(), null, 2)}
+          left={JSON.stringify(formuleState?.initial?.uiSchema, null, 2)}
+          right={JSON.stringify(formuleCurrentUiSchema, null, 2)}
           lang={json}
           height="100%"
         />
       ),
       schemaDiff: (
         <CodeDiffViewer
-          left={JSON.stringify(initialSchema.toJS(), null, 2)}
-          right={JSON.stringify(schema.toJS(), null, 2)}
+          left={JSON.stringify(formuleState?.initial?.schema, null, 2)}
+          right={JSON.stringify(formuleCurrentSchema, null, 2)}
           lang={json}
           height="100%"
         />
@@ -243,14 +245,11 @@ const Header = ({
 
 Header.propTypes = {
   config: PropTypes.object,
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object,
-  initialUiSchema: PropTypes.object,
-  initialSchema: PropTypes.object,
   pushPath: PropTypes.func,
-  updateSchemaConfig: PropTypes.func,
   saveSchemaChanges: PropTypes.func,
-  pathname: PropTypes.string,
+  formuleState: PropTypes.object,
+  display: PropTypes.string,
+  setDisplay: PropTypes.func,
 };
 
 export default Header;
