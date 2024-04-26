@@ -4,12 +4,27 @@ import { transformSchema } from "../../partials/Utils/schema";
 import { COLLECTION_BASE } from "../../routes";
 import { shouldDisplayTabButton } from "../utils";
 import SideBar from "./SideBar";
-import { EditOutlined } from "@ant-design/icons";
-import { Space, Tag, Button, Row, Col, Radio, Grid, Layout } from "antd";
+import {
+  EditOutlined,
+  ExportOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
+import {
+  Space,
+  Tag,
+  Button,
+  Row,
+  Col,
+  Radio,
+  Grid,
+  Layout,
+  Tooltip,
+} from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 const Preview = ({
   history,
@@ -21,6 +36,7 @@ const Preview = ({
   id,
   metadata = { general_title: "" },
   schemas = { schema: {}, uiSchema: {} },
+  updated,
 }) => {
   const [display, setDisplay] = useState(
     schemas.uiSchema["ui:object"] == "tabView" ? "tabView" : "list"
@@ -39,19 +55,36 @@ const Preview = ({
           <Space direction="vertical">
             {metadata.general_title}
             <Space style={{ width: "100%" }} wrap>
-              <Tag color="purple">Published</Tag>
-              <Tag>{id}</Tag>
+              <Tag bordered={false} color="purple-inverse">
+                Published
+              </Tag>
+              <Tag bordered={false} color="magenta">
+                {id}
+              </Tag>
               {schemaType && (
                 <Link
                   to={`${COLLECTION_BASE}/${schemaType.name}/${
                     schemaType.version || ""
                   }`}
                 >
-                  <Tag color="geekblue">
+                  <Tag
+                    bordered={false}
+                    color="geekblue"
+                    icon={<ExportOutlined />}
+                  >
                     {schemaType.fullname} v{schemaType.version}
                   </Tag>
                 </Link>
               )}
+              <Tooltip
+                title={`Last publication: ${dayjs(updated).format(
+                  "DD/MM/YYYY HH:mm:ss"
+                )}`}
+              >
+                <Tag bordered={false} icon={<InfoCircleOutlined />}>
+                  {dayjs(updated).format("DD/MM/YYYY")}
+                </Tag>
+              </Tooltip>
             </Space>
           </Space>
         }
@@ -146,6 +179,7 @@ Preview.propTypes = {
   canUpdate: PropTypes.bool,
   files: PropTypes.object,
   status: PropTypes.string,
+  updated: PropTypes.string,
 };
 
 export default Preview;

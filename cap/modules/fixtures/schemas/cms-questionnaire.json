@@ -1830,6 +1830,9 @@
         "ui:order": ["options", "comments"]
       },
       "fitting_model": {
+        "comments": {
+          "ui:widget": "textarea"
+        },
         "ui:order": ["options", "comments"]
       },
       "stats": {

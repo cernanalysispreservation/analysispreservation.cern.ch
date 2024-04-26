@@ -10,12 +10,10 @@ const mapStateToProps = state => ({
   files: state.published.get("files"),
   schemas: state.published.get("schemas"),
   schemaType: state.published.get("schema"),
-  status: state.published.get("status")
+  status: state.published.get("status"),
+  updated: state.published.get("updated"),
 });
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Preview);
+export default connect(mapStateToProps, mapDispatchToProps)(Preview);

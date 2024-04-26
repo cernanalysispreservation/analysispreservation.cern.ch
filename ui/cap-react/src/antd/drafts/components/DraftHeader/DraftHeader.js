@@ -39,7 +39,9 @@ const DraftHeader = ({
             newText.trim() != "" && updateGeneralTitle(newText)
           }
         />
-        {!canEdit(canAdmin, canUpdate) && <Tag color="gold">READ ONLY</Tag>}
+        {!canEdit(canAdmin, canUpdate) && (
+          <Tag color="gold-inverse">Read-only</Tag>
+        )}
       </Space>
       <Space size="middle">
         {!screens.lg && (
