@@ -1,9 +1,18 @@
-import PropTypes from "prop-types";
 import { Button, Form, Input } from "antd";
+import { CMS_NEW } from "../../routes";
+import { withRouter } from "react-router";
+import { initFormuleSchemaWithNotifications } from "../utils";
 
-const CreateForm = ({ createContentType }) => {
+const CreateForm = ({ history }) => {
+  const onFinish = content => {
+    let { name, description } = content;
+    const config = { config: { fullname: name } };
+    initFormuleSchemaWithNotifications({ config }, name, description);
+    history.push(CMS_NEW);
+  };
+
   return (
-    <Form name="basic" layout="vertical" onFinish={createContentType}>
+    <Form name="basic" layout="vertical" onFinish={onFinish}>
       <Form.Item
         label="Name"
         name="name"
@@ -31,8 +40,4 @@ const CreateForm = ({ createContentType }) => {
   );
 };
 
-CreateForm.propTypes = {
-  createContentType: PropTypes.func,
-};
-
-export default CreateForm;
+export default withRouter(CreateForm);
