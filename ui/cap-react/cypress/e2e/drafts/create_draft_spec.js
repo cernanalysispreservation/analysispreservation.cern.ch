@@ -69,4 +69,23 @@ describe("Create Draft", function () {
 
     cy.url().should("not.include", DRAFTS);
   });
+
+  it("Save a draft with an empty required field", () => {
+    cy.loginUrl("info@inveniosoftware.org", "infoinfo");
+
+    // navigate to the draft
+    cy.get("[data-cy=DraftDocuments-list] a").first().click();
+
+    // navigate to edit tab
+    cy.get("[data-cy=itemNavEdit]").click();
+
+    // type in a normal field but leave the required field empty
+    cy.get("textarea#root\\!basic_info\\!abstract").type("whatever");
+
+    // save the draft
+    cy.get("[data-cy=draft-save-btn]").click();
+
+    // validate save
+    cy.get("div.ant-notification-notice-message").contains("Draft saved");
+  });
 });

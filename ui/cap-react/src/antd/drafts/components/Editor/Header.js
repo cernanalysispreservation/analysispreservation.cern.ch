@@ -174,6 +174,7 @@ const Header = ({
         disabled={mode != "edit" || !canEdit(canAdmin, canUpdate)}
         loading={loading}
         onClick={_saveData}
+        data-cy="draft-save-btn"
       >
         Save
       </Button>
