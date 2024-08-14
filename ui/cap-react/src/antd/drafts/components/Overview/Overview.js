@@ -48,7 +48,7 @@ const Overview = ({
 
   const infoArray = [
     {
-      text: `${revision} revision`,
+      text: `${revision} revision(s)`,
       icon: <InfoCircleOutlined />,
     },
     {
