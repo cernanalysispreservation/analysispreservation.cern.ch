@@ -1,6 +1,6 @@
 {
   "name": "cap-react",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "CERN Analysis Preservation UI",
   "type": "module",
   "engines": {
@@ -70,7 +70,6 @@
     "redux-logger": "3.0.6",
     "redux-thunk": "2.3.0",
     "sanitize-html": "2.4.0",
-    "squirrelly": "8.0.8",
     "vite": "^5.0.2"
   },
   "devDependencies": {

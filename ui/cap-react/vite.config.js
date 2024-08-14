@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
       }),
       // Restarts the dev server (full reload aka --force) when a new version of react-formule is available
       ViteRestart({
-        restart: [".yalc/react-formule/dist/react-formule.js"],
+        restart: ["../../../react-formule/dist/react-formule.js"],
       }),
     ],
     server: {
@@ -35,13 +35,6 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, ""),
         },
-      },
-    },
-    // ESModules only allow "import" imports. However some libraries (i.e. squirrelly)
-    // still use "require" imports. This converts CommonJS modules to ESModules
-    build: {
-      commonjsOptions: {
-        transformMixedEsModules: true,
       },
     },
     // Allows writing JSX in .js files
@@ -65,6 +58,7 @@ export default defineConfig(({ mode }) => {
           },
         ],
       },
+      include: ["react-formule"],
     },
     // TEMPORARY: allows using process.env (ideally we should use import.meta.env I think)
     define: {

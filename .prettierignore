@@ -7,5 +7,3 @@ yarn.lock
 Dockerfile
 *.svg
 .npmrc
-.yalc
-yalc.lock
