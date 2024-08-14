@@ -1,28 +1,22 @@
 import PropTypes from "prop-types";
-import {
-  Card,
-  Divider,
-  Modal,
-  Space,
-  Tag,
-  Typography,
-} from "antd";
+import { Card, Divider, Modal, Space, Tag, Typography } from "antd";
 import { EyeFilled, LinkOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import CodeEditor from "../../../utils/CodeEditor";
-import { json, jsonParseLinter } from "@codemirror/lang-json";
+import { CodeEditor } from "react-formule";
 
 const CAPDeposit = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
+
+  console.log(JSON.stringify(data, null, 2));
 
   return (
     <>
       <Modal open={showModal} onCancel={() => setShowModal(false)}>
         <CodeEditor
-          lang={json}
-          value={JSON.stringify(data, null, 2)}
-          lint={jsonParseLinter}
-          isReadOnly={true}
+          lang="json"
+          initialValue={JSON.stringify(data, null, 2)}
+          lint="json"
+          isEditable={false} // TODO: Change to !isEditable?
           height="calc(100vh - 325px)"
         />
       </Modal>
@@ -33,7 +27,9 @@ const CAPDeposit = ({ data }) => {
           <Space style={{ flex: 1 }}>
             <Card.Meta
               size="small"
-              avatar={data?.schema?.fullname && <Tag>{data?.schema?.fullname}</Tag>}
+              avatar={
+                data?.schema?.fullname && <Tag>{data?.schema?.fullname}</Tag>
+              }
               title={data?.metadata?.general_title || "No title"}
               description={"No description"}
             />
