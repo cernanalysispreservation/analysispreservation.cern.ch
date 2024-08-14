@@ -3,7 +3,6 @@ import { commonFields, extraFields } from "react-formule";
 import { CloudDownloadOutlined, FileOutlined } from "@ant-design/icons";
 import CernUsers from "./customFields/CernUsers";
 import CapFiles from "./customFields/CapFiles";
-import SchemaPathSuggester from "./customFields/SchemaPathSuggester";
 import IdFetcher from "./customFields/IdFetcher";
 import ImportDataField from "./customFields/ImportDataField";
 
@@ -201,7 +200,6 @@ export const customFieldTypes = {
 export const customFields = {
   cernUsers: CernUsers,
   CapFiles: CapFiles,
-  schemaPathSuggester: SchemaPathSuggester,
   idFetcher: IdFetcher,
   importData: ImportDataField,
 };

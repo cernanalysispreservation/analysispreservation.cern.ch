@@ -3,7 +3,7 @@ import store, { history } from "./store/configureStore";
 import Root from "./antd/Root";
 import * as Sentry from "@sentry/react";
 
-import "antd/dist/reset.css";
+// import "antd/dist/reset.css";
 import "./style.less";
 
 if (process.env.SENTRY_UI_DSN) {
