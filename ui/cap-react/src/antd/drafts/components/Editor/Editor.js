@@ -7,6 +7,8 @@ import Header from "../../containers/EditorHeader";
 import { canEdit } from "../../utils/permissions";
 import { FormuleForm } from "react-formule";
 
+import objectPath from "object-path";
+
 const Editor = ({
   schemaErrors,
   schemas = { schema: {}, uiSchema: {} },
@@ -27,6 +29,30 @@ const Editor = ({
   let _schema =
     schemas && schemas.schema ? transformSchema(schemas.schema) : null;
 
+  // mainly this is used for the drafts forms
+  // we want to allow forms to be saved even without required fields
+  // if these fields are not filled in when publishing then an error will be shown
+  const transformErrors = errors => {
+    errors = errors
+      .filter(item => item.name != "required")
+      .map(error => {
+        console.log(error);
+        if (error.name == "required") return null;
+
+        // Update messages for undefined fields when required,
+        // from "should be string" ==> "Either edit or remove"
+        if (error.message == "should be string") {
+          let errorMessages = objectPath.get(formData, error.property);
+          if (errorMessages == undefined)
+            error.message = "Either edit or remove";
+        }
+
+        return error;
+      });
+
+    return errors;
+  };
+
   return (
     <Col span={24} style={{ height: "100%", overflow: "auto" }}>
       <Layout style={{ height: "100%", padding: 0 }}>
@@ -40,6 +66,7 @@ const Editor = ({
             extraErrors={extraErrors || {}}
             draftEditor
             readonly={mode != "edit" || !canEdit(canAdmin, canUpdate)}
+            transformErrors={transformErrors}
           />
         </Layout.Content>
       </Layout>
