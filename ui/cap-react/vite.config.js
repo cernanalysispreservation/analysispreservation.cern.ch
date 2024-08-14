@@ -70,10 +70,6 @@ export default defineConfig(({ mode }) => {
     define: {
       "process.env": {},
     },
-    // Avoid duplicate dependencies (codemirror was breaking because of this)
-    resolve: {
-      dedupe: ["@codemirror/state", "@codemirror/view"],
-    },
     // Avoid errors when accesing e.g. document from tests
     test: {
       environment: "happy-dom",

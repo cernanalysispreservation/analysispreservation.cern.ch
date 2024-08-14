@@ -22,9 +22,8 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { CMS } from "../../routes";
-import CodeViewer from "../../utils/CodeViewer";
-import { json } from "@codemirror/lang-json";
-import CodeDiffViewer from "../../utils/CodeDiffViewer";
+import { CodeViewer } from "react-formule";
+import { CodeDiffViewer } from "react-formule";
 
 const { useBreakpoint } = Grid;
 const Header = ({
@@ -71,22 +70,24 @@ const Header = ({
       uiSchema: (
         <CodeViewer
           value={JSON.stringify(formuleCurrentUiSchema, null, 2)}
-          lang={json}
+          lang="json"
           height="100%"
+          reset
         />
       ),
       schema: (
         <CodeViewer
           value={JSON.stringify(formuleCurrentSchema, null, 2)}
-          lang={json}
+          lang="json"
           height="100%"
+          reset
         />
       ),
       uiSchemaDiff: (
         <CodeDiffViewer
           left={JSON.stringify(formuleState?.initial?.uiSchema, null, 2)}
           right={JSON.stringify(formuleCurrentUiSchema, null, 2)}
-          lang={json}
+          lang="json"
           height="100%"
         />
       ),
@@ -94,7 +95,7 @@ const Header = ({
         <CodeDiffViewer
           left={JSON.stringify(formuleState?.initial?.schema, null, 2)}
           right={JSON.stringify(formuleCurrentSchema, null, 2)}
-          lang={json}
+          lang="json"
           height="100%"
         />
       ),
