@@ -37,6 +37,13 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    // ESModules only allow "import" imports. However some libraries (i.e. squirrelly)
+    // still use "require" imports. This converts CommonJS modules to ESModules
+    build: {
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+    },
     // Allows writing JSX in .js files
     esbuild: {
       loader: "jsx",
