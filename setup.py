@@ -80,13 +80,14 @@ install_requires = [
     'requests-gssapi>=1.2.3',
     'swagger-spec-validator==2.7.6',
     'prometheus-flask-exporter==0.20.3',
-    # 'suds==1.1.2',
+    'suds==1.1.2',
     'wtforms==2.2.1',
     'beautifulsoup4>=4',
     'pandas>=1.5',
     'marshmallow==2.17.0',
-    # 'reana-client==*',
-    # 'reana-commons[yadage,snakemake]==*',
+    'reana-client==0.9.3',
+    'reana-commons[yadage,snakemake]',
+    'jsonschema-specifications',
 
     # Invenio Base Deps
     'invenio-base==1.2.5',
@@ -109,16 +110,16 @@ install_requires = [
     # Invenio Metadata Deps
     'invenio-indexer @ git+https://github.com/cernanalysispreservation/invenio-indexer.git@os-2-new',
     'invenio-jsonschemas @ git+https://github.com/cernanalysispreservation/invenio-jsonschemas.git@v1.0.1',
-    'invenio-oaiserver @ git+https://github.com/cernanalysispreservation/invenio-oaiserver.git@os-2-new',
+    'invenio-oaiserver@git+https://github.com/cernanalysispreservation/invenio-oaiserver.git@os-2-new',
     'invenio-pidstore==1.1.0',
-    'invenio-records-rest @ git+https://github.com/cernanalysispreservation/invenio-records-rest.git@os-2-new',
+    'invenio-records-rest@git+https://github.com/cernanalysispreservation/invenio-records-rest.git@os-2-new#egg=invenio-records-rest',
     'invenio-records-ui==1.0.1',
     'invenio-records==1.3.0',
     'invenio-search-ui==1.1.1',
-    'invenio-search @ git+https://github.com/cernanalysispreservation/invenio-search.git@v1.2.3#egg=invenio-search',
+    'invenio-search @ git+https://github.com/cernanalysispreservation/invenio-search.git@mock/v1.2.3#egg=invenio-search[opensearch2]',
 
     # Invenio Files deps
-    'invenio-files-rest @ git+https://github.com/cernanalysispreservation/invenio-files-rest.git@v1.0.5',
+    'invenio-files-rest @ git+https://github.com/cernanalysispreservation/invenio-files-rest.git@mock/v1.0.5#egg=invenio-files-rest',
     'invenio-records-files @ git+https://github.com/cernanalysispreservation/invenio-records-files.git@new#egg=invenio-records-files',
 
     # Database deps
