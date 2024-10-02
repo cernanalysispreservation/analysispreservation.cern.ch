@@ -184,7 +184,7 @@ const Schemas = ({ match, pushPath }) => {
               />
             </Modal>
             <Row>
-              <Col xs={4}>
+              <Col xs={8}>
                 <Menu
                   mode="horizontal"
                   className="no-bottom-border"
@@ -204,7 +204,7 @@ const Schemas = ({ match, pushPath }) => {
                   ]}
                 />
               </Col>
-              <Col xs={20}>
+              <Col xs={16}>
                 <Menu
                   mode="horizontal"
                   selectable={false}
