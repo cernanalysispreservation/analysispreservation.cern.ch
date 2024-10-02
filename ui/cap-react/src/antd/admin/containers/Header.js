@@ -2,18 +2,15 @@ import { connect } from "react-redux";
 import {
   saveSchemaChanges,
   updateSchemaConfig,
-} from "../../../actions/schemaWizard";
+} from "../../../actions/builder";
 import { pushPath } from "../../../actions/support";
 import Header from "../components/Header";
 
 function mapStateToProps(state) {
   return {
-    schema: state.schemaWizard.getIn(["current", "schema"]),
-    uiSchema: state.schemaWizard.getIn(["current", "uiSchema"]),
-    initialSchema: state.schemaWizard.getIn(["initial", "schema"]),
-    initialUiSchema: state.schemaWizard.getIn(["initial", "uiSchema"]),
-    config: state.schemaWizard.get("config"),
+    config: state.builder.get("config"),
     pathname: state.router.location.pathname,
+    formuleState: state.builder.get("formuleState"),
   };
 }
 
@@ -25,7 +22,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
