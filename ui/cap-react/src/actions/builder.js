@@ -178,7 +178,9 @@ export const saveSchemaChanges = () => (dispatch, getState) => {
           description: "schema successfully created",
         });
         dispatch(updateDepositGroups());
-        dispatch(push(`/admin/${config.get("name")}/${config.get("version")}`));
+        dispatch(
+          push(`/admin/editor/${config.get("name")}/${config.get("version")}`)
+        );
       })
       .catch(err => {
         let errorHeading, errorMessage;
