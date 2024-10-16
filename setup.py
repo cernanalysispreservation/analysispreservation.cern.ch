@@ -104,7 +104,7 @@ install_requires = [
     'invenio-access==1.3.0',
     'invenio-accounts==1.1.1',
     'invenio-oauth2server==1.0.4',
-    'invenio-oauthclient @ git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@v1.1.3',
+    'invenio-oauthclient @ git+https://github.com/cernanalysispreservation/invenio-oauthclient.git@v1.1.3-openid',
     'invenio-userprofiles @ git+https://github.com/cernanalysispreservation/invenio-userprofiles.git@v1.0.1',
 
     # Invenio Metadata Deps
