@@ -21,6 +21,7 @@ from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
 from invenio_deposit.scopes import write_scope
 from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
+from invenio_oauthclient.contrib.cern_openid import REMOTE_APP as CERN_OPENID_REMOTE_APP
 from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
 from invenio_records_rest.facets import range_filter, terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
@@ -620,6 +621,11 @@ CERN_APP_CREDENTIALS = {
     'consumer_secret': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_SECRET'),
 }
 
+CERN_APP_OPENID_CREDENTIALS = {
+    'consumer_key': os.environ.get('INVENIO_CERN_APP_OPENID_CREDENTIALS_KEY'),
+    'consumer_secret': os.environ.get('INVENIO_CERN_APP_OPENID_CREDENTIALS_SECRET'),
+}
+
 # Update CERN OAuth handlers - due to REST - mostly only redirect urls
 # and error flashing
 CERN_REMOTE_APP.update(
@@ -629,16 +635,24 @@ CERN_REMOTE_APP.update(
     )
 )
 
+CERN_OPENID_REMOTE_APP["params"].update(dict(request_token_params={
+           "scope": "openid profile email cern-login-info offline_access",
+       }))
+
 CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
 #: Defintion of OAuth client applications.
 OAUTHCLIENT_REMOTE_APPS = dict(
     cern=CERN_REMOTE_APP,
+    cern_openid=CERN_OPENID_REMOTE_APP
 )
 #: Serializer for extracting `extra_data` from invenio-oauthclient
 OAUTHCLIENT_CERN_EXTRA_DATA_SERIALIZER = oauth_extra_data_serializer
 OAUTHCLIENT_CERN_REFRESH_TIMEDELTA = timedelta(minutes=-10)
 
+# OAUTHCLIENT_CERN_OPENID_EXTRA_DATA_SERIALIZER = oauth_extra_data_serializer
+OAUTHCLIENT_CERN_OPENID_REFRESH_TIMEDELTA = timedelta(minutes=-10)
+OAUTHCLIENT_CERN_OPENID_ALLOWED_ROLES =  ["cern_user", "default-role"]
 #: Defintion of OAuth/Auth client template.
 AUTHENTICATION_POPUP_TEMPLATE = 'auth/authentication_popup.html'
 AUTHENTICATION_POPUP__NO_REDIRECT_TEMPLATE = (
