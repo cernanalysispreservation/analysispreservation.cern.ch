@@ -1,13 +1,11 @@
 import PropTypes from "prop-types";
 import { Menu, Dropdown, Button } from "antd";
 import { WELCOME } from "../../../routes";
-import OauthPopup from "../../OAuthPopUp";
 import { LoginOutlined } from "@ant-design/icons";
 import LoginForm from "../LoginForm";
 import { useState } from "react";
 
 const SimpleMenu = ({
-  initCurrentUser,
   loginLocalUser,
   location = { state: { next: "/" } },
 }) => {
