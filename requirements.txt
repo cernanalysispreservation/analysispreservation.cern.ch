@@ -83,7 +83,7 @@ invenio-jsonschemas==1.0.0  # via invenio
 # 'invenio-logging' < v1.2.0 is needed because of 'invenio-base' version
 # conflicts, USING 'cernanalysispreservation/invenio-logging' FORM now
 # invenio-logging==1.0.0
-git+https://github.com/cernanalysispreservation/invenio-logging.git@v1.2.0-without-invenio-base-des#egg=invenio-logging[sentry,sentry-sdk]
+git+https://github.com/cernanalysispreservation/invenio-logging.git@v1.2.0-without-invenio-base-des#egg=invenio-logging[sentry]
 invenio-mail==1.0.1       # via invenio, invenio-oauthclient
 invenio-oaiserver==1.0.0  # via invenio
 invenio-oauth2server==1.0.1  # via invenio, invenio-accounts-rest

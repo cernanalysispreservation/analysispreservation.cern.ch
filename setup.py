@@ -98,7 +98,6 @@ install_requires = [
     'swagger-spec-validator==2.7.6',
     'prometheus-flask-exporter==0.20.3',
     'suds==1.1.2',
-    'sentry-sdk==1.25.1',
 ]
 
 packages = find_packages()
