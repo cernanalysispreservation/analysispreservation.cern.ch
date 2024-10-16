@@ -643,7 +643,7 @@ CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
 #: Defintion of OAuth client applications.
 OAUTHCLIENT_REMOTE_APPS = dict(
-    cern=CERN_REMOTE_APP,
+    # cern=CERN_REMOTE_APP,
     cern_openid=CERN_OPENID_REMOTE_APP
 )
 #: Serializer for extracting `extra_data` from invenio-oauthclient
