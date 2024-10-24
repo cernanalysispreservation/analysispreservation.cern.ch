@@ -1,5 +1,6 @@
 import { Cascader } from "antd";
 import { transformSchema } from "../../partials/Utils/schema";
+import { connect } from "react-redux";
 
 const SchemaPathSuggester = ({
   disabled,
@@ -11,7 +12,7 @@ const SchemaPathSuggester = ({
   name,
   formData,
   formContext,
-  fullSchema,
+  formuleState,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
@@ -37,7 +38,9 @@ const SchemaPathSuggester = ({
   return (
     <Cascader
       options={convertToOptions(
-        getPropertiesOrItems(transformSchema(fullSchema.toJS()))
+        getPropertiesOrItems(
+          transformSchema({ ...formuleState?.current?.schema })
+        )
       )}
       disabled={disabled || (readonlyAsDisabled && readonly)}
       name={name}
@@ -50,4 +53,10 @@ const SchemaPathSuggester = ({
   );
 };
 
-export default SchemaPathSuggester;
+function mapStateToProps(state) {
+  return {
+    formuleState: state.builder.get("formuleState"),
+  };
+}
+
+export default connect(mapStateToProps)(SchemaPathSuggester);

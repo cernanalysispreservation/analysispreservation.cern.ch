@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import Icon from "@ant-design/icons";
+import CAPDeposit from "./services/CAPDeposit";
+import CapSvg from "./services/svg/CapSvg";
 import axios from "../../../axios";
+import OrcidSvg from "./services/svg/OrcidSvg";
+import RorSvg from "./services/svg/RorSvg";
+import ZenodoSvg from "./services/svg/ZenodoSvg";
 import Ror from "./services/Ror";
 import Zenodo from "./services/Zenodo";
 import Orcid from "./services/Orcid";
-import { DeleteOutlined } from "@ant-design/icons";
-import OrcidSvg from "./services/svg/OrcidSvg";
-import ZenodoSvg from "./services/svg/ZenodoSvg";
-import RorSvg from "./services/svg/RorSvg";
-import Icon from "@ant-design/icons";
-import CAPDeposit from "./services/CAPDeposit";
-import CAPLogo from "./services/svg/capLogo";
+
+// TODO: This component needs to be rethought: we either keep it like this or we separate
+// the cap records and cap deposits fetchers into a different field
 
 const SERVICES = {
   orcid: {
@@ -31,16 +34,16 @@ const SERVICES = {
   capRecords: {
     name: "CAP Records",
     url: "/api/records/",
-    svg: CAPLogo,
+    svg: CapSvg,
   },
   capDeposits: {
     name: "CAP Deposits",
     url: "/api/deposits/",
-    svg: CAPLogo,
+    svg: CapSvg,
   },
 };
 
-const ServiceGetter = ({ formData = {}, uiSchema = {}, onChange }) => {
+const IdFetcher = ({ formData = {}, uiSchema, onChange }) => {
   const [service, setService] = useState();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
@@ -167,6 +170,4 @@ const ServiceGetter = ({ formData = {}, uiSchema = {}, onChange }) => {
   );
 };
 
-ServiceGetter.propTypes = {};
-
-export default ServiceGetter;
+export default IdFetcher;
