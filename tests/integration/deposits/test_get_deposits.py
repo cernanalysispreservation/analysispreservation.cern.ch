@@ -1085,7 +1085,7 @@ def test_get_deposits_with_range_query(
 def test_get_deposit_when_superuser_returns_deposit_that_he_even_has_no_access_to(
     client, users, auth_headers_for_superuser, create_deposit
 ):
-    deposit = create_deposit(users['alice_user'], 'alice')
+    deposit = create_deposit(users['lhcb_user'], 'lhcb')
 
     resp = client.get(
         '/deposits/{}'.format(deposit['_deposit']['id']),
@@ -1098,8 +1098,8 @@ def test_get_deposit_when_superuser_returns_deposit_that_he_even_has_no_access_t
 def test_get_deposit_when_owner_returns_deposit(
     client, users, auth_headers_for_user, create_deposit
 ):
-    user = users['alice_user']
-    deposit = create_deposit(user, 'alice')
+    user = users['lhcb_user']
+    deposit = create_deposit(user, 'lhcb')
 
     resp = client.get(
         '/deposits/{}'.format(deposit['_deposit']['id']),
@@ -1112,8 +1112,8 @@ def test_get_deposit_when_owner_returns_deposit(
 def test_get_deposit_when_other_member_of_collaboration_returns_403(
     client, users, auth_headers_for_user, create_deposit
 ):
-    user, other_user = users['alice_user'], users['alice_user2']
-    deposit = create_deposit(user, 'alice')
+    user, other_user = users['lhcb_user'], users['lhcb_user2']
+    deposit = create_deposit(user, 'lhcb')
 
     resp = client.get(
         '/deposits/{}'.format(deposit['_deposit']['id']),
@@ -1127,8 +1127,8 @@ def test_get_deposit_when_other_member_of_collaboration_returns_403(
 def test_get_deposit_when_user_has_read_or_admin_acces_can_see_deposit(
     action, client, users, auth_headers_for_user, create_deposit
 ):
-    user, other_user = users['alice_user'], users['alice_user2']
-    deposit = create_deposit(user, 'alice')
+    user, other_user = users['atlas_user'], users['atlas_user2']
+    deposit = create_deposit(user, 'atlas')
     pid = deposit['_deposit']['id']
     permissions = [
         {'email': other_user.email, 'type': 'user', 'op': 'add', 'action': action}
@@ -1153,9 +1153,10 @@ def test_get_deposit_when_user_has_read_or_admin_acces_can_see_deposit(
 def test_get_deposit_when_user_is_member_of_egroup_with_read_or_admin_acces_can_see_deposit(
     action, client, users, auth_headers_for_user, create_deposit
 ):
-    user, other_user = users['alice_user'], users['lhcb_user']
+    user = users['atlas_user']
+    other_user = users['lhcb_user']
     add_role_to_user(other_user, 'some-egroup@cern.ch')
-    deposit = create_deposit(user, 'alice')
+    deposit = create_deposit(user, 'atlas')
     pid = deposit['_deposit']['id']
     permissions = [
         {

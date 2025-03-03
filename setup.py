@@ -58,6 +58,7 @@ install_requires = [
     'Flask-Debugtoolbar',
     'flask-wtf==0.15.1',
     'flask-login==0.4.1',
+    'flask-mail<0.10.0',
 
     # CAP specific libraries
     'jsonref>=1.0.0',

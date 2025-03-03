@@ -1867,7 +1867,8 @@ def test_patch_notifications_config(
         headers=json_headers + auth_headers_for_user(owner),
     )
     assert resp.status_code == 400
-    assert resp.json['message'] == 'Could not apply json-patch to object: string indices must be integers'
+    assert resp.json['message'] == ('Could not apply json-patch to object: '
+        'Document is expected to be sequence of operations, got a sequence of strings.')
 
 
 def test_post_notifications_config(

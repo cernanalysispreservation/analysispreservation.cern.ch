@@ -126,7 +126,7 @@ def default_config():
                 DEBUG=False,
                 TESTING=True,
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken',
-                MAIL_DEFAULT_SENDER="analysis-preservation-support@cern.ch",
+                MAIL_DEFAULT_SENDER="testtest@cern0.ch",
                 CADI_REGEX="^[A-Z]{3}-[0-9]{2}-[0-9]{3}$",
                 CMS_STATS_COMMITEE_AND_PAGS=dict({
                     'ABC': {
