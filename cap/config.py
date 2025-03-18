@@ -22,9 +22,10 @@ from invenio_deposit.scopes import write_scope
 from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
 from invenio_oauthclient.contrib.cern_openid import REMOTE_APP as CERN_OPENID_REMOTE_APP
-from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
+from invenio_records_rest.config import RECORDS_REST_ENDPOINTS, RECORDS_REST_DEFAULT_SORT
 from invenio_records_rest.facets import range_filter, terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
+from invenio_search.utils import prefix_index
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
 
@@ -310,6 +311,17 @@ DEPOSIT_REST_SORT_OPTIONS['deposits']['analysis_stage'] = {
 }
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
+records_sort_options_keys = list(RECORDS_REST_SORT_OPTIONS.keys())
+for records_sort_options_key in records_sort_options_keys:
+    RECORDS_REST_SORT_OPTIONS[prefix_index(records_sort_options_key, prefix=os.environ.get('SEARCH_INDEX_PREFIX', ''))] = \
+        RECORDS_REST_SORT_OPTIONS[records_sort_options_key]
+
+records_sort_keys = list(RECORDS_REST_DEFAULT_SORT.keys())
+for records_sort_key in records_sort_keys:
+    RECORDS_REST_DEFAULT_SORT[prefix_index(records_sort_key, prefix=os.environ.get('SEARCH_INDEX_PREFIX', ''))] = \
+        RECORDS_REST_DEFAULT_SORT[records_sort_key]
+
+
 #: Record search facets.
 # for aggregations, only ones starting with facet_ will be displayed on a page
 CAP_FACETS = {
@@ -488,7 +500,10 @@ CAP_FACETS = {
     },
 }
 
-RECORDS_REST_FACETS = {'deposits': CAP_FACETS, 'records': CAP_FACETS}
+RECORDS_REST_FACETS = {
+    prefix_index('deposits', prefix=os.environ.get('SEARCH_INDEX_PREFIX', ''), app=1): CAP_FACETS,
+    prefix_index('records', prefix=os.environ.get('SEARCH_INDEX_PREFIX', ''), app=1): CAP_FACETS
+}
 
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
@@ -835,6 +850,7 @@ FILES_REST_FILE_TAGS_HEADER = 'X-CAP-File-Tags'
 # =======
 #: Flag for not replacing refs when creating deposit
 INDEXER_REPLACE_REFS = False
+INDEXER_RECORD_TO_INDEX = "cap.modules.schemas.utils._record_to_index"
 
 # LHCB DB files location
 # ======================

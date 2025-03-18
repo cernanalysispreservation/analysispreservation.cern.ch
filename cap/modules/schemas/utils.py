@@ -29,6 +29,8 @@ from functools import wraps
 from flask import abort, jsonify
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from jsonpatch import JsonPatchConflict
+from invenio_indexer.utils import default_record_to_index
+from invenio_search.utils import prefix_index
 
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
@@ -239,3 +241,14 @@ def schema_read_permission(f):
         )
 
     return wrapper
+
+def _record_to_index(record):
+    """Get index given a record.
+
+    It tries to extract from `record['$schema']` the index.
+    If it fails, return the default value.
+    :param record: The record object.
+    :returns: The index.
+    """
+    index = default_record_to_index(record)
+    return prefix_index(index)

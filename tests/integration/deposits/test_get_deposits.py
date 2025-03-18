@@ -379,8 +379,24 @@ def test_get_deposits_with_correct_search_links_in_debug_mode(
         }
 
 
-def test_get_deposits_with_facets(client, users, auth_headers_for_user, create_deposit):
+def test_get_deposits_with_facets(env_config, client, users, auth_headers_for_user, create_deposit):
     user = users['cms_user']
+
+
+    # TOFIX: `create_deposit` needed to create the aliaases for indices in search
+    create_deposit(
+        user,
+        'cms-analysis',
+        {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+            'basic_info': {
+                'analysis_number': 'dream_team',
+            },
+        },
+        files={'file_1.txt': BytesIO(b'Hello world!')},
+        experiment='CMS',
+    )
+
     resp = client.get(
         '/deposits/',
         headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
@@ -415,6 +431,22 @@ def test_get_deposits_with_facets_containing_meta(
     client, users, auth_headers_for_user, create_deposit
 ):
     user = users['cms_user']
+
+    # TOFIX: `create_deposit` needed to create the aliaases for indices in search
+    create_deposit(
+        user,
+        'cms-analysis',
+        {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+            'basic_info': {
+                'analysis_number': 'dream_team',
+            },
+        },
+        files={'file_1.txt': BytesIO(b'Hello world!')},
+        experiment='CMS',
+    )
+
+
     resp = client.get(
         '/deposits/',
         headers=[('Accept', 'application/basic+json')] + auth_headers_for_user(user),
@@ -1077,6 +1109,17 @@ def test_get_deposits_with_range_query(
     assert len(hits) == 2
     assert hits[0]['metadata']['analysis_context']['next_deadline_date'] == '2018-02-01'
     assert hits[1]['metadata']['analysis_context']['next_deadline_date'] == '2018-01-01'
+
+    url = '/deposits/?q=next_deadline_date%3A%5B2018-01-01%20TO%202019-01-01%5D&sort=-mostrecent'
+    resp = client.get(url, headers=headers)
+
+    assert resp.status_code == 200
+
+    hits = resp.json['hits']['hits']
+
+    assert len(hits) == 2
+    assert hits[0]['metadata']['analysis_context']['next_deadline_date'] == '2018-01-01'
+    assert hits[1]['metadata']['analysis_context']['next_deadline_date'] == '2018-02-01'
 
 
 ###########################

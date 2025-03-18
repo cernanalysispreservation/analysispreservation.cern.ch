@@ -25,6 +25,7 @@
 
 from opensearch_dsl import Search
 from invenio_search.proxies import current_search_client as es
+from invenio_search.utils import prefix_index
 
 DAS_DATASETS_ES_CONFIG = {
     'alias': 'das-datasets',
@@ -55,12 +56,13 @@ class DASSearch(Search):
     class Meta:
         """Meta class."""
 
-        index = DAS_DATASETS_ES_CONFIG['alias']
         fields = ('name', )
 
     def __init__(self, **kwargs):
         """Use Meta to set kwargs defaults."""
-        kwargs.setdefault('index', getattr(self.Meta, 'index', None))
+        prefixed_index = prefix_index(DAS_DATASETS_ES_CONFIG['alias'])
+
+        kwargs.setdefault('index', prefixed_index)
         kwargs.setdefault('using', es)
 
         super(DASSearch, self).__init__(**kwargs)

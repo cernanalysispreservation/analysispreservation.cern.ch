@@ -27,6 +27,7 @@ from sqlalchemy.exc import IntegrityError
 from cap.modules.schemas.models import Schema
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
+from invenio_search.utils import prefix_index
 from pytest import mark, raises
 
 from conftest import add_role_to_user, _datastore
@@ -259,11 +260,11 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     )
     assert 'records-cms-schema-v1.0.0' in current_search.mappings.keys()
 
-    assert es.indices.exists('deposits-records-cms-schema-v1.0.0')
-    assert es.indices.exists('records-cms-schema-v1.0.0')
+    assert es.indices.exists(prefix_index('deposits-records-cms-schema-v1.0.0'))
+    assert es.indices.exists(prefix_index('records-cms-schema-v1.0.0'))
 
-    assert es.indices.get_mapping('records-cms-schema-v1.0.0') == {
-        'records-cms-schema-v1.0.0':
+    assert es.indices.get_mapping(prefix_index('records-cms-schema-v1.0.0')) == {
+        prefix_index('records-cms-schema-v1.0.0'):
             {
                 'mappings': {
                     'properties': {
@@ -275,8 +276,8 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
             }
     }
 
-    assert es.indices.get_mapping('deposits-records-cms-schema-v1.0.0') == {
-        'deposits-records-cms-schema-v1.0.0':
+    assert es.indices.get_mapping(prefix_index('deposits-records-cms-schema-v1.0.0')) == {
+        prefix_index('deposits-records-cms-schema-v1.0.0'):
             {
                 'mappings':
                     {
@@ -292,8 +293,8 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     db.session.delete(schema)
     db.session.commit()
 
-    assert not es.indices.exists('deposits-records-cms-schema-v1.0.0')
-    assert not es.indices.exists('records-cms-schema-v1.0.0')
+    assert not es.indices.exists(prefix_index('deposits-records-cms-schema-v1.0.0'))
+    assert not es.indices.exists(prefix_index('records-cms-schema-v1.0.0'))
 
     assert 'deposits-records-cms-schema-v1.0.0' not in current_search.mappings.keys(
     )

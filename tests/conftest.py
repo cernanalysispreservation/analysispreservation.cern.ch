@@ -49,6 +49,7 @@ from invenio_oauth2server.models import Client, Token
 from invenio_oauthclient.models import RemoteAccount
 from invenio_pidstore.resolver import Resolver
 from invenio_search import current_search, current_search_client
+from invenio_search.utils import prefix_index
 
 from click.testing import CliRunner
 from sqlalchemy_utils.functions import create_database, database_exists
@@ -103,6 +104,7 @@ def env_config(instance_path):
     """Default instance path."""
     os.environ.update(APP_INSTANCE_PATH=os.environ.get('INSTANCE_PATH',
                                                        instance_path), )
+    os.environ.update(SEARCH_INDEX_PREFIX='testing-' )
 
     return os.environ
 
@@ -125,6 +127,7 @@ def default_config():
                 ACCESS_CACHE=None,
                 DEBUG=False,
                 TESTING=True,
+                SEARCH_INDEX_PREFIX="testing-",
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken',
                 MAIL_DEFAULT_SENDER="testtest@cern0.ch",
                 CADI_REGEX="^[A-Z]{3}-[0-9]{2}-[0-9]{3}$",
@@ -170,7 +173,7 @@ def create_app():
 
 
 @pytest.fixture(scope='session')
-def base_app(create_app, default_config, request):
+def base_app(create_app, env_config, default_config, request):
     app_ = create_app(**default_config)
 
     with app_.app_context():
@@ -315,13 +318,13 @@ def clear_caches():
 def es(base_app):
     """Provide Search access."""
     list(current_search.delete(ignore=[400, 404]))
-    current_search_client.indices.delete(index='*')
-    list(current_search.create())
+    current_search_client.indices.delete(index=prefix_index('*'))
+    # list(current_search.create())
     current_search_client.indices.refresh()
     try:
         yield current_search_client
     finally:
-        current_search_client.indices.delete(index='*')
+        current_search_client.indices.delete(index=prefix_index('*'))
 
 
 @pytest.fixture

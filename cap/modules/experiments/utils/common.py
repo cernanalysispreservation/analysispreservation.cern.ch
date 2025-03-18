@@ -34,6 +34,7 @@ from cachetools.func import ttl_cache
 from opensearchpy import helpers
 from flask import current_app
 from invenio_search.proxies import current_search_client as es
+from invenio_search.utils import prefix_index
 
 
 def kinit(principal, keytab):
@@ -136,10 +137,16 @@ def recreate_es_index_from_source(alias,
         for _, g in groupby(iterable, lambda _: next(c) // chunk_size):
             yield g
 
-    if es.indices.exists('{}-v1'.format(alias)):
-        old_index, new_index = ('{}-v1'.format(alias), '{}-v2'.format(alias))
+    if es.indices.exists(prefix_index('{}-v1'.format(alias))):
+        old_index, new_index = (
+            prefix_index('{}-v1'.format(alias)),
+            prefix_index('{}-v2'.format(alias))
+        )
     else:
-        old_index, new_index = ('{}-v2'.format(alias), '{}-v1'.format(alias))
+        old_index, new_index = (
+            prefix_index('{}-v2'.format(alias)),
+            prefix_index('{}-v1'.format(alias))
+        )
 
     # recreate new index
     if es.indices.exists(new_index):

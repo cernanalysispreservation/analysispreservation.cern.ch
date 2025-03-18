@@ -40,6 +40,7 @@ from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_oauth2server.models import Token
 from invenio_search import current_search_client
+from invenio_search.utils import prefix_index
 from jsonschema import Draft7Validator, exceptions
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
@@ -377,7 +378,7 @@ def validate(
 
     # get all the records for this specific schema/type combination
     records = current_search_client.search(
-        index=f"{search_path}-{schema.name}-v{schema.version}",
+        index=prefix_index(f"{search_path}-{schema.name}-v{schema.version}"),
         body={
             "query": {
                 "bool": {

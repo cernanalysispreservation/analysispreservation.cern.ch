@@ -27,6 +27,7 @@ import re
 
 from opensearch_dsl import Q, Search
 from invenio_search.proxies import current_search_client as es
+from invenio_search.utils import prefix_index
 
 CMS_TRIGGERS_ES_CONFIG = {
     'alias': 'cms-triggers',
@@ -69,12 +70,13 @@ class CMSTriggerSearch(Search):
     class Meta:
         """Meta class."""
 
-        index = CMS_TRIGGERS_ES_CONFIG['alias']
         fields = ('trigger', )
 
     def __init__(self, **kwargs):
         """Use Meta to set kwargs defaults."""
-        kwargs.setdefault('index', getattr(self.Meta, 'index', None))
+        prefixed_index = prefix_index(CMS_TRIGGERS_ES_CONFIG['alias'])
+
+        kwargs.setdefault('index', prefixed_index)
         kwargs.setdefault('using', es)
 
         super(CMSTriggerSearch, self).__init__(**kwargs)

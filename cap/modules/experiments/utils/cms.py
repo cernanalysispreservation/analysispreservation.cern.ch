@@ -32,6 +32,7 @@ from google.auth.exceptions import RefreshError
 
 from flask import current_app
 from invenio_db import db
+from invenio_search.utils import prefix_index
 
 from cap.modules.deposit.errors import DepositDoesNotExist,\
     DepositValidationError
@@ -60,7 +61,7 @@ def cache_cms_triggers_in_es_from_file(source):
 
     :param source: list of dict with dataset, year and trigger
     """
-    recreate_es_index_from_source(alias=CMS_TRIGGERS_ES_CONFIG['alias'],
+    recreate_es_index_from_source(alias=prefix_index(CMS_TRIGGERS_ES_CONFIG['alias']),
                                   mapping=CMS_TRIGGERS_ES_CONFIG['mappings'],
                                   settings=CMS_TRIGGERS_ES_CONFIG['settings'],
                                   source=source)

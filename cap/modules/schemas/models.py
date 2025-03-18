@@ -36,6 +36,7 @@ from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_rest.errors import FieldError
 from invenio_search import current_search
 from invenio_search import current_search_client as es
+from invenio_search.utils import prefix_index
 from jsonschema import Draft7Validator
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
@@ -508,14 +509,15 @@ def name_to_es_name(name):
 
 def create_index(index_name, mapping_body, aliases):
     """Create index in opensearch, add under given aliases."""
-    if not es.indices.exists(index_name):
-        current_search.mappings[index_name] = {}  # invenio search needs it
+    prefixed_index = prefix_index(index_name)
+    if not es.indices.exists(prefixed_index):
+        current_search.mappings[prefixed_index] = {}  # invenio search needs it
 
-        es.indices.create(index=index_name, body=mapping_body, ignore=False)
+        es.indices.create(index=prefixed_index, body=mapping_body, ignore=False)
 
         for alias in aliases:
             es.indices.update_aliases(
-                {'actions': [{'add': {'index': index_name, 'alias': alias}}]}
+                {'actions': [{'add': {'index': prefixed_index, 'alias': prefix_index(alias)}}]}
             )
 
 
@@ -558,7 +560,10 @@ def after_insert_schema(target, value, schema):
 def before_delete_schema(mapper, connect, schema):
     """On schema delete, delete corresponding indexes and aliases in ES."""
     if schema.is_indexed:
-        for index in (schema.record_index, schema.deposit_index):
+        for index in (
+            prefix_index(schema.record_index), 
+            prefix_index(schema.deposit_index)
+        ):
             if es.indices.exists(index):
                 es.indices.delete(index)
 
