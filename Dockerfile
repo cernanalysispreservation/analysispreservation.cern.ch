@@ -30,6 +30,9 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+RUN apt-get update -q \
+    && apt-get install -y kstart krb5-kdc krb5-admin-server krb5-multidev
+
 # Install Invenio
 ENV WORKING_DIR=/opt/cap
 ENV INVENIO_INSTANCE_PATH=${WORKING_DIR}/var/instance
@@ -59,6 +62,7 @@ RUN mkdir -p ${INVENIO_INSTANCE_PATH}
 RUN mkdir -p ${CAP_FILES_DIR}
 
 RUN pip install -e .
+RUN pip install gunicorn
 
 RUN cat ./docker/base/CERN_Root_Certification_Authority_2.pem >>  /usr/local/lib/python3.10/site-packages/certifi/cacert.pem
 
@@ -70,7 +74,6 @@ ENV APP_GITHUB_OAUTH_ACCESS_TOKEN=${APP_GITHUB_OAUTH_ACCESS_TOKEN}
 ARG APP_GITLAB_OAUTH_ACCESS_TOKEN
 ENV APP_GITLAB_OAUTH_ACCESS_TOKEN=${APP_GITLAB_OAUTH_ACCESS_TOKEN}
 
-RUN pip install gunicorn
 
 # Set folder permissions
 RUN chgrp -R 0 ${WORKING_DIR} ${CAP_FILES_DIR} && \

@@ -9,7 +9,7 @@ version: "2.3"
 services:
   nginx:
     restart: "always"
-    image: gitlab-registry.cern.ch/analysispreservation/nginx-ui:ant-e2e
+    image: gitlab-registry.cern.ch/analysispreservation/nginx-ui:next-e2e
     ports:
       - "80:80"
       - "443:443"
@@ -18,6 +18,7 @@ services:
     volumes:
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
       - ./docker/nginx/ssl:/etc/ssl
+      - ./docker/nginx/config.js:/usr/share/nginx/html/config.js
   cypress:
     image: "cypress/included:12.10.0"
     # entrypoint: cypress run --headless --browser chrome
@@ -43,7 +44,7 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
+    command: gunicorn -b 0.0.0.0:5000 cap.wsgi:application
     ports:
       - "5000"
     volumes:
@@ -80,7 +81,7 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini --py-autoreload=1 --http-timeout=3800 --socket-timeout=3800 --honour-stdin
+    command: gunicorn -b 0.0.0.0:5000 cap.wsgi:application
     ports:
       - "5000"
     environment:

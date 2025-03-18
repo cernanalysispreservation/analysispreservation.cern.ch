@@ -18,7 +18,7 @@ services:
   app-image:
     extends:
       service: app-base
-    image: gitlab-registry.cern.ch/analysispreservation/analysispreservation-openshift/app:master-e2e
+    image: gitlab-registry.cern.ch/analysispreservation/analysispreservation-openshift/app:next-e2e
   app-base:
     environment:
       - "INVENIO_ACCOUNTS_SESSION_REDIS_URL=redis://cache:6379/1"

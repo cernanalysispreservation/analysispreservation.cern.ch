@@ -2,7 +2,7 @@ name: Build and export CAP server image
 
 on:
   push:
-    branches: ['master', 'dev', 'qa', 'test']
+    branches: ["master", "dev", "qa", "test", "next"]
     paths-ignore:
       - "ui/**"
 

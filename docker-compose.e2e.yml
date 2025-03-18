@@ -17,6 +17,10 @@ services:
     depends_on:
       - web-api
       - frontend
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/ssl
+      - ./docker/nginx/config.js:/usr/share/nginx/html/config.js
   cypress:
     image: "cypress/included:12.10.0"
     # entrypoint: cypress run --headless --browser chrome
