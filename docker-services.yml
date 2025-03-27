@@ -40,6 +40,7 @@ services:
       - "CACHE_REDIS_HOST=cache"
       - "INVENIO_CACHE_REDIS_HOST=cache"
       - "INVENIO_ACCESS_SESSION_REDIS_HOST=cache"
+      - "INVENIO_SEARCH_INDEX_PREFIX=docker-"
   lb:
     build: ./docker/haproxy/
     image: cap-lb

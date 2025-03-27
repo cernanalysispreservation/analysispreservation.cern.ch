@@ -50,6 +50,7 @@ include docker/harbour/ui/Dockerfile
 include docker/base/Dockerfile
 include docker/haproxy/Dockerfile
 include docker/nginx/Dockerfile
+include docker/nginxdev/Dockerfile
 include docker/postgres/Dockerfile
 include scripts/bootstrap
 include scripts/console
@@ -93,3 +94,9 @@ recursive-include ui *.yarnclean
 recursive-include ui *.yml
 recursive-include ui *.editorconfig
 prune docs/_build
+
+# added by check-manifest
+recursive-include docker *.js
+recursive-include ui *.jsx
+recursive-include ui *.json
+recursive-include ui *.js
