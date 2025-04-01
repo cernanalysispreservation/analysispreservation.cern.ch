@@ -62,7 +62,6 @@ def cap_search_factory(self, search, query_parser=None):
 
         query = Q('query_string',
                   query=_escape_qstr(qstr),
-                  analyzer="lowercase_whitespace_analyzer",
                   analyze_wildcard=True,
                   default_operator='AND') if qstr else Q()
 
