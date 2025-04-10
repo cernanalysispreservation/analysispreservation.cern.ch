@@ -29,7 +29,7 @@ const FacetItem = ({
                   onChange={e => onChange(category, e)}
                   checked={isAggSelected(
                     selectedAggs[category],
-                    item.get("key")
+                    `${item.get("key")}`
                   )}
                 >
                   <EllipsisText
@@ -39,8 +39,8 @@ const FacetItem = ({
                     type="secondary"
                   >
                     {item.has("__display_name__")
-                      ? item.get("__display_name__")
-                      : item.get("key")}
+                      ? `${item.get("__display_name__")}`
+                      : `${item.get("key")}`}
                   </EllipsisText>
                 </Checkbox>
                 <Tag>
