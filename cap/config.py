@@ -374,6 +374,24 @@ CAP_FACETS = {
             },
             'meta': {'title': 'SM Analysis Characteristics'},
         },
+        'facet_measurement_type': {
+            'terms': {
+                'field': 'general.measurement_type'  # noqa
+            },
+            'meta': {'title': 'Measurement type'},
+        },
+        'facet_power_mW': {
+            'terms': {
+                'field': 'beamline_parameters.laser_parameters.power_mW'  # noqa
+            },
+            'meta': {'title': 'Power (in mw)'},
+        },
+        'facet_isotope': {
+            'terms': {
+                'field': 'general.isotope'  # noqa
+            },
+            'meta': {'title': 'Isotope'},
+        },
         'facet_interpretation': {
             'terms': {
                 'size': 30,
@@ -401,6 +419,18 @@ CAP_FACETS = {
                 "min_doc_count": 1,
             },
             'meta': {'title': 'Next Deadline Date', 'type': 'range'},
+        },
+        "facet_year": {
+            "terms": {
+                "field": "general.year"
+            },
+            'meta': {'title': 'Data Taking Year'},
+        },
+        "facet_wavelength_nm": {
+            "terms": {
+                "field": "beamline_parameters.laser_parameters.wavelength_nm"
+            },
+            'meta': {'title': 'wavelength_nm'},
         },
         "facet_target_date": {
             "date_histogram": {
@@ -457,6 +487,7 @@ CAP_FACETS = {
             format='yyyy',
             end_date_math='/y',
         ),
+        'year': terms_filter('general.year'),
         "target_date": range_filter(
             'initial.target_date',
             format='yyyy-MM-dd',
@@ -480,6 +511,16 @@ CAP_FACETS = {
         'interpretation': terms_filter(
             'basic_info.analysis_keywords.interpretation.keyword'
         ),
+        'measurement_type': terms_filter(
+            'general.measurement_type'
+        ),
+        'power_mW': terms_filter(
+            'beamline_parameters.laser_parameters.power_mW'
+        ),
+        'isotope': terms_filter(
+            'general.isotope'
+        ),
+        'wavelength': terms_filter("beamline_parameters.laser_parameters.wavelength_nm"),
         'further_search_categorisation': terms_filter(
             'basic_info.analysis_keywords.further_search_categorisation.keyword'
         ),  # noqa
