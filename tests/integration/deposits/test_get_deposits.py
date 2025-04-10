@@ -416,12 +416,17 @@ def test_get_deposits_with_facets(env_config, client, users, auth_headers_for_us
             'facet_further_search_categorisation',
             'facet_further_search_categorisation_heavy_ion',
             'facet_interpretation',
+            'facet_isotope',
+            'facet_measurement_type',
             'facet_next_deadline_date',
             'facet_physics_theme',
+            'facet_power_mW',
             'facet_sm_analysis_characteristics',
             'facet_stage',
             'facet_target_date',
+            'facet_wavelength_nm',
             'facet_collection',
+            'facet_year',
             'particles',
         ]
     )
