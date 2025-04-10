@@ -53,9 +53,9 @@ const Results = ({ results, loading }) => {
 
       <Space size="small" style={{ marginBottom: "10px", flexWrap: "wrap" }}>
         {[
-          item.getIn(["schema", "name"]),
-          new Date(item.get("created")).toLocaleString("en-GB", timeOptions),
-          ...item.get("labels"),
+          ...(item.getIn(["schema", "name"]) ? [item.getIn(["schema", "name"])] : []),
+          ...(item.get("created") ? [new Date(item.get("created")).toLocaleString("en-GB", timeOptions)] : []),
+          ...(item.get("labels") || []),
         ].map(label => (
           <Tag key={label}>{label}</Tag>
         ))}
