@@ -123,7 +123,7 @@ def ldap_egroup_mail():
 
     resp, status = _ldap(query, sf, by='egroup')
     data = [x[1]['mail'][0] for x in resp]
-    return jsonify(data)
+    return jsonify(str(data))
 
 
 def _oidc(endpoint, query):
