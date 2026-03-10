@@ -28,6 +28,8 @@ import pytest
 
 import json
 from cap.modules.deposit.api import CAPDeposit
+from invenio_access.models import ActionUsers
+from cap.modules.experiments.permissions import cms_pag_convener_action
 
 default_headers = [('Content-Type', 'application/json'),
                    ('Accept', 'application/form+json')]
@@ -316,3 +318,138 @@ def test_review_and_published_revision_ids(
 
         _, record = rec.fetch_published()
         assert record.revision_id == 1
+
+
+def test_review_questionnaire_pag_convener_all_can_review(
+        app, client, db, users, auth_headers_for_user,
+        create_deposit, create_schema):
+    """PAG convener with 'all' access can review questionnaire deposits."""
+    owner = users['cms_user']
+    convener = users['cms_user2']
+
+    create_schema('cms-stats-questionnaire', experiment='CMS',
+                  version="0.0.1", config={"reviewable": True})
+
+    deposit = create_deposit(
+        owner, 'cms-analysis', {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                       'deposits/records/cms-stats-questionnaire-v0.0.1.json',
+            'general_title': 'test questionnaire',
+            'analysis_context': {'wg': 'ABC'}
+        }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    # convener without pag access cannot review
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "test"}),
+        headers=auth_headers_for_user(convener) + default_headers)
+    assert resp.status_code == 403
+
+    # grant pag convener access (all PAGs)
+    with db.session.begin_nested():
+        db.session.add(ActionUsers.allow(
+            cms_pag_convener_action(None), user=convener))
+    db.session.commit()
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "test"}),
+        headers=auth_headers_for_user(convener) + default_headers)
+    assert resp.status_code == 201
+
+
+def test_review_questionnaire_pag_convener_wg_can_review(
+        app, client, db, users, auth_headers_for_user,
+        create_deposit, create_schema):
+    """PAG convener with matching WG access can review questionnaire."""
+    owner = users['cms_user']
+    convener = users['cms_user2']
+
+    create_schema('cms-stats-questionnaire', experiment='CMS',
+                  version="0.0.1", config={"reviewable": True})
+
+    deposit = create_deposit(
+        owner, 'cms-analysis', {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                       'deposits/records/cms-stats-questionnaire-v0.0.1.json',
+            'general_title': 'test questionnaire',
+            'analysis_context': {'wg': 'ABC'}
+        }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    # grant pag convener access for specific WG
+    with db.session.begin_nested():
+        db.session.add(ActionUsers.allow(
+            cms_pag_convener_action('abc'), user=convener))
+    db.session.commit()
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "test"}),
+        headers=auth_headers_for_user(convener) + default_headers)
+    assert resp.status_code == 201
+
+
+def test_review_questionnaire_pag_convener_wrong_wg_cannot_review(
+        app, client, db, users, auth_headers_for_user,
+        create_deposit, create_schema):
+    """PAG convener with different WG access cannot review questionnaire."""
+    owner = users['cms_user']
+    convener = users['cms_user2']
+
+    create_schema('cms-stats-questionnaire', experiment='CMS',
+                  version="0.0.1", config={"reviewable": True})
+
+    deposit = create_deposit(
+        owner, 'cms-analysis', {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                       'deposits/records/cms-stats-questionnaire-v0.0.1.json',
+            'general_title': 'test questionnaire',
+            'analysis_context': {'wg': 'ABC'}
+        }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    # grant pag convener access for a different WG
+    with db.session.begin_nested():
+        db.session.add(ActionUsers.allow(
+            cms_pag_convener_action('xyz'), user=convener))
+    db.session.commit()
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "test"}),
+        headers=auth_headers_for_user(convener) + default_headers)
+    assert resp.status_code == 403
+
+
+def test_review_non_questionnaire_no_extra_needs(
+        app, client, db, users, auth_headers_for_user,
+        create_deposit, create_schema):
+    """Non-questionnaire deposits don't get extra PAG convener needs."""
+    owner = users['cms_user']
+    other_user = users['cms_user2']
+
+    create_schema('other-schema', experiment='CMS',
+                  config={"reviewable": True})
+
+    deposit = create_deposit(
+        owner, 'other-schema', {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                       'deposits/records/other-schema-v1.0.0.json',
+            'general_title': 'test',
+            'analysis_context': {'wg': 'ABC'}
+        }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    # PAG convener access should NOT grant review on non-questionnaire
+    with db.session.begin_nested():
+        db.session.add(ActionUsers.allow(
+            cms_pag_convener_action(None), user=other_user))
+    db.session.commit()
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "test"}),
+        headers=auth_headers_for_user(other_user) + default_headers)
+    assert resp.status_code == 403

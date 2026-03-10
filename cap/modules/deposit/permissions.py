@@ -176,6 +176,20 @@ class DepositPermission(Permission):
 
         super(DepositPermission, self).__init__(*_needs)
 
+    @staticmethod
+    def get_schema_needs_for_questionnaire(record):
+        """Extra permissions based on schema's record fields."""
+        _needs = set()
+
+        if record.schema.name == 'cms-stats-questionnaire':
+            _needs.add(cms_pag_convener_action(None))
+
+            wg = record.get("analysis_context", {}).get("wg")
+            if wg:
+                _needs.add(cms_pag_convener_action(wg.lower()))
+
+        return _needs
+
 
 class CreateDepositPermission(Permission):
     """Deposit create permission."""
@@ -225,22 +239,7 @@ class ReadDepositPermission(DepositPermission):
     def __init__(self, record):
         """Initialize state."""
         extra_needs = self.get_schema_needs_for_questionnaire(record)
-
         super(ReadDepositPermission, self).__init__(record, 'read', extra_needs)
-
-    @staticmethod
-    def get_schema_needs_for_questionnaire(record):
-        """Create deposit permissions are based on schema's permissions."""
-        _needs = set()
-
-        if record.schema.name == 'cms-stats-questionnaire':
-            _needs.add(cms_pag_convener_action(None))
-
-            wg = record.get("analysis_context", {}).get("wg")
-            if wg:
-                _needs.add(cms_pag_convener_action(wg.lower()))
-
-        return _needs
 
 
 class UpdateDepositPermission(DepositPermission):
@@ -272,7 +271,10 @@ class ReviewDepositPermission(DepositPermission):
 
     def __init__(self, record):
         """Initialize state."""
-        super(ReviewDepositPermission, self).__init__(record, 'review')
+        extra_needs = self.get_schema_needs_for_questionnaire(record)
+        super(ReviewDepositPermission, self).__init__(
+            record, 'review', extra_needs
+        )
 
 
 class DepositFilesPermission(Permission):
