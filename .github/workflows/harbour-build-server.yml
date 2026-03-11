@@ -10,7 +10,7 @@ jobs:
   build-image:
     needs: python-tests
     name: Build and export server image
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       image-id: ${{ steps.build.outputs.image-id }}
 
@@ -39,7 +39,7 @@ jobs:
   deploy:
     needs: build-image
     name: update-image
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: send event

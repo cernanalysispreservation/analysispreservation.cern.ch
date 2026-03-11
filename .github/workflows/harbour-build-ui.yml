@@ -10,7 +10,7 @@ on:
 jobs:
   build-image:
     name: Build and export ui image
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       image-id: ${{ steps.build-ui.outputs.image-id }}
 

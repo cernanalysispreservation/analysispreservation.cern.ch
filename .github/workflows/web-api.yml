@@ -12,7 +12,7 @@ on:
 
 jobs:
   lint-python-changes:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -28,7 +28,7 @@ jobs:
           darker . --check -i -L flake8
 
   python-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     services:
       redis:
         image: redis
@@ -47,7 +47,7 @@ jobs:
         ports:
           - 5672:5672
       search:
-        image: opensearchproject/opensearch:2.2.0
+        image: opensearchproject/opensearch:3.2.0
         env:
           node.name: search
           bootstrap.memory_lock: true

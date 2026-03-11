@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint-shellcheck:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -16,7 +16,7 @@ jobs:
           ./run-tests.sh --check-shellscript
 
   lint-pydocstyle:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -31,7 +31,7 @@ jobs:
           ./run-tests.sh --check-pydocstyle
 
   lint-flake8:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -46,7 +46,7 @@ jobs:
           ./run-tests.sh --check-flake8
 
   lint-black:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -63,7 +63,7 @@ jobs:
           ./run-tests.sh --check-black
 
   lint-isort:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -78,7 +78,7 @@ jobs:
           ./run-tests.sh --check-isort
 
   lint-prettier:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -93,7 +93,7 @@ jobs:
           prettier --check "ui/**/*.js"
 
   lint-check-manifest:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -108,7 +108,7 @@ jobs:
           ./run-tests.sh --check-manifest
 
   lint-commit-quality:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
