@@ -1,27 +1,75 @@
 import PropTypes from "prop-types";
-import { CheckOutlined, DiffOutlined, CloseOutlined } from "@ant-design/icons";
-import { Space, Tag, Typography } from "antd";
+import {
+  CheckOutlined,
+  DiffOutlined,
+  CloseOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
+import { Space, Tag, Tooltip, Typography } from "antd";
+
+const formatDate = (isoString) => {
+  if (!isoString) return null;
+  const date = new Date(isoString);
+  return date.toLocaleString();
+};
+
+const typeConfig = {
+  approved: {
+    icon: <CheckOutlined style={{ color: "#52c41a" }} />,
+    label: "approved",
+    color: "green",
+  },
+  request_changes: {
+    icon: <DiffOutlined style={{ color: "#1890ff" }} />,
+    label: "changes requested",
+    color: "blue",
+  },
+  declined: {
+    icon: <CloseOutlined style={{ color: "#ff4d4f" }} />,
+    label: "declined",
+    color: "red",
+  },
+};
 
 const Description = ({ review }) => {
-  const icon = {
-    approved: <CheckOutlined style={{ color: "#52c41a" }} />,
-    request_changes: <DiffOutlined style={{ color: "rgb(24, 144, 255)  " }} />,
-    declined: <CloseOutlined style={{ color: "#ff4d4f" }} />,
-  };
+  const config = typeConfig[review.type] || {};
 
-  const text = {
-    approved: "approved",
-    request_changes: "changes requested",
-    declined: "declined",
-  };
   return (
-    <Space direction="horizontal">
-      {review.resolved && <Tag color="green">Resolved</Tag>}
-      <Typography.Link href={`mailto:${review.reviewer}`}>
-        {review.reviewer}
-      </Typography.Link>
-      <Typography.Text>{icon[review.type]}</Typography.Text>
-      <Typography.Text>{text[review.type]}</Typography.Text>
+    <Space direction="vertical" size={2} style={{ width: "100%" }}>
+      <Space size={[6, 4]} wrap>
+        <Tag
+          color={config.color}
+          icon={config.icon}
+          style={{ marginRight: 0 }}
+        >
+          {config.label}
+        </Tag>
+        {review.resolved && (
+          <Tooltip
+            title={
+              review.resolved_by
+                ? `Resolved by ${review.resolved_by}${review.resolved_at ? ` on ${formatDate(review.resolved_at)}` : ""}`
+                : undefined
+            }
+          >
+            <Tag color="success">Resolved</Tag>
+          </Tooltip>
+        )}
+      </Space>
+      <Space size={4}>
+        <Typography.Link
+          href={`mailto:${review.reviewer}`}
+          style={{ fontSize: 13 }}
+        >
+          {review.reviewer}
+        </Typography.Link>
+        {review.created_at && (
+          <Typography.Text type="secondary" style={{ fontSize: 11 }}>
+            <ClockCircleOutlined style={{ marginRight: 3 }} />
+            {formatDate(review.created_at)}
+          </Typography.Text>
+        )}
+      </Space>
     </Space>
   );
 };

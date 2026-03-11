@@ -453,3 +453,214 @@ def test_review_non_questionnaire_no_extra_needs(
         data=json.dumps({"type": "request_changes", "body": "test"}),
         headers=auth_headers_for_user(other_user) + default_headers)
     assert resp.status_code == 403
+
+
+def test_review_stores_metadata(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    """Review creation stores timestamps and reviewer email."""
+    owner = users['cms_user']
+    create_schema('review-schema', experiment='CMS',
+                  config={'reviewable': True})
+
+    deposit = create_deposit(owner, 'review-schema', {
+        '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                   'deposits/records/review-schema-v1.0.0.json',
+    }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "Please fix"}),
+        headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 201
+
+    review = resp.json["review"][0]
+    assert review["reviewer"] == owner.email
+    assert review["created_at"] is not None
+    assert review["updated_at"] is not None
+    assert review["resolved"] is False
+    assert review["resolved_by"] is None
+    assert review["resolved_at"] is None
+    assert review["comments"] == []
+
+
+def test_review_resolve_stores_metadata(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    """Resolving a review stores resolved_by and resolved_at."""
+    owner = users['cms_user']
+    create_schema('review-schema', experiment='CMS',
+                  config={'reviewable': True})
+
+    deposit = create_deposit(owner, 'review-schema', {
+        '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                   'deposits/records/review-schema-v1.0.0.json',
+    }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "Fix this"}),
+        headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 201
+    review_id = resp.json["review"][0]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"id": review_id, "action": "resolve"}),
+        headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 201
+
+    review = resp.json["review"][0]
+    assert review["resolved"] is True
+    assert review["resolved_by"] == owner.email
+    assert review["resolved_at"] is not None
+
+
+def test_review_comment_creates_comment(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    """Adding a comment to a review stores it with proper fields."""
+    owner = users['cms_user']
+    create_schema('review-schema', experiment='CMS',
+                  config={'reviewable': True})
+
+    deposit = create_deposit(owner, 'review-schema', {
+        '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                   'deposits/records/review-schema-v1.0.0.json',
+    }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "Fix this"}),
+        headers=default_headers + auth_headers_for_user(owner))
+    review_id = resp.json["review"][0]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({
+            "id": review_id,
+            "action": "comment",
+            "body": "I disagree with this"
+        }),
+        headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 201
+
+    review = resp.json["review"][0]
+    assert len(review["comments"]) == 1
+
+    comment = review["comments"][0]
+    assert comment["body"] == "I disagree with this"
+    assert comment["reviewer"] == owner.email
+    assert comment["parent_id"] is None
+    assert comment["created_at"] is not None
+    assert comment["id"] is not None
+
+
+def test_review_subcomment_with_parent_id(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    """A subcomment references its parent comment via parent_id."""
+    owner = users['cms_user']
+    create_schema('review-schema', experiment='CMS',
+                  config={'reviewable': True})
+
+    deposit = create_deposit(owner, 'review-schema', {
+        '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                   'deposits/records/review-schema-v1.0.0.json',
+    }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "Fix this"}),
+        headers=default_headers + auth_headers_for_user(owner))
+    review_id = resp.json["review"][0]["id"]
+
+    # Create parent comment
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({
+            "id": review_id,
+            "action": "comment",
+            "body": "Parent comment"
+        }),
+        headers=default_headers + auth_headers_for_user(owner))
+    parent_comment_id = resp.json["review"][0]["comments"][0]["id"]
+
+    # Create subcomment
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({
+            "id": review_id,
+            "action": "comment",
+            "body": "Reply to parent",
+            "parent_id": parent_comment_id
+        }),
+        headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 201
+
+    review = resp.json["review"][0]
+    assert len(review["comments"]) == 2
+
+    subcomment = review["comments"][1]
+    assert subcomment["body"] == "Reply to parent"
+    assert subcomment["parent_id"] == parent_comment_id
+
+
+def test_review_comment_requires_body(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    """Comment without body should return 400."""
+    owner = users['cms_user']
+    create_schema('review-schema', experiment='CMS',
+                  config={'reviewable': True})
+
+    deposit = create_deposit(owner, 'review-schema', {
+        '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                   'deposits/records/review-schema-v1.0.0.json',
+    }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "Fix this"}),
+        headers=default_headers + auth_headers_for_user(owner))
+    review_id = resp.json["review"][0]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({
+            "id": review_id,
+            "action": "comment"
+        }),
+        headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 400
+
+
+def test_review_comment_invalid_parent_id(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    """Comment with invalid parent_id should return 400."""
+    owner = users['cms_user']
+    create_schema('review-schema', experiment='CMS',
+                  config={'reviewable': True})
+
+    deposit = create_deposit(owner, 'review-schema', {
+        '$schema': 'https://analysispreservation.cern.ch/schemas/'
+                   'deposits/records/review-schema-v1.0.0.json',
+    }, experiment='CMS')
+    depid = deposit["_deposit"]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({"type": "request_changes", "body": "Fix this"}),
+        headers=default_headers + auth_headers_for_user(owner))
+    review_id = resp.json["review"][0]["id"]
+
+    resp = client.post(
+        f'/deposits/{depid}/actions/review',
+        data=json.dumps({
+            "id": review_id,
+            "action": "comment",
+            "body": "Reply",
+            "parent_id": "nonexistent-id"
+        }),
+        headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 400
