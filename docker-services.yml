@@ -80,7 +80,7 @@ services:
       - "15672:15672"
       - "5672:5672"
   search:
-    image: opensearchproject/opensearch:2.2.0
+    image: opensearchproject/opensearch:3.2.0
     environment:
       - node.name=search
       - discovery.seed_hosts=search
@@ -99,7 +99,7 @@ services:
       - "9200:9200"
       - "9600:9600"
   search-dashboards:
-    image: opensearchproject/opensearch-dashboards:2.2.0
+    image: opensearchproject/opensearch-dashboards:3.2.0
     ports:
       - 5601:5601
     expose:
