@@ -74,7 +74,7 @@ def test_download_repo_file(deposit, file_tar):
         body=file_tar,
         content_type='text/plain',
         headers={
-            'Content-Length': '18',
+            'Content-Length': str(len(file_tar)),
             'Content-Encoding': 'gzip'
         },
         stream=True,
@@ -108,7 +108,7 @@ def test_download_repo_file_when_failed_creates_empty_file_object_with_failed_ta
         body=file_tar,
         content_type='text/plain',
         headers={
-            'Content-Length': '18',
+            'Content-Length': str(len(file_tar)),
             'Content-Encoding': 'gzip'
         },
         stream=True,

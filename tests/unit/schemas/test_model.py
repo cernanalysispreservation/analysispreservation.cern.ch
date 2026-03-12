@@ -260,10 +260,10 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     )
     assert 'records-cms-schema-v1.0.0' in current_search.mappings.keys()
 
-    assert es.indices.exists(prefix_index('deposits-records-cms-schema-v1.0.0'))
-    assert es.indices.exists(prefix_index('records-cms-schema-v1.0.0'))
+    assert es.indices.exists(index=prefix_index('deposits-records-cms-schema-v1.0.0'))
+    assert es.indices.exists(index=prefix_index('records-cms-schema-v1.0.0'))
 
-    assert es.indices.get_mapping(prefix_index('records-cms-schema-v1.0.0')) == {
+    assert es.indices.get_mapping(index=prefix_index('records-cms-schema-v1.0.0')) == {
         prefix_index('records-cms-schema-v1.0.0'):
             {
                 'mappings': {
@@ -276,7 +276,7 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
             }
     }
 
-    assert es.indices.get_mapping(prefix_index('deposits-records-cms-schema-v1.0.0')) == {
+    assert es.indices.get_mapping(index=prefix_index('deposits-records-cms-schema-v1.0.0')) == {
         prefix_index('deposits-records-cms-schema-v1.0.0'):
             {
                 'mappings':
@@ -293,8 +293,8 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     db.session.delete(schema)
     db.session.commit()
 
-    assert not es.indices.exists(prefix_index('deposits-records-cms-schema-v1.0.0'))
-    assert not es.indices.exists(prefix_index('records-cms-schema-v1.0.0'))
+    assert not es.indices.exists(index=prefix_index('deposits-records-cms-schema-v1.0.0'))
+    assert not es.indices.exists(index=prefix_index('records-cms-schema-v1.0.0'))
 
     assert 'deposits-records-cms-schema-v1.0.0' not in current_search.mappings.keys(
     )

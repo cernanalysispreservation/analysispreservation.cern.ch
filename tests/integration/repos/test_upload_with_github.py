@@ -806,7 +806,7 @@ def test_upload_when_repo_file(m_get_repo, client, deposit,
         body=file_tar,
         content_type='text/plain',
         headers={
-            'Content-Length': '18',
+            'Content-Length': str(len(file_tar)),
             'Content-Encoding': 'gzip'
         },
         stream=True,
@@ -858,7 +858,7 @@ def test_upload_when_repo_file_with_type(m_get_repo, client, deposit,
         body=file_tar,
         content_type='text/plain',
         headers={
-            'Content-Length': '18',
+            'Content-Length': str(len(file_tar)),
             'Content-Encoding': 'gzip'
         },
         stream=True,

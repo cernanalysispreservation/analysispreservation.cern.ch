@@ -510,14 +510,14 @@ def name_to_es_name(name):
 def create_index(index_name, mapping_body, aliases):
     """Create index in opensearch, add under given aliases."""
     prefixed_index = prefix_index(index_name)
-    if not es.indices.exists(prefixed_index):
+    if not es.indices.exists(index=prefixed_index):
         current_search.mappings[prefixed_index] = {}  # invenio search needs it
 
         es.indices.create(index=prefixed_index, body=mapping_body, ignore=False)
 
         for alias in aliases:
             es.indices.update_aliases(
-                {'actions': [{'add': {'index': prefixed_index, 'alias': prefix_index(alias)}}]}
+                body= {'actions': [{'add': {'index': prefixed_index, 'alias': prefix_index(alias)}}]}
             )
 
 
@@ -564,8 +564,8 @@ def before_delete_schema(mapper, connect, schema):
             prefix_index(schema.record_index), 
             prefix_index(schema.deposit_index)
         ):
-            if es.indices.exists(index):
-                es.indices.delete(index)
+            if es.indices.exists(index=index):
+                es.indices.delete(index=index)
 
             # invenio search needs it
             mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')

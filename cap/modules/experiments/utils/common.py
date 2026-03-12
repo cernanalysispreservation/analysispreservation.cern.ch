@@ -137,7 +137,7 @@ def recreate_es_index_from_source(alias,
         for _, g in groupby(iterable, lambda _: next(c) // chunk_size):
             yield g
 
-    if es.indices.exists(prefix_index('{}-v1'.format(alias))):
+    if es.indices.exists(index=prefix_index('{}-v1'.format(alias))):
         old_index, new_index = (
             prefix_index('{}-v1'.format(alias)),
             prefix_index('{}-v2'.format(alias))
@@ -149,7 +149,7 @@ def recreate_es_index_from_source(alias,
         )
 
     # recreate new index
-    if es.indices.exists(new_index):
+    if es.indices.exists(index=new_index):
         es.indices.delete(index=new_index)
     es.indices.create(index=new_index,
                       body=dict(mappings=mapping, settings=settings or {}))
@@ -175,5 +175,5 @@ def recreate_es_index_from_source(alias,
     es.indices.put_alias(index=new_index, name=alias)
 
     # remove old index
-    if es.indices.exists(old_index):
+    if es.indices.exists(index=old_index):
         es.indices.delete(index=old_index)

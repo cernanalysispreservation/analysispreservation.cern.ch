@@ -24,7 +24,7 @@ jobs:
       - name: Run darker
         run: |
           pip install flake8
-          pip install darker[isort]
+          pip install darker[isort,black]
           darker . --check -i -L flake8
 
   python-tests:
@@ -78,7 +78,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install .
+          pip install ".[tests]"
 
       - name: Run integration and unit tests
         run: ./run-tests.sh --check-pytest

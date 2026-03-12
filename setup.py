@@ -15,17 +15,6 @@ readme = open('README.rst').read()
 
 tests_require = [
     'check-manifest>=0.35',
-    # 'coverage>=5.2.1',
-    # 'isort>=4.3',
-    # 'mock>=2.0.0',
-    # 'pydocstyle>=2.0.0',
-    # 'pytest-cov==2.5.1',
-    # 'pytest-invenio>=1.0.5,<=1.3.4',
-    # 'pytest-mock>=1.6.0',
-    # 'pytest-pep8>=1.0.6',
-    # 'pytest-random-order>=0.5.4',
-    # 'pytest==5.3.5',
-    # 'responses==0.10.6',
     'pytest-cov>=3',
     'pytest>=7',
     'responses>=0.22.0',
@@ -37,7 +26,7 @@ extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
-extras_require['ldap'] = ['python-ldap>=2.4.39']
+extras_require['ldap'] = ['python-ldap>=3.1.0']
 
 # Do not include in all requirement
 extras_require['xrootd'] = [
@@ -45,7 +34,7 @@ extras_require['xrootd'] = [
     # 'xrootdpyfs>=0.1.5',
 ]
 
-setup_requires = ['Babel>=2.4.0', 'pytest-runner>=3.0.0,<5']
+setup_requires = ['Babel>=2.4.0']
 
 install_requires = [
     # CAP Base
@@ -266,7 +255,6 @@ setup(
     extras_require=extras_require,
     install_requires=install_requires,
     setup_requires=setup_requires,
-    tests_require=tests_require,
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',

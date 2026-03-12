@@ -54,7 +54,7 @@ check_manifest () {
 }
 
 check_pytest () {
-    python setup.py test
+    pytest .
 }
 
 

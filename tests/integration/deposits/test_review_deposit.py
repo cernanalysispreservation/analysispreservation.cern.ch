@@ -131,10 +131,21 @@ def test_deposit_review_create_reviewable(
 
     assert resp.status_code == 400
 
+    # comment without body should fail
     resp = client.post(f'/deposits/{reviewable_id}/actions/review',
                        data=json.dumps({
                            "id": review_item_id,
                            "action": "comment"
+                       }),
+                       headers=default_headers + auth_headers_for_user(owner))
+    assert resp.status_code == 400
+
+    # comment with body should succeed
+    resp = client.post(f'/deposits/{reviewable_id}/actions/review',
+                       data=json.dumps({
+                           "id": review_item_id,
+                           "action": "comment",
+                           "body": "This is a comment"
                        }),
                        headers=default_headers + auth_headers_for_user(owner))
     assert resp.status_code == 201
