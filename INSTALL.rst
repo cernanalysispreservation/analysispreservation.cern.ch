@@ -71,8 +71,8 @@ build all docker images and boot them up using ``docker-compose``:
 
     $ git clone https://github.com/cernanalysispreservation/analysispreservation.cern.ch.git
     $ cd analysispreservation.cern.ch
-    $ docker-compose -f docker-compose.full.yml build
-    $ docker-compose -f docker-compose.full.yml up -d
+    $ docker compose -f docker-compose.full.yml build
+    $ docker compose -f docker-compose.full.yml up -d
 
 Keep the session with the docker-compose above alive, and in a new shell,
 go to the project directory and run the init script which creates the database
@@ -80,7 +80,7 @@ tables, search indexes and some data fixtures:
 
 .. code-block:: console
 
-    $ docker-compose -f docker-compose.full.yml run web-api sh scripts/init.sh
+    $ docker compose -f docker-compose.full.yml run web-api sh scripts/init.sh
 
 Now visit the following URL in your browser:
 
@@ -111,14 +111,14 @@ by following the next steps:
 
     .. code-block:: console
 
-        $ docker-compose -f docker-compose.dev.yml up
+        $ docker compose -f docker-compose.dev.yml up
 
 - In order to initialize the necessary services (e.g. build and connect to the db, etc), open another
   cell and use the following command, while the services are running:
 
     .. code-block:: console
 
-        $ docker-compose -f docker-compose.dev.yml run web-api sh scripts/clean-and-init.sh
+        $ docker compose -f docker-compose.dev.yml run web-api sh scripts/clean-and-init.sh
 
 Now you have a dev environment that can automatically reload changed code in the backend, and will also
 accept changes in the frontend, after rebuilding the ``index.html`` file.
@@ -160,7 +160,7 @@ installed.
     Redis, RabbitMQ or Elasticsearch on those ports in your system.
 
 Similarly to how we previously ran
-``docker-compose -f docker-compose.full.yml up -d`` to run full-stack
+``docker compose -f docker-compose.full.yml up -d`` to run full-stack
 CAP, this time we run only four docker nodes with the database,
 Elasticsearch, Redis and RabbitMQ:
 
@@ -339,7 +339,7 @@ To run a recipe do:
    sh scripts/<recipe-file.sh>
 
    // Using docker enviroment
-   docker-compose -f docker-compose-dev.yml run web sh scripts/<recipe-file.sh>
+   docker compose -f docker-compose-dev.yml run web sh scripts/<recipe-file.sh>
 
 Existing recipes list:
 
@@ -481,7 +481,7 @@ Run the following command
 
 .. code-block:: shell
 
-	docker-compose -f docker-compose.dev.yml up   --remove-orphans
+	docker compose -f docker-compose.dev.yml up   --remove-orphans
 
 When all the services are running you can navigate to a browser
 
@@ -497,15 +497,15 @@ Do the following commands in the exact order
 
 .. code-block:: shell
 
-    docker-compose -f docker-compose.dev.yml run web-api  curl -XDELETE es:9200/_all
+    docker compose -f docker-compose.dev.yml run web-api  curl -XDELETE es:9200/_all
 
-    docker-compose -f docker-compose.dev.yml run web-api sh scripts/clean-and-init.sh
+    docker compose -f docker-compose.dev.yml run web-api sh scripts/clean-and-init.sh
 
-    docker-compose -f docker-compose.dev.yml run web-api  cap files location local var/data --default
+    docker compose -f docker-compose.dev.yml run web-api  cap files location local var/data --default
 
-    docker-compose -f docker-compose.dev.yml run web-api  cap fixtures cms index-datasets --file /opt/cap/demo/das.txt
+    docker compose -f docker-compose.dev.yml run web-api  cap fixtures cms index-datasets --file /opt/cap/demo/das.txt
 
-    docker-compose -f docker-compose.dev.yml run web-api  cap fixtures cms index-triggers --file /opt/cap/demo/cms-triggers.json
+    docker compose -f docker-compose.dev.yml run web-api  cap fixtures cms index-triggers --file /opt/cap/demo/cms-triggers.json
 
 
 Statping User and Token Creation
