@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Collapse, Divider, Input, List, Space, Typography } from "antd";
+import { Button, Collapse, Input, List, Space, Typography } from "antd";
 import {
   CommentOutlined,
   DeleteOutlined,
