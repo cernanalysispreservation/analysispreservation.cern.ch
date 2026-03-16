@@ -4,7 +4,7 @@
 #
 # Base cap image to install on with base python 3.10
 
-FROM python:3.10.10
+FROM python:3.10.15
 
 # Certficates configuartion
 ENV PYTHONBUFFERED=0 \
