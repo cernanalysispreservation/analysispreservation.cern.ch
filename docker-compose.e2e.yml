@@ -18,7 +18,6 @@ services:
       - web-api
       - frontend
     volumes:
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
       - ./docker/nginx/ssl:/etc/ssl
       - ./docker/nginx/config.js:/usr/share/nginx/html/config.js
   cypress:
@@ -77,10 +76,9 @@ services:
     tty: true
   # API Files Application
   cap-client:
-    # build:
-    #   context: https://github.com/cernanalysispreservation/cap-client.git
-    #   dockerfile: Dockerfile
-    image: gitlab-registry.cern.ch/analysispreservation/cap-client
+    build:
+      context: https://github.com/cernanalysispreservation/cap-client.git
+      dockerfile: Dockerfile
     environment:
       - "CAP_SERVER_URL=https://nginx"
     links:

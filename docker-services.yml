@@ -40,7 +40,7 @@ services:
       - "CACHE_REDIS_HOST=cache"
       - "INVENIO_CACHE_REDIS_HOST=cache"
       - "INVENIO_ACCESS_SESSION_REDIS_HOST=cache"
-      - "INVENIO_SEARCH_INDEX_PREFIX=docker-"
+      # - "INVENIO_SEARCH_INDEX_PREFIX=docker-"
   lb:
     build: ./docker/haproxy/
     image: cap-lb
@@ -62,6 +62,7 @@ services:
     image: redis
     restart: "always"
     read_only: true
+    command: redis-server --stop-writes-on-bgsave-error no
     ports:
       - "6379:6379"
   db:
