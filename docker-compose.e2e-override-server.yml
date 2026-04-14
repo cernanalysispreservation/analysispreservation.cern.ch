@@ -19,6 +19,11 @@ services:
       - search
       - mq
       - db
+    environment:
+      - "FLASK_DEBUG=True"
+      - "DEBUG_MODE=True"
+      - "DEV_HOST=nginx"
+      - "FLASK_APP=cap/wsgi.py"
 
   files-api:
     extends:
@@ -27,6 +32,11 @@ services:
     volumes:
       - ./docker/uwsgi:/opt/cap/var/instance
       - ./cap:/opt/invenio/src/cap
+    environment:
+      - "FLASK_DEBUG=True"
+      - "DEBUG_MODE=True"
+      - "DEV_HOST=nginx"
+      - "FLASK_APP=cap/wsgi.py"
   # Worker
   worker:
     extends:
@@ -34,3 +44,8 @@ services:
       service: app-image
     volumes:
       - ./cap:/opt/invenio/src/cap
+    environment:
+      - "FLASK_DEBUG=True"
+      - "DEBUG_MODE=True"
+      - "DEV_HOST=nginx"
+      - "FLASK_APP=cap/wsgi.py"
