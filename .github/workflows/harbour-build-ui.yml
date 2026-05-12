@@ -2,7 +2,7 @@ name: Build and export CAP UI image
 
 on:
   push:
-    branches: ["master", "dev", "qa", "test", "with-formule", "next"]
+    branches: ["master", "dev", "qa", "test", "next"]
     # paths:
     #   - "ui/**"
     #   - ".github/workflows/ui-test.yml"
