@@ -1,4 +1,4 @@
-FROM python:3.10.16
+FROM python:3.10.15
 
 # Certficates configuartion
 ENV PYTHONBUFFERED=0 \
@@ -82,6 +82,8 @@ RUN if [ ! -z $BRANCH_NAME ]; then \
 
 # print current commit id
 RUN echo "Current commit id:" && git rev-parse HEAD
+
+RUN pip install --upgrade pip
 
 # install Python dependencies
 RUN pip install -e .

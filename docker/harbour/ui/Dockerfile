@@ -27,9 +27,10 @@ COPY ./ui ${WORKING_DIR}/ui
 RUN yarn install
 RUN yarn workspace cap-react build
 WORKDIR ${WORKING_DIR}/ui/cap-react
-RUN yarn sentry:create-release
-RUN yarn sentry:sourcemaps
-RUN yarn sentry:finalize-release
+# RUN npm install -g @sentry/cli
+# RUN yarn sentry:create-release
+# RUN yarn sentry:sourcemaps
+# RUN yarn sentry:finalize-release
 
 # build general docs
 COPY ./docs ${WORKING_DIR}/docs
