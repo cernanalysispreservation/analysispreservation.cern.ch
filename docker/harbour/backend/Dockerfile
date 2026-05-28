@@ -35,7 +35,7 @@ RUN apt-get update -q \
     && apt-get install -y kstart krb5-kdc krb5-admin-server krb5-multidev
 
 # set invenio path
-ENV WORKING_DIR=/opt/cap
+ENV WORKING_DIR=/opt/invenio
 ENV INVENIO_INSTANCE_PATH=$WORKING_DIR/var/instance
 ENV CAP_FILES_DIR=$WORKING_DIR/src/var
 
