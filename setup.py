@@ -58,6 +58,7 @@ install_requires = [
     'python-cern-sso-krb==1.3.3',
     'gssapi>=1.7.3',
     'Authlib==0.15.1',
+    'sentry-sdk==1.9.0',
     # 'uWSGI==2.0.21',
     # 'uwsgi-tools==1.1.1',
     # 'uwsgitop==0.10',

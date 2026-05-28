@@ -12,6 +12,7 @@ ENV PYTHONBUFFERED=0 \
     REQUESTS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt" \
     PATH="/root/.local/bin:${PATH}" \
     POETRY_VIRTUALENVS_CREATE=false
+
 COPY docker/base/CERN_Root_Certification_Authority_2.pem /usr/local/share/ca-certificates/CERN_Root_Certification_Authority_2.crt
 
 # Install system dependencies

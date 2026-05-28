@@ -35,7 +35,7 @@ RUN apt-get update -q \
     && apt-get install -y kstart krb5-kdc krb5-admin-server krb5-multidev
 
 # set invenio path
-ENV WORKING_DIR=/opt/invenio
+ENV WORKING_DIR=/opt/cap
 ENV INVENIO_INSTANCE_PATH=$WORKING_DIR/var/instance
 ENV CAP_FILES_DIR=$WORKING_DIR/src/var
 
@@ -83,7 +83,10 @@ RUN if [ ! -z $BRANCH_NAME ]; then \
 # print current commit id
 RUN echo "Current commit id:" && git rev-parse HEAD
 
-RUN pip install --upgrade pip
+# Install/create static files
+RUN mkdir -p ${INVENIO_INSTANCE_PATH}
+RUN mkdir -p $INVENIO_INSTANCE_PATH/static
+RUN mkdir -p ${CAP_FILES_DIR}
 
 # install Python dependencies
 RUN pip install -e .
@@ -91,14 +94,9 @@ RUN pip install gunicorn
 
 RUN cat /etc/ssl/certs/CERN-bundle.pem >>  /usr/local/lib/python3.10/site-packages/certifi/cacert.pem
 
-# install/create static files
-RUN mkdir -p $INVENIO_INSTANCE_PATH
-RUN mkdir -p $INVENIO_INSTANCE_PATH/static
-RUN mkdir -p $CAP_FILES_DIR
-
 # set folder permissions
-RUN chgrp -R 0 $INVENIO_INSTANCE_PATH $CAP_FILES_DIR && \
-    chmod -R g=u $INVENIO_INSTANCE_PATH $CAP_FILES_DIR
+RUN chgrp -R 0 $WORKING_DIR $CAP_FILES_DIR && \
+    chmod -R g=u $WORKING_DIR $CAP_FILES_DIR
 
 RUN useradd invenio --uid 1000 --gid 0 && \
     chown -R invenio:root $INVENIO_INSTANCE_PATH $CAP_FILES_DIR && \
