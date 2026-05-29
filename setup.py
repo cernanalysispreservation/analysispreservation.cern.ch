@@ -44,6 +44,7 @@ install_requires = [
     'itsdangerous==2.0.1',
     'werkzeug==1.0.1',
     'Flask-Caching==1.5.0',
+    'redis<=7.4.0', # or update redis-server
     'Flask-Debugtoolbar',
     'flask-wtf==0.15.1',
     'flask-login==0.4.1',
