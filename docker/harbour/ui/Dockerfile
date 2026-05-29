@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 RUN apk add --no-cache git
 
@@ -21,6 +21,8 @@ ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
 RUN mkdir -p ui/cap-react
 
 WORKDIR $WORKING_DIR/ui
+
+ENV NODE_OPTIONS=--max-old-space-size=4096
 
 # build CAP UI
 COPY ./ui ${WORKING_DIR}/ui
