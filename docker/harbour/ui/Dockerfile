@@ -22,6 +22,8 @@ RUN mkdir -p ui/cap-react
 
 WORKDIR $WORKING_DIR/ui
 
+RUN yarn config set network-timeout 600000 -g
+RUN yarn config set registry https://registry.npmjs.org/ -g
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
 # build CAP UI
