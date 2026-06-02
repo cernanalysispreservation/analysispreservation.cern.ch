@@ -173,14 +173,47 @@ def _get_admin_egroups(wg):
     return roles
 
 
-def get_from_cadi_by_id(cadi_id, from_validator=False):
+def get_token():
+    response = requests.post(
+        current_app.config.get('CADI_AUTH_URL'),
+        data={
+            "grant_type": "client_credentials",
+            "client_id": current_app.config.get("CADI_CLIENT_ID"),
+            "client_secret": current_app.config.get("CADI_CLIENT_SECRET"),
+            "audience": current_app.config.get("CADI_AUDIENCE"),
+        },
+    )
+    response.raise_for_status()
+    return response.json()["access_token"]
+
+
+def get_analysis_list(token):
+    response = requests.get(
+        current_app.config.get("CADI_API_URL"),
+        headers={"Authorization": f"Bearer {token}"},
+        verify=False,
+    )
+    return response.json()
+
+
+def get_analysis_by_id(token, cadi_id):
+    response = requests.get(
+        current_app.config.get("CADI_ITEM_API_URL").format(
+            id=cadi_id.upper()),
+        headers={"Authorization": f"Bearer {token}"},
+        verify=False,
+    )
+    return response.json()
+
+
+def get_from_cadi_legacy_by_id(cadi_id, from_validator=False):
     """Retrieve entry with given id from CADI database.
 
     :params str cadi_id: CADI identifier
     :returns: entry from CADI
     :rtype dict
     """
-    url = current_app.config.get('CADI_GET_RECORD_URL').format(
+    url = current_app.config.get('CADI_LEGACY_GET_RECORD_URL').format(
         id=cadi_id.upper())
 
     cookie = get_sso_cookie_for_cadi()
@@ -199,6 +232,27 @@ def get_from_cadi_by_id(cadi_id, from_validator=False):
     return entry
 
 
+def get_from_cadi_by_id(cadi_id, from_validator=False):
+    """Retrieve entry with given id from CADI database.
+
+    :params str cadi_id: CADI identifier
+    :returns: entry from CADI
+    :rtype dict
+    """
+    try:
+        token = get_token()
+        entry = get_analysis_by_id(token, cadi_id)
+    except Exception:
+        if from_validator:
+            return False
+        if entry == {}:
+            abort(400, 'No CADI entry found')
+
+        raise ExternalAPIException()
+
+    return entry
+
+
 def get_all_from_cadi():
     """Retrieve all active entries from CADI database.
 
@@ -207,7 +261,30 @@ def get_all_from_cadi():
     :returns: list of CADI entries
     :rtype list of dict
     """
-    url = current_app.config.get('CADI_GET_ALL_URL')
+    try:
+        token = get_token()
+        all_entries = get_analysis_list(token)
+    except Exception:
+        raise ExternalAPIException()
+
+    all_entries = all_entries.get("analysis", [])
+
+    # filter out inactive or superseded entries
+    entries = (entry for entry in all_entries
+               if entry['status'] not in ['Inactive', 'SUPERSEDED', 'Free'])
+
+    return entries
+
+
+def get_all_from_cadi_legacy():
+    """Retrieve all active entries from CADI database.
+
+    Entries with status inactive|superseded will be skipped.
+
+    :returns: list of CADI entries
+    :rtype list of dict
+    """
+    url = current_app.config.get('CADI_LEGACY_GET_ALL_URL')
 
     cookie = get_sso_cookie_for_cadi()
     response = requests.get(url=url, cookies=cookie, verify=False)
