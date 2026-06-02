@@ -32,8 +32,10 @@ from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.experiments.errors import ExternalAPIException
 from cap.modules.experiments.serializers import CADISchema
 from cap.modules.experiments.utils.cadi import (get_all_from_cadi,
+                                                get_all_from_cadi_legacy,
                                                 get_deposit_by_cadi_id,
                                                 get_from_cadi_by_id,
+                                                get_from_cadi_legacy_by_id,
                                                 synchronize_cadi_entries)
 from conftest import _datastore, assign_egroup_to_experiment
 from invenio_accounts.testutils import create_test_user
@@ -45,7 +47,7 @@ from pytest import raises
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
+def test_get_from_cadi_legacy_by_id(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
     cadi_id = 'EXO-00-000'
     cadi_resp = {
@@ -73,11 +75,11 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
 
     mock_get_sso_cookie_for_cadi.return_value = cookie
     responses.add(responses.GET,
-                  current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
+                  current_app.config['CADI_LEGACY_GET_RECORD_URL'].format(id=cadi_id),
                   json=cadi_resp,
                   status=200)
 
-    output = get_from_cadi_by_id(cadi_id)
+    output = get_from_cadi_legacy_by_id(cadi_id)
 
     # check that requst to glance is called with correct url and cookie
     url = 'https://icms.cern.ch/tools-api/restplus/relay/' + \
@@ -92,7 +94,7 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.generate_krb_cookie',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
-def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(
+def test_get_from_cadi_legacy_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(
         app):
     cadi_id = 'non-existing'
     # CADI API returns empty list, when no match with given id
@@ -100,11 +102,11 @@ def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict
 
     responses.add(
         responses.GET,
-        current_app.config['CADI_GET_RECORD_URL'].format(id='NON-EXISTING'),
+        current_app.config['CADI_LEGACY_GET_RECORD_URL'].format(id='NON-EXISTING'),
         json=cadi_resp,
         status=200)
 
-    output = get_from_cadi_by_id(cadi_id)
+    output = get_from_cadi_legacy_by_id(cadi_id)
 
     # check the response
     assert output == {}
@@ -113,31 +115,31 @@ def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
-def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(app):
+def test_get_from_cadi_legacy_by_id_when_cadi_server_down_returns_503(app):
     cadi_id = 'EXO-00-000'
 
     responses.add(responses.GET,
-                  current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
+                  current_app.config['CADI_LEGACY_GET_RECORD_URL'].format(id=cadi_id),
                   status=500)
 
     with raises(ExternalAPIException):
-        get_from_cadi_by_id(cadi_id)
+        get_from_cadi_legacy_by_id(cadi_id)
 
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
        MagicMock(side_effect=ExternalAPIException()))
-def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns_503(
+def test_get_from_cadi_legacy_by_id_when_cadi_server_down_while_asking_for_auth_returns_503(
         app):
     cadi_id = 'EXO-00-000'
 
     with raises(ExternalAPIException):
-        get_from_cadi_by_id(cadi_id)
+        get_from_cadi_legacy_by_id(cadi_id)
 
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
+def test_get_all_from_cadi_legacy(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
     cadi_resp = dict(_embedded=dict(cadiLineCapInfoList=[
         dict(code=u'dEXO-00-001', status=u'Inactive'),
@@ -147,11 +149,11 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
 
     mock_get_sso_cookie_for_cadi.return_value = cookie
     responses.add(responses.GET,
-                  current_app.config['CADI_GET_ALL_URL'],
+                  current_app.config['CADI_LEGACY_GET_ALL_URL'],
                   json=cadi_resp,
                   status=200)
 
-    output = list(get_all_from_cadi())
+    output = list(get_all_from_cadi_legacy())
 
     # check that request to glance is called with correct url and cookie
     url = 'https://icms.cern.ch/tools-api/restplus/relay/piggyback/' + \
@@ -170,18 +172,112 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
-def test_get_all_from_cadi_when_cadi_server_down_returns_503(app):
+def test_get_all_from_cadi_legacy_when_cadi_server_down_returns_503(app):
     responses.add(responses.GET,
-                  current_app.config['CADI_GET_ALL_URL'],
+                  current_app.config['CADI_LEGACY_GET_ALL_URL'],
                   status=500)
 
     with raises(ExternalAPIException):
-        get_all_from_cadi()
+        get_all_from_cadi_legacy()
 
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
        MagicMock(side_effect=ExternalAPIException()))
+def test_get_all_from_cadi_legacy_when_cadi_server_down_while_asking_for_auth_returns_503(
+        app):
+    with raises(ExternalAPIException):
+        get_all_from_cadi_legacy()
+
+
+@patch('cap.modules.experiments.utils.cadi.get_analysis_by_id')
+@patch('cap.modules.experiments.utils.cadi.get_token')
+def test_get_from_cadi_by_id(mock_get_token, mock_get_analysis_by_id, app):
+    cadi_id = 'EXO-00-000'
+    cadi_resp = {
+        u'code': 'dEXO-00-000',
+        u'status': 'PUB',
+        u'description': 'Description',
+        u'name': 'Name',
+        u'contact': 'Contact User',
+    }
+
+    mock_get_token.return_value = 'test_token'
+    mock_get_analysis_by_id.return_value = cadi_resp
+
+    output = get_from_cadi_by_id(cadi_id)
+
+    mock_get_token.assert_called_once()
+    mock_get_analysis_by_id.assert_called_once_with('test_token', cadi_id)
+    assert output == cadi_resp
+
+
+@patch('cap.modules.experiments.utils.cadi.get_analysis_by_id')
+@patch('cap.modules.experiments.utils.cadi.get_token')
+def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(
+        mock_get_token, mock_get_analysis_by_id, app):
+    cadi_id = 'non-existing'
+
+    mock_get_token.return_value = 'test_token'
+    mock_get_analysis_by_id.return_value = {}
+
+    output = get_from_cadi_by_id(cadi_id)
+
+    assert output == {}
+
+
+@patch('cap.modules.experiments.utils.cadi.get_analysis_by_id',
+       MagicMock(side_effect=Exception('Server error')))
+@patch('cap.modules.experiments.utils.cadi.get_token',
+       MagicMock(return_value='test_token'))
+def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(app):
+    with raises(ExternalAPIException):
+        get_from_cadi_by_id('EXO-00-000')
+
+
+@patch('cap.modules.experiments.utils.cadi.get_token',
+       MagicMock(side_effect=Exception('Auth error')))
+def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns_503(
+        app):
+    with raises(ExternalAPIException):
+        get_from_cadi_by_id('EXO-00-000')
+
+
+@patch('cap.modules.experiments.utils.cadi.get_analysis_list')
+@patch('cap.modules.experiments.utils.cadi.get_token')
+def test_get_all_from_cadi(mock_get_token, mock_get_analysis_list, app):
+    cadi_resp = dict(analysis=[
+        dict(code=u'dEXO-00-001', status=u'Inactive'),
+        dict(code=u'dEXO-00-002', status=u'PUB'),
+        dict(code=u'dEXO-00-003', status=u'SUPERSEDED')
+    ])
+
+    mock_get_token.return_value = 'test_token'
+    mock_get_analysis_list.return_value = cadi_resp
+
+    output = list(get_all_from_cadi())
+
+    mock_get_token.assert_called_once()
+    mock_get_analysis_list.assert_called_once_with('test_token')
+
+    # check that inactive|superseded analysis are not returned
+    assert dict(code='dEXO-00-001', status='Inactive') not in output
+    assert dict(code='dEXO-00-003', status='SUPERSEDED') not in output
+
+    assert output == [dict(code='dEXO-00-002', status='PUB')]
+
+
+@patch('cap.modules.experiments.utils.cadi.get_analysis_list',
+       MagicMock(side_effect=Exception('Server error')))
+@patch('cap.modules.experiments.utils.cadi.get_token',
+       MagicMock(return_value='test_token'))
+def test_get_all_from_cadi_when_cadi_server_down_returns_503(app):
+    with raises(ExternalAPIException):
+        get_all_from_cadi()
+
+
+@patch('cap.modules.experiments.utils.cadi.get_token',
+       MagicMock(side_effect=Exception('Auth error')))
 def test_get_all_from_cadi_when_cadi_server_down_while_asking_for_auth_returns_503(
         app):
     with raises(ExternalAPIException):

@@ -245,10 +245,11 @@ def get_from_cadi_by_id(cadi_id, from_validator=False):
     except Exception:
         if from_validator:
             return False
-        if entry == {}:
-            abort(400, 'No CADI entry found')
-
         raise ExternalAPIException()
+
+    if entry == {}:
+        return {}
+
 
     return entry
 
