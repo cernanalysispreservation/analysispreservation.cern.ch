@@ -42,8 +42,7 @@ jobs:
 
     steps:
       - name: send event
-        uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-new-images@v6.4
-        with:
+        uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-new-images@v7.0.0
           event-type: update
           token: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES_CAP }}
           repo: cern-sis/kubernetes-cap
