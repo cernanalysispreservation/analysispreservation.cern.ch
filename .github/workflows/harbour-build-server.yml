@@ -47,4 +47,4 @@ jobs:
           token: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES_CAP }}
           repo: cern-sis/kubernetes-cap
           images: |
-            cern-sis/cap-server@{{ needs.build-image.outputs.image-id }}
+            cern-sis/cap-server@${{ needs.build-image.outputs.image-id }}
