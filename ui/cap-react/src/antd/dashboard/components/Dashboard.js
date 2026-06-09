@@ -13,10 +13,13 @@ import {
   Space,
   Modal,
   Button,
+  Result,
 } from "antd";
+import { MailOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import LockImage from "../../../img/lock.svg";
 
 const MAX_DISPLAYED_COLLECTIONS = 20;
 
@@ -39,6 +42,53 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
         <Tag>{e["name"]}</Tag>
       </Link>
     ));
+
+  if (!loading && (!groups || groups.size === 0)) {
+    return (
+      <Row justify="center" style={{ padding: "60px 20px" }}>
+        <Col xs={24} md={16} lg={12}>
+          <Result
+            icon={
+              <img
+                src={LockImage}
+                alt="No collections"
+                style={{ maxWidth: "200px" }}
+              />
+            }
+            title="You don't have access to any collections yet"
+            subTitle={
+              <>
+                <Typography.Paragraph
+                  type="secondary"
+                  style={{ maxWidth: "460px", margin: "0 auto 8px" }}
+                >
+                  Collections become available once your account is linked to an
+                  experiment or team e-group (e.g. CMS, ATLAS, LHCb, ALICE). This is
+                  usually set up by your group coordinator or CAP admin.
+                </Typography.Paragraph>
+                <Typography.Paragraph
+                  type="secondary"
+                  style={{ maxWidth: "460px", margin: "0 auto" }}
+                >
+                  If you have already been added to a group and still see this
+                  page, feel free to reach out and we will sort it out.
+                </Typography.Paragraph>
+              </>
+            }
+            extra={
+              <Button
+                type="primary"
+                icon={<MailOutlined />}
+                href="mailto:analysis-preservation-support@cern.ch"
+              >
+                Contact Support
+              </Button>
+            }
+          />
+        </Col>
+      </Row>
+    );
+  }
 
   return (
     <Row gutter={[20, 20]} style={{ padding: "20px" }}>
