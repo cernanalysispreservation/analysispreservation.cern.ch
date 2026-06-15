@@ -759,7 +759,7 @@ CMS_CONVENERS_EGROUP = 'cms-phys-conveners-{wg}@cern.ch'
 # Configuration
 CADI_AUTH_URL = "https://auth.cern.ch/auth/realms/cern/api-access/token"
 CADI_API_URL = "https://cmsfence.cern.ch/alcm/api/analysislistforweb"
-CADI_ITEM_API_URL = "https://cmsfence.cern.ch/alcm/api/analysis/ancode/{id}"
+CADI_ITEM_API_URL = "https://cmsfence.cern.ch/alcm/api/analysisdetailforweb/ancode/{id}"
 # CADI_API_URL = "https://cmsfence-int.cern.ch/alcm/api/analysislistforweb"
 
 CADI_CLIENT_ID = "glance-api-access-client"

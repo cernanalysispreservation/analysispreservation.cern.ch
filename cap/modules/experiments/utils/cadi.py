@@ -47,7 +47,7 @@ from .common import generate_krb_cookie
 def get_sso_cookie_for_cadi():
     """Get sso cookie needed to authenticate to CADI."""
     principal, kt = current_app.config['KRB_PRINCIPALS']['CADI']
-    url = current_app.config['CADI_AUTH_URL']
+    url = current_app.config['CADI_LEGACY_AUTH_URL']
     return generate_krb_cookie(principal, kt, url)
 
 
@@ -203,8 +203,12 @@ def get_analysis_by_id(token, cadi_id):
         headers={"Authorization": f"Bearer {token}"},
         verify=False,
     )
-    return response.json()
 
+    analysis = response.json().get("analysis", [])
+    if len(analysis) == 1:
+        return analysis[0]
+    
+    return {}
 
 def get_from_cadi_legacy_by_id(cadi_id, from_validator=False):
     """Retrieve entry with given id from CADI database.
