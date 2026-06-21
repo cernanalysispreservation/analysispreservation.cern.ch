@@ -24,7 +24,14 @@ const NavMenu = ({ match, history, formErrors }) => {
         },
         {
           key: "edit",
-          label: <Link to={`/drafts/${match.params.draft_id}/edit`}>Edit</Link>,
+          label: (
+            <Link
+              data-cy="itemNavEdit"
+              to={`/drafts/${match.params.draft_id}/edit`}
+            >
+              Edit
+            </Link>
+          ),
           icon: <TagOutlined />,
           danger: formErrors && formErrors.size > 0,
         },
