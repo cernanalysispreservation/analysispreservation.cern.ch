@@ -91,7 +91,7 @@ const Dashboard = ({ fetchDashboard, results, loading, groups }) => {
   }
 
   return (
-    <Row gutter={[20, 20]} style={{ padding: "20px" }}>
+    <Row gutter={[20, 20]} style={{ padding: "20px" }} align="stretch">
       {showModal && (
         <Modal
           title="Your Collections"

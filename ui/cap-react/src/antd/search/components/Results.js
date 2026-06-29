@@ -45,7 +45,9 @@ const Results = ({ results, loading }) => {
       >
         <Typography.Title
           level={5}
+          ellipsis={{ rows: 2 }}
           type={!item.getIn(["metadata", "general_title"]) && "secondary"}
+          style={{ marginTop: 0 }}
         >
           {item.getIn(["metadata", "general_title"]) || "No title"}
         </Typography.Title>

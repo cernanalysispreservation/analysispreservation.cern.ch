@@ -31,7 +31,14 @@ const DashboardListItem = ({ item }) => {
       }
     >
       <List.Item.Meta
-        title={getTitle()}
+        title={
+          <Typography.Paragraph
+            ellipsis={{ rows: 2 }}
+            style={{ marginBottom: 0 }}
+          >
+            {getTitle()}
+          </Typography.Paragraph>
+        }
         description={
           <Typography.Text ellipsis type="secondary">
             {abstract ? abstract : "No abstract provided"}

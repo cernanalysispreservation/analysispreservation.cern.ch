@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Menu, Dropdown, Button } from "antd";
+import { Menu, Popover, Button } from "antd";
 import { WELCOME } from "../../../routes";
 import { LoginOutlined } from "@ant-design/icons";
 import LoginForm from "../LoginForm";
@@ -12,7 +12,7 @@ const SimpleMenu = ({
 }) => {
   if (location.pathname != WELCOME) return null;
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   let oauthLink =
     process.env.NODE_ENV === "development"
@@ -35,24 +35,19 @@ const SimpleMenu = ({
     menuItems.unshift({
       key: "localLogin",
       label: (
-        <Dropdown
-          menu={{
-            items: [
-              {
-                label: <LoginForm loginLocalUser={loginLocalUser} />,
-                key: "localLoginForm",
-              },
-            ],
-          }}
-          open={dropdownOpen}
-          onOpenChange={x => setDropdownOpen(x)}
+        <Popover
+          content={<LoginForm loginLocalUser={loginLocalUser} />}
+          trigger="click"
+          open={popoverOpen}
+          onOpenChange={setPopoverOpen}
+          placement="bottomLeft"
+          styles={{ body: { padding: 0 } }}
         >
-          <div>
+          <div data-cy="localLogin">
             <LoginOutlined /> Local login
           </div>
-        </Dropdown>
+        </Popover>
       ),
-      "data-cy": "localLogin",
     });
 
   return (

@@ -20,63 +20,79 @@ const DashboardList = ({
   return loading ? (
     <DashboardListLoader />
   ) : (
-    <List
+    <div
       style={{
         background: "#fff",
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
-      size="small"
-      header={
-        <Row style={{ padding: "0 15px" }}>
-          <Col flex="auto">
-            <Typography.Text strong style={{ marginRight: "10px" }}>
-              {header}
-            </Typography.Text>
-            {description && (
-              <Tooltip title={description} placement="right">
-                <InfoCircleOutlined />
-              </Tooltip>
-            )}
-          </Col>
-          <Col flex="none">
-            <TypeTags
-              types={listKeys}
-              updateActiveList={type => setActiveList(type)}
-            />
-          </Col>
-        </Row>
-      }
-      data-cy={`${header.replace(/\s/g, "").replace(/[^\w\s]/gi, "")}-list`}
-      itemLayout="horizontal"
-      dataSource={list[activeList].list}
-      renderItem={item => (
-        <div style={{ borderBottom: "1px solid #f0f0f0", margin: "0 10px" }}>
-          <Link
-            data-cy={
-              item.metadata ? item.metadata.general_title : "Untitled Document"
-            }
-            to={
-              listType == "draft"
-                ? `/drafts/${item.id}`
-                : `/published/${item.id}`
-            }
+    >
+      <List
+        size="small"
+        style={{ flex: 1, overflow: "hidden" }}
+        header={
+          <Row style={{ padding: "0 15px" }}>
+            <Col flex="auto">
+              <Typography.Text strong style={{ marginRight: "10px" }}>
+                {header}
+              </Typography.Text>
+              {description && (
+                <Tooltip title={description} placement="right">
+                  <InfoCircleOutlined />
+                </Tooltip>
+              )}
+            </Col>
+            <Col flex="none">
+              <TypeTags
+                types={listKeys}
+                updateActiveList={type => setActiveList(type)}
+              />
+            </Col>
+          </Row>
+        }
+        data-cy={`${header.replace(/\s/g, "").replace(/[^\w\s]/gi, "")}-list`}
+        itemLayout="horizontal"
+        dataSource={list[activeList].list}
+        renderItem={item => (
+          <div
+            style={{ borderBottom: "1px solid #f0f0f0", margin: "0 10px" }}
+          >
+            <Link
+              data-cy={
+                item.metadata
+                  ? item.metadata.general_title
+                  : "Untitled Document"
+              }
+              to={
+                listType == "draft"
+                  ? `/drafts/${item.id}`
+                  : `/published/${item.id}`
+              }
+              style={{
+                boxShadow: "0px 20px 1px -20px darkgray",
+                backgroundColor: "blue !important",
+              }}
+            >
+              <DashboardListItem item={item} listType={listType} />
+            </Link>
+          </div>
+        )}
+      />
+      {displayShowAll && (
+        <Link to={list[activeList].more || "#"}>
+          <div
             style={{
-              boxShadow: "0px 20px 1px -20px darkgray",
-              backgroundColor: "blue !important",
+              textAlign: "center",
+              padding: "10px 0",
+              borderTop: "1px solid #f0f0f0",
             }}
           >
-            <DashboardListItem item={item} listType={listType} />
-          </Link>
-        </div>
+            Show All
+          </div>
+        </Link>
       )}
-      footer={
-        displayShowAll && (
-          <Link to={list[activeList].more || "#"}>
-            <div style={{ textAlign: "center" }}>Show All</div>
-          </Link>
-        )
-      }
-    />
+    </div>
   );
 };
 
