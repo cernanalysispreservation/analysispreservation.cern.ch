@@ -9,6 +9,15 @@ describe("Published Tests", function () {
 
     cy.get("[data-cy=DraftDocuments-list] a").first().click();
 
+    // navigate to edit tab
+    cy.get("[data-cy=itemNavEdit]").click();
+
+    // fill in the required field
+    cy.get("input#root\\!basic_info\\!cadi_id").type("JME-10-107");
+
+    //save the draft
+    cy.get("[data-cy=draft-save-btn]").click();
+
     // navigate to settings tab
     cy.get("[data-cy=itemNavSettings]").click();
 
@@ -45,6 +54,55 @@ describe("Published Tests", function () {
 
     cy.get("[data-cy=changeToDraftButton]").click();
 
-    cy.get("[ data-cy=sidebarStatus]").contains("draft");
+    cy.get("[data-cy=sidebarStatus]").contains("draft");
+  });
+
+  it("Does not allow publishing a draft with an empty required field", () => {
+    cy.createDraft("CMS Analysis", "empty-required", "cms");
+
+    cy.visit("/");
+
+    cy.get("[data-cy=DraftDocuments-list] a").first().click();
+
+    // 1. Check that the validation works without modifying the form data
+
+    // navigate to settings tab
+    cy.get("[data-cy=itemNavSettings]").click();
+
+    // click publish button
+    cy.get("[data-cy=draftSettingsRecidButton]").click();
+
+    // confirm publish action
+    cy.get("[data-cy=draftSettingsPublish]").click();
+
+    // verify that it throws an error
+    cy.get("div.ant-notification-notice-message").contains(
+      "Validation Error while publishing"
+    );
+
+    // 2. Check the that the validation works after modifying the form data
+
+    // navigate to edit tab
+    cy.get("[data-cy=itemNavEdit]").click();
+
+    // type in a normal field but leave the required field empty
+    cy.get("textarea#root\\!basic_info\\!abstract").type("asd");
+
+    // save the draft
+    cy.get("[data-cy=draft-save-btn]").click();
+
+    // navigate to settings tab
+    cy.get("[data-cy=itemNavSettings]").click();
+
+    // click publish button
+    cy.get("[data-cy=draftSettingsRecidButton]").click();
+
+    // confirm publish action
+    cy.get("[data-cy=draftSettingsPublish]").click();
+
+    // verify that it throws an error
+    cy.get("div.ant-notification-notice-message").contains(
+      "Validation Error while publishing"
+    );
   });
 });
